@@ -225,7 +225,7 @@ var
   index,i : integer;
   Ts : TStringList;
   List,List1,List3 : TListeAc;
-  Grup,ustUser,doktor : TcxImageComboKadir;
+  Grup,ustUser,doktor,sirketler : TcxImageComboKadir;
 begin
 
 
@@ -253,6 +253,17 @@ begin
   Grup.Filter := '';
   setDataStringKontrol(self,Grup,'Grup','Grup',kolon1,'',120);
   OrtakEventAta(Grup);
+
+
+  sirketler := TcxImageComboKadir.Create(self);
+  sirketler.Conn := Datalar.ADOConnection2;
+  sirketler.TableName := 'SIRKETLER_TNM';
+  sirketler.ValueField := 'sirketKod';
+  sirketler.DisplayField := 'Tanimi';
+  sirketler.BosOlamaz := False;
+  sirketler.Filter := '';
+  setDataStringKontrol(self,sirketler,'SirketKodu','Þirket',kolon1,'',120);
+  OrtakEventAta(sirketler);
 
   ustUser := TcxImageComboKadir.Create(self);
   ustUser.Conn := Datalar.ADOConnection2;

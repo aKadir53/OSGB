@@ -149,7 +149,7 @@ begin
   setDataStringC(self,'cuma','Cuma',sayfa2_Kolon1,'',80,'0,1,1-2,1-3,2,2-3,3');
   setDataStringC(self,'cumartesi','Cumartesi',sayfa2_Kolon1,'',80,'0,1,1-2,1-3,2,2-3,3');
 
-  setDataImage(self,'foto','Foto',Kolon2,'',120,100);
+ // setDataImage(self,'foto','Foto',Kolon2,'',120,100);
 
   SayfaCaption('Taným Bilgileri','Çalýþma Bilgileri','','','');
 
