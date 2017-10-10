@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+<soap:Envelope xmlns:soap="http://www.w3.org/2003/05/soap-envelope" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <soap:Body>
+    <GETHEKIMLISTResponse xmlns="http://tempuri.org/">
+      <GETHEKIMLISTResult>
+        <HATAVAR>true</HATAVAR>
+        <HATAMESAJI>KULLANICI ADI VEYA PAROLA HATASI</HATAMESAJI>
+      </GETHEKIMLISTResult>
+    </GETHEKIMLISTResponse>
+  </soap:Body>
+</soap:Envelope>
+

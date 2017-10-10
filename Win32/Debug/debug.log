@@ -1,0 +1,3 @@
+[0317/220322.613:ERROR:crash_report_database_win.cc(563)] CreateDirectory C:\Program Files (x86)\reports: Eriþim engellendi. (0x5)
+[0317/220322.615:ERROR:registration_protocol_win.cc(84)] TransactNamedPipe: Boru sonlandý. (0x6D)
+[0317/220322.618:ERROR:crash_report_database_win.cc(563)] CreateDirectory C:\Program Files (x86)\reports: Eriþim engellendi. (0x5)

@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/">
+  <soapenv:Body>
+    <ns2:raporBilgisiBulRaporTakipNodanResponse xmlns:ns2="http://servisler.ws.gss.sgk.gov.tr">
+      <raporBilgisiBulRaporTakipNodanReturn>
+        <raporTakipNo>0</raporTakipNo>
+        <sonucKodu>5130</sonucKodu>
+        <sonucAciklamasi>Rapor sistemde bulunamamýþtýr!</sonucAciklamasi>
+      </raporBilgisiBulRaporTakipNodanReturn>
+    </ns2:raporBilgisiBulRaporTakipNodanResponse>
+  </soapenv:Body>
+</soapenv:Envelope>
+
