@@ -1,3 +1,4 @@
+
 unit data_modul;
 
 interface
@@ -699,9 +700,9 @@ begin
     _passSaglikNet_ := WebErisimBilgi('90','01');
 
 
-    sql := 'select * from DoktorEreceteSifre where doktorKodu = ' + QuotedStr(datalar.doktorKodu);
+    sql := 'select * from DoktorlarT where Kod = ' + QuotedStr(datalar.doktorKodu);
     datalar.QuerySelect(ado,sql);
-    _doktorReceteUser := ado.fieldbyname('eReceteKullaniciAdi').AsString;
+    _doktorReceteUser := ado.fieldbyname('eReceteKullanici').AsString;
     _doktorRecetePas :=  ado.fieldbyname('eReceteSifre').AsString;
 
 
