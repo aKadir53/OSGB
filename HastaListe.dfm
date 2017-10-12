@@ -309,6 +309,16 @@ object frmHastaListe: TfrmHastaListe
           HeaderAlignmentVert = vaCenter
           Width = 80
         end
+        object ListeColumn14: TcxGridDBColumn
+          Caption = #304#351'e Ba'#351'lama'
+          DataBinding.FieldName = 'iseBaslama'
+          PropertiesClassName = 'TcxDateEditProperties'
+          Properties.Alignment.Horz = taCenter
+          Properties.Alignment.Vert = taVCenter
+          HeaderAlignmentHorz = taCenter
+          HeaderAlignmentVert = vaCenter
+          Options.Editing = False
+        end
       end
       object cxGridLevel1: TcxGridLevel
         Caption = 'Hastalar'

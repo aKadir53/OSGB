@@ -350,11 +350,11 @@ begin
                log := true;
                datalar.loginLog := True;
                SUTKODU;
-               datalar.doktor := login.FieldByName('doktor').AsString;
+               datalar.doktorKodu := login.FieldByName('doktor').AsString;
                AnaForm.dxSkinController1.SkinName := login.FieldByName('userSkin').AsString;
                DateSeparator := '.';
                Hide;
-
+               datalar.login;
 
              (*
                 if LocalIP(IPAdres) then

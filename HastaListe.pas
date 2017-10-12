@@ -22,7 +22,7 @@ uses
   dxSkinOffice2007Silver, dxSkinOffice2010Black, dxSkinOffice2010Blue,
   dxSkinOffice2010Silver, dxSkinPumpkin, dxSkinSeven, dxSkinSharp, dxSkinSilver,
   dxSkinSpringTime, dxSkinStardust, dxSkinSummer2008, dxSkinValentine,
-  dxSkinXmas2008Blue;
+  dxSkinXmas2008Blue, cxCalendar;
 
 type
   TfrmHastaListe = class(TGirisForm)
@@ -74,6 +74,7 @@ type
     ListeColumn11: TcxGridDBColumn;
     ListeColumn12: TcxGridDBColumn;
     ListeColumn13: TcxGridDBColumn;
+    ListeColumn14: TcxGridDBColumn;
 
     procedure TopPanelPropertiesChange(Sender: TObject);
     procedure btnVazgecClick(Sender: TObject);

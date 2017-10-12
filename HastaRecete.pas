@@ -310,9 +310,7 @@ var
   d,u,s : string;
 begin
   d := copy(ADO_Recete.FieldByName('doktor').asstring,1,4);
-  //datalar.Login;
-  doktorEReceteUser(d ,u, s);
-  MedEczaneGit(u,s,DosyaNoTC(_dosyaNo_));
+  MedEczaneGit(datalar._doktorReceteUser,datalar._doktorRecetePas,_TC_);
 end;
 
 procedure TfrmHastaRecete.ReceteyiSablonOlarakKaydet;

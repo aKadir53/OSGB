@@ -2746,7 +2746,7 @@ begin
   datalar.ReceteKullanimYollari.active := True;
   datalar.Ado_Doktorlar.Active := True;
   datalar.ADO_DiyalizKodlari.Active := True;
-  login;
+//  login;
 end;
 
 procedure TDATALAR.ADOConnection2WillExecute(Connection: TADOConnection;
