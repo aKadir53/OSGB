@@ -345,6 +345,7 @@ begin
                or (DATALAR.AktifSirket = trim(login.FieldValues['Sirketkodu'])) then begin
 
                datalar.username := edit1.Text;
+               DATALAR.usersifre := edit2.Text;
                regyazLastLogin;
                log := true;
                datalar.loginLog := True;

@@ -69,6 +69,10 @@ object AnaForm: TAnaForm
           OptionsView.WorkStart = 0.291666666666666700
           Storage = cxSchedulerDBStorage1
           TabOrder = 0
+          ExplicitLeft = 2
+          ExplicitTop = -2
+          ExplicitWidth = 676
+          ExplicitHeight = 423
           Splitters = {
             12020000F5010000A1020000FA0100000D02000001000000120200008D010000}
           StoredClientBounds = {0100000001000000A10200008D010000}

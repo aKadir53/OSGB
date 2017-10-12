@@ -450,6 +450,11 @@ type
     F_IlacEtkenMadde_ : string;
   End;
 
+  TSifreDegistir = record
+    KullaniciAdi : String;
+    Sifre : String;
+  end;
+
 Const
   TagfrmHastaKart = 90;
   TagfrmFirmaKart = 100;

@@ -302,17 +302,13 @@ object frmLogin: TfrmLogin
     TabOrder = 0
     Properties.ActivePage = SayfaLogin
     OnPageChanging = LoginSayfalarPageChanging
-    ClientRectBottom = 208
-    ClientRectLeft = 4
-    ClientRectRight = 308
-    ClientRectTop = 24
+    ClientRectBottom = 205
+    ClientRectLeft = 3
+    ClientRectRight = 305
+    ClientRectTop = 26
     object SayfaLogin: TcxTabSheet
       Caption = 'Kullan'#305'c'#305' Giri'#351'i   '
       ImageIndex = 17
-      ExplicitLeft = 3
-      ExplicitTop = 26
-      ExplicitWidth = 302
-      ExplicitHeight = 179
       object dxLayoutControl1: TdxLayoutControl
         Left = 0
         Top = 0
@@ -493,28 +489,21 @@ object frmLogin: TfrmLogin
     object SayfaConTest: TcxTabSheet
       Caption = 'Server Test'
       ImageIndex = 1
-      ExplicitLeft = 3
-      ExplicitTop = 26
-      ExplicitWidth = 302
-      ExplicitHeight = 179
       object cxGroupBox1: TcxGroupBox
         Left = 0
         Top = 0
         Align = alClient
         Caption = 'Server Bilgisi'
         TabOrder = 0
-        Height = 184
-        Width = 304
+        Height = 179
+        Width = 302
         object dxLayoutControl2: TdxLayoutControl
           Left = 2
-          Top = 5
-          Width = 300
-          Height = 177
+          Top = -2
+          Width = 298
+          Height = 179
           Align = alClient
           TabOrder = 0
-          ExplicitTop = -2
-          ExplicitWidth = 298
-          ExplicitHeight = 179
           object txtServerName: TcxTextEditKadir
             Left = 104
             Top = 10

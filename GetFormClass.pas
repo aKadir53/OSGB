@@ -119,6 +119,11 @@ begin
            TabCaption := 'Seans Tarihi Düzenle';
            Result := 'SEANS ÝÞLEMLERÝ';
          end;
+    PrgSifre  :
+         begin
+           TabCaption := 'Þifre Deðiþtir';
+           Result := 'AYARLAR';
+         end;
    end;
 
 end;

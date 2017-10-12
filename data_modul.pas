@@ -466,7 +466,7 @@ type
     { Private declarations }
   public
    loginLog : boolean;
-   servername,username , _username , _sifre , _donemuser , _donemsifre , _tesisKodu , _labusername , _labsifre , doktor ,doktorKodu, _dosyaNo_,_gelisNo_,kontrolKod,
+   servername,username, usersifre , _username , _sifre , _donemuser , _donemsifre , _tesisKodu , _labusername , _labsifre , doktor ,doktorKodu, _dosyaNo_,_gelisNo_,kontrolKod,
    _labkurumkod , _labkurumkodText, _laburl , _labfirma ,  _SKRS , _saglikNetUser , _saglikNetPass , _firmaSKRS , _usermernis , _passmernis : string;
    _doktorReceteUser,_doktorRecetePas,_KurumSKRS_, _userSaglikNet_ , _passSaglikNet_ , _userSaglikNet2_ , _passSaglikNet2_ , itsGLN , itsUser , itsPass: string;
    _merkezAdi , _DyobKurumKodu_,_DyobSifre_,_DyobServiceKodu_ , doktorTip , bashekimKodu,hekimKodu,ImajFTPServer : string;
@@ -505,7 +505,7 @@ type
    ftpUser,ftpPassword,versiyon: string;
    KontrolUserSet : Boolean;
    ZorunluAlanVar : Boolean;
-
+   SifreDegistir : TSifreDegistir;
    yardimciIslemURL : string;
    DiabetFormURL : string;
    hastaKabulURL : string;
@@ -3035,6 +3035,5 @@ begin
       Pointer(@TimeOut),
       SizeOf(TimeOut));
 end;
-
 
 end.
