@@ -277,9 +277,9 @@ begin
 
   doktor := TcxImageComboKadir.Create(self);
   doktor.Conn := Datalar.ADOConnection2;
-  doktor.TableName := 'Doktorlar';
+  doktor.TableName := 'DoktorlarT';
   doktor.ValueField := 'KOD';
-  doktor.DisplayField := 'ADI';
+  doktor.DisplayField := 'Tanimi';
   doktor.BosOlamaz := False;
   doktor.Filter := '';
   setDataStringKontrol(self,doktor,'doktor','Doktor',kolon1,'',120);

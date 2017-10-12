@@ -29,7 +29,7 @@ type
 
 const _TableName_ = 'DoktorlarT';
       formGenislik = 500;
-      formYukseklik = 450;
+      formYukseklik = 500;
 
 var
   frmDoktorlar: TfrmDoktorlar;
@@ -125,6 +125,8 @@ begin
   setDataString(self,'eReceteSifre','Reçete Þifresi',Kolon1,'',100,True);
   setDataString(self,'pin','Ýmza Token Pin',Kolon1,'',50);
   setDataString(self,'TesisKodu','Tesis Kodu',Kolon1,'',100);
+  setDataString(self,'GSM','GSM',Kolon1,'',100);
+  setDataString(self,'EPosta','E-Posta',Kolon1,'',200);
  // setDataString(self,'TDisID','TDis ID',Kolon1,'TDIS',80);
  // addButton(self,nil,'btnTDis','','TDIS ID Getir',Kolon1,'TDIS',120,ButtonClick);
   setDataString(self,'sertifika','Sertifika',Kolon1,'',80);

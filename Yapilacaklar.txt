@@ -1,0 +1,7 @@
+
+kullanýcý tanýum ekranýnda kullanýcý seçmeden sað tarafa formdaki diðer kontrollere müdahale edemesin.
+
+
+personel taným bilgileri ekranýnda popup menü içinden hasta raporlarý ve ilaç tedavi kaldýrýlacak
+
+hasta kartýna med eczane giriþi düðmesi eklenecek (popup menuye mi ???)

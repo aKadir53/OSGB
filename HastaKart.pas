@@ -338,7 +338,7 @@ begin
    then exit;
 
 
-   if UserRight('GELÝÞ ÝÞLEMLERÝ', 'Aç') = False
+   if UserRight('Muayene Ýþlemleri', 'Yeni Muayene') = False
    then begin
        ShowMessageSkin('Bu Ýþlem Ýçin Yetkiniz Bulunmamaktadýr !','','','info');
        exit;

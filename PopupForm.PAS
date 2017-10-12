@@ -474,6 +474,9 @@ inherited;
           ImageComboItemAdd('1','Ýþe Giriþ Muayenesi',ImageCombo);
           ImageComboItemAdd('2','Periyodik Muayene',ImageCombo);
           ImageComboItemAdd('3','Normal Muayene',ImageCombo);
+          ImageComboItemAdd('4','Ýþten Çýkýþ Muayenesi',ImageCombo);
+          ImageComboItemAdd('5','Ýþe Dönüþ Muayenesi',ImageCombo);
+          ImageComboItemAdd('6','Ýþ Kazasý Muayenesi',ImageCombo);
           setDataStringKontrol(self,ImageCombo, 'TEDAVITURU','Tedavi Türü',Kolon1,'',120);
 
        end;
