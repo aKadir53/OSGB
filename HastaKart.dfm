@@ -494,11 +494,15 @@ object frmHastaKart: TfrmHastaKart
       item
         Description = 'Pasif'
         ImageIndex = 77
-        Value = '0'
+        Value = 0
       end
       item
         Description = 'Aktif'
-        Value = '1'
+        Value = 1
+      end
+      item
+        Description = 'Yeni'
+        Value = 2
       end>
     Style.TextStyle = [fsBold]
     TabOrder = 10
@@ -709,12 +713,14 @@ object frmHastaKart: TfrmHastaKart
       Tag = 140
       Caption = #304'la'#231' Tedavi'
       ImageIndex = 63
+      Visible = False
       OnClick = cxButtonCClick
     end
     object HastaRaporlar1: TMenuItem
       Tag = -29
       Caption = 'Hasta Raporlar'#305
       ImageIndex = 98
+      Visible = False
       OnClick = cxButtonCClick
     end
     object N2: TMenuItem
