@@ -184,6 +184,21 @@ begin
               datalar.GelisDuzenleRecord.GirisTarihi := TcxTextEdit(FindComponent('GirisTarihi')).EditValue;
               datalar.GelisDuzenleRecord.TedaviYontemi := TcxImageComboKadir(FindComponent('TEDAVITURU')).EditValue;
             end;
+       PrgSifre :
+           begin
+             if TcxTextEdit(FindComponent('MevcutSifre')).EditValue <> DATALAR.usersifre then
+             begin
+               ShowMessageSkin('Mevcut þifre hatalý!','', '', 'info');
+               Action := caNone;
+             end
+             else if TcxTextEdit(FindComponent('YeniSifre')).EditValue <>
+               TcxTextEdit(FindComponent('YeniSifreTekrar')).EditValue then
+             begin
+               ShowMessageSkin('Yeni þifre ve tekrar giriþleri uyumsuz', '', '', 'info');
+               Action := caNone;
+             end;
+             datalar.SifreDegistir.Sifre := TcxTextEdit(FindComponent('YeniSifre')).EditValue;
+           end;
   end;
 end;
 
@@ -459,8 +474,22 @@ inherited;
           ImageComboItemAdd('1','Ýþe Giriþ Muayenesi',ImageCombo);
           ImageComboItemAdd('2','Periyodik Muayene',ImageCombo);
           ImageComboItemAdd('3','Normal Muayene',ImageCombo);
+          ImageComboItemAdd('4','Ýþten Çýkýþ Muayenesi',ImageCombo);
+          ImageComboItemAdd('5','Ýþe Dönüþ Muayenesi',ImageCombo);
+          ImageComboItemAdd('6','Ýþ Kazasý Muayenesi',ImageCombo);
           setDataStringKontrol(self,ImageCombo, 'TEDAVITURU','Tedavi Türü',Kolon1,'',120);
 
+       end;
+
+   PrgSifre :
+       begin
+          setDataString(self,'MevcutSifre','Mevcut Þifre',Kolon1,'',100);
+          setDataString(self,'YeniSifre','Yeni Þifre',Kolon1,'',100);
+          setDataString(self,'YeniSifreTekrar','Yeni Þifre Tekrar',Kolon1,'',100);
+
+
+          ClientHeight := 250;
+          ClientWidth := 400;
        end;
 
   end;

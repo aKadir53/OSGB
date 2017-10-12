@@ -312,14 +312,16 @@ object frmLogin: TfrmLogin
       object dxLayoutControl1: TdxLayoutControl
         Left = 0
         Top = 0
-        Width = 302
-        Height = 179
+        Width = 304
+        Height = 184
         Align = alClient
         TabOrder = 0
         LayoutLookAndFeel = dxLayoutSkinLookAndFeel1
+        ExplicitWidth = 302
+        ExplicitHeight = 179
         object Edit1: TcxTextEdit
-          Left = 93
-          Top = 23
+          Left = 95
+          Top = 28
           ParentFont = False
           Style.Font.Charset = DEFAULT_CHARSET
           Style.Font.Color = clWindowText
@@ -333,8 +335,8 @@ object frmLogin: TfrmLogin
           Width = 121
         end
         object Edit2: TcxTextEdit
-          Left = 93
-          Top = 50
+          Left = 95
+          Top = 55
           ParentFont = False
           ParentShowHint = False
           Properties.EchoMode = eemPassword
@@ -352,8 +354,8 @@ object frmLogin: TfrmLogin
           Width = 121
         end
         object txtSirket: TcxButtonEditKadir
-          Left = 93
-          Top = 77
+          Left = 95
+          Top = 82
           ParentFont = False
           Properties.Buttons = <
             item
@@ -375,15 +377,15 @@ object frmLogin: TfrmLogin
           Width = 121
         end
         object txtServer: TcxTextEdit
-          Left = 93
-          Top = 104
+          Left = 95
+          Top = 109
           Style.HotTrack = False
           TabOrder = 3
           Width = 121
         end
         object btnGiris: TcxButton
-          Left = 126
-          Top = 144
+          Left = 128
+          Top = 148
           Width = 75
           Height = 25
           Caption = 'Giri'#351' Yap'
@@ -391,8 +393,8 @@ object frmLogin: TfrmLogin
           OnClick = Image1Click
         end
         object btnVazgec: TcxButton
-          Left = 212
-          Top = 144
+          Left = 214
+          Top = 148
           Width = 285
           Height = 25
           Caption = 'Vazge'#231
@@ -496,16 +498,12 @@ object frmLogin: TfrmLogin
         Height = 179
         Width = 302
         object dxLayoutControl2: TdxLayoutControl
-          Left = 3
-          Top = 15
-          Width = 296
-          Height = 154
+          Left = 2
+          Top = -2
+          Width = 298
+          Height = 179
           Align = alClient
           TabOrder = 0
-          ExplicitLeft = 2
-          ExplicitTop = -2
-          ExplicitWidth = 298
-          ExplicitHeight = 179
           object txtServerName: TcxTextEditKadir
             Left = 104
             Top = 10
@@ -671,7 +669,7 @@ object frmLogin: TfrmLogin
     BiriktirmeliSecim = False
     SkinName = 'coffee'
     Grup = False
-    GrupCol = -1
+    GrupCol = 0
     Left = 24
     Top = 168
   end

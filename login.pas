@@ -341,26 +341,33 @@ begin
         begin
            if trim(login.FieldValues['password']) = edit2.Text
            then begin
-             datalar.username := edit1.Text;
-             regyazLastLogin;
-             log := true;
-             datalar.loginLog := True;
-             SUTKODU;
-             datalar.doktor := login.FieldByName('doktor').AsString;
-             AnaForm.dxSkinController1.SkinName := login.FieldByName('userSkin').AsString;
-             DateSeparator := '.';
-             Hide;
+             if (login.FieldValues['grup'] <> 10)
+               or (DATALAR.AktifSirket = trim(login.FieldValues['Sirketkodu'])) then begin
+
+               datalar.username := edit1.Text;
+               DATALAR.usersifre := edit2.Text;
+               regyazLastLogin;
+               log := true;
+               datalar.loginLog := True;
+               SUTKODU;
+               datalar.doktor := login.FieldByName('doktor').AsString;
+               AnaForm.dxSkinController1.SkinName := login.FieldByName('userSkin').AsString;
+               DateSeparator := '.';
+               Hide;
 
 
-           (*
-              if LocalIP(IPAdres) then
-              txtip.Caption := IpAdres
-              else
-              txtip.Caption := '';
-             *)
+             (*
+                if LocalIP(IPAdres) then
+                txtip.Caption := IpAdres
+                else
+                txtip.Caption := '';
+               *)
 
-             close;
-             exit;
+               close;
+               exit;
+             end else begin
+               showMessageSkin('Bu þirkette çalýþma yetkiniz yok','','','info');
+             end;
            end else begin
            ShowMessageSkin('Þifre Hatalý','','','info');
            end;

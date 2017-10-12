@@ -317,6 +317,9 @@ begin
 //FormID > 0 form açılacak
  case _Tag_ of
     9999 : close;
+    83 : begin
+      SifreDegistir;
+    end
      else
         if FormID > 0 then
         begin

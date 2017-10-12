@@ -333,7 +333,8 @@ procedure GetBuildInfo(const AppName: string; var V1, V2, V3,V4: Word);
 function SMSGonder(KullaniciAdi,Sifre,Gonderen,Tel,SMS : string ; var Hata : string) : boolean;
 procedure MedEczaneGit(user,pasword,Tc : string);
 procedure cxExceleGonder(grid : TcxGrid ; dosyaName : string);
-procedure SifreDegistir(newSifre : string ; sifreTip : integer);
+procedure SifreDegistir(newSifre : string ; sifreTip : integer);  overload;
+procedure SifreDegistir;overload;
 procedure HastaBilgiRecordSet(Adi,Soyadi,Tc,Yas : string);
 procedure HastaRapor(dosyaNo,gelisNo : string);
 procedure Son6AylikTetkikSonuc(dosyaNo,Tarih : string);
@@ -7908,5 +7909,29 @@ begin
   Result := doktorkod;
 end;
 
+procedure SifreDegistir;
+var
+ B : TBookmark;
+begin
+  datalar.SifreDegistir.KullaniciAdi := DATALAR.username;
+  datalar.SifreDegistir.Sifre := DATALAR.usersifre;
+
+  if mrYes = ShowPopupForm('Þifre Deðiþtirme',PrgSifre)
+  then begin
+    //güncellemeleri yap
+    sql := 'update Users set password = ' + QuotedStr(datalar.SifreDegistir.Sifre)
+           + ' where [user] = ' + QuotedStr(datalar.username);
+    ado := TADOQuery.Create(nil);
+    try
+      datalar.QueryExec(ado,sql);
+      ShowMessageSkin('Þifreniz Deðiþtirildi','','','info');
+      DATALAR.usersifre := datalar.SifreDegistir.Sifre
+    finally
+      ado.Free;
+    end
+  End
+  else
+      ShowMessageSkin('Ýþlem iptal edildi','','','info');
+end;
 
 end.

@@ -50,24 +50,19 @@ object frmUsers: TfrmUsers
     TabOrder = 1
     Properties.ActivePage = cxTabSheet1
     Properties.Style = 11
-    ClientRectBottom = 562
-    ClientRectRight = 358
-    ClientRectTop = 20
+    ClientRectBottom = 555
+    ClientRectLeft = 3
+    ClientRectRight = 351
+    ClientRectTop = 26
     object cxTabSheet1: TcxTabSheet
       Caption = #304#351'lem Yetkiler'
-      ExplicitLeft = 3
-      ExplicitTop = 26
-      ExplicitWidth = 348
-      ExplicitHeight = 529
       object cxGrid2: TcxGrid
         Left = 0
         Top = 0
-        Width = 358
-        Height = 542
+        Width = 348
+        Height = 529
         Align = alClient
         TabOrder = 0
-        ExplicitWidth = 348
-        ExplicitHeight = 529
         object cxGridUserSet: TcxGridDBTableView
           DataController.DataModeController.DetailInSQLMode = True
           DataController.DataSource = UserSettings_DataSource
@@ -102,6 +97,7 @@ object frmUsers: TfrmUsers
     object cxTabSheet2: TcxTabSheet
       Caption = 'Men'#252' Yetkileri'
       ImageIndex = 1
+      ExplicitLeft = 0
       ExplicitTop = 0
       ExplicitWidth = 419
       ExplicitHeight = 0
@@ -200,16 +196,12 @@ object frmUsers: TfrmUsers
     Height = 296
     Width = 400
     object cxGrid3: TcxGrid
-      Left = 2
-      Top = 46
-      Width = 396
-      Height = 248
+      Left = 3
+      Top = 43
+      Width = 394
+      Height = 243
       Align = alClient
       TabOrder = 0
-      ExplicitLeft = 3
-      ExplicitTop = 43
-      ExplicitWidth = 394
-      ExplicitHeight = 243
       object cxGridUserGrup: TcxGridDBTableView
         Navigator.Buttons.First.Visible = False
         Navigator.Buttons.PriorPage.Visible = False
@@ -255,16 +247,13 @@ object frmUsers: TfrmUsers
       end
     end
     object TcxGroupBox
-      Left = 2
-      Top = 18
+      Left = 3
+      Top = 15
       Align = alTop
       PanelStyle.Active = True
       TabOrder = 1
-      ExplicitLeft = 3
-      ExplicitTop = 15
-      ExplicitWidth = 394
       Height = 28
-      Width = 396
+      Width = 394
       object txtYeniGrup: TcxTextEditKadir
         Tag = -100
         Left = 70
@@ -272,8 +261,7 @@ object frmUsers: TfrmUsers
         Align = alClient
         Properties.Alignment.Vert = taVCenter
         TabOrder = 0
-        ExplicitWidth = 263
-        Width = 265
+        Width = 263
       end
       object cxLabel1: TcxLabel
         Left = 2
@@ -288,7 +276,7 @@ object frmUsers: TfrmUsers
       end
       object btnGrupEkle: TcxButtonKadir
         Tag = 50
-        Left = 335
+        Left = 333
         Top = 2
         Width = 59
         Height = 24
@@ -298,7 +286,6 @@ object frmUsers: TfrmUsers
         TabStop = False
         OnClick = btnGrupEkleClick
         NewButtonVisible = False
-        ExplicitLeft = 333
       end
     end
   end
