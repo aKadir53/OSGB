@@ -354,9 +354,9 @@ inherited;
 
           Doktorlar := TcxImageComboKadir.Create(self);
           Doktorlar.Conn := Datalar.ADOConnection2;
-          Doktorlar.TableName := 'Doktorlar';
+          Doktorlar.TableName := 'DoktorlarT';
           Doktorlar.ValueField := 'kod';
-          Doktorlar.DisplayField := 'ADI';
+          Doktorlar.DisplayField := 'tanimi';
           Doktorlar.Filter := '';
           setDataStringKontrol(self,Doktorlar,'kod','Doktor',kolon1,'',200);
 

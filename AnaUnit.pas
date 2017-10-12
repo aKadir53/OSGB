@@ -77,6 +77,7 @@ type
     WebBrowser1: TWebBrowser;
     Menu_Image24: TcxImageList;
     Menu_Image16: TcxImageList;
+    Menu_Image24x24: TcxImageList;
     procedure FormCreate(Sender: TObject);
     procedure ToolButton1Click(Sender: TObject);
     procedure FormResize(Sender: TObject);

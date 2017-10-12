@@ -255,7 +255,7 @@ object frmSon6AylikTetkikSonuc: TfrmSon6AylikTetkikSonuc
   object DataSource6: TDataSource
     DataSet = ADO_Tetkikler
     Left = 96
-    Top = 138
+    Top = 106
   end
   object ADO_Tetkikler: TADOQuery
     Connection = DATALAR.ADOConnection2

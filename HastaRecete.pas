@@ -654,10 +654,12 @@ begin
          ADO_Recete.FieldByName('tarih').AsString := datalar.YeniRecete.Tarih;
          ADO_Recete.FieldByName('ReceteTur').AsString := datalar.YeniRecete.ReceteTuru;
          ADO_Recete.FieldByName('ReceteAltTur').AsString := datalar.YeniRecete.ReceteAltTuru;
-         ADO_Recete.FieldByName('doktor').AsString := datalar.YeniRecete.doktor+'-'+datalar.YeniRecete.doktorAdi;
+         ADO_Recete.FieldByName('doktor').AsString := datalar.YeniRecete.doktor;//+'-'+datalar.YeniRecete.doktorAdi;
          ADO_Recete.FieldByName('ProtokolNo').AsString := datalar.YeniRecete.protokolNo;
          ADO_Recete.FieldByName('ereceteNo').AsString := '0000';
          ADO_Recete.Post;
+
+
 
       //   ADO_receteTani.Append;
        //  ADO_ReceteTani.FieldByName('taniKodu').AsString := 'N18';
@@ -953,8 +955,8 @@ begin
  if (_dosyaNo <> '') and (gelisNo <> '')
  then begin
 
-    sql := 'select *,d.ADI from Recete r' +
-           ' left join doktorlar d on d.kod = substring(r.doktor,1,4) ' +
+    sql := 'select *,d.tanimi ADI from Recete r' +
+           ' left join doktorlarT d on d.kod = substring(r.doktor,1,4) ' +
            ' where r.dosyaNo = ' + QuotedStr(_dosyaNo) +
            ' and r.gelisNo = ' + gelisNo +
              ' order by r.tarih desc';
@@ -1133,6 +1135,8 @@ begin
          ADO_Recete.FieldByName('ReceteTur').AsString := datalar.YeniRecete.ReceteTuru;
          ADO_Recete.FieldByName('ReceteAltTur').AsString := datalar.YeniRecete.ReceteAltTuru;
          ADO_Recete.FieldByName('doktor').AsString := datalar.YeniRecete.doktor;//+'-'+datalar.YeniRecete.doktorAdi;
+         ADO_Recete.FieldByName('protokolNo').AsString := datalar.YeniRecete.protokolNo;//+'-'+datalar.YeniRecete.doktorAdi;
+
          ADO_Recete.Post;
          ADO_Recete.Active := false;
          ADO_Recete.Active := True;

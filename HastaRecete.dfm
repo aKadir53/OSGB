@@ -39,13 +39,13 @@ object frmHastaRecete: TfrmHastaRecete
       Style.Font.Style = [fsBold]
       Style.IsFontAssigned = True
       TabOrder = 0
-      Height = 222
+      Height = 278
       Width = 1096
       object cxGrid10: TcxGrid
         Left = 3
         Top = 15
         Width = 1090
-        Height = 89
+        Height = 154
         Align = alTop
         Font.Charset = TURKISH_CHARSET
         Font.Color = clWindowText
@@ -56,9 +56,6 @@ object frmHastaRecete: TfrmHastaRecete
         TabOrder = 0
         LevelTabs.ImageBorder = 2
         LevelTabs.Style = 1
-        ExplicitLeft = 2
-        ExplicitTop = -2
-        ExplicitWidth = 1092
         object cxGridRecete: TcxGridDBTableView
           OnDblClick = cxGridReceteDblClick
           Navigator.Buttons.First.Visible = True
@@ -204,12 +201,10 @@ object frmHastaRecete: TfrmHastaRecete
           object cxGridDBColumn18: TcxGridDBColumn
             Caption = 'Doktor'
             DataBinding.FieldName = 'doktor'
-            PropertiesClassName = 'TcxTextEditProperties'
-            Properties.Alignment.Horz = taCenter
-            Properties.Alignment.Vert = taVCenter
+            Visible = False
             HeaderAlignmentHorz = taCenter
             Options.Editing = False
-            Width = 49
+            Width = 166
           end
           object cxGridReceteColumn3: TcxGridDBColumn
             Caption = 'Doktor Ad'#305
@@ -219,11 +214,13 @@ object frmHastaRecete: TfrmHastaRecete
             Properties.Alignment.Vert = taVCenter
             HeaderAlignmentHorz = taCenter
             Options.Editing = False
-            Width = 160
+            Width = 176
           end
           object cxGridDBColumn19: TcxGridDBColumn
             Caption = 'E-Kay'#305't'
             DataBinding.FieldName = 'eReceteNo'
+            PropertiesClassName = 'TcxTextEditProperties'
+            Properties.Alignment.Horz = taCenter
             HeaderAlignmentHorz = taCenter
             Options.Editing = False
             Width = 90
@@ -238,7 +235,7 @@ object frmHastaRecete: TfrmHastaRecete
       end
       object cxPanelReceteBaslikBottom: TcxGroupBox
         Left = 3
-        Top = 104
+        Top = 169
         Align = alClient
         PanelStyle.Active = True
         TabOrder = 1
@@ -246,7 +243,7 @@ object frmHastaRecete: TfrmHastaRecete
         ExplicitTop = 87
         ExplicitWidth = 1092
         ExplicitHeight = 133
-        Height = 108
+        Height = 99
         Width = 1090
         object cxPanelReceteTanilar: TcxGroupBox
           Left = 2
@@ -264,14 +261,14 @@ object frmHastaRecete: TfrmHastaRecete
           ExplicitHeight = 129
           DesignSize = (
             438
-            97)
-          Height = 104
+            88)
+          Height = 95
           Width = 438
           object cxGrid11: TcxGrid
             Left = 3
             Top = 15
             Width = 386
-            Height = 79
+            Height = 70
             Align = alLeft
             Font.Charset = TURKISH_CHARSET
             Font.Color = clWindowText
@@ -395,15 +392,15 @@ object frmHastaRecete: TfrmHastaRecete
           ExplicitHeight = 129
           DesignSize = (
             648
-            97)
-          Height = 104
+            88)
+          Height = 95
           Width = 648
           object cxGrid9: TcxGrid
             Tag = 1
             Left = 3
             Top = 15
             Width = 534
-            Height = 79
+            Height = 70
             Align = alLeft
             Font.Charset = TURKISH_CHARSET
             Font.Color = clWindowText
@@ -522,7 +519,7 @@ object frmHastaRecete: TfrmHastaRecete
     end
     object cxPanelReceteDetay: TcxGroupBox
       Left = 2
-      Top = 232
+      Top = 288
       Align = alClient
       Caption = 'Re'#231'ete Detaylar'#305
       ParentFont = False
@@ -533,10 +530,12 @@ object frmHastaRecete: TfrmHastaRecete
       Style.Font.Style = [fsBold]
       Style.IsFontAssigned = True
       TabOrder = 1
+      ExplicitTop = 232
+      ExplicitHeight = 366
       DesignSize = (
         1096
-        359)
-      Height = 366
+        303)
+      Height = 310
       Width = 1096
       object cxGrid4: TcxGrid
         Left = 3
@@ -735,7 +734,7 @@ object frmHastaRecete: TfrmHastaRecete
         Left = 3
         Top = 234
         Width = 790
-        Height = 122
+        Height = 66
         Align = alLeft
         Font.Charset = TURKISH_CHARSET
         Font.Color = clWindowText
@@ -747,9 +746,7 @@ object frmHastaRecete: TfrmHastaRecete
         TabOrder = 1
         LevelTabs.ImageBorder = 2
         LevelTabs.Style = 1
-        ExplicitLeft = 2
-        ExplicitTop = 217
-        ExplicitHeight = 147
+        ExplicitHeight = 121
         object cxGridReceteIlacAciklama: TcxGridDBTableView
           OnDblClick = cxGridReceteIlacAciklamaDblClick
           Navigator.Buttons.First.Visible = True
@@ -861,17 +858,18 @@ object frmHastaRecete: TfrmHastaRecete
     end
     object cxSplitter1: TcxSplitter
       Left = 2
-      Top = 224
+      Top = 280
       Width = 1096
       Height = 8
       AlignSplitter = salTop
       Control = cxPanelReceteBaslik
+      ExplicitTop = 224
     end
   end
   object PopupMenu1: TPopupMenu
     Images = DATALAR.imag24png
-    Left = 320
-    Top = 40
+    Left = 312
+    Top = 56
     object K1: TMenuItem
       Tag = 9999
       Caption = 'Kapat'
@@ -893,11 +891,6 @@ object frmHastaRecete: TfrmHastaRecete
       Caption = 'Son 6 Aylik Tetkik Sonu'#231
       ImageIndex = 45
       OnClick = cxButtonCClick
-    end
-    object HastannReeteleri1: TMenuItem
-      Tag = -13
-      Caption = 'Hastan'#305'n Re'#231'eteleri'
-      Visible = False
     end
     object ReeteifremiDeitir1: TMenuItem
       Tag = -15
@@ -933,6 +926,11 @@ object frmHastaRecete: TfrmHastaRecete
       Tag = -17
       Caption = #304'la'#231' Raporu Ekle'
       OnClick = cxButtonCClick
+    end
+    object HastannReeteleri1: TMenuItem
+      Tag = -13
+      Caption = 'Hastan'#305'n Re'#231'eteleri'
+      Visible = False
     end
     object ReeteOnay1: TMenuItem
       Tag = -12
@@ -1026,8 +1024,8 @@ object frmHastaRecete: TfrmHastaRecete
   end
   object DataSource5: TDataSource
     DataSet = ADO_RECETE_DETAY
-    Left = 636
-    Top = 60
+    Left = 612
+    Top = 156
   end
   object ADO_RECETE_DETAY: TADOTable
     Connection = DATALAR.ADOConnection2
@@ -1037,13 +1035,13 @@ object frmHastaRecete: TfrmHastaRecete
     MasterFields = 'id'
     MasterSource = DataSource4
     TableName = 'ReceteDetay'
-    Left = 604
-    Top = 60
+    Left = 580
+    Top = 148
   end
   object DataSource10: TDataSource
     DataSet = ADO_receteTani
     Left = 530
-    Top = 5
+    Top = 65525
   end
   object ADO_receteTani: TADOTable
     Connection = DATALAR.ADOConnection2
@@ -1068,7 +1066,7 @@ object frmHastaRecete: TfrmHastaRecete
     Prepared = True
     SQL.Strings = (
       'select * from Recete'
-      'where dosyaNo = '#39'792010'#39)
+      'where dosyaNo = '#39'015098'#39)
     Left = 420
     Top = 70
   end

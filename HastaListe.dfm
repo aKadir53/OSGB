@@ -234,13 +234,13 @@ object frmHastaListe: TfrmHastaListe
           Properties.Items = <
             item
               Description = 'Erkek'
-              ImageIndex = 59
-              Value = '1'
+              ImageIndex = 44
+              Value = 0
             end
             item
               Description = 'Bayan'
-              ImageIndex = 58
-              Value = '0'
+              ImageIndex = 38
+              Value = 1
             end>
           HeaderAlignmentHorz = taCenter
           HeaderAlignmentVert = vaCenter
