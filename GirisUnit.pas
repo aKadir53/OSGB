@@ -2178,6 +2178,11 @@ end;
 
 procedure TGirisForm.Image2Click(Sender: TObject);
 begin
+  if UserRight('Kullanýcý Ýþlemleri', 'KontrolUserSet') = False
+  then begin
+    ShowMessageSkin('Bu Ýþlem Ýçin Yetkiniz Bulunmamaktadýr !','','','info');
+    exit;
+  end;
   Application.CreateForm(TfrmKontrolUserSet, frmKontrolUserSet);
   frmKontrolUserSet.formName := self;
   frmKontrolUserSet.Kontroller.SmallImages := menu.Images;
