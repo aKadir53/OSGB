@@ -23,8 +23,6 @@ object frmRapor: TfrmRapor
     Width = 308
     Height = 19
     Panels = <>
-    ExplicitTop = 145
-    ExplicitWidth = 612
   end
   object memo: TDBMemo
     Left = 128
@@ -45,8 +43,6 @@ object frmRapor: TfrmRapor
     BevelInner = bvLowered
     Caption = 'Panel1'
     TabOrder = 2
-    ExplicitWidth = 612
-    ExplicitHeight = 145
     object btnOnIzle: TcxButton
       Left = 205
       Top = 3

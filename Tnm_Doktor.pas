@@ -18,6 +18,8 @@ type
     procedure cxKaydetClick(Sender: TObject);
     procedure cxTextEditKeyDown(Sender: TObject; var Key: Word;
       Shift: TShiftState);
+    procedure cxButtonEditPropertiesButtonClick(Sender: TObject;
+      AButtonIndex: Integer);override;
     procedure cxEditEnter(Sender: TObject);
     procedure cxEditExit(Sender: TObject);
     procedure ButtonClick(Sender: TObject);
@@ -38,6 +40,12 @@ var
 implementation
 
 {$R *.dfm}
+procedure TfrmDoktorlar.cxButtonEditPropertiesButtonClick(Sender: TObject;
+      AButtonIndex: Integer);
+begin
+  inherited;
+  Enabled;
+end;
 
 procedure TfrmDoktorlar.ButtonClick(Sender: TObject);
 var
@@ -155,6 +163,9 @@ begin
  // setDataImage(self,'foto','Foto',Kolon2,'',120,100);
 
   SayfaCaption('Taným Bilgileri','Çalýþma Bilgileri','','','');
+
+
+  Disabled(self,True);
 
 
  end;

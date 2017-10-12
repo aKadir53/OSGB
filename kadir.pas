@@ -148,6 +148,7 @@ function Sifrele(s: string): string;
 function bransAdi(_kod: string): string;
 function tesisAdi(_kod: string): string;
 procedure Disabled(_form: TForm);
+
 procedure EnabledEdit(_form: TForm);
 procedure ReadOnlyd(_form: TForm);
 procedure ReadOnlydFalse(_form: TForm);
@@ -244,7 +245,7 @@ function kareBarkodOku(Kb: string; Gsindex: integer): TKareBarkod;
 function TestKodToNormalDeger(kod, yas, cins: string; deger: double): Boolean;
 function SgKTipEslestirKod(kod: string): string;
 function DiyalizPaketiUygula(DosyaNo, GelisNo, sablonId: string): integer;
-Procedure EpikrizYaz(DosyaNo, GelisNo: string; QR: Boolean);
+procedure EpikrizYaz(DosyaNo, GelisNo : string; QR: Boolean ; DataSet : Tdataset = nil);
 procedure ImzaFoyleriYaz;
 procedure MenuIDRun(MenuId : integer);
 function sureKontrol: Boolean;
@@ -3042,18 +3043,25 @@ end;
 
 
 
-Procedure EpikrizYaz(DosyaNo, GelisNo: string; QR: Boolean);
+Procedure EpikrizYaz(DosyaNo, GelisNo : string; QR: Boolean ; DataSet : Tdataset = nil);
 var
   sql: string;
   ado, ado1 , ado2 , ado3: TADOQuery;
   printT : TprintTip;
   TopluDataset : TDataSetKadir;
 begin
+(*
+if DataSet = nil then
+ begin
   ado := TADOQuery.Create(nil);
   ado.Connection := datalar.ADOConnection2;
-  sql := 'sp_frmPersonelIseGirisMuayene  ' + QuotedStr(DosyaNo);
+  sql := 'sp_frmPersonelIseGirisMuayene  ' + QuotedStr(DosyaNo) + ',' + gelisNo;
   datalar.QuerySelect(ado, sql);
   TopluDataset.Dataset1 := ado;
+ end
+ else
+ *)
+  TopluDataset.Dataset1 := DataSet;
 
 
   ado1 := TADOQuery.Create(nil);
@@ -3076,7 +3084,7 @@ begin
 
   PrintYap('001','Ýþe Giriþ Muayene Formu','',TopluDataset,pTNone);
 
-  ado.Free;
+//  if Assigned(ado) then ado.Free;
   ado1.Free;
   ado2.Free;
   ado3.Free;
@@ -5195,6 +5203,11 @@ begin
   ThousandSeparator := ',';
   DateSeparator := '.';
 end;
+
+
+
+
+
 
 procedure Disabled(_form: TForm);
 var

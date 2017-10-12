@@ -29,6 +29,7 @@ type
     Kapat1: TMenuItem;
     Tanilar: TListeAc;
     gridTanilarColumn1: TcxGridDBColumn;
+    gridTanilarColumn2: TcxGridDBColumn;
     procedure FormCreate(Sender: TObject);
     procedure TaniGetir;
     procedure TaniEkle;
@@ -44,7 +45,7 @@ type
 const _TableName_ = 'Anamnez_ICD';
       formGenislik = 600;
       formYukseklik = 300;
-      TaniSQL = 'select * from Anamnez_ICD where dosyaNO = %s and gelisNo = %s';
+      TaniSQL = 'select * from Anamnez_ICD  where dosyaNO = %s and gelisNo = %s';
 var
   frmTaniKart: TfrmTaniKart;
 

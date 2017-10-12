@@ -33,7 +33,6 @@ object frmTaniKart: TfrmTaniKart
     LevelTabs.ImageBorder = 2
     LevelTabs.Style = 1
     LookAndFeel.Kind = lfFlat
-    ExplicitWidth = 490
     object gridTanilar: TcxGridDBTableView
       Navigator.Buttons.First.Visible = False
       Navigator.Buttons.PriorPage.Visible = False
@@ -79,6 +78,13 @@ object frmTaniKart: TfrmTaniKart
       OptionsView.GroupByBox = False
       OptionsView.Indicator = True
       OptionsView.RowSeparatorColor = clBlack
+      object gridTanilarColumn2: TcxGridDBColumn
+        DataBinding.FieldName = 'Tarih'
+        Visible = False
+        HeaderAlignmentHorz = taCenter
+        Options.Editing = False
+        Width = 109
+      end
       object cxGridDBColumn1: TcxGridDBColumn
         DataBinding.FieldName = 'dosyaNo'
         Visible = False
@@ -184,6 +190,7 @@ object frmTaniKart: TfrmTaniKart
     Calistir = fgEvet
     BiriktirmeliSecim = False
     Grup = False
+    GrupCol = 0
     Left = 16
     Top = 165
   end

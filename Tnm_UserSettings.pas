@@ -112,6 +112,8 @@ implementation
     uses AnaUnit,HastaKart;
 {$R *.dfm}
 
+
+
 function TfrmUsers.Init(Sender: TObject) : Boolean;
 begin
   inherited;
@@ -147,6 +149,7 @@ procedure TfrmUsers.cxButtonEditPropertiesButtonClick(Sender: TObject;
   AButtonIndex: Integer);
 begin
   inherited;
+  Enabled;
   IslemveMenuGorunumSetEkle(ugUser);
 
   UserSettings.Active := true;
@@ -302,6 +305,8 @@ begin
   UserGroup.Active := True;
 
   SayfaCaption('Kullanýcý Ýþlemleri','Grup Ýþlemleri','','','');
+
+  Disabled(self,True);
 
  end;
 

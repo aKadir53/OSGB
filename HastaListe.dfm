@@ -505,6 +505,7 @@ object frmHastaListe: TfrmHastaListe
       Tag = -1
       Caption = #304'la'#231' Tedavi Kart'#305
       ImageIndex = 63
+      Visible = False
       OnClick = cxButtonCClick
       Modul = 'TEDAVI KARTI'
       Islem = #304'la'#231' Tedavi'
@@ -514,11 +515,12 @@ object frmHastaListe: TfrmHastaListe
       Tag = -2
       Caption = 'Seans Kart'#305
       ImageIndex = 80
+      Visible = False
       OnClick = cxButtonCClick
       FormId = 0
     end
     object Epikriz1: TMenuItemModul
-      Caption = 'Epikriz'
+      Caption = #304#351'e Giri'#351' Muayene Formu'
       ImageIndex = 89
       OnClick = Epikriz1Click
       FormId = 0
@@ -526,6 +528,7 @@ object frmHastaListe: TfrmHastaListe
     object e1: TMenuItemModul
       Caption = 'Tetkik Takip Formlar'#305
       ImageIndex = 28
+      Visible = False
       FormId = 0
       object He1: TMenuItemModul
         Caption = 'Hepatitler Dahil'
@@ -547,18 +550,20 @@ object frmHastaListe: TfrmHastaListe
       Tag = 9020
       Caption = 'A'#351#305' Kart'#305
       ImageIndex = 60
+      Visible = False
       OnClick = cxButtonCClick
     end
     object T1: TMenuItem
       Tag = 330
       Caption = 'Tan'#305' Kart'#305
       ImageIndex = 74
+      Visible = False
       OnClick = cxButtonCClick
     end
   end
   object popupYil: TPopupMenu
     OnPopup = popupYilPopup
-    Left = 464
+    Left = 392
     Top = 88
     object N1: TMenuItem
       Caption = 'N'

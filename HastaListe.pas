@@ -137,15 +137,14 @@ begin
   if datalar.KontrolUserSet = True then exit;
 
   GirisFormRecord.F_dosyaNo_ := _Dataset.FieldByName('dosyaNo').AsString;
-  GirisFormRecord.F_gelisNo_ := _Dataset.FieldByName('gelisNo').AsString;
-  GirisFormRecord.F_provizyonTarihi_ := _Dataset.FieldByName('BHDAT').AsString;
+//  GirisFormRecord.F_gelisNo_ := _Dataset.FieldByName('gelisNo').AsString;
+//  GirisFormRecord.F_provizyonTarihi_ := _Dataset.FieldByName('BHDAT').AsString;
   GirisFormRecord.F_HastaAdSoyad_ := _Dataset.FieldByName('HASTAADI').AsString + ' ' +
                                      _Dataset.FieldByName('HASTASOYADI').AsString;
-  GirisFormRecord.F_TakipNo_ := _Dataset.FieldByName('TakýpNO').AsString;
+//  GirisFormRecord.F_TakipNo_ := _Dataset.FieldByName('TakýpNO').AsString;
   GirisFormRecord.F_TC_ := _Dataset.FieldByName('TCKimlikNo').AsString;
-  GirisFormRecord.F_Doktor_ := _Dataset.FieldByName('doktor').AsString;
-  GirisFormRecord.F_Makina_ := _Dataset.FieldByName('MakinaNo').AsString;
-  GirisFormRecord.F_Seans_ := _Dataset.FieldByName('Seans').AsString;
+//  GirisFormRecord.F_Doktor_ := _Dataset.FieldByName('doktor').AsString;
+
   case Tcontrol(sender).tag of
  -1 : begin
           F := FormINIT(TagfrmHastaIlacTedavi,GirisFormRecord,ikEvet,'Giriþ');
@@ -156,12 +155,12 @@ begin
       end;
 
  -7 : begin
-          F := FormINIT(TagfrmHastaRecete,GirisFormRecord,ikEvet);
+          F := FormINIT(TagfrmHastaRecete,GirisFormRecord,ikEvet,'Giriþ');
           if F <> nil then F.ShowModal;
        // ReceteForm(ado_BransKodlari.FieldByName('dosyaNo').AsString,ado_BransKodlari.FieldByName('gelisNo').AsString);
       end;
  330,9020 : begin
-               F := FormINIT(Tcontrol(sender).tag,GirisFormRecord,ikEvet,'Giriþ');
+               F := FormINIT(Tcontrol(sender).tag,GirisFormRecord,ikEvet,'');
                if F <> nil then F.ShowModal;
             end;
 

@@ -129,6 +129,8 @@ type
     procedure KontrolEditValueClear;
     procedure sqlRunLoad;
     procedure Yukle;
+    procedure Disabled(_form: TForm ; indexField : Boolean);
+    procedure Enabled;
     procedure newButonVisible(durum : boolean);
     procedure indexKaydiBul(kod : string;Fieldname : string = '');
     procedure cxButtonKadir1Click(Sender: TObject);
@@ -712,6 +714,75 @@ begin
 
 end;
 
+procedure TGirisForm.Enabled;
+var
+  _say, x: integer;
+  _Obje_ : TcxCustomEdit;
+begin
+  _say := self.ComponentCount - 1;
+  for x := 0 to _say do
+  begin
+       _obje_ := TcxCustomEdit(self.Components[x]);
+       if (_obje_.ClassName = 'TcxTextEdit') or
+       (_obje_.ClassName = 'TcxTextEditKadir') or
+       (_obje_.ClassName = 'TcxButtonEdit') or
+       (_obje_.ClassName = 'TcxButtonEditKadir') or
+       (_obje_.ClassName = 'TcxComboBox') or
+       (_obje_.ClassName = 'TcxMemo') or
+       (_obje_.ClassName = 'TcxImageComboBox') or
+       (_obje_.ClassName = 'TcxImageComboKadir') or
+       (_obje_.ClassName = 'TcxCheckBox') or
+       (_obje_.ClassName = 'TcxCurrencyEdit') or
+       (_obje_.ClassName = 'TcxDateEdit') or
+       (_obje_.ClassName = 'TcxDateEditKadir') or
+       (_obje_.ClassName = 'TcxCheckGroup') or
+       (_obje_.ClassName = 'TcxButton') or
+       (_obje_.ClassName = 'TcxGrid')
+      Then
+        TControl(_obje_).Enabled := True;
+
+  end;
+end;
+
+
+procedure TGirisForm.Disabled(_form: TForm ; indexField : Boolean);
+var
+  _say, x: integer;
+  _Obje_ : TcxCustomEdit;
+begin
+  _say := _form.ComponentCount - 1;
+
+  for x := 0 to _say do
+  begin
+   _obje_ := TcxCustomEdit(_form.Components[x]);
+
+   if ((_obje_.ClassName = 'TcxButtonEditKadir') and
+      (TcxButtonEditKadir(_obje_).indexField = True))
+    Then begin
+     TcxButtonEditKadir(_obje_).Enabled := True;
+    end
+    else
+      if (_obje_.ClassName = 'TcxTextEdit') or
+       (_obje_.ClassName = 'TcxTextEditKadir') or
+       (_obje_.ClassName = 'TcxButtonEdit') or
+       (_obje_.ClassName = 'TcxButtonEditKadir') or
+       (_obje_.ClassName = 'TcxComboBox') or
+       (_obje_.ClassName = 'TcxMemo') or
+       (_obje_.ClassName = 'TcxImageComboBox') or
+       (_obje_.ClassName = 'TcxImageComboKadir') or
+       (_obje_.ClassName = 'TcxCheckBox') or
+       (_obje_.ClassName = 'TcxCurrencyEdit') or
+       (_obje_.ClassName = 'TcxDateEdit') or
+       (_obje_.ClassName = 'TcxDateEditKadir') or
+       (_obje_.ClassName = 'TcxCheckGroup') or
+       (_obje_.ClassName = 'TcxButton') or
+       (_obje_.ClassName = 'TcxGrid')
+      Then
+        TControl(_obje_).Enabled := False;
+  end;
+end;
+
+
 
 procedure TGirisForm.Yukle;
 begin
@@ -982,6 +1053,7 @@ begin
        // TcxButtonEditKadir(sender).Properties.ReadOnly := True;
       end;
       TcxButtonEditKadir(sender).ListeAc.Where := where;
+
   end;
 end;
 
@@ -2055,6 +2127,8 @@ begin
 
         end;
     1 : begin
+
+
          if MrYes = ShowMessageSkin('Silmek Ýstediðinizden Emin misiniz ?','','','msg')
          then begin
              try
@@ -2074,9 +2148,12 @@ begin
              end;
              cxPanelButtonEnabled(true,false,false);
          end;
+
+
        end;
 
     2 : begin
+         Enabled;
          _SQLRUN_ := _SqlInsert_;
          indexKaydiBul(dosyaNo,'');
        //  KontrolEditValueClear;

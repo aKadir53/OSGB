@@ -289,6 +289,7 @@ object frmHastaKart: TfrmHastaKart
             FixedKind = fkLeft
             Styles.Content = cxStyle1
             Styles.Header = cxStyle1
+            Visible = False
           end
           item
             Caption = 'Muayene Bilgileri'
@@ -545,7 +546,7 @@ object frmHastaKart: TfrmHastaKart
     Height = 64
     Width = 89
   end
-  object cxGridKadir1: TcxGridKadir
+  object IseGirisMuayene: TcxGridKadir
     Left = 8
     Top = 292
     Width = 513
@@ -661,7 +662,7 @@ object frmHastaKart: TfrmHastaKart
         Position.RowIndex = 0
       end
     end
-    object cxGridKadir1Level1: TcxGridLevel
+    object IseGirisMuayeneLevel1: TcxGridLevel
       GridView = GridList
     end
   end
@@ -699,8 +700,8 @@ object frmHastaKart: TfrmHastaKart
     end
     object Epikriz1: TMenuItem
       Tag = -26
-      Caption = 'Epikriz'
-      ImageIndex = 90
+      Caption = #304#351'e Giri'#351' Muayene Formu'
+      ImageIndex = 28
       OnClick = cxButtonCClick
     end
     object R1: TMenuItem

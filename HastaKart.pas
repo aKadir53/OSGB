@@ -7,7 +7,7 @@ uses
   Dialogs, cxGraphics, cxControls, cxLookAndFeels, cxLookAndFeelPainters,pngImage,
   cxContainer, cxEdit, Menus, StdCtrls, cxButtons, cxGroupBox, DB, ADODB,
   cxTextEdit, cxMaskEdit, cxButtonEdit, cxDBEdit,
-  kadirType,KadirLabel,Kadir,Data_Modul,
+  kadirType,KadirLabel,Kadir,Data_Modul,strUtils,
   GirisUnit, cxStyles, dxSkinscxPCPainter, cxCustomData, cxFilter,
   cxData, cxDataStorage, cxDBData, cxGridCustomTableView, cxGridTableView,
   cxGridDBTableView, cxGridLevel, cxClasses, cxGridCustomView, cxGrid,jpeg,
@@ -85,7 +85,7 @@ type
     N3: TMenuItem;
     G2: TMenuItem;
     T2: TMenuItem;
-    cxGridKadir1: TcxGridKadir;
+    IseGirisMuayene: TcxGridKadir;
     GridList: TcxGridDBBandedTableView;
     GridListMuayeneSoru: TcxGridDBBandedColumn;
     GridListGrupKod: TcxGridDBBandedColumn;
@@ -97,7 +97,7 @@ type
     GridListvalueObjevalues: TcxGridDBBandedColumn;
     GridListvalueTip: TcxGridDBBandedColumn;
     GridListDesc: TcxGridDBBandedColumn;
-    cxGridKadir1Level1: TcxGridLevel;
+    IseGirisMuayeneLevel1: TcxGridLevel;
     cxStyleRepository2: TcxStyleRepository;
     cxStyle3: TcxStyle;
     procedure FormCreate(Sender: TObject);
@@ -172,10 +172,10 @@ var
   item : TcxRadioGroupItem;
 begin
 
-  if cxGridKadir1.Dataset.FieldByName('ValueTip').AsString = 'R'
+  if IseGirisMuayene.Dataset.FieldByName('ValueTip').AsString = 'R'
   then begin
         ValuesCombo := TStringList.Create;
-        ValueObjeValues := cxGridKadir1.Dataset.FieldByName('ValueObjeValues').AsString;
+        ValueObjeValues := IseGirisMuayene.Dataset.FieldByName('ValueObjeValues').AsString;
         GridListValue.PropertiesClassName := 'TcxRadioGroupProperties';
         TcxRadioGroupProperties(GridListValue.Properties).Items.Clear;
         ExtractStrings([','], [], PChar(ValueObjeValues),ValuesCombo);
@@ -188,7 +188,7 @@ begin
         ValuesCombo.Free;
   end
   else
-  if cxGridKadir1.Dataset.FieldByName('ValueTip').AsString = 'B'
+  if IseGirisMuayene.Dataset.FieldByName('ValueTip').AsString = 'B'
   then begin
        GridListValue.PropertiesClassName := 'TcxCheckBoxProperties';
        TcxCheckBoxProperties(GridListValue.Properties).ValueChecked := '1';
@@ -196,12 +196,12 @@ begin
        TcxCheckBoxProperties(GridListValue.Properties).ValueGrayed := '';
   end
   Else
-  if cxGridKadir1.Dataset.FieldByName('ValueTip').AsString[1] = 'C'
+  if IseGirisMuayene.Dataset.FieldByName('ValueTip').AsString[1] = 'C'
   then begin
-    if length(cxGridKadir1.Dataset.FieldByName('ValueTip').AsString) = 2
+    if length(IseGirisMuayene.Dataset.FieldByName('ValueTip').AsString) = 2
     then begin
       ValuesCombo := TStringList.Create;
-      ValueObjeValues := cxGridKadir1.Dataset.FieldByName('defaultValue').AsString;
+      ValueObjeValues := IseGirisMuayene.Dataset.FieldByName('defaultValue').AsString;
       GridListDesc.Options.Editing := True;
       GridListDesc.PropertiesClassName := 'TcxComboBoxProperties';
       TcxComboBoxProperties(GridListDesc.Properties).Items.Clear;
@@ -214,7 +214,7 @@ begin
     end;
     GridListDesc.Options.Editing:= False;
     ValuesCombo := TStringList.Create;
-    ValueObjeValues := cxGridKadir1.Dataset.FieldByName('ValueObjeValues').AsString;
+    ValueObjeValues := IseGirisMuayene.Dataset.FieldByName('ValueObjeValues').AsString;
     GridListValue.PropertiesClassName := 'TcxComboBoxProperties';
     TcxComboBoxProperties(GridListValue.Properties).Items.Clear;
     ExtractStrings([','], [], PChar(ValueObjeValues),ValuesCombo);
@@ -299,10 +299,11 @@ var
 begin
    if _gelisNo_ = '' then exit;
 
-   if _TakipNo_ <> ''
+
+   if UserRight('Muayene Ýþlemleri', 'Sil') = False
    then begin
-     ShowMessageSkin('Takip Bilgisi Ýptal Edilmeden Geliþi Silemezsiniz','','','info');
-     exit;
+       ShowMessageSkin('Bu Ýþlem Ýçin Yetkiniz Bulunmamaktadýr !','','','info');
+       exit;
    end;
 
    ado := TADOQuery.Create(nil);
@@ -311,6 +312,8 @@ begin
        sql := 'Delete from Gelisler where dosyaNo = ' + #39 + DosyaNo.Text + #39 +
               ' and gelisNo = ' + _gelisNo_;
        datalar.QueryExec(ado,sql);
+
+
        ado.Free;
        Gelisler(DosyaNo.Text);
    except on e : exception do
@@ -385,10 +388,6 @@ begin
         exit;
      end;
 
-     cxGridKadir1.Dataset.Connection := datalar.ADOConnection2;
-     cxGridKadir1.Dataset.SQL.Text := 'sp_frmPersonelIseGirisMuayene ' + QuotedStr(dosyaNo.Text);
-     cxGridKadir1.Dataset.Open;
-
      Gelisler(dosyaNo.Text);
 
 
@@ -420,7 +419,7 @@ var
   i : integer;
 begin
  HastaGelis(kartNo,ADO_Gelisler);
- if not ADO_Gelisler.Eof then
+ //if not ADO_Gelisler.Eof then
 
 
 // PopupMenuToToolBar(self,ToolBar1,PopupMenu1);
@@ -649,11 +648,11 @@ begin
              g.Free;
            end;
 
-           cxGridKadir1.Dataset.Connection := datalar.ADOConnection2;
-           cxGridKadir1.Dataset.SQL.Text := 'sp_frmPersonelIseGirisMuayene ' + QuotedStr(dosyaNo.Text);
-           cxGridKadir1.Dataset.Open;
-
            Gelisler(TcxButtonEditKadir(sender).Text);
+
+      //     _gelisNO_ := ADO_Gelisler.FieldByName('gelisNO').AsString;
+
+
 
        end;
 
@@ -687,15 +686,22 @@ procedure TfrmHastaKart.cxGridGelislerFocusedRecordChanged(
 begin
   inherited;
   _gelisNo_ := ADO_Gelisler.FieldByName('gelisNo').AsString;
- // _TakipNo_ := ADO_Gelisler.FieldByName('TakIpNo').AsString;
-//  _BasvuruNo_ := ADO_Gelisler.FieldByName('basvuruNO').AsString;
+  if _gelisNO_ <> ''
+  then  begin
+  _gelisNo_ := ifThen(_gelisNo_ = '','0',_gelisNo_);
   _provizyonTarihi_ := ADO_Gelisler.FieldByName('Tarih').AsString;
   _Doktor_ := ADO_Gelisler.FieldByName('doktor').AsString;
-
   datalar.Bilgi.gelisNo := ADO_Gelisler.FieldByName('gelisNo').AsString;
   datalar.Bilgi.Doktor := ADO_Gelisler.FieldByName('doktor').AsString;
-//  datalar.Bilgi.TakipNo := ADO_Gelisler.FieldByName('TakIpNo').AsString;
   datalar.Bilgi.ProvizyonTarihi := ADO_Gelisler.FieldByName('Tarih').AsString;
+
+  IseGirisMuayene.Dataset.Connection := datalar.ADOConnection2;
+  IseGirisMuayene.Dataset.SQL.Text := 'sp_frmPersonelIseGirisMuayene ' + QuotedStr(dosyaNo.Text)+ ',' +
+                                                                     _gelisNO_;
+  IseGirisMuayene.Dataset.Open;
+  end
+  else
+    IseGirisMuayene.Dataset.close;
 
 end;
 
@@ -795,7 +801,7 @@ begin
    dosyaNo.OnKeyDown(frmHastaKart.dosyaNo,key,[]);
 
 
-  cxGridKadir1.Dataset.AfterScroll := ADO_WebServisErisimAfterScroll;
+  IseGirisMuayene.Dataset.AfterScroll := ADO_WebServisErisimAfterScroll;
   GridList.ViewData.Expand(true);
 
   Result := True;
@@ -1055,7 +1061,7 @@ begin
 
   setDataStringKontrol(self,txtSeansSikayet , 'GELHAST','Kronik Hast/Baðým',sayfa3_Kolon1,'',300);
 
-  setDataStringKontrol(self,cxGridKadir1,'cxGridKadir1','',sayfa4_Kolon1,'',800,350,alClient);
+  setDataStringKontrol(self,IseGirisMuayene,'IseGirisMuayene','',sayfa4_Kolon1,'',800,350,alClient);
 
 
   tableColumnDescCreate;
@@ -1199,11 +1205,11 @@ begin
         end;
 
  -25 : begin
-          F := FormINIT(TagfrmAsiKarti,GirisFormRecord,ikHayir);
+          F := FormINIT(TagfrmAsiKarti,GirisFormRecord,ikEvet,'');
           if F <> nil then F.ShowModal;
        end;
  -26 : begin
-         EpikrizYaz(dosyaNo.Text,ADO_Gelisler.FieldByName('gelisNo').AsString,false);
+         EpikrizYaz(dosyaNo.Text,ADO_Gelisler.FieldByName('gelisNo').AsString,false,IseGirisMuayene.Dataset);
        end;
  -27 : begin
          GelisAc;
@@ -1235,7 +1241,7 @@ begin
        end;
 
  -35 : begin
-          F := FormINIT(TagfrmTaniKarti,GirisFormRecord,ikHayir);
+          F := FormINIT(TagfrmTaniKarti,GirisFormRecord,ikEvet,'');
           if F <> nil then F.ShowModal;
        end;
 

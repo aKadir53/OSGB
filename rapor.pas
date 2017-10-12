@@ -422,12 +422,12 @@ end;
 procedure TfrmRapor.FormShow(Sender: TObject);
 begin
 
-   if UserRight('RAPORLAR', 'Dizayn Modu') = True
+   if UserRight('Raporlar', 'Dizayn Modu') = True
    then begin
           btnSend.Visible := True;
    End Else btnSend.Visible := False;
 
-   if UserRight('RAPORLAR', 'Ön Ýzleme') = True
+   if UserRight('Raporlar', 'Ön Ýzleme') = True
    then begin
           btnOnIzle.Visible := True;
    End Else btnOnIzle.Visible := False;
