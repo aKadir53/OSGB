@@ -161,27 +161,32 @@ object frmHastaKart: TfrmHastaKart
     Width = 110
     object Foto: TcxImage
       Tag = -1
-      Left = 2
-      Top = 18
+      Left = 3
+      Top = 15
       Align = alClient
       Properties.PopupMenuLayout.MenuItems = []
       Properties.Stretch = True
       TabOrder = 0
-      ExplicitTop = 5
-      ExplicitHeight = 114
-      Height = 101
-      Width = 106
+      ExplicitLeft = 2
+      ExplicitTop = -2
+      ExplicitWidth = 106
+      ExplicitHeight = 121
+      Height = 96
+      Width = 104
     end
     object cxFotoEkleButton: TcxButton
       Tag = -50
-      Left = 2
-      Top = 119
-      Width = 106
+      Left = 3
+      Top = 111
+      Width = 104
       Height = 28
       Align = alBottom
       Caption = 'Ekle'
       TabOrder = 1
       OnClick = cxButtonCClick
+      ExplicitLeft = 2
+      ExplicitTop = 119
+      ExplicitWidth = 106
     end
   end
   object dosyaNo: TcxButtonEditKadir
@@ -251,10 +256,10 @@ object frmHastaKart: TfrmHastaKart
     Height = 153
     Width = 800
     object cxGridGelis: TcxGrid
-      Left = 2
-      Top = 18
-      Width = 796
-      Height = 133
+      Left = 3
+      Top = 15
+      Width = 794
+      Height = 128
       Align = alClient
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clWindowText
@@ -263,8 +268,10 @@ object frmHastaKart: TfrmHastaKart
       Font.Style = []
       ParentFont = False
       TabOrder = 0
-      ExplicitTop = 5
-      ExplicitHeight = 146
+      ExplicitLeft = 2
+      ExplicitTop = -2
+      ExplicitWidth = 796
+      ExplicitHeight = 153
       object cxGridGelisler: TcxGridDBBandedTableView
         OnDblClick = cxGridGelislerDblClick
         OnFocusedRecordChanged = cxGridGelislerFocusedRecordChanged
