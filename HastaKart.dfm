@@ -244,7 +244,7 @@ object frmHastaKart: TfrmHastaKart
   object cxpnlHastaGelisler: TcxGroupBox
     Left = 8
     Top = 416
-    Caption = 'Geli'#351'ler'
+    Caption = 'Muayeneler'
     ParentFont = False
     Style.Font.Charset = DEFAULT_CHARSET
     Style.Font.Color = clWindowText

@@ -910,6 +910,7 @@ begin
       frmIlacSarf._gelisNO_ := _gelisNo_;
       frmIlacSarf.Tanilar('Recete',t );
       frmIlacSarf.Tag := TagfrmIlacSarf;
+      frmIlacSarf.cxTab.Tabs[0].Caption := 'Ýlaçlar';
       frmIlacSarf.ShowModal;
       FreeAndNil(frmIlacSarf);
      except

@@ -957,6 +957,12 @@ object GirisForm: TGirisForm
       item
         PanelStyleClassName = 'TdxStatusBarTextPanelStyle'
         PanelStyle.ImageIndex = 3
+        PanelStyle.Font.Charset = DEFAULT_CHARSET
+        PanelStyle.Font.Color = clWindowText
+        PanelStyle.Font.Height = -11
+        PanelStyle.Font.Name = 'Tahoma'
+        PanelStyle.Font.Style = [fsBold]
+        PanelStyle.ParentFont = False
         Width = 100
       end>
     PaintStyle = stpsUseLookAndFeel

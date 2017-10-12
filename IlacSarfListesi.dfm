@@ -264,7 +264,7 @@ object frmIlacSarf: TfrmIlacSarf
         OptionsData.DeletingConfirmation = False
         OptionsData.Editing = False
         OptionsData.Inserting = False
-        OptionsView.NoDataToDisplayInfoText = 'Listelenecek Kay'#305't Yok'
+        OptionsView.NoDataToDisplayInfoText = 'Listelenecek '#304'la'#231' Yok'
         OptionsView.CellAutoHeight = True
         OptionsView.ColumnAutoWidth = True
         OptionsView.GroupByBox = False
@@ -359,7 +359,7 @@ object frmIlacSarf: TfrmIlacSarf
         OptionsBehavior.FocusCellOnTab = True
         OptionsData.DeletingConfirmation = False
         OptionsData.Inserting = False
-        OptionsView.NoDataToDisplayInfoText = 'Listelenecek Kay'#305't Yok'
+        OptionsView.NoDataToDisplayInfoText = 'Eklenen '#304'la'#231' Yok'
         OptionsView.CellAutoHeight = True
         OptionsView.ColumnAutoWidth = True
         OptionsView.GroupByBox = False
