@@ -663,28 +663,28 @@ begin
     _medulaOrtam_ := WebErisimBilgi('98','01');
    if _medulaOrtam_ = 'Gerçek'
    Then begin
-     yardimciIslemURL := WebErisimBilgi('MDL','04');
-     DiabetFormURL := WebErisimBilgi('MDL','09');
-     hastaKabulURL := WebErisimBilgi('MDL','01');
-     faturaKayitURL := WebErisimBilgi('MDL','03');
-     hizmetKayitURL := WebErisimBilgi('MDL','02');
+     //yardimciIslemURL := WebErisimBilgi('MDL','04');
+     //DiabetFormURL := WebErisimBilgi('MDL','09');
+     //hastaKabulURL := WebErisimBilgi('MDL','01');
+     //faturaKayitURL := WebErisimBilgi('MDL','03');
+     //hizmetKayitURL := WebErisimBilgi('MDL','02');
      receteURL := WebErisimBilgi('MDL','05');
-     raporIlacURL := WebErisimBilgi('MDL','06');
-     raporURL := WebErisimBilgi('MDL','07');
+     //raporIlacURL := WebErisimBilgi('MDL','06');
+     //raporURL := WebErisimBilgi('MDL','07');
    end
    Else
    begin
-     yardimciIslemURL := WebErisimBilgi('MDL','14');
-     DiabetFormURL := WebErisimBilgi('MDL','19');
-     hastaKabulURL := WebErisimBilgi('MDL','11');
-     faturaKayitURL := WebErisimBilgi('MDL','13');
-     hizmetKayitURL := WebErisimBilgi('MDL','12');
+     //yardimciIslemURL := WebErisimBilgi('MDL','14');
+     //DiabetFormURL := WebErisimBilgi('MDL','19');
+     //hastaKabulURL := WebErisimBilgi('MDL','11');
+     //faturaKayitURL := WebErisimBilgi('MDL','13');
+     //hizmetKayitURL := WebErisimBilgi('MDL','12');
      receteURL := WebErisimBilgi('MDL','15');
-     raporIlacURL := WebErisimBilgi('MDL','16');
-     raporURL := WebErisimBilgi('MDL','17');
+     //raporIlacURL := WebErisimBilgi('MDL','16');
+     //raporURL := WebErisimBilgi('MDL','17');
    end;
-     DyopURL := WebErisimBilgi('TDS','01');
-     DonemSonlandir := WebErisimBilgi('MDL','08');;
+     //DyopURL := WebErisimBilgi('TDS','01');
+     //DonemSonlandir := WebErisimBilgi('MDL','08');;
 
     _tesisKodu := WebErisimBilgi('99','00');
     _Kurumkod := strtoint(_tesisKodu);
@@ -696,8 +696,8 @@ begin
     _donemsifre := WebErisimBilgi('991','01');
     _donemGoster := strtoint(ifThen(WebErisimBilgi('99','02') = 'Evet','1','0'));
     _KurumSKRS_ := WebErisimBilgi('90','02');
-    _userSaglikNet_ := WebErisimBilgi('90','00');
-    _passSaglikNet_ := WebErisimBilgi('90','01');
+    //_userSaglikNet_ := WebErisimBilgi('90','00');
+    //_passSaglikNet_ := WebErisimBilgi('90','01');
 
 
     sql := 'select * from DoktorlarT where Kod = ' + QuotedStr(datalar.doktorKodu);
@@ -706,8 +706,8 @@ begin
     _doktorRecetePas :=  ado.fieldbyname('eReceteSifre').AsString;
 
 
-    _userSaglikNet2_ := WebErisimBilgi('90','00');
-    _passSaglikNet2_ := WebErisimBilgi('90','01');
+    //_userSaglikNet2_ := WebErisimBilgi('90','00');
+    //_passSaglikNet2_ := WebErisimBilgi('90','01');
 
     (*
     _SKRS := datalar.ADO_SQL2.fieldbyname('SLYY').AsString;
@@ -717,27 +717,27 @@ begin
       *)
 
 
-    _labusername := WebErisimBilgi('LA','00');
-    _labsifre := WebErisimBilgi('LA','01');
-    _labkurumkod := WebErisimBilgi('LA','02');
-    _laburl := WebErisimBilgi('LA','04');
-    _labfirma := WebErisimBilgi('LA','05');
-    _labkurumkodText := WebErisimBilgi('LA','03');
-    kontrolKod := WebErisimBilgi('LA','06');
+    //_labusername := WebErisimBilgi('LA','00');
+    //_labsifre := WebErisimBilgi('LA','01');
+    //_labkurumkod := WebErisimBilgi('LA','02');
+    //_laburl := WebErisimBilgi('LA','04');
+    //_labfirma := WebErisimBilgi('LA','05');
+    //_labkurumkodText := WebErisimBilgi('LA','03');
+    //kontrolKod := WebErisimBilgi('LA','06');
   //  dosyaNoONEK := ado.fieldbyname('slxxx').AsString;
 
 
-    _usermernis := WebErisimBilgi('97','00');
-    _passmernis := WebErisimBilgi('97','01');
+    //_usermernis := WebErisimBilgi('97','00');
+    //_passmernis := WebErisimBilgi('97','01');
 
 
-    itsGLN := WebErisimBilgi('IT','02');
-    itsUser := WebErisimBilgi('IT','00');
-    itsPass := WebErisimBilgi('IT','01');
+    //itsGLN := WebErisimBilgi('IT','02');
+    //itsUser := WebErisimBilgi('IT','00');
+    //itsPass := WebErisimBilgi('IT','01');
 
-    _DyobKurumKodu_ := WebErisimBilgi('DY','00');
-    _DyobSifre_ := WebErisimBilgi('DY','02');
-    _DyobServiceKodu_ := WebErisimBilgi('DY','01');
+    //_DyobKurumKodu_ := WebErisimBilgi('DY','00');
+    //_DyobSifre_ := WebErisimBilgi('DY','02');
+    //_DyobServiceKodu_ := WebErisimBilgi('DY','01');
 
     sql := 'SELECT MerkezAdi FROM merkezBilgisi';
     datalar.QuerySelect(ado,sql);
@@ -748,11 +748,11 @@ begin
     datalar.QuerySelect(ado,sql);
     LisansALUrl := ado.fieldbyname('SLVV').AsString;
 
-    sql := 'select SLVV,SLXX,SLYY,SLZZ from parametreler where slk = ''GA'' and SLB = ''02''';
-    datalar.QuerySelect(ado,sql);
-    ftpUrl := ado.fieldbyname('SLVV').AsString;
-    ftpUser := ado.fieldbyname('SLXX').AsString;
-    ftpPassword := ado.fieldbyname('SLYY').AsString;
+    //sql := 'select SLVV,SLXX,SLYY,SLZZ from parametreler where slk = ''GA'' and SLB = ''02''';
+    //datalar.QuerySelect(ado,sql);
+    //ftpUrl := ado.fieldbyname('SLVV').AsString;
+    //ftpUser := ado.fieldbyname('SLXX').AsString;
+    //ftpPassword := ado.fieldbyname('SLYY').AsString;
 
 
     SMSHesapUser := WebErisimBilgi('SMS','00');
@@ -764,9 +764,9 @@ begin
     datalar.QuerySelect(ado,sql);
     AlpemixRun := ado.fieldbyname('SLX').AsString;
 
-    sql := 'select SLXX from parametreler where slk = ''00'' and SLB = ''IS''';
-    datalar.QuerySelect(ado,sql);
-    ImajFTPServer := ado.fieldbyname('SLXX').AsString;
+    //sql := 'select SLXX from parametreler where slk = ''00'' and SLB = ''IS''';
+    //datalar.QuerySelect(ado,sql);
+    //ImajFTPServer := ado.fieldbyname('SLXX').AsString;
 
     AlpemixGrupAdi := WebErisimBilgi('UD','00');
     if AlpemixGrupAdi <> ''
@@ -2743,9 +2743,6 @@ end;
 
 procedure TDATALAR.ADOConnection2AfterConnect(Sender: TObject);
 begin
-  datalar.ReceteKullanimYollari.active := True;
-  datalar.Ado_Doktorlar.Active := True;
-  datalar.ADO_DiyalizKodlari.Active := True;
 //  login;
 end;
 

@@ -584,6 +584,11 @@ object frmLogin: TfrmLogin
         end
       end
     end
+    object cxTabSheet1: TcxTabSheet
+      Caption = 'cxTabSheet1'
+      ImageIndex = 2
+      TabVisible = False
+    end
   end
   object dxStatusBar1: TdxStatusBar
     Left = 0

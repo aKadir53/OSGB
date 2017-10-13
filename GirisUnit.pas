@@ -2096,12 +2096,11 @@ begin
     ShowMessageSkin('Bu kontrolü kullanýmýnýz kýsýtlandýrýmýþ','Sistem yöneticinizle görüþün','','info');
     exit;
   end;
-
+  DurumGoster();
   case TControl(sender).Tag  of
     0 : begin
          try
            if FormInputZorunluKontrol(self) Then Exit;
-
            if sqlTip = sql_Select
            then begin
              sonuc := post;
@@ -2188,7 +2187,7 @@ begin
     9998 : ShowMessage(Tform(self).Name + ' Yardým','','','info'); // formun kullanýmý ile igili yardým
 
    end;
-
+  DurumGoster(False);
 
 
 

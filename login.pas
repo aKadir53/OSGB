@@ -68,6 +68,7 @@ type
     txtServerName: TcxTextEditKadir;
     txtOsgbKodu: TcxTextEdit;
     dxLayoutControl2Item4: TdxLayoutItem;
+    cxTabSheet1: TcxTabSheet;
 
     PROCEDURE YUVARLAK(WDN:HWND;ALAN:TRECT);
     procedure FormCreate(Sender: TObject);
@@ -260,6 +261,7 @@ var
    sql ,IPAdres , skin : string;
 begin
    xx := Tregistry.Create;
+   LoginSayfalar.ActivePageIndex := 0;
    xx.OpenKey('Software\NOKTA\NOKTA',True);
    Edit1.Text := xx.ReadString('LastLogin');
    DecimalSeparator := '.';
@@ -349,13 +351,15 @@ begin
                regyazLastLogin;
                log := true;
                datalar.loginLog := True;
-               SUTKODU;
+               //SUTKODU;
                datalar.doktorKodu := login.FieldByName('doktor').AsString;
                AnaForm.dxSkinController1.SkinName := login.FieldByName('userSkin').AsString;
                DateSeparator := '.';
-               Hide;
+               LoginSayfalar.ActivePageIndex := 2;
                datalar.login;
-
+               datalar.ReceteKullanimYollari.active := True;
+               datalar.Ado_Doktorlar.Active := True;
+               Hide;
              (*
                 if LocalIP(IPAdres) then
                 txtip.Caption := IpAdres
