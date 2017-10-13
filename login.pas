@@ -19,7 +19,7 @@ uses
   dxSkinOffice2007Pink, dxSkinOffice2007Silver, dxSkinOffice2010Black,
   dxSkinOffice2010Blue, dxSkinOffice2010Silver, dxSkinPumpkin, dxSkinSeven,
   dxSkinSharp, dxSkinSilver, dxSkinSpringTime, dxSkinStardust, dxSkinSummer2008,
-  dxSkinValentine, dxSkinXmas2008Blue, cxGroupBox;
+  dxSkinValentine, dxSkinXmas2008Blue, cxGroupBox, acPNG, cxImage;
 
 type
   TfrmLogin = class(TForm)
@@ -69,6 +69,8 @@ type
     txtOsgbKodu: TcxTextEdit;
     dxLayoutControl2Item4: TdxLayoutItem;
     cxTabSheet1: TcxTabSheet;
+    cxImage1: TcxImage;
+    Label1: TLabel;
 
     PROCEDURE YUVARLAK(WDN:HWND;ALAN:TRECT);
     procedure FormCreate(Sender: TObject);
@@ -356,6 +358,7 @@ begin
                AnaForm.dxSkinController1.SkinName := login.FieldByName('userSkin').AsString;
                DateSeparator := '.';
                LoginSayfalar.ActivePageIndex := 2;
+               Application.ProcessMessages;
                datalar.login;
                datalar.ReceteKullanimYollari.active := True;
                datalar.Ado_Doktorlar.Active := True;
