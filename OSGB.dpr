@@ -72,9 +72,9 @@ begin
 
   if FileExists('C:\OSGB\NoktaDLL.dll') = False
   Then begin
-    dosya := TFileStream.Create('C:\OSGB\NoktaDLL.dll',fmCreate);
-    datalar.HTTP1.Get('http://www.noktayazilim.net/NoktaDLL.dll' ,TStream(dosya));
-    dosya.Free;
+//    dosya := TFileStream.Create('C:\OSGB\NoktaDLL.dll',fmCreate);
+//    datalar.HTTP1.Get('http://www.noktayazilim.net/NoktaDLL.dll' ,TStream(dosya));
+ //   dosya.Free;
   end;
 
   GetBuildInfo(Application.ExeName, V1, V2, V3,V4);

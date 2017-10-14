@@ -23,7 +23,7 @@ uses
   dxSkinOffice2007Silver, dxSkinOffice2010Black, dxSkinOffice2010Blue,
   dxSkinOffice2010Silver, dxSkinPumpkin, dxSkinSeven, dxSkinSharp, dxSkinSilver,
   dxSkinSpringTime, dxSkinStardust, dxSkinSummer2008, dxSkinValentine,
-  dxSkinXmas2008Blue, cxRadioGroup, cxCheckComboBox, cxCheckGroup;
+  dxSkinXmas2008Blue, cxRadioGroup, cxCheckComboBox, cxCheckGroup, Vcl.ImgList;
 type
   TControlAccess = class(TControl);
   TcxLookAndFeelAccess = class(TcxLookAndFeel);
@@ -110,6 +110,7 @@ type
     Sayfa4_Kolon3: TdxLayoutGroup;
     Sayfa4_Kolon1: TdxLayoutGroup;
     SeansKriter: TcxTextEdit;
+    pnlDurumImageList: TcxImageList;
 
     procedure cxKaydetClick(Sender: TObject);
     procedure cxButtonCClick(Sender: TObject);
@@ -234,7 +235,8 @@ type
     procedure OrtakEventAta(Sender : TcxImageComboKadir);
     procedure QuerySelect(sql:string);
     procedure DurumGoster(Visible : Boolean = True; pBarVisible : Boolean = False ;
-                                 msj : string = 'Ýþleminiz Yapýlýyor , lütfen bekleyiniz...');
+                                 msj : string = 'Ýþleminiz Yapýlýyor , lütfen bekleyiniz...';
+                                 imageIndex : integer = 0);
 
     function ResultDataset(FormTag : integer) : TADOQuery;
         { Public declarations }
@@ -376,12 +378,15 @@ begin
 end;
 
 procedure TGirisForm.DurumGoster(Visible : Boolean = True; pBarVisible : Boolean = False ;
-                                 msj : string = 'Ýþleminiz Yapýlýyor , lütfen bekleyiniz...');
+                                 msj : string = 'Ýþleminiz Yapýlýyor , lütfen bekleyiniz...';
+                                 imageIndex : integer = 0);
 begin
    pnlDurum.BringToFront;
    pnlDurum.Visible := Visible;
    pBar.Visible := pBarVisible;
    pnlDurumDurum.Caption := msj;
+   pnlDurumImage.Clear;
+   pnlDurumImageList.GetBitmap(imageIndex,pnlDurumImage.Picture.Bitmap);
    Application.ProcessMessages;
 end;
 
