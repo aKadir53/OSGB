@@ -465,9 +465,9 @@ begin
 
 
   setDataStringB(self,'sirketKod','Þirket Kodu',Kolon1,'',80,List,True,sirketKod,'','',True,True,1);
-  setDataString(self,'tanimi','Firma Adý  ',Kolon1,'',250,True);
+  setDataString(self,'tanimi','Firma Adý  ',Kolon1,'',350,True);
   setDataStringKontrol(self,NaceKod, 'NaceKod','Nace Kodu  ',Kolon1,'',130);
-  setDataString(self,'anaFaliyet','Firma Ana Faaliye',Kolon1,'',250,True);
+  setDataString(self,'anaFaliyet','Firma Ana Faaliye',Kolon1,'',450,True);
   setDataString(self,'tehlikeSinifi','Tehlike Sýnýfý',Kolon1,'',100,True);
   doktor := TcxImageComboKadir.Create(self);
   doktor.Conn := Datalar.ADOConnection2;
@@ -615,6 +615,12 @@ begin
  // setDataStringBLabel(self,'EV_MAHALLE',Kolon2,'mh',100,' ');
   setDataString(self,'SOKAK','Sok./Cad.',Kolon1,'',166,True);
   setDataString(self,'ADRES','Adres Diðer',Kolon1,'',166);
+  setdatastring (self, 'Tel1', 'Telefon 1', Kolon1, '', 100);
+  setdatastring (self, 'Tel2', 'Telefon 2', Kolon1, '', 100);
+  setdatastring (self, 'Fax', 'Faks', Kolon1, '', 100);
+  setdatastring (self, 'Yetkili', 'Yetkili Kiþi', Kolon1, '', 100);
+  setdatastring (self, 'yetkiliTel', 'Yetkili Telefon', Kolon1, '', 100);
+  setdatastring (self, 'yetkilimail', 'Yetkili EPosta', Kolon1, '', 100);
  // setDataString(self,'EMAIL','E-Posta',Kolon2,'',166);
 
 
