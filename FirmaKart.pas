@@ -299,6 +299,7 @@ var
  bmp: TBitmap;
 begin
   inherited;
+  Enabled;
 
   case TcxButtonEditKadir(sender).tag of
    1 : begin  //dosyaNo buttonedit
@@ -430,7 +431,7 @@ var
   List,List1,List3 : TListeAc;
   cxBtnkod : TcxButtonKadir;
   merkezdeBaslangic,BASLANGIC,ilkTaniTarihi : TcxDateEdit;
-  SEHIR ,ILCE ,BUCAK ,KOY,MAHALLE,DEV_KURUM,Kurum,EGITIM : TcxImageComboKadir;
+  SEHIR ,ILCE ,BUCAK ,KOY,MAHALLE,DEV_KURUM,Kurum,EGITIM, doktor : TcxImageComboKadir;
   D : TcxComboBox;
   Tab : TcxTabSheet;
 begin
@@ -468,6 +469,15 @@ begin
   setDataStringKontrol(self,NaceKod, 'NaceKod','Nace Kodu  ',Kolon1,'',130);
   setDataString(self,'anaFaliyet','Firma Ana Faaliye',Kolon1,'',250,True);
   setDataString(self,'tehlikeSinifi','Tehlike Sýnýfý',Kolon1,'',100,True);
+  doktor := TcxImageComboKadir.Create(self);
+  doktor.Conn := Datalar.ADOConnection2;
+  doktor.TableName := 'DoktorlarT';
+  doktor.ValueField := 'KOD';
+  doktor.DisplayField := 'Tanimi';
+  doktor.BosOlamaz := False;
+  doktor.Filter := '';
+  setDataStringKontrol(self,doktor,'doktor','Doktor',kolon1,'',120);
+  OrtakEventAta(doktor);
   (*
   setDataString(self,'HUVIYETNO','',Kolon1,'dn',45);
   setDataString(self,'TCKIMLIKNO','TC Kimlik No  ',Kolon1,'',130,True);
@@ -545,7 +555,7 @@ begin
   SEHIR.DisplayField := 'ADI';
   SEHIR.BosOlamaz := True;
   SEHIR.Filter := '';
-  setDataStringKontrol(self,SEHIR,'SEHIR','Ýl',kolon2,'',120);
+  setDataStringKontrol(self,SEHIR,'SEHIR','Ýl',kolon1,'',120);
   OrtakEventAta(SEHIR);
 //  setDataStringBLabel(self,'EV_SEHIR',Kolon2,'il',100,' ');
 
@@ -559,7 +569,7 @@ begin
   ILCE.BosOlamaz := True;
 //  EV_ILCE.Filter := EV_SEHIR.EditValue;
 //  EV_ILCE.Properties.ReadOnly := True;
-  setDataStringKontrol(self,ILCE,'ILCE','Ýlçe',kolon2,'',120);
+  setDataStringKontrol(self,ILCE,'ILCE','Ýlçe',kolon1,'',120);
   OrtakEventAta(ILCE);
   //  setDataStringB(self,'EV_ILCE','Ýlçe',Kolon2,'ilce',60,ILCE_KODLARI,false,EV_ILCE,'ADI','EV_SEHIR',false);
 //  setDataStringBLabel(self,'EV_ILCE',Kolon2,'ilce',100,' ');
@@ -572,7 +582,7 @@ begin
   BUCAK.DisplayField := 'ADI';
   BUCAK.BosOlamaz := True;
 
-  setDataStringKontrol(self,BUCAK,'BUCAK','Bucak',kolon2,'',120);
+  setDataStringKontrol(self,BUCAK,'BUCAK','Bucak',kolon1,'',120);
   OrtakEventAta(BUCAK);
 
 //  setDataStringB(self,'EV_BUCAK','Bucak',Kolon2,'bucak',60,BUCAK_KODLARI,false,EV_BUCAK,'ADI','EV_ILCE',false);
@@ -586,7 +596,7 @@ begin
   KOY.ValueField := 'KODU';
   KOY.DisplayField := 'ADI';
   KOY.BosOlamaz := True;
-  setDataStringKontrol(self,KOY,'KOY','Köyü',kolon2,'',120);
+  setDataStringKontrol(self,KOY,'KOY','Köyü',kolon1,'',120);
   OrtakEventAta(KOY);
   //  setDataStringB(self,'EV_KOY','Köyü',Kolon2,'koy',60,KOY_KODLARI,false,EV_KOY,'ADI','EV_BUCAK',false);
 //  setDataStringBLabel(self,'EV_KOY',Kolon2,'koy',100,' ');
@@ -599,18 +609,18 @@ begin
   MAHALLE.ValueField := 'KODU';
   MAHALLE.DisplayField := 'ADI';
   MAHALLE.BosOlamaz := True;
-  setDataStringKontrol(self,MAHALLE,'MAHALLE','Mahalle',kolon2,'',120);
+  setDataStringKontrol(self,MAHALLE,'MAHALLE','Mahalle',kolon1,'',120);
    OrtakEventAta(MAHALLE);
  // setDataStringB(self,'EV_MAHALLE','Mahalle',Kolon2,'mh',60,MAHALLE_KODLARI,false,EV_MAHALLE,'ADI','EV_KOY',false);
  // setDataStringBLabel(self,'EV_MAHALLE',Kolon2,'mh',100,' ');
-  setDataString(self,'SOKAK','Sok./Cad.',Kolon2,'',166,True);
-  setDataString(self,'ADRES','Adres Diðer',Kolon2,'',166);
+  setDataString(self,'SOKAK','Sok./Cad.',Kolon1,'',166,True);
+  setDataString(self,'ADRES','Adres Diðer',Kolon1,'',166);
  // setDataString(self,'EMAIL','E-Posta',Kolon2,'',166);
 
 
 
-  setDataStringKontrol(self,cxFotoPanel , 'cxFotoPanel','',Kolon3,'',110);
-  setDataStringKontrol(self,txtAktif , 'Aktif','',Kolon3,'',110);
+  setDataStringKontrol(self,cxFotoPanel , 'cxFotoPanel','',Kolon2,'',110);
+  setDataStringKontrol(self,txtAktif , 'Aktif','',Kolon2,'',110);
 //  setDataStringKontrol(self,txtTip , 'Tip','',Kolon3,'',110);
 
 
@@ -659,6 +669,7 @@ begin
  // cxpnlHastaGelisler.Align := alBottom;
 
   SayfaCaption('Firma Bilgileri','','' ,'','');
+  Disabled(self,True);
 
  end;
 
