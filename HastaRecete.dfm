@@ -56,6 +56,9 @@ object frmHastaRecete: TfrmHastaRecete
         TabOrder = 0
         LevelTabs.ImageBorder = 2
         LevelTabs.Style = 1
+        ExplicitLeft = 2
+        ExplicitTop = -2
+        ExplicitWidth = 1092
         object cxGridRecete: TcxGridDBTableView
           OnDblClick = cxGridReceteDblClick
           Navigator.Buttons.First.Visible = True
@@ -240,9 +243,9 @@ object frmHastaRecete: TfrmHastaRecete
         PanelStyle.Active = True
         TabOrder = 1
         ExplicitLeft = 2
-        ExplicitTop = 87
+        ExplicitTop = 152
         ExplicitWidth = 1092
-        ExplicitHeight = 133
+        ExplicitHeight = 124
         Height = 99
         Width = 1090
         object cxPanelReceteTanilar: TcxGroupBox
@@ -258,7 +261,7 @@ object frmHastaRecete: TfrmHastaRecete
           Style.Font.Style = [fsBold]
           Style.IsFontAssigned = True
           TabOrder = 0
-          ExplicitHeight = 129
+          ExplicitHeight = 120
           DesignSize = (
             438
             88)
@@ -282,7 +285,7 @@ object frmHastaRecete: TfrmHastaRecete
             LevelTabs.Style = 1
             ExplicitLeft = 2
             ExplicitTop = -2
-            ExplicitHeight = 129
+            ExplicitHeight = 120
             object cxGridReceteTani: TcxGridDBTableView
               Navigator.Buttons.First.Visible = True
               Navigator.Buttons.PriorPage.Visible = True
@@ -389,7 +392,7 @@ object frmHastaRecete: TfrmHastaRecete
           Caption = 'Recete A'#231#305'klamalar'#305
           TabOrder = 1
           ExplicitWidth = 650
-          ExplicitHeight = 129
+          ExplicitHeight = 120
           DesignSize = (
             648
             88)
@@ -413,7 +416,7 @@ object frmHastaRecete: TfrmHastaRecete
             LevelTabs.Style = 1
             ExplicitLeft = 2
             ExplicitTop = -2
-            ExplicitHeight = 129
+            ExplicitHeight = 120
             object cxGridReceteAciklama: TcxGridDBTableView
               Tag = 1
               OnDblClick = cxGridReceteAciklamaDblClick
@@ -530,8 +533,6 @@ object frmHastaRecete: TfrmHastaRecete
       Style.Font.Style = [fsBold]
       Style.IsFontAssigned = True
       TabOrder = 1
-      ExplicitTop = 232
-      ExplicitHeight = 366
       DesignSize = (
         1096
         303)
@@ -746,7 +747,9 @@ object frmHastaRecete: TfrmHastaRecete
         TabOrder = 1
         LevelTabs.ImageBorder = 2
         LevelTabs.Style = 1
-        ExplicitHeight = 121
+        ExplicitLeft = 2
+        ExplicitTop = 217
+        ExplicitHeight = 91
         object cxGridReceteIlacAciklama: TcxGridDBTableView
           OnDblClick = cxGridReceteIlacAciklamaDblClick
           Navigator.Buttons.First.Visible = True
@@ -863,7 +866,6 @@ object frmHastaRecete: TfrmHastaRecete
       Height = 8
       AlignSplitter = salTop
       Control = cxPanelReceteBaslik
-      ExplicitTop = 224
     end
   end
   object PopupMenu1: TPopupMenu

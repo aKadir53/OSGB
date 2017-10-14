@@ -160,7 +160,7 @@ object frmHastaTetkikEkle: TfrmHastaTetkikEkle
               end
               object cxGridTetkiklerNAME1: TcxGridDBColumn
                 Caption = 'Tetkik Ad'#305
-                DataBinding.FieldName = 'NAME1'
+                DataBinding.FieldName = 'tanimi'
                 HeaderAlignmentHorz = taCenter
                 HeaderAlignmentVert = vaCenter
                 Options.Editing = False
@@ -354,6 +354,7 @@ object frmHastaTetkikEkle: TfrmHastaTetkikEkle
             Align = alBottom
             Caption = 'Hesaplama'
             TabOrder = 2
+            Visible = False
             Height = 45
             Width = 625
             object Label2: TLabel
@@ -588,6 +589,7 @@ object frmHastaTetkikEkle: TfrmHastaTetkikEkle
     object H1: TMenuItem
       Tag = -5
       Caption = 'Hepatit Marker Ekle'
+      Visible = False
       OnClick = ItemClick
     end
     object T2: TMenuItem
@@ -603,7 +605,7 @@ object frmHastaTetkikEkle: TfrmHastaTetkikEkle
     end
     object K2: TMenuItem
       Tag = -20
-      Caption = 'Kt/v - Urr Listesi'
+      Caption = #304'stem Guruplar'#305
       OnClick = ItemClick
     end
     object T4: TMenuItem
@@ -718,6 +720,7 @@ object frmHastaTetkikEkle: TfrmHastaTetkikEkle
     Calistir = fgEvet
     BiriktirmeliSecim = False
     Grup = False
+    GrupCol = 0
     Left = 328
     Top = 205
   end

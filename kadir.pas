@@ -455,9 +455,9 @@ end;
 function GridCellToString(Grid : TcxGridDBTableView; ColonName : string ; Row : integer) : Variant;
 begin
   GridCellToString := '';
-  GridCellToString := Grid.DataController.GetValue(
-    Grid.Controller.SelectedRows[Row].RecordIndex,
-      Grid.DataController.GetItemByFieldName(ColonName).Index);
+    GridCellToString := Grid.DataController.GetValue(
+      Grid.Controller.SelectedRows[Row].RecordIndex,
+        Grid.DataController.GetItemByFieldName(ColonName).Index);
 end;
 procedure GridCellSetValue(Grid : TcxGridDBTableView; ColonName : string ; Row : integer ; Value : Variant);
 begin
@@ -778,8 +778,6 @@ end;
 procedure KTVHesapListe;
 begin
     Application.CreateForm(TfrmKtvListesi, frmKtvListesi);
-    frmKtvListesi.txtDonem.Date := date;
-    frmKtvListesi.txtDonem2.Date := date;
     frmKtvListesi.ShowModal;
     FreeAndNil(frmKtvListesi);
 end;

@@ -130,7 +130,6 @@
 			</DCCReference>
 			<DCCReference Include="FormKontrolUserSet.pas">
 				<Form>frmKontrolUserSet</Form>
-				<FormType>dfm</FormType>
 			</DCCReference>
 			<DCCReference Include="KadirType.pas"/>
 			<DCCReference Include="AktifPasifSebeb.pas">
@@ -150,7 +149,6 @@
 			</DCCReference>
 			<DCCReference Include="GridListe.pas">
 				<Form>frmGridListeForm</Form>
-				<FormType>dfm</FormType>
 			</DCCReference>
 			<DCCReference Include="TedaviKart.pas">
 				<Form>frmTedaviBilgisi</Form>

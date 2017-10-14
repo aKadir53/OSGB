@@ -651,8 +651,6 @@ procedure TfrmTahliltakip.K2Click(Sender: TObject);
 begin
     Application.CreateForm(TfrmKtvListesi, frmKtvListesi);
     GorselAyar(frmKtvListesi,DATALAR.global_img_list4);
-    frmKtvListesi.txtDonem.Date := date;
-    frmKtvListesi.txtDonem2.Date := date;
     frmKtvListesi.ShowModal;
     frmKtvListesi := nil;
 end;

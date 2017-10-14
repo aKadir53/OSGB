@@ -2,6 +2,11 @@ program OSGB;
 
 uses
   Vcl.Forms,
+  strutils,
+  windows,
+  Controls,
+  Classes,
+  ShellAPI,
   System.SysUtils,
   AnaUnit in 'AnaUnit.pas' {AnaForm},
   GirisUnit in 'GirisUnit.pas' {GirisForm},
@@ -45,8 +50,16 @@ uses
 
 // KadirMedula3 in '..\..\medula3wsdl\KadirMedula3.pas';
 
+const
+  AppalicationVer : integer = 2209;
+  // Versiyon info kontrol etmeyi unutma
+
 {$R *.res}
  var SiteVersiyon,ExeVersiyon: string; V1, V2, V3, V4: word;
+   versiyon,sql : string;
+  _exe : PAnsiChar;
+  dosya : TFileStream;
+
 begin
   Application.Initialize;
   Application.MainFormOnTaskbar := True;
@@ -57,6 +70,12 @@ begin
  // form2.Label1.Caption := 'NoktaDLL Kontrol Ediliyor...';
  // Application.ProcessMessages;
 
+  if FileExists('C:\OSGB\NoktaDLL.dll') = False
+  Then begin
+    dosya := TFileStream.Create('C:\OSGB\NoktaDLL.dll',fmCreate);
+    datalar.HTTP1.Get('http://www.noktayazilim.net/NoktaDLL.dll' ,TStream(dosya));
+    dosya.Free;
+  end;
 
   GetBuildInfo(Application.ExeName, V1, V2, V3,V4);
   ExeVersiyon:= Format('%d.%d.%d.%d', [V1, V2, V3,V4]);

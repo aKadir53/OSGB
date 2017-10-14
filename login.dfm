@@ -502,6 +502,10 @@ object frmLogin: TfrmLogin
           Height = 154
           Align = alClient
           TabOrder = 0
+          ExplicitLeft = 2
+          ExplicitTop = -2
+          ExplicitWidth = 298
+          ExplicitHeight = 179
           object txtServerName: TcxTextEditKadir
             Left = 104
             Top = 10
@@ -587,8 +591,8 @@ object frmLogin: TfrmLogin
       object Label1: TLabel
         Left = 154
         Top = 14
-        Width = 145
-        Height = 85
+        Width = 142
+        Height = 60
         Caption = 'Parametreler y'#252'klenirken l'#252'tfen bekleyiniz...'
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clRed

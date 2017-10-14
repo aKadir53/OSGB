@@ -729,7 +729,7 @@ object frmHastaKart: TfrmHastaKart
     end
     object T1: TMenuItem
       Tag = -32
-      Caption = 'Tetkik Tedavi Kart'#305
+      Caption = 'Tetkik Sonu'#231
       ImageIndex = 47
       OnClick = cxButtonCClick
     end
@@ -764,6 +764,7 @@ object frmHastaKart: TfrmHastaKart
         Tag = -31
         Caption = 'D'#252'zenle'
         ImageIndex = 49
+        Visible = False
         OnClick = cxButtonCClick
       end
       object G2: TMenuItem

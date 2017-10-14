@@ -34,6 +34,10 @@ object frmTahliltakip: TfrmTahliltakip
     object cxTabSheet1: TcxTabSheet
       Caption = 'Kay'#305'tlar'
       ImageIndex = 0
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       object PnltetkikDegerlendir: TcxGroupBox
         Left = 1000
         Top = 33
@@ -66,6 +70,10 @@ object frmTahliltakip: TfrmTahliltakip
           object TetkikDegerlendirSayfa1: TcxTabSheet
             Caption = 'Tetkik De'#287'erlendir'
             ImageIndex = 0
+            ExplicitLeft = 0
+            ExplicitTop = 0
+            ExplicitWidth = 0
+            ExplicitHeight = 0
             object cxGrid1: TcxGrid
               Left = 0
               Top = 25
@@ -169,6 +177,10 @@ object frmTahliltakip: TfrmTahliltakip
           object TetkikDegerlendirSayfa2: TcxTabSheet
             Caption = 'Tetkik De'#287'. Ayar'
             ImageIndex = 1
+            ExplicitLeft = 0
+            ExplicitTop = 0
+            ExplicitWidth = 0
+            ExplicitHeight = 0
             object cxGrid13: TcxGrid
               Left = 0
               Top = 0
@@ -298,6 +310,7 @@ object frmTahliltakip: TfrmTahliltakip
           StyleFocused.LookAndFeel.NativeStyle = False
           StyleHot.LookAndFeel.NativeStyle = False
           TabOrder = 0
+          ExplicitHeight = 21
           Width = 121
         end
         object tarih1: TcxDateEdit
@@ -319,6 +332,7 @@ object frmTahliltakip: TfrmTahliltakip
           StyleFocused.LookAndFeel.NativeStyle = False
           StyleHot.LookAndFeel.NativeStyle = False
           TabOrder = 1
+          ExplicitHeight = 21
           Width = 121
         end
         object DiyalizTip: TcxRadioGroup
@@ -364,6 +378,7 @@ object frmTahliltakip: TfrmTahliltakip
           Style.TransparentBorder = True
           TabOrder = 3
           Transparent = True
+          ExplicitHeight = 0
           Width = 177
         end
         object btnList: TcxButton
@@ -1068,6 +1083,10 @@ object frmTahliltakip: TfrmTahliltakip
     object cxTabSheet2: TcxTabSheet
       Caption = 'LOG'
       ImageIndex = 1
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       object txtHatalar: TcxMemo
         Left = 0
         Top = 0

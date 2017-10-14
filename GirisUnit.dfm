@@ -1377,6 +1377,9 @@ object GirisForm: TGirisForm
         41845577C1B0EEC6827E9D750566A48B950CECECF3D5FF94DF667CDA0070FF03
         7935AE55479994CB0000000049454E44AE426082}
       TabOrder = 0
+      ExplicitLeft = 2
+      ExplicitTop = 2
+      ExplicitHeight = 60
       Height = 58
       Width = 65
     end
@@ -1388,6 +1391,10 @@ object GirisForm: TGirisForm
       Caption = #304#351'leminiz Yap'#305'l'#305'yor , l'#252'tfen bekleyiniz...'
       PanelStyle.Active = True
       TabOrder = 1
+      ExplicitLeft = 67
+      ExplicitTop = 2
+      ExplicitWidth = 432
+      ExplicitHeight = 60
       Height = 58
       Width = 430
       object pBar: TcxProgressBar
@@ -1396,6 +1403,8 @@ object GirisForm: TGirisForm
         Align = alBottom
         TabOrder = 0
         Visible = False
+        ExplicitTop = 39
+        ExplicitWidth = 428
         Width = 426
       end
     end

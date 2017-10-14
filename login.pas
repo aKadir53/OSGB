@@ -481,9 +481,21 @@ procedure TfrmLogin.cxButtonEditKadir1PropertiesButtonClick(Sender: TObject;
   AButtonIndex: Integer);
 var
   List : ArrayListeSecimler;
+  sql : string;
 begin
   if Datalar.Baglan
   Then Begin
+    sql := 'select doktor,sirketKodu from Users where kullanici = ' + QuotedStr(edit1.text);
+    datalar.QuerySelect(DONEMBUL,sql);
+
+    if DONEMBUL.FieldByName('doktor').AsString <> ''
+    then ListeAc1.Where := 'doktor = ' + QuotedStr(DONEMBUL.FieldByName('doktor').AsString)
+    else
+    if DONEMBUL.FieldByName('sirketKodu').AsString <> ''
+     then ListeAc1.Where := 'SirketKod = ' + QuotedStr(DONEMBUL.FieldByName('sirketKodu').AsString)
+    else
+      ListeAc1.Where := '';
+
     List := ListeAc1.ListeGetir;
     txtSirket.Text := list[0].kolon2;
     txtDonemler.Text := list[0].kolon1;

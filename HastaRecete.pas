@@ -193,7 +193,7 @@ const _TableName_ = 'Recete';
       formYukseklik = 650;
 
 const
-LIB_DLL = 'D:\Projeler\VS\c#\ListeDLL\ListeDLL\bin\x86\Debug\NoktaDLL.dll';
+LIB_DLL = 'NoktaDLL.dll';
 
 
 var

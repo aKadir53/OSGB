@@ -1,1 +1,1 @@
-upx DiyalizV4.exe
+upx OSGB.exe

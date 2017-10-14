@@ -160,15 +160,17 @@ end;
 
 procedure TfrmHastaTetkikEkle.Sonuclar;
 begin
-   sql := 'select * from hareketler h join labtestler t on t.butKodu = h.code ' +
+   sql := 'select h.*,t.tanimi from hareketler h join labtestler t on t.butKodu = h.code ' +
           ' where dosyaNo = ' + #39 + _dosyaNo_ + #39 +
           ' and gelisNo = ' + _gelisNo_ + ' and abs(t.tip) = ' + inttostr(ABS(cxTabTetkik.TabIndex+2)) + // sql1 +
           ' order by kabulno,h.TARIH,sira ';
    datalar.QuerySelect(ADO_Tetkikler,sql);
 
+(*
    sql := 'select * from labsonucdegerlendirme where dosyaNo = ' + #39 + _dosyaNo_ + #39 +
           ' and gelisNo = ' + _gelisNo_;
    datalar.QuerySelect(ADO_TetkikDegerlendir,sql);
+   *)
 end;
 
 procedure TfrmHastaTetkikEkle.TetkikSil;
@@ -265,11 +267,13 @@ begin
             KTVHesapListe;
           end;
     -21 : begin
+           (*
             GirisRecord.F_dosyaNO_ := self._dosyaNO_;
             GirisRecord.F_gelisNO_ := self._gelisNO_;
             GirisRecord.F_HastaAdSoyad_ := self._HastaAdSoyad_;
             F := FormINIT(TagfrmKanTetkikTakipDegerlendir,GirisRecord,ikHayir,'Giriþ');
             if F <> nil then F.show;
+            *)
 
             //KanTetkikleriDegerlendir(_dosyaNO_,_gelisNO_);
           end;
