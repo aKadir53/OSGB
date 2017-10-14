@@ -299,6 +299,7 @@ var
  bmp: TBitmap;
 begin
   inherited;
+  Enabled;
 
   case TcxButtonEditKadir(sender).tag of
    1 : begin  //dosyaNo buttonedit
@@ -668,6 +669,7 @@ begin
  // cxpnlHastaGelisler.Align := alBottom;
 
   SayfaCaption('Firma Bilgileri','','' ,'','');
+  Disabled(self,True);
 
  end;
 
