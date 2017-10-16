@@ -84,7 +84,7 @@ type
       var DisplayValue: Variant; var ErrorText: TCaption; var Error: Boolean);
     procedure txtNaceKodPropertiesButtonClick(Sender: TObject;
       AButtonIndex: Integer);
-
+     procedure ButtonClick(Sender: TObject);
 
   private
     { Private declarations }
@@ -114,7 +114,18 @@ implementation
     uses AnaUnit,SMS;
 {$R *.dfm}
 
+procedure TfrmFirmaKart.ButtonClick(Sender: TObject);
+var
+  ID : integer;
+  F : TGirisForm;
+  GirisRecord : TGirisFormRecord;
+begin
+  GirisRecord.F_firmaKod_ := TcxButtonEditKadir(FindComponent('sirketKod')).EditValue;
+  GirisRecord.F_HastaAdSoyad_ := TcxTextEditKadir(FindComponent('tanimi')).EditValue;
+  F := FormINIT(TagfrmSube,GirisRecord,ikHayir,'');
+  if F <> nil then F.ShowModal;
 
+end;
 
 procedure TfrmFirmaKart.OrtakEventAta(Sender : TObject);
 begin
@@ -455,7 +466,9 @@ begin
   indexFieldName := 'sirketKod';
   TableName := _TableName_;
   Olustur(self,_TableName_,'Firma Taným Kartý',22,sqlInsert);
-  cxPanel.Visible := false;
+
+  cxPanel.Visible := True;
+
   Sayfa3_Kolon3.Width := 0;
   Sayfa3_Kolon2.Width := 0;
 
@@ -478,75 +491,10 @@ begin
   doktor.Filter := '';
   setDataStringKontrol(self,doktor,'doktor','Doktor',kolon1,'',120);
   OrtakEventAta(doktor);
-  (*
-  setDataString(self,'HUVIYETNO','',Kolon1,'dn',45);
-  setDataString(self,'TCKIMLIKNO','TC Kimlik No  ',Kolon1,'',130,True);
 
-  setDataString(self,'HASTASOYADI','Soyadý  ',Kolon1,'',130,True);
-  setDataString(self,'BABAADI','Baba Adý  ',Kolon1,'',130);
-  setDataString(self,'ANAADI','Ana Adý  ',Kolon1,'',130);
-  setDataString(self,'DOGUMYERI','Doðum Yeri  ',Kolon1,'',130);
-  setDataStringKontrol(self,DOGUMTARIHI, 'DOGUMTARIHI','Doðum Tarihi  ',Kolon1,'',130);
-
-
-  setDataStringKontrol(self,KANGRUBU, 'KANGRUBU','Kan Grubu  ',Kolon1,'',100);
-  setDataStringKontrol(self,CINSIYETI, 'CINSIYETI','Cinsiyeti  ',Kolon1,'',100);
-  setDataStringKontrol(self,MEDENI, 'MEDENI','Medeni Hal  ',Kolon1,'',100);
-
-  setDataStringKontrol(self,VatandasTip, 'VatandasTip','Vatandaþ Tipi  ',Kolon1,'',100);
-  UYRUK := ListeAcCreate('SKRS_ULKE_KODLARI','KODU,ADI','Kod,Ülke Adi',
-                       '50,200','KODU','Ülke Kodlarý','',2);
-  setDataStringB(self,'UYRUGU','Uyruk',Kolon1,'',50,UYRUK,false,nil,'ADI','',True,True);
-
-  EGITIM := TcxImageComboKadir.Create(self);
-  EGITIM.Conn := Datalar.ADOConnection2;
-  EGITIM.TableName := 'EgitimDurumlari';
-  EGITIM.ValueField := 'kod';
-  EGITIM.DisplayField := 'tanimi';
-  EGITIM.BosOlamaz := True;
-  EGITIM.Filter := '';
-  OrtakEventAta(EGITIM);
-  setDataStringKontrol(self,EGITIM,'EGITIM_DURUMU','Eðitim Durumu',kolon1,'',130);
-
-//  setDataString(self,'YKARTNO','Tdis id',Kolon1,'',100);
-
-
-  Kurum := TcxImageComboKadir.Create(self);
-  Kurum.Conn := Datalar.ADOConnection2;
-  Kurum.TableName := 'Kurumlar';
-  Kurum.ValueField := 'Kurum';
-  Kurum.DisplayField := 'ADI1';
-  Kurum.BosOlamaz := True;
-  Kurum.Filter := '';
-  OrtakEventAta(Kurum);
-  setDataStringKontrol(self,Kurum,'Kurum','Kurum',kolon2,'',120);
-
-  DEV_KURUM := TcxImageComboKadir.Create(self);
-  DEV_KURUM.Conn := Datalar.ADOConnection2;
-  DEV_KURUM.TableName := 'DevredilenKurum_Tnm';
-  DEV_KURUM.ValueField := 'kod';
-  DEV_KURUM.DisplayField := 'tanimi';
-  DEV_KURUM.BosOlamaz := True;
-  DEV_KURUM.Filter := '';
-  OrtakEventAta(DEV_KURUM);
-  setDataStringKontrol(self,DEV_KURUM,'KurumTip','Dev. Kurum',kolon2,'',120);
-
-
-
-
-  setDataStringKontrol(self,DURUM, 'Durum','Sigortalý Tipi',Kolon2,'',70);
-  setDataString(self,'SicilNo','Sigorta No',Kolon2,'',70);
-
-  setDataStringBLabel(self,'BosSatir1',Kolon2,'',10);
-
-  setDataString(self,'EV_TEL1','Mobil Tel',Kolon2,'',120);
-  setDataString(self,'EV_TEL2','Sabit Tel',Kolon2,'',120);
-
-
- // IL_KODLARI := ListeAcCreate('SKRS_IL_KODLARI','KODU,ADI','Kod,Adi','50,100','KODU','ÝLLER','',2);
-
-
-   *)
+  setDataString(self,'VD','Vergi Dairesi',Kolon1,'',100,True);
+  setDataString(self,'VN','Vergi No',Kolon1,'',100,True);
+  setDataString(self,'sicilNo','Ýþ Yeri Sicil No',Kolon1,'',100,True);
 
   SEHIR := TcxImageComboKadir.Create(self);
   SEHIR.Conn := Datalar.ADOConnection2;
@@ -629,45 +577,10 @@ begin
   setDataStringKontrol(self,txtAktif , 'Aktif','',Kolon2,'',110);
 //  setDataStringKontrol(self,txtTip , 'Tip','',Kolon3,'',110);
 
-
- // setDataStringKontrol(self,txtBobrekHastaligi , 'PBH','Primer Böbrek Hast.',sayfa2_Kolon1,'',200);
- // ilkTaniTarihi := TcxDateEdit.Create(self);
- // setDataStringKontrol(self,ilkTaniTarihi, 'ilkTaniTarihi','Ýlk Taný Tarihi',sayfa2_Kolon1,'',100);
-
-//  BASLANGIC := TcxDateEdit.Create(self);
-//  setDataStringKontrol(self,BASLANGIC, 'BASLANGIC','Ýlk Diyaliz Tarihi',sayfa2_Kolon1,'',100);
-
- // merkezdeBaslangic := TcxDateEdit.Create(self);
-//  setDataStringKontrol(self,merkezdeBaslangic, 'merkezdeBaslangic','Merkezde Baþlama Tarihi',sayfa2_Kolon1,'',100);
- // setDataStringKontrol(self,hastaTip , 'hastaTip','Hasta Tipi',sayfa2_Kolon1,'',100);
-
-//  setDataStringC(self,'Aday','Transplastasyon',sayfa2_Kolon1,'',100,'E,H');
-
   setDataStringBLabel(self,'bosSatir2',sayfa2_Kolon1,'',1);
 
- // setDataStringC(self,'seans','Seans',sayfa2_Kolon1,'_s_',50,'1,2,3,4,5');
-//  setDataString(self,'seansSuresi','Seans Süre',sayfa2_Kolon1,'_s_',30);
-//  setDataString(self,'makinaNo','Makina',sayfa2_Kolon1,'_s_',40);
-///  setDataStringKontrol(self,seansGunleri , 'seansGunleri','Seans Günleri',sayfa2_Kolon1,'',230);
 
-
- // setDataStringCurr(self,'idealKilo','Kilo',sayfa2_Kolon2,'kilo',50,'0.00');
- // setDataStringCurr(self,'boy','Boy',sayfa2_Kolon2,'_boy_',50,'0');
-
-
-//  setDataStringC(self,'HbsAg','HbsAg',sayfa2_Kolon2,'kilo',40,'-,+');
-//  setDataStringC(self,'AntiHbs','AntiHbs',sayfa2_Kolon2,'kilo',40,'-,+');
-//  setDataStringC(self,'AntiHCV','AntiHCV',sayfa2_Kolon2,'_boy_',40,'-,+');
-//  setDataStringC(self,'HIV','AntiHIV',sayfa2_Kolon2,'_boy_',40,'-,+');
-//  setDataStringBLabel(self,'bosSatir3',sayfa2_Kolon2,'',1);
-
-
- // setDataStringMemo(self,'soygecmis','Soy Geçmiþ',sayfa3_Kolon1,'',630,40);
-//  setDataStringMemo(self,'hastaNot','Tedavi Geçmiþ',sayfa3_Kolon1,'',630,40);
- // setDataStringMemo(self,'diger','Hasta Özel Durum',sayfa3_Kolon1,'',630,40);
-
- // setDataStringKontrol(self,txtSeansSikayet , 'GELHAST','Kronik Hast/Baðým',sayfa3_Kolon1,'',300);
-
+  addButton(self,nil,'btnSubeler','','Þube Tanýmla / Getir',Kolon3,'',120,ButtonClick);
 
   tableColumnDescCreate;
 

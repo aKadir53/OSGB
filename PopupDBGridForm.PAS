@@ -28,7 +28,7 @@ type
     btnYes: TcxButton;
     btnIptal: TcxButton;
     cxGroupDoktorlar: TcxGroupBox;
-    cxGrid3: TcxGrid;
+    cxGrid3: TcxGridKadir;
     DBGrid: TcxGridDBTableView;
     cxGridDBBandedTableView5: TcxGridDBBandedTableView;
     cxGridDBBandedColumn14: TcxGridDBBandedColumn;
@@ -59,11 +59,14 @@ type
     procedure Yukle;
     procedure SetGrid;
     procedure txtTablePropertiesChange(Sender: TObject);
+    procedure ADOBeforePost(DataSet: TDataSet);
+
   private
     { Private declarations }
   public
     _islem_ :integer;
-    _caption_ : string;
+    _caption_  : string;
+
     function Init(Sender: TObject) : Boolean; override;
     { Public declarations }
   end;
@@ -83,7 +86,21 @@ uses message, data_modul;
 
 {$R *.DFM}
 
+procedure TfrmPopupDBGridForm.ADOBeforePost(DataSet: TDataSet);
+begin
+  inherited;
+  case Tag of
+  TagfrmSube :
+        begin
+           cxGrid3.Dataset.FieldByName('sirketKod').AsString := _firmaKod_;
+        end;
+  end;
+end;
+
 function TfrmPopupDBGridForm.Init(Sender: TObject) : Boolean;
+var
+  ado : TADOQuery;
+  sql : string;
 begin
   inherited;
 
@@ -98,39 +115,35 @@ begin
       txtTable.Filter := '';
       txtTable.BosOlamaz := True;
       OrtakEventAta(txtTable);
-
       indexFieldName := '1=1';
       cxPanel.Visible := false;
       SayfaCaption('','','','','');
   end;
+
+    TagfrmSube :
+    begin
+        ClientHeight := 300;
+        ClientWidth := 550;
+        TableName := 'SIRKET_SUBE_TNM';
+        _fields_ := 'sirketKod,subeKod,subeTanim,subeSiciNo,subeDoktor';
+        _fieldBaslik_ := ',ÞubeKodu,ÞubeTanimi,ÝþYeriSicilNo,Doktor';
+        _fieldTips_ := 'string,string,string,string,ImageDoktorCombo';
+        indexFieldName := 'sirketKod = ' + QuotedStr(_firmaKod_);
+        cxPanel.Visible := false;
+        cxGroupDoktorlar.Caption := 'Þube Bilgileri';
+        cxGrid3.Dataset.BeforePost := ADOBeforePost;
+        cxGrid3.Dataset.Connection := datalar.ADOConnection2;
+        cxGrid3.Dataset.SQL.Text := 'Select * from SIRKET_SUBE_TNM where sirketKod = ' + QuotedStr(_firmaKod_);
+        cxGrid3.Dataset.Open;
+        DBGrid.DataController.CreateAllItems(True);
+        SetGrid;
+
+        SayfaCaption('','','','','');
+    end;
+
   end;
 
-  (*
-  case Tag of
-     TagfrmBolum:
-        begin
-          TableName := 'Bolumler';
-          indexFieldName := '1=1';
-          cxPanel.Visible := false;
-          SayfaCaption('','','','','');
-          _fields_ := 'kod,tanimi ';
-          _fieldBaslik_ := 'Kod,BolumTanýmý ';
-          _fieldTips_ := 'int,string';
-          Yukle;
-        end;
-     TagfrmBirim:
-        begin
-          TableName := 'Birimler';
-          indexFieldName := '1=1';
-          cxPanel.Visible := false;
-          SayfaCaption('','','','','');
-          _fields_ := 'kod,tanimi ';
-          _fieldBaslik_ := 'Kod,BirimTanýmý ';
-          _fieldTips_ := 'int,string';
-          Yukle;
-        end;
 
-  end; *)
 end;
 
 
@@ -167,6 +180,14 @@ begin
      begin
       DBgrid.Columns[i].PropertiesClassName := 'TcxDateEditProperties';
      end;
+
+    if Tips[i] = 'ImageDoktorCombo' then
+     begin
+      DBgrid.Columns[i].PropertiesClassName := 'TcxImageComboProperties';
+
+     end;
+
+
 
     DBgrid.Columns[i].Width := 70;
 

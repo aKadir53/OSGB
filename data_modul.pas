@@ -472,7 +472,7 @@ type
    _labkurumkod , _labkurumkodText, _laburl , _labfirma ,  _SKRS , _saglikNetUser , _saglikNetPass , _firmaSKRS , _usermernis , _passmernis : string;
    _doktorReceteUser,_doktorRecetePas,_KurumSKRS_, _userSaglikNet_ , _passSaglikNet_ , _userSaglikNet2_ , _passSaglikNet2_ , itsGLN , itsUser , itsPass: string;
    _merkezAdi , _DyobKurumKodu_,_DyobSifre_,_DyobServiceKodu_ , doktorTip , bashekimKodu,hekimKodu,ImajFTPServer : string;
-   _medulaOrtam_ : string;
+   _medulaOrtam_ , WanIp,WanIpURL ,_firmaKod_: string;
    TakipDevam : boolean;
    AktifSirketAdi,AktifSirket ,_donemSonlandir_ ,TenayMNTRequest , TenayBIORequest , DyobRequest , _database , _Tip : string;
    CentroResponse ,SMSHesapFrom,SMSHesapUser,SMSHesapSifre , AlpemixRun,AlpemixGrupAdi,AlpemixGrupParola : string;
@@ -662,6 +662,7 @@ begin
     ado := TADOQuery.Create(nil);
     ado.Connection := datalar.ADOConnection2;
 
+     WanIpURL := WebErisimBilgi('WIP','00');
     _medulaOrtam_ := WebErisimBilgi('98','01');
    if _medulaOrtam_ = 'Gerçek'
    Then begin

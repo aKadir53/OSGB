@@ -181,6 +181,7 @@ type
     F_DataSource : TDataSource;
     F_SeansSira_ : string;
     F_IlacEtkenMadde_ : string;
+    F_firmaKod_ : string;
 
     { Private declarations }
   public
@@ -263,6 +264,8 @@ type
     property _DataSource : TDataSource read F_DataSource write F_DataSource;
     property _SeansSira_ : string read F_SeansSira_ write F_SeansSira_;
     property _IlacEtkenMadde_ : string read F_IlacEtkenMadde_ write F_IlacEtkenMadde_;
+    property _firmaKod_ : string read F_firmaKod_ write F_firmaKod_;
+
   end;
 
   const

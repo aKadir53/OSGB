@@ -98,6 +98,7 @@ object frmHastaListe: TfrmHastaListe
         OptionsView.GroupByBox = False
         OptionsView.HeaderHeight = 35
         OptionsView.RowSeparatorColor = clBlack
+        Styles.Group = cxStyle2
         Styles.Indicator = cxStyle1
         object TC: TcxGridDBColumn
           Caption = 'Tc Kimlik No'
@@ -319,6 +320,14 @@ object frmHastaListe: TfrmHastaListe
           HeaderAlignmentVert = vaCenter
           Options.Editing = False
         end
+        object ListeColumn15: TcxGridDBColumn
+          Caption = #350'ubesi'
+          DataBinding.FieldName = 'subeTanim'
+          GroupIndex = 0
+          HeaderAlignmentHorz = taCenter
+          HeaderAlignmentVert = vaCenter
+          Width = 80
+        end
       end
       object cxGridLevel1: TcxGridLevel
         Caption = 'Hastalar'
@@ -486,6 +495,15 @@ object frmHastaListe: TfrmHastaListe
       Font.Name = 'MS Sans Serif'
       Font.Style = [fsBold]
       TextColor = clWhite
+    end
+    object cxStyle2: TcxStyle
+      AssignedValues = [svColor, svFont]
+      Color = 16777088
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -13
+      Font.Name = 'Tahoma'
+      Font.Style = [fsBold]
     end
   end
   object PopupMenu1: TPopupMenu

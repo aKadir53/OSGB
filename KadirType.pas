@@ -448,6 +448,7 @@ type
     F_Yupass_ : string;
     F_SeansSira_ : string;
     F_IlacEtkenMadde_ : string;
+    F_firmaKod_ : string;
   End;
 
   TSifreDegistir = record
@@ -461,6 +462,7 @@ Const
   TagfrmUsers = 110;
   TagfrmBolum = 9010;
   TagfrmBirim = 9011;
+  TagfrmSube = 9012;
   TagfrmRaporDetay = -20;
   TagfrmTakipNo = -10;
   TagfrmAsiKarti = 9020;

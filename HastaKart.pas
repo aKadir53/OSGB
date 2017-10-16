@@ -813,7 +813,7 @@ var
   merkezdeBaslangic,BASLANGIC,ilkTaniTarihi : TcxDateEditKadir;
   EV_SEHIR ,EV_ILCE ,EV_BUCAK , EV_KOY,EV_MAHALLE : TcxImageComboKadir;
   DEV_KURUM,Kurum,EGITIM : TcxImageComboKadir;
-  askerlik,ozur,bolum,birim,risk,statu,muayenePeryot: TcxImageComboKadir;
+  askerlik,ozur,bolum,birim,risk,statu,muayenePeryot,Subeler: TcxImageComboKadir;
   D : TcxComboBox;
   Tab : TcxTabSheet;
 begin
@@ -1030,6 +1030,24 @@ begin
   birim.BosOlamaz := True;
   setDataStringKontrol(self,birim,'birim','Birimi',kolon3,'',120);
   OrtakEventAta(birim);
+
+
+  subeler := TcxImageComboKadir.Create(self);
+  subeler.Conn := Datalar.ADOConnection2;
+  subeler.TableName := 'SIRKET_SUBE_TNM';
+  subeler.ValueField := 'subeKod';
+  subeler.DisplayField := 'subeTanim';
+  subeler.ItemList := '00;MERKEZ';
+  subeler.Filter := '';
+  subeler.BosOlamaz := True;
+
+
+
+
+  setDataStringKontrol(self,subeler,'sube','Þube',kolon3,'',120);
+
+
+  OrtakEventAta(subeler);
 
   setDataStringBLabel(self,'bosSatir2',Kolon3,'',350);
 

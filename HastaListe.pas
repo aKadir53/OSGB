@@ -75,6 +75,8 @@ type
     ListeColumn12: TcxGridDBColumn;
     ListeColumn13: TcxGridDBColumn;
     ListeColumn14: TcxGridDBColumn;
+    ListeColumn15: TcxGridDBColumn;
+    cxStyle2: TcxStyle;
 
     procedure TopPanelPropertiesChange(Sender: TObject);
     procedure btnVazgecClick(Sender: TObject);

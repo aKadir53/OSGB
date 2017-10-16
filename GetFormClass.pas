@@ -192,7 +192,7 @@ begin
   case formId of
    TagfrmHastaKart : Result := frmHastaKart;
    TagfrmFirmaKart : Result := frmFirmaKart;
-   TagfrmPopupDBGridForm,TagfrmBolum,TagfrmBirim : Result := frmPopupDBGridForm;
+   TagfrmPopupDBGridForm,TagfrmBolum,TagfrmBirim,TagfrmSube : Result := frmPopupDBGridForm;
    TagfrmHizliKayit : Result := frmHizliKayit;
    TagfrmReceteSablon : Result := frmReceteSablon;
 
@@ -372,7 +372,7 @@ begin
 
   case FormTag of
     TagfrmFirmaKart : Application.CreateForm(TfrmFirmaKart,frmFirmaKart);
-    TagfrmPopupDBGridForm,TagfrmBolum,TagfrmBirim: Application.CreateForm(TfrmPopupDBGridForm , frmPopupDBGridForm);
+    TagfrmPopupDBGridForm,TagfrmBolum,TagfrmBirim,TagfrmSube: Application.CreateForm(TfrmPopupDBGridForm , frmPopupDBGridForm);
     TagfrmDoktorlar :  Application.CreateForm(TfrmDoktorlar, frmDoktorlar);
     TagfrmKurumBilgi : Application.CreateForm(TfrmKurumBilgi, frmKurumBilgi);
     TagfrmReceteler : Application.CreateForm(TfrmReceteler, frmReceteler);
@@ -415,6 +415,8 @@ begin
   TGirisForm(Form)._DevKurum_ := Value.F_DevKurum_;
   TGirisForm(Form)._SigortaliTur_ := Value.F_SigortaliTur_;
   TGirisForm(Form)._SeansSira_ := Value.F_SeansSira_;
+  TGirisForm(Form)._firmaKod_ := Value.F_FirmaKod_;
+
   TgirisForm(Form).Caption := FormCaption(FormTag) + ' - ' + FormAltCaption(FormTag);
   if ik = ikEvet
    then

@@ -17,6 +17,7 @@ uses Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Consts,
 
 
 
+function WanIp(url : string = 'http://bot.whatismyipaddress.com') : string;
 procedure RegYaz(dizi , diziDegeri : string ; openKey : string = 'Software\NOKTA\NOKTA');
 function RegOku(dizi : string ; openKey : string = 'Software\NOKTA\NOKTA') : Variant;
 function Songelis(DosyaNo: string): string;
@@ -510,6 +511,15 @@ begin
    reg.Free;
 end;
 
+function WanIp(url : string = 'http://bot.whatismyipaddress.com') : string;
+begin
+    try
+    datalar.WanIp := (datalar.HTTP1.Get(url));
+  except
+    datalar.WanIp := '';
+  end;
+  WanIp := datalar.WanIp;
+end;
 
 function SQLSelectToDataSet(Columns,Table,Where : string) : TADOQuery;
 var

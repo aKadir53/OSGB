@@ -363,6 +363,9 @@ begin
                datalar.ReceteKullanimYollari.active := True;
                datalar.Ado_Doktorlar.Active := True;
                datalar.KontrolZorunlu.Active := True;
+
+               WanIp(datalar.WanIPURL);
+
                Hide;
              (*
                 if LocalIP(IPAdres) then
