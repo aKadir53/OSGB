@@ -6,7 +6,6 @@ object DATALAR: TDATALAR
   Width = 1114
   object ADOConnection2: TADOConnection
     CommandTimeout = 0
-    Connected = True
     ConnectionString = 
       'Provider=SQLOLEDB.1;Password=5353;Persist Security Info=True;Use' +
       'r ID=Nokta;Initial Catalog=OSGB_UZMAN;Data Source=213.159.30.6;U' +
@@ -67,8 +66,8 @@ object DATALAR: TDATALAR
     Request.Ranges.Units = 'bytes'
     Request.Ranges = <>
     HTTPOptions = [hoForceEncodeParams]
-    Left = 37
-    Top = 193
+    Left = 69
+    Top = 169
   end
   object Takip: THTTPRIO
     OnAfterExecute = TakipAfterExecute
@@ -245,8 +244,8 @@ object DATALAR: TDATALAR
     Parameters = <>
     SQL.Strings = (
       'select * from HizmetFiyatTipleri')
-    Left = 48
-    Top = 376
+    Left = 120
+    Top = 304
   end
   object ADO_SQL7: TADOQuery
     Connection = ADOConnection2
@@ -299,8 +298,8 @@ object DATALAR: TDATALAR
     Parameters = <>
     SQL.Strings = (
       'exec sp_hastabakiye '#39'20070101'#39','#39'20071231'#39)
-    Left = 80
-    Top = 336
+    Left = 128
+    Top = 344
   end
   object SQL_Tarih: TADOQuery
     Parameters = <>
@@ -356,7 +355,7 @@ object DATALAR: TDATALAR
     Left = 701
     Top = 96
     Bitmap = {
-      494C01019B009F00FC0418001800ECE9D800FF10FFFFFFFFFFFFFFFF424D3600
+      494C01019B009F00040518001800ECE9D800FF10FFFFFFFFFFFFFFFF424D3600
       000000000000360000002800000060000000A80300000100200000000000007C
       050000000000000000000000000000000000D8E9EC00D8E9EC00D8E9EC00D8E9
       EC00D8E9EC00D8E9EC00D8E9EC00D8E9EC00D8E9EC00D8E9EC00D8E9EC00D8E9
@@ -12175,7 +12174,7 @@ object DATALAR: TDATALAR
     Left = 581
     Top = 72
     Bitmap = {
-      494C01019B009F004C0518001800ECE9D800FF10FFFFFFFFFFFFFFFF424D3600
+      494C01019B009F00540518001800ECE9D800FF10FFFFFFFFFFFFFFFF424D3600
       000000000000360000002800000060000000A80300000100200000000000007C
       050000000000000000000000000000000000D8E9EC00D8E9EC00D8E9EC00D8E9
       EC00D8E9EC00D8E9EC00D8E9EC00D8E9EC00D8E9EC00D8E9EC00D8E9EC00D8E9
@@ -52541,5 +52540,20 @@ object DATALAR: TDATALAR
     FieldDefs = <>
     Left = 296
     Top = 240
+  end
+  object KontrolZorunlu: TADOQuery
+    Connection = ADOConnection2
+    CursorType = ctStatic
+    Filtered = True
+    Parameters = <>
+    SQL.Strings = (
+      'select * from KontrolZorunlu')
+    Left = 24
+    Top = 304
+  end
+  object KontrolZorunlu_DataSource: TDataSource
+    DataSet = KontrolZorunlu
+    Left = 24
+    Top = 352
   end
 end

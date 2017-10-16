@@ -1369,7 +1369,7 @@ begin
   cxEdit.Name := fieldName;
   cxEdit.Text := '';
   cxEdit.Properties.ValidateOnEnter := True;
-  cxEdit.BosOlamaz := KontrolZorunlumu(TForm(sender).Tag,fieldName); //Zorunlu;
+  cxEdit.BosOlamaz := Zorunlu;//KontrolZorunlumu(TForm(sender).Tag,fieldName); //Zorunlu;
   dxLa := TdxLayoutGroup(parent).CreateItemForControl(cxEdit);
 //  dxLa.ControlOptions.ShowBorder := true;
   dxLa.Name := 'dxLa'+fieldName;
@@ -1477,7 +1477,7 @@ begin
   cxEditB.indexField := indexField;
   cxEditB.tanim := tanimi;
   cxEditB.Tag := _Tag_;
-  cxEditB.BosOlamaz := KontrolZorunlumu(TForm(sender).Tag,fieldName);//Zorunlu;
+  cxEditB.BosOlamaz := Zorunlu;//KontrolZorunlumu(TForm(sender).Tag,fieldName);//Zorunlu;
   cxEditB.Properties.ReadOnly := ReadOnly;
   cxEditB.whereColum := whereColumObjeName;
   cxEditB.Properties.ClickKey := menus.TextToShortCut('Shift+F1');
@@ -2270,6 +2270,8 @@ begin
   frmKontrolUserSet.Init(nil);
   frmKontrolUserSet.ShowModal;
   freeAndNil(frmKontrolUserSet);
+  datalar.KontrolZorunlu.Active := False;
+  datalar.KontrolZorunlu.Active := True;
 end;
 
 end.

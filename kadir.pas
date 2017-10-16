@@ -3,7 +3,7 @@ unit kadir;
 interface
 
 uses Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Consts,
-  Dialogs, ADODB, registry, ComCtrls, StdCtrls, db, ExtCtrls,
+  Dialogs, ADODB, registry, ComCtrls, StdCtrls, db, ExtCtrls,comObj,
   ShellApi, forms, data_modul, Grids,  Rio, SOAPHTTPClient,cxGridExportLink,
   xsbuiltIns,  Mask, Math, Printers,   zlib, StrUtils, Menus, SHDocVw,
   ActiveX, Buttons,  WinSvc, ImgList,wininet, types, kadirType, KadirLabel,jpeg, AdvGrid,
@@ -365,7 +365,7 @@ procedure TDISDoktorIDGetir(Tc : string ; var ID : integer);
 function GridCellToString(Grid : TcxGridDBTableView; ColonName : string ; Row : integer) : Variant;
 procedure GridCellSetValue(Grid : TcxGridDBTableView; ColonName : string ; Row : integer ; Value : Variant);
 function SQLSelectToDataSet(Columns,Table,Where : string) : TADOQuery;
-
+procedure ExceldenPersonelYukle;
 
 
 
@@ -386,6 +386,27 @@ const
   SettingsSection = 'Shell Folders';
   Key_Personal = 'Personal';
   _SqlSelect_ = 'Select %s from %s where %s';
+  _insertPersonel_ = 'sp_YeniPersonelHastaKarti ' +
+                     '@SirketKod = %s,' +
+                     '@TCKIMLIKNO = %s,'+
+                     '@HASTAADI = %s,'+
+                     '@HASTASOYADI = %s,'+
+                     '@CINSIYETI = %s,'+
+                     '@MEDENI = %s,'+
+                     '@BABAADI = %s,'+
+                     '@ANAADI = %s,'+
+                     '@EV_SEHIR = %s,'+
+                     '@EV_TEL1 = %s,'+
+                     '@EV_TEL2 = %s,'+
+                 //    '@EMAIL = %s,'+
+                     '@DOGUMYERI = %s,'+
+                     '@DOGUMTARIHI = %s,'+
+                     '@UYRUGU = %s,'+
+                     '@baslangic = %s,'+
+                     '@kanGrubu = %s,'+
+                     '@USER_ID = %s';
+
+
 var
   strList: string;
   AktifRenk: tcolor = clYellow;
@@ -407,6 +428,7 @@ var
   _kurumKod: integer;
   _username, _sifre: string;
   AramaText: string;
+  v,sayfa : Variant;
 
 implementation
 
@@ -414,6 +436,55 @@ uses message,AnaUnit,message_y,popupForm,rapor,TedaviKart,Son6AylikTetkikSonuc,
              HastaRecete,HastailacTedavi,sifreDegis,raporDetay,HastaTetkikEkle,
              KanTetkikleriTakip,ktv_urrListesi,KanTetkikleriDegerlendir,GirisUnit;
 
+
+procedure ExceldenPersonelYukle;
+var
+  openD : TOpenDialog;
+  dosya ,sql : string;
+  sonsatir , x : integer;
+begin
+  openD := TOpenDialog.Create(nil);
+  openD.execute;
+  dosya := openD.filename;
+
+  v := CreateOleObject('Excel.Application');
+  try
+    v.Workbooks.Open(dosya);
+    v.visible := true;//Exceli acip verileri goster
+    sayfa := v.workbooks[1].worksheets[1];
+  except
+    v.DisplayAlerts := False;  //Excel mesajlarýný görünteleme
+    v.Quit;
+    v := Unassigned;
+  end;
+
+  sonsatir := v.Range[Char(96 + 1) + IntToStr(65536)].end[3].Rows.Row;
+
+  for x := 2 to sonsatir do
+  begin
+
+      sql := sql + ' ' + #13 + Format(_insertPersonel_,
+                                       [datalar.AktifSirket,
+                                       sayfa.cells[x,1],
+                                       sayfa.cells[x,2],
+                                       sayfa.cells[x,3],
+                                       sayfa.cells[x,4],
+                                       sayfa.cells[x,5],
+                                       sayfa.cells[x,6],
+                                       sayfa.cells[x,7],
+                                       sayfa.cells[x,8],
+                                       sayfa.cells[x,9],
+                                       sayfa.cells[x,10],
+                                       sayfa.cells[x,11],
+                                       sayfa.cells[x,12],
+                                       sayfa.cells[x,13],
+                                       sayfa.cells[x,14],
+                                       sayfa.cells[x,15],
+                                       datalar.username]);
+
+
+  end;
+end;
 
 function RegOku(dizi : string ; openKey : string = 'Software\NOKTA\NOKTA') : Variant;
 var
@@ -644,14 +715,23 @@ var
   sql : string;
 begin
    KontrolZorunlumu := False;
-   ado := TADOQuery.Create(nil);
-   ado.Connection := datalar.ADOConnection2;
+  // ado := TADOQuery.Create(nil);
+  // ado.Connection := datalar.ADOConnection2;
+
+
    sql := 'select * from KontrolZorunlu where formTag = ' + inttostr(formTag) +
           ' and kontrolName = ' + QuotedStr(KontrolName);
-   datalar.QuerySelect(ado,sql);
+   datalar.KontrolZorunlu.Filter := 'formTag = ' + inttostr(formTag) +
+                                    ' and kontrolName = ' + QuotedStr(KontrolName);
 
-   if not ado.Eof then KontrolZorunlumu := True;
-   ado.Free;
+ // KontrolZorunlumu := datalar.KontrolZorunlu.Eof;
+
+  // datalar.QuerySelect(ado,sql);
+
+   if not datalar.KontrolZorunlu.Eof
+   then KontrolZorunlumu := True;
+
+//   ado.Free;
 end;
 
 
@@ -667,7 +747,8 @@ var
 begin
   for i := 0 to form.ComponentCount - 1 do
   begin
-    if (form.Components[i].ClassName = 'TcxTextEdit') or
+    if
+       (form.Components[i].ClassName = 'TcxTextEdit') or
        (form.Components[i].ClassName = 'TcxTextEditKadir') or
        (form.Components[i].ClassName = 'TcxButtonEdit') or
        (form.Components[i].ClassName = 'TcxButtonEditKadir') or

@@ -638,8 +638,8 @@ begin
     datalar.YeniRecete.doktorAdi := doktorAdi(datalar.doktor);
     datalar.YeniRecete.protokolNo := EnsonSeansProtokolNo(_dosyaNo_);
     datalar.YeniRecete.Tarih := datetostr(date);
-    datalar.YeniRecete.ReceteTuru := '';
-    datalar.YeniRecete.ReceteAltTuru := '';
+    datalar.YeniRecete.ReceteTuru := '1';
+    datalar.YeniRecete.ReceteAltTuru := '1';
 
     if islem = ReceteYeni
     then
@@ -1024,9 +1024,9 @@ begin
          HastaRapor(_dosyaNo_,_gelisNO_);
        end;
  -30 : begin
-         Application.CreateForm(TfrmReceteSablon, frmReceteSablon);
-         frmReceteSablon.ShowModal;
-         FreeAndNil(frmReceteSablon);
+          Form := FormINIT(TagfrmReceteSablon,GirisFormRecord);
+          if Form <> nil then Form.showModal;
+
        end;
  -31 : begin
           GirisFormRecord.F_HastaAdSoyad_ := _HastaAdSoyad_;

@@ -88,8 +88,6 @@ end;
 procedure TfrmReceteSablon.FormCreate(Sender: TObject);
 begin
   inherited;
-  Tag := TagfrmTedaviBilgisi;
-
   cxPanel.Visible := false;
   SayfaCaption('','','','','');
   Olustur(self,'','Reçete Þablonlarý',23);

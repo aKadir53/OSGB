@@ -9,7 +9,7 @@ uses
   IdComponent, IdTCPConnection, IdTCPClient, IdHTTP, InvokeRegistry, Rio,SOAPHTTPTrans,
   SOAPHTTPClient,  ImgList, Controls, XMLDoc, FileCtrl,HizmetKayitIslemleriWS,
   Dialogs, cxGraphics, dxmdaset, ExtCtrls, xmldom, Provider, Xmlxform, DBClient,XMLIntf,
-  RxMemDS,strUtils,Registry;
+  RxMemDS,strUtils,Registry, SQLMemMain;
 
 
 type
@@ -303,6 +303,8 @@ type
     AEN: THTTPRIO;
     Lios: THTTPRIO;
     RxMemoryData2: TRxMemoryData;
+    KontrolZorunlu: TADOQuery;
+    KontrolZorunlu_DataSource: TDataSource;
     procedure pcarihareketlerAfterScroll(DataSet: TDataSet);
     procedure TempConnectionAfterConnect(Sender: TObject);
     procedure TakipHTTPWebNode1BeforePost(const HTTPReqResp: THTTPReqResp;

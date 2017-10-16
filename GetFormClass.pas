@@ -38,7 +38,7 @@ implementation
 uses message,Data_Modul,AnaUnit,message_y,popupForm,rapor,TedaviKart,Son6AylikTetkikSonuc,
              HastaRecete,HastailacTedavi,sifreDegis,HastaTetkikEkle,
              KanTetkikleriTakip,KanTetkikleriDegerlendir, Receteler,
-             HastaKart,FirmaKart,
+             HastaKart,FirmaKart,hizliKayit,receteSablonlari,
              HastaListe,TeleEKG,
              Tnm_UserSettings,HastaAsiKarti,HastaTaniKart,
              KurumLogin,
@@ -161,6 +161,8 @@ begin
    TagfrmHastaKart : Result := TfrmHastaKart;
    TagfrmFirmaKart : Result := TfrmFirmaKart;
    TagfrmPopupDBGridForm,TagfrmBolum,TagfrmBirim : Result := TfrmPopupDBGridForm;
+   TagfrmHizliKayit : Result := TfrmHizliKayit;
+   TagfrmReceteSablon : Result := TfrmReceteSablon;
 
    TagfrmTedaviBilgisi : Result := TfrmTedaviBilgisi;
    TagfrmHastaRecete : Result := TfrmHastaRecete;
@@ -191,6 +193,8 @@ begin
    TagfrmHastaKart : Result := frmHastaKart;
    TagfrmFirmaKart : Result := frmFirmaKart;
    TagfrmPopupDBGridForm,TagfrmBolum,TagfrmBirim : Result := frmPopupDBGridForm;
+   TagfrmHizliKayit : Result := frmHizliKayit;
+   TagfrmReceteSablon : Result := frmReceteSablon;
 
    TagfrmTedaviBilgisi : Result := frmTedaviBilgisi;
    TagfrmHastaIlacTedavi : Result := frmHastaIlacTedavi;
@@ -241,6 +245,7 @@ begin
    case FormTag of
       TagfrmHastaKart : frmHastaKart := TfrmHastaKart.Create(Tab);
       TagfrmFirmaKart : frmFirmaKart := TfrmFirmaKart.Create(Tab);
+      TagfrmHizliKayit : frmHizliKayit := TfrmHizliKayit.Create(Tab);
 
       TagfrmHastaListe : frmHastaListe := TfrmHastaListe.Create(Tab);
       TagfrmTeleEkg : frmTeleEKG := TfrmTeleEKG.Create(Tab);
@@ -312,6 +317,7 @@ begin
    case FormTag of
       TagfrmHastaKart : frmHastaKart := TfrmHastaKart.Create(Tab);
       TagfrmFirmaKart : frmFirmaKart := TfrmFirmaKart.Create(Tab);
+      TagfrmHizliKayit : frmHizliKayit := TfrmHizliKayit.Create(Tab);
 
       TagfrmHastaListe : frmHastaListe := TfrmHastaListe.Create(Tab);
       TagfrmTeleEkg : frmTeleEKG := TfrmTeleEKG.Create(Tab);
@@ -370,8 +376,9 @@ begin
     TagfrmDoktorlar :  Application.CreateForm(TfrmDoktorlar, frmDoktorlar);
     TagfrmKurumBilgi : Application.CreateForm(TfrmKurumBilgi, frmKurumBilgi);
     TagfrmReceteler : Application.CreateForm(TfrmReceteler, frmReceteler);
-
     TagfrmHastaRecete : Application.CreateForm(TfrmHastaRecete,frmHastaRecete);
+    TagfrmReceteSablon : Application.CreateForm(TfrmReceteSablon,frmReceteSablon);
+
     TagfrmTedaviBilgisi : Application.CreateForm(TfrmTedaviBilgisi,frmTedaviBilgisi);
     TagfrmHastaIlacTedavi : Application.CreateForm(TfrmHastaIlacTedavi,frmHastaIlacTedavi);
     TagfrmTeleEkg : Application.CreateForm(TfrmTeleEKG, frmTeleEKG);

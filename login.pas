@@ -362,6 +362,7 @@ begin
                datalar.login;
                datalar.ReceteKullanimYollari.active := True;
                datalar.Ado_Doktorlar.Active := True;
+               datalar.KontrolZorunlu.Active := True;
                Hide;
              (*
                 if LocalIP(IPAdres) then

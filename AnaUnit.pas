@@ -320,7 +320,7 @@ begin
     9999 : close;
     83 : begin
       SifreDegistir;
-    end
+    end;
      else
         if FormID > 0 then
         begin

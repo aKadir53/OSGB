@@ -419,10 +419,6 @@ var
   i : integer;
 begin
  HastaGelis(kartNo,ADO_Gelisler);
- //if not ADO_Gelisler.Eof then
-
-
-// PopupMenuToToolBar(self,ToolBar1,PopupMenu1);
 end;
 
 
@@ -685,37 +681,34 @@ procedure TfrmHastaKart.cxGridGelislerFocusedRecordChanged(
   AFocusedRecord: TcxCustomGridRecord; ANewItemRecordFocusingChanged: Boolean);
 begin
   inherited;
-  _gelisNo_ := ADO_Gelisler.FieldByName('gelisNo').AsString;
-  if _gelisNO_ <> ''
-  then  begin
-  _gelisNo_ := ifThen(_gelisNo_ = '','0',_gelisNo_);
-  _provizyonTarihi_ := ADO_Gelisler.FieldByName('Tarih').AsString;
-  _Doktor_ := ADO_Gelisler.FieldByName('doktor').AsString;
-  datalar.Bilgi.gelisNo := ADO_Gelisler.FieldByName('gelisNo').AsString;
-  datalar.Bilgi.Doktor := ADO_Gelisler.FieldByName('doktor').AsString;
-  datalar.Bilgi.ProvizyonTarihi := ADO_Gelisler.FieldByName('Tarih').AsString;
+  if ADO_Gelisler.Active
+  Then begin
+    _gelisNo_ := ADO_Gelisler.FieldByName('gelisNo').AsString;
+    if _gelisNO_ <> ''
+    then  begin
+      _gelisNo_ := ifThen(_gelisNo_ = '','0',_gelisNo_);
+      _provizyonTarihi_ := ADO_Gelisler.FieldByName('Tarih').AsString;
+      _Doktor_ := ADO_Gelisler.FieldByName('doktor').AsString;
+      datalar.Bilgi.gelisNo := ADO_Gelisler.FieldByName('gelisNo').AsString;
+      datalar.Bilgi.Doktor := ADO_Gelisler.FieldByName('doktor').AsString;
+      datalar.Bilgi.ProvizyonTarihi := ADO_Gelisler.FieldByName('Tarih').AsString;
 
-  IseGirisMuayene.Dataset.Connection := datalar.ADOConnection2;
-  IseGirisMuayene.Dataset.SQL.Text := 'sp_frmPersonelIseGirisMuayene ' + QuotedStr(dosyaNo.Text)+ ',' +
-                                                                     _gelisNO_;
-  IseGirisMuayene.Dataset.Open;
-  end
-  else
-    IseGirisMuayene.Dataset.close;
+      IseGirisMuayene.Dataset.Connection := datalar.ADOConnection2;
+      IseGirisMuayene.Dataset.SQL.Text := 'sp_frmPersonelIseGirisMuayene ' + QuotedStr(dosyaNo.Text)+ ',' +
+                                                                         _gelisNO_;
+      IseGirisMuayene.Dataset.Open;
+    end
+    else
+      IseGirisMuayene.Dataset.close;
 
+  end;
 end;
 
 procedure TfrmHastaKart.cxTextEditBKeyDown(Sender: TObject; var Key: Word;
   Shift: TShiftState);
 begin
    inherited;
-  // if key  then
-
    cxButtonEditPropertiesButtonClick(TcxButtonEditKadir(sender),-1);
-
-//   Gelisler(TcxButtonEditKadir(sender).Text);
-
-
 end;
 
 procedure TfrmHastaKart.cxTextEditKeyDown(Sender: TObject; var Key: Word;
@@ -801,8 +794,10 @@ begin
    dosyaNo.OnKeyDown(frmHastaKart.dosyaNo,key,[]);
 
 
+
   IseGirisMuayene.Dataset.AfterScroll := ADO_WebServisErisimAfterScroll;
   GridList.ViewData.Expand(true);
+
 
   Result := True;
 end;
@@ -1064,10 +1059,12 @@ begin
   setDataStringKontrol(self,IseGirisMuayene,'IseGirisMuayene','',sayfa4_Kolon1,'',800,350,alClient);
 
 
-  tableColumnDescCreate;
+ // tableColumnDescCreate;
   cxpnlHastaGelisler.Align := alBottom;
 
   SayfaCaption('Kimlik Bilgileri','DÝðer Bilgileri','Öz Geçmiþ','Ýþe Giriþ Muayene','');
+
+
 
  end;
 

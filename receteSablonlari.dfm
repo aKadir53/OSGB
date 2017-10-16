@@ -23,8 +23,6 @@ object frmReceteSablon: TfrmReceteSablon
     Height = 489
     Align = alLeft
     TabOrder = 0
-    ExplicitTop = 48
-    ExplicitHeight = 409
     object DBGridEh3: TDBGridEh
       Left = 1
       Top = 1
@@ -75,8 +73,6 @@ object frmReceteSablon: TfrmReceteSablon
     Height = 489
     Align = alClient
     TabOrder = 1
-    ExplicitTop = 48
-    ExplicitHeight = 409
     object cxGroupBox1: TcxGroupBox
       Left = 1
       Top = 1
