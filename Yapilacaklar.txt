@@ -1,7 +1,25 @@
 
-kullanýcý tanýum ekranýnda kullanýcý seçmeden sað tarafa formdaki diðer kontrollere müdahale edemesin.
 
 
+
+
+
+
+kart 
+
+
+connection timeout
+
+
+yapýlanlar
+
+iþe giriþ, iþten çýkýþ, iþe dönüþ, iþ kazasý, ... muayene tipleri
+doktor kartýna doktor cep telefonu yoksa eklenecek ok.
 personel taným bilgileri ekranýnda popup menü içinden hasta raporlarý ve ilaç tedavi kaldýrýlacak
-
+hasta kartýna durumda aktif pasif seçenekleri yanýna bir de yeni seçeneði eklenecek.
+aþý kartý taný kartý gibi þeylere yetki tanýmý kontrolü (userkontrolset ile çözüldü)
 hasta kartýna med eczane giriþi düðmesi eklenecek (popup menuye mi ???)
+firma tanýmlarýna doktor seçimi eklendi
+kullanýcý tanýum ekranýnda kullanýcý seçmeden sað tarafa formdaki diðer kontrollere müdahale edemesin. (Abdulkadir yapmýþ, ben de takliden firma kartlarýna ekledim)
+doktor þirket eþleþtirmeleri yapýlabilir (o þirkete yeni personel girildiðinde hangi doktora sms atacak) - Abdulkadir firmanýn tek doktoru olur diyerek firma kartýna ekledi
+fþrma kartlarýna telefon1 2 fax yetkili yetklitelef yetkilkimaili eklendi
