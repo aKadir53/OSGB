@@ -570,17 +570,23 @@ begin
   case islem of
    ReceteMedulaKaydet :  begin
                             DurumGoster(True,False,'Reçeteniz Kayýt Ýçin Ýmzalanýyor...Lütfen Bekleyiniz...',1);
-                            Sonuc := ReceteImzalaGonder;
-                            DurumGoster(False,False,'');
-                            ShowMessageSkin(Sonuc,'','','info');
+                            try
+                              Sonuc := ReceteImzalaGonder;
+                            finally
+                              DurumGoster(False,False,'');
+                              ShowMessageSkin(Sonuc,'','','info');
+                            end;
                           end;
 
      // _exe :=  PAnsiChar(AnsiString('C:\NoktaV3\E-imza\imza.exe ' + 'I' + ' '+ _dn_ + ' ' + _gn_ + ' ' + _id_ + ' ' + _d_  + ' ' + datalar.AktifSirket));
    ReceteMedulaSil : begin
                             DurumGoster(True,False,'Reçete Silinmek Üzere Ýmzalanýyor...Lütfen Bekleyiniz...',1);
-                            Sonuc := ReceteImzalaSil;
-                            DurumGoster(False,False,'');
-                            ShowMessageSkin(Sonuc,'','','info');
+                            try
+                              Sonuc := ReceteImzalaSil;
+                            finally
+                              DurumGoster(False,False,'');
+                              ShowMessageSkin(Sonuc,'','','info');
+                            end;
                       end;
 
      // _exe :=  PAnsiChar(AnsiString('C:\NoktaV3\E-imza\imza.exe ' + 'D' + ' '+ _id_ + ' ' + _erNo_ + ' ' + _d_ + ' ' + datalar.AktifSirket));

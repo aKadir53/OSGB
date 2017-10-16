@@ -461,18 +461,21 @@ var
   sql ,apm : string;
 begin
     DurumGoster;
-    if chkMisafir.Checked
-    Then apm := '0,1'
-    Else apm := '0,1,2';
+    try
+      if chkMisafir.Checked
+      Then apm := '0,1'
+      Else apm := '0,1,2';
 
-   // exec sp_dbcmptlevel DIALIZ,90
+     // exec sp_dbcmptlevel DIALIZ,90
 
-    sql := 'exec sp_hastaTahlilSonuclari ' +
-           QuotedStr(tarihal(tarih1.Date)) + ',' + QuotedStr(tarihal(tarih2.Date)) +
-           ',@tip = ' + QuotedStr(DiyalizTip.EditValue) +
-           ',@apm = ' + QuotedStr(apm);
-    datalar.QuerySelect(ADO_TetkiklerHastaList,sql);
-    DurumGoster(False);
+      sql := 'exec sp_hastaTahlilSonuclari ' +
+             QuotedStr(tarihal(tarih1.Date)) + ',' + QuotedStr(tarihal(tarih2.Date)) +
+             ',@tip = ' + QuotedStr(DiyalizTip.EditValue) +
+             ',@apm = ' + QuotedStr(apm);
+      datalar.QuerySelect(ADO_TetkiklerHastaList,sql);
+      finally
+      DurumGoster(False);
+    end;
 end;
 
 procedure TfrmTahliltakip.btnSendClick(Sender: TObject);
@@ -491,29 +494,32 @@ begin
     if MrYes = ShowMessageSkin('Deðerlendirme Yapýlacak ,Var Olan Deðerlendirme Ýptal Edilecek','','','msg')
     Then Begin
        DurumGoster(True,True);
-       c := Liste.Controller.SelectedRowCount;
-       r := Liste.ViewData.DataController.GetFocusedRecordIndex;
-       for i := 0 to c - 1 do
-       begin
-         Application.ProcessMessages;
-         try
-           d := Liste.DataController.GetValue(
-                                          Liste.Controller.SelectedRows[i].RecordIndex,0);
-           g := Liste.DataController.GetValue(
-                                          Liste.Controller.SelectedRows[i].RecordIndex,1);
-           ad := Liste.DataController.GetValue(
-                                          Liste.Controller.SelectedRows[i].RecordIndex,2);
-           //label3.Caption := ad;
+       try
+         c := Liste.Controller.SelectedRowCount;
+         r := Liste.ViewData.DataController.GetFocusedRecordIndex;
+         for i := 0 to c - 1 do
+         begin
+           Application.ProcessMessages;
+           try
+             d := Liste.DataController.GetValue(
+                                            Liste.Controller.SelectedRows[i].RecordIndex,0);
+             g := Liste.DataController.GetValue(
+                                            Liste.Controller.SelectedRows[i].RecordIndex,1);
+             ad := Liste.DataController.GetValue(
+                                            Liste.Controller.SelectedRows[i].RecordIndex,2);
+             //label3.Caption := ad;
 
-           ado_tetkikDegerlendir.SQL.Clear;
-           sql := 'exec sp_TetkikSonucDegerlandir ' + QuotedStr(d) + ',' + g;
-           datalar.QuerySelect(ado_tetkikDegerlendir,sql);
-         except
+             ado_tetkikDegerlendir.SQL.Clear;
+             sql := 'exec sp_TetkikSonucDegerlandir ' + QuotedStr(d) + ',' + g;
+             datalar.QuerySelect(ado_tetkikDegerlendir,sql);
+           except
+           end;
+
+
          end;
-
-
+       finally
+         DurumGoster(False);
        end;
-       DurumGoster(False);
 
     End;
 

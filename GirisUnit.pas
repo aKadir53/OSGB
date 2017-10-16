@@ -298,45 +298,48 @@ begin
    ADO := TADOQuery.Create(nil);
    ADO.Connection := Datalar.ADOConnection2;
    DurumGoster;
-   case formTag of
-     TagfrmHastaListe :
-         begin
-            sql := 'exec sp_frmPersonelListesi ' + QuotedStr(datalar.AktifSirket) + ',' +
-                                                   AktifPasifTopPanel.EditValue;
+   try
+     case formTag of
+       TagfrmHastaListe :
+           begin
+              sql := 'exec sp_frmPersonelListesi ' + QuotedStr(datalar.AktifSirket) + ',' +
+                                                     AktifPasifTopPanel.EditValue;
 
-         end;
+           end;
 
-     TagfrmReceteler :
-         begin
-            if KurumTipTopPanel.EditValue = 1 then sirketKod := datalar.AktifSirket
-             else SirketKod := '';
-            sql := 'exec sp_Receteler ' + QuotedStr(sirketKod) + ',' +
-                                          txtTopPanelTarih1.GetSQLValue   + ',' +
-                                          txtTopPanelTarih2.GetSQLValue;
+       TagfrmReceteler :
+           begin
+              if KurumTipTopPanel.EditValue = 1 then sirketKod := datalar.AktifSirket
+               else SirketKod := '';
+              sql := 'exec sp_Receteler ' + QuotedStr(sirketKod) + ',' +
+                                            txtTopPanelTarih1.GetSQLValue   + ',' +
+                                            txtTopPanelTarih2.GetSQLValue;
 
-         end;
-     TagfrmKiloOrder :
-         begin
-           sql := 'exec sp_TopluSeansGetir ' + txtTopPanelTarih1.GetSQLValue   + ',' +
-                                               txtTopPanelTarih2.GetSQLValue + ',' +
-                                               QuotedStr('') + ',' +
-                                               QuotedStr(txtSeansTopPanel.Text) + ',' +
-                                               QuotedStr('') + ',' +
-                                               copy(chkList.EditValue,1,1) + ',' +
-                                               inttoStr(strtoint(copy(chkList.EditValue,3,1))*-1) + ',' +
-                                               copy(chkList.EditValue,2,1);
+           end;
+       TagfrmKiloOrder :
+           begin
+             sql := 'exec sp_TopluSeansGetir ' + txtTopPanelTarih1.GetSQLValue   + ',' +
+                                                 txtTopPanelTarih2.GetSQLValue + ',' +
+                                                 QuotedStr('') + ',' +
+                                                 QuotedStr(txtSeansTopPanel.Text) + ',' +
+                                                 QuotedStr('') + ',' +
+                                                 copy(chkList.EditValue,1,1) + ',' +
+                                                 inttoStr(strtoint(copy(chkList.EditValue,3,1))*-1) + ',' +
+                                                 copy(chkList.EditValue,2,1);
 
-         end;
-     TagfrmTedaviListP :
-         begin
-           sql := 'exec sp_TedaviListesiPivot ' + txtTopPanelTarih1.GetSQLValue + ',' +
-                                                  txtTopPanelTarih2.GetSQLValue;
-         end;
+           end;
+       TagfrmTedaviListP :
+           begin
+             sql := 'exec sp_TedaviListesiPivot ' + txtTopPanelTarih1.GetSQLValue + ',' +
+                                                    txtTopPanelTarih2.GetSQLValue;
+           end;
 
+     end;
+     datalar.QuerySelect(ADO,sql);
+     ResultDataset := ADO;
+   finally
+     DurumGoster(False);
    end;
-   datalar.QuerySelect(ADO,sql);
-   ResultDataset := ADO;
-   DurumGoster(False);
 end;
 
 procedure TGirisForm.TopPanelButonClick(Sender: TObject);
@@ -2100,99 +2103,100 @@ begin
     exit;
   end;
   DurumGoster();
-  case TControl(sender).Tag  of
-    0 : begin
-         try
-           if FormInputZorunluKontrol(self) Then Exit;
-           if sqlTip = sql_Select
+  try
+    case TControl(sender).Tag  of
+      0 : begin
+           try
+             if FormInputZorunluKontrol(self) Then Exit;
+             if sqlTip = sql_Select
+             then begin
+               sonuc := post;
+               newButonVisible(false);
+               cxPanelButtonEnabled(true,false,true);
+             end
+             else
+             begin
+               sonuc := PostSQL(_SqlUpdate_);
+               newButonVisible(false);
+               cxPanelButtonEnabled(false,True,false);
+             end;
+
+             if sonuc = True Then begin
+              newButonVisible(false);
+              ShowMessageskin('Kayýt Yapýldý','','','info');
+             end;
+           except on e: Exception do
+            begin
+              ShowMessage(e.Message,'','','info');
+            end;
+           end;
+
+          end;
+      1 : begin
+
+
+           if MrYes = ShowMessageSkin('Silmek Ýstediðinizden Emin misiniz ?','','','msg')
            then begin
-             sonuc := post;
-             newButonVisible(false);
-             cxPanelButtonEnabled(true,false,true);
-           end
-           else
-           begin
-             sonuc := PostSQL(_SqlUpdate_);
-             newButonVisible(false);
-             cxPanelButtonEnabled(false,True,false);
+               try
+                sqlRun.Delete;
+               except on e : Exception do
+                begin
+                  ShowMessage(e.Message + ' Silmek isteðiniz kayýt iliþkisel veri olabilir mi?','','','info');
+                end;
+               end;
+               try
+                indexKaydiBul('');
+                sqlRunLoad;
+               except on e : exception do
+                begin
+                  ShowMessageSkin(e.Message,'','Boþ Kayýt yüklenirken hata oluþtu','info');
+                end;
+               end;
+               cxPanelButtonEnabled(true,false,false);
            end;
 
-           if sonuc = True Then begin
-            newButonVisible(false);
-            ShowMessageskin('Kayýt Yapýldý','','','info');
-           end;
-         except on e: Exception do
-          begin
-            ShowMessage(e.Message,'','','info');
-          end;
+
          end;
 
-        end;
-    1 : begin
+      2 : begin
+           Enabled;
+           _SQLRUN_ := _SqlInsert_;
+           indexKaydiBul(dosyaNo,'');
+         //  KontrolEditValueClear;
+           sqlRunLoad;
+           (*
+           if Tform(self).tag = 90
+           Then begin
+              dosyaNo := dosyaNoYeniNumaraAl;
+              if dosyaNo = '0'
+              then begin
+                ShowMessageskin('Dosya No Alýnamadý','','','info');
+                exit;
+              end
+              else
+               TcxButtonEditKadir(FindComponent('dosyaNo')).Text :=  dosyaNo;
+           end;*)
 
-
-         if MrYes = ShowMessageSkin('Silmek Ýstediðinizden Emin misiniz ?','','','msg')
-         then begin
-             try
-              sqlRun.Delete;
-             except on e : Exception do
-              begin
-                ShowMessage(e.Message + ' Silmek isteðiniz kayýt iliþkisel veri olabilir mi?','','','info');
-              end;
-             end;
-             try
-              indexKaydiBul('');
-              sqlRunLoad;
-             except on e : exception do
-              begin
-                ShowMessageSkin(e.Message,'','Boþ Kayýt yüklenirken hata oluþtu','info');
-              end;
-             end;
-             cxPanelButtonEnabled(true,false,false);
-         end;
-
-
-       end;
-
-    2 : begin
-         Enabled;
-         _SQLRUN_ := _SqlInsert_;
-         indexKaydiBul(dosyaNo,'');
-       //  KontrolEditValueClear;
-         sqlRunLoad;
-         (*
-         if Tform(self).tag = 90
-         Then begin
-            dosyaNo := dosyaNoYeniNumaraAl;
-            if dosyaNo = '0'
-            then begin
-              ShowMessageskin('Dosya No Alýnamadý','','','info');
-              exit;
-            end
-            else
-             TcxButtonEditKadir(FindComponent('dosyaNo')).Text :=  dosyaNo;
-         end;*)
-
-         sqlRun.Append;
-         cxPanelButtonEnabled(false,true,false);
-         newButonVisible(true);
-        end;
-    3 : begin
-         sqlRun.Next;
-         indexKaydiBul('');
-        end;
-
-    9999 : begin
-            sqlRun.Close;
-            close;
+           sqlRun.Append;
+           cxPanelButtonEnabled(false,true,false);
+           newButonVisible(true);
+          end;
+      3 : begin
+           sqlRun.Next;
+           indexKaydiBul('');
           end;
 
-    9998 : ShowMessage(Tform(self).Name + ' Yardým','','','info'); // formun kullanýmý ile igili yardým
+      9999 : begin
+              sqlRun.Close;
+              close;
+            end;
 
-   end;
-  DurumGoster(False);
+      9998 : ShowMessage(Tform(self).Name + ' Yardým','','','info'); // formun kullanýmý ile igili yardým
 
-
+     end;
+  finally
+    DurumGoster(False);
+  end;
 
 end;
 
