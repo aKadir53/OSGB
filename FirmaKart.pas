@@ -299,47 +299,51 @@ var
  bmp: TBitmap;
 begin
   inherited;
-  Enabled;
-
-  case TcxButtonEditKadir(sender).tag of
-   1 : begin  //dosyaNo buttonedit
-
-           TcxImageComboKadir(FindComponent('ILCE')).Filter := 'ILKODU = ' + QuotedStr(TcxImageComboKadir(FindComponent('SEHIR')).EditingValue);
-           TcxImageComboKadir(FindComponent('BUCAK')).Filter := 'ILCEKODU = ' + QuotedStr(TcxImageComboKadir(FindComponent('ILCE')).EditingValue);
-           TcxImageComboKadir(FindComponent('KOY')).Filter := 'BUCAKKODU = ' + QuotedStr(TcxImageComboKadir(FindComponent('BUCAK')).EditingValue);
-           TcxImageComboKadir(FindComponent('MAHALLE')).Filter := 'KOYKODU = ' + QuotedStr(TcxImageComboKadir(FindComponent('KOY')).EditingValue);
+  if length(datalar.ButtonEditSecimlist) > 0 then
+  begin
+    enabled;
 
 
-           _dosyaNo_ := TcxButtonEditKadir(sender).Text;
-           (*
-           _Tc_ := TcxTextEditKadir(FindComponent('TcKimlikNo')).Text;
-           _HastaAdSoyad_ := TcxTextEditKadir(FindComponent('HASTAADI')).Text +
-                             ' ' + TcxTextEditKadir(FindComponent('HASTASOYADI')).Text;
-           HastaBilgiRecordSet(TcxTextEditKadir(FindComponent('HASTAADI')).Text,
-                               TcxTextEditKadir(FindComponent('HASTASOYADI')).Text,
-                               _Tc_,'');
-             *)
-           datalar.ADO_Foto.SQL.Text := Format(FotoTable,[#39+_dosyaNo_+#39]);
-           datalar.ADO_FOTO.Open;
+    case TcxButtonEditKadir(sender).tag of
+     1 : begin  //dosyaNo buttonedit
 
-           g := TJpegimage.Create;
-           try
-            if datalar.ADO_FOTO.FieldByName('logo').AsVariant <> Null
-            Then begin
-              g.Assign(datalar.ADO_FOTO.FieldByName('logo'));
-              FOTO.Picture.Assign(g);
-            end
-            else
-            FOTO.Picture.Assign(nil);
-           except
-             g.Free;
-           end;
+             TcxImageComboKadir(FindComponent('ILCE')).Filter := 'ILKODU = ' + QuotedStr(TcxImageComboKadir(FindComponent('SEHIR')).EditingValue);
+             TcxImageComboKadir(FindComponent('BUCAK')).Filter := 'ILCEKODU = ' + QuotedStr(TcxImageComboKadir(FindComponent('ILCE')).EditingValue);
+             TcxImageComboKadir(FindComponent('KOY')).Filter := 'BUCAKKODU = ' + QuotedStr(TcxImageComboKadir(FindComponent('BUCAK')).EditingValue);
+             TcxImageComboKadir(FindComponent('MAHALLE')).Filter := 'KOYKODU = ' + QuotedStr(TcxImageComboKadir(FindComponent('KOY')).EditingValue);
 
 
-       end;
+             _dosyaNo_ := TcxButtonEditKadir(sender).Text;
+             (*
+             _Tc_ := TcxTextEditKadir(FindComponent('TcKimlikNo')).Text;
+             _HastaAdSoyad_ := TcxTextEditKadir(FindComponent('HASTAADI')).Text +
+                               ' ' + TcxTextEditKadir(FindComponent('HASTASOYADI')).Text;
+             HastaBilgiRecordSet(TcxTextEditKadir(FindComponent('HASTAADI')).Text,
+                                 TcxTextEditKadir(FindComponent('HASTASOYADI')).Text,
+                                 _Tc_,'');
+               *)
+             datalar.ADO_Foto.SQL.Text := Format(FotoTable,[#39+_dosyaNo_+#39]);
+             datalar.ADO_FOTO.Open;
+
+             g := TJpegimage.Create;
+             try
+              if datalar.ADO_FOTO.FieldByName('logo').AsVariant <> Null
+              Then begin
+                g.Assign(datalar.ADO_FOTO.FieldByName('logo'));
+                FOTO.Picture.Assign(g);
+              end
+              else
+              FOTO.Picture.Assign(nil);
+             except
+               g.Free;
+             end;
 
 
-   end;
+         end;
+
+
+     end;
+  end;
 end;
 
 procedure TfrmFirmaKart.cxEditEnter(Sender: TObject);

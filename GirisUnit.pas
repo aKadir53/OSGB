@@ -1070,9 +1070,7 @@ var
 begin
 
   list := TcxButtonEditKadir(TcxGridDBColumn(sender).Properties).ListeAc.ListeGetir;
-  if length(list) = 0 then exit;
-
-
+  Datalar.ButtonEditSecimlist := List;
 end;
 
 

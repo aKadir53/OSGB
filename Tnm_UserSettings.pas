@@ -149,15 +149,18 @@ procedure TfrmUsers.cxButtonEditPropertiesButtonClick(Sender: TObject;
   AButtonIndex: Integer);
 begin
   inherited;
-  Enabled;
-  IslemveMenuGorunumSetEkle(ugUser);
+  if length(datalar.ButtonEditSecimlist) > 0 then
+  begin
+    enabled;
 
-  UserSettings.Active := true;
-  UserSettings.Filter := 'kullanici = ' + QuotedStr(TcxButtonEditKadir(sender).Text);
+    IslemveMenuGorunumSetEkle(ugUser);
 
-  User_Menu_Settings.Active := true;
-  User_Menu_Settings .Filter := 'kullanici = ' + QuotedStr(TcxButtonEditKadir(sender).Text);
+    UserSettings.Active := true;
+    UserSettings.Filter := 'kullanici = ' + QuotedStr(TcxButtonEditKadir(sender).Text);
 
+    User_Menu_Settings.Active := true;
+    User_Menu_Settings .Filter := 'kullanici = ' + QuotedStr(TcxButtonEditKadir(sender).Text);
+  end;
 end;
 
 procedure TfrmUsers.btnGrupEkleClick(Sender: TObject);
