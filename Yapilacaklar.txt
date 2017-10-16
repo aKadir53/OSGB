@@ -1,3 +1,6 @@
+listede seçmeden vazgeçince enable olmamasý
+excel altyapýsý sql unique index kontrolleri 
+kontrol zorunlu vs bilgilerinin datasete yüklenip oradan kontrol edilmeleri
 
 
 
