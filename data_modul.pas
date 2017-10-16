@@ -532,7 +532,6 @@ type
     { Public declarations }
   end;
 
-
 var
   DATALAR: TDATALAR;
   CommandLog : TstringList;
@@ -541,11 +540,7 @@ implementation
 
 uses AnaUnit,kadir;
 
-
-
 {$R *.dfm}
-
-
 
 function TDatalar.MasterBaglan(MasterKod : string ; var DB : string ; Server : string = '') : Boolean;
 var

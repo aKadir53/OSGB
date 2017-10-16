@@ -498,7 +498,7 @@ begin
 
   setDataString(self,'VD','Vergi Dairesi',Kolon1,'',100,True);
   setDataString(self,'VN','Vergi No',Kolon1,'',100,True);
-  setDataString(self,'sicilNo','Ýþ Yeri Sicil No',Kolon1,'',100,True);
+  setDataString(self,'sube','Ýþ Yeri Sicil No',Kolon1,'',100,True);
 
   SEHIR := TcxImageComboKadir.Create(self);
   SEHIR.Conn := Datalar.ADOConnection2;

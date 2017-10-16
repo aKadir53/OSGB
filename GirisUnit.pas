@@ -1049,6 +1049,7 @@ begin
      end;
 
       list := TcxButtonEditKadir(sender).ListeAc.ListeGetir;
+      datalar.ButtonEditSecimlist := list;
       if length(list) = 0 then begin
        TcxButtonEditKadir(sender).ListeAc.Where := where;
        exit;
@@ -1074,7 +1075,6 @@ var
   list : ArrayListeSecimler;
   key : word;
 begin
-
   list := TcxButtonEditKadir(TcxGridDBColumn(sender).Properties).ListeAc.ListeGetir;
   Datalar.ButtonEditSecimlist := List;
 end;
