@@ -514,6 +514,12 @@ end;
 procedure TfrmLogin.FormShow(Sender: TObject);
 begin
    txtServerName.EditValue := Decode64(regOku('servername'));
+   if Trim (txtServerName.EditValue) = '' then
+   begin
+     txtServerName.Text := '213.159.30.6';
+     txtOsgbKodu.Text := 'OSGB1';
+   end;
+
    txtDataBase.EditValue := Decode64(regOku('OSGB_db_name'));
    Edit2.SetFocus;
 end;

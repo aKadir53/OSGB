@@ -44,7 +44,10 @@ procedure TfrmDoktorlar.cxButtonEditPropertiesButtonClick(Sender: TObject;
       AButtonIndex: Integer);
 begin
   inherited;
-  Enabled;
+  if length(datalar.ButtonEditSecimlist) > 0 then
+  begin
+    enabled;
+  end;
 end;
 
 procedure TfrmDoktorlar.ButtonClick(Sender: TObject);

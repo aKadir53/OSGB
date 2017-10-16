@@ -1,10 +1,4 @@
-listede seçmeden vazgeçince enable olmamasý
 excel altyapýsý sql unique index kontrolleri 
-kontrol zorunlu vs bilgilerinin datasete yüklenip oradan kontrol edilmeleri
-
-
-
-
 
 
 
@@ -26,3 +20,6 @@ firma tanýmlarýna doktor seçimi eklendi
 kullanýcý tanýum ekranýnda kullanýcý seçmeden sað tarafa formdaki diðer kontrollere müdahale edemesin. (Abdulkadir yapmýþ, ben de takliden firma kartlarýna ekledim)
 doktor þirket eþleþtirmeleri yapýlabilir (o þirkete yeni personel girildiðinde hangi doktora sms atacak) - Abdulkadir firmanýn tek doktoru olur diyerek firma kartýna ekledi
 fþrma kartlarýna telefon1 2 fax yetkili yetklitelef yetkilkimaili eklendi
+kontrol zorunlu vs bilgilerinin datasete yüklenip oradan kontrol edilmeleri
+registry sunucu IP ve osgb kodu boþ ise sabit IP ve OSGB1 atamasý
+listede seçmeden vazgeçince enable olmamasý (giriþ ünitesine diziye atama eklenip firma, doktor ve kullanýcý taným ekranlarýnda seçilmiþ seçilmemiþ kontrolü eklendi)

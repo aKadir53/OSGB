@@ -518,6 +518,7 @@ type
    raporURL :string;
    DyopURL :string;
    DonemSonlandir :string;
+   ButtonEditSecimlist : ArrayListeSecimler;
 
    function QuerySelect (Q: TADOQuery; sql:string) : Boolean;overload;
   // function QuerySelect (sql:string;Q: TADOQuery = nil) : Boolean;overload;
