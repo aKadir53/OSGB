@@ -323,10 +323,19 @@ object frmHastaListe: TfrmHastaListe
         object ListeColumn15: TcxGridDBColumn
           Caption = #350'ubesi'
           DataBinding.FieldName = 'subeTanim'
-          GroupIndex = 0
+          Visible = False
+          GroupIndex = 1
           HeaderAlignmentHorz = taCenter
           HeaderAlignmentVert = vaCenter
           Width = 80
+        end
+        object ListeColumn16: TcxGridDBColumn
+          Caption = 'Sirket'
+          DataBinding.FieldName = 'tanimi'
+          Visible = False
+          GroupIndex = 0
+          HeaderAlignmentHorz = taCenter
+          HeaderAlignmentVert = vaCenter
         end
       end
       object cxGridLevel1: TcxGridLevel

@@ -663,6 +663,7 @@ begin
          ADO_Recete.FieldByName('doktor').AsString := datalar.YeniRecete.doktor;//+'-'+datalar.YeniRecete.doktorAdi;
          ADO_Recete.FieldByName('ProtokolNo').AsString := datalar.YeniRecete.protokolNo;
          ADO_Recete.FieldByName('ereceteNo').AsString := '0000';
+         ADO_Recete.FieldByName('WanIP').AsString := datalar.WanIp;
          ADO_Recete.Post;
 
 
