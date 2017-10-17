@@ -1,6 +1,7 @@
 excel altyapýsý sql unique index kontrolleri 
-
-
+recete þablonlarý formunda çalýþmalar...
+hasta kartý (personel kartý) üzerine firmasýný gösteren etiket...
+firma kodunun ve isminin, þube kombosuna da baz teþkiðl etmesi lazým. adamýn fþrmasýnuýn þubeleri gelmeli
 
 kart 
 
