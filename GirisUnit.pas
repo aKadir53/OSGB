@@ -209,7 +209,7 @@ type
     procedure setDataStringC(sender : Tform ; fieldName,caption : string;
      parent : TdxLayoutGroup;grup : string ;uzunluk : integer;List : string); overload;
     procedure setDataString(sender : Tform ; fieldName ,caption: string ;
-          parent : TdxLayoutGroup; grup : string;uzunluk : integer;Zorunlu : Boolean = False);
+          parent : TdxLayoutGroup; grup : string;uzunluk : integer;Zorunlu : Boolean = False; ObjectName : String = '');
     procedure setDataStringMemo(sender : Tform ; fieldName ,caption: string ;
           parent : TdxLayoutGroup; grup : string;uzunluk,yukseklik : integer);
     procedure setDataStringB(sender : Tform; fieldName ,caption: string ;
@@ -1369,7 +1369,7 @@ begin
 end;
 
 procedure TGirisForm.setDataString(sender : Tform ; fieldName ,caption: string;
-                  parent : TdxLayoutGroup; grup : string;uzunluk : integer ; Zorunlu : Boolean = False);
+                  parent : TdxLayoutGroup; grup : string;uzunluk : integer ; Zorunlu : Boolean = False; ObjectName : String = '');
 var
   cxEdit : TcxTextEditKadir;
   dxLa : TdxLayoutItem;
@@ -1377,7 +1377,8 @@ var
   SpaceItem : TdxLayoutEmptySpaceItem;
 begin
   cxEdit := TcxTextEditKadir.Create(self);
-  cxEdit.Name := fieldName;
+
+  cxEdit.Name := ifthen (Trim(ObjectName) = '', fieldName, Trim (ObjectName));
   cxEdit.Text := '';
   cxEdit.Properties.ValidateOnEnter := True;
   cxEdit.BosOlamaz := Zorunlu;//KontrolZorunlumu(TForm(sender).Tag,fieldName); //Zorunlu;
