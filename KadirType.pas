@@ -481,6 +481,7 @@ Const
   TagfrmKanTetkikTakipDegerlendir = 220;
   TagfrmKontrolUserSet = 230;
   TagfrmHastaListe = 240;
+  TagfrmDoktorHastaListe = 241;
   TagfrmIlacSarf = 250;
   TagfrmSeansDetayKart = 260;
   TagfrmPopupDBGridForm = 270;

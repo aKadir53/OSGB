@@ -20,7 +20,7 @@ uses
   DB, cxDBData, cxCurrencyEdit, cxGridLevel, cxGridBandedTableView,
   cxGridDBBandedTableView, cxGridCustomTableView, cxGridTableView,
   cxGridDBTableView, cxClasses, cxGridCustomView, cxGrid, cxLabel, cxCheckBox,
-  cxImageComboBox, cxMemo,adoDb;
+  cxImageComboBox, cxMemo,adoDb,cxDBLookupComboBox;
 
 type
   TfrmPopupDBGridForm = class(TGirisForm)
@@ -153,6 +153,7 @@ var
  Columns,Baslik,Tips : TstringList;
  ColName : string;
  Col : TcxGridDBColumn;
+ FItem : TcxImageComboBoxItem;
 begin
   Columns := TStringList.Create;
   Baslik := TStringList.Create;
@@ -183,11 +184,19 @@ begin
 
     if Tips[i] = 'ImageDoktorCombo' then
      begin
-      DBgrid.Columns[i].PropertiesClassName := 'TcxImageComboProperties';
+      DBgrid.Columns[i].PropertiesClassName := 'TcxImageComboBoxProperties';
+      TcxImageComboBoxProperties(DBgrid.Columns[i].Properties).Items.Clear;
+
+      datalar.Ado_Doktorlar.First;
+      while not datalar.Ado_Doktorlar.Eof do
+      begin
+        FItem := TcxImageComboBoxProperties(DBgrid.Columns[i].Properties).Items.add;
+        FItem.Value := datalar.Ado_Doktorlar.FieldByName('kod').AsString;
+        FItem.Description := datalar.Ado_Doktorlar.FieldByName('tanimi').AsString;
+        datalar.Ado_Doktorlar.Next;
+      end;
 
      end;
-
-
 
     DBgrid.Columns[i].Width := 70;
 

@@ -166,7 +166,7 @@ begin
 
    TagfrmTedaviBilgisi : Result := TfrmTedaviBilgisi;
    TagfrmHastaRecete : Result := TfrmHastaRecete;
-   TagfrmHastaListe : Result := TfrmHastaListe;
+   TagfrmHastaListe,TagfrmDoktorHastaListe : Result := TfrmHastaListe;
    TagfrmTeleEkg : Result := TfrmTeleEKG;
    TagfrmUsers : Result := TfrmUsers;
    TagfrmHastaTetkikEkle : Result := TfrmHastaTetkikEkle;
@@ -199,7 +199,7 @@ begin
    TagfrmTedaviBilgisi : Result := frmTedaviBilgisi;
    TagfrmHastaIlacTedavi : Result := frmHastaIlacTedavi;
    TagfrmHastaRecete : Result := frmHastaRecete;
-   TagfrmHastaListe : Result := frmHastaListe;
+   TagfrmHastaListe,TagfrmDoktorHastaListe : Result := frmHastaListe;
    TagfrmTeleEkg : Result := frmTeleEKG;
    TagfrmUsers : Result := frmUsers;
    TagfrmHastaTetkikEkle : Result := frmHastaTetkikEkle;
@@ -247,7 +247,7 @@ begin
       TagfrmFirmaKart : frmFirmaKart := TfrmFirmaKart.Create(Tab);
       TagfrmHizliKayit : frmHizliKayit := TfrmHizliKayit.Create(Tab);
 
-      TagfrmHastaListe : frmHastaListe := TfrmHastaListe.Create(Tab);
+      TagfrmHastaListe,TagfrmDoktorHastaListe : frmHastaListe := TfrmHastaListe.Create(Tab);
       TagfrmTeleEkg : frmTeleEKG := TfrmTeleEKG.Create(Tab);
       TagfrmDonemSonlandir : frmDonemSonlandir := TfrmDonemSonlandir.Create(Tab);
       TagfrmTahliltakip : frmTahliltakip := TfrmTahliltakip.Create(Tab);
@@ -319,7 +319,7 @@ begin
       TagfrmFirmaKart : frmFirmaKart := TfrmFirmaKart.Create(Tab);
       TagfrmHizliKayit : frmHizliKayit := TfrmHizliKayit.Create(Tab);
 
-      TagfrmHastaListe : frmHastaListe := TfrmHastaListe.Create(Tab);
+      TagfrmHastaListe,TagfrmDoktorHastaListe : frmHastaListe := TfrmHastaListe.Create(Tab);
       TagfrmTeleEkg : frmTeleEKG := TfrmTeleEKG.Create(Tab);
       TagfrmDonemSonlandir : frmDonemSonlandir := TfrmDonemSonlandir.Create(Tab);
       TagfrmTahliltakip : frmTahliltakip := TfrmTahliltakip.Create(Tab);
