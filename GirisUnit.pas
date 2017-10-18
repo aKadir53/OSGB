@@ -1736,7 +1736,7 @@ var
   ICitem : TcxImageComboBoxItems;
 begin
   if obje = nil then exit;
-  obje.Name := fieldName;
+  try obje.Name := fieldName; except on e: exception do ShowMessageSkin (e.Message, '', '', 'info'); end;
   obje.Align := Aling;
   dxLaC := TdxLayoutGroup(parent).CreateItemForControl(obje);
   dxLaC.Name := 'dxLa'+fieldName;
