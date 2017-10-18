@@ -787,7 +787,6 @@ begin
      ado.Free;
   end;
 
-
   key := 13;
   dosyaNo.EditValue := _dosyaNo_;//datalar.Bilgi.dosyaNo;
 
@@ -795,6 +794,8 @@ begin
   then
    dosyaNo.OnKeyDown(frmHastaKart.dosyaNo,key,[]);
 
+  TcxImageComboKadir (FindComponent ('sube')).ItemList := '00;MERKEZ';
+  TcxImageComboKadir (FindComponent ('sube')).Filter := ' SirketKod = ' + QuotedStr (TcxLabel(FindComponent('LabelSirketKod')).Caption);
 
 
   IseGirisMuayene.Dataset.AfterScroll := ADO_WebServisErisimAfterScroll;
@@ -984,7 +985,7 @@ begin
   setDataStringKontrol(self,muayenePeryot,'MuayenePeryot','',kolon4,'',110);
   OrtakEventAta(muayenePeryot);
 
-  setDataStringBLabel(Self, 'SirketKod', Kolon4, '', 300, '', '', 'SirketKod');
+  setDataStringBLabel(Self, 'SirketKod', Kolon4, '', 0, '', '', 'SirketKod');
 
   sirketlerx := TcxImageComboKadir.Create(self);
   sirketlerx.Conn := Datalar.ADOConnection2;
@@ -994,7 +995,9 @@ begin
   sirketlerx.BosOlamaz := False;
   sirketlerx.Filter := '';
   sirketlerx.tag := -100;
-  setDataStringKontrol(self,sirketlerx,'Sirketlerx','Þirket',kolon4,'',420);
+  sirketlerx.Properties.ReadOnly := True;
+  sirketlerx.Properties.Buttons [0].Visible := False;
+  setDataStringKontrol(self,sirketlerx,'Sirketlerx','Þirket',kolon4,'',250);
   OrtakEventAta(sirketlerx);
 
 
@@ -1053,7 +1056,7 @@ begin
   subeler.ValueField := 'subeKod';
   subeler.DisplayField := 'subeTanim';
   subeler.ItemList := '00;MERKEZ';
-  subeler.Filter := '';
+  //subeler.Filter := '';
   subeler.BosOlamaz := True;
 
 
