@@ -108,6 +108,7 @@ type
     { Private declarations }
   public
     { Public declarations }
+    function Init(Sender: TObject) : Boolean; override;
   end;
 
 type
@@ -124,6 +125,17 @@ implementation
 {$R *.dfm}
 
 
+function TfrmHastaListe.Init(Sender : TObject) : Boolean;
+begin
+  //
+  if Tag = TagfrmHastaListe
+  then
+   TapPanelElemanVisible(True,false,false,false,false,false,False,false,False,True,False,False)
+  else
+   TapPanelElemanVisible(True,false,false,false,false,false,True,false,False,True,False,False);
+
+
+end;
 
 procedure TfrmHastaListe.btnVazgecClick(Sender: TObject);
 begin
@@ -180,24 +192,15 @@ begin
   ClientWidth := formGenislik;
   Olustur(self,TableName,'Personel Listesi',23);
   Menu := PopupMenu1;
-  Tag := TagfrmHastaListe;
-
-//  TdxLayoutControlAccess(sayfa1_dxLayoutControl1). ScrollBars := ssVertical;
-//  TdxLayoutControlAccess(dxLayoutControl1).VScrollBar.Visible := False;
 
   TopPanel.Visible := true;
-  TapPanelElemanVisible(True,false,false,false,false,false,False,false,False,True,False,False);
+
+
   Liste.DataController.DataSource := DataSource;
 
   AktifPasifTopPanel.EditValue := '1';
 
-//  txtDonemTopPanel.Yil := copy(tarihal(date()),1,4);
-  //txtDonemTopPanel.EditValue := copy(tarihal(date()),5,2);
 
- // txtay.ItemIndex :=  strtoint(copy(tarihal(date()),5,2))-1;
-
-//  ay1 := txtDonemTopPanel.getValueIlkTarih; //tarihal(ayaditoay(txtAy.Text));
- // ay2 := txtDonemTopPanel.getValueSonTarih; //tarihal(ayliktarih2(txtAy.Text));
   SayfaCaption('','','','','');
 
 end;

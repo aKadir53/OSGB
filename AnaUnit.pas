@@ -321,6 +321,9 @@ begin
     83 : begin
       SifreDegistir;
     end;
+    122 : begin
+            OnlineDestekOpen;
+          end;
      else
         if FormID > 0 then
         begin

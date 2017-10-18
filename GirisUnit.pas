@@ -309,6 +309,13 @@ begin
                                                      AktifPasifTopPanel.EditValue;
 
            end;
+       TagfrmDoktorHastaListe :
+           begin
+              sql := 'exec sp_frmDoktorPersonelListesi ' + QuotedStr(ifThen(KurumTipTopPanel.EditingValue=1,datalar.AktifSirket,'')) + ',' +
+                                                          AktifPasifTopPanel.EditValue + ',' +
+                                                          QuotedStr(datalar.doktorKodu);
+
+           end;
 
        TagfrmReceteler :
            begin
