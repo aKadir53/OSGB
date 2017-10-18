@@ -614,7 +614,7 @@ begin
 
   case TcxButtonEditKadir(sender).tag of
    1 : begin  //dosyaNo buttonedit
-           TcxImageComboKadir(FindComponent('Sirketlerx')).EditValue := sirketKod.Text;
+           TcxImageComboKadir(FindComponent('Sirketlerx')).EditValue := TcxLabel(FindComponent('LabelSirketKod')).Caption;
 
            TcxImageComboKadir(FindComponent('EV_ILCE')).Filter := 'ILKODU = ' + QuotedStr(TcxImageComboKadir(FindComponent('EV_SEHIR')).EditingValue);
            TcxImageComboKadir(FindComponent('EV_BUCAK')).Filter := 'ILCEKODU = ' + QuotedStr(TcxImageComboKadir(FindComponent('EV_ILCE')).EditingValue);
@@ -983,6 +983,8 @@ begin
   muayenePeryot.BosOlamaz := True;
   setDataStringKontrol(self,muayenePeryot,'MuayenePeryot','',kolon4,'',110);
   OrtakEventAta(muayenePeryot);
+
+  setDataStringBLabel(Self, 'SirketKod', Kolon4, '', 300, '', '', 'SirketKod');
 
   sirketlerx := TcxImageComboKadir.Create(self);
   sirketlerx.Conn := Datalar.ADOConnection2;
