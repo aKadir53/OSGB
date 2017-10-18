@@ -146,7 +146,7 @@ object frmHastaKart: TfrmHastaKart
   object DOGUMTARIHI: TcxDateEditKadir
     Left = 144
     Top = 80
-    Properties.OnValidate = PropertiesValidate
+    Properties.OnValidate = DOGUMTARIHIPropertiesValidate
     TabOrder = 6
     BosOlamaz = True
     ValueTip = tvString
@@ -167,10 +167,6 @@ object frmHastaKart: TfrmHastaKart
       Properties.PopupMenuLayout.MenuItems = []
       Properties.Stretch = True
       TabOrder = 0
-      ExplicitLeft = 2
-      ExplicitTop = -2
-      ExplicitWidth = 106
-      ExplicitHeight = 121
       Height = 96
       Width = 104
     end
@@ -184,9 +180,6 @@ object frmHastaKart: TfrmHastaKart
       Caption = 'Ekle'
       TabOrder = 1
       OnClick = cxButtonCClick
-      ExplicitLeft = 2
-      ExplicitTop = 119
-      ExplicitWidth = 106
     end
   end
   object dosyaNo: TcxButtonEditKadir
@@ -268,10 +261,6 @@ object frmHastaKart: TfrmHastaKart
       Font.Style = []
       ParentFont = False
       TabOrder = 0
-      ExplicitLeft = 2
-      ExplicitTop = -2
-      ExplicitWidth = 796
-      ExplicitHeight = 153
       object cxGridGelisler: TcxGridDBBandedTableView
         OnDblClick = cxGridGelislerDblClick
         OnFocusedRecordChanged = cxGridGelislerFocusedRecordChanged

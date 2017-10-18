@@ -134,6 +134,7 @@ type
     procedure DOGUMTARIHIPropertiesValidate(Sender: TObject;
       var DisplayValue: Variant; var ErrorText: TCaption; var Error: Boolean);
     procedure ADO_WebServisErisimAfterScroll(DataSet: TDataSet);
+    procedure FormShow(Sender: TObject);
 
   private
     { Private declarations }
@@ -613,6 +614,7 @@ begin
 
   case TcxButtonEditKadir(sender).tag of
    1 : begin  //dosyaNo buttonedit
+           TcxImageComboKadir(FindComponent('Sirketlerx')).EditValue := TcxLabel(FindComponent('LabelSirketKod')).Caption;
 
            TcxImageComboKadir(FindComponent('EV_ILCE')).Filter := 'ILKODU = ' + QuotedStr(TcxImageComboKadir(FindComponent('EV_SEHIR')).EditingValue);
            TcxImageComboKadir(FindComponent('EV_BUCAK')).Filter := 'ILCEKODU = ' + QuotedStr(TcxImageComboKadir(FindComponent('EV_ILCE')).EditingValue);
@@ -813,7 +815,7 @@ var
   merkezdeBaslangic,BASLANGIC,ilkTaniTarihi : TcxDateEditKadir;
   EV_SEHIR ,EV_ILCE ,EV_BUCAK , EV_KOY,EV_MAHALLE : TcxImageComboKadir;
   DEV_KURUM,Kurum,EGITIM : TcxImageComboKadir;
-  askerlik,ozur,bolum,birim,risk,statu,muayenePeryot,Subeler: TcxImageComboKadir;
+  askerlik,ozur,bolum,birim,risk,statu,muayenePeryot,Subeler,sirketlerx: TcxImageComboKadir;
   D : TcxComboBox;
   Tab : TcxTabSheet;
 begin
@@ -982,6 +984,19 @@ begin
   setDataStringKontrol(self,muayenePeryot,'MuayenePeryot','',kolon4,'',110);
   OrtakEventAta(muayenePeryot);
 
+  setDataStringBLabel(Self, 'SirketKod', Kolon4, '', 300, '', '', 'SirketKod');
+
+  sirketlerx := TcxImageComboKadir.Create(self);
+  sirketlerx.Conn := Datalar.ADOConnection2;
+  sirketlerx.TableName := 'SIRKETLER_TNM';
+  sirketlerx.ValueField := 'sirketKod';
+  sirketlerx.DisplayField := 'Tanimi';
+  sirketlerx.BosOlamaz := False;
+  sirketlerx.Filter := '';
+  sirketlerx.tag := -100;
+  setDataStringKontrol(self,sirketlerx,'Sirketlerx','Þirket',kolon4,'',420);
+  OrtakEventAta(sirketlerx);
+
 
   BASLANGIC := TcxDateEditKadir.Create(self);
   BASLANGIC.ValueTip := tvString;
@@ -1086,6 +1101,12 @@ begin
 
  end;
 
+
+procedure TfrmHastaKart.FormShow(Sender: TObject);
+begin
+  inherited;
+  //
+end;
 
 procedure TfrmHastaKart.seansGunleriPropertiesEditValueChanged(Sender: TObject);
 var
@@ -1285,6 +1306,5 @@ begin
 
   end;
 end;
-
 
 end.
