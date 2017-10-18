@@ -501,11 +501,6 @@ begin
         exit;
       end;
 
-      if SmsGonder(datalar.SMSHesapUser,datalar.SMSHesapSifre,datalar.SMSHesapFrom,tel,msj,Hata)
-      Then
-        ShowMessageSkin('Sms Gönderildi','','','info')
-      Else
-        ShowMessageSkin(Hata,'','','info');
 
   end;
 end;

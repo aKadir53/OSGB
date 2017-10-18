@@ -9,7 +9,7 @@ uses Windows, Messages, SysUtils, Variants, Classes, Graphics, Vcl.Controls, Con
   ActiveX, Buttons,  WinSvc, ImgList,wininet, types, kadirType, KadirLabel,jpeg, AdvGrid,
   IdBaseComponent, IdComponent, IdTCPConnection, IdTCPClient, IdHTTP,
   cxDBLookupComboBox,winsock,  DBCtrlsEh, EncdDecd,cxStyles, cxCustomData, cxGraphics,
-  cxFilter, cxData, cxDropDownEdit,NoktaDLL_TLB,MedEczane,DISWS,
+  cxFilter, cxData, cxDropDownEdit,MedEczane,
   IdCoderMIME, cxDataStorage, cxEdit, cxControls, cxGridCustomView, cxGridDBTableView,
   cxCheckListBox,cxGridCustomTableView, cxGridTableView, cxGridBandedTableView, cxClasses,
   cxGroupBox, cxRadioGroup,cxGridLevel, cxGrid, cxCheckBox, cxImageComboBox, cxTextEdit, cxButtonEdit,
@@ -332,7 +332,6 @@ function HastaGelisSelect(dosyaNo : string ; var ado : TADOQuery) : integer;
 procedure ReceteForm(dosyaNo,gelisNo : string);
 procedure ImageComboItemAdd(value,Description : string;ImageCombo : TcxImageComboBox);
 procedure GetBuildInfo(const AppName: string; var V1, V2, V3,V4: Word);
-function SMSGonder(KullaniciAdi,Sifre,Gonderen,Tel,SMS : string ; var Hata : string) : boolean;
 procedure MedEczaneGit(user,pasword,Tc : string);
 procedure cxExceleGonder(grid : TcxGrid ; dosyaName : string);
 procedure SifreDegistir(newSifre : string ; sifreTip : integer);  overload;
@@ -345,7 +344,6 @@ procedure AdoQueryActiveYenile(ado : TADOQuery);
 procedure PrintYap(raporKodu,caption,formId : string; Data: TDataSetKadir; yazdirmaTipi : TprintTip = pTNone);
 procedure KanTetkikleri(dosyaNo,Tarih : string);
 procedure KanTetkikleriDegerlendir(dosyaNo,gelisNo : string);
-procedure KTVHesapListe;
 procedure ReceteIlacAckTaniEkleMedula(islem : integer ; dosyaNo,gelisNo,ereceteNo,id,doktor,taniKodu,ackId : string);
 procedure TaniIlaciliskilendir(TaniKodu,kulyol,doz,adet,barkod : string);
 procedure SendQueryString(QueryString: string);
@@ -362,7 +360,7 @@ function GelisDuzenle(GelisBilgisi : TGelisDuzenle ; var Hata : string) : Boolea
 procedure AdoGelisEnabledMenuItem(Bar : TToolBar;Item : TMenuItem;Enabled : Boolean = True);
 function FindToolButton(Bar : TToolBar ; ButtonName : String) : TToolButtonKadir;
 procedure SatiriRenklendir(Grid: TAdvStringGrid; Satir, ColonSayisi: integer;  renk: tcolor);
-procedure TDISDoktorIDGetir(Tc : string ; var ID : integer);
+//procedure TDISDoktorIDGetir(Tc : string ; var ID : integer);
 function GridCellToString(Grid : TcxGridDBTableView; ColonName : string ; Row : integer) : Variant;
 procedure GridCellSetValue(Grid : TcxGridDBTableView; ColonName : string ; Row : integer ; Value : Variant);
 function SQLSelectToDataSet(Columns,Table,Where : string) : TADOQuery;
@@ -435,8 +433,7 @@ var
 implementation
 
 uses message,AnaUnit,message_y,popupForm,rapor,TedaviKart,Son6AylikTetkikSonuc,
-             HastaRecete,HastailacTedavi,sifreDegis,raporDetay,HastaTetkikEkle,
-             KanTetkikleriTakip,ktv_urrListesi,KanTetkikleriDegerlendir,GirisUnit;
+             HastaRecete,sifreDegis,HastaTetkikEkle,GirisUnit;
 
 
 procedure OnlineDestekOpen;
@@ -559,6 +556,7 @@ begin
         Grid.Controller.SelectedRows[Row].RecordIndex,
           Grid.DataController.GetItemByFieldName(ColonName).Index,Value);
 end;
+(*
 procedure TDISDoktorIDGetir(Tc : string ; var ID : integer);
 var
   Cvp : DISWS.HEKIMSONUC;
@@ -585,7 +583,7 @@ begin
        if Tc = H.TCKIMLIK then ID := H.ID;
      end;
 end;
-
+  *)
 
 procedure SatiriRenklendir(Grid: TAdvStringGrid; Satir, ColonSayisi: integer;
   renk: tcolor);
@@ -846,7 +844,6 @@ end;
 procedure ReceteIlacAckTaniEkleMedula(islem : integer ; dosyaNo,gelisNo,ereceteNo,id,doktor,taniKodu,ackId : string);
 var
   msj : string;
-  Cvp : EreceteTaniEkleCevapDVO;
   _dn_ ,_gn_ , _id_ , _d_ , _s , _p , barkod , icd , _ack_ , _ackId_ , acktur : string;
   _exe : PAnsiChar;
 
@@ -879,12 +876,8 @@ begin
     FreeAndNil(frmRapor);
 end;
 
-procedure KTVHesapListe;
-begin
-    Application.CreateForm(TfrmKtvListesi, frmKtvListesi);
-    frmKtvListesi.ShowModal;
-    FreeAndNil(frmKtvListesi);
-end;
+
+
 
 procedure AdoQueryActiveYenile(ado : TADOQuery);
 var
@@ -898,20 +891,12 @@ end;
 
 procedure KanTetkikleriDegerlendir(dosyaNo,gelisNo : string);
 begin
-  Application.CreateForm(TfrmKanTetkikTakipDegerlendir, frmKanTetkikTakipDegerlendir);
-  frmKanTetkikTakipDegerlendir._dosyaNO_ := dosyaNo;
-  frmKanTetkikTakipDegerlendir._gelisNO_ := gelisNo;
-  frmKanTetkikTakipDegerlendir.Getir;
-  frmKanTetkikTakipDegerlendir.ShowModal;
-  FreeAndNil(frmKanTetkikTakipDegerlendir);
+
 end;
 
 procedure KanTetkikleri(dosyaNo,Tarih : string);
 begin
-    Application.CreateForm(TfrmKanTetkikTakip, frmKanTetkikTakip);
-    frmKanTetkikTakip.KanTetkikleri(dosyaNo,copy(Tarih,1,4));
-    frmKanTetkikTakip.ShowModal;
-    FreeAndNil(frmKanTetkikTakip);
+
 end;
 
 procedure TetkikEkle(dosyaNo,gelisNo,Tarih : string);
@@ -962,12 +947,7 @@ begin
        ShowMessageSkin('Bu Ýþlem Ýçin Yetkiniz Bulunmamaktadýr !','','','info');
        exit;
    end;
-     Application.CreateForm(TfrmRaporDetay, frmRaporDetay);
-     frmRaporDetay._dosyaNo_ := dosyaNo;
-     frmRaporDetay._gelisNo_ := gelisNo;
-     frmRaporDetay.Raporlar(dosyaNo,gelisNo);
-     frmRaporDetay.ShowModal;
-     FreeAndNil(frmRaporDetay);
+
 end;
 
 
@@ -1010,24 +990,7 @@ begin
 end;
 
 
-function SMSGonder(KullaniciAdi,Sifre,Gonderen,Tel,SMS : string ; var Hata : string) : boolean;
-var
-  _SMS_ : _SMS;
-  Cvp : _SMSCvp;
-begin
-  _SMS_ := CoSMS.Create;
-  Cvp := CoSMSCvp.Create;
-  Cvp := _SMS_.SMSGonderTek(KullaniciAdi,Sifre,Gonderen,Tel,SMS);
 
-  if Cvp.Code = 200
-  then
-    SMSGonder := True
-  else
-  begin
-    SMSGonder := False;
-    Hata := CVp.Description;
-  end;
-end;
 
 
 procedure GetBuildInfo(const AppName: string; var V1, V2, V3,V4: Word);
@@ -1107,12 +1070,7 @@ end;
 procedure IlacTedaviKarti(dosyaNo,gelisNo,Tarih : string ; islem : integer = 99999);
 begin
 
-   Application.CreateForm(TfrmHastaIlacTedavi, frmHastaIlacTedavi);
-   frmHastaIlacTedavi._dosyaNO_ := dosyaNo;
-   frmHastaIlacTedavi._gelisNO_  := gelisNo;
-   frmHastaIlacTedavi.IlacTedavi(dosyaNo,gelisNo,Tarih,islem);
-   frmHastaIlacTedavi.ShowModal;
-   FreeAndNil(frmHastaIlacTedavi);
+
 
 end;
 
@@ -8027,6 +7985,7 @@ end;
 procedure SifreDegistir;
 var
  B : TBookmark;
+ ado : TadoQuery;
 begin
   datalar.SifreDegistir.KullaniciAdi := DATALAR.username;
   datalar.SifreDegistir.Sifre := DATALAR.usersifre;

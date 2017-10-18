@@ -36,15 +36,15 @@ function PopupFormCaption(islemTag : integer ; var TabCaption : string) : String
 implementation
 
 uses message,Data_Modul,AnaUnit,message_y,popupForm,rapor,TedaviKart,Son6AylikTetkikSonuc,
-             HastaRecete,HastailacTedavi,sifreDegis,HastaTetkikEkle,
-             KanTetkikleriTakip,KanTetkikleriDegerlendir, Receteler,
+             HastaRecete,sifreDegis,HastaTetkikEkle,
+             Receteler,
              HastaKart,FirmaKart,hizliKayit,receteSablonlari,
-             HastaListe,TeleEKG,
+             HastaListe,
              Tnm_UserSettings,HastaAsiKarti,HastaTaniKart,
              KurumLogin,
-             MedulaKurumSifreDegis,donemSonlandirma,TahlilTakipListesi,
-             TahlilSonucGir,Tnm_Doktor,LabTestAyarlari,
-             TedaviListPivot,PopupDBGridForm,Tnm_Ilaclar;
+             MedulaKurumSifreDegis,
+             Tnm_Doktor,LabTestAyarlari,
+             PopupDBGridForm,Tnm_Ilaclar;
 
 
 
@@ -167,20 +167,18 @@ begin
    TagfrmTedaviBilgisi : Result := TfrmTedaviBilgisi;
    TagfrmHastaRecete : Result := TfrmHastaRecete;
    TagfrmHastaListe,TagfrmDoktorHastaListe : Result := TfrmHastaListe;
-   TagfrmTeleEkg : Result := TfrmTeleEKG;
+
    TagfrmUsers : Result := TfrmUsers;
    TagfrmHastaTetkikEkle : Result := TfrmHastaTetkikEkle;
    TagfrmAsiKarti : Result := TfrmAsiKarti;
    TagfrmTaniKarti : Result := TfrmTaniKart;
-   TagfrmKanTetkikTakipDegerlendir : Result := TfrmKanTetkikTakipDegerlendir;
+
    TagfrmKurumBilgi : Result := TfrmKurumBilgi;
    TagKurumSifreDegisForm : Result := TKurumSifreDegisForm;
-   TagfrmDonemSonlandir : Result := TfrmDonemSonlandir;
-   TagfrmTahliltakip : Result := TfrmTahliltakip;
-   TagfrmTahlilsonucGir : Result := TfrmTahlilsonucGir;
+
    TagfrmDoktorlar : Result := TfrmDoktorlar;
    TagfrmTestAyarlari : Result := TfrmTestAyarlari;
-   TagfrmTedaviListP : Result := TfrmTedaviListP;
+
    TagfrmIlaclar,TagfrmIlacAnaGrup,TagfrmIlacEtkenMadde : Result := TfrmIlaclar;
    TagfrmSon6AylikTetkikSonuc : Result := TfrmSon6AylikTetkikSonuc;
    TagfrmReceteler : Result := TfrmReceteler;
@@ -197,23 +195,21 @@ begin
    TagfrmReceteSablon : Result := frmReceteSablon;
 
    TagfrmTedaviBilgisi : Result := frmTedaviBilgisi;
-   TagfrmHastaIlacTedavi : Result := frmHastaIlacTedavi;
+
    TagfrmHastaRecete : Result := frmHastaRecete;
    TagfrmHastaListe,TagfrmDoktorHastaListe : Result := frmHastaListe;
-   TagfrmTeleEkg : Result := frmTeleEKG;
+
    TagfrmUsers : Result := frmUsers;
    TagfrmHastaTetkikEkle : Result := frmHastaTetkikEkle;
    TagfrmAsiKarti : Result := frmAsiKarti;
    TagfrmTaniKarti : Result := frmTaniKart;
-   TagfrmKanTetkikTakipDegerlendir : Result := frmKanTetkikTakipDegerlendir;
+
    TagfrmKurumBilgi : Result := frmKurumBilgi;
    TagKurumSifreDegisForm : Result := KurumSifreDegisForm;
-   TagfrmDonemSonlandir : Result := frmDonemSonlandir;
-   TagfrmTahliltakip : Result := frmTahliltakip;
-   TagfrmTahlilsonucGir : Result := frmTahlilsonucGir;
+
    TagfrmDoktorlar : Result := frmDoktorlar;
    TagfrmTestAyarlari : Result := frmTestAyarlari;
-   TagfrmTedaviListP : Result := frmTedaviListP;
+
    TagfrmIlaclar,TagfrmIlacAnaGrup,TagfrmIlacEtkenMadde  : Result := frmIlaclar;
    TagfrmSon6AylikTetkikSonuc : Result := frmSon6AylikTetkikSonuc;
    TagfrmReceteler : Result := frmReceteler;
@@ -248,9 +244,7 @@ begin
       TagfrmHizliKayit : frmHizliKayit := TfrmHizliKayit.Create(Tab);
 
       TagfrmHastaListe,TagfrmDoktorHastaListe : frmHastaListe := TfrmHastaListe.Create(Tab);
-      TagfrmTeleEkg : frmTeleEKG := TfrmTeleEKG.Create(Tab);
-      TagfrmDonemSonlandir : frmDonemSonlandir := TfrmDonemSonlandir.Create(Tab);
-      TagfrmTahliltakip : frmTahliltakip := TfrmTahliltakip.Create(Tab);
+
       TagfrmSon6AylikTetkikSonuc : frmSon6AylikTetkikSonuc := TfrmSon6AylikTetkikSonuc.Create(Tab);
       TagfrmReceteler : frmReceteler := TfrmReceteler.Create(Tab);
      else
@@ -320,10 +314,7 @@ begin
       TagfrmHizliKayit : frmHizliKayit := TfrmHizliKayit.Create(Tab);
 
       TagfrmHastaListe,TagfrmDoktorHastaListe : frmHastaListe := TfrmHastaListe.Create(Tab);
-      TagfrmTeleEkg : frmTeleEKG := TfrmTeleEKG.Create(Tab);
-      TagfrmDonemSonlandir : frmDonemSonlandir := TfrmDonemSonlandir.Create(Tab);
-      TagfrmTahliltakip : frmTahliltakip := TfrmTahliltakip.Create(Tab);
-      TagfrmTedaviListP : frmTedaviListP := TfrmTedaviListP.Create(Tab);
+
       TagfrmSon6AylikTetkikSonuc : frmSon6AylikTetkikSonuc := TfrmSon6AylikTetkikSonuc.Create(Tab);
       TagfrmReceteler : frmReceteler := TfrmReceteler.Create(Tab);
      else
@@ -380,16 +371,13 @@ begin
     TagfrmReceteSablon : Application.CreateForm(TfrmReceteSablon,frmReceteSablon);
 
     TagfrmTedaviBilgisi : Application.CreateForm(TfrmTedaviBilgisi,frmTedaviBilgisi);
-    TagfrmHastaIlacTedavi : Application.CreateForm(TfrmHastaIlacTedavi,frmHastaIlacTedavi);
-    TagfrmTeleEkg : Application.CreateForm(TfrmTeleEKG, frmTeleEKG);
+
     TagfrmUsers : Application.CreateForm(TfrmUsers, frmUsers);
     TagfrmHastaTetkikEkle : Application.CreateForm(TfrmHastaTetkikEkle, frmHastaTetkikEkle);
     TagfrmAsiKarti : Application.CreateForm(TfrmAsiKarti, frmAsiKarti);
     TagfrmTaniKarti : Application.CreateForm(TfrmTaniKart, frmTaniKart);
-    TagfrmKanTetkikTakipDegerlendir : Application.CreateForm(TfrmKanTetkikTakipDegerlendir, frmKanTetkikTakipDegerlendir);
 
     TagKurumSifreDegisForm : Application.CreateForm(TKurumSifreDegisForm, KurumSifreDegisForm);
-    TagfrmTahlilsonucGir : Application.CreateForm(TfrmTahlilsonucGir, frmTahlilsonucGir);
 
     TagfrmTestAyarlari : Application.CreateForm(TfrmTestAyarlari, frmTestAyarlari);
     TagfrmIlaclar,TagfrmIlacAnaGrup,TagfrmIlacEtkenMadde : Application.CreateForm(TfrmIlaclar , frmIlaclar);

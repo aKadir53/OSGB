@@ -34,10 +34,6 @@ object frmTedaviBilgisi: TfrmTedaviBilgisi
       TabOrder = 0
       Properties.ActivePage = cxTabHastaGelis
       Properties.TabPosition = tpBottom
-      ExplicitLeft = 3
-      ExplicitTop = 15
-      ExplicitWidth = 243
-      ExplicitHeight = 492
       ClientRectBottom = 473
       ClientRectLeft = 4
       ClientRectRight = 241
@@ -46,17 +42,12 @@ object frmTedaviBilgisi: TfrmTedaviBilgisi
         Caption = 'Hasta Liste'
         ImageIndex = 0
         TabVisible = False
-        ExplicitLeft = 3
-        ExplicitTop = 3
-        ExplicitWidth = 233
-        ExplicitHeight = 459
         object cxGroupBox1: TcxGroupBox
           Left = 0
           Top = 0
           Align = alTop
           Caption = 'Hasta Listesi  [ Salon Bilgisi ]'
           TabOrder = 0
-          ExplicitWidth = 235
           Height = 51
           Width = 237
           object cxSalonBilgisi: TcxComboBox
@@ -73,9 +64,6 @@ object frmTedaviBilgisi: TfrmTedaviBilgisi
               'Salon 5')
             Properties.OnChange = cxSalonBilgisiPropertiesChange
             TabOrder = 0
-            ExplicitTop = -2
-            ExplicitWidth = 227
-            ExplicitHeight = 51
             Width = 233
           end
         end
@@ -86,8 +74,6 @@ object frmTedaviBilgisi: TfrmTedaviBilgisi
           Height = 418
           Align = alClient
           TabOrder = 1
-          ExplicitWidth = 233
-          ExplicitHeight = 408
           object cxGridHastaListesi: TcxGridDBTableView
             OnDblClick = cxGridHastaListesiDblClick
             OnFocusedRecordChanged = cxGridHastaListesiFocusedRecordChanged
@@ -133,18 +119,12 @@ object frmTedaviBilgisi: TfrmTedaviBilgisi
       object cxTabHastaGelis: TcxTabSheet
         Caption = 'Personel Muayeneleri'
         ImageIndex = 1
-        ExplicitLeft = 3
-        ExplicitTop = 3
-        ExplicitWidth = 233
-        ExplicitHeight = 459
         object cxGroupBox2: TcxGroupBox
           Left = 0
           Top = 0
           Align = alClient
           Caption = 'Muayeneler'
           TabOrder = 0
-          ExplicitWidth = 235
-          ExplicitHeight = 464
           Height = 469
           Width = 237
           object cxGrid1: TcxGrid
@@ -154,9 +134,8 @@ object frmTedaviBilgisi: TfrmTedaviBilgisi
             Height = 449
             Align = alClient
             TabOrder = 0
-            ExplicitTop = -2
-            ExplicitWidth = 229
-            ExplicitHeight = 459
+            ExplicitTop = 5
+            ExplicitHeight = 462
             object cxGridHastaGelis: TcxGridDBTableView
               OnFocusedRecordChanged = cxGridHastaGelisFocusedRecordChanged
               DataController.DataModeController.GridMode = True
@@ -215,7 +194,6 @@ object frmTedaviBilgisi: TfrmTedaviBilgisi
     end
   end
   object AdoHastaGelis: TADOQuery
-    Connection = DATALAR.ADOConnection2
     Parameters = <>
     Left = 40
     Top = 96

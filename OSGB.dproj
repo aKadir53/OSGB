@@ -112,6 +112,9 @@
 			<DCCReference Include="login.pas">
 				<Form>frmLogin</Form>
 			</DCCReference>
+			<DCCReference Include="TedaviKart.pas">
+				<Form>frmTedaviBilgisi</Form>
+			</DCCReference>
 			<DCCReference Include="AcilisMesajForm.pas">
 				<Form>Form2</Form>
 			</DCCReference>
@@ -132,9 +135,6 @@
 				<Form>frmKontrolUserSet</Form>
 			</DCCReference>
 			<DCCReference Include="KadirType.pas"/>
-			<DCCReference Include="AktifPasifSebeb.pas">
-				<Form>frmAktifPasifSebebleri</Form>
-			</DCCReference>
 			<DCCReference Include="HastaAsiKArti.pas">
 				<Form>frmAsiKarti</Form>
 			</DCCReference>
@@ -150,31 +150,18 @@
 			<DCCReference Include="GridListe.pas">
 				<Form>frmGridListeForm</Form>
 			</DCCReference>
-			<DCCReference Include="TedaviKart.pas">
-				<Form>frmTedaviBilgisi</Form>
-			</DCCReference>
 			<DCCReference Include="HastaRecete.pas">
 				<Form>frmHastaRecete</Form>
 			</DCCReference>
 			<DCCReference Include="kadir.pas"/>
-			<DCCReference Include="NoktaDLL_TLB.pas"/>
 			<DCCReference Include="MedEczane.pas">
 				<Form>frmMedEczane</Form>
-			</DCCReference>
-			<DCCReference Include="TeleEKG.pas">
-				<Form>frmTeleEKG</Form>
 			</DCCReference>
 			<DCCReference Include="Son6AylikTetkikSonuc.pas">
 				<Form>frmSon6AylikTetkikSonuc</Form>
 			</DCCReference>
 			<DCCReference Include="HastaTetkikEkle.pas">
 				<Form>frmHastaTetkikEkle</Form>
-			</DCCReference>
-			<DCCReference Include="KanTetkikleriTakip.pas">
-				<Form>frmKanTetkikTakip</Form>
-			</DCCReference>
-			<DCCReference Include="KanTetkikleriDegerlendir.pas">
-				<Form>frmKanTetkikTakipDegerlendir</Form>
 			</DCCReference>
 			<DCCReference Include="IlacSarfListesi.pas">
 				<Form>frmIlacSarf</Form>
@@ -194,9 +181,6 @@
 			</DCCReference>
 			<DCCReference Include="hizliKayit.pas">
 				<Form>frmHizliKayit</Form>
-			</DCCReference>
-			<DCCReference Include="TedaviListPivot.pas">
-				<Form>frmTedaviListP</Form>
 			</DCCReference>
 			<DCCReference Include="FirmaKart.pas">
 				<Form>frmFirmaKart</Form>

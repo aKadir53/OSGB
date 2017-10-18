@@ -14,8 +14,8 @@ uses
   dxSkinPumpkin, dxSkinSeven, dxSkinSharp, dxSkinSilver, dxSkinSpringTime,
   dxSkinStardust, dxSkinSummer2008, dxSkinsDefaultPainters, dxSkinValentine,
   dxSkinXmas2008Blue, dxSkinscxPCPainter, cxPCdxBarPopupMenu, cxContainer,
-  cxEdit, Menus, cxTextEdit, cxMemo, StdCtrls, cxButtons, cxGroupBox, cxPC,NoktaDLL_TLB,
-  cxLabel,shellApi,data_modul,noktaservice,adodb,kadir;
+  cxEdit, Menus, cxTextEdit, cxMemo, StdCtrls, cxButtons, cxGroupBox, cxPC,
+  cxLabel,shellApi,data_modul,adodb,kadir;
 
 type
   TfrmSMS = class(TForm)

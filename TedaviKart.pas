@@ -77,8 +77,8 @@ var
 
   sql : String;
 implementation
-      uses Data_Modul,AnaUnit,HastaListe,HastaRecete,HastaIlacTedavi,HastaTetkikEkle,
-           HastaDiyalizIzlem;
+      uses Data_Modul,AnaUnit,HastaListe,HastaRecete,HastaTetkikEkle;
+
 {$R *.dfm}
 
 function TfrmTedaviBilgisi.Init(Sender : TObject) : Boolean;
@@ -111,22 +111,14 @@ begin
                                    frmHastaRecete.ReceteGetir(self._dosyaNO_,self._gelisNO_);
                                    frmHastaRecete._provizyonTarihi_ := self._provizyonTarihi_;
                                 end;
-        TagfrmHastaIlacTedavi : begin
-                                   frmHastaIlacTedavi.IlacTedavi(self._dosyaNO_,self._gelisNO_,NoktasizTarih(self._provizyonTarihi_));
 
-                                end;
         TagfrmHastaTetkikEkle : begin
                                    frmHastaTetkikEkle._dosyaNO_ := self._dosyaNO_;
                                    frmHastaTetkikEkle._gelisNO_ := self._gelisNO_;
 
                                    frmHastaTetkikEkle.Sonuclar;
                                 end;
-      TagfrmHastaDiyalizIzlem : begin
-                                  frmHastaDiyalizIzlem._dosyaNO_ := self._dosyaNO_;
-                                  frmHastaDiyalizIzlem._gelisNO_ := self._gelisNO_;
-                                  frmHastaDiyalizIzlem.TedaviIzlemGetir;
 
-                                end;
 
 
       end;

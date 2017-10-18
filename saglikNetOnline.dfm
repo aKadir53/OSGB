@@ -16,6 +16,8 @@ object frmSaglikNetOnline: TfrmSaglikNetOnline
   Position = poScreenCenter
   OnClose = FormClose
   OnCreate = FormCreate
+  ExplicitWidth = 320
+  ExplicitHeight = 240
   PixelsPerInch = 96
   TextHeight = 13
   object cxPageControl1: TcxPageControl
@@ -36,8 +38,6 @@ object frmSaglikNetOnline: TfrmSaglikNetOnline
     object page_list: TcxTabSheet
       Caption = 'Hasta Kay'#305't Listesi'
       ImageIndex = 0
-      ExplicitLeft = 35
-      ExplicitTop = 30
       DesignSize = (
         1232
         625)
@@ -175,8 +175,8 @@ object frmSaglikNetOnline: TfrmSaglikNetOnline
         Height = 52
         Width = 1232
         object ilkTarih: TcxDateEdit
-          Left = 3
-          Top = 15
+          Left = 2
+          Top = -2
           Align = alLeft
           ParentFont = False
           Style.Font.Charset = DEFAULT_CHARSET
@@ -186,14 +186,11 @@ object frmSaglikNetOnline: TfrmSaglikNetOnline
           Style.Font.Style = [fsBold]
           Style.IsFontAssigned = True
           TabOrder = 0
-          ExplicitLeft = 2
-          ExplicitTop = -2
-          ExplicitHeight = 52
           Width = 121
         end
         object sonTarih: TcxDateEdit
-          Left = 124
-          Top = 15
+          Left = 123
+          Top = -2
           Align = alLeft
           ParentFont = False
           Style.Font.Charset = DEFAULT_CHARSET
@@ -203,17 +200,14 @@ object frmSaglikNetOnline: TfrmSaglikNetOnline
           Style.Font.Style = [fsBold]
           Style.IsFontAssigned = True
           TabOrder = 1
-          ExplicitLeft = 123
-          ExplicitTop = -2
-          ExplicitHeight = 52
           Width = 121
         end
         object btnList: TcxButton
           Tag = 21
-          Left = 570
-          Top = 15
+          Left = 569
+          Top = -2
           Width = 80
-          Height = 27
+          Height = 52
           Align = alLeft
           Caption = 'Listele'
           TabOrder = 2
@@ -224,15 +218,12 @@ object frmSaglikNetOnline: TfrmSaglikNetOnline
           Font.Style = [fsBold]
           ParentFont = False
           OnClick = cxListeleClick
-          ExplicitLeft = 569
-          ExplicitTop = -2
-          ExplicitHeight = 52
         end
         object btnSend: TcxButton
-          Left = 650
-          Top = 15
+          Left = 649
+          Top = -2
           Width = 97
-          Height = 27
+          Height = 52
           Align = alLeft
           Caption = 'G'#246'nder'
           Glyph.Data = {
@@ -536,9 +527,6 @@ object frmSaglikNetOnline: TfrmSaglikNetOnline
           Font.Name = 'Tahoma'
           Font.Style = [fsBold]
           ParentFont = False
-          ExplicitLeft = 649
-          ExplicitTop = -2
-          ExplicitHeight = 52
         end
         object btnMuayeneKayit: TcxButton
           Left = 765
@@ -569,8 +557,8 @@ object frmSaglikNetOnline: TfrmSaglikNetOnline
           Width = 197
         end
         object msjTip: TcxRadioGroup
-          Left = 245
-          Top = 15
+          Left = 244
+          Top = -2
           Align = alLeft
           Alignment = alCenterCenter
           Properties.Columns = 3
@@ -592,7 +580,9 @@ object frmSaglikNetOnline: TfrmSaglikNetOnline
           TabOrder = 7
           OnClick = msjTipClick
           ExplicitLeft = 269
-          Height = 27
+          ExplicitTop = 15
+          ExplicitHeight = 27
+          Height = 52
           Width = 325
         end
       end
@@ -1309,6 +1299,10 @@ object frmSaglikNetOnline: TfrmSaglikNetOnline
     object cxTabSheet1: TcxTabSheet
       Caption = 'Mesaj XML'
       ImageIndex = 2
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       object Panel1: TPanel
         Left = 0
         Top = 0
@@ -1358,6 +1352,10 @@ object frmSaglikNetOnline: TfrmSaglikNetOnline
     object cxTabSheet2: TcxTabSheet
       Caption = 'Log'
       ImageIndex = 0
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       object txtLog: TcxMemo
         Left = 0
         Top = 0

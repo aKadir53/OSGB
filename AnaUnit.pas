@@ -113,9 +113,9 @@ var
   AnaForm: TAnaForm;
 
 implementation
-      uses Tnm_Hemsire,Tnm_Ilaclar,Tnm_LabTest,Tnm_Makina,
-      Data_Modul,HastaKart,SeansGostergesi,
-      Tnm_UserSettings, sifreDegis, TeleEKG,Unit3;
+      uses Tnm_Ilaclar,Tnm_LabTest,
+      Data_Modul,HastaKart,
+      Tnm_UserSettings, sifreDegis;
 {$R *.dfm}
 {$R xx.res}
 

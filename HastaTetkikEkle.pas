@@ -264,7 +264,7 @@ begin
 
          end;
     -20 : begin
-            KTVHesapListe;
+            //
           end;
     -21 : begin
            (*

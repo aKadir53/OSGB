@@ -26,12 +26,10 @@ object frmHizliKayit: TfrmHizliKayit
     Height = 529
     Align = alClient
     TabOrder = 0
-    ExplicitWidth = 755
-    ExplicitHeight = 501
-    ClientRectBottom = 522
-    ClientRectLeft = 3
-    ClientRectRight = 772
-    ClientRectTop = 3
+    ClientRectBottom = 525
+    ClientRectLeft = 4
+    ClientRectRight = 775
+    ClientRectTop = 4
   end
   object cxGrid2: TcxGridKadir
     Left = 0
@@ -49,10 +47,6 @@ object frmHizliKayit: TfrmHizliKayit
     LevelTabs.ImageBorder = 2
     LevelTabs.Style = 1
     ExceleGonder = False
-    ExplicitLeft = 88
-    ExplicitTop = 280
-    ExplicitWidth = 705
-    ExplicitHeight = 263
     object Liste: TcxGridDBTableView
       PopupMenu = PopupMenu1
       Navigator.Buttons.First.Visible = True
@@ -299,7 +293,7 @@ object frmHizliKayit: TfrmHizliKayit
     TableName = 'Table668953727_4652'
     Exclusive = False
     MemoryTableAllocBy = 1000
-    Left = 696
+    Left = 704
     Top = 168
   end
   object DataSource2: TDataSource
@@ -308,7 +302,6 @@ object frmHizliKayit: TfrmHizliKayit
     Top = 7
   end
   object PopupMenu1: TPopupMenu
-    Images = DATALAR.imag24png
     Left = 696
     Top = 224
     object B1: TMenuItem

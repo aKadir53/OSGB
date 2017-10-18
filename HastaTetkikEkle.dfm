@@ -47,6 +47,10 @@ object frmHastaTetkikEkle: TfrmHastaTetkikEkle
         object cxTabTetkikler: TcxTabSheet
           Caption = 'Hasta Tetkikleri'
           ImageIndex = 0
+          ExplicitLeft = 0
+          ExplicitTop = 0
+          ExplicitWidth = 0
+          ExplicitHeight = 0
           object cxGrid15: TcxGrid
             Left = 0
             Top = 0
@@ -358,10 +362,10 @@ object frmHastaTetkikEkle: TfrmHastaTetkikEkle
             Height = 45
             Width = 625
             object Label2: TLabel
-              Left = 97
-              Top = 15
+              Left = 96
+              Top = -2
               Width = 29
-              Height = 20
+              Height = 45
               Align = alLeft
               Alignment = taCenter
               Caption = ' Kt/V  '
@@ -372,13 +376,15 @@ object frmHastaTetkikEkle: TfrmHastaTetkikEkle
               Font.Style = []
               ParentFont = False
               Layout = tlCenter
+              ExplicitLeft = 97
+              ExplicitTop = 15
               ExplicitHeight = 13
             end
             object Label1: TLabel
-              Left = 182
-              Top = 15
+              Left = 181
+              Top = -2
               Width = 31
-              Height = 20
+              Height = 45
               Align = alLeft
               Alignment = taCenter
               Caption = ' CaXP '
@@ -389,13 +395,15 @@ object frmHastaTetkikEkle: TfrmHastaTetkikEkle
               Font.Style = []
               ParentFont = False
               Layout = tlCenter
+              ExplicitLeft = 182
+              ExplicitTop = 15
               ExplicitHeight = 13
             end
             object Label3: TLabel
-              Left = 269
-              Top = 15
+              Left = 268
+              Top = -2
               Width = 41
-              Height = 20
+              Height = 45
               Align = alLeft
               Alignment = taCenter
               Caption = ' D'#252'z.Ca '
@@ -406,13 +414,15 @@ object frmHastaTetkikEkle: TfrmHastaTetkikEkle
               Font.Style = []
               ParentFont = False
               Layout = tlCenter
+              ExplicitLeft = 269
+              ExplicitTop = 15
               ExplicitHeight = 13
             end
             object Label4: TLabel
-              Left = 3
-              Top = 15
+              Left = 2
+              Top = -2
               Width = 38
-              Height = 20
+              Height = 45
               Align = alLeft
               Alignment = taCenter
               Caption = 'URR % '
@@ -423,11 +433,13 @@ object frmHastaTetkikEkle: TfrmHastaTetkikEkle
               Font.Style = []
               ParentFont = False
               Layout = tlCenter
+              ExplicitLeft = 3
+              ExplicitTop = 15
               ExplicitHeight = 13
             end
             object txtUrr: TcxDBTextEdit
-              Left = 41
-              Top = 15
+              Left = 40
+              Top = -2
               Align = alLeft
               DataBinding.DataField = 'URR'
               DataBinding.DataSource = DataSource1
@@ -440,14 +452,11 @@ object frmHastaTetkikEkle: TfrmHastaTetkikEkle
               Style.Font.Style = [fsBold]
               Style.IsFontAssigned = True
               TabOrder = 0
-              ExplicitLeft = 40
-              ExplicitTop = -2
-              ExplicitHeight = 45
               Width = 56
             end
             object txtKtv: TcxDBTextEdit
-              Left = 126
-              Top = 15
+              Left = 125
+              Top = -2
               Align = alLeft
               DataBinding.DataField = 'KT_v'
               DataBinding.DataSource = DataSource1
@@ -460,14 +469,11 @@ object frmHastaTetkikEkle: TfrmHastaTetkikEkle
               Style.Font.Style = [fsBold]
               Style.IsFontAssigned = True
               TabOrder = 1
-              ExplicitLeft = 125
-              ExplicitTop = -2
-              ExplicitHeight = 45
               Width = 56
             end
             object txtCaXP: TcxDBTextEdit
-              Left = 213
-              Top = 15
+              Left = 212
+              Top = -2
               Align = alLeft
               DataBinding.DataField = 'CaxP'
               DataBinding.DataSource = DataSource1
@@ -480,14 +486,11 @@ object frmHastaTetkikEkle: TfrmHastaTetkikEkle
               Style.Font.Style = [fsBold]
               Style.IsFontAssigned = True
               TabOrder = 2
-              ExplicitLeft = 212
-              ExplicitTop = -2
-              ExplicitHeight = 45
               Width = 56
             end
             object txtDuzCa: TcxDBTextEdit
-              Left = 310
-              Top = 15
+              Left = 309
+              Top = -2
               Align = alLeft
               DataBinding.DataField = 'DuzCa'
               DataBinding.DataSource = DataSource1
@@ -500,52 +503,40 @@ object frmHastaTetkikEkle: TfrmHastaTetkikEkle
               Style.Font.Style = [fsBold]
               Style.IsFontAssigned = True
               TabOrder = 3
-              ExplicitLeft = 309
-              ExplicitTop = -2
-              ExplicitHeight = 45
               Width = 56
             end
             object ktv: TcxButtonKadir
-              Left = 472
-              Top = 15
+              Left = 473
+              Top = -2
               Width = 75
-              Height = 20
+              Height = 45
               Align = alRight
               Caption = 'Kt/V'
               TabOrder = 4
               OnClick = ktvClick
               NewButtonVisible = False
-              ExplicitLeft = 473
-              ExplicitTop = -2
-              ExplicitHeight = 45
             end
             object spKtv: TcxButtonKadir
-              Left = 397
-              Top = 15
+              Left = 398
+              Top = -2
               Width = 75
-              Height = 20
+              Height = 45
               Align = alRight
               Caption = 'spKtv'
               TabOrder = 5
               OnClick = spKtvClick
               NewButtonVisible = False
-              ExplicitLeft = 398
-              ExplicitTop = -2
-              ExplicitHeight = 45
             end
             object cxBtnHesapKaydet: TcxButtonKadir
-              Left = 547
-              Top = 15
+              Left = 548
+              Top = -2
               Width = 75
-              Height = 20
+              Height = 45
               Align = alRight
               Caption = 'Kaydet'
               TabOrder = 6
               OnClick = cxBtnHesapKaydetClick
               NewButtonVisible = False
-              ExplicitLeft = 548
-              ExplicitTop = -2
-              ExplicitHeight = 45
             end
           end
         end

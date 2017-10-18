@@ -14,6 +14,7 @@ uses
   Tnm_Ilaclar in 'Tnm_Ilaclar.pas' {frmIlaclar},
   Tnm_LabTest in 'Tnm_LabTest.pas' {frmLabTest},
   login in 'login.pas' {frmLogin},
+  TedaviKart in 'TedaviKart.pas' {frmTedaviBilgisi},
   AcilisMesajForm in 'AcilisMesajForm.pas' {Form2},
   data_modul in 'data_modul.pas' {DATALAR: TDataModule},
   rapor in 'rapor.pas' {frmRapor},
@@ -21,22 +22,16 @@ uses
   Tnm_UserSettings in 'Tnm_UserSettings.pas' {frmUsers},
   FormKontrolUserSet in 'FormKontrolUserSet.pas' {frmKontrolUserSet},
   KadirType in 'KadirType.pas',
-  AktifPasifSebeb in 'AktifPasifSebeb.pas' {frmAktifPasifSebebleri},
   HastaAsiKArti in 'HastaAsiKArti.pas' {frmAsiKarti},
   SMS in 'SMS.pas' {frmSMS},
   PopupForm in 'PopupForm.PAS' {frmPopup},
   sifreDegis in 'sifreDegis.pas' {frmSifreDegis},
   GridListe in 'GridListe.pas' {frmGridListeForm},
-  TedaviKart in 'TedaviKart.pas' {frmTedaviBilgisi},
   HastaRecete in 'HastaRecete.pas' {frmHastaRecete},
   kadir in 'kadir.pas',
-  NoktaDLL_TLB in 'NoktaDLL_TLB.pas',
   MedEczane in 'MedEczane.pas' {frmMedEczane},
-  TeleEKG in 'TeleEKG.pas' {frmTeleEKG},
   Son6AylikTetkikSonuc in 'Son6AylikTetkikSonuc.pas' {frmSon6AylikTetkikSonuc},
   HastaTetkikEkle in 'HastaTetkikEkle.pas' {frmHastaTetkikEkle},
-  KanTetkikleriTakip in 'KanTetkikleriTakip.pas' {frmKanTetkikTakip},
-  KanTetkikleriDegerlendir in 'KanTetkikleriDegerlendir.pas' {frmKanTetkikTakipDegerlendir},
   IlacSarfListesi in 'IlacSarfListesi.pas' {frmIlacSarf},
   PopupDBGridForm in 'PopupDBGridForm.PAS' {frmPopupDBGridForm},
   GetFormClass in 'GetFormClass.pas',
@@ -44,7 +39,6 @@ uses
   KurumLogin in 'KurumLogin.pas' {frmKurumBilgi},
   MedulaKurumSifreDegis in 'MedulaKurumSifreDegis.pas' {KurumSifreDegisForm},
   hizliKayit in 'hizliKayit.pas' {frmHizliKayit},
-  TedaviListPivot in 'TedaviListPivot.pas' {frmTedaviListP},
   FirmaKart in 'FirmaKart.pas' {frmFirmaKart},
   Receteler in 'Receteler.pas' {frmReceteler},
   receteSablonlari in 'receteSablonlari.pas' {frmReceteSablon};
@@ -66,6 +60,7 @@ begin
   Application.MainFormOnTaskbar := True;
   Application.CreateForm(TDATALAR, DATALAR);
   Application.CreateForm(TAnaForm, AnaForm);
+  Application.CreateForm(TfrmTedaviBilgisi, frmTedaviBilgisi);
   // form2.show;
 
  // form2.Label1.Caption := 'NoktaDLL Kontrol Ediliyor...';

@@ -1123,6 +1123,16 @@ procedure TfrmHastaKart.cxKaydetClick(Sender: TObject);
 var
   g : TGraphic;
 begin
+
+
+ if datalar.AktifSirket <> TcxLabel(FindComponent('LabelSirketKod')).Caption
+ then begin
+   ShowMessageSkin('Personel Kartýnda Deðiþiklik için ','','','info');
+   exit;
+ end;
+
+
+
   datalar.KontrolUserSet := False;
   inherited;
   if datalar.KontrolUserSet = True then exit;

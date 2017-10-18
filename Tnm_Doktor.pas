@@ -54,7 +54,6 @@ procedure TfrmDoktorlar.ButtonClick(Sender: TObject);
 var
   ID : integer;
 begin
-  TDISDoktorIDGetir(TcxTextEditKadir(FindComponent('tcKimlikNo')).EditValue,ID);
   TcxTextEditKadir(FindComponent('TDisID')).EditValue := ID;
 end;
 

@@ -49,21 +49,16 @@ object frmUsers: TfrmUsers
     TabOrder = 1
     Properties.ActivePage = cxTabSheet1
     Properties.Style = 11
-    ClientRectBottom = 555
-    ClientRectLeft = 3
-    ClientRectRight = 351
-    ClientRectTop = 26
+    ClientRectBottom = 562
+    ClientRectRight = 358
+    ClientRectTop = 20
     object cxTabSheet1: TcxTabSheet
       Caption = #304#351'lem Yetkiler'
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object cxGrid2: TcxGrid
         Left = 0
         Top = 0
-        Width = 348
-        Height = 529
+        Width = 358
+        Height = 542
         Align = alClient
         TabOrder = 0
         object cxGridUserSet: TcxGridDBTableView
@@ -100,7 +95,6 @@ object frmUsers: TfrmUsers
     object cxTabSheet2: TcxTabSheet
       Caption = 'Men'#252' Yetkileri'
       ImageIndex = 1
-      ExplicitLeft = 0
       ExplicitTop = 0
       ExplicitWidth = 419
       ExplicitHeight = 0
@@ -199,10 +193,10 @@ object frmUsers: TfrmUsers
     Height = 296
     Width = 400
     object cxGrid3: TcxGrid
-      Left = 3
-      Top = 43
-      Width = 394
-      Height = 243
+      Left = 2
+      Top = 46
+      Width = 396
+      Height = 248
       Align = alClient
       TabOrder = 0
       object cxGridUserGrup: TcxGridDBTableView
@@ -250,16 +244,13 @@ object frmUsers: TfrmUsers
       end
     end
     object TcxGroupBox
-      Left = 3
-      Top = 15
+      Left = 2
+      Top = 18
       Align = alTop
       PanelStyle.Active = True
       TabOrder = 1
-      ExplicitLeft = 2
-      ExplicitTop = -2
-      ExplicitWidth = 396
       Height = 28
-      Width = 394
+      Width = 396
       object txtYeniGrup: TcxTextEditKadir
         Tag = -100
         Left = 70
@@ -267,8 +258,7 @@ object frmUsers: TfrmUsers
         Align = alClient
         Properties.Alignment.Vert = taVCenter
         TabOrder = 0
-        ExplicitHeight = 21
-        Width = 263
+        Width = 265
       end
       object cxLabel1: TcxLabel
         Left = 2
@@ -283,7 +273,7 @@ object frmUsers: TfrmUsers
       end
       object btnGrupEkle: TcxButtonKadir
         Tag = 50
-        Left = 333
+        Left = 335
         Top = 2
         Width = 59
         Height = 24
@@ -297,7 +287,6 @@ object frmUsers: TfrmUsers
     end
   end
   object UserSettings: TADOTable
-    Connection = DATALAR.ADOConnection2
     CursorType = ctStatic
     BeforePost = UserSettingsBeforePost
     TableName = 'UserSettings'
@@ -315,7 +304,6 @@ object frmUsers: TfrmUsers
     Top = 272
   end
   object User_Menu_Settings: TADOTable
-    Connection = DATALAR.ADOConnection2
     CursorType = ctStatic
     BeforePost = UserSettingsBeforePost
     TableName = 'UserMenuSettings'
@@ -323,7 +311,6 @@ object frmUsers: TfrmUsers
     Top = 272
   end
   object PopupMenu1: TPopupMenu
-    Images = DATALAR.imag24png
     Left = 32
     Top = 88
     object Kapat1: TMenuItem
@@ -376,7 +363,6 @@ object frmUsers: TfrmUsers
     Top = 416
   end
   object UserGroup: TADOTable
-    Connection = DATALAR.ADOConnection2
     CursorType = ctStatic
     AfterPost = UserGroupAfterPost
     BeforeDelete = UserGroupBeforeDelete
@@ -390,7 +376,6 @@ object frmUsers: TfrmUsers
     Top = 256
   end
   object UserGroup_Menu_Settings: TADOQuery
-    Connection = DATALAR.ADOConnection2
     CursorType = ctStatic
     Parameters = <>
     SQL.Strings = (
@@ -399,7 +384,6 @@ object frmUsers: TfrmUsers
     Top = 416
   end
   object UserGroupSettings: TADOQuery
-    Connection = DATALAR.ADOConnection2
     CursorType = ctStatic
     Parameters = <>
     SQL.Strings = (

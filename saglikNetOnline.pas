@@ -18,7 +18,7 @@ uses
   Menus, StdCtrls, cxButtons, cxTextEdit, cxMaskEdit, cxDropDownEdit,ShellAPI,
   cxCalendar, cxGroupBox, cxGridLevel, cxClasses, cxGridCustomView,
   cxGridCustomTableView, cxGridTableView, cxGridDBTableView, cxGrid,
-  dxSkinsForm, cxPC,kadir,NoktaDLL_TLB, cxMemo, cxRadioGroup, cxCheckBox, acPNG,
+  dxSkinsForm, cxPC,kadir,cxMemo, cxRadioGroup, cxCheckBox, acPNG,
   cxImage, cxLabel, cxHyperLinkEdit, cxRichEdit, cxDBRichEdit, AdvMemo, Advmxml,
   DBAdvMemo, xmldom, XMLIntf, msxmldom, XMLDoc, cxImageComboBox, ExtCtrls,
   cxDBEdit, OleCtrls, SHDocVw,SYSWS, Soap.InvokeRegistry, Soap.Rio,

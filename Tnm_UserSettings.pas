@@ -109,7 +109,7 @@ var
 
 
 implementation
-    uses AnaUnit,HastaKart;
+    uses AnaUnit;
 {$R *.dfm}
 
 
