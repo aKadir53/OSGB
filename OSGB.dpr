@@ -46,7 +46,8 @@ uses
   hizliKayit in 'hizliKayit.pas' {frmHizliKayit},
   TedaviListPivot in 'TedaviListPivot.pas' {frmTedaviListP},
   FirmaKart in 'FirmaKart.pas' {frmFirmaKart},
-  Receteler in 'Receteler.pas' {frmReceteler};
+  Receteler in 'Receteler.pas' {frmReceteler},
+  receteSablonlari in 'receteSablonlari.pas' {frmReceteSablon};
 
 // KadirMedula3 in '..\..\medula3wsdl\KadirMedula3.pas';
 

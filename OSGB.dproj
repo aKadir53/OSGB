@@ -204,6 +204,9 @@
 			<DCCReference Include="Receteler.pas">
 				<Form>frmReceteler</Form>
 			</DCCReference>
+			<DCCReference Include="receteSablonlari.pas">
+				<Form>frmReceteSablon</Form>
+			</DCCReference>
 			<None Include="ModelSupport_DiyalizV4\default.txaPackage"/>
 			<BuildConfiguration Include="Release">
 				<Key>Cfg_2</Key>
