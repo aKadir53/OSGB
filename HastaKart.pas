@@ -196,7 +196,7 @@ begin
        TcxCheckBoxProperties(GridListValue.Properties).ValueGrayed := '';
   end
   Else
-  if IseGirisMuayene.Dataset.FieldByName('ValueTip').AsString[1] = 'C'
+  if IseGirisMuayene.Dataset.FieldByName('ValueTip').AsString = 'C'
   then begin
     if length(IseGirisMuayene.Dataset.FieldByName('ValueTip').AsString) = 2
     then begin
