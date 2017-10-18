@@ -43,9 +43,7 @@ object frmReceteler: TfrmReceteler
     Height = 512
     Align = alClient
     TabOrder = 1
-    Properties.ActivePage = cxTabSheet1
-    ExplicitTop = 88
-    ExplicitHeight = 424
+    Properties.ActivePage = cxTabSheet3
     ClientRectBottom = 505
     ClientRectLeft = 3
     ClientRectRight = 905
@@ -53,9 +51,6 @@ object frmReceteler: TfrmReceteler
     object cxTabSheet1: TcxTabSheet
       Caption = 'Re'#231'eteler'
       ImageIndex = 0
-      ExplicitLeft = 4
-      ExplicitWidth = 904
-      ExplicitHeight = 394
       object cxGrid2: TcxGrid
         Left = 0
         Top = 201
@@ -71,8 +66,6 @@ object frmReceteler: TfrmReceteler
         TabOrder = 0
         LevelTabs.ImageBorder = 2
         LevelTabs.Style = 1
-        ExplicitWidth = 904
-        ExplicitHeight = 193
         object ReceteDetay: TcxGridDBTableView
           Navigator.Buttons.First.Visible = True
           Navigator.Buttons.PriorPage.Visible = True
@@ -371,7 +364,6 @@ object frmReceteler: TfrmReceteler
         TabOrder = 1
         LevelTabs.ImageBorder = 2
         LevelTabs.Style = 1
-        ExplicitWidth = 904
         object Recete: TcxGridDBTableView
           Navigator.Buttons.First.Visible = True
           Navigator.Buttons.PriorPage.Visible = True
@@ -701,6 +693,7 @@ object frmReceteler: TfrmReceteler
       Caption = 'Re'#231'ete '#304'la'#231' Say'#305'lar'#305
       ImageIndex = 1
       ExplicitLeft = 4
+      ExplicitTop = 0
       ExplicitWidth = 904
       ExplicitHeight = 394
       object cxGrid3: TcxGrid
@@ -1301,9 +1294,6 @@ object frmReceteler: TfrmReceteler
     object cxTabSheet3: TcxTabSheet
       Caption = 'Re'#231'eteler (Hasta Gruplu)'
       ImageIndex = 2
-      ExplicitLeft = 4
-      ExplicitWidth = 904
-      ExplicitHeight = 394
       object cxGrid5: TcxGrid
         Left = 0
         Top = 32
@@ -1319,9 +1309,6 @@ object frmReceteler: TfrmReceteler
         TabOrder = 0
         LevelTabs.ImageBorder = 2
         LevelTabs.Style = 1
-        ExplicitLeft = 32
-        ExplicitTop = 80
-        ExplicitHeight = 479
         object cxGridRecetelerGrup: TcxGridDBTableView
           PopupMenu = PopupMenu1
           Navigator.Buttons.First.Visible = True
@@ -1737,9 +1724,6 @@ object frmReceteler: TfrmReceteler
           Style.Font.Style = [fsBold]
           Style.IsFontAssigned = True
           TabOrder = 0
-          ExplicitLeft = 667
-          ExplicitWidth = 174
-          ExplicitHeight = 24
           Width = 599
         end
         object cxLabel1: TcxLabel

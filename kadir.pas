@@ -2,7 +2,7 @@ unit kadir;
 
 interface
 
-uses Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Consts,
+uses Windows, Messages, SysUtils, Variants, Classes, Graphics, Vcl.Controls, Consts,
   Dialogs, ADODB, registry, ComCtrls, StdCtrls, db, ExtCtrls,comObj,
   ShellApi, forms, data_modul, Grids,  Rio, SOAPHTTPClient,cxGridExportLink,
   xsbuiltIns,  Mask, Math, Printers,   zlib, StrUtils, Menus, SHDocVw,
@@ -367,6 +367,7 @@ function GridCellToString(Grid : TcxGridDBTableView; ColonName : string ; Row : 
 procedure GridCellSetValue(Grid : TcxGridDBTableView; ColonName : string ; Row : integer ; Value : Variant);
 function SQLSelectToDataSet(Columns,Table,Where : string) : TADOQuery;
 procedure ExceldenPersonelYukle;
+procedure OnlineDestekOpen;
 
 
 
@@ -437,6 +438,18 @@ uses message,AnaUnit,message_y,popupForm,rapor,TedaviKart,Son6AylikTetkikSonuc,
              HastaRecete,HastailacTedavi,sifreDegis,raporDetay,HastaTetkikEkle,
              KanTetkikleriTakip,ktv_urrListesi,KanTetkikleriDegerlendir,GirisUnit;
 
+
+procedure OnlineDestekOpen;
+var
+ filename : string;
+ par : string;
+ Handle : HWND;
+begin
+  filename := 'C:\OSGB\AlpemixCMX.exe';
+  par :=  'Mavinoktabilgitek ' + datalar.AlpemixGrupAdi + ' ' + datalar.AlpemixGrupParola  + ' ' +  StringReplace((copy(merkezAdi(''),1,15) + ' - ' + datalar.username),' ','_',[rfReplaceAll]);
+  ShellExecute(Handle,'open', pwidechar(filename),
+                pwidechar(par), nil, SW_SHOWNORMAL);
+end;
 
 procedure ExceldenPersonelYukle;
 var
