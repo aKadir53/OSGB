@@ -16,7 +16,7 @@ uses Windows, Messages, SysUtils, Variants, Classes, Graphics, Vcl.Controls, Con
   cxCalendar,dxLayoutContainer, dxLayoutControl,cxPC;
 
 
-
+procedure SMSSend(tel,Msj : string);
 function WanIp(url : string = 'http://bot.whatismyipaddress.com') : string;
 procedure RegYaz(dizi , diziDegeri : string ; openKey : string = 'Software\NOKTA\NOKTA');
 function RegOku(dizi : string ; openKey : string = 'Software\NOKTA\NOKTA') : Variant;
@@ -433,7 +433,7 @@ var
 implementation
 
 uses message,AnaUnit,message_y,popupForm,rapor,TedaviKart,Son6AylikTetkikSonuc,
-             HastaRecete,sifreDegis,HastaTetkikEkle,GirisUnit;
+             HastaRecete,sifreDegis,HastaTetkikEkle,GirisUnit,SMS;
 
 
 procedure OnlineDestekOpen;
@@ -529,6 +529,17 @@ begin
     datalar.WanIp := '';
   end;
   WanIp := datalar.WanIp;
+end;
+
+procedure SMSSend(tel,Msj : string);
+begin
+    Application.CreateForm(TfrmSMS, frmSMS);
+    frmSMS.mesaj := Msj;
+    frmSMS.MobilTel := tel;
+  //  frmSMS.hasta := txtHastaAdi.Text + ' ' + txtSoyAdi.Text;
+    frmSMS.ShowModal;
+    frmSMS := nil;
+
 end;
 
 function SQLSelectToDataSet(Columns,Table,Where : string) : TADOQuery;

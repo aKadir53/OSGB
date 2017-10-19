@@ -449,6 +449,7 @@ type
     F_SeansSira_ : string;
     F_IlacEtkenMadde_ : string;
     F_firmaKod_ : string;
+    F_mobilTel_ : string;
   End;
 
   TSifreDegistir = record

@@ -24,10 +24,10 @@ object frmSMS: TfrmSMS
     Align = alClient
     TabOrder = 0
     Properties.ActivePage = cxTabSheet1
-    ClientRectBottom = 217
-    ClientRectLeft = 4
-    ClientRectRight = 451
-    ClientRectTop = 24
+    ClientRectBottom = 214
+    ClientRectLeft = 3
+    ClientRectRight = 448
+    ClientRectTop = 26
     object cxTabSheet1: TcxTabSheet
       Caption = 'Hastaya Mesaj G'#246'nder'
       ImageIndex = 190
@@ -38,10 +38,10 @@ object frmSMS: TfrmSMS
         Caption = 'Mesaj'
         TabOrder = 0
         Height = 140
-        Width = 447
+        Width = 445
         object txtmsg: TcxMemo
-          Left = 2
-          Top = 18
+          Left = 3
+          Top = 15
           Align = alClient
           Properties.MaxLength = 160
           Properties.OnChange = txtmsgPropertiesChange
@@ -54,10 +54,12 @@ object frmSMS: TfrmSMS
           StyleHot.LookAndFeel.NativeStyle = False
           StyleHot.LookAndFeel.SkinName = 'McSkin'
           TabOrder = 0
-          ExplicitTop = 5
-          ExplicitHeight = 133
-          Height = 120
-          Width = 443
+          ExplicitLeft = 2
+          ExplicitTop = -2
+          ExplicitWidth = 441
+          ExplicitHeight = 140
+          Height = 115
+          Width = 439
         end
       end
       object btnMesajGonder: TcxButton

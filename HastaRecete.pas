@@ -481,8 +481,8 @@ procedure TfrmHastaRecete.EreceteNoSmsSend;
 var
  tel,msj,Hata : string;
 begin
-  if (ADO_Recete.FieldByName('EreceteNo').AsString = '') or
-     (ADO_Recete.FieldByName('EreceteNo').AsString = '0000')
+  if (ADO_Recete.FieldByName('EreceteNo').AsString = '')
+ // or (ADO_Recete.FieldByName('EreceteNo').AsString = '0000')
   then begin
     ShowMessageSkin('E-Reçete Kayýtlý Deðil ','','','info');
     exit;
@@ -491,9 +491,10 @@ begin
   if mrYes = ShowMessageSkin('E-Reçete Numaranýz SMS ile Bildirilecek','','','msg')
   then begin
       //datalar.Login;
-      tel := dosyaNoTel(_dosyaNO_);
+      tel := _mobilTel_; //dosyaNoTel(_dosyaNO_);
       msj := 'E-Reçete Numaranýz : ' + ADO_Recete.FieldByName('EreceteNo').AsString + #13 +
              ' Saðlýklý Günler Dileriz';
+      SMSSend(tel,msj);
 
       if tel = ''
       then begin

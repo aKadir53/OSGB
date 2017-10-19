@@ -699,6 +699,7 @@ begin
       IseGirisMuayene.Dataset.SQL.Text := 'sp_frmPersonelIseGirisMuayene ' + QuotedStr(dosyaNo.Text)+ ',' +
                                                                          _gelisNO_;
       IseGirisMuayene.Dataset.Open;
+      GridList.ViewData.Expand(true);
     end
     else
       IseGirisMuayene.Dataset.close;
@@ -1184,6 +1185,7 @@ begin
   GirisFormRecord.F_Doktor_ := ADO_Gelisler.FieldByName('doktor').AsString;
   GirisFormRecord.F_SigortaliTur_ := TcxImageComboKadir(FindComponent('Durum')).EditValue;
   GirisFormRecord.F_HastaAdSoyad_ := _HastaAdSoyad_;
+  GirisFormRecord.F_mobilTel_ := TcxTextEdit(FindComponent('EV_TEL1')).Text;
 
 
 
@@ -1259,8 +1261,11 @@ begin
        end;
 
  -28 : begin
+      //  SMSSend(TcxTextEdit(FindComponent('EV_TEL1')).Text,'');
+
           Application.CreateForm(TfrmSMS, frmSMS);
-          frmSMS.dosyaNo := DosyaNo.Text;
+          frmSMS.dosyaNo := TcxTextEdit(FindComponent('EV_TEL1')).Text;
+          frmSMS.MobilTel := TcxTextEdit(FindComponent('EV_TEL1')).Text;
         //  frmSMS.hasta := txtHastaAdi.Text + ' ' + txtSoyAdi.Text;
           frmSMS.ShowModal;
           frmSMS := nil;

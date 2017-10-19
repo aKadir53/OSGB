@@ -182,6 +182,7 @@ type
     F_SeansSira_ : string;
     F_IlacEtkenMadde_ : string;
     F_firmaKod_ : string;
+    F_mobilTel_ : string;
 
     { Private declarations }
   public
@@ -265,6 +266,7 @@ type
     property _SeansSira_ : string read F_SeansSira_ write F_SeansSira_;
     property _IlacEtkenMadde_ : string read F_IlacEtkenMadde_ write F_IlacEtkenMadde_;
     property _firmaKod_ : string read F_firmaKod_ write F_firmaKod_;
+    property _mobilTel_ : string read F_mobilTel_ write F_mobilTel_;
 
   end;
 

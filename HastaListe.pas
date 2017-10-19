@@ -78,22 +78,12 @@ type
     ListeColumn15: TcxGridDBColumn;
     cxStyle2: TcxStyle;
     ListeColumn16: TcxGridDBColumn;
+    K1: TMenuItem;
 
     procedure TopPanelPropertiesChange(Sender: TObject);
     procedure btnVazgecClick(Sender: TObject);
-    procedure btnAraClick(Sender: TObject);
-    procedure ado_BransKodlariAfterPost(DataSet: TDataSet);
     procedure ListeDblClick(Sender: TObject);
-    procedure SeansKart1Click(Sender: TObject);
-    procedure edaviKart1Click(Sender: TObject);
-    procedure Epikriz1Click(Sender: TObject);
-    procedure SeansTahakkuk1Click(Sender: TObject);
     procedure FormCreate(Sender: TObject);
-    procedure ado_BransKodlariAfterOpen(DataSet: TDataSet);
-    procedure ado_BransKodlariAfterScroll(DataSet: TDataSet);
-    procedure ListeDataControllerFilterRecord(
-      ADataController: TcxCustomDataController; ARecordIndex: Integer;
-      var Accept: Boolean);
     procedure popupYilPopup(Sender: TObject);
     procedure ListeCellClick(Sender: TcxCustomGridTableView;
       ACellViewInfo: TcxGridTableDataCellViewInfo; AButton: TMouseButton;
@@ -103,6 +93,7 @@ type
     procedure ListeFocusedRecordChanged(Sender: TcxCustomGridTableView;
       APrevFocusedRecord, AFocusedRecord: TcxCustomGridRecord;
       ANewItemRecordFocusingChanged: Boolean);
+    procedure N1Click(Sender: TObject);
 
   private
     { Private declarations }
@@ -236,87 +227,6 @@ begin
 
 end;
 
-procedure TfrmHastaListe.btnAraClick(Sender: TObject);
-var
-  t : string;
-  List : TStringList;
-begin
-
-
-
-end;
-
-procedure TfrmHastaListe.ado_BransKodlariAfterOpen(DataSet: TDataSet);
-begin
- // panel1.Caption := 'Listelenen Hasta Sayýsý : ' + inttostr(ado_BransKodlari.RecordCount);
-end;
-
-procedure TfrmHastaListe.ado_BransKodlariAfterPost(DataSet: TDataSet);
-begin
-
-//   gridBransKodlari.Options := [goFixedVertLine, goFixedHorzLine, goVertLine, goHorzLine, goRangeSelect, goDrawFocusSelected, goEditing , goRowSelect];
-
-
-end;
-
-procedure TfrmHastaListe.ado_BransKodlariAfterScroll(DataSet: TDataSet);
-begin
-(*
-  datalar.Bilgi.dosyaNo := ado_BransKodlari.FieldByName('dosyaNo').AsString;
-  datalar.Bilgi.gelisNo := ado_BransKodlari.FieldByName('gelisNo').AsString;
-  datalar.Bilgi.Doktor := ado_BransKodlari.FieldByName('doktor').AsString;
-  datalar.Bilgi.TakipNo := ado_BransKodlari.FieldByName('TakýpNo').AsString;
-  datalar.Bilgi.Adi := ado_BransKodlari.FieldByName('HASTAADI').AsString + ' ' +
-                           ado_BransKodlari.FieldByName('HASTASOYADI').AsString;
-  datalar.Bilgi.tckimlikNo := ado_BransKodlari.FieldByName('TCKIMLIKNO').AsString;
-  datalar.Bilgi.ProvizyonTarihi := FormattedTarih(ado_BransKodlari.FieldByName('BHDAT').AsString);
-
-
-
-
- (*
-  HastaBilgileri.TcKimlikNo := ado_BransKodlari.FieldByName('TCKIMLIKNO').AsString;
-
-  HastaBilgileri.Adi := ado_BransKodlari.FieldByName('HASTAADI').AsString + ' ' +
-                           ado_BransKodlari.FieldByName('HASTASOYADI').AsString;
-
-  HastaBilgileri.dosyaNo := ado_BransKodlari.FieldByName('dosyaNo').AsString;
-  datalar._takip_ := ado_BransKodlari.FieldByName('TakýpNo').AsString;
-
-
-  datalar.Bilgi.dosyaNo := ado_BransKodlari.FieldByName('dosyaNo').AsString;
-  datalar.Bilgi.gelisNo := ado_BransKodlari.FieldByName('gelisNo').AsString;
-  datalar.Bilgi.Doktor := ado_BransKodlari.FieldByName('doktor').AsString;
-  datalar.Bilgi.TakipNo := ado_BransKodlari.FieldByName('TakýpNo').AsString;
-  datalar.Bilgi.Adi := ado_BransKodlari.FieldByName('HASTAADI').AsString + ' ' +
-                           ado_BransKodlari.FieldByName('HASTASOYADI').AsString;
-  datalar.Bilgi.tckimlikNo := ado_BransKodlari.FieldByName('TCKIMLIKNO').AsString;
-      *)
-
-(*
-  if (ado_BransKodlari.FieldByName('tahlil').AsString = '1')
-      or
-     (ado_BransKodlari.FieldByName('ozelDurum').AsString = '1')
-     or
-     (ado_BransKodlari.FieldByName('seansKontrol').AsString = '1')
-     Then Begin
-       uyari.Visible := True;
-       txtUyariMesaj.Lines.Add(ado_BransKodlari.FieldByName('diger').AsString);
-       if ado_BransKodlari.FieldByName('tahlil').AsString = '1'
-       Then txtUyariMesaj.Lines.Add('Sonucu Girilmemiþ Tetkik Bilgisi Bulunmaktadýr');
-       if ado_BransKodlari.FieldByName('Kilo').AsString = '1'
-       Then txtUyariMesaj.Lines.Add('Giriþ Çýkýþ Kilo Bilgisi Girilmemiþ Seans Bulunmaktadýr');
-       if ado_BransKodlari.FieldByName('seansKontrol').AsString = '1'
-       Then txtUyariMesaj.Lines.Add('Rapora Göre haftalýk eksik yada sebeb belirtilmeden girilmemiþ Seans bulunmaktadýr');
-     End
-     Else
-     begin
-      txtUyariMesaj.Lines.Clear;
-      uyari.Visible := False;
-     end;
-     *)
-end;
-
 procedure TfrmHastaListe.ListeCellClick(Sender: TcxCustomGridTableView;
   ACellViewInfo: TcxGridTableDataCellViewInfo; AButton: TMouseButton;
   AShift: TShiftState; var AHandled: Boolean);
@@ -340,15 +250,6 @@ begin
     cxGrid2.ShowHint := false;
   end;
       *)
-
-end;
-
-procedure TfrmHastaListe.ListeDataControllerFilterRecord(
-  ADataController: TcxCustomDataController; ARecordIndex: Integer;
-  var Accept: Boolean);
-begin
-
- //  panel1.Caption := 'Kayýt Sayýsý : '  + inttostr(liste.DataController.Summary.FooterSummaryValues[0]);
 
 end;
 
@@ -420,6 +321,16 @@ begin
 
 end;
 
+procedure TfrmHastaListe.N1Click(Sender: TObject);
+begin
+  inherited;
+  case TMenuItem(Sender).tag of
+      0 :   Liste.ViewData.Expand(true);
+      1 :   Liste.ViewData.Expand(False);
+  end;
+
+end;
+
 procedure TfrmHastaListe.popupYilPopup(Sender: TObject);
 var
   I ,yil : integer;
@@ -441,71 +352,12 @@ begin
   end;
 end;
 
-procedure TfrmHastaListe.SeansKart1Click(Sender: TObject);
-begin
-
-   (*
-   if UserRight('SEANS iÞLEMLERÝ', 'Ýzle') = False
-   then begin
-       ShowMessageSkin('Bu Ýþlem Ýçin Yetkiniz Bulunmamaktadýr !','','','info');
-       exit;
-   end;
-
-    Application.CreateForm(TfrmSeanslar, frmSeanslar);
-    GorselAyar(frmSeanslar,datalar.global_img_list4);
-    //frmSeanslar.HastaBil(txtDosyaNo.Text , gridGelisler.Cells[1,gridgelisler.Row] , txtHastaAdi.text+' '+txtSoyadi.text , gridGelisler.Cells[3,gridgelisler.Row] ,gridGelisler.Cells[6,gridgelisler.Row],txtMakinaNo.text);
-    frmSeanslar.SeansGetir(ado_BransKodlari.fieldbyname('dosyaNo').AsString , ado_BransKodlari.fieldbyname('gelisno').AsString);
-    frmSeanslar.ShowModal;
-    frmSeanslar.Release;
-    frmSeanslar := nil;
-             *)
-
-end;
-
-procedure TfrmHastaListe.edaviKart1Click(Sender: TObject);
-begin
-  (*
-   if UserRight('Hasta Kartý', 'Tedavi Kartý') = False
-   then begin
-       ShowMessageSkin('Bu Ýþlem Ýçin Yetkiniz Bulunmamaktadýr !','','','info');
-       exit;
-   end;
-
-       Application.CreateForm(TfrmTedaviBilgisi, frmTedaviBilgisi);
-       frmTedaviBilgisi.TedaviFormDosyaNo := ado_BransKodlari.fieldbyname('dosyaNo').AsString;
-       frmTedaviBilgisi.TedaviFormGelisNo := ado_BransKodlari.fieldbyname('gelisNo').AsString;
-
-       GorselAyar(frmTedaviBilgisi,datalar.global_img_list4);
-       frmTedaviBilgisi.TedaviBilgi(ado_BransKodlari.fieldbyname('gelisNo').AsString,ado_BransKodlari.fieldbyname('dosyaNo').AsString
-                                      ,datetostr(kadir.tarihyap(ado_BransKodlari.fieldbyname('BHDAT').AsString)),'',ado_BransKodlari.fieldbyname('HASTAADI').AsString,
-                                       ado_BransKodlari.fieldbyname('HASTASOYADI').AsString);
-       frmTedaviBilgisi.ShowModal;
-       *)
-end;
-
-procedure TfrmHastaListe.Epikriz1Click(Sender: TObject);
-begin
- //  EpikrizYaz(ado_BransKodlari.fieldbyname('dosyaNo').AsString,ado_BransKodlari.fieldbyname('gelisNo').AsString,false);
-end;
-
-procedure TfrmHastaListe.SeansTahakkuk1Click(Sender: TObject);
-begin
-(*
-  DatasetiDoldur(ado_BransKodlari.fieldbyname('TakýpNo').AsString,
-                 ado_BransKodlari.fieldbyname('TEDAVITURU').AsString,
-                 ado_BransKodlari.fieldbyname('TakýpNo').AsString);
-
-  frmRapor.topluset.Dataset8 := KurumBilgi;
-
-  frmRapor.raporData1(frmRapor.topluset ,'035','\SeansTahakkuk');
-  frmRapor.ShowModal;
-  *)
-end;
-
 procedure TfrmHastaListe.TopPanelPropertiesChange(Sender: TObject);
 begin
   inherited;
-//  Bilgiler;
+  Liste.ViewData.Expand(true);
+
+  //  Bilgiler;
 end;
 
 end.
