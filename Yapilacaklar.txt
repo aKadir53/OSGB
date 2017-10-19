@@ -2,10 +2,24 @@ recete þablonlarý formunda çalýþmalar...
 hasta kartý (personel kartý) üzerine firmasýný gösteren etiket...
 firma kodunun ve isminin, þube kombosuna da baz teþkiðl etmesi lazým. adamýn fþrmasýnuýn þubeleri gelmeli
 
-kart 
+kart
+
+
+komboya eklediðimiz 00 merkezleri kaldýracaðýz.
+
+foreign keyler...
+doktor þirket arasý
+firma doktor arasý
+þube doktor arasý
+reçete reçete detay arasý
+reçete doktor arasý
+user doktor arasý
+user þirket arasý
 
 
 connection timeout
+
+þirket seçmeden giriþ yapmaya mani ol
 
 ------------------------------------------------------------------------------------------------------------------------
 yapýlanlar
@@ -24,3 +38,7 @@ kontrol zorunlu vs bilgilerinin datasete yüklenip oradan kontrol edilmeleri
 registry sunucu IP ve osgb kodu boþ ise sabit IP ve OSGB1 atamasý
 listede seçmeden vazgeçince enable olmamasý (giriþ ünitesine diziye atama eklenip firma, doktor ve kullanýcý taným ekranlarýnda seçilmiþ seçilmemiþ kontrolü eklendi)
 excel altyapýsý sql unique index kontrolleri  (set nocount on eklendi, Abdulkadir test etmiþ, OK.)
+firma kartýna trigger eklendi, yeni firma insert olunca 00/Merkez þube ekleme iþi yapacak.
+þube tablosundan personel karta foreign key konuldu
+personel kart tablosunda þube primary key yapýldý
+view'ý kaldýracaðýz (doldur boþalt yaptýk)
