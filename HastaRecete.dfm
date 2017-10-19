@@ -715,6 +715,7 @@ object frmHastaRecete: TfrmHastaRecete
                 FieldName = 'tanimi'
               end>
             Properties.ListOptions.ShowHeader = False
+            Properties.ListSource = DATALAR.ReceteKullanimYollari_Datasource
             FooterAlignmentHorz = taCenter
             HeaderAlignmentHorz = taCenter
             HeaderAlignmentVert = vaCenter
@@ -1072,6 +1073,7 @@ object frmHastaRecete: TfrmHastaRecete
     Top = 70
   end
   object PopupMenuEkleSil: TPopupMenu
+    Images = DATALAR.imag24png
     Left = 64
     Top = 72
     object E1: TMenuItem
@@ -1129,9 +1131,11 @@ object frmHastaRecete: TfrmHastaRecete
     TColcount = 2
     TColsW = '60,350'
     Table = 'icd_teshisleri'
+    Conn = DATALAR.ADOConnection2
     Filtercol = 1
     BaslikRenk = 16744576
     DipRenk = 16744576
+    ImajList = DATALAR.global_img_list4
     ButtonImajIndex = 132
     Kolonlar.Strings = (
       'ICDKODU'
@@ -1158,6 +1162,7 @@ object frmHastaRecete: TfrmHastaRecete
     TColcount = 2
     TColsW = '30,100'
     Table = 'ReceteSablon'
+    Conn = DATALAR.ADOConnection2
     Filtercol = 1
     BaslikRenk = 16744576
     DipRenk = 16744576

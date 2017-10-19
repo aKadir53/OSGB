@@ -42,7 +42,9 @@ uses
   FirmaKart in 'FirmaKart.pas' {frmFirmaKart},
   Receteler in 'Receteler.pas' {frmReceteler},
   receteSablonlari in 'receteSablonlari.pas' {frmReceteSablon},
-  Update_G in 'Update_G.pas' {frmUpdate};
+  Update_G in 'Update_G.pas' {frmUpdate},
+  MESSAGE in 'MESSAGE.PAS' {frmMessage};
+
 
 // KadirMedula3 in '..\..\medula3wsdl\KadirMedula3.pas';
 

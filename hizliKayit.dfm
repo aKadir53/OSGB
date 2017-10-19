@@ -302,6 +302,7 @@ object frmHizliKayit: TfrmHizliKayit
     Top = 7
   end
   object PopupMenu1: TPopupMenu
+    Images = DATALAR.imag24png
     Left = 696
     Top = 224
     object B1: TMenuItem

@@ -194,6 +194,7 @@ object frmTedaviBilgisi: TfrmTedaviBilgisi
     end
   end
   object AdoHastaGelis: TADOQuery
+    Connection = DATALAR.ADOConnection2
     Parameters = <>
     Left = 40
     Top = 96

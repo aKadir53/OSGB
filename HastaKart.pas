@@ -794,7 +794,6 @@ begin
   then
    dosyaNo.OnKeyDown(frmHastaKart.dosyaNo,key,[]);
 
-  TcxImageComboKadir (FindComponent ('sube')).ItemList := '00;MERKEZ';
   TcxImageComboKadir (FindComponent ('sube')).Filter := ' SirketKod = ' + QuotedStr (TcxLabel(FindComponent('LabelSirketKod')).Caption);
 
 
@@ -1055,12 +1054,7 @@ begin
   subeler.TableName := 'SIRKET_SUBE_TNM';
   subeler.ValueField := 'subeKod';
   subeler.DisplayField := 'subeTanim';
-  subeler.ItemList := '00;MERKEZ';
-  //subeler.Filter := '';
   subeler.BosOlamaz := True;
-
-
-
 
   setDataStringKontrol(self,subeler,'sube','Þube',kolon3,'',120);
 
