@@ -287,6 +287,7 @@ object frmUsers: TfrmUsers
     end
   end
   object UserSettings: TADOTable
+    Connection = DATALAR.ADOConnection2
     CursorType = ctStatic
     BeforePost = UserSettingsBeforePost
     TableName = 'UserSettings'
@@ -304,6 +305,7 @@ object frmUsers: TfrmUsers
     Top = 272
   end
   object User_Menu_Settings: TADOTable
+    Connection = DATALAR.ADOConnection2
     CursorType = ctStatic
     BeforePost = UserSettingsBeforePost
     TableName = 'UserMenuSettings'
@@ -311,6 +313,7 @@ object frmUsers: TfrmUsers
     Top = 272
   end
   object PopupMenu1: TPopupMenu
+    Images = DATALAR.imag24png
     Left = 32
     Top = 88
     object Kapat1: TMenuItem
@@ -363,6 +366,7 @@ object frmUsers: TfrmUsers
     Top = 416
   end
   object UserGroup: TADOTable
+    Connection = DATALAR.ADOConnection2
     CursorType = ctStatic
     AfterPost = UserGroupAfterPost
     BeforeDelete = UserGroupBeforeDelete
@@ -376,6 +380,7 @@ object frmUsers: TfrmUsers
     Top = 256
   end
   object UserGroup_Menu_Settings: TADOQuery
+    Connection = DATALAR.ADOConnection2
     CursorType = ctStatic
     Parameters = <>
     SQL.Strings = (
@@ -384,6 +389,7 @@ object frmUsers: TfrmUsers
     Top = 416
   end
   object UserGroupSettings: TADOQuery
+    Connection = DATALAR.ADOConnection2
     CursorType = ctStatic
     Parameters = <>
     SQL.Strings = (
