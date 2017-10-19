@@ -41,7 +41,8 @@ uses
   hizliKayit in 'hizliKayit.pas' {frmHizliKayit},
   FirmaKart in 'FirmaKart.pas' {frmFirmaKart},
   Receteler in 'Receteler.pas' {frmReceteler},
-  receteSablonlari in 'receteSablonlari.pas' {frmReceteSablon};
+  receteSablonlari in 'receteSablonlari.pas' {frmReceteSablon},
+  MESSAGE in 'MESSAGE.PAS' {frmMessage};
 
 // KadirMedula3 in '..\..\medula3wsdl\KadirMedula3.pas';
 
