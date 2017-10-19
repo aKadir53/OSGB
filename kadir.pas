@@ -366,7 +366,7 @@ procedure GridCellSetValue(Grid : TcxGridDBTableView; ColonName : string ; Row :
 function SQLSelectToDataSet(Columns,Table,Where : string) : TADOQuery;
 procedure ExceldenPersonelYukle;
 procedure OnlineDestekOpen;
-
+function IsNull (const s: String): Boolean;
 
 
 const
@@ -8006,6 +8006,11 @@ begin
   End
   else
       ShowMessageSkin('Ýþlem iptal edildi','','','info');
+end;
+
+function IsNull (const s: String): Boolean;
+begin
+  Result := Trim (s) = '';
 end;
 
 end.
