@@ -46,7 +46,7 @@ uses
 // KadirMedula3 in '..\..\medula3wsdl\KadirMedula3.pas';
 
 const
-  AppalicationVer : integer = 2209;
+  AppalicationVer : integer = 1001;
   // Versiyon info kontrol etmeyi unutma
 
 {$R *.res}
@@ -62,18 +62,38 @@ begin
   Application.CreateForm(TAnaForm, AnaForm);
   Application.CreateForm(TfrmTedaviBilgisi, frmTedaviBilgisi);
   // form2.show;
-
- // form2.Label1.Caption := 'NoktaDLL Kontrol Ediliyor...';
- // Application.ProcessMessages;
+  datalar.versiyon := inttostr(AppalicationVer);
   if ForceDirectories ('C:\OSGB') then
   begin
-    if FileExists('C:\OSGB\YvOSGB.exe') = False
+    if FileExists('C:\OSGB\isg.exe') = False
     Then begin
-      dosya := TFileStream.Create('C:\OSGB\YvOSGB.exe',fmCreate);
-      datalar.HTTP1.Get('http://www.noktayazilim.net/Yv.exe' ,TStream(dosya));
+      dosya := TFileStream.Create('C:\OSGB\isg.exe',fmCreate);
+      datalar.HTTP1.Get('http://www.noktayazilim.net/isg.exe' ,TStream(dosya));
       dosya.Free;
     end;
 
+  try
+    versiyon := (datalar.HTTP1.Get('http://www.noktayazilim.net/OSGBVersiyon.txt'));
+  except
+    versiyon := inttostr(AppalicationVer);
+  end;
+
+  if versiyon = '' then versiyon := inttostr(AppalicationVer);
+
+  if (strtoint(versiyon) > AppalicationVer)
+  Then Begin
+    try
+     _exe :=  PAnsiChar(AnsiString('C:\OSGB\isg.exe'));
+     WinExec(_exe,SW_SHOW);
+    // datalar.KillTask('Diyaliz.exe');
+    except on e : exception do
+      begin
+        ShowMessageSkin(e.Message,'','','info');
+      end;
+    end;
+  End;
+
+ (*
     if FileExists('C:\OSGB\AlpemixCMX.exe') = False
     Then begin
       dosya := TFileStream.Create('C:\OSGB\AlpemixCMX.exe',fmCreate);
@@ -108,6 +128,7 @@ begin
       datalar.HTTP1.Get('http://www.noktayazilim.net/Net.Pkcs11.dll' ,TStream(dosya));
       dosya.Free;
     end;
+    *)
   end;
 
   GetBuildInfo(Application.ExeName, V1, V2, V3,V4);

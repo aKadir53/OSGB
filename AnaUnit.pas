@@ -24,7 +24,7 @@ uses
   dxSkinOffice2007Pink, dxSkinOffice2007Silver, dxSkinOffice2010Black,
   dxSkinOffice2010Blue, dxSkinOffice2010Silver, dxSkinPumpkin, dxSkinSeven,
   dxSkinSharp, dxSkinSilver, dxSkinSpringTime, dxSkinStardust, dxSkinSummer2008,
-  dxSkinValentine, dxSkinXmas2008Blue;
+  dxSkinValentine, dxSkinXmas2008Blue,cxSchedulerStrs;
 
 type
   TAnaForm = class(TForm)
@@ -181,8 +181,7 @@ end;
 procedure TAnaForm.FormClose(Sender: TObject; var Action: TCloseAction);
 begin
   Datalar.ADOConnection2.Connected := false;
-  DATALAR.KillTask('DiyalizV4.exe');
-  DATALAR.KillTask('Diyaliz.exe');
+  DATALAR.KillTask('OSGB.exe');
  // halt;
 end;
 
@@ -196,9 +195,12 @@ begin
 
  // WebBrowser1.Navigate('https://www.noktayazilim.net');
 
-  caption := 'Mavi Nokta Bilgi Teknolojileri Ltd.Þti.  OSGB';
+  caption := 'Mavi Nokta Bilgi Teknolojileri Ltd.Þti.  Ýþyeri Hekimliði E-Reçete V.1';
   Sayfalar.Properties.CloseButtonMode := cbmNone;
   WebBrowser1.Navigate('https://www.noktayazilim.net/destek/GenelMesajlar2.aspx?Tip=D');
+
+  cxSetResourceString(@scxEvent,'Olay');
+
 
 end;
 
@@ -258,7 +260,7 @@ begin
   dxStatusBar1.Panels[1].Text := DATALAR.AktifSirketAdi;
   dxStatusBar1.Panels[1].Width := length(Datalar.AktifSirketAdi) * 8;
   dxStatusBar1.Panels[3].Text := DATALAR._merkezAdi;
-
+  dxStatusBar1.Panels[4].Text := 'Versiyon : ' + datalar.versiyon;
 
 end;
 

@@ -475,10 +475,9 @@ end;
 
 procedure TfrmLogin.btnVazgecClick(Sender: TObject);
 begin
- DATALAR.KillTask('Diyaliz.exe');
- DATALAR.KillTask('DiyalizV4.exe');
+ DATALAR.KillTask('OSGB.exe');
  log := false;
- close;
+ halt;
 end;
 
 procedure TfrmLogin.cxButtonEditKadir1PropertiesButtonClick(Sender: TObject;
