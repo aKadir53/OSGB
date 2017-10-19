@@ -1058,8 +1058,8 @@ object frmHastaRecete: TfrmHastaRecete
   end
   object DataSource4: TDataSource
     DataSet = ADO_Recete
-    Left = 474
-    Top = 93
+    Left = 522
+    Top = 101
   end
   object ADO_Recete: TADOQuery
     Connection = DATALAR.ADOConnection2
