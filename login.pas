@@ -299,6 +299,13 @@ begin
           exit;
         end;
 
+        if IsNull (txtSirket.Text) then
+        begin
+          ShowMessageSkin('Þirket Seçmeden Devam Edemezsiniz','','','info');
+          exit;
+        end;
+
+
         datalar.AktifSirket := txtDonemler.Text;
         (*
          if InternetVarmi
