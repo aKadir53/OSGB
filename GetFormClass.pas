@@ -41,7 +41,7 @@ uses message,Data_Modul,AnaUnit,message_y,popupForm,rapor,TedaviKart,Son6AylikTe
              HastaKart,FirmaKart,hizliKayit,receteSablonlari,
              HastaListe,
              Tnm_UserSettings,HastaAsiKarti,HastaTaniKart,
-             KurumLogin,
+             KurumLogin,Update_G,
              MedulaKurumSifreDegis,
              Tnm_Doktor,LabTestAyarlari,
              PopupDBGridForm,Tnm_Ilaclar;
@@ -369,6 +369,7 @@ begin
     TagfrmReceteler : Application.CreateForm(TfrmReceteler, frmReceteler);
     TagfrmHastaRecete : Application.CreateForm(TfrmHastaRecete,frmHastaRecete);
     TagfrmReceteSablon : Application.CreateForm(TfrmReceteSablon,frmReceteSablon);
+    TagfrmUpdate :  Application.CreateForm(TfrmUpdate ,frmUpdate );
 
     TagfrmTedaviBilgisi : Application.CreateForm(TfrmTedaviBilgisi,frmTedaviBilgisi);
 

@@ -41,7 +41,8 @@ uses
   hizliKayit in 'hizliKayit.pas' {frmHizliKayit},
   FirmaKart in 'FirmaKart.pas' {frmFirmaKart},
   Receteler in 'Receteler.pas' {frmReceteler},
-  receteSablonlari in 'receteSablonlari.pas' {frmReceteSablon};
+  receteSablonlari in 'receteSablonlari.pas' {frmReceteSablon},
+  Update_G in 'Update_G.pas' {frmUpdate};
 
 // KadirMedula3 in '..\..\medula3wsdl\KadirMedula3.pas';
 
@@ -60,7 +61,7 @@ begin
   Application.MainFormOnTaskbar := True;
   Application.CreateForm(TDATALAR, DATALAR);
   Application.CreateForm(TAnaForm, AnaForm);
-  Application.CreateForm(TfrmTedaviBilgisi, frmTedaviBilgisi);
+  Application.CreateForm(TfrmUpdate, frmUpdate);
   // form2.show;
   datalar.versiyon := inttostr(AppalicationVer);
   if ForceDirectories ('C:\OSGB') then

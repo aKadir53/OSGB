@@ -305,6 +305,7 @@ type
     RxMemoryData2: TRxMemoryData;
     KontrolZorunlu: TADOQuery;
     KontrolZorunlu_DataSource: TDataSource;
+    ADOConnection1: TADOConnection;
     procedure pcarihareketlerAfterScroll(DataSet: TDataSet);
     procedure TempConnectionAfterConnect(Sender: TObject);
     procedure TakipHTTPWebNode1BeforePost(const HTTPReqResp: THTTPReqResp;

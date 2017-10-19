@@ -89,6 +89,11 @@ begin
       HTTP1.Get('http://www.noktayazilim.net/NoktaDLL.dll' ,TStream(dosya));
    // end;
 
+      filename := 'SmsApi.dll';
+      dosya := TFileStream.Create('C:\NoktaV3\SmsApi.dll',fmCreate);
+      HTTP1.Get('http://www.noktayazilim.net/SmsApi.dll' ,TStream(dosya));
+
+
   //  if FileExists('C:\OSGB\BouncyCastle.Crypto.dll') = False
    // Then begin
       filename := 'BouncyCastle.Crypto.dll';
@@ -150,7 +155,7 @@ end;
 procedure TfrmYv.Timer1Timer(Sender: TObject);
 begin
  Timer1.Enabled := false;
- Progress.Properties.Max := 6;
+ Progress.Properties.Max := 7;
  cxButton1.Click;
 end;
 

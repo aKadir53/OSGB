@@ -61,9 +61,6 @@ object frmYv: TfrmYv
     Font.Height = -11
     Font.Name = 'Tahoma'
     Font.Style = []
-    ExplicitLeft = 240
-    ExplicitTop = 88
-    ExplicitWidth = 0
   end
   object HTTP1: TIdHTTP
     OnWork = HTTP1Work

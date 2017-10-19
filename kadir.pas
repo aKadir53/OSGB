@@ -5079,7 +5079,7 @@ begin
     sql := 'select SLX from parametreler where SLK = ''GT''';
     datalar.QuerySelect(ado, sql);
     _sonSQLID := strtoint(trim(datalar.http2.Get(
-          'http://www.noktayazilim.net/update.txt')));
+          'http://www.noktayazilim.net/OSGBupdate.txt')));
     if ado.Fields[0].AsInteger < _sonSQLID then
     begin
       Result := 'G';
@@ -7672,12 +7672,12 @@ begin
       servername := 'Provider=SQLOLEDB.1;Password=' + p +
         ';Persist Security Info=False;User ID=' + u + ';Initial Catalog=' +
         db + ';Data Source=' + s;
-    //  datalar.ADOConnection1.ConnectionString := servername;
- //     datalar.ADOConnection1.Connected := True;
+      datalar.ADOConnection1.ConnectionString := servername;
+      datalar.ADOConnection1.Connected := True;
     except
       on e: exception do
       begin
-        // ShowMessage(e.Message,'','','info');
+         ShowMessage(e.Message,'','','info');
       end;
     end;
   End;

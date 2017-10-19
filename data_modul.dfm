@@ -66,8 +66,8 @@ object DATALAR: TDATALAR
     Request.Ranges.Units = 'bytes'
     Request.Ranges = <>
     HTTPOptions = [hoForceEncodeParams]
-    Left = 69
-    Top = 169
+    Left = 53
+    Top = 217
   end
   object Takip: THTTPRIO
     OnAfterExecute = TakipAfterExecute
@@ -355,7 +355,7 @@ object DATALAR: TDATALAR
     Left = 701
     Top = 96
     Bitmap = {
-      494C01019B009F00140518001800ECE9D800FF10FFFFFFFFFFFFFFFF424D3600
+      494C01019B009F00180518001800ECE9D800FF10FFFFFFFFFFFFFFFF424D3600
       000000000000360000002800000060000000A80300000100200000000000007C
       050000000000000000000000000000000000D8E9EC00D8E9EC00D8E9EC00D8E9
       EC00D8E9EC00D8E9EC00D8E9EC00D8E9EC00D8E9EC00D8E9EC00D8E9EC00D8E9
@@ -12174,7 +12174,7 @@ object DATALAR: TDATALAR
     Left = 581
     Top = 72
     Bitmap = {
-      494C01019B009F00640518001800ECE9D800FF10FFFFFFFFFFFFFFFF424D3600
+      494C01019B009F00680518001800ECE9D800FF10FFFFFFFFFFFFFFFF424D3600
       000000000000360000002800000060000000A80300000100200000000000007C
       050000000000000000000000000000000000D8E9EC00D8E9EC00D8E9EC00D8E9
       EC00D8E9EC00D8E9EC00D8E9EC00D8E9EC00D8E9EC00D8E9EC00D8E9EC00D8E9
@@ -51941,8 +51941,8 @@ object DATALAR: TDATALAR
     Request.Ranges.Units = 'bytes'
     Request.Ranges = <>
     HTTPOptions = [hoForceEncodeParams]
-    Left = 32
-    Top = 136
+    Left = 24
+    Top = 216
   end
   object ITS: THTTPRIO
     OnBeforeExecute = ITSBeforeExecute
@@ -52267,15 +52267,15 @@ object DATALAR: TDATALAR
     Top = 180
   end
   object Ado_Guncellemeler: TADOQuery
-    Connection = Master
+    Connection = ADOConnection1
     CursorType = ctStatic
     Parameters = <>
     SQL.Strings = (
       
         'select * from UPDATE_CMD where ID > 994 and Modul = '#39'D'#39' Order by' +
         ' ID ')
-    Left = 102
-    Top = 446
+    Left = 86
+    Top = 70
   end
   object Master: TADOConnection
     CommandTimeout = 0
@@ -52555,5 +52555,16 @@ object DATALAR: TDATALAR
     DataSet = KontrolZorunlu
     Left = 24
     Top = 352
+  end
+  object ADOConnection1: TADOConnection
+    CommandTimeout = 0
+    ConnectionString = 
+      'Provider=SQLOLEDB.1;Password=5353;Persist Security Info=True;Use' +
+      'r ID=nokta;Initial Catalog=mavi;Data Source=91.151.85.12'
+    ConnectionTimeout = 10
+    LoginPrompt = False
+    Provider = 'SQLOLEDB.1'
+    Left = 33
+    Top = 119
   end
 end

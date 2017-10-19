@@ -99,6 +99,8 @@ type
       var ACanClose: Boolean);
     procedure sayfalarPageChanging(Sender: TObject; NewPage: TcxTabSheet;
       var AllowChange: Boolean);
+    function GuncellemeKontrol : boolean;
+    procedure GuncellemeBaslat(tip : string);
   private
     { Private declarations }
   public
@@ -115,9 +117,75 @@ var
 implementation
       uses Tnm_Ilaclar,Tnm_LabTest,
       Data_Modul,HastaKart,
-      Tnm_UserSettings, sifreDegis;
+      Tnm_UserSettings, sifreDegis, Update_G;
+
 {$R *.dfm}
 {$R xx.res}
+
+
+
+function TAnaForm.GuncellemeKontrol : boolean;
+var
+  sql , guncel : string;
+  ado : TADOQuery;
+  deneme : integer;
+begin
+    ado := TADOQuery.Create(nil);
+    ado.Connection := datalar.ADOConnection2;
+  try
+    sql := 'select SLK,SLT,SLX from parametreler where SLK = ''GT'' and SLB = ''0000''';
+    datalar.QuerySelect(ado,sql);
+    Guncel := ado.Fieldbyname('SLX').AsString;
+
+    if datalar.ADOConnection1.Connected = false
+    then begin
+             deneme := 1;
+             while deneme < 3 do
+             begin
+                  try
+                     SQL_Host_Baglan;
+                     deneme := 3;
+                  except
+                        deneme := deneme + 1;
+                  end;
+             end;
+
+             if DATALAR.ADOConnection1.Connected = false
+             then begin
+                exit;
+             end;
+    end;
+
+    try
+      datalar.Ado_Guncellemeler.Connection := datalar.ADOConnection1;
+      sql := 'select * from UPDATE_CMD where ID > ' + guncel + ' and Modul = ''D''' +
+             ' Order by ID ';
+      datalar.QuerySelect(datalar.Ado_Guncellemeler,sql);
+    except on e : Exception do
+     begin
+        ShowMessageSkin(e.Message,'','','info');
+     end;
+    end;
+
+    if not datalar.Ado_Guncellemeler.Eof
+    then begin
+      GuncellemeKontrol := True
+    end
+    else
+      GuncellemeKontrol := False;
+  except
+
+  end;
+
+  ado.Free;
+
+end;
+
+procedure TAnaForm.GuncellemeBaslat(tip : string);
+begin
+    frmUpdate.UpdateTip(tip);
+    frmUpdate.ShowModal;
+end;
 
 
 
@@ -199,6 +267,8 @@ begin
   Sayfalar.Properties.CloseButtonMode := cbmNone;
   WebBrowser1.Navigate('https://www.noktayazilim.net/destek/GenelMesajlar2.aspx?Tip=D');
 
+
+
   cxSetResourceString(@scxEvent,'Olay');
 
 
@@ -222,6 +292,15 @@ procedure TAnaForm.FormShow(Sender: TObject);
 var
  i,j : integer;
 begin
+
+
+//  if GuncelKontrol = 0 then exit;
+  if rev = 'G'
+  then begin
+     GuncellemeBaslat('Auto');
+  end;
+
+
   UserTable.Active := True;
   UserTable.Filter := 'User = ' + QuotedStr(datalar.username);
   EventsTable.Active := True;
