@@ -491,10 +491,10 @@ begin
   if mrYes = ShowMessageSkin('E-Reçete Numaranýz SMS ile Bildirilecek','','','msg')
   then begin
       //datalar.Login;
-      tel := _mobilTel_; //dosyaNoTel(_dosyaNO_);
+      tel := dosyaNoTel(_dosyaNO_,_mobilTel_);
       msj := 'E-Reçete Numaranýz : ' + ADO_Recete.FieldByName('EreceteNo').AsString + #13 +
              ' Saðlýklý Günler Dileriz';
-      SMSSend(tel,msj);
+      SMSSend(tel,msj,_HastaAdSoyad_);
 
       if tel = ''
       then begin
