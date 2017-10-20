@@ -43,8 +43,8 @@ uses
   Receteler in 'Receteler.pas' {frmReceteler},
   receteSablonlari in 'receteSablonlari.pas' {frmReceteSablon},
   Update_G in 'Update_G.pas' {frmUpdate},
-  MESSAGE in 'MESSAGE.PAS' {frmMessage};
-
+  MESSAGE in 'MESSAGE.PAS' {frmMessage},
+  PersonelEgitimFrm in 'PersonelEgitimFrm.pas' {frmPersonelEgitim};
 
 // KadirMedula3 in '..\..\medula3wsdl\KadirMedula3.pas';
 

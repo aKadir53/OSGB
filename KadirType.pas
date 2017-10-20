@@ -467,7 +467,7 @@ Const
   TagfrmRaporDetay = -20;
   TagfrmTakipNo = -10;
   TagfrmAsiKarti = 9020;
-  TagfrmDoktorlar = 80;
+  TagfrmDoktorlarx = 80;
   TagfrmTedaviBilgisi = 70;
   TagfrmGridListeForm = 120;
   TagfrmHastaRecete = 130;
@@ -515,6 +515,7 @@ Const
   TagfrmIlacEtkenMadde = 540;
   TagfrmIlacEtkenMaddeDetay = 550;
   TagfrmReceteler = 560;
+  TagPersonelEgitim = 570;
   TagfrmUpdate = 570;
 
   ExceleGonder = 9997;
@@ -558,5 +559,5 @@ implementation
 
 
 
-
+    TagfrmDoktorlarx
 end.

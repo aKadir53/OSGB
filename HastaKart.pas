@@ -1311,7 +1311,7 @@ begin
 
        end;
  140 : begin
-            F := FormINIT(TagfrmHastaIlacTedavi,GirisFormRecord,ikEvet,'Giriþ');
+            F := FormINIT(TagfrmHastaIlacTedaviþ,GirisFormRecord,ikEvet,'');
             if F <> nil then F.ShowModal;
       //  IlacTedaviKarti(dosyaNo.Text,_gelisNo_,noktasizTarih(DATALAR.Bilgi.ProvizyonTarihi));
        end;
