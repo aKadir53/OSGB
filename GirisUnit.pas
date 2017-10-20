@@ -2266,7 +2266,9 @@ begin
   //USER_ID.Text := datalar.username;
 
   cxPanelButtonEnabled(True,false,false);
+  if _HastaBilgileriniCaptionGoster_ then
 
+   cxTab.Tabs[0].Caption := self._HastaAdSoyad_;// datalar.HastaBil.Adi + ' ' + datalar.HastaBil.SoyAdi;
 
 
 
