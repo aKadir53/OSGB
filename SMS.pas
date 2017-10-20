@@ -97,7 +97,7 @@ begin
       frmSMS.Caption := '[' + hasta + ']' + ' Mesaj Gönderiliyor...';
       Application.ProcessMessages;
       //datalar.Login;
-      tel := MobilTel;//dosyaNoTel(dosyaNo);
+      tel := MobilTel;
       if tel = ''
       then begin
         ShowMessageSkin('Mobil Telefon boþ olmamalýdýr','','','info');

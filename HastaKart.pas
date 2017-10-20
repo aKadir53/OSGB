@@ -1261,14 +1261,16 @@ begin
        end;
 
  -28 : begin
-      //  SMSSend(TcxTextEdit(FindComponent('EV_TEL1')).Text,'');
+        SMSSend(TcxTextEdit(FindComponent('EV_TEL1')).Text,'',_HastaAdSoyad_);
 
+        (*
           Application.CreateForm(TfrmSMS, frmSMS);
           frmSMS.dosyaNo := TcxTextEdit(FindComponent('EV_TEL1')).Text;
           frmSMS.MobilTel := TcxTextEdit(FindComponent('EV_TEL1')).Text;
         //  frmSMS.hasta := txtHastaAdi.Text + ' ' + txtSoyAdi.Text;
           frmSMS.ShowModal;
           frmSMS := nil;
+          *)
        end;
  -29 : begin
          HastaRaporlari;
