@@ -90,7 +90,7 @@ begin
    // end;
 
       filename := 'SmsApi.dll';
-      dosya := TFileStream.Create('C:\NoktaV3\SmsApi.dll',fmCreate);
+      dosya := TFileStream.Create('C:\OSGB\SmsApi.dll',fmCreate);
       HTTP1.Get('http://www.noktayazilim.net/SmsApi.dll' ,TStream(dosya));
 
 
