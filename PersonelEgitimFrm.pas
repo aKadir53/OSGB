@@ -27,9 +27,10 @@ type
     { Private declarations }
   public
     { Public declarations }
+    function Init(Sender: TObject) : Boolean; override;
   end;
 
-const _TableName_ = 'DoktorlarT';
+const _TableName_ = 'Personel_Egitim';
       formGenislik = 500;
       formYukseklik = 500;
 
@@ -85,33 +86,75 @@ var
   index,i : integer;
   Ts,Ts1 : TStringList;
   List,List1,List3 : TListeAc;
-  bransKodu,calismaTipi : TcxImageComboKadir;
+  kombo : TcxImageComboKadir;
 begin
   Tag := TagfrmPersonelEgitim;
   ClientHeight := formYukseklik;
   ClientWidth := formGenislik;
-
-  indexFieldName := 'kod';
+  indexFieldName := 'id';
   TableName := _TableName_;
-  Olustur(self,_TableName_,'Doktor Taným',22);
+  Olustur(self,_TableName_,'Personel Eðitimleri',22);
 
 
   List := TListeAc.Create(nil);
 
-  List.Table := 'DoktorlarT';
+  List.Table := 'Personel_Egitim';
 
-  List.kolonlar.Add('kod');// := Ts;
-  List.kolonlar.Add('tanimi'); // := Ts;
+  List.kolonlar.Add('id');// := Ts;
+  List.kolonlar.Add('EgitimKod');// := Ts;
+  List.kolonlar.Add('BaslamaTarihi'); // := Ts;
 
 
-  List.KolonBasliklari.Add('Doktor Kodu');// := Ts1;
-  List.KolonBasliklari.Add('Doktor Adi');// := Ts1;
-  List.TColcount := 2;
-  List.TColsW := '50,200';
-  List.ListeBaslik := 'Doktorlar';
-  List.Name := 'kod';
+  List.KolonBasliklari.Add('ID');// := Ts1;
+  List.KolonBasliklari.Add('Eðitim Kodu');// := Ts1;
+  List.KolonBasliklari.Add('Baþlama Tarihi');// := Ts1;
+  List.TColcount := 3;
+  List.TColsW := '50,200,20';
+  List.ListeBaslik := 'Eðitimler';
+  List.Name := 'id';
   List.Conn := Datalar.ADOConnection2;
   List.SkinName := 'coffee';//AnaForm.dxSkinController1.SkinName;
+
+  setDataStringB(self,'id','Eðitim NO.',Kolon1,'',70,List,True,nil);
+
+  kombo := TcxImageComboKadir.Create(self);
+  kombo.Conn := Datalar.ADOConnection2;
+  kombo.TableName := 'Egitim_tnm';
+  kombo.ValueField := 'kod';
+  kombo.DisplayField := 'tanimi';
+  kombo.BosOlamaz := True;
+  kombo.Filter := '';
+  OrtakEventAta(kombo);
+  setDataStringKontrol(self,kombo,'Egitimkod','Eðitim Kodu',kolon1,'',120);
+
+
+  _HastaAdSoyad_
+id
+PersonelDosyaNo
+
+BaslamaTarihi
+BaslamaSaati
+BitisTarihi
+Sure
+Egitimci
+EgitimTuru
+EgitimYeri
+SertifikaNo
+EgitimIcerigi
+EgitimUcreti
+EgitimUcretParaBirimi
+EgitimUcretiOdendi
+
+  kombo := TcxImageComboKadir.Create(self);
+  kombo.Conn := Datalar.ADOConnection2;
+  kombo.TableName := 'DoktorlarT';
+  kombo.ValueField := 'kod';
+  kombo.DisplayField := 'tanimi';
+  kombo.BosOlamaz := True;
+  kombo.Filter := '';
+  OrtakEventAta(kombo);
+  setDataStringKontrol(self,kombo,'Doktor','Doktor',kolon1,'',120);{}
+
 
   setDataStringB(self,'kod','Doktor Kodu',Kolon1,'',70,List,True,nil);
 
@@ -126,7 +169,7 @@ begin
   bransKodu.BosOlamaz := True;
   bransKodu.Filter := '';
   OrtakEventAta(bransKodu);
-  setDataStringKontrol(self,bransKodu,'bransKodu','Branþ Kodu',kolon1,'',120);
+  setDataStringKontrol(self,bransKodu,'bransKodu','Branþ Kodu',kolon1,'',120);{}
 
 
 
@@ -149,7 +192,7 @@ begin
   calismaTipi.Filter := '';
   OrtakEventAta(calismaTipi);
   setDataStringKontrol(self,calismaTipi,'calismaTipi','Çalýþma Tipi',kolon1,'',120);
-
+   {}
   setDataStringC(self,'uzman','Uzman mý?',Kolon1,'',80,'Evet,Hayýr');
   setDataStringC(self,'durum','Durum',Kolon1,'',80,'Aktif,Pasif');
 
@@ -168,13 +211,17 @@ begin
 
 
   Disabled(self,True);
-
-
  end;
 
 
 
 
+
+function TfrmPersonelEgitim.Init(Sender: TObject): Boolean;
+begin
+  result := inherited;
+  _HastaBilgileriniCaptionGoster_ := True;
+end;
 
 procedure TfrmPersonelEgitim.cxKaydetClick(Sender: TObject);
 begin
