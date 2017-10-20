@@ -74,7 +74,8 @@ begin
      TagfrmGonderilmis : Result := -1;
      TagfrmTahliltakip : Result := -1;
      TagfrmTahlilsonucGir : Result := -1;
-     TagfrmDoktorlar : Result := -1;
+     TagfrmDoktorlarx : Result := -1;
+     TagfrmPersonelEgitim : Result := -1;
      TagfrmHemsireler : Result := -1;
      TagfrmMakina : Result := 89;
      TagfrmTestAyarlari : Result := -1;

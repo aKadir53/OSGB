@@ -515,8 +515,8 @@ Const
   TagfrmIlacEtkenMadde = 540;
   TagfrmIlacEtkenMaddeDetay = 550;
   TagfrmReceteler = 560;
-  TagPersonelEgitim = 570;
   TagfrmUpdate = 570;
+  TagfrmPersonelEgitim = 580;
 
   ExceleGonder = 9997;
   SeansTarihiUpdate = 0;
