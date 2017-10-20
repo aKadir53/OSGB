@@ -1313,7 +1313,7 @@ begin
 
        end;
  140 : begin
-            F := FormINIT(TagfrmHastaIlacTedaviþ,GirisFormRecord,ikEvet,'');
+            F := FormINIT(TagfrmPersonelEgitim,GirisFormRecord,ikEvet,'');
             if F <> nil then F.ShowModal;
       //  IlacTedaviKarti(dosyaNo.Text,_gelisNo_,noktasizTarih(DATALAR.Bilgi.ProvizyonTarihi));
        end;

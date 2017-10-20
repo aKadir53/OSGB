@@ -467,7 +467,7 @@ Const
   TagfrmRaporDetay = -20;
   TagfrmTakipNo = -10;
   TagfrmAsiKarti = 9020;
-  TagfrmDoktorlarx = 80;
+  TagfrmDoktorlar = 80;
   TagfrmTedaviBilgisi = 70;
   TagfrmGridListeForm = 120;
   TagfrmHastaRecete = 130;
@@ -552,12 +552,7 @@ Const
 
   sp_HastaGelis = 'exec sp_HastaGelisleri ';
 
-
-
 implementation
 
 
-
-
-    TagfrmDoktorlarx
 end.
