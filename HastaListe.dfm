@@ -42,7 +42,7 @@ object frmHastaListe: TfrmHastaListe
       LevelTabs.Style = 1
       ExceleGonder = False
       object Liste: TcxGridDBTableView
-        PopupMenu = PopupMenu1
+        PopupMenu = popupYil
         OnDblClick = ListeDblClick
         Navigator.Buttons.First.Visible = True
         Navigator.Buttons.PriorPage.Visible = True
@@ -549,7 +549,6 @@ object frmHastaListe: TfrmHastaListe
     object Epikriz1: TMenuItemModul
       Caption = #304#351'e Giri'#351' Muayene Formu'
       ImageIndex = 89
-      OnClick = Epikriz1Click
       FormId = 0
     end
     object e1: TMenuItemModul
@@ -589,11 +588,16 @@ object frmHastaListe: TfrmHastaListe
     end
   end
   object popupYil: TPopupMenu
-    OnPopup = popupYilPopup
     Left = 392
     Top = 88
     object N1: TMenuItem
-      Caption = 'N'
+      Caption = 'T'#252'm Gruplar'#305' A'#231
+      OnClick = N1Click
+    end
+    object K1: TMenuItem
+      Tag = 1
+      Caption = 'Gruplar'#305' Kapat'
+      OnClick = N1Click
     end
   end
   object ADOTable1: TADOTable

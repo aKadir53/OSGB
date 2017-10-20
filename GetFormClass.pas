@@ -405,6 +405,7 @@ begin
   TGirisForm(Form)._SigortaliTur_ := Value.F_SigortaliTur_;
   TGirisForm(Form)._SeansSira_ := Value.F_SeansSira_;
   TGirisForm(Form)._firmaKod_ := Value.F_FirmaKod_;
+  TGirisForm(Form)._mobilTel_ := Value.F_mobilTel_;
 
   TgirisForm(Form).Caption := FormCaption(FormTag) + ' - ' + FormAltCaption(FormTag);
   if ik = ikEvet

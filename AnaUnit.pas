@@ -248,9 +248,12 @@ end;
 
 procedure TAnaForm.FormClose(Sender: TObject; var Action: TCloseAction);
 begin
+  datalar.LoginInOut.Login := lgnOut;
+  datalar.LoginInOut.Execute;
   Datalar.ADOConnection2.Connected := false;
   DATALAR.KillTask('OSGB.exe');
  // halt;
+
 end;
 
 procedure TAnaForm.FormCreate(Sender: TObject);

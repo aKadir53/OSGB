@@ -71,6 +71,7 @@ type
     cxTabSheet1: TcxTabSheet;
     cxImage1: TcxImage;
     Label1: TLabel;
+    login1: Tlogin;
 
     PROCEDURE YUVARLAK(WDN:HWND;ALAN:TRECT);
     procedure FormCreate(Sender: TObject);
@@ -299,6 +300,13 @@ begin
           exit;
         end;
 
+        if IsNull (txtSirket.Text) then
+        begin
+          ShowMessageSkin('Þirket Seçmeden Devam Edemezsiniz','','','info');
+          exit;
+        end;
+
+
         datalar.AktifSirket := txtDonemler.Text;
         (*
          if InternetVarmi
@@ -365,6 +373,9 @@ begin
                datalar.KontrolZorunlu.Active := True;
 
                WanIp(datalar.WanIPURL);
+               datalar.LoginInOut.Kullanici := datalar.username;
+               datalar.LoginInOut.Login := lgnIn;
+               datalar.LoginInOut.Execute;
 
                Hide;
              (*

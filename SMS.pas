@@ -35,6 +35,8 @@ type
     { Public declarations }
     dosyaNo : string;
     hasta : string;
+    MobilTel : string;
+    mesaj : string;
   end;
 
   TSendMesaj = procedure(KullaniciAdi : string ; Sifre : string ; _from : string ;
@@ -95,7 +97,7 @@ begin
       frmSMS.Caption := '[' + hasta + ']' + ' Mesaj Gönderiliyor...';
       Application.ProcessMessages;
       //datalar.Login;
-      tel := dosyaNoTel(dosyaNo);
+      tel := MobilTel;//dosyaNoTel(dosyaNo);
       if tel = ''
       then begin
         ShowMessageSkin('Mobil Telefon boþ olmamalýdýr','','','info');
@@ -112,8 +114,6 @@ begin
       else
        ShowMessageSkin('Hata : ' + SS[2] ,'','','info');
 
-
-
     finally
       frmSMS.Caption := 'SMS Gönderim  [' + hasta + ']';
 
@@ -124,9 +124,8 @@ end;
 
 procedure TfrmSMS.FormShow(Sender: TObject);
 begin
-
   frmSMS.Caption := 'SMS Gönderim  [' + hasta + ']';
-
+  frmSMS.txtmsg.Text := mesaj;
 end;
 
 procedure TfrmSMS.txtmsgPropertiesChange(Sender: TObject);
