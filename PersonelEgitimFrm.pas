@@ -87,6 +87,7 @@ var
   Ts,Ts1 : TStringList;
   List,List1,List3 : TListeAc;
   kombo : TcxImageComboKadir;
+  dateEdit: TcxDateEditKadir;
 begin
   Tag := TagfrmPersonelEgitim;
   ClientHeight := formYukseklik;
@@ -127,14 +128,17 @@ begin
   OrtakEventAta(kombo);
   setDataStringKontrol(self,kombo,'Egitimkod','Eðitim Kodu',kolon1,'',120);
 
+  dateEdit := TcxDateEditKadir.Create(self);
+  dateEdit.ValueTip := tvString;
+  setDataStringKontrol(self,dateEdit, 'BaslamaTarihi','Baþlama Tarihi',Kolon1,'',100);
 
-  _HastaAdSoyad_
-id
-PersonelDosyaNo
+  dateEdit := TcxDateEditKadir.Create(self);
+  dateEdit.ValueTip := tvString;
+  setDataStringKontrol(self,dateEdit, 'BitisTarihi','Bitiþ Tarihi',Kolon1,'',100);
 
-BaslamaTarihi
+
 BaslamaSaati
-BitisTarihi
+
 Sure
 Egitimci
 EgitimTuru
@@ -211,7 +215,8 @@ EgitimUcretiOdendi
 
 
   Disabled(self,True);
- end;
+  _HastaBilgileriniCaptionGoster_ := True;
+end;
 
 
 
@@ -220,7 +225,6 @@ EgitimUcretiOdendi
 function TfrmPersonelEgitim.Init(Sender: TObject): Boolean;
 begin
   result := inherited;
-  _HastaBilgileriniCaptionGoster_ := True;
 end;
 
 procedure TfrmPersonelEgitim.cxKaydetClick(Sender: TObject);
