@@ -116,7 +116,10 @@ begin
   List.Conn := Datalar.ADOConnection2;
   List.SkinName := 'coffee';//AnaForm.dxSkinController1.SkinName;
 
-  setDataStringB(self,'id','Eðitim NO.',Kolon1,'',70,List,True,nil);
+  setDataStringB(self,'id','Eðitim NO.',Kolon1,'',70,List,True,nil, 'tanimi', '', False, True);
+
+  setDataString(self,'PersonelDosyaNo','DosyaNo',Kolon1,'',100,True);
+  TcxTextEditKadir (FindComponent('PersonelDosyaNo')).Properties.ReadOnly := True;
 
   kombo := TcxImageComboKadir.Create(self);
   kombo.Conn := Datalar.ADOConnection2;
@@ -149,7 +152,14 @@ begin
   OrtakEventAta(kombo);
   setDataStringKontrol(self,kombo,'Egitimci','Eðitimci',kolon1,'',120);{}
   //setDataString(self,'Egitimci','Eðitimci',Kolon1,'',100);
-  setDataStringC(self,'EgitimTuru','Eðitim Türü',Kolon1,'',100, 'Ýç Eðitim,Dýþ Eðitim,Diðer');
+  kombo := TcxImageComboKadir.Create(self);
+  kombo.Conn := nil;
+  kombo.BosOlamaz := True;
+  kombo.ItemList := '0;Ýç Eðitim,1;Dýþ Eðitim';
+  kombo.Filter := '';
+  OrtakEventAta(kombo);
+  setDataStringKontrol(self,kombo,'EgitimTuru','Eðitim Türü',kolon1,'',120);
+  //setDataStringC(self,'EgitimTuru','Eðitim Türü',Kolon1,'',100, 'Ýç Eðitim,Dýþ Eðitim,Diðer');
   setDataString(self,'EgitimYeri','Eðitim Yeri',Kolon1,'',100);
   setDataString(self,'SertifikaNo','Sertifika No.',Kolon1,'',100);
   setDataString(self,'EgitimIcerigi','Eðitim Ýçeriði',Kolon1,'',100);
@@ -164,9 +174,10 @@ begin
   OrtakEventAta(kombo);
   setDataStringKontrol(self,kombo,'EgitimUcretiOdendi','Ödendi mi?',kolon1,'',120);
 
-  setDataStringC(self,'','',Kolon1,'',100, 'Evet,Hayýr');
+  //setDataStringC(self,'EgitimUcretiOdendi','Ödendi mi?',Kolon1,'',100, 'Evet,Hayýr');
 
   Disabled(self,True);
+  SayfaCaption('Eðitim Bilgileri', '', '', '', '');
   _HastaBilgileriniCaptionGoster_ := True;
 end;
 
@@ -177,6 +188,7 @@ end;
 function TfrmPersonelEgitim.Init(Sender: TObject): Boolean;
 begin
   result := inherited;
+  TcxTextEditKadir (FindComponent('PersonelDosyaNo')).Text := _dosyaNO_;
 end;
 
 procedure TfrmPersonelEgitim.cxKaydetClick(Sender: TObject);
