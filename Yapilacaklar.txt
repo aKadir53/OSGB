@@ -23,6 +23,9 @@ giriþ unit'ten türeme
 doktorlar formunu deðiþtirip çak...
 formcaption tablosu
 
+personel_egitim tablosundan dosya no alanýný imha edip þirket için eðitim düzenleme ekranýna döndert
+daha sonra þirket eðitimlerine personel seçip atama yaptýrt. mevcut yapýda her personel için tek tek açýp girmek lazým. öyle olmasýn. toplu olsun.
+
 
 ------------------------------------------------------------------------------------------------------------------------
 yapýlanlar
