@@ -8,7 +8,7 @@ uses
   cxContainer, cxEdit, Menus, StdCtrls, cxButtons, cxGroupBox, DB, ADODB,
   cxTextEdit, cxMaskEdit, cxButtonEdit, cxDBEdit,kadirType,KadirLabel,Kadir,  GirisUnit,Data_Modul, dxSkinsCore, dxSkinBlue, dxSkinCaramel, dxSkinCoffee,
   dxSkiniMaginary, dxSkinLilian, dxSkinLiquidSky, dxSkinLondonLiquidSky,
-  dxSkinMcSkin, dxSkinMoneyTwins, dxSkinsDefaultPainters, cxCheckBox, cxLabel;
+  dxSkinMcSkin, dxSkinMoneyTwins, dxSkinsDefaultPainters, cxCheckBox, cxLabel, cxcalendar;
 
 
 
@@ -52,10 +52,8 @@ begin
 end;
 
 procedure TfrmPersonelEgitim.ButtonClick(Sender: TObject);
-var
-  ID : integer;
 begin
-  TcxTextEditKadir(FindComponent('TDisID')).EditValue := ID;
+  TcxTextEditKadir (FindComponent('PersonelDosyaNo')).Text := _dosyaNO_;
 end;
 
 procedure TfrmPersonelEgitim.cxEditEnter(Sender: TObject);
@@ -116,10 +114,11 @@ begin
   List.Conn := Datalar.ADOConnection2;
   List.SkinName := 'coffee';//AnaForm.dxSkinController1.SkinName;
 
-  setDataStringB(self,'id','Eðitim NO.',Kolon1,'',70,List,True,nil, 'tanimi', '', False, True);
+  setDataStringB(self,'id','Eðitim No.',Kolon1,'',70,List,True,nil, 'tanimi', '', False, True, -100);
 
-  setDataString(self,'PersonelDosyaNo','DosyaNo',Kolon1,'',100,True);
+  setDataString(self,'PersonelDosyaNo','DosyaNo',Kolon1,'TDIS',100,True);
   TcxTextEditKadir (FindComponent('PersonelDosyaNo')).Properties.ReadOnly := True;
+  addButton(self,nil,'btnDosyaNo','','Dosya No''yu Ata',Kolon1,'TDIS',150,ButtonClick);
 
   kombo := TcxImageComboKadir.Create(self);
   kombo.Conn := Datalar.ADOConnection2;
@@ -129,16 +128,15 @@ begin
   kombo.BosOlamaz := True;
   kombo.Filter := '';
   OrtakEventAta(kombo);
-  setDataStringKontrol(self,kombo,'Egitimkod','Eðitim Kodu',kolon1,'',120);
+  setDataStringKontrol(self,kombo,'Egitimkod','Eðitim',kolon1,'',130);
 
   dateEdit := TcxDateEditKadir.Create(self);
-  dateEdit.ValueTip := tvString;
-  setDataStringKontrol(self,dateEdit, 'BaslamaTarihi','Baþlama Tarihi',Kolon1,'',100);
-
-  setDataString(self,'BaslamaSaati','Baþlama Saati',Kolon1,'',100);
+  dateEdit.ValueTip := tvDate;
+  dateEdit.Properties.Kind := ckdatetime;
+  setDataStringKontrol(self,dateEdit, 'BaslamaTarihi','Baþlama Zamaný',Kolon1,'',130);
 
   dateEdit := TcxDateEditKadir.Create(self);
-  dateEdit.ValueTip := tvString;
+  dateEdit.ValueTip := tvDate;
   setDataStringKontrol(self,dateEdit, 'BitisTarihi','Bitiþ Tarihi',Kolon1,'',100);
 
   setDataString(self,'Sure','Süre (Saat)',Kolon1,'',100);
@@ -162,7 +160,7 @@ begin
   //setDataStringC(self,'EgitimTuru','Eðitim Türü',Kolon1,'',100, 'Ýç Eðitim,Dýþ Eðitim,Diðer');
   setDataString(self,'EgitimYeri','Eðitim Yeri',Kolon1,'',100);
   setDataString(self,'SertifikaNo','Sertifika No.',Kolon1,'',100);
-  setDataString(self,'EgitimIcerigi','Eðitim Ýçeriði',Kolon1,'',100);
+  setDataStringMemo(self,'EgitimIcerigi','Eðitim Ýçeriði',Kolon1,'',300, 65);
   setDataString(self,'EgitimUcreti','Eðitim Ücreti',Kolon1,'',100);
   setDataString(self,'EgitimUcretParaBirimi','Para Birimi',Kolon1,'',100);
 
@@ -176,7 +174,7 @@ begin
 
   //setDataStringC(self,'EgitimUcretiOdendi','Ödendi mi?',Kolon1,'',100, 'Evet,Hayýr');
 
-  Disabled(self,True);
+  //Disabled(self,True);
   SayfaCaption('Eðitim Bilgileri', '', '', '', '');
   _HastaBilgileriniCaptionGoster_ := True;
 end;
