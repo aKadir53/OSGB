@@ -167,7 +167,7 @@ begin
 
   //Disabled(self,True);
   SayfaCaption('Eðitim Bilgileri', '', '', '', '');
-  _HastaBilgileriniCaptionGoster_ := True;
+  //_HastaBilgileriniCaptionGoster_ := True;
 end;
 
 
