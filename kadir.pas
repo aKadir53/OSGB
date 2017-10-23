@@ -16,7 +16,7 @@ uses Windows, Messages, SysUtils, Variants, Classes, Graphics, Vcl.Controls, Con
   cxCalendar,dxLayoutContainer, dxLayoutControl,cxPC;
 
 
-procedure SMSSend(tel,Msj : string);
+procedure SMSSend(tel : string; Msj : string = '';Kisi : string ='');
 function WanIp(url : string = 'http://bot.whatismyipaddress.com') : string;
 procedure RegYaz(dizi , diziDegeri : string ; openKey : string = 'Software\NOKTA\NOKTA');
 function RegOku(dizi : string ; openKey : string = 'Software\NOKTA\NOKTA') : Variant;
@@ -260,7 +260,7 @@ function StokBul(_kodu: string; var Birim: string; var kdv: integer): string;
 function DosyaNoTC(DosyaNo: string): string; overload;
 function DosyaNoTC(DosyaNo: string; var idealKilo: string): string; overload;
 function DosyaNoHastaAd(DosyaNo: string): string;
-function DosyaNoTel(DosyaNo: string): string;
+function DosyaNoTel(DosyaNo: string; Telefon : string = ''): string;
 
 function receteIlacBilgisiGetir(barkod: string): TReceteIlacBilgisi;
 function provizyonTakipTiptoReceteTip(Tip: string): integer;
@@ -531,12 +531,12 @@ begin
   WanIp := datalar.WanIp;
 end;
 
-procedure SMSSend(tel,Msj : string);
+procedure SMSSend(tel : string; Msj : string = '';Kisi : string ='');
 begin
     Application.CreateForm(TfrmSMS, frmSMS);
     frmSMS.mesaj := Msj;
     frmSMS.MobilTel := tel;
-  //  frmSMS.hasta := txtHastaAdi.Text + ' ' + txtSoyAdi.Text;
+    frmSMS.hasta := Kisi;
     frmSMS.ShowModal;
     frmSMS := nil;
 
@@ -2742,28 +2742,35 @@ begin
 
 end;
 
-function DosyaNoTel(DosyaNo: string): string;
+function DosyaNoTel(DosyaNo: string; Telefon : string = ''): string;
 var
   sql, Tel, kod: string;
   ado: TADOQuery;
 
 begin
-  ado := TADOQuery.Create(nil);
-  ado.Connection := datalar.ADOConnection2;
-  sql := 'select EV_TEL1  from Personelkart where dosyaNO = ' + QuotedStr(DosyaNo);
-  datalar.QuerySelect(ado, sql);
-  Tel := ado.Fields[0].AsString;
+  Tel := '';
+  if Telefon = '' then
+  begin
+    ado := TADOQuery.Create(nil);
+    ado.Connection := datalar.ADOConnection2;
+    sql := 'select EV_TEL1  from Personelkart where dosyaNO = ' + QuotedStr(DosyaNo);
+    datalar.QuerySelect(ado, sql);
+    Tel := ado.Fields[0].AsString;
+    ado.Free;
+  end
+  Else
+   Tel := Telefon;
 
   Tel := trim(Tel); // telefondan sað sol boþluk varsa at
   if copy(Tel, 1, 1) = '0' then
-    Tel := copy(Tel, 2, 20); // telefon ilk deðeri 0 sa at
+  Tel := copy(Tel, 2, 20); // telefon ilk deðeri 0 sa at
   Tel := StringReplace(Tel, ' ', '', [rfReplaceAll]);
   // telefon iinde boþluk varsa at
   Tel := '90' + Tel; // tel baþýna 90 ekle
 
   Result := Tel;
 
-  ado.Free;
+
 end;
 
 function DosyaNoTC(DosyaNo: string): string; overload;
