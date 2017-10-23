@@ -13,6 +13,16 @@ nace kodlarý
 
 connection timeout
 
+eðitimler tablosu eklenecek ve intemsoft ekranýndaki þeyler eklenecek
+iþ kazasý ve meslek hastalýðý bildirim formu ekle ekraný ???
+hasta (personel) kartýnda eðitim ekle 
+
+kadirtype'ta form için tag oluþtur
+projeye formu ekle
+giriþ unit'ten türeme
+doktorlar formunu deðiþtirip çak...
+formcaption tablosu
+
 
 ------------------------------------------------------------------------------------------------------------------------
 yapýlanlar
@@ -49,3 +59,50 @@ reçete doktor arasý ok.
 user doktor arasý ok.
 user þirket arasý ok.
 -------------------
+
+
+
+           Bu program iþyeri fabrika, þirket v.b. iþyeri hekimlerinin firma çalýþanlarýnýn saðlýk durumlarý ile ilgili her türlü verilerini bilgisayar ortamýnda kaydedebilmeleri ve izleyebilmeleri amacýyla yazýlmýþtýr
+Program ile yapabileceðiniz bazý þeyler aþaðýda sýralanmýþtýr..
+Program Server/Client çalýþma sistemine uyumlu olarak yazýlmýþtýr. 
+Veritabaný olarak Firebird SQL Server kullanýlmýþtýr. 
+Her çalýþan için bir defaya mahsus hasta kayýt kartý açarak sonraki tüm iþlemlerini bu kart üzerinden yürütebilirsiniz.
+Ýþyeri hekimleri çalýþanlarý diðer saðlýk kuruluþlarýna sevk edebilir, bu sevk kayýtlarýný sonlanana kadar takip edip kayýt altýna alabilirler. 
+Hastalarýnýza normal muayene kaydý açarak þikayetlerini, fizik muayene bulgularýný, düþüncelerinizi ve kararýnýzý yazabilirsiniz. 
+Açtýðýnýz muayene kaydýna ait olarak reçete yazabilir, yazýcýnýzdan print alabilirsiniz.
+Hastanýza eðer yapýlmýþsa laboratuar ve radyoloji tetkiklerini kaydedebilir ve bunlarý raporlayabilirsiniz.
+Eðer hastanýza istirahat raporu ve/veya bir baþka saðlýk kuruluþuna sevk ediyorsanýz bunlarý kaydedebilir ve istediðiniz an bunlarý görüntüleyebilirsiniz.
+Tek tuþla bir hastanýzýn daha önceki geliþlerini, bu geliþlerinde neler yapýldýðýný, hangi teþhis koyulduðunu ve muayene sonucunu görüntüleyebilirsiniz.
+Tek tuþla muayene kaydýnýn tüm aþamalarýný ve bilgilerini içeren epikriz formunu görüntüleyebilir ve print edebilirsiniz.
+Hastanýza iþe giriþ muayenesi açarak program tarafýndan oluþturulan bilgi kutucuklarýný doldurup müteakiben tek tuþla Aðýr Ve Tehlikeli Ýþlerde Çalýþacaklara Ait
+Ýþe Giriþ / Periyodik Muayene Formunu görüntüleyip print edebilirsiniz. 
+Olasý iþ kazasý ve meslek hastalýðý durumlarýnda program tarafýndan istenen bilgileri girerek iþ kazasý ve meslek hastalýðý kaydý oluþturup, tek tuþla resmi iþ kazasý formunu print edebilirsiniz.
+Çalýþanlarýnýz için aþý takvimleri oluþturup onlarý takip edebilirsiniz.
+Muayene kayýtlarý, sevk kayýtlarý, istirahat raporlarý, aþý kayýtlarý, iþ kazasý ve meslek hastalýklarý kayýtlarý v.b. programa girilen her türlü veriler üzerinde tek tuþla istatistiki çýkarýmlar yapabilir ve kolaylýkla bunlarý print edebilirsiniz.Alabileceðiniz bir çok rapordan birkaç tanesini örnek verecek olursak;
+      --Yeni iþe giriþlerin aylara göre daðýlýmý…
+      --Yapýlan sevklerin departmanlara göre daðýlýmý…
+      --Verilen istirahat raporlarýnýn teþhislere göre daðýlýmý…
+      --Ýþ kazalarýnýn departmanlara göre daðýlýmý…
+      --Yazýlan reçetelerin ilaç isimlerine göre daðýlýmý…
+      --Ve daha bir çok kritere göre alýnan yüzlerce rapor… sayýlabilir.    
+Birden fazla hekim ayný iþyerine kendi kayýtlarýný yapabilir.
+Bir hekim ayný programla birden fazla iþyerini birbirine karýþtýrmadan ayný program üzerinde takip edebilir.
+Çalýþanlarýnýzýn tümüne toplu mail ve/veya SMS gönderebilirsiniz.
+Programýn alarm ve hatýrlatma modülünü günlük iþlerinizin karmaþasý içinde bir asistan gibi kullanabilirsiniz. 
+ADMIN kullanýcýsý olarak kullanýcý tanýmlama bölümünde yetkilendirme yaparak kullanýcýlarýn program üzerinde izin verdiðiniz kadar tasarruf etmelerine olanak saðlayabilirsiniz. 
+Programýn her anýnda raporlama yapabilir ve bunlar yazýcýdan çýktý olarak alabilirsiniz. 
+Programda bazý bilgiler parametriktir ve bir kez girilir.Bundan sonra o bilgiler klavyeden girmek yerine seçerek veri giriþi yapýlýr. 
+Verilerinizi istediðiniz anda tek tuþla yedekleyebilir ve istediðiniz anda istediðiniz yedeðe dönebilirsiniz. 
+Geliþmiþ arama sistemiyle kayýt sayýsý ne kadar çok olursa olsun aradýðýnýz kayda bir saniye gibi kýsa bir zamanda ulaþabilirsiniz. Türkçe karakter kullanmak serbesttir. 
+Programýn her aþamasýnda kullanýlan mesajlar ile kullanýcý bilgilendirilerek hata yapmasý önlenmektedir. 
+Hasta kayýtlarýna resim ekleyebilirsiniz. 
+Programýn görünümünü istediðiniz þekilde ayarlayabilirsiniz.
+Programdaki verileri tek týklamayla web sayfasý, word sayfasý, excel sayfasý olarak kaydedebilirsiniz. 
+Program 20 kayýtlýk sýnýrlama ile gelmektedir.20 kayýttan sonra programa kayýt giriþi durdurulmaktadýr. 
+Programý sýnýrsýz tam sürüm olarak kullanabilmeniz için lisans formunda ve aþaðýda yazýlý bulunan mail adresine adýnýz, soyadýnýz, irtibat kurabileceðimiz bir telefon veya mail adresi, alacaðýnýz programýn adýný, (bu program için kliniksoft yazmanýz yeterlidir.) programýn ürettiði (lisans formunda yazan seri numaralarý)seri numaralarýný ve sitemizde yayýnlanan banka hesaplarýndan herhangi birine program bedelini yatýrdýðýnýzý belirten bir mesaj göndermeniz gerekmektedir.Mailiniz bize ulaþýr ulaþmaz tam sürüm lisans numaralarý belirttiðiniz mail adresine gönderilecektir.Buna gerek olmamakla birlikte programýn cd’sini de isteyen müþterilerimize program cd’ si de kargo ile gönderilir.Tüm bu konularda görüþmek ve bilgi almak içinde aþaðýdaki adrese mail atabilirsiniz. 
+
+Atatürk Mh. 1.Cd Y2 5G4 Tatkavaklý Mustafakemalpaþa/BURSA
+Tel    :0 (224) 636 71 84 
+GSM :0 (532) 563 68 52
+yuksel@indemsoft.com
+indemsoft@gmail.com 
