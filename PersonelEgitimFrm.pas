@@ -22,7 +22,6 @@ type
       AButtonIndex: Integer);override;
     procedure cxEditEnter(Sender: TObject);
     procedure cxEditExit(Sender: TObject);
-    procedure ButtonClick(Sender: TObject);
   private
     { Private declarations }
   public
@@ -30,9 +29,9 @@ type
     function Init(Sender: TObject) : Boolean; override;
   end;
 
-const _TableName_ = 'Personel_Egitim';
+const _TableName_ = 'Egitimler';
       formGenislik = 500;
-      formYukseklik = 500;
+      formYukseklik = 600;
 
 var
   frmPersonelEgitim: TfrmPersonelEgitim;
@@ -49,11 +48,6 @@ begin
   begin
     enabled;
   end;
-end;
-
-procedure TfrmPersonelEgitim.ButtonClick(Sender: TObject);
-begin
-  TcxTextEditKadir (FindComponent('PersonelDosyaNo')).Text := _dosyaNO_;
 end;
 
 procedure TfrmPersonelEgitim.cxEditEnter(Sender: TObject);
@@ -81,9 +75,7 @@ end;
 
 procedure TfrmPersonelEgitim.FormCreate(Sender: TObject);
 var
-  index,i : integer;
-  Ts,Ts1 : TStringList;
-  List,List1,List3 : TListeAc;
+  List : TListeAc;
   kombo : TcxImageComboKadir;
   dateEdit: TcxDateEditKadir;
 begin
@@ -97,7 +89,7 @@ begin
 
   List := TListeAc.Create(nil);
 
-  List.Table := 'Personel_Egitim';
+  List.Table := 'Egitimler';
 
   List.kolonlar.Add('id');// := Ts;
   List.kolonlar.Add('EgitimKod');// := Ts;
@@ -116,9 +108,8 @@ begin
 
   setDataStringB(self,'id','Eðitim No.',Kolon1,'',70,List,True,nil, 'tanimi', '', False, True, -100);
 
-  setDataString(self,'PersonelDosyaNo','DosyaNo',Kolon1,'TDIS',100,True);
-  TcxTextEditKadir (FindComponent('PersonelDosyaNo')).Properties.ReadOnly := True;
-  addButton(self,nil,'btnDosyaNo','','Dosya No''yu Ata',Kolon1,'TDIS',150,ButtonClick);
+  setDataStringB(self,'SirketKod','Þirket Kodu',Kolon1,'',100,nil, True, SirketKod);
+  SirketKod.Properties.ReadOnly := True;
 
   kombo := TcxImageComboKadir.Create(self);
   kombo.Conn := Datalar.ADOConnection2;
@@ -128,12 +119,12 @@ begin
   kombo.BosOlamaz := True;
   kombo.Filter := '';
   OrtakEventAta(kombo);
-  setDataStringKontrol(self,kombo,'Egitimkod','Eðitim',kolon1,'',130);
+  setDataStringKontrol(self,kombo,'Egitimkod','Eðitim',kolon1,'',145);
 
   dateEdit := TcxDateEditKadir.Create(self);
   dateEdit.ValueTip := tvDate;
   dateEdit.Properties.Kind := ckdatetime;
-  setDataStringKontrol(self,dateEdit, 'BaslamaTarihi','Baþlama Zamaný',Kolon1,'',130);
+  setDataStringKontrol(self,dateEdit, 'BaslamaTarihi','Baþlama Zamaný',Kolon1,'',145);
 
   dateEdit := TcxDateEditKadir.Create(self);
   dateEdit.ValueTip := tvDate;
@@ -186,25 +177,12 @@ end;
 function TfrmPersonelEgitim.Init(Sender: TObject): Boolean;
 begin
   result := inherited;
-  TcxTextEditKadir (FindComponent('PersonelDosyaNo')).Text := _dosyaNO_;
 end;
 
 procedure TfrmPersonelEgitim.cxKaydetClick(Sender: TObject);
 begin
+  SirketKod.Text := datalar.AktifSirket;
   inherited;
-  case TcxButton(sender).Tag  of
-    0 : begin
-        // ShowMessage('Kaydet');
-        // ButonClick(self,'k');
-      //   Olustur(self,'Users');
-      //   setDataString(self,'ADISOYADI',100,10);
-
-        end;
-    1 : begin
-         // post;
-         //ShowMessage('Ýptal');
-    end;
-  end;
 end;
 
 end.
