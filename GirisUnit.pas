@@ -155,6 +155,7 @@ type
 
     function FormInputZorunluKontrol(form : TForm) : Boolean;
     procedure FormCreate(Sender: TObject);
+    procedure SayfalarChange(Sender: TObject);
 
   private
     F_dosyaNO_ : string;
@@ -596,6 +597,11 @@ begin
    if s4 = '' then sayfa4.TabVisible := false else sayfa4.TabVisible := True;
    if s5 = '' then sayfa5.TabVisible := false else sayfa5.TabVisible := True;
    Sayfalar.ActivePageIndex := ActivePage;
+end;
+
+procedure TGirisForm.SayfalarChange(Sender: TObject);
+begin
+  //
 end;
 
 procedure TGirisForm.SayfalarPageChanging(Sender: TObject; NewPage: TcxTabSheet;
