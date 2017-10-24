@@ -1,11 +1,20 @@
+iþ kazasýnýn altýna menüye eðitimler eklenecek
+personel kartýndaki eðitim düðmesi geri kapatýlacak
+EÐÝTÝM EKRANINA eðitime personel ekle butonu eklenecek
+butona basýnca liste açtýrýlacak (iþ kazasý ekranýndan kopya alýnabilir)
+formun altýna grid eklenip listeden seçtikçe altýna eklenebilir (cxkadirgrid kendi dataseti varmýþ).
+eðitimler ekranýnda bir de eðitim seçme için o genel seçilebilir parametreler ekranýný çaðoran düðme eklenecek. seçilince süre ve açýklamayý otomatik doldurabiliriz
+eðitimler ekranýnda eðitim seçerken gelen listedeki mantýksýz manasýz sütunlar
+
 recete þablonlarý formunda çalýþmalar...
 cxschedulerstrs unitinde türkçeleþtirme
 þirket tablosuna ssk (?) bölge müdürlüðü sicil numarasý ?
 kart
-
+toplu personel atamada where þartýna þirkjet eklenecekti
+login formu bekleyin resmi ortalanacak
 
 eðitim sertifikasý baskýsý eklenecek baský olarak
-
+eðitim seçiminde where ile o þirketin eðitimleri getirtilecek.
 -------------
 taný listesi
 ilaç listesi
