@@ -646,6 +646,7 @@ object GirisForm: TGirisForm
     Properties.Style = 11
     Properties.TabHeight = 10
     Properties.TabPosition = tpBottom
+    OnChange = SayfalarChange
     OnPageChanging = SayfalarPageChanging
     ClientRectBottom = 278
     ClientRectLeft = 3

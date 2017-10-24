@@ -8,13 +8,24 @@ uses
   cxContainer, cxEdit, Menus, StdCtrls, cxButtons, cxGroupBox, DB, ADODB,
   cxTextEdit, cxMaskEdit, cxButtonEdit, cxDBEdit,kadirType,KadirLabel,Kadir,  GirisUnit,Data_Modul, dxSkinsCore, dxSkinBlue, dxSkinCaramel, dxSkinCoffee,
   dxSkiniMaginary, dxSkinLilian, dxSkinLiquidSky, dxSkinLondonLiquidSky,
-  dxSkinMcSkin, dxSkinMoneyTwins, dxSkinsDefaultPainters, cxCheckBox, cxLabel, cxcalendar;
+  dxSkinMcSkin, dxSkinMoneyTwins, dxSkinsDefaultPainters, cxCheckBox, cxLabel, cxcalendar,
+  cxStyles, dxSkinscxPCPainter, cxCustomData, cxFilter, cxData, cxDataStorage,
+  cxDBData, cxDropDownEdit, cxGridLevel, cxGridCustomTableView, cxGridTableView,
+  cxGridBandedTableView, cxGridDBBandedTableView, cxClasses, cxGridCustomView,
+  cxGrid, cxPC;
 
 
 
 type
   TfrmPersonelEgitim = class(TGirisForm)
+    EgitimPersonel: TcxGridKadir;
+    GridList: TcxGridDBBandedTableView;
+    GridListMuayeneSoru: TcxGridDBBandedColumn;
+    GridListGrupKod: TcxGridDBBandedColumn;
+    EgitimPersonelLevel1: TcxGridLevel;
+    PersonelList: TListeAc;
     procedure FormCreate(Sender: TObject);
+    procedure ButtonClick(Sender: TObject);
     procedure cxKaydetClick(Sender: TObject);
     procedure cxTextEditKeyDown(Sender: TObject; var Key: Word;
       Shift: TShiftState);
@@ -22,7 +33,10 @@ type
       AButtonIndex: Integer);override;
     procedure cxEditEnter(Sender: TObject);
     procedure cxEditExit(Sender: TObject);
-  private
+    procedure SayfalarPageChanging(Sender: TObject; NewPage: TcxTabSheet;
+       var AllowChange: Boolean);
+    procedure SayfalarChange(Sender: TObject);
+ private
     { Private declarations }
   public
     { Public declarations }
@@ -31,7 +45,7 @@ type
 
 const _TableName_ = 'Egitimler';
       formGenislik = 500;
-      formYukseklik = 600;
+      formYukseklik = 500;
 
 var
   frmPersonelEgitim: TfrmPersonelEgitim;
@@ -40,6 +54,41 @@ var
 implementation
 
 {$R *.dfm}
+procedure TfrmPersonelEgitim.ButtonClick(Sender: TObject);
+var
+  i : Integer;
+  sTmp: String;
+begin
+  if TcxButtonKadir (Sender).ButtonName = 'btnPersonelEkle' then
+  begin
+    PersonelList.Where := 'Aktif = 1 and SirketKod = ' + QuotedStr (datalar.AktifSirket);
+    datalar.ButtonEditSecimlist := PersonelList.ListeGetir;
+    if length (datalar.ButtonEditSecimlist) > 0 then
+    begin
+      for i := Low (datalar.ButtonEditSecimlist) to High (datalar.ButtonEditSecimlist) do
+      begin
+        EgitimPersonel.Dataset.Append;
+        EgitimPersonel.Dataset.FieldByName('PersonelDosyaNo').AsString := DATALAR.ButtonEditSecimlist [i].kolon1;
+        EgitimPersonel.Dataset.FieldByName('Egitimid').AsString := TcxButtonEditKadir (FindComponent('id')).Text;
+        EgitimPersonel.Dataset.Post;
+      end;
+      EgitimPersonel.Dataset.Active := False;
+      EgitimPersonel.Dataset.Active := True;
+    end;
+  end
+  else if TcxButtonKadir (Sender).ButtonName = 'btnPersonelSil' then
+  begin
+    sTmp := EgitimPersonel.Dataset.FieldByName ('id').AsString;
+    if not IsNull (sTmp) then
+    begin
+      datalar.QueryExec(nil, 'delete from Personel_Egitim where id = '+ sTmp);
+      EgitimPersonel.Dataset.Active := False;
+      EgitimPersonel.Dataset.Active := True;
+    end;
+
+  end;
+end;
+
 procedure TfrmPersonelEgitim.cxButtonEditPropertiesButtonClick(Sender: TObject;
       AButtonIndex: Integer);
 begin
@@ -48,6 +97,14 @@ begin
   begin
     enabled;
   end;
+  EgitimPersonel.Dataset.Connection := DATALAR.ADOConnection2;
+  EgitimPersonel.Dataset.SQL.Text :=
+    'Select pe.*, pk.HASTAADI + '' '' + pk.HASTASOYADI as PersonelAdiSoyadi '+
+    'from Personel_Egitim pe '+
+    'inner join PersonelKart pk on pk.DosyaNo = pe.PersonelDosyaNo '+
+    'where EgitimId = ' + TcxButtonEditKadir (FindComponent('id')).Text+
+    'order by PersonelAdiSoyadi, pe.id';
+  EgitimPersonel.Dataset.Open;
 end;
 
 procedure TfrmPersonelEgitim.cxEditEnter(Sender: TObject);
@@ -162,11 +219,14 @@ begin
   kombo.Filter := '';
   OrtakEventAta(kombo);
   setDataStringKontrol(self,kombo,'EgitimUcretiOdendi','Ödendi mi?',kolon1,'',120);
+  addButton(self,nil,'btnPersonelEkle','','Personel Getir',Sayfa2_Kolon1,'PERS',120,ButtonClick);
+  addButton(self,nil,'btnPersonelSil','','Seçili Personeli Sil',Sayfa2_Kolon1,'PERS',120,ButtonClick);
+  setDataStringKontrol(self,EgitimPersonel,'EgitimPersonel','',sayfa2_kolon1,'',400,300);
 
   //setDataStringC(self,'EgitimUcretiOdendi','Ödendi mi?',Kolon1,'',100, 'Evet,Hayýr');
 
   //Disabled(self,True);
-  SayfaCaption('Eðitim Bilgileri', '', '', '', '');
+  SayfaCaption('Eðitim Bilgileri', 'Eðitime Katýlan Personeller', '', '', '');
   //_HastaBilgileriniCaptionGoster_ := True;
 end;
 
@@ -177,6 +237,18 @@ end;
 function TfrmPersonelEgitim.Init(Sender: TObject): Boolean;
 begin
   result := inherited;
+end;
+
+procedure TfrmPersonelEgitim.SayfalarChange(Sender: TObject);
+begin
+  //d
+end;
+
+procedure TfrmPersonelEgitim.SayfalarPageChanging(Sender: TObject;
+  NewPage: TcxTabSheet; var AllowChange: Boolean);
+begin
+  cxPanel.Visible := (newPage <> sayfa2);
+
 end;
 
 procedure TfrmPersonelEgitim.cxKaydetClick(Sender: TObject);
