@@ -125,9 +125,9 @@ begin
         ClientHeight := 300;
         ClientWidth := 550;
         TableName := 'SIRKET_SUBE_TNM';
-        _fields_ := 'sirketKod,subeKod,subeTanim,subeSiciNo,subeDoktor';
-        _fieldBaslik_ := ',ÞubeKodu,ÞubeTanimi,ÝþYeriSicilNo,Doktor';
-        _fieldTips_ := 'string,string,string,string,ImageDoktorCombo';
+        _fields_ := 'sirketKod,subeKod,subeTanim,subeSiciNo,subeDoktor,BolgeMudurlukSicilNo';
+        _fieldBaslik_ := ',ÞubeKodu,ÞubeTanimi,ÝþYeriSicilNo,Doktor,BölgeMdSicilNo';
+        _fieldTips_ := 'string,string,string,string,ImageDoktorCombo,string';
         indexFieldName := 'sirketKod = ' + QuotedStr(_firmaKod_);
         cxPanel.Visible := false;
         cxGroupDoktorlar.Caption := 'Þube Bilgileri';

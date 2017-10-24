@@ -499,7 +499,7 @@ begin
   setDataString(self,'VD','Vergi Dairesi',Kolon1,'',100,True);
   setDataString(self,'VN','Vergi No',Kolon1,'',100,True);
   setDataString(self,'IsyeriSicilNo','Ýþ Yeri Sicil No',Kolon1,'',100,True);
-
+  setDataString(self,'BolgeMudurlukSicilNo','Bölge Müd. Sicil No.',Kolon1,'',100,True);
   SEHIR := TcxImageComboKadir.Create(self);
   SEHIR.Conn := Datalar.ADOConnection2;
   SEHIR.TableName := 'SKRS_IL_KODLARI';
