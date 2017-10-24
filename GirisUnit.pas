@@ -183,6 +183,8 @@ type
     F_IlacEtkenMadde_ : string;
     F_firmaKod_ : string;
     F_mobilTel_ : string;
+    F_sp_ : string;
+    F_kod_ : string;
 
     { Private declarations }
   public
@@ -267,6 +269,8 @@ type
     property _IlacEtkenMadde_ : string read F_IlacEtkenMadde_ write F_IlacEtkenMadde_;
     property _firmaKod_ : string read F_firmaKod_ write F_firmaKod_;
     property _mobilTel_ : string read F_mobilTel_ write F_mobilTel_;
+    property _sp_ : string read F_sp_ write F_sp_;
+    property _kod_ : string read F_kod_ write F_kod_;
 
   end;
 
@@ -1084,6 +1088,8 @@ var
   list : ArrayListeSecimler;
   key : word;
 begin
+ // TcxButtonEditKadir(TcxGridDBColumn(sender).Properties).ListeAc.Table := 'PersonelKart';
+
   list := TcxButtonEditKadir(TcxGridDBColumn(sender).Properties).ListeAc.ListeGetir;
   Datalar.ButtonEditSecimlist := List;
 end;

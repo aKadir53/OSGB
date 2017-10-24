@@ -12,6 +12,7 @@ object frmSorgulamalar: TfrmSorgulamalar
   Font.Style = []
   OldCreateOrder = False
   Position = poScreenCenter
+  OnCreate = FormCreate
   PixelsPerInch = 96
   TextHeight = 13
   object cxPageControl2: TcxPageControl
@@ -89,55 +90,12 @@ object frmSorgulamalar: TfrmSorgulamalar
             Height = 13
             Caption = 'A'#231#305'klama'
           end
-          object sBitBtn19: TsBitBtn
-            Left = 15
-            Top = 342
-            Width = 76
-            Height = 29
-            Hint = 'Kaydet'
-            Caption = 'Kaydet'
-            Font.Charset = TURKISH_CHARSET
-            Font.Color = clWindowText
-            Font.Height = -11
-            Font.Name = 'Tahoma'
-            Font.Style = [fsBold]
-            NumGlyphs = 2
-            ParentFont = False
-            Spacing = 15
-            TabOrder = 0
-            OnClick = sBitBtn19Click
-            SkinData.SkinSection = 'BUTTON'
-            ImageIndex = 10
-            Images = DATALAR.global_img_list4
-          end
-          object sBitBtn23: TsBitBtn
-            Tag = -1
-            Left = 94
-            Top = 342
-            Width = 76
-            Height = 29
-            Hint = 'Kaydet'
-            Caption = 'Kapat'
-            Font.Charset = TURKISH_CHARSET
-            Font.Color = clWindowText
-            Font.Height = -11
-            Font.Name = 'Tahoma'
-            Font.Style = [fsBold]
-            NumGlyphs = 2
-            ParentFont = False
-            Spacing = 15
-            TabOrder = 1
-            OnClick = sBitBtn23Click
-            SkinData.SkinSection = 'BUTTON'
-            ImageIndex = 12
-            Images = DATALAR.global_img_list4
-          end
           object cxDBMemo1: TcxDBMemo
             Left = 14
             Top = 164
             DataBinding.DataField = 'Aciklama'
             DataBinding.DataSource = DataSource2
-            TabOrder = 2
+            TabOrder = 0
             Height = 177
             Width = 211
           end
@@ -145,23 +103,40 @@ object frmSorgulamalar: TfrmSorgulamalar
             Left = 16
             Top = 118
             Properties.Items = <>
-            TabOrder = 3
+            TabOrder = 1
+            Conn = DATALAR.ADOConnection2
             BosOlamaz = False
             Width = 201
           end
           object txtRaporAdi: TcxTextEdit
             Left = 16
             Top = 72
-            TabOrder = 4
-            Text = 'txtRaporAdi'
+            TabOrder = 2
             Width = 201
           end
           object txtRaporKodu: TcxTextEdit
             Left = 16
             Top = 26
-            TabOrder = 5
-            Text = 'txtRaporKodu'
+            TabOrder = 3
             Width = 121
+          end
+          object btnSorgulamalarKaydet: TcxButton
+            Left = 16
+            Top = 347
+            Width = 75
+            Height = 25
+            Caption = 'Kaydet'
+            TabOrder = 4
+            OnClick = btnSorgulamalarKaydetClick
+          end
+          object btnSorgulamalarKapat: TcxButton
+            Left = 97
+            Top = 347
+            Width = 75
+            Height = 25
+            Caption = 'Kapat'
+            TabOrder = 5
+            OnClick = btnSorgulamalarKapatClick
           end
         end
         object gridRaporlar: TDBGridEh
@@ -2403,83 +2378,44 @@ object frmSorgulamalar: TfrmSorgulamalar
               4E44AE426082}
             Stretch = True
           end
-          object sBitBtn8: TsBitBtn
+          object btnYeniSorgu: TcxButton
             Tag = 27
-            Left = 2
+            Left = 3
             Top = 177
-            Width = 180
-            Height = 28
-            Hint = 'Yeni Sorgu'
-            Caption = 'Yeni Rapor Haz'#305'rla'
-            NumGlyphs = 2
-            Spacing = 15
+            Width = 176
+            Height = 25
+            Caption = 'Yeni Sorgu Haz'#305'rla'
             TabOrder = 0
-            OnClick = sBitBtn8Click
-            SkinData.SkinSection = 'BUTTON'
-            ImageIndex = 27
-            Images = DATALAR.global_img_list4
+            OnClick = btnYeniSorguClick
           end
-          object sBitBtn18: TsBitBtn
+          object btnSorguyuDegistir: TcxButton
             Tag = 25
-            Left = 2
-            Top = 205
-            Width = 180
-            Height = 28
-            Hint = 'Sorgu D'#252'zenle'
-            Caption = 'Rapor De'#287'i'#351'tir'
-            NumGlyphs = 2
-            ParentShowHint = False
-            ShowHint = True
-            Spacing = 15
+            Left = 3
+            Top = 208
+            Width = 176
+            Height = 25
+            Caption = 'Sorguyu De'#287'i'#351'tir'
             TabOrder = 1
-            WordWrap = False
-            OnClick = sBitBtn8Click
-            SkinData.SkinSection = 'BUTTON'
-            ImageIndex = 25
-            Images = DATALAR.global_img_list4
+            OnClick = btnYeniSorguClick
           end
-          object sBitBtn9: TsBitBtn
+          object btnSorguyuSil: TcxButton
             Tag = -1
-            Left = 2
-            Top = 233
-            Width = 180
-            Height = 28
-            Hint = 'Sil'
-            Caption = 'Raporu Sil'
-            NumGlyphs = 2
-            ParentShowHint = False
-            ShowHint = True
-            Spacing = 15
+            Left = 3
+            Top = 239
+            Width = 176
+            Height = 25
+            Caption = 'Sorguyu Sil'
             TabOrder = 2
-            WordWrap = False
-            OnClick = sBitBtn9Click
-            SkinData.SkinSection = 'BUTTON'
-            ImageIndex = 7
-            Images = DATALAR.global_img_list4
+            OnClick = btnSorguyuSilClick
           end
-          object sBitBtn24: TsBitBtn
-            Tag = 155
-            Left = -2
-            Top = 313
-            Width = 181
-            Height = 28
-            Caption = 'F5 - '#199'al'#305#351't'#305'r'
-            Font.Charset = DEFAULT_CHARSET
-            Font.Color = clWindowText
-            Font.Height = -11
-            Font.Name = 'MS Sans Serif'
-            Font.Style = [fsBold]
-            NumGlyphs = 2
-            ParentFont = False
-            ParentShowHint = False
-            ShowHint = True
-            Spacing = 15
+          object btnSorguCalistir: TcxButton
+            Left = 3
+            Top = 282
+            Width = 176
+            Height = 25
+            Caption = 'Sorguyu '#199'al'#305#351't'#305'r'
             TabOrder = 3
-            WordWrap = False
-            OnClick = sBitBtn24Click
-            SkinData.SkinSection = 'BUTTON'
-            ImageIndex = 61
-            Images = DATALAR.global_img_list4
+            OnClick = btnSorguCalistirClick
           end
         end
         object txtAciklama: TcxDBMemo
@@ -2500,9 +2436,9 @@ object frmSorgulamalar: TfrmSorgulamalar
       ImageIndex = 1
       object cxGrid3: TcxGrid
         Left = 0
-        Top = 30
+        Top = 0
         Width = 1286
-        Height = 539
+        Height = 590
         Align = alClient
         Font.Charset = TURKISH_CHARSET
         Font.Color = clWindowText
@@ -2513,9 +2449,7 @@ object frmSorgulamalar: TfrmSorgulamalar
         TabOrder = 0
         LevelTabs.ImageBorder = 2
         LevelTabs.Style = 1
-        LookAndFeel.Kind = lfOffice11
-        LookAndFeel.NativeStyle = False
-        LookAndFeel.SkinName = 'McSkin'
+        ExplicitHeight = 569
         object cxGrid3DBBandedTableView1: TcxGridDBBandedTableView
           PopupMenu = PopupMenu1
           DataController.DataSource = DataSource1
@@ -2535,7 +2469,6 @@ object frmSorgulamalar: TfrmSorgulamalar
           OptionsView.ColumnAutoWidth = True
           OptionsView.Footer = True
           OptionsView.FooterMultiSummaries = True
-          OptionsView.GroupByBox = False
           Bands = <
             item
             end>
@@ -2546,48 +2479,6 @@ object frmSorgulamalar: TfrmSorgulamalar
           Options.DetailFrameColor = clHighlight
         end
       end
-      object Panel7: TPanel
-        Left = 0
-        Top = 0
-        Width = 1286
-        Height = 30
-        Align = alTop
-        TabOrder = 1
-        object sBitBtn20: TsBitBtn
-          Tag = 151
-          Left = 1
-          Top = 1
-          Width = 26
-          Height = 27
-          Hint = 'Excel'#39'e G'#246'nder'
-          NumGlyphs = 2
-          ParentShowHint = False
-          ShowHint = True
-          TabOrder = 0
-          WordWrap = False
-          OnClick = sBitBtn20Click
-          Alignment = taLeftJustify
-          SkinData.SkinSection = 'BUTTON'
-          ImageIndex = 151
-          Images = DATALAR.global_img_list4
-        end
-      end
-      object Panel12: TPanel
-        Left = 0
-        Top = 569
-        Width = 1286
-        Height = 21
-        Align = alBottom
-        Alignment = taLeftJustify
-        Caption = 'Listelenen Kay'#305't Say'#305's'#305' :'
-        Font.Charset = DEFAULT_CHARSET
-        Font.Color = clWindowText
-        Font.Height = -11
-        Font.Name = 'MS Sans Serif'
-        Font.Style = [fsBold]
-        ParentFont = False
-        TabOrder = 2
-      end
     end
     object cxTabSheet8: TcxTabSheet
       Caption = 'SQL'
@@ -2596,7 +2487,7 @@ object frmSorgulamalar: TfrmSorgulamalar
         Left = 0
         Top = 30
         Width = 1286
-        Height = 115
+        Height = 171
         Align = alTop
         Font.Charset = TURKISH_CHARSET
         Font.Color = clWindowText
@@ -2615,48 +2506,22 @@ object frmSorgulamalar: TfrmSorgulamalar
         Height = 30
         Align = alTop
         TabOrder = 1
-        object sBitBtn21: TsBitBtn
-          Tag = 59
-          Left = 2
-          Top = 2
-          Width = 26
-          Height = 26
-          Hint = #199'al'#305#351't'#305'r'
-          NumGlyphs = 2
-          ParentShowHint = False
-          ShowHint = True
+        object btnSQLRun: TcxButton
+          Left = 3
+          Top = 1
+          Width = 75
+          Height = 25
+          Caption = #199'al'#305#351't'#305'r'
           TabOrder = 0
-          WordWrap = False
-          OnClick = sBitBtn21Click
-          Alignment = taLeftJustify
-          SkinData.SkinSection = 'BUTTON'
-          ImageIndex = 59
-          Images = DATALAR.global_img_list4
-        end
-        object sBitBtn22: TsBitBtn
-          Tag = 34
-          Left = 29
-          Top = 2
-          Width = 26
-          Height = 26
-          Hint = 'sp_kaydet'
-          NumGlyphs = 2
-          ParentShowHint = False
-          ShowHint = True
-          TabOrder = 1
-          Visible = False
-          WordWrap = False
-          SkinData.SkinSection = 'BUTTON'
-          ImageIndex = 10
-          Images = DATALAR.global_img_list4
+          OnClick = btnSQLRunClick
         end
       end
       object SQL_grid: TDBGridEh
         Left = 0
-        Top = 145
+        Top = 201
         Width = 1286
-        Height = 184
-        Align = alTop
+        Height = 389
+        Align = alClient
         DynProps = <>
         Flat = True
         FooterParams.Color = clWindow
@@ -2674,7 +2539,7 @@ object frmSorgulamalar: TfrmSorgulamalar
     Parameters = <>
     SQL.Strings = (
       'select * from raporlar1')
-    Left = 616
+    Left = 600
     Top = 278
   end
   object DataSource2: TDataSource
@@ -2688,8 +2553,8 @@ object frmSorgulamalar: TfrmSorgulamalar
   end
   object DataSource1: TDataSource
     DataSet = DATALAR.Ado_Sorgulamalar
-    Left = 832
-    Top = 264
+    Left = 688
+    Top = 144
   end
   object ADO_SQL11: TADOQuery
     Connection = DATALAR.ADOConnection2
@@ -2702,7 +2567,7 @@ object frmSorgulamalar: TfrmSorgulamalar
   end
   object DataSource3: TDataSource
     DataSet = ADO_SQL11
-    Left = 640
+    Left = 648
     Top = 208
   end
   object PopupMenu1: TPopupMenu
@@ -2727,8 +2592,15 @@ object frmSorgulamalar: TfrmSorgulamalar
       Caption = 'En K'#252#231#252'k'
       OnClick = O1Click
     end
+    object N2: TMenuItem
+      Caption = '-'
+    end
+    object E3: TMenuItem
+      Caption = 'Excel'
+      OnClick = E3Click
+    end
   end
-  object Menu: TPopupMenu
+  object ToolMenu: TPopupMenu
     Left = 336
     Top = 128
     object Y1: TMenuItem

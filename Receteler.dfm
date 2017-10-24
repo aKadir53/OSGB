@@ -692,10 +692,6 @@ object frmReceteler: TfrmReceteler
     object cxTabSheet2: TcxTabSheet
       Caption = 'Re'#231'ete '#304'la'#231' Say'#305'lar'#305
       ImageIndex = 1
-      ExplicitLeft = 4
-      ExplicitTop = 0
-      ExplicitWidth = 904
-      ExplicitHeight = 394
       object cxGrid3: TcxGrid
         Left = 0
         Top = 0
@@ -711,7 +707,6 @@ object frmReceteler: TfrmReceteler
         TabOrder = 0
         LevelTabs.ImageBorder = 2
         LevelTabs.Style = 1
-        ExplicitWidth = 904
         object cxGridDBTableView1: TcxGridDBTableView
           OnDblClick = cxGridDBTableView1DblClick
           Navigator.Buttons.First.Visible = True
@@ -993,8 +988,6 @@ object frmReceteler: TfrmReceteler
         TabOrder = 1
         LevelTabs.ImageBorder = 2
         LevelTabs.Style = 1
-        ExplicitWidth = 904
-        ExplicitHeight = 161
         object cxGridDBTableView2: TcxGridDBTableView
           Navigator.Buttons.First.Visible = True
           Navigator.Buttons.PriorPage.Visible = True

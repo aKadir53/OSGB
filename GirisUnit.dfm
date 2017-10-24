@@ -654,6 +654,10 @@ object GirisForm: TGirisForm
     object sayfa1: TcxTabSheet
       Caption = 'sayfa1'
       ImageIndex = 2
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       object Sayfa1_dxLayoutControl1: TdxLayoutControl
         Left = 0
         Top = 0
@@ -805,6 +809,10 @@ object GirisForm: TGirisForm
     object sayfa3: TcxTabSheet
       Caption = 'sayfa3'
       ImageIndex = 2
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       object sayfa3_dxLayoutControl2: TdxLayoutControl
         Left = 0
         Top = 0
@@ -857,6 +865,10 @@ object GirisForm: TGirisForm
     object sayfa4: TcxTabSheet
       Caption = 'sayfa4'
       ImageIndex = 3
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       object dxLayoutControl1: TdxLayoutControl
         Left = 0
         Top = 0
@@ -909,11 +921,19 @@ object GirisForm: TGirisForm
     object sayfa5: TcxTabSheet
       Caption = 'sayfa5'
       ImageIndex = 2
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
     end
     object sayfaList: TcxTabSheet
       Caption = 'sayfaList'
       ImageIndex = 3
       TabVisible = False
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       object cxGridGiris: TcxGrid
         Left = 2
         Top = 5
@@ -1378,6 +1398,9 @@ object GirisForm: TGirisForm
         7935AE55479994CB0000000049454E44AE426082}
       Properties.GraphicClassName = 'TdxPNGImage'
       TabOrder = 0
+      ExplicitLeft = 2
+      ExplicitTop = 2
+      ExplicitHeight = 60
       Height = 58
       Width = 65
     end
@@ -1401,6 +1424,10 @@ object GirisForm: TGirisForm
       StyleFocused.LookAndFeel.NativeStyle = True
       StyleHot.LookAndFeel.NativeStyle = True
       TabOrder = 1
+      ExplicitLeft = 67
+      ExplicitTop = 2
+      ExplicitWidth = 432
+      ExplicitHeight = 60
       Height = 58
       Width = 430
       object pBar: TcxProgressBar
@@ -1409,6 +1436,8 @@ object GirisForm: TGirisForm
         Align = alBottom
         TabOrder = 0
         Visible = False
+        ExplicitTop = 39
+        ExplicitWidth = 428
         Width = 426
       end
     end
