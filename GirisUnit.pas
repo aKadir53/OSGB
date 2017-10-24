@@ -1945,6 +1945,9 @@ try
           (sqlRun.State in [dsNewValue,dsInsert])
        Then begin
          sqlRun.FieldByName(_Obje_.Name).AsString := _Obje_.EditingValue;
+         if (sqlRun.FieldByName(_Obje_.Name) is TStringField)
+           and IsNull (sqlRun.FieldByName(_Obje_.Name).AsString) then sqlRun.FieldByName(_Obje_.Name).Clear;
+
        end
        else
        if (self.Components[i].ClassName = 'TcxButtonEditKadir') and
@@ -1983,7 +1986,11 @@ try
            // exit;
          end
         else
-        sqlRun.FieldByName(_Obje_.Name).AsVariant := _Obje_.EditingValue;
+        begin
+          sqlRun.FieldByName(_Obje_.Name).AsVariant := _Obje_.EditingValue;
+          if (sqlRun.FieldByName(_Obje_.Name) is TStringField)
+            and IsNull (sqlRun.FieldByName(_Obje_.Name).AsString) then sqlRun.FieldByName(_Obje_.Name).Clear;
+        end;
 
     end;
   end;
