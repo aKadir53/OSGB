@@ -302,7 +302,7 @@ begin
             'left join receteDetay D on R.id = D.ReceteId ' +
             'left join gelisler g on g.dosyaNO = R.dosyaNo and g.gelisNo = R.gelisNo ' +
             'left join ILACLAR I on I.code = D.ilacKodu ' +
-            'left join hastaKart H on H.dosyaNo = R.dosyaNo ' +
+            'left join PersonelKart H on H.dosyaNo = R.dosyaNo ' +
             ' where convert(varchar,R.Tarih,112) between ' + txtTopPanelTarih1.GetSQLValue +
             ' and ' + txtTopPanelTarih1.GetSQLValue +
             ' and r.id IN (select datavalue from dbo.StrToTable(' + QuotedStr(copy(id,2,500)) + ','',''))' +

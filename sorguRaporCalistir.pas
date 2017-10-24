@@ -5,36 +5,37 @@ interface
 uses
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
   Dialogs, StdCtrls, Buttons, sBitBtn, ExtCtrls, Grids, BaseGrid, AdvGrid,strUtils,
-  db, kadir, adodb,
-  cxCustomData, cxGraphics, cxFilter, cxData, cxDataStorage,
+  db, kadir, adodb, cxCustomData, cxGraphics, cxFilter, cxData, cxDataStorage,
+  kadirLabel,kadirType,GirisUnit,
   cxEdit, cxDBData, cxGridLevel, cxClasses, cxControls,
   cxGridCustomView, cxGridCustomTableView, cxGridTableView, cxGridDBTableView,
-  cxGrid, cxLookAndFeels, cxLookAndFeelPainters, DBTables, AdvObj;
+  cxGrid, cxLookAndFeels, cxLookAndFeelPainters, DBTables, AdvObj, Menus,
+  dxSkinsCore, dxSkinBlue, dxSkinCaramel, dxSkinCoffee, dxSkiniMaginary,
+  dxSkinLilian, dxSkinLiquidSky, dxSkinLondonLiquidSky, dxSkinMcSkin,
+  dxSkinMoneyTwins, dxSkinsDefaultPainters, cxButtons;
 
 
 type
-  TfrmRaporCalistir = class(TForm)
+  TfrmRaporCalistir = class(TGirisForm)
     pnlTitle: TPanel;
-    pnlToolBar: TPanel;
-    Image2: TImage;
-    PanelSource: TPanel;
-    btnAra: TsBitBtn;
     pnlOnay: TPanel;
     txtinfo: TLabel;
-    btnSend: TsBitBtn;
-    btnVazgec: TsBitBtn;
     gridParams: TAdvStringGrid;
     txtHatalar: TMemo;
     DataSource1: TDataSource;
+    btnCalistirGoruntule: TcxButton;
 
-   procedure sp_params(sp , kod : string);
+   procedure sp_params(_sp_ , _kod_ : string);
     procedure gridParamsGetEditorType(Sender: TObject; ACol, ARow: Integer;
       var AEditor: TEditorType);
-    procedure btnSendClick(Sender: TObject);
+    procedure btnCalistirGoruntuleClick(Sender: TObject);
+    procedure FormCreate(Sender: TObject);
 
   private
     { Private declarations }
   public
+    sp , kod : string;
+    function Init(Sender: TObject) : Boolean; override;
     { Public declarations }
   end;
 
@@ -44,12 +45,16 @@ var
   dataset : Tdataset;
 
 implementation
- uses data_model1,rapor,
-  cxGridDBBandedTableView, Sorgulamalar;
+ uses data_modul,rapor,Sorgulamalar;
 {$R *.dfm}
 
 
-procedure TfrmRaporCalistir.sp_params(sp , kod : string);
+function TfrmRaporCalistir.Init(Sender : TObject) : Boolean;
+begin
+ sp_params(_sp_,_kod_);
+end;
+
+procedure TfrmRaporCalistir.sp_params(_sp_ , _kod_ : string);
 var
   sql : string;
   s : integer;
@@ -58,14 +63,9 @@ begin
     ado := TADOQuery.Create(nil);
     ado.Connection := datalar.ADOConnection2;
 
- (*   ado.close;
-    ado.SQL.Clear;
-    sql := 'exec ' + sp;
-    datalar.QuerySelect(ado,sql); *)
 
-
-    sp_name := sp;
-    _kod := kod;
+    sp_name := _sp_;
+    _kod := _kod_;
 
     sql := 'select name,' +
            '(case xtype ' +
@@ -73,7 +73,7 @@ begin
                   ' when 56 then ''integer''' +
                   ' when 62 then ''float''' +
                   ' when 61 then ''tarih'' end ' +
-           ') as tip from syscolumns where id = ( select id from sysobjects where name = ' + QuotedStr(sp) + ')';
+           ') as tip from syscolumns where id = ( select id from sysobjects where name = ' + QuotedStr(_sp_) + ')';
     ado.close;
     ado.SQL.Clear;
     datalar.QuerySelect(ado,sql);
@@ -89,14 +89,12 @@ begin
         ado.Next;
         gridParams.AddRow;
     End;
-
-
-
-
-
 end;
 
-
+procedure TfrmRaporCalistir.FormCreate(Sender: TObject);
+begin
+  cxPanel.Visible := False;
+end;
 
 procedure TfrmRaporCalistir.gridParamsGetEditorType(Sender: TObject; ACol,
   ARow: Integer; var AEditor: TEditorType);
@@ -117,7 +115,7 @@ begin
 
 end;
 
-procedure TfrmRaporCalistir.btnSendClick(Sender: TObject);
+procedure TfrmRaporCalistir.btnCalistirGoruntuleClick(Sender: TObject);
 var
    sql , sqlp , _prm_: string;
    s,pcount , ic ,rs: integer;
@@ -125,6 +123,7 @@ var
    ct : double;
     _footerItem: TcxGridDBTableSummaryItem;
     fieldTip : TFieldType;
+    TopluDataset : TDataSetKadir;
 begin
 
     pcount := gridParams.RowCount - 2;
@@ -189,19 +188,13 @@ begin
      end;
 
 
-     frmSorgulamalar.Panel12.Caption := 'Listelenen Kayýt Sayýsý : ' +
-     inttostr(frmSorgulamalar.cxGrid3DBBandedTableView1.DataController.RowCount);
+      TopluDataset.Dataset0 := datalar.Ado_Sorgulamalar;
+     PrintYap(_kod,sp_name,'',TopluDataset,pTNone);
 
-
-     frmRapor.rapor1Data(datalar.Ado_Sorgulamalar,_kod,sp_name,'');
-     frmRapor.ShowModal;
      datalar.ADO_RAPORLAR1.Active := false;
      frmSorgulamalar.cxPageControl2.ActivePageIndex := 1;
 
      close;
-
-
-
 
 end;
 

@@ -450,6 +450,8 @@ type
     F_IlacEtkenMadde_ : string;
     F_firmaKod_ : string;
     F_mobilTel_ : string;
+    F_sp_ : string;
+    F_kod_ : string;
   End;
 
   TSifreDegistir = record
@@ -486,6 +488,7 @@ Const
   TagfrmIlacSarf = 250;
   TagfrmSeansDetayKart = 260;
   TagfrmPopupDBGridForm = 270;
+  TagfrmPopupDBVerticalGridForm = 275;
   TagfrmSaglikNetOnline = 280;
   TagfrmSeansDagilimi = 290;
   TagfrmFatura = 300;
@@ -516,6 +519,10 @@ Const
   TagfrmIlacEtkenMaddeDetay = 550;
   TagfrmReceteler = 560;
   TagfrmUpdate = 570;
+
+  TagfrmSorgulamalar = 590;
+  TagfrmSorguCalistir = 600;
+  TagfrmIsKazasi = 610;
 
   ExceleGonder = 9997;
   SeansTarihiUpdate = 0;
