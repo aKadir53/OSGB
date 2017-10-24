@@ -6,7 +6,7 @@ uses
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
   Dialogs, cxGraphics, cxControls, cxLookAndFeels, cxLookAndFeelPainters,
   dxSkinsCore, dxSkinMcSkin, dxSkinscxPCPainter, cxPCdxBarPopupMenu,
-  kadir,GirisUnit,
+  kadir,GirisUnit,KadirLabel,KadirType, GetFormClass,
   cxContainer, cxEdit, DBGridEhGrouping, ToolCtrlsEh, DBGridEhToolCtrls,
   cxStyles, cxCustomData, cxFilter, cxData, cxDataStorage, DB, cxDBData, ADODB,
   StdCtrls, cxGridLevel, cxClasses, cxGridCustomView, cxGridCustomTableView,
@@ -15,11 +15,10 @@ uses
   Buttons, sBitBtn, sComboBox, Mask, EditType, cxPC,cxGridExportlink, Menus,
   dxSkinBlue, dxSkinCaramel, dxSkinCoffee, dxSkiniMaginary, dxSkinLilian,
   dxSkinLiquidSky, dxSkinLondonLiquidSky, dxSkinMoneyTwins,
-  dxSkinsDefaultPainters, cxMaskEdit, cxDropDownEdit, cxImageComboBox,
-  KadirLabel;
+  dxSkinsDefaultPainters, cxMaskEdit, cxDropDownEdit, cxImageComboBox, cxButtons;
 
 type
-  TfrmSorgulamalar = class(TGirisUnit)
+  TfrmSorgulamalar = class(TGirisForm)
     cxPageControl2: TcxPageControl;
     cxTabSheet6: TcxTabSheet;
     Panel5: TPanel;
@@ -29,29 +28,18 @@ type
     Label14: TLabel;
     Label15: TLabel;
     Label18: TLabel;
-    sBitBtn19: TsBitBtn;
-    sBitBtn23: TsBitBtn;
     cxDBMemo1: TcxDBMemo;
     gridRaporlar: TDBGridEh;
     Panel11: TPanel;
     Image3: TImage;
-    sBitBtn8: TsBitBtn;
-    sBitBtn18: TsBitBtn;
-    sBitBtn9: TsBitBtn;
-    sBitBtn24: TsBitBtn;
     txtAciklama: TcxDBMemo;
     cxTabSheet7: TcxTabSheet;
     cxGrid3: TcxGrid;
     cxGrid3DBBandedTableView1: TcxGridDBBandedTableView;
     cxGridLevel2: TcxGridLevel;
-    Panel7: TPanel;
-    sBitBtn20: TsBitBtn;
-    Panel12: TPanel;
     cxTabSheet8: TcxTabSheet;
     SQL_text: TMemo;
     Panel8: TPanel;
-    sBitBtn21: TsBitBtn;
-    sBitBtn22: TsBitBtn;
     SQL_grid: TDBGridEh;
     ADO_SQL1: TADOQuery;
     DataSource2: TDataSource;
@@ -64,7 +52,7 @@ type
     O1: TMenuItem;
     E1: TMenuItem;
     E2: TMenuItem;
-    Menu: TPopupMenu;
+    ToolMenu: TPopupMenu;
     Y1: TMenuItem;
     R1: TMenuItem;
     R2: TMenuItem;
@@ -72,20 +60,31 @@ type
     txtSP_name: TcxImageComboKadir;
     txtRaporAdi: TcxTextEdit;
     txtRaporKodu: TcxTextEdit;
-    procedure sBitBtn8Click(Sender: TObject);
-    procedure sBitBtn9Click(Sender: TObject);
-    procedure sBitBtn24Click(Sender: TObject);
+    btnSorgulamalarKaydet: TcxButton;
+    btnSorgulamalarKapat: TcxButton;
+    btnYeniSorgu: TcxButton;
+    btnSorguyuDegistir: TcxButton;
+    btnSorguyuSil: TcxButton;
+    btnSorguCalistir: TcxButton;
+    N2: TMenuItem;
+    E3: TMenuItem;
+    btnSQLRun: TcxButton;
     procedure Raporlar;
-    procedure sBitBtn19Click(Sender: TObject);
-    procedure sBitBtn23Click(Sender: TObject);
-    procedure sBitBtn20Click(Sender: TObject);
-    procedure sBitBtn21Click(Sender: TObject);
     procedure O1Click(Sender: TObject);
+    procedure btnSorgulamalarKaydetClick(Sender: TObject);
+    procedure btnSorgulamalarKapatClick(Sender: TObject);
+    procedure btnYeniSorguClick(Sender: TObject);
+    procedure btnSorguyuSilClick(Sender: TObject);
+    procedure btnSorguCalistirClick(Sender: TObject);
+    procedure E3Click(Sender: TObject);
+    procedure btnSQLRunClick(Sender: TObject);
+    procedure FormCreate(Sender: TObject);
 
   private
     { Private declarations }
   public
     { Public declarations }
+     function Init(Sender: TObject) : Boolean; override;
   end;
 
 var
@@ -95,65 +94,45 @@ implementation
    uses data_modul, sorguRaporCalistir;
 {$R *.dfm}
 
-procedure TfrmSorgulamalar.O1Click(Sender: TObject);
+function TfrmSorgulamalar.Init(Sender : TObject) : Boolean;
 var
-  ic : integer;
-  fieldTip : TFieldType;
-  _Kind : TcxSummaryKind;
+  key : word;
+  sql : string;
+  t1,t2 : Tdate;
+  ado : TADOQuery;
 begin
-  inherited;
-  if TMenuItem(sender).Tag = 0
-  Then
-   _Kind := skSum
-  Else
-  if TMenuItem(sender).Tag = 1
-  Then
-   _Kind := skAverage
-  Else
-  if TMenuItem(sender).Tag = 2
-  Then
-   _Kind := skMax
-  Else
-  if TMenuItem(sender).Tag = 3
-  Then
-   _Kind := skMin;
+  Result := False;
+  if not inherited Init(Sender) then exit;
+  Raporlar;
+end;
 
+procedure TfrmSorgulamalar.btnSorguCalistirClick(Sender: TObject);
+var
+  kod : string;
+  F : TGirisForm;
+  GirisRecord : TGirisFormRecord;
+begin
+  sp := ADO_SQL1.fieldbyname('sp').AsString;
+  kod := ADO_SQL1.fieldbyname('raporKodu').AsString;
+  //gridRaporlar.Cells[2,gridRaporlar.Row];
+ // Application.CreateForm(TfrmRaporCalistir, frmRaporCalistir);
+  //GorselAyar(frmRaporCalistir,DATALAR.global_img_list4);
+  GirisRecord.F_sp_ := sp;
+  GirisRecord.F_kod_ := kod;
+  F := FormINIT(TagfrmSorguCalistir,GirisRecord,ikHayir,'');
+  if F <> nil then F.ShowModal;
 
-     for ic := 0 to cxGrid3DBBandedTableView1.DataController.ItemCount - 1 do
-     begin
-          // frmIstatistik.cxGrid3DBBandedTableView1.Columns[ic].
-           fieldTip := frmSorgulamalar.cxGrid3DBBandedTableView1.Columns[ic].DataBinding.Field.DataType;
-           if (fieldTip in [ftFloat,ftInteger,ftCurrency])
-           Then begin
-           with cxGrid3DBBandedTableView1.DataController.Summary.FooterSummaryItems[ic] as
-           TcxGridDBTableSummaryItem do
-           begin
-            // Column := cxGrid3DBBandedTableView1.Columns[ic];
-            // FieldName := cxGrid3DBBandedTableView1.Columns[ic].DataBinding.FieldName;
-             Kind := _Kind;
-           end; // with
-           end; // if
-     end;
-
-  cxGrid3DBBandedTableView1.DataController.Refresh;
+ // frmRaporCalistir.sp_params(sp,kod);
 
 end;
 
-procedure TfrmSorgulamalar.Raporlar;
-var
-   sql : string;
-   s : integer;
-   ikon : TBitmap;
+procedure TfrmSorgulamalar.btnSorgulamalarKapatClick(Sender: TObject);
 begin
-    ikon := TBitmap.Create;
-    datalar.global_img_list4.GetBitmap(3,ikon);
-    sql := 'select * from raporlar1';
-    datalar.QuerySelect(ADO_SQL1,sql);
+   Panel6.Visible := False;
+   txtAciklama.Visible := true;
 end;
 
-
-
-procedure TfrmSorgulamalar.sBitBtn19Click(Sender: TObject);
+procedure TfrmSorgulamalar.btnSorgulamalarKaydetClick(Sender: TObject);
 var
   sql : string;
   ado : TADOQuery;
@@ -208,78 +187,32 @@ begin
 
 end;
 
-procedure TfrmSorgulamalar.sBitBtn20Click(Sender: TObject);
-begin
-    SaveDialog1.FileName := sp + '.xls';
-    if SaveDialog1.Execute = True
-    Then
-      ExportGridToExcel(SaveDialog1.FileName,cxGrid3 ,False,True);
-
-end;
-procedure TfrmSorgulamalar.sBitBtn21Click(Sender: TObject);
+procedure TfrmSorgulamalar.btnSorguyuSilClick(Sender: TObject);
 var
   sql : string;
-  dset : TDataSet;
-  ds : TDataSource;
 begin
-    ADO_SQL11.close;
-    ADO_SQL11.SQL.Clear;
-    sql := copy(trim(SQL_text.Text),1,6);
-    if UpperCase(sql) = 'CREATE'
+
+    if MrYes = ShowMessageSkin('Rapor Bilgisi Silinecek','Eminmisiniz?','','msg')
     Then Begin
-    datalar.QueryExec(ADO_SQL11,SQL_text.Lines.Text);
+         sql := 'delete from Raporlar1 where raporKodu = ' + QuotedStr(ADO_SQL1.fieldbyname('raporKodu').AsString);
+         datalar.ADO_SQL.close;
+         datalar.ADO_SQL.SQL.Clear;
+         datalar.QueryExec(datalar.ADO_SQL,sql);
+    End;
 
-    ENd
-    else
-
-    datalar.QuerySelect(ADO_SQL11,SQL_text.Lines.Text);
-
-    SQL_grid.DataSource := DataSource3;
-
-end;
-
-procedure TfrmSorgulamalar.sBitBtn23Click(Sender: TObject);
-begin
-         Panel6.Visible := False;
-         txtAciklama.Visible := true;
+    Raporlar;
 
 end;
 
-procedure TfrmSorgulamalar.sBitBtn24Click(Sender: TObject);
-var
-  kod : string;
-
-begin
-  sp := ADO_SQL1.fieldbyname('sp').AsString;
-  kod := ADO_SQL1.fieldbyname('raporKodu').AsString;
-  //gridRaporlar.Cells[2,gridRaporlar.Row];
-  Application.CreateForm(TfrmRaporCalistir, frmRaporCalistir);
-  GorselAyar(frmRaporCalistir,DATALAR.global_img_list4);
-  frmRaporCalistir.sp_params(sp,kod);
-  frmRaporCalistir.ShowModal;
-  frmRaporCalistir := nil;
-end;
-
-procedure TfrmSorgulamalar.sBitBtn8Click(Sender: TObject);
+procedure TfrmSorgulamalar.btnYeniSorguClick(Sender: TObject);
 var
    sql : string;
 begin
 
-    if UserRight('Genel Sorgulamalar', 'Yeni Deðiþtir') = False
-    then begin
-       ShowMessageSkin('Bu Ýþlem Ýçin Yetkiniz Bulunmamaktadýr !','','','info');
-       exit;
-    end;
-
-
-    sql := 'select name from sysobjects where xtype = ''P'' and category = 0 order by name';
-    datalar.ADO_SQL5.Close;
-    datalar.ADO_SQL5.SQL.Clear;
-
-
-
-
-    ComboDoldur(datalar.ADO_SQL5,sql,txtSP_name);
+    txtSP_name.TableName := 'VW_Spler';
+    txtSP_name.ValueField := 'id';
+    txtSP_name.DisplayField := 'name';
+    txtSP_name.Filter := '';
 
 
     case TsBitBtn(sender).Tag of
@@ -309,26 +242,94 @@ begin
 
 end;
 
-procedure TfrmSorgulamalar.sBitBtn9Click(Sender: TObject);
+procedure TfrmSorgulamalar.btnSQLRunClick(Sender: TObject);
 var
   sql : string;
+  dset : TDataSet;
+  ds : TDataSource;
 begin
-   if UserRight('Genel Sorgulamalar', 'Yeni Deðiþtir') = False
-   then begin
-       ShowMessageSkin('Bu Ýþlem Ýçin Yetkiniz Bulunmamaktadýr !','','','info');
-       exit;
-   end;
-
-    if MrYes = ShowMessageSkin('Rapor Bilgisi Silinecek','Eminmisiniz?','','msg')
+    ADO_SQL11.close;
+    ADO_SQL11.SQL.Clear;
+    sql := copy(trim(SQL_text.Text),1,6);
+    if UpperCase(sql) = 'CREATE'
     Then Begin
-         sql := 'delete from Raporlar1 where raporKodu = ' + QuotedStr(ADO_SQL1.fieldbyname('raporKodu').AsString);
-         datalar.ADO_SQL.close;
-         datalar.ADO_SQL.SQL.Clear;
-         datalar.QueryExec(datalar.ADO_SQL,sql);
-    End;
+    datalar.QueryExec(ADO_SQL11,SQL_text.Lines.Text);
 
-    Raporlar;
+    ENd
+    else
+
+    datalar.QuerySelect(ADO_SQL11,SQL_text.Lines.Text);
+
+    SQL_grid.DataSource := DataSource3;
 
 end;
+procedure TfrmSorgulamalar.E3Click(Sender: TObject);
+begin
+    SaveDialog1.FileName := sp + '.xls';
+    if SaveDialog1.Execute = True
+    Then
+      ExportGridToExcel(SaveDialog1.FileName,cxGrid3 ,False,True);
+end;
+
+procedure TfrmSorgulamalar.FormCreate(Sender: TObject);
+begin
+  Menu := PopupMenu1;
+  cxPanel.Visible := False;
+end;
+
+procedure TfrmSorgulamalar.O1Click(Sender: TObject);
+var
+  ic : integer;
+  fieldTip : TFieldType;
+  _Kind : TcxSummaryKind;
+begin
+  inherited;
+  if TMenuItem(sender).Tag = 0
+  Then
+   _Kind := skSum
+  Else
+  if TMenuItem(sender).Tag = 1
+  Then
+   _Kind := skAverage
+  Else
+  if TMenuItem(sender).Tag = 2
+  Then
+   _Kind := skMax
+  Else
+  if TMenuItem(sender).Tag = 3
+  Then
+   _Kind := skMin;
+
+
+     for ic := 0 to cxGrid3DBBandedTableView1.DataController.ItemCount - 1 do
+     begin
+          // frmIstatistik.cxGrid3DBBandedTableView1.Columns[ic].
+           fieldTip := frmSorgulamalar.cxGrid3DBBandedTableView1.Columns[ic].DataBinding.Field.DataType;
+           if (fieldTip in [ftFloat,ftInteger,ftCurrency])
+           Then begin
+           with cxGrid3DBBandedTableView1.DataController.Summary.FooterSummaryItems[ic] as
+           TcxGridDBTableSummaryItem do
+           begin
+            // Column := cxGrid3DBBandedTableView1.Columns[ic];
+            // FieldName := cxGrid3DBBandedTableView1.Columns[ic].DataBinding.FieldName;
+             Kind := _Kind;
+           end; // with
+           end; // if
+     end;
+
+  cxGrid3DBBandedTableView1.DataController.Refresh;
+
+end;
+
+procedure TfrmSorgulamalar.Raporlar;
+var
+   sql : string;
+   s : integer;
+begin
+    sql := 'select * from raporlar1';
+    datalar.QuerySelect(ADO_SQL1,sql);
+end;
+
+
 
 end.
