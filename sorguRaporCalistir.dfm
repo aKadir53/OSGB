@@ -4,7 +4,7 @@ object frmRaporCalistir: TfrmRaporCalistir
   BorderStyle = bsToolWindow
   Caption = 'frmRaporCalistir'
   ClientHeight = 247
-  ClientWidth = 342
+  ClientWidth = 398
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -12,12 +12,13 @@ object frmRaporCalistir: TfrmRaporCalistir
   Font.Name = 'MS Sans Serif'
   Font.Style = []
   OldCreateOrder = False
+  OnCreate = FormCreate
   PixelsPerInch = 96
   TextHeight = 13
   object pnlTitle: TPanel
     Left = 0
     Top = 0
-    Width = 342
+    Width = 398
     Height = 26
     Align = alTop
     Caption = 'Parametre Tan'#305'mlamas'#305' (Rapor '#199'al'#305#351't'#305'r)'
@@ -30,67 +31,14 @@ object frmRaporCalistir: TfrmRaporCalistir
     ParentFont = False
     TabOrder = 0
   end
-  object pnlToolBar: TPanel
-    Left = 0
-    Top = 26
-    Width = 342
-    Height = 36
-    Align = alTop
-    Color = clBackground
-    Font.Charset = TURKISH_CHARSET
-    Font.Color = clBlue
-    Font.Height = -11
-    Font.Name = 'Tahoma'
-    Font.Style = [fsBold]
-    ParentFont = False
-    TabOrder = 1
-    object Image2: TImage
-      Left = 662
-      Top = 5
-      Width = 27
-      Height = 27
-      Transparent = True
-    end
-    object PanelSource: TPanel
-      Left = 569
-      Top = 16
-      Width = 65
-      Height = 17
-      AutoSize = True
-      BevelOuter = bvNone
-      Color = clBackground
-      Font.Charset = TURKISH_CHARSET
-      Font.Color = clAqua
-      Font.Height = -11
-      Font.Name = 'Tahoma'
-      Font.Style = [fsBold]
-      ParentFont = False
-      TabOrder = 0
-    end
-    object btnAra: TsBitBtn
-      Tag = 43
-      Left = 5
-      Top = 5
-      Width = 26
-      Height = 27
-      Hint = 'Kart Ara'
-      DoubleBuffered = True
-      NumGlyphs = 2
-      ParentDoubleBuffered = False
-      TabOrder = 1
-      Visible = False
-      SkinData.SkinSection = 'BUTTON'
-      ImageIndex = 25
-    end
-  end
   object pnlOnay: TPanel
     Left = 0
     Top = 215
-    Width = 342
+    Width = 398
     Height = 32
     Align = alBottom
     Color = clBackground
-    TabOrder = 2
+    TabOrder = 1
     object txtinfo: TLabel
       Left = 7
       Top = 11
@@ -104,56 +52,29 @@ object frmRaporCalistir: TfrmRaporCalistir
       Font.Style = [fsBold]
       ParentFont = False
     end
-    object btnVazgec: TsBitBtn
-      Left = 15
-      Top = 3
-      Width = 83
-      Height = 27
-      Hint = 'Vazge'#231
-      Caption = 'Kapat'
-      DoubleBuffered = True
-      Font.Charset = TURKISH_CHARSET
-      Font.Color = clWindowText
-      Font.Height = -11
-      Font.Name = 'Tahoma'
-      Font.Style = [fsBold]
-      NumGlyphs = 2
-      ParentDoubleBuffered = False
-      ParentFont = False
-      TabOrder = 1
-      Visible = False
-      SkinData.SkinSection = 'BUTTON'
-      ImageIndex = 12
-    end
-    object btnSend: TsBitBtn
+    object btnCalistirGoruntule: TcxButton
       Left = 1
-      Top = 2
-      Width = 340
-      Height = 27
-      Hint = 'G'#246'nder'
-      Caption = 'Raporu '#199'al'#305#351't'#305'r G'#246'r'#252'nt'#252'le'
-      DoubleBuffered = True
-      Font.Charset = TURKISH_CHARSET
+      Top = 1
+      Width = 396
+      Height = 30
+      Align = alClient
+      Caption = 'Sorguyu '#199'al'#305#351't'#305'r G'#246'r'#252'nt'#252'le'
+      TabOrder = 0
+      Font.Charset = DEFAULT_CHARSET
       Font.Color = clWindowText
       Font.Height = -11
-      Font.Name = 'Tahoma'
+      Font.Name = 'MS Sans Serif'
       Font.Style = [fsBold]
-      NumGlyphs = 2
-      ParentDoubleBuffered = False
       ParentFont = False
-      TabOrder = 0
-      OnClick = btnSendClick
-      SkinData.SkinSection = 'BUTTON'
-      ImageIndex = 25
-      Images = DATALAR.global_img_list4
+      OnClick = btnCalistirGoruntuleClick
     end
   end
   object gridParams: TAdvStringGrid
     Tag = 200
     Left = 0
-    Top = 62
-    Width = 342
-    Height = 153
+    Top = 26
+    Width = 398
+    Height = 189
     Cursor = crDefault
     Hint = 'Fatura Bilgileri'
     TabStop = False
@@ -173,7 +94,7 @@ object frmRaporCalistir: TfrmRaporCalistir
     ParentCtl3D = False
     ParentFont = False
     ScrollBars = ssBoth
-    TabOrder = 3
+    TabOrder = 2
     HoverRowCells = [hcNormal, hcSelected]
     OnGetEditorType = gridParamsGetEditorType
     ActiveCellFont.Charset = TURKISH_CHARSET
@@ -332,7 +253,7 @@ object frmRaporCalistir: TfrmRaporCalistir
     ColWidths = (
       25
       160
-      114)
+      126)
     RowHeights = (
       23
       21)
@@ -349,7 +270,7 @@ object frmRaporCalistir: TfrmRaporCalistir
   end
   object DataSource1: TDataSource
     DataSet = DATALAR.ADO_SQL5
-    Left = 232
-    Top = 158
+    Left = 88
+    Top = 134
   end
 end

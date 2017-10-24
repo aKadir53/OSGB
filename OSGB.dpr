@@ -43,8 +43,10 @@ uses
   Receteler in 'Receteler.pas' {frmReceteler},
   receteSablonlari in 'receteSablonlari.pas' {frmReceteSablon},
   Update_G in 'Update_G.pas' {frmUpdate},
-  MESSAGE in 'MESSAGE.PAS' {frmMessage};
-
+  MESSAGE in 'MESSAGE.PAS' {frmMessage},
+  Sorgulamalar in 'Sorgulamalar.pas' {frmSorgulamalar},
+  PopupDBVerticalGridForm in 'PopupDBVerticalGridForm.PAS' {frmPopupDBVerticalGridForm},
+  IsKazasi in 'IsKazasi.pas' {frmIsKazasi};
 
 // KadirMedula3 in '..\..\medula3wsdl\KadirMedula3.pas';
 
@@ -64,6 +66,7 @@ begin
   Application.CreateForm(TDATALAR, DATALAR);
   Application.CreateForm(TAnaForm, AnaForm);
   Application.CreateForm(TfrmUpdate, frmUpdate);
+
   // form2.show;
   datalar.versiyon := inttostr(AppalicationVer);
   if ForceDirectories ('C:\OSGB') then
