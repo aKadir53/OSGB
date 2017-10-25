@@ -152,23 +152,25 @@ begin
 
   List := TListeAc.Create(nil);
 
-  List.Table := 'Egitimler';
+  List.Table := '(Select e.*, et.tanimi from Egitimler e inner join Egitim_Tnm et on et.Kod = e.EgitimKod) Egitimler';
 
   List.kolonlar.Add('id');// := Ts;
   List.kolonlar.Add('EgitimKod');// := Ts;
+  List.kolonlar.Add('Tanimi');// := Ts;
   List.kolonlar.Add('BaslamaTarihi'); // := Ts;
 
 
   List.KolonBasliklari.Add('ID');// := Ts1;
   List.KolonBasliklari.Add('Eðitim Kodu');// := Ts1;
+  List.KolonBasliklari.Add('Tanýmý');// := Ts1;
   List.KolonBasliklari.Add('Baþlama Tarihi');// := Ts1;
-  List.TColcount := 3;
-  List.TColsW := '50,200,20';
+  List.TColcount := 4;
+  List.TColsW := '10,10,140,70';
   List.ListeBaslik := 'Eðitimler';
   List.Name := 'id';
   List.Conn := Datalar.ADOConnection2;
   List.SkinName := 'coffee';//AnaForm.dxSkinController1.SkinName;
-
+  List.Where := 'SirketKod = ' + QuotedStr (DATALAR.AktifSirket);
   setDataStringB(self,'id','Eðitim No.',Kolon1,'',70,List,True,nil, 'tanimi', '', False, True, -100);
 
   setDataStringB(self,'SirketKod','Þirket Kodu',Kolon1,'',100,nil, True, SirketKod);
