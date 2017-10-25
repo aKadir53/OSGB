@@ -1,20 +1,15 @@
-iþ kazasýnýn altýna menüye eðitimler eklenecek
-personel kartýndaki eðitim düðmesi geri kapatýlacak
-EÐÝTÝM EKRANINA eðitime personel ekle butonu eklenecek
-butona basýnca liste açtýrýlacak (iþ kazasý ekranýndan kopya alýnabilir)
-formun altýna grid eklenip listeden seçtikçe altýna eklenebilir (cxkadirgrid kendi dataseti varmýþ).
+raporlar dizayn tablosuna fastreport dizaynýný XML olarak atýyoruz
+gerçek veritabanlarýnda personel kartýna TCKIMLIKNO alaný üzerinden SirketKod, TCKIMLIKNO unique index
+personel eðitim menüsü imaj
+eðitim ekranýna baský seçeneði eklenecek
+eðitim sertifikasý baskýsý eklenecek baský olarak
 eðitimler ekranýnda bir de eðitim seçme için o genel seçilebilir parametreler ekranýný çaðoran düðme eklenecek. seçilince süre ve açýklamayý otomatik doldurabiliriz
-eðitimler ekranýnda eðitim seçerken gelen listedeki mantýksýz manasýz sütunlar
+isg exe osgb exe kýsayolunu oluþturmalý
 
 recete þablonlarý formunda çalýþmalar...
 cxschedulerstrs unitinde türkçeleþtirme
-þirket tablosuna ssk (?) bölge müdürlüðü sicil numarasý ?
 kart
-toplu personel atamada where þartýna þirkjet eklenecekti
-login formu bekleyin resmi ortalanacak
 
-eðitim sertifikasý baskýsý eklenecek baský olarak
-eðitim seçiminde where ile o þirketin eðitimleri getirtilecek.
 -------------
 taný listesi
 ilaç listesi
@@ -31,9 +26,6 @@ projeye formu ekle
 giriþ unit'ten türeme
 doktorlar formunu deðiþtirip çak...
 formcaption tablosu
-
-personel_egitim tablosundan dosya no alanýný imha edip þirket için eðitim düzenleme ekranýna döndert
-daha sonra þirket eðitimlerine personel seçip atama yaptýrt. mevcut yapýda her personel için tek tek açýp girmek lazým. öyle olmasýn. toplu olsun.
 
 
 ------------------------------------------------------------------------------------------------------------------------
@@ -71,7 +63,24 @@ reçete doktor arasý ok.
 user doktor arasý ok.
 user þirket arasý ok.
 -------------------
-
+ilk yapýda tek tek personel kartýndan eðitim açýp eklemek gerekiyordu
+personel_egitim tablosundan dosya no alanýný imha edip þirket için eðitim düzenleme ekranýna çevirdik
+daha sonra þirket eðitimlerine personel seçip atama yaptýrdýk.
+bu kapsamda;
+EÐÝTÝM EKRANINA eðitime personel ekle butonu eklendi
+butona basýnca liste açtýrýldý
+formun altýna grid eklenip listeden seçtikçe altýna eklenmesi saðlandý
+personel_egitim tablosuna egitimID ve PersonelDosyaNo alanlarýna göre Unique index eklendi
+o þirketin personellerinden o eðitimde eklenmemiþ olanlarýn listelenmesi saðlandý.
+personel ekleme gridinde kolonlarýn bandýný daralttýk
+iþ kazasýnýn altýna menüye personel eðitimleri eklendi
+personel kartýndaki eðitim düðmesi geri kapatýldý
+login ekranýnda registry'den sunucu ismi gelmezse userID yerine demo atamasý da yapýldý. demo kullanýcýsý için sabit olarak OSGB_UZMAN veritabanýna baðlanma ve sabit sunucu IP'sine baðlanma özelliði eklendi
+þirket tablosuna ssk (?) bölge müdürlüðü sicil numarasý eklendi. þube tablosuna da eklendi. þirket tablosunda bilgi deðiþtiðinde þube tablosunda ayný bilgiye sahip þube kayýtlarýnýn da eþ zamanlý güncellenmesi saðlandý (trigger)
+eðitimler ekranýnda þirket eðitimi seçerken gelen listedeki mantýksýz manasýz sütunlar yerine eðitim açýklamasý da getirildi
+eðitim seçiminde where ile o þirketin eðitimleri getirtilecek þekilde düzeltildi.
+login formu bekleyin resmi ortalanmasý...
+Egitim_Tnm tablosundaki süre ve açýklama alanlarý imha edildi.
 
 
            Bu program iþyeri fabrika, þirket v.b. iþyeri hekimlerinin firma çalýþanlarýnýn saðlýk durumlarý ile ilgili her türlü verilerini bilgisayar ortamýnda kaydedebilmeleri ve izleyebilmeleri amacýyla yazýlmýþtýr
@@ -118,3 +127,6 @@ Tel    :0 (224) 636 71 84
 GSM :0 (532) 563 68 52
 yuksel@indemsoft.com
 indemsoft@gmail.com 
+
+bitlisin önünde daðlar
+bir ay doðar
