@@ -61,7 +61,13 @@ var
 begin
   if TcxButtonKadir (Sender).ButtonName = 'btnPersonelEkle' then
   begin
-    PersonelList.Where := 'Aktif = 1 and SirketKod = ' + QuotedStr (datalar.AktifSirket);
+    PersonelList.Where :=
+      'Aktif = 1 '+
+      'and SirketKod = ' + QuotedStr (datalar.AktifSirket)+
+      'and not exists (select 1 '+
+      'from Personel_Egitim pe '+
+      'where pe.EgitimId = ' +  TcxButtonEditKadir (FindComponent('id')).Text + ' '+
+      'and pe.PersonelDosyaNo = PersonelKartview.DosyaNo)';
     datalar.ButtonEditSecimlist := PersonelList.ListeGetir;
     if length (datalar.ButtonEditSecimlist) > 0 then
     begin
@@ -222,6 +228,7 @@ begin
   addButton(self,nil,'btnPersonelEkle','','Personel Getir',Sayfa2_Kolon1,'PERS',120,ButtonClick);
   addButton(self,nil,'btnPersonelSil','','Seçili Personeli Sil',Sayfa2_Kolon1,'PERS',120,ButtonClick);
   setDataStringKontrol(self,EgitimPersonel,'EgitimPersonel','',sayfa2_kolon1,'',400,300);
+  GridList.Bands [0].Width := 350;;
 
   //setDataStringC(self,'EgitimUcretiOdendi','Ödendi mi?',Kolon1,'',100, 'Evet,Hayýr');
 
