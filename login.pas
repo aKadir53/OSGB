@@ -521,7 +521,7 @@ begin
    if Trim (txtServerName.EditValue) = '' then
    begin
      txtServerName.Text := '213.159.30.6';
-     txtOsgbKodu.Text := 'OSGB1';
+     txtOsgbKodu.Text := '1001';
      Edit1.Text := 'demo';
      {if RegOku('servername') = ''
      Then

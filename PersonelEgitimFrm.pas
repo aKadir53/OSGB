@@ -24,6 +24,8 @@ type
     GridListGrupKod: TcxGridDBBandedColumn;
     EgitimPersonelLevel1: TcxGridLevel;
     PersonelList: TListeAc;
+    PopupMenu1: TPopupMenu;
+    Y1: TMenuItem;
     procedure FormCreate(Sender: TObject);
     procedure ButtonClick(Sender: TObject);
     procedure cxKaydetClick(Sender: TObject);
@@ -36,6 +38,7 @@ type
     procedure SayfalarPageChanging(Sender: TObject; NewPage: TcxTabSheet;
        var AllowChange: Boolean);
     procedure SayfalarChange(Sender: TObject);
+    procedure cxButtonCClick(Sender: TObject);
  private
     { Private declarations }
   public
@@ -93,6 +96,26 @@ begin
     end;
 
   end;
+end;
+
+procedure TfrmPersonelEgitim.cxButtonCClick(Sender: TObject);
+var
+  Ado : TADOQuery;
+  sql : string;
+  TopluDataset : TDataSetKadir;
+begin
+  inherited;
+
+  ado := TADOQuery.Create(nil);
+  ado.Connection := datalar.ADOConnection2;
+  sql := 'sp_frmPersonelEgitim ' + TcxButtonEditKadir(FindComponent('id')).Text;
+  datalar.QuerySelect(ado, sql);
+  TopluDataset.Dataset0 := ado;
+  TopluDataset.Dataset0.Name := 'PersonelEgitimleri';
+
+  PrintYap('005','Personel Eðitimi Sertifikasý','',TopluDataset,pTNone);
+  ado.free;
+
 end;
 
 procedure TfrmPersonelEgitim.cxButtonEditPropertiesButtonClick(Sender: TObject;
@@ -231,9 +254,9 @@ begin
   setDataStringKontrol(self,kombo,'EgitimUcretiOdendi','Ödendi mi?',kolon1,'',120);
   addButton(self,nil,'btnPersonelEkle','','Personel Getir',Sayfa2_Kolon1,'PERS',120,ButtonClick);
   addButton(self,nil,'btnPersonelSil','','Seçili Personeli Sil',Sayfa2_Kolon1,'PERS',120,ButtonClick);
-  setDataStringKontrol(self,EgitimPersonel,'EgitimPersonel','',sayfa2_kolon1,'',400,300);
-  GridList.Bands [0].Width := 350;;
-
+  setDataStringKontrol(self,EgitimPersonel,'EgitimPersonel','',sayfa2_kolon1,'',410,300);
+  GridList.Bands [0].Width := 380;;
+  Menu := PopupMenu1;
   //setDataStringC(self,'EgitimUcretiOdendi','Ödendi mi?',Kolon1,'',100, 'Evet,Hayýr');
 
   //Disabled(self,True);
