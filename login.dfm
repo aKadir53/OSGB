@@ -302,9 +302,9 @@ object frmLogin: TfrmLogin
     TabOrder = 0
     Properties.ActivePage = SayfaLogin
     OnPageChanging = LoginSayfalarPageChanging
-    ClientRectBottom = 205
-    ClientRectLeft = 3
-    ClientRectRight = 305
+    ClientRectBottom = 208
+    ClientRectLeft = 4
+    ClientRectRight = 308
     ClientRectTop = 26
     object SayfaLogin: TcxTabSheet
       Caption = 'Kullan'#305'c'#305' Giri'#351'i   '
@@ -312,14 +312,14 @@ object frmLogin: TfrmLogin
       object dxLayoutControl1: TdxLayoutControl
         Left = 0
         Top = 0
-        Width = 302
-        Height = 179
+        Width = 304
+        Height = 182
         Align = alClient
         TabOrder = 0
         LayoutLookAndFeel = dxLayoutSkinLookAndFeel1
         object Edit1: TcxTextEdit
-          Left = 93
-          Top = 23
+          Left = 94
+          Top = 24
           ParentFont = False
           Style.Font.Charset = DEFAULT_CHARSET
           Style.Font.Color = clWindowText
@@ -333,8 +333,8 @@ object frmLogin: TfrmLogin
           Width = 121
         end
         object Edit2: TcxTextEdit
-          Left = 93
-          Top = 50
+          Left = 94
+          Top = 51
           ParentFont = False
           ParentShowHint = False
           Properties.EchoMode = eemPassword
@@ -352,8 +352,8 @@ object frmLogin: TfrmLogin
           Width = 121
         end
         object txtSirket: TcxButtonEditKadir
-          Left = 93
-          Top = 77
+          Left = 94
+          Top = 78
           ParentFont = False
           Properties.Buttons = <
             item
@@ -375,15 +375,15 @@ object frmLogin: TfrmLogin
           Width = 121
         end
         object txtServer: TcxTextEdit
-          Left = 93
-          Top = 104
+          Left = 94
+          Top = 105
           Style.HotTrack = False
           TabOrder = 3
           Width = 121
         end
         object btnGiris: TcxButton
-          Left = 126
-          Top = 144
+          Left = 128
+          Top = 146
           Width = 75
           Height = 25
           Caption = 'Giri'#351' Yap'
@@ -391,8 +391,8 @@ object frmLogin: TfrmLogin
           OnClick = Image1Click
         end
         object btnVazgec: TcxButton
-          Left = 212
-          Top = 144
+          Left = 214
+          Top = 146
           Width = 285
           Height = 25
           Caption = 'Vazge'#231
@@ -493,19 +493,19 @@ object frmLogin: TfrmLogin
         Align = alClient
         Caption = 'Server Bilgisi'
         TabOrder = 0
-        Height = 179
-        Width = 302
+        Height = 182
+        Width = 304
         object dxLayoutControl2: TdxLayoutControl
           Left = 3
           Top = 15
-          Width = 296
-          Height = 154
+          Width = 298
+          Height = 156
           Align = alClient
           TabOrder = 0
           ExplicitLeft = 2
-          ExplicitTop = -2
-          ExplicitWidth = 298
-          ExplicitHeight = 179
+          ExplicitTop = -3
+          ExplicitWidth = 300
+          ExplicitHeight = 183
           object txtServerName: TcxTextEditKadir
             Left = 104
             Top = 10

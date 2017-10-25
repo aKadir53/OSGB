@@ -113,6 +113,7 @@ type
 
 var
   AnaForm: TAnaForm;
+  f : double;
 
 implementation
       uses Tnm_Ilaclar,Tnm_LabTest,
@@ -268,12 +269,16 @@ begin
 
   caption := 'Mavi Nokta Bilgi Teknolojileri Ltd.Şti.  İşyeri Hekimliği E-Reçete V.1';
   Sayfalar.Properties.CloseButtonMode := cbmNone;
-  WebBrowser1.Navigate('https://www.noktayazilim.net/destek/GenelMesajlar2.aspx?Tip=D');
+  WebBrowser1.Navigate('https://www.noktayazilim.net/destek/GenelMesajlar2.aspx?Tip=O');
 
 
+ try
+  LisansKontrol(f);
+ except
+   ShowMessageSkin('Lisans Hatası','Lütfen Lisans ALınız','','info');
+ end;
 
   cxSetResourceString(@scxEvent,'Olay');
-
 
 end;
 
@@ -408,6 +413,9 @@ begin
     122 : begin
             OnlineDestekOpen;
           end;
+    124 : begin
+            LisansUzat;
+          end
      else
         if FormID > 0 then
         begin

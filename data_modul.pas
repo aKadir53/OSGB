@@ -474,11 +474,13 @@ type
    _labkurumkod , _labkurumkodText, _laburl , _labfirma ,  _SKRS , _saglikNetUser , _saglikNetPass , _firmaSKRS , _usermernis , _passmernis : string;
    _doktorReceteUser,_doktorRecetePas,_KurumSKRS_, _userSaglikNet_ , _passSaglikNet_ , _userSaglikNet2_ , _passSaglikNet2_ , itsGLN , itsUser , itsPass: string;
    _merkezAdi , _DyobKurumKodu_,_DyobSifre_,_DyobServiceKodu_ , doktorTip , bashekimKodu,hekimKodu,ImajFTPServer : string;
-   _medulaOrtam_ , WanIp,WanIpURL ,_firmaKod_: string;
+   _medulaOrtam_ , WanIp,WanIpURL ,_firmaKod_ , osgbKodu : string;
    TakipDevam : boolean;
    AktifSirketAdi,AktifSirket ,_donemSonlandir_ ,TenayMNTRequest , TenayBIORequest , DyobRequest , _database , _Tip : string;
    CentroResponse ,SMSHesapFrom,SMSHesapUser,SMSHesapSifre , AlpemixRun,AlpemixGrupAdi,AlpemixGrupParola : string;
    _kurumKod  , _donemgoster : integer;
+   LisansBitis,LisansBasla,LisansTarih : string;
+   LisansLimit : integer;
    Bilgi : THastaKabul;
    GelisDuzenleRecord : TGelisDuzenle;
    SeansBilgi : TDigerIslemTalep;
@@ -657,41 +659,23 @@ end;
 
 procedure TDATALAR.Login;
 var
-  sql : string;
+  sql,kurum : string;
   ado : TADOQuery;
 begin
 
   try
     ado := TADOQuery.Create(nil);
     ado.Connection := datalar.ADOConnection2;
-
-     WanIpURL := WebErisimBilgi('WIP','00');
+    WanIpURL := WebErisimBilgi('WIP','00');
     _medulaOrtam_ := WebErisimBilgi('98','01');
    if _medulaOrtam_ = 'Gerçek'
    Then begin
-     //yardimciIslemURL := WebErisimBilgi('MDL','04');
-     //DiabetFormURL := WebErisimBilgi('MDL','09');
-     //hastaKabulURL := WebErisimBilgi('MDL','01');
-     //faturaKayitURL := WebErisimBilgi('MDL','03');
-     //hizmetKayitURL := WebErisimBilgi('MDL','02');
      receteURL := WebErisimBilgi('MDL','05');
-     //raporIlacURL := WebErisimBilgi('MDL','06');
-     //raporURL := WebErisimBilgi('MDL','07');
    end
    Else
    begin
-     //yardimciIslemURL := WebErisimBilgi('MDL','14');
-     //DiabetFormURL := WebErisimBilgi('MDL','19');
-     //hastaKabulURL := WebErisimBilgi('MDL','11');
-     //faturaKayitURL := WebErisimBilgi('MDL','13');
-     //hizmetKayitURL := WebErisimBilgi('MDL','12');
      receteURL := WebErisimBilgi('MDL','15');
-     //raporIlacURL := WebErisimBilgi('MDL','16');
-     //raporURL := WebErisimBilgi('MDL','17');
    end;
-     //DyopURL := WebErisimBilgi('TDS','01');
-     //DonemSonlandir := WebErisimBilgi('MDL','08');;
-
     _tesisKodu := WebErisimBilgi('99','00');
     _Kurumkod := strtoint(_tesisKodu);
 
@@ -712,54 +696,17 @@ begin
     _doktorRecetePas :=  ado.fieldbyname('eReceteSifre').AsString;
 
 
-    //_userSaglikNet2_ := WebErisimBilgi('90','00');
-    //_passSaglikNet2_ := WebErisimBilgi('90','01');
 
-    (*
-    _SKRS := datalar.ADO_SQL2.fieldbyname('SLYY').AsString;
-    _saglikNetUser := datalar.ADO_SQL2.fieldbyname('SLZZ').AsString;
-    _saglikNetPass := datalar.ADO_SQL2.fieldbyname('SLXXX').AsString;
-    _firmaSKRS := datalar.ADO_SQL2.fieldbyname('SLXXv').AsString;
-      *)
-
-
-    //_labusername := WebErisimBilgi('LA','00');
-    //_labsifre := WebErisimBilgi('LA','01');
-    //_labkurumkod := WebErisimBilgi('LA','02');
-    //_laburl := WebErisimBilgi('LA','04');
-    //_labfirma := WebErisimBilgi('LA','05');
-    //_labkurumkodText := WebErisimBilgi('LA','03');
-    //kontrolKod := WebErisimBilgi('LA','06');
-  //  dosyaNoONEK := ado.fieldbyname('slxxx').AsString;
-
-
-    //_usermernis := WebErisimBilgi('97','00');
-    //_passmernis := WebErisimBilgi('97','01');
-
-
-    //itsGLN := WebErisimBilgi('IT','02');
-    //itsUser := WebErisimBilgi('IT','00');
-    //itsPass := WebErisimBilgi('IT','01');
-
-    //_DyobKurumKodu_ := WebErisimBilgi('DY','00');
-    //_DyobSifre_ := WebErisimBilgi('DY','02');
-    //_DyobServiceKodu_ := WebErisimBilgi('DY','01');
-
-    sql := 'SELECT MerkezAdi FROM merkezBilgisi';
+    sql := 'SELECT MerkezKodu,MerkezAdi FROM merkezBilgisi';
     datalar.QuerySelect(ado,sql);
     _merkezAdi := ado.fieldbyname('merkezAdi').AsString;
+    osgbKodu := ado.fieldbyname('merkezKodu').AsString;
 
+    LisansBilgileri(LisansTarih,LisansBasla,LisansBitis,kurum,LisansLimit);
 
     sql := 'select SLVV from parametreler where slk = ''GA'' and SLB = ''00''';
     datalar.QuerySelect(ado,sql);
     LisansALUrl := ado.fieldbyname('SLVV').AsString;
-
-    //sql := 'select SLVV,SLXX,SLYY,SLZZ from parametreler where slk = ''GA'' and SLB = ''02''';
-    //datalar.QuerySelect(ado,sql);
-    //ftpUrl := ado.fieldbyname('SLVV').AsString;
-    //ftpUser := ado.fieldbyname('SLXX').AsString;
-    //ftpPassword := ado.fieldbyname('SLYY').AsString;
-
 
     SMSHesapUser := WebErisimBilgi('SMS','00');
     SMSHesapSifre := WebErisimBilgi('SMS','01');

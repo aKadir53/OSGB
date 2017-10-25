@@ -299,6 +299,7 @@ begin
           exit;
         end;
 
+        datalar.ProgTarih := FormattedTarih(tarihal(date()));
 
         datalar.AktifSirket := txtDonemler.Text;
         (*

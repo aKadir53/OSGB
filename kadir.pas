@@ -367,7 +367,7 @@ function SQLSelectToDataSet(Columns,Table,Where : string) : TADOQuery;
 procedure ExceldenPersonelYukle;
 procedure OnlineDestekOpen;
 function IsNull (const s: String): Boolean;
-
+procedure LisansUzat;
 
 const
   _YTL_ = 'YTL';
@@ -433,8 +433,16 @@ var
 implementation
 
 uses message,AnaUnit,message_y,popupForm,rapor,TedaviKart,Son6AylikTetkikSonuc,
-             HastaRecete,sifreDegis,HastaTetkikEkle,GirisUnit,SMS;
+             HastaRecete,sifreDegis,HastaTetkikEkle,GirisUnit,SMS,LisansUzat;
 
+
+procedure LisansUzat;
+begin
+    Application.CreateForm(TfrmLisansBilgisi, frmLisansBilgisi);
+    frmLisansBilgisi.LisansBilgisi;
+    frmLisansBilgisi.ShowModal;
+    frmLisansBilgisi := nil;
+end;
 
 procedure OnlineDestekOpen;
 var
@@ -4045,8 +4053,8 @@ begin
     kurum := ado.FieldByName('SLZZ').AsString;
 
     //datalar.Login;
-    Key := strtofloat(bitis) - datalar._kurumKod;
-    Key := Key / datalar._kurumKod;
+    Key := strtofloat(bitis) - strtofloat(datalar.osgbKodu);
+    Key := Key / strtofloat(datalar.osgbKodu);
     bitis := floattostr(Key);
 
   except
@@ -4064,8 +4072,7 @@ var
   _fark: double;
   _bitis: Tdate;
 begin
-
-  LisansBilgileri(Tarih, basla, bitis, kurum, limit);
+//  LisansBilgileri(Tarih, basla, bitis, kurum, limit);
 
   if (datalar.ProgTarih = '') Then
   Begin
@@ -4073,7 +4080,7 @@ begin
     Exit;
   End;
 
-  _bitis := strtodate(FormattedTarih(bitis));
+  _bitis := strtodate(FormattedTarih(Datalar.LisansBitis));
 
   if _bitis < strtodate(datalar.ProgTarih) Then
   Begin
