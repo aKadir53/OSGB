@@ -95,7 +95,7 @@ object frmPersonelEgitim: TfrmPersonelEgitim
     Left = 400
     Top = 40
     object Y1: TMenuItem
-      Caption = 'Eðitim Sertifikas'#305' Yazd'#305'r'
+      Caption = 'E'#287'itim Sertifikas'#305' Yazd'#305'r'
       ImageIndex = 28
       OnClick = cxButtonCClick
     end
