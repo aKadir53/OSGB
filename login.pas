@@ -71,7 +71,6 @@ type
     cxTabSheet1: TcxTabSheet;
     cxImage1: TcxImage;
     Label1: TLabel;
-    login1: Tlogin;
 
     PROCEDURE YUVARLAK(WDN:HWND;ALAN:TRECT);
     procedure FormCreate(Sender: TObject);
@@ -277,12 +276,6 @@ VAR
    Arect:Trect;
 begin
      INVALIDATERECT(HANDLE,@ARect,False);
-     if RegOku('servername') = ''
-     Then
-      LoginSayfalar.ActivePageIndex := 1
-     Else
-      LoginSayfalar.ActivePageIndex := 0;
-
 end;
 
 procedure TfrmLogin.Image1Click(Sender: TObject);
@@ -497,7 +490,7 @@ var
   List : ArrayListeSecimler;
   sql : string;
 begin
-  if Datalar.Baglan
+  if Datalar.Baglan ('', '', Edit1.Text)
   Then Begin
     sql := 'select doktor,sirketKodu from Users where kullanici = ' + QuotedStr(edit1.text);
     datalar.QuerySelect(DONEMBUL,sql);
@@ -528,6 +521,13 @@ begin
    begin
      txtServerName.Text := '213.159.30.6';
      txtOsgbKodu.Text := 'OSGB1';
+     Edit1.Text := 'demo';
+     {if RegOku('servername') = ''
+     Then
+      LoginSayfalar.ActivePageIndex := 1
+     Else
+      LoginSayfalar.ActivePageIndex := 0;{}
+
    end;
 
    txtDataBase.EditValue := Decode64(regOku('OSGB_db_name'));
