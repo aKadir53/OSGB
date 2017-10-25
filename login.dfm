@@ -590,7 +590,7 @@ object frmLogin: TfrmLogin
       TabVisible = False
       object Label1: TLabel
         Left = 154
-        Top = 14
+        Top = 46
         Width = 142
         Height = 60
         Caption = 'Parametreler y'#252'klenirken l'#252'tfen bekleyiniz...'
@@ -604,7 +604,7 @@ object frmLogin: TfrmLogin
       end
       object cxImage1: TcxImage
         Left = 3
-        Top = 3
+        Top = 35
         Picture.Data = {
           0B54504E474772617068696336510000424D3651000000000000360000002800
           0000480000004800000001002000000000000051000000000000000000000000
@@ -1257,10 +1257,13 @@ object frmLogin: TfrmLogin
           FF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFF
           FF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFF
           FF00FFFFFF00}
+        Properties.ShowFocusRect = False
+        Style.BorderStyle = ebsNone
+        Style.Edges = []
         TabOrder = 0
         Transparent = True
-        Height = 111
-        Width = 150
+        Height = 94
+        Width = 145
       end
     end
   end
