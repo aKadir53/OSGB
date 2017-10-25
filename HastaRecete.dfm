@@ -42,9 +42,9 @@ object frmHastaRecete: TfrmHastaRecete
       Height = 278
       Width = 1096
       object cxGrid10: TcxGrid
-        Left = 2
-        Top = -2
-        Width = 1092
+        Left = 3
+        Top = 15
+        Width = 1090
         Height = 154
         Align = alTop
         Font.Charset = TURKISH_CHARSET
@@ -56,6 +56,9 @@ object frmHastaRecete: TfrmHastaRecete
         TabOrder = 0
         LevelTabs.ImageBorder = 2
         LevelTabs.Style = 1
+        ExplicitLeft = 2
+        ExplicitTop = -3
+        ExplicitWidth = 1092
         object cxGridRecete: TcxGridDBTableView
           OnDblClick = cxGridReceteDblClick
           Navigator.Buttons.First.Visible = True
@@ -234,15 +237,17 @@ object frmHastaRecete: TfrmHastaRecete
         end
       end
       object cxPanelReceteBaslikBottom: TcxGroupBox
-        Left = 2
-        Top = 152
+        Left = 3
+        Top = 169
         Align = alClient
         PanelStyle.Active = True
         TabOrder = 1
-        ExplicitWidth = 1090
-        ExplicitHeight = 99
-        Height = 124
-        Width = 1092
+        ExplicitLeft = 2
+        ExplicitTop = 151
+        ExplicitWidth = 1092
+        ExplicitHeight = 125
+        Height = 98
+        Width = 1090
         object cxPanelReceteTanilar: TcxGroupBox
           Left = 2
           Top = 2
@@ -256,17 +261,17 @@ object frmHastaRecete: TfrmHastaRecete
           Style.Font.Style = [fsBold]
           Style.IsFontAssigned = True
           TabOrder = 0
-          ExplicitHeight = 95
+          ExplicitHeight = 121
           DesignSize = (
             438
-            113)
-          Height = 120
+            86)
+          Height = 94
           Width = 438
           object cxGrid11: TcxGrid
-            Left = 2
-            Top = -2
+            Left = 3
+            Top = 15
             Width = 386
-            Height = 120
+            Height = 68
             Align = alLeft
             Font.Charset = TURKISH_CHARSET
             Font.Color = clWindowText
@@ -278,6 +283,9 @@ object frmHastaRecete: TfrmHastaRecete
             TabOrder = 0
             LevelTabs.ImageBorder = 2
             LevelTabs.Style = 1
+            ExplicitLeft = 2
+            ExplicitTop = -3
+            ExplicitHeight = 122
             object cxGridReceteTani: TcxGridDBTableView
               Navigator.Buttons.First.Visible = True
               Navigator.Buttons.PriorPage.Visible = True
@@ -383,19 +391,19 @@ object frmHastaRecete: TfrmHastaRecete
           Align = alClient
           Caption = 'Recete A'#231#305'klamalar'#305
           TabOrder = 1
-          ExplicitWidth = 648
-          ExplicitHeight = 95
+          ExplicitWidth = 650
+          ExplicitHeight = 121
           DesignSize = (
-            650
-            113)
-          Height = 120
-          Width = 650
+            648
+            86)
+          Height = 94
+          Width = 648
           object cxGrid9: TcxGrid
             Tag = 1
-            Left = 2
-            Top = -2
+            Left = 3
+            Top = 15
             Width = 534
-            Height = 120
+            Height = 68
             Align = alLeft
             Font.Charset = TURKISH_CHARSET
             Font.Color = clWindowText
@@ -406,6 +414,9 @@ object frmHastaRecete: TfrmHastaRecete
             TabOrder = 0
             LevelTabs.ImageBorder = 2
             LevelTabs.Style = 1
+            ExplicitLeft = 2
+            ExplicitTop = -3
+            ExplicitHeight = 122
             object cxGridReceteAciklama: TcxGridDBTableView
               Tag = 1
               OnDblClick = cxGridReceteAciklamaDblClick
@@ -483,7 +494,7 @@ object frmHastaRecete: TfrmHastaRecete
             end
           end
           object cxButtonKadirAckSil: TcxButtonKadir
-            Left = 608
+            Left = 606
             Top = 56
             Width = 42
             Height = 38
@@ -492,9 +503,10 @@ object frmHastaRecete: TfrmHastaRecete
             TabOrder = 1
             OnClick = cxButtonKadirAckSilClick
             NewButtonVisible = False
+            ExplicitLeft = 608
           end
           object cxButtonKadirAckEkle: TcxButtonKadir
-            Left = 608
+            Left = 606
             Top = 15
             Width = 42
             Height = 38
@@ -503,6 +515,7 @@ object frmHastaRecete: TfrmHastaRecete
             TabOrder = 2
             OnClick = cxButtonKadirAckEkleClick
             NewButtonVisible = False
+            ExplicitLeft = 608
           end
         end
       end
@@ -522,13 +535,13 @@ object frmHastaRecete: TfrmHastaRecete
       TabOrder = 1
       DesignSize = (
         1096
-        303)
+        302)
       Height = 310
       Width = 1096
       object cxGrid4: TcxGrid
-        Left = 2
-        Top = -2
-        Width = 1092
+        Left = 3
+        Top = 15
+        Width = 1090
         Height = 211
         Align = alTop
         Font.Charset = TURKISH_CHARSET
@@ -541,6 +554,9 @@ object frmHastaRecete: TfrmHastaRecete
         LevelTabs.ImageBorder = 2
         LevelTabs.Style = 1
         LookAndFeel.Kind = lfOffice11
+        ExplicitLeft = 2
+        ExplicitTop = -3
+        ExplicitWidth = 1092
         object gridIlaclar: TcxGridDBTableView
           PopupMenu = GridIlaclarPopup
           OnDblClick = gridIlaclarDblClick
@@ -716,10 +732,10 @@ object frmHastaRecete: TfrmHastaRecete
       end
       object cxGrid8: TcxGrid
         Tag = 1
-        Left = 2
-        Top = 217
+        Left = 3
+        Top = 234
         Width = 790
-        Height = 91
+        Height = 65
         Align = alLeft
         Font.Charset = TURKISH_CHARSET
         Font.Color = clWindowText
@@ -731,6 +747,9 @@ object frmHastaRecete: TfrmHastaRecete
         TabOrder = 1
         LevelTabs.ImageBorder = 2
         LevelTabs.Style = 1
+        ExplicitLeft = 2
+        ExplicitTop = 216
+        ExplicitHeight = 92
         object cxGridReceteIlacAciklama: TcxGridDBTableView
           OnDblClick = cxGridReceteIlacAciklamaDblClick
           Navigator.Buttons.First.Visible = True
@@ -807,12 +826,15 @@ object frmHastaRecete: TfrmHastaRecete
         end
       end
       object cxSplitter2: TcxSplitter
-        Left = 2
-        Top = 209
-        Width = 1092
+        Left = 3
+        Top = 226
+        Width = 1090
         Height = 8
         AlignSplitter = salTop
         Control = cxGrid4
+        ExplicitLeft = 2
+        ExplicitTop = 208
+        ExplicitWidth = 1092
       end
       object cxButtonKadirIlacAckSil: TcxButtonKadir
         Left = 1051

@@ -1,0 +1,429 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tm="http://microsoft.com/wsdl/mime/textMatching/" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/" xmlns:tns="http://tempuri.org/" xmlns:s="http://www.w3.org/2001/XMLSchema" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" xmlns:http="http://schemas.xmlsoap.org/wsdl/http/" targetNamespace="http://tempuri.org/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsdl:types>
+    <s:schema elementFormDefault="qualified" targetNamespace="http://tempuri.org/">
+      <s:element name="TestTotalCvp">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="K" type="tns:ArrayOfTestTotal" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="ArrayOfTestTotal">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="TestTotal" nillable="true" type="tns:TestTotal" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="TestTotal">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="Test" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="ay" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="t" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="A" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="B" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="C" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Kurum" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="TestTotalCvpResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="TestTotalCvpResult" type="tns:SonucDurum" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="SonucDurum">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="SonucMsj" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="SonucKod" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="SonucKayitSayi" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="LisansBitis">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="K" type="tns:KurumBilgiGrs" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="KurumBilgiGrs">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="KurumKod" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="LisansBitisResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="LisansBitisResult" type="tns:KurumBilgi" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="KurumBilgi">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="username" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="password" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Lisans" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="SonucKodu" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="SonucMesaj" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="firma" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="kurumkod" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="FaturaHastaSayi">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="FHC" type="tns:FaturaHastaCount" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="FaturaHastaCount">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="KurumKod" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="HastaCount" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="sonucKodu" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="sonucMesaj" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="FaturaHastaSayiResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="FaturaHastaSayiResult" type="tns:KurumBilgi" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="BackupLogGonder">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="kurumKodu" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="BackupLogGonderResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="BackupLogGonderResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="MesajOku">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="id" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="MesajOkuResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="MesajOkuResult" type="tns:mesajBilgi" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="mesajBilgi">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="id" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="mesajTip" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="mesaj" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="TarihAl">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="kurumKodu" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="TarihAlResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="TarihAlResult" type="tns:serverTarih" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="serverTarih">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="Tarih" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="HastaKayit">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="HH" type="tns:HastaKayitGrs" />
+            <s:element minOccurs="0" maxOccurs="1" name="HastaNo" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="tarih" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="gNo" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="HastaKayitGrs">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="KurumKod" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="HastaNo" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="GelisNo" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="TcKimlikNo" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="tarih" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="testler" type="tns:ArrayOfTest" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="ArrayOfTest">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="Test" nillable="true" type="tns:Test" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="Test">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="TestKodu" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="IslemKodu" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="TestAdi" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Tip" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="HastaKayitResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="HastaKayitResult" type="tns:HastaKayitCikis" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="HastaKayitCikis">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="KurumKod" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="HastaNo" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="TcKimlikNo" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="gelisNo" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="gelisId" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="testler" type="tns:ArrayOfTestC" />
+          <s:element minOccurs="0" maxOccurs="1" name="sonucKodu" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="sonucMesaj" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="ArrayOfTestC">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="TestC" nillable="true" type="tns:TestC" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="TestC">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="TestKodu" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="IslemKodu" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="TestAdi" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Tip" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="SiraNo" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="SonucMesaj" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+    </s:schema>
+  </wsdl:types>
+  <wsdl:message name="TestTotalCvpSoapIn">
+    <wsdl:part name="parameters" element="tns:TestTotalCvp" />
+  </wsdl:message>
+  <wsdl:message name="TestTotalCvpSoapOut">
+    <wsdl:part name="parameters" element="tns:TestTotalCvpResponse" />
+  </wsdl:message>
+  <wsdl:message name="LisansBitisSoapIn">
+    <wsdl:part name="parameters" element="tns:LisansBitis" />
+  </wsdl:message>
+  <wsdl:message name="LisansBitisSoapOut">
+    <wsdl:part name="parameters" element="tns:LisansBitisResponse" />
+  </wsdl:message>
+  <wsdl:message name="FaturaHastaSayiSoapIn">
+    <wsdl:part name="parameters" element="tns:FaturaHastaSayi" />
+  </wsdl:message>
+  <wsdl:message name="FaturaHastaSayiSoapOut">
+    <wsdl:part name="parameters" element="tns:FaturaHastaSayiResponse" />
+  </wsdl:message>
+  <wsdl:message name="BackupLogGonderSoapIn">
+    <wsdl:part name="parameters" element="tns:BackupLogGonder" />
+  </wsdl:message>
+  <wsdl:message name="BackupLogGonderSoapOut">
+    <wsdl:part name="parameters" element="tns:BackupLogGonderResponse" />
+  </wsdl:message>
+  <wsdl:message name="MesajOkuSoapIn">
+    <wsdl:part name="parameters" element="tns:MesajOku" />
+  </wsdl:message>
+  <wsdl:message name="MesajOkuSoapOut">
+    <wsdl:part name="parameters" element="tns:MesajOkuResponse" />
+  </wsdl:message>
+  <wsdl:message name="TarihAlSoapIn">
+    <wsdl:part name="parameters" element="tns:TarihAl" />
+  </wsdl:message>
+  <wsdl:message name="TarihAlSoapOut">
+    <wsdl:part name="parameters" element="tns:TarihAlResponse" />
+  </wsdl:message>
+  <wsdl:message name="HastaKayitSoapIn">
+    <wsdl:part name="parameters" element="tns:HastaKayit" />
+  </wsdl:message>
+  <wsdl:message name="HastaKayitSoapOut">
+    <wsdl:part name="parameters" element="tns:HastaKayitResponse" />
+  </wsdl:message>
+  <wsdl:portType name="Service1Soap">
+    <wsdl:operation name="TestTotalCvp">
+      <wsdl:input message="tns:TestTotalCvpSoapIn" />
+      <wsdl:output message="tns:TestTotalCvpSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="LisansBitis">
+      <wsdl:input message="tns:LisansBitisSoapIn" />
+      <wsdl:output message="tns:LisansBitisSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="FaturaHastaSayi">
+      <wsdl:input message="tns:FaturaHastaSayiSoapIn" />
+      <wsdl:output message="tns:FaturaHastaSayiSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="BackupLogGonder">
+      <wsdl:input message="tns:BackupLogGonderSoapIn" />
+      <wsdl:output message="tns:BackupLogGonderSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="MesajOku">
+      <wsdl:input message="tns:MesajOkuSoapIn" />
+      <wsdl:output message="tns:MesajOkuSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="TarihAl">
+      <wsdl:input message="tns:TarihAlSoapIn" />
+      <wsdl:output message="tns:TarihAlSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="HastaKayit">
+      <wsdl:input message="tns:HastaKayitSoapIn" />
+      <wsdl:output message="tns:HastaKayitSoapOut" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="Service1Soap" type="tns:Service1Soap">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="TestTotalCvp">
+      <soap:operation soapAction="http://tempuri.org/TestTotalCvp" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="LisansBitis">
+      <soap:operation soapAction="http://tempuri.org/LisansBitis" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="FaturaHastaSayi">
+      <soap:operation soapAction="http://tempuri.org/FaturaHastaSayi" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="BackupLogGonder">
+      <soap:operation soapAction="http://tempuri.org/BackupLogGonder" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="MesajOku">
+      <soap:operation soapAction="http://tempuri.org/MesajOku" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="TarihAl">
+      <soap:operation soapAction="http://tempuri.org/TarihAl" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="HastaKayit">
+      <soap:operation soapAction="http://tempuri.org/HastaKayit" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:binding name="Service1Soap12" type="tns:Service1Soap">
+    <soap12:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="TestTotalCvp">
+      <soap12:operation soapAction="http://tempuri.org/TestTotalCvp" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="LisansBitis">
+      <soap12:operation soapAction="http://tempuri.org/LisansBitis" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="FaturaHastaSayi">
+      <soap12:operation soapAction="http://tempuri.org/FaturaHastaSayi" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="BackupLogGonder">
+      <soap12:operation soapAction="http://tempuri.org/BackupLogGonder" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="MesajOku">
+      <soap12:operation soapAction="http://tempuri.org/MesajOku" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="TarihAl">
+      <soap12:operation soapAction="http://tempuri.org/TarihAl" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="HastaKayit">
+      <soap12:operation soapAction="http://tempuri.org/HastaKayit" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="Service1">
+    <wsdl:port name="Service1Soap" binding="tns:Service1Soap">
+      <soap:address location="http://www.noktayazilim.net/noktaservice.asmx" />
+    </wsdl:port>
+    <wsdl:port name="Service1Soap12" binding="tns:Service1Soap12">
+      <soap12:address location="http://www.noktayazilim.net/noktaservice.asmx" />
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

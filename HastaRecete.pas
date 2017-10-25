@@ -550,6 +550,7 @@ var
   memo : Tmemo;
   _dn_ ,_gn_ , _id_ , _d_ , _s , _p , _erNo_  : string;
   _exe : PAnsiChar;
+  fark : double;
 begin
   Reg := Tregistry.Create;
   Reg.RootKey := HKEY_CURRENT_USER;
@@ -565,14 +566,19 @@ begin
 
   case islem of
    ReceteMedulaKaydet :  begin
-                            DurumGoster(True,False,'Reçeteniz Kayýt Ýçin Ýmzalanýyor...Lütfen Bekleyiniz...',1);
-                            try
-                              Sonuc := ReceteImzalaGonder;
-                            finally
-                              DurumGoster(False,False,'');
-                              ShowMessageSkin(Sonuc,'','','info');
-                            end;
-                          end;
+                           if LisansKontrol(fark) = True
+                           Then Begin
+                              DurumGoster(True,False,'Reçeteniz Kayýt Ýçin Ýmzalanýyor...Lütfen Bekleyiniz...',1);
+                              try
+                                Sonuc := ReceteImzalaGonder;
+                              finally
+                                DurumGoster(False,False,'');
+                                ShowMessageSkin(Sonuc,'','','info');
+                              end;
+                           end
+                           Else
+                            ShowMessageSkin('Lütfen Lisans Bilgilerinizi Kontrol Ediniz...','','','info');
+                         end;
 
      // _exe :=  PAnsiChar(AnsiString('C:\NoktaV3\E-imza\imza.exe ' + 'I' + ' '+ _dn_ + ' ' + _gn_ + ' ' + _id_ + ' ' + _d_  + ' ' + datalar.AktifSirket));
    ReceteMedulaSil : begin

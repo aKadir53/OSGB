@@ -47,7 +47,8 @@ uses
   PersonelEgitimFrm in 'PersonelEgitimFrm.pas' {frmPersonelEgitim},
   Sorgulamalar in 'Sorgulamalar.pas' {frmSorgulamalar},
   PopupDBVerticalGridForm in 'PopupDBVerticalGridForm.PAS' {frmPopupDBVerticalGridForm},
-  IsKazasi in 'IsKazasi.pas' {frmIsKazasi};
+  IsKazasi in 'IsKazasi.pas' {frmIsKazasi},
+  LisansUzat in 'LisansUzat.pas' {frmLisansBilgisi};
 
 // KadirMedula3 in '..\..\medula3wsdl\KadirMedula3.pas';
 
