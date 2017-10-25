@@ -61,7 +61,13 @@ var
 begin
   if TcxButtonKadir (Sender).ButtonName = 'btnPersonelEkle' then
   begin
-    PersonelList.Where := 'Aktif = 1 and SirketKod = ' + QuotedStr (datalar.AktifSirket);
+    PersonelList.Where :=
+      'Aktif = 1 '+
+      'and SirketKod = ' + QuotedStr (datalar.AktifSirket)+
+      'and not exists (select 1 '+
+      'from Personel_Egitim pe '+
+      'where pe.EgitimId = ' +  TcxButtonEditKadir (FindComponent('id')).Text + ' '+
+      'and pe.PersonelDosyaNo = PersonelKartview.DosyaNo)';
     datalar.ButtonEditSecimlist := PersonelList.ListeGetir;
     if length (datalar.ButtonEditSecimlist) > 0 then
     begin
@@ -146,23 +152,25 @@ begin
 
   List := TListeAc.Create(nil);
 
-  List.Table := 'Egitimler';
+  List.Table := '(Select e.*, et.tanimi from Egitimler e inner join Egitim_Tnm et on et.Kod = e.EgitimKod) Egitimler';
 
   List.kolonlar.Add('id');// := Ts;
   List.kolonlar.Add('EgitimKod');// := Ts;
+  List.kolonlar.Add('Tanimi');// := Ts;
   List.kolonlar.Add('BaslamaTarihi'); // := Ts;
 
 
   List.KolonBasliklari.Add('ID');// := Ts1;
   List.KolonBasliklari.Add('Eðitim Kodu');// := Ts1;
+  List.KolonBasliklari.Add('Tanýmý');// := Ts1;
   List.KolonBasliklari.Add('Baþlama Tarihi');// := Ts1;
-  List.TColcount := 3;
-  List.TColsW := '50,200,20';
+  List.TColcount := 4;
+  List.TColsW := '10,10,140,70';
   List.ListeBaslik := 'Eðitimler';
   List.Name := 'id';
   List.Conn := Datalar.ADOConnection2;
   List.SkinName := 'coffee';//AnaForm.dxSkinController1.SkinName;
-
+  List.Where := 'SirketKod = ' + QuotedStr (DATALAR.AktifSirket);
   setDataStringB(self,'id','Eðitim No.',Kolon1,'',70,List,True,nil, 'tanimi', '', False, True, -100);
 
   setDataStringB(self,'SirketKod','Þirket Kodu',Kolon1,'',100,nil, True, SirketKod);
@@ -222,6 +230,7 @@ begin
   addButton(self,nil,'btnPersonelEkle','','Personel Getir',Sayfa2_Kolon1,'PERS',120,ButtonClick);
   addButton(self,nil,'btnPersonelSil','','Seçili Personeli Sil',Sayfa2_Kolon1,'PERS',120,ButtonClick);
   setDataStringKontrol(self,EgitimPersonel,'EgitimPersonel','',sayfa2_kolon1,'',400,300);
+  GridList.Bands [0].Width := 350;;
 
   //setDataStringC(self,'EgitimUcretiOdendi','Ödendi mi?',Kolon1,'',100, 'Evet,Hayýr');
 
