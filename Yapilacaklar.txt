@@ -10,10 +10,11 @@ recete þablonlarý formunda çalýþmalar...
 cxschedulerstrs unitinde türkçeleþtirme
 þirket tablosuna ssk (?) bölge müdürlüðü sicil numarasý ?
 kart
-
+toplu personel atamada where þartýna þirkjet eklenecekti
+login formu bekleyin resmi ortalanacak
 
 eðitim sertifikasý baskýsý eklenecek baský olarak
-
+eðitim seçiminde where ile o þirketin eðitimleri getirtilecek.
 -------------
 taný listesi
 ilaç listesi

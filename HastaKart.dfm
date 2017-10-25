@@ -714,6 +714,7 @@ object frmHastaKart: TfrmHastaKart
       Tag = 140
       Caption = 'Personel E'#287'itimleri'
       ImageIndex = 63
+      Visible = False
       OnClick = cxButtonCClick
     end
     object HastaRaporlar1: TMenuItem
