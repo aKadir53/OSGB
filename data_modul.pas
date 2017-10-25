@@ -457,7 +457,7 @@ type
     procedure AENBeforeExecute(const MethodName: string; SOAPRequest: TStream);
     procedure LiosBeforeExecute(const MethodName: string; SOAPRequest: TStream);
     procedure LiosAfterExecute(const MethodName: string; SOAPResponse: TStream);
-    function Baglan(db : string = '' ; Server : string = '') : Boolean;
+    function Baglan(db : string = '' ; Server : string = ''; username : String = '') : Boolean;
     function MasterBaglan(MasterKod : string ; var DB : string ; Server : string = '') : boolean;
     procedure ADOConnection2WillExecute(Connection: TADOConnection;
       var CommandText: WideString; var CursorType: TCursorType;
@@ -571,7 +571,7 @@ begin
 end;
 
 
-function TDatalar.Baglan(db : string = '' ; Server : string = '') : Boolean;
+function TDatalar.Baglan(db : string = '' ; Server : string = ''; username : String = '') : Boolean;
 var
  iniFiles : TIniFile;
  _db_ : string;
@@ -583,9 +583,14 @@ begin
    servername := ifThen(Server = '', Decode64(RegOku('servername')),Server);
    _db_ := ifThen(db = '', Decode64(RegOku('OSGB_db_name')),db);
 
+   if username = 'demo' then begin
+     _db_ := 'OSGB_UZMAN';
+     servername := '213.159.30.6';
+   end;
    if (_db_ <> '')
    Then Begin
      ADOConnection2.Connected := false;
+
      ADOConnection2.ConnectionString :=
      'Provider=SQLOLEDB.1;Password=5353;Persist Security Info=True;User ID=Nokta;Initial Catalog=' + _db_ +';Data Source='+servername;
      ADOConnection2.Connected := True;
