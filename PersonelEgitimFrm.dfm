@@ -90,4 +90,14 @@ object frmPersonelEgitim: TfrmPersonelEgitim
     Left = 528
     Top = 40
   end
+  object PopupMenu1: TPopupMenu
+    Images = DATALAR.imag24png
+    Left = 400
+    Top = 40
+    object Y1: TMenuItem
+      Caption = 'Eðitim Sertifikas'#305' Yazd'#305'r'
+      ImageIndex = 28
+      OnClick = cxButtonCClick
+    end
+  end
 end
