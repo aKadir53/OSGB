@@ -113,7 +113,7 @@ begin
   TopluDataset.Dataset0 := ado;
   TopluDataset.Dataset0.Name := 'PersonelEgitimleri';
 
-  PrintYap('004','Personel Eðitimi Sertifikasý','',TopluDataset,pTNone);
+  PrintYap('005','Personel Eðitimi Sertifikasý','',TopluDataset,pTNone);
   ado.free;
 
 end;
@@ -252,8 +252,8 @@ begin
   setDataStringKontrol(self,kombo,'EgitimUcretiOdendi','Ödendi mi?',kolon1,'',120);
   addButton(self,nil,'btnPersonelEkle','','Personel Getir',Sayfa2_Kolon1,'PERS',120,ButtonClick);
   addButton(self,nil,'btnPersonelSil','','Seçili Personeli Sil',Sayfa2_Kolon1,'PERS',120,ButtonClick);
-  setDataStringKontrol(self,EgitimPersonel,'EgitimPersonel','',sayfa2_kolon1,'',400,300);
-  GridList.Bands [0].Width := 350;;
+  setDataStringKontrol(self,EgitimPersonel,'EgitimPersonel','',sayfa2_kolon1,'',410,300);
+  GridList.Bands [0].Width := 380;;
   Menu := PopupMenu1;
   //setDataStringC(self,'EgitimUcretiOdendi','Ödendi mi?',Kolon1,'',100, 'Evet,Hayýr');
 
