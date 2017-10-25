@@ -60,6 +60,7 @@ begin
   sql := 'sp_frmKazaTutanagiYazdir ' + TcxButtonEditKadir(FindComponent('ID')).Text;
   datalar.QuerySelect(ado, sql);
   TopluDataset.Dataset0 := ado;
+  TopluDataset.Dataset0.Name := 'IsKazalari';
 
   PrintYap('003','Ýþ Kazasý Tutanak','',TopluDataset,pTNone);
   ado.free;
