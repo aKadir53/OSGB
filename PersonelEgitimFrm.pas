@@ -26,6 +26,9 @@ type
     PersonelList: TListeAc;
     PopupMenu1: TPopupMenu;
     Y1: TMenuItem;
+    T1: TMenuItem;
+    S1: TMenuItem;
+    L1: TMenuItem;
     procedure FormCreate(Sender: TObject);
     procedure ButtonClick(Sender: TObject);
     procedure cxKaydetClick(Sender: TObject);
@@ -109,11 +112,16 @@ begin
   ado := TADOQuery.Create(nil);
   ado.Connection := datalar.ADOConnection2;
   sql := 'sp_frmPersonelEgitim ' + TcxButtonEditKadir(FindComponent('id')).Text;
+  if TMenuItem (Sender).Tag = -20 then sql := sql + ', ' + QuotedStr (EgitimPersonel.Dataset.FieldByName('PersonelDosyaNo').AsString);
+
   datalar.QuerySelect(ado, sql);
   TopluDataset.Dataset0 := ado;
   TopluDataset.Dataset0.Name := 'PersonelEgitimleri';
 
-  PrintYap('005','Personel Eðitimi Sertifikasý','',TopluDataset,pTNone);
+  if TMenuItem (Sender).Tag = -30 then
+    PrintYap('004','Eðitime Katýlan Personel Listesi','',TopluDataset,pTNone)
+   else
+    PrintYap('005','Personel Eðitimi Sertifikasý','',TopluDataset,pTNone);
   ado.free;
 
 end;

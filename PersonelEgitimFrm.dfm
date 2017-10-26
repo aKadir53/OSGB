@@ -95,9 +95,23 @@ object frmPersonelEgitim: TfrmPersonelEgitim
     Left = 400
     Top = 40
     object Y1: TMenuItem
-      Caption = 'E'#287'itim Sertifikas'#305' Yazd'#305'r'
+      Caption = 'Yazd'#305'r'
       ImageIndex = 28
-      OnClick = cxButtonCClick
+      object T1: TMenuItem
+        Tag = -10
+        Caption = 'E'#287'itime Kat'#305'lan T'#252'm Personel Sertifika Bas'#305'm'#305
+        OnClick = cxButtonCClick
+      end
+      object S1: TMenuItem
+        Tag = -20
+        Caption = 'Se'#231'ili Personel Sertifika Bas'#305'm'#305
+        OnClick = cxButtonCClick
+      end
+      object L1: TMenuItem
+        Tag = -30
+        Caption = 'E'#287'itime Kat'#305'lan Personel Listesi'
+        OnClick = cxButtonCClick
+      end
     end
   end
 end
