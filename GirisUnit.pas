@@ -1988,7 +1988,7 @@ try
                sqlRun.FieldByName(_Obje_.Name).AsVariant :=  TcxDateEditKadir(_Obje_).GetValue('YYYYMMDD') //tarihal(TcxDateEdit(_Obje_).Date)
 
           else
-           sqlRun.FieldByName(_Obje_.Name).AsVariant := '';
+           sqlRun.FieldByName(_Obje_.Name).AsVariant := null;
        End
        else
         if (TcxTextEditKadir(_obje_).BosOlamaz = True) and (TcxTextEditKadir(_obje_).Text = '')

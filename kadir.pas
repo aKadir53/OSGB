@@ -3132,7 +3132,7 @@ end;
 Procedure EpikrizYaz(DosyaNo, GelisNo : string; QR: Boolean ; DataSet : Tdataset = nil);
 var
   sql: string;
-  ado, ado1 , ado2 , ado3: TADOQuery;
+  ado, ado1 , ado2 , ado3 , ado4 : TADOQuery;
   printT : TprintTip;
   TopluDataset : TDataSetKadir;
 begin
@@ -3147,33 +3147,50 @@ if DataSet = nil then
  end
  else
  *)
-  TopluDataset.Dataset1 := DataSet;
+//  TopluDataset.Dataset1 := DataSet;
 
+
+  ado := TADOQuery.Create(nil);
+  ado.Connection := datalar.ADOConnection2;
+  sql := 'sp_frmPersonelIseGirisMuayene ' + QuotedStr(DosyaNo) + ',' + gelisNo + ',' + QuotedStr('PK');
+  datalar.QuerySelect(ado, sql);
+  TopluDataset.Dataset0 := ado;
+  TopluDataset.Dataset0.name := 'IsyeriIsciBilgisi';
 
   ado1 := TADOQuery.Create(nil);
   ado1.Connection := datalar.ADOConnection2;
-  sql := 'select * from MerkezBilgisi ';
+  sql := 'sp_frmPersonelIseGirisMuayene ' + QuotedStr(DosyaNo) + ',' + gelisNo + ',' + QuotedStr('TA12');
   datalar.QuerySelect(ado1, sql);
-  TopluDataset.Dataset0 := ado1;
+  TopluDataset.Dataset1 := ado1;
+  TopluDataset.Dataset1.name := 'TIBBIANAMNEZ12';
 
   ado2 := TADOQuery.Create(nil);
   ado2.Connection := datalar.ADOConnection2;
-  sql := 'select * from PersonelKart where dosyaNo = ' + QuotedStr(DosyaNo);
+  sql := 'sp_frmPersonelIseGirisMuayene ' + QuotedStr(DosyaNo) + ',' + gelisNo + ',' + QuotedStr('TA345678');
   datalar.QuerySelect(ado2, sql);
   TopluDataset.Dataset2 := ado2;
+  TopluDataset.Dataset2.name := 'TIBBIANAMNEZ345678';
 
   ado3 := TADOQuery.Create(nil);
   ado3.Connection := datalar.ADOConnection2;
-  sql := 'select * from PersonelFoto where dosyaNo = ' + QuotedStr(DosyaNo);
+  sql := 'sp_frmPersonelIseGirisMuayene ' + QuotedStr(DosyaNo) + ',' + gelisNo + ',' + QuotedStr('TA9');
   datalar.QuerySelect(ado3, sql);
   TopluDataset.Dataset3 := ado3;
+
+
+  ado4 := TADOQuery.Create(nil);
+  ado4.Connection := datalar.ADOConnection2;
+  sql := 'select * from PersonelFoto where dosyaNo = ' + QuotedStr(DosyaNo);
+  datalar.QuerySelect(ado4, sql);
+  TopluDataset.Dataset4 := ado4;
 
   PrintYap('001','Ýþe Giriþ Muayene Formu','',TopluDataset,pTNone);
 
 //  if Assigned(ado) then ado.Free;
+  ado.Free;
   ado1.Free;
-  ado2.Free;
   ado3.Free;
+  ado4.free;
 end;
 
 function DiyalizPaketiUygula(DosyaNo, GelisNo, sablonId: string): integer;

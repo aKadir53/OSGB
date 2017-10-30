@@ -288,8 +288,10 @@ begin
     try
        frxReport1.LoadFromStream(template);
        frxDBDataset0.DataSet := dataset.Dataset0;
+       frxDBDataset0.DataSet.Name := dataset.Dataset0.name;
 
        frxDBDataset1.DataSet := dataset.Dataset1;
+       frxDBDataset1.DataSet.name := dataset.Dataset1.name;
        frxDBDataset2.DataSet := dataset.Dataset2;
        frxDBDataset3.DataSet := dataset.Dataset3;
        frxDBDataset4.DataSet := dataset.Dataset4;
