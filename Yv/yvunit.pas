@@ -5,10 +5,10 @@ interface
 uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, cxGraphics, cxControls, cxLookAndFeels,
-  cxLookAndFeelPainters, dxSkinsCore, dxSkinLilian, dxSkinsDefaultPainters,
+  cxLookAndFeelPainters, dxSkinsCore, dxSkinLilian, dxSkinsDefaultPainters,Registry,
   dxActivityIndicator, cxContainer, cxEdit, cxLabel, cxProgressBar,ShellApi,TlHelp32,
   IdBaseComponent, IdComponent, IdTCPConnection, IdTCPClient, IdHTTP, Vcl.Menus,
-  Vcl.StdCtrls, cxButtons, dxStatusBar, Vcl.ExtCtrls;
+  Vcl.StdCtrls, cxButtons, dxStatusBar, Vcl.ExtCtrls,ShlObj,ActiveX,ComObj;
 
 type
   TfrmYv = class(TForm)
@@ -26,6 +26,7 @@ type
     procedure HTTP1WorkEnd(ASender: TObject; AWorkMode: TWorkMode);
     procedure Timer1Timer(Sender: TObject);
     function KillTask(Dosyadi: string): integer;
+    function DesktopPath : string;
   private
     { Private declarations }
   public
@@ -40,6 +41,52 @@ var
   implementation
 
 {$R *.dfm}
+
+
+function TfrmYv.DesktopPath : string;
+var
+ theReg  : TRegistry;
+ KeyName : String;
+begin
+ theReg := TRegistry.Create;
+ KeyName := 'Software\Microsoft\Windows\CurrentVersion\Explorer\Shell Folders';
+ if (theReg.KeyExists(KeyName)) then
+   begin
+     theReg.OpenKey(KeyName, False);
+     DesktopPath := theReg.ReadString('Desktop');
+   end
+ else
+   begin
+     theReg.OpenKey(KeyName, True);
+     DesktopPath := 'Error';
+   end;
+ theReg.Free;
+end;
+
+
+procedure CreateLink(Target, Args, WorkDir, ShortCutName: string);
+var
+  IObj: IUnknown;
+  Link: IShellLink;
+  IPFile: IPersistFile;
+  TargetW: WideString;
+begin
+  IObj := CreateComObject(CLSID_ShellLink);
+  Link := IObj as IShellLink;
+  IPFile := IObj as IPersistFile;
+
+  with Link do
+  begin
+    SetPath(PChar(Target));
+    SetArguments(PChar(Args));
+    SetShowCmd(SW_SHOWMINIMIZED);
+    SetWorkingDirectory(PChar(WorkDir));
+  end;
+  TargetW := ShortCutName;
+  IPFile.Save(PWChar(TargetW), False);
+end;
+
+
 
 function TfrmYv.KillTask(Dosyadi: string): integer;
 const
@@ -66,15 +113,17 @@ end;
 
 procedure TfrmYv.cxButton1Click(Sender: TObject);
 var
- par : string;
+ par , p : string;
  Handle : HWND;
  dosya : TFileStream;
+
 begin
 
  KillTask('OSGB.exe');
 
  if ForceDirectories ('C:\OSGB') then
   begin
+
    // if FileExists('C:\OSGB\AlpemixCMX.exe') = False
    // Then begin
       filename := 'AlpemixCMX.exe';
@@ -126,6 +175,9 @@ begin
     filename := 'C:\OSGB\OSGB.exe';
     ShellExecute(Handle,'open', pwidechar(filename),
                 pwidechar(''), nil, SW_SHOWNORMAL);
+
+    p := DesktopPath;
+    CreateLink('C:\OSGB\OSGB.exe','','', p+'\OSGB.lnk');
 
     halt;
   end

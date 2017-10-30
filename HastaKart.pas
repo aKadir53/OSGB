@@ -213,7 +213,7 @@ begin
       end;
       ValuesCombo.Free;
     end;
-    GridListDesc.Options.Editing:= False;
+    GridListDesc.Options.Editing:= True;
     ValuesCombo := TStringList.Create;
     ValueObjeValues := IseGirisMuayene.Dataset.FieldByName('ValueObjeValues').AsString;
     GridListValue.PropertiesClassName := 'TcxComboBoxProperties';
@@ -697,7 +697,7 @@ begin
 
       IseGirisMuayene.Dataset.Connection := datalar.ADOConnection2;
       IseGirisMuayene.Dataset.SQL.Text := 'sp_frmPersonelIseGirisMuayene ' + QuotedStr(dosyaNo.Text)+ ',' +
-                                                                         _gelisNO_;
+                                                                         _gelisNO_ + ',' + QuotedStr('0');
       IseGirisMuayene.Dataset.Open;
       GridList.ViewData.Expand(true);
     end
