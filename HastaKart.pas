@@ -1122,13 +1122,19 @@ var
   g : TGraphic;
 begin
 
-
- if datalar.AktifSirket <> TcxLabel(FindComponent('LabelSirketKod')).Caption
- then begin
-   ShowMessageSkin('Personel Kartýnda Deðiþiklik için ','','','info');
-   exit;
- end;
-
+    case TControl(sender).Tag  of
+      0,1 :begin
+        if datalar.AktifSirket <> TcxLabel(FindComponent('LabelSirketKod')).Caption
+        then begin
+          ShowMessageSkin('Personel Kartýnda Deðiþiklik için personelin kayýtlý olduðu þirketle programa giriþ yapýnýz!','','','info');
+          exit;
+        end;
+      end;
+      2 : begin
+        if IsNull (TcxLabel(FindComponent('LabelSirketKod')).Caption) then
+          TcxLabel(FindComponent('LabelSirketKod')).Caption := datalar.AktifSirket;
+      end;
+    end;
 
 
   datalar.KontrolUserSet := False;
