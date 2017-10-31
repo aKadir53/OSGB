@@ -1,1 +1,2 @@
-upx OSGB.exe
+upx.exe OSGB.exe
+pause
