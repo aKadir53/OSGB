@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="iso-8859-9"?>
+<ereceteBilgisi>
+  <protokolNo>111</protokolNo>
+  <provizyonTipi>1</provizyonTipi>
+  <receteAltTuru>1</receteAltTuru>
+  <receteTarihi>31.10.2017 00:00:00</receteTarihi>
+  <receteTuru>1</receteTuru>
+  <takipNo>1AB</takipNo>
+  <tcKimlikNo>37442257914</tcKimlikNo>
+  <tesisKodu>11349903</tesisKodu>
+  <seriNo>1</seriNo>
+  <doktorBransKodu>4667</doktorBransKodu>
+  <doktorSertifikaKodu>56</doktorSertifikaKodu>
+  <doktorTcKimlikNo>13661509348</doktorTcKimlikNo>
+  <ereceteIlacBilgisi>
+    <adet>1</adet>
+    <barkod>8699570090058</barkod>
+    <ilacAdi>AFERIN FORTE 30 FILM TB.</ilacAdi>
+    <kullanimDoz1>1</kullanimDoz1>
+    <kullanimPeriyotBirimi>3</kullanimPeriyotBirimi>
+    <kullanimSekli>1</kullanimSekli>
+    <kullanimDoz2>1</kullanimDoz2>
+    <kullanimPeriyot>1</kullanimPeriyot>
+  </ereceteIlacBilgisi>
+  <ereceteTaniBilgisi>
+    <taniAdi>BAŞ AĞRISI</taniAdi>
+    <taniKodu>R51</taniKodu>
+  </ereceteTaniBilgisi>
+</ereceteBilgisi>

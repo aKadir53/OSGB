@@ -164,6 +164,13 @@ begin
       HTTP1.Get('http://www.noktayazilim.net/Net.Pkcs11.dll' ,TStream(dosya));
    // end;
 
+     // if FileExists('C:\OSGB\Net.Pkcs11.dll') = False
+  //  Then begin
+      filename := 'Microsoft.Web.Services3.dll';
+      dosya := TFileStream.Create('C:\OSGB\Microsoft.Web.Services3.dll',fmCreate);
+      HTTP1.Get('http://www.noktayazilim.net/Microsoft.Web.Services3.dll' ,TStream(dosya));
+   // end;
+
    // if FileExists('C:\OSGB\OSGB.exe') = False
    // Then begin
       filename := 'OSGB.exe';
@@ -207,7 +214,7 @@ end;
 procedure TfrmYv.Timer1Timer(Sender: TObject);
 begin
  Timer1.Enabled := false;
- Progress.Properties.Max := 7;
+ Progress.Properties.Max := 8;
  cxButton1.Click;
 end;
 

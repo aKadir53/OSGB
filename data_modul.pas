@@ -667,7 +667,7 @@ begin
     ado := TADOQuery.Create(nil);
     ado.Connection := datalar.ADOConnection2;
     WanIpURL := WebErisimBilgi('WIP','00');
-    _medulaOrtam_ := WebErisimBilgi('98','01');
+    _medulaOrtam_ := WebErisimBilgi('98','00');
    if _medulaOrtam_ = 'Gerçek'
    Then begin
      receteURL := WebErisimBilgi('MDL','05');
