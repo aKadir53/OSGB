@@ -168,15 +168,15 @@ type
   end;
 
 
-  TReceteImzala = procedure(Id : PWideChar;
-                      recete : PWideChar;
-                      doktorkullanici : PWideChar;
-                      doktrsifre : PWideChar;
-                      pin : PWideChar;
-                      doktorTc : PWideChar;
-                      TesisKodu : PWideChar;
+  TReceteImzala = procedure(Id : integer;
+                      recete : string;
+                      doktorkullanici : string;
+                      doktrsifre : string;
+                      pin : string;
+                      doktorTc : string;
+                      TesisKodu : integer;
                        var sonuc : PWideChar;
-                      url : PWideChar); stdcall;
+                      url : string); stdcall;
 
   TReceteImzalaDelete = procedure(Id : PWideChar;
                       recete : PWideChar;
@@ -218,26 +218,30 @@ function TfrmHastaRecete.ReceteImzalaGonder : string;
 var
   imzala : TReceteImzala;
   dllHandle: Cardinal;
-  msj : integer;
+  msj ,receteId,TesisKodu: integer;
   TS : TStringList;
-  recete,doktorKullanici,doktorsifre,pin,doktorTc,TesisKodu,receteId,url: WideString;
+  recete,doktorKullanici,doktorsifre,pin,url: string;
+  doktorTc : string;
   ss : PWideChar;
   sonuc : boolean;
   ado : TADOQuery;
   sql : string;
 begin
-  url := datalar.receteURL;
+  url := (datalar.receteURL);
   sql := 'sp_HastaReceteToXML ' + ADO_Recete.FieldByName('id').AsString;
   QuerySelect(sql);
 
-  ss := '';
-  receteId := ADO_Recete.FieldByName('id').AsString;
-  recete := SelectAdo.FieldByName('recete').AsString;
-  doktorKullanici := SelectAdo.FieldByName('doktorKullanici').AsString;
-  doktorsifre :=  SelectAdo.FieldByName('doktorsifre').AsString;
-  pin :=  SelectAdo.FieldByName('pin').AsString;
-  doktorTc :=  SelectAdo.FieldByName('doktorTc').AsString;
-  TesisKodu :=  SelectAdo.FieldByName('TesisKodu').AsString;
+
+
+  ss := 'Yok';
+  receteId := (ADO_Recete.FieldByName('id').AsInteger);
+  recete := (SelectAdo.FieldByName('recete').AsString);
+  doktorKullanici := (SelectAdo.FieldByName('doktorKullanici').AsString);
+  doktorsifre :=  (SelectAdo.FieldByName('doktorsifre').AsString);
+  pin :=  (SelectAdo.FieldByName('pin').AsString);
+  doktorTc :=  (SelectAdo.FieldByName('doktorTc').AsString);
+  TesisKodu :=  (SelectAdo.FieldByName('TesisKodu').AsInteger);
+
 
   dllHandle := LoadLibrary(LIB_DLL);
   if dllHandle = 0 then
@@ -246,10 +250,7 @@ begin
 
   @imzala := findMethod(dllHandle, 'ReceteImzalaGonder');
   if addr(imzala) <> nil then
-  imzala(PWideChar(receteId),PWideChar(recete),
-                                PWideChar(doktorKullanici),PWideChar(doktorsifre),
-                                PWideChar(pin),PWideChar(doktorTc),PWideChar(TesisKodu),ss,
-                                PWideChar(datalar.receteURL));
+  imzala(receteId,recete,doktorKullanici,doktorsifre,pin,doktorTc,TesisKodu,ss,url);
 
   ReceteImzalaGonder := ss;
 
