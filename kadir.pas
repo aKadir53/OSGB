@@ -18,8 +18,8 @@ uses Windows, Messages, SysUtils, Variants, Classes, Graphics, Vcl.Controls, Con
 
 procedure SMSSend(tel : string; Msj : string = '';Kisi : string ='');
 function WanIp(url : string = 'http://bot.whatismyipaddress.com') : string;
-procedure RegYaz(dizi , diziDegeri : string ; openKey : string = 'Software\NOKTA\NOKTA');
-function RegOku(dizi : string ; openKey : string = 'Software\NOKTA\NOKTA') : Variant;
+procedure RegYaz(dizi , diziDegeri : string ; openKey : string = '');
+function RegOku(dizi : string ; openKey : string = '') : Variant;      þ
 function Songelis(DosyaNo: string): string;
 // function HGBal : string;
 // function MesajKontrol(id : string) : mesajBilgi;
@@ -505,28 +505,33 @@ begin
   end;
 end;
 
-function RegOku(dizi : string ; openKey : string = 'Software\NOKTA\NOKTA') : Variant;
+function RegOku(dizi : string ; openKey : string = 'Software\NOKTA\NOKTA') : Variant;      þ
 var
    reg : tregistry;
    value : Variant;
 begin
    reg := Tregistry.Create;
-   reg.OpenKey(openKey,True);
+   try
+   reg.OpenKey(openKey,True);'Software\NOKTA\NOKTA'
    value := reg.ReadString(dizi);
    reg.CloseKey;
    reg.Free;
    Result := value;
 end;
 
-procedure RegYaz(dizi , diziDegeri : string ; openKey : string = 'Software\NOKTA\NOKTA');
+procedure RegYaz(dizi , diziDegeri : string ; openKey : string = '');
 var
-   reg : tregistry;
+  reg : tregistry;
 begin
-   reg := Tregistry.Create;
-   reg.OpenKey(openKey,True);
-   reg.WriteString(dizi,diziDegeri);
-   reg.CloseKey;
-   reg.Free;
+  reg := Tregistry.Create;
+  try
+    if IsNull (OpenKey) then OpenKey := 'Software\NOKTA\NOKTA';
+    reg.OpenKey(openKey,True);
+    reg.WriteString(dizi,diziDegeri);
+    reg.CloseKey;
+  finally
+    reg.Free;
+  end;
 end;
 
 function WanIp(url : string = 'http://bot.whatismyipaddress.com') : string;
@@ -7664,7 +7669,7 @@ VAR
   CN: string;
 begin
   Xy := TRegistry.Create;
-  Xy.OpenKey('Software\NOKTA\NOKTA', True);
+  Xy.OpenKey('Software\NOKTA\NOKTA', True);         þ
   CN := Xy.ReadString('CS');
 
   if CN = 'ODBC' then
@@ -7686,7 +7691,7 @@ VAR
 begin
   user := '';
   xx := TRegistry.Create;
-  xx.OpenKey('Software\NOKTA\NOKTA', True);
+  xx.OpenKey('Software\NOKTA\NOKTA', True);       þ
   s := Adres;
   s1 := xx.ReadString('CS');
 
@@ -7722,7 +7727,7 @@ VAR
 begin
 
   xx := TRegistry.Create;
-  xx.OpenKey('Software\NOKTA\NOKTA', True);
+  xx.OpenKey('Software\NOKTA\NOKTA', True);        þ
   s := xx.ReadString('servername');
   s1 := xx.ReadString('CS');
   sifre := xx.ReadString('sifre');

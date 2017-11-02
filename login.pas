@@ -147,7 +147,7 @@ var
    server : string;
 begin
    reg := Tregistry.Create;
-   reg.OpenKey('Software\NOKTA\NOKTA',True);
+   reg.OpenKey('Software\NOKTA\NOKTA',True);   þ
    reg.WriteString('LastLogin',Edit1.text);
    reg.CloseKey;
 end;
@@ -264,7 +264,7 @@ var
 begin
    xx := Tregistry.Create;
    LoginSayfalar.ActivePageIndex := 0;
-   xx.OpenKey('Software\NOKTA\NOKTA',True);
+   xx.OpenKey('Software\NOKTA\NOKTA',True); þ
    Edit1.Text := xx.ReadString('LastLogin');
    DecimalSeparator := '.';
    ThousandSeparator := ',';
