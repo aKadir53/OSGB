@@ -3151,6 +3151,7 @@ if DataSet = nil then
 
 
   ado := TADOQuery.Create(nil);
+  try
   ado.Connection := datalar.ADOConnection2;
   sql := 'sp_frmPersonelIseGirisMuayene ' + QuotedStr(DosyaNo) + ',' + gelisNo + ',' + QuotedStr('PK');
   datalar.QuerySelect(ado, sql);
@@ -3158,6 +3159,7 @@ if DataSet = nil then
   TopluDataset.Dataset0.name := 'IsyeriIsciBilgisi';
 
   ado1 := TADOQuery.Create(nil);
+  try
   ado1.Connection := datalar.ADOConnection2;
   sql := 'sp_frmPersonelIseGirisMuayene ' + QuotedStr(DosyaNo) + ',' + gelisNo + ',' + QuotedStr('TA12');
   datalar.QuerySelect(ado1, sql);
@@ -3165,6 +3167,7 @@ if DataSet = nil then
   TopluDataset.Dataset1.name := 'TIBBIANAMNEZ12';
 
   ado2 := TADOQuery.Create(nil);
+  try
   ado2.Connection := datalar.ADOConnection2;
   sql := 'sp_frmPersonelIseGirisMuayene ' + QuotedStr(DosyaNo) + ',' + gelisNo + ',' + QuotedStr('TA345678');
   datalar.QuerySelect(ado2, sql);
@@ -3172,36 +3175,42 @@ if DataSet = nil then
   TopluDataset.Dataset2.name := 'TIBBIANAMNEZ345678';
 
   ado3:= TADOQuery.Create(nil);
+  try
   ado3.Connection := datalar.ADOConnection2;
   sql := 'sp_frmPersonelIseGirisMuayene ' + QuotedStr(DosyaNo) + ',' + gelisNo + ',' + QuotedStr('TA9');
   datalar.QuerySelect(ado3, sql);
   TopluDataset.Dataset3 := ado3;
 
   ado4:= TADOQuery.Create(nil);
+  try
   ado4.Connection := datalar.ADOConnection2;
   sql := 'sp_frmPersonelIseGirisMuayene ' + QuotedStr(DosyaNo) + ',' + gelisNo + ',' + QuotedStr('TA10');
   datalar.QuerySelect(ado4, sql);
   TopluDataset.Dataset5 := ado4;
 
   ado5:= TADOQuery.Create(nil);
+  try
   ado5.Connection := datalar.ADOConnection2;
   sql := 'sp_frmPersonelIseGirisMuayene ' + QuotedStr(DosyaNo) + ',' + gelisNo + ',' + QuotedStr('FM1-8');
   datalar.QuerySelect(ado5, sql);
   TopluDataset.Dataset6 := ado5;
 
   ado6:= TADOQuery.Create(nil);
+  try
   ado6.Connection := datalar.ADOConnection2;
   sql := 'sp_frmPersonelIseGirisMuayene ' + QuotedStr(DosyaNo) + ',' + gelisNo + ',' + QuotedStr('FM9');
   datalar.QuerySelect(ado6, sql);
   TopluDataset.Dataset7 := ado6;
 
   ado7:= TADOQuery.Create(nil);
+  try
   ado7.Connection := datalar.ADOConnection2;
   sql := 'sp_frmPersonelIseGirisMuayene ' + QuotedStr(DosyaNo) + ',' + gelisNo + ',' + QuotedStr('LB');
   datalar.QuerySelect(ado7, sql);
   TopluDataset.Dataset8 := ado7;
 
   ado8:= TADOQuery.Create(nil);
+  try
   ado8.Connection := datalar.ADOConnection2;
   sql := 'sp_frmPersonelIseGirisMuayene ' + QuotedStr(DosyaNo) + ',' + gelisNo + ',' + QuotedStr('KS');
   datalar.QuerySelect(ado8, sql);
@@ -3209,6 +3218,7 @@ if DataSet = nil then
 
 
   ado9 := TADOQuery.Create(nil);
+  try
   ado9.Connection := datalar.ADOConnection2;
   sql := 'select * from PersonelFoto where dosyaNo = ' + QuotedStr(DosyaNo);
   datalar.QuerySelect(ado9, sql);
@@ -3217,15 +3227,37 @@ if DataSet = nil then
   PrintYap('001','Ýþe Giriþ Muayene Formu','',TopluDataset,pTNone);
 
 //  if Assigned(ado) then ado.Free;
-  ado.Free;
-  ado1.Free;
-  ado3.Free;
-  ado9.free;
-  ado4.Free;
-  ado5.Free;
-  ado6.Free;
-  ado7.Free;
-  ado8.Free;
+  finally
+    ado9.free;
+  end;
+  finally
+    ado8.Free;
+  end;
+  finally
+    ado7.Free;
+  end;
+  finally
+    ado6.Free;
+  end;
+  finally
+    ado5.Free;
+  end;
+  finally
+    ado4.Free;
+  end;
+  finally
+    ado3.Free;
+  end;
+  finally
+    ado2.Free;
+
+  end;
+  finally
+    ado1.Free;
+  end;
+  finally
+    ado.Free;
+  end;
 end;
 
 function DiyalizPaketiUygula(DosyaNo, GelisNo, sablonId: string): integer;
