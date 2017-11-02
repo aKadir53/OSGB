@@ -590,11 +590,6 @@ object frmRapor: TfrmRapor
   object frxGradientObject1: TfrxGradientObject
     Left = 40
   end
-  object FormStorage1: TFormStorage
-    StoredValues = <>
-    Left = 248
-    Top = 8
-  end
   object PrinterSetupDialog1: TPrinterSetupDialog
     Left = 272
     Top = 8
