@@ -3132,7 +3132,7 @@ end;
 Procedure EpikrizYaz(DosyaNo, GelisNo : string; QR: Boolean ; DataSet : Tdataset = nil);
 var
   sql: string;
-  ado, ado1 , ado2 , ado3 , ado4 : TADOQuery;
+  ado, ado1 , ado2 , ado3 , ado4 , ado5 , ado6 , ado7 , ado8 , ado9 : TADOQuery;
   printT : TprintTip;
   TopluDataset : TDataSetKadir;
 begin
@@ -3171,18 +3171,48 @@ if DataSet = nil then
   TopluDataset.Dataset2 := ado2;
   TopluDataset.Dataset2.name := 'TIBBIANAMNEZ345678';
 
-  ado3 := TADOQuery.Create(nil);
+  ado3:= TADOQuery.Create(nil);
   ado3.Connection := datalar.ADOConnection2;
   sql := 'sp_frmPersonelIseGirisMuayene ' + QuotedStr(DosyaNo) + ',' + gelisNo + ',' + QuotedStr('TA9');
   datalar.QuerySelect(ado3, sql);
   TopluDataset.Dataset3 := ado3;
 
-
-  ado4 := TADOQuery.Create(nil);
+  ado4:= TADOQuery.Create(nil);
   ado4.Connection := datalar.ADOConnection2;
-  sql := 'select * from PersonelFoto where dosyaNo = ' + QuotedStr(DosyaNo);
+  sql := 'sp_frmPersonelIseGirisMuayene ' + QuotedStr(DosyaNo) + ',' + gelisNo + ',' + QuotedStr('TA10');
   datalar.QuerySelect(ado4, sql);
-  TopluDataset.Dataset4 := ado4;
+  TopluDataset.Dataset5 := ado4;
+
+  ado5:= TADOQuery.Create(nil);
+  ado5.Connection := datalar.ADOConnection2;
+  sql := 'sp_frmPersonelIseGirisMuayene ' + QuotedStr(DosyaNo) + ',' + gelisNo + ',' + QuotedStr('FM1-8');
+  datalar.QuerySelect(ado5, sql);
+  TopluDataset.Dataset6 := ado5;
+
+  ado6:= TADOQuery.Create(nil);
+  ado6.Connection := datalar.ADOConnection2;
+  sql := 'sp_frmPersonelIseGirisMuayene ' + QuotedStr(DosyaNo) + ',' + gelisNo + ',' + QuotedStr('FM9');
+  datalar.QuerySelect(ado6, sql);
+  TopluDataset.Dataset7 := ado6;
+
+  ado7:= TADOQuery.Create(nil);
+  ado7.Connection := datalar.ADOConnection2;
+  sql := 'sp_frmPersonelIseGirisMuayene ' + QuotedStr(DosyaNo) + ',' + gelisNo + ',' + QuotedStr('LB');
+  datalar.QuerySelect(ado7, sql);
+  TopluDataset.Dataset8 := ado7;
+
+  ado8:= TADOQuery.Create(nil);
+  ado8.Connection := datalar.ADOConnection2;
+  sql := 'sp_frmPersonelIseGirisMuayene ' + QuotedStr(DosyaNo) + ',' + gelisNo + ',' + QuotedStr('KS');
+  datalar.QuerySelect(ado8, sql);
+  TopluDataset.Dataset9 := ado8;
+
+
+  ado9 := TADOQuery.Create(nil);
+  ado9.Connection := datalar.ADOConnection2;
+  sql := 'select * from PersonelFoto where dosyaNo = ' + QuotedStr(DosyaNo);
+  datalar.QuerySelect(ado9, sql);
+  TopluDataset.Dataset4 := ado9;
 
   PrintYap('001','Ýþe Giriþ Muayene Formu','',TopluDataset,pTNone);
 
@@ -3190,7 +3220,12 @@ if DataSet = nil then
   ado.Free;
   ado1.Free;
   ado3.Free;
-  ado4.free;
+  ado9.free;
+  ado4.Free;
+  ado5.Free;
+  ado6.Free;
+  ado7.Free;
+  ado8.Free;
 end;
 
 function DiyalizPaketiUygula(DosyaNo, GelisNo, sablonId: string): integer;
