@@ -142,14 +142,8 @@ begin
 end;
 
 procedure TfrmLogin.regyazLastLogin;
-var
-   reg : tregistry;
-   server : string;
 begin
-   reg := Tregistry.Create;
-   reg.OpenKey('Software\NOKTA\NOKTA',True);   þ
-   reg.WriteString('LastLogin',Edit1.text);
-   reg.CloseKey;
+  RegYaz ('LastLogin',Edit1.text);
 end;
 
 procedure TfrmLogin.LisansAliniyorCaption;
@@ -258,17 +252,11 @@ END;
 
 
 procedure TfrmLogin.FormCreate(Sender: TObject);
-var
-   xx : tregistry;
-   sql ,IPAdres , skin : string;
 begin
-   xx := Tregistry.Create;
    LoginSayfalar.ActivePageIndex := 0;
-   xx.OpenKey('Software\NOKTA\NOKTA',True); þ
-   Edit1.Text := xx.ReadString('LastLogin');
+   Edit1.Text := RegOku ('LastLogin');
    DecimalSeparator := '.';
    ThousandSeparator := ',';
-   xx.Free;
 end;
 
 procedure TfrmLogin.FormActivate(Sender: TObject);
@@ -279,9 +267,6 @@ begin
 end;
 
 procedure TfrmLogin.Image1Click(Sender: TObject);
-VAR
-   Reg : TREGISTRY;
-   db ,sql : STRING;
 begin
     try
        try
