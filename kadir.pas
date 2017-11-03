@@ -7725,36 +7725,27 @@ end;
 
 Function serverismi(katalog: string): string;
 VAR
-  xxy: TREGISTRy;
   s, s1, servername, sifre: string;
 
 begin
+  s := RegOku ('servername');
+  s1 := RegOku ('CS');
+  sifre := RegOku ('sifre');
 
-  xxy := TRegistry.Create;
-  try
-    xxy.OpenKey('Software\NOKTA\NOKTA', True);
-    s := xxy.ReadString('servername');
-    s1 := xxy.ReadString('CS');
-    sifre := xxy.ReadString('sifre');
-
-    if s1 = 'ODBC' then
-    begin
-      servername :=
-        'Provider=MSDASQL.1;Persist Security Info=False;User ID=SA;Data Source=SQL SERVER;Initial Catalog=' + katalog;
-    end;
-
-    if s1 = 'SQL' then
-    begin
-      servername := 'Provider=SQLOLEDB.1;Password=' + sifre +
-        ';Persist Security Info=False;User ID=sa;Initial Catalog=' + katalog +
-        ';Data Source=' + s;
-    end;
-
-    Result := servername;
-  finally
-    xxy.Free;
+  if s1 = 'ODBC' then
+  begin
+    servername :=
+      'Provider=MSDASQL.1;Persist Security Info=False;User ID=SA;Data Source=SQL SERVER;Initial Catalog=' + katalog;
   end;
 
+  if s1 = 'SQL' then
+  begin
+    servername := 'Provider=SQLOLEDB.1;Password=' + sifre +
+      ';Persist Security Info=False;User ID=sa;Initial Catalog=' + katalog +
+      ';Data Source=' + s;
+  end;
+
+  Result := servername;
 end;
 
 function SQL_Host(var server: string; var user: string; var password: string;
