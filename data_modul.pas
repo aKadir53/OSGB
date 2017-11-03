@@ -582,7 +582,7 @@ begin
   try
    _db_ := RegOku('OSGB_db_name');
    _db_ := Decode64(_db_);
-   servername := ifThen(Server = '', Decode64(RegOku('servername')),Server);
+   servername := ifThen(Server = '', Decode64(RegOku('OSGB_servername')),Server);
    _db_ := ifThen(db = '', Decode64(RegOku('OSGB_db_name')),db);
 
    if username = 'demo' then begin

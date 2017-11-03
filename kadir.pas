@@ -18,8 +18,8 @@ uses Windows, Messages, SysUtils, Variants, Classes, Graphics, Vcl.Controls, Con
 
 procedure SMSSend(tel : string; Msj : string = '';Kisi : string ='');
 function WanIp(url : string = 'http://bot.whatismyipaddress.com') : string;
-procedure RegYaz(dizi , diziDegeri : string ; openKey : string = 'Software\NOKTA\NOKTA');
-function RegOku(dizi : string ; openKey : string = 'Software\NOKTA\NOKTA') : Variant;
+procedure RegYaz(dizi , diziDegeri : string ; openKey : string = '');
+function RegOku(dizi : string ; openKey : string = '') : Variant;
 function Songelis(DosyaNo: string): string;
 // function HGBal : string;
 // function MesajKontrol(id : string) : mesajBilgi;
@@ -505,28 +505,43 @@ begin
   end;
 end;
 
-function RegOku(dizi : string ; openKey : string = 'Software\NOKTA\NOKTA') : Variant;
+function RegOku(dizi : string ; openKey : string = '') : Variant;
 var
    reg : tregistry;
    value : Variant;
 begin
    reg := Tregistry.Create;
-   reg.OpenKey(openKey,True);
-   value := reg.ReadString(dizi);
-   reg.CloseKey;
-   reg.Free;
+   try
+     if isnull (openKey) then openkey := 'Software\NOKTA\NOKTA';
+
+     reg.OpenKey(openKey,True);
+     try
+       value := reg.ReadString(dizi);
+     finally
+       reg.CloseKey;
+     end;
+   finally
+     reg.Free;
+   end;
    Result := value;
 end;
 
-procedure RegYaz(dizi , diziDegeri : string ; openKey : string = 'Software\NOKTA\NOKTA');
+procedure RegYaz(dizi , diziDegeri : string ; openKey : string = '');
 var
-   reg : tregistry;
+  reg : tregistry;
 begin
-   reg := Tregistry.Create;
-   reg.OpenKey(openKey,True);
-   reg.WriteString(dizi,diziDegeri);
-   reg.CloseKey;
-   reg.Free;
+  reg := Tregistry.Create;
+  try
+    if IsNull (OpenKey) then OpenKey := 'Software\NOKTA\NOKTA';
+    reg.OpenKey(openKey,True);
+    try
+      reg.WriteString(dizi,diziDegeri);
+    finally
+      reg.CloseKey;
+    end;
+  finally
+    reg.Free;
+  end;
 end;
 
 function WanIp(url : string = 'http://bot.whatismyipaddress.com') : string;
@@ -6971,13 +6986,8 @@ begin
 end;
 
 function aktifdonem: string;
-var
-  xx: TRegistry;
 begin
-  xx := TRegistry.Create;
-  xx.OpenKey('Software\NOKTA', True);
-  Result := xx.ReadString('DONEM');
-
+  Result := RegOku ('DONEM', 'Software\NOKTA');
 end;
 
 Function tariharalikkontrol(Tarih: Tdate; donem: string): string;
@@ -7660,13 +7670,9 @@ end;
 
 Function servertip(): string;
 VAR
-  Xy: TREGISTRy;
   CN: string;
 begin
-  Xy := TRegistry.Create;
-  Xy.OpenKey('Software\NOKTA\NOKTA', True);
-  CN := Xy.ReadString('CS');
-
+  CN := RegOku ('CS');
   if CN = 'ODBC' then
   begin
     Result := 'MSDASQL.1';
@@ -7675,25 +7681,21 @@ begin
   begin
     Result := 'SQLOLEDB.1';
   end;
-
 end;
 
 Function serverismi(Adres, katalog: string): string;
 VAR
-  xx: TREGISTRy;
   s, s1, servername, sifre, user: string;
 
 begin
   user := '';
-  xx := TRegistry.Create;
-  xx.OpenKey('Software\NOKTA\NOKTA', True);
   s := Adres;
-  s1 := xx.ReadString('CS');
+  s1 := RegOku ('CS');
 
-  user := xx.ReadString('dbuser');
+  user := RegOku ('dbuser');
   user := ifThen(user = '', 'Nokta', user);
 
-  sifre := xx.ReadString('dbsifre');
+  sifre := RegOku ('dbsifre');
   sifre := ifThen(sifre = '', '5353', sifre);
 
   if s1 = 'ODBC' then
@@ -7711,21 +7713,16 @@ begin
   end;
 
   Result := servername;
-
 end;
 
 Function serverismi(katalog: string): string;
 VAR
-  xx: TREGISTRy;
   s, s1, servername, sifre: string;
 
 begin
-
-  xx := TRegistry.Create;
-  xx.OpenKey('Software\NOKTA\NOKTA', True);
-  s := xx.ReadString('servername');
-  s1 := xx.ReadString('CS');
-  sifre := xx.ReadString('sifre');
+  s := RegOku ('OSGB_servername');
+  s1 := RegOku ('CS');
+  sifre := RegOku ('sifre');
 
   if s1 = 'ODBC' then
   begin
@@ -7741,7 +7738,6 @@ begin
   end;
 
   Result := servername;
-
 end;
 
 function SQL_Host(var server: string; var user: string; var password: string;
