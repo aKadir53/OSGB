@@ -19,7 +19,7 @@ uses Windows, Messages, SysUtils, Variants, Classes, Graphics, Vcl.Controls, Con
 procedure SMSSend(tel : string; Msj : string = '';Kisi : string ='');
 function WanIp(url : string = 'http://bot.whatismyipaddress.com') : string;
 procedure RegYaz(dizi , diziDegeri : string ; openKey : string = '');
-function RegOku(dizi : string ; openKey : string = '') : Variant;      þ
+function RegOku(dizi : string ; openKey : string = '') : Variant;
 function Songelis(DosyaNo: string): string;
 // function HGBal : string;
 // function MesajKontrol(id : string) : mesajBilgi;
@@ -505,17 +505,24 @@ begin
   end;
 end;
 
-function RegOku(dizi : string ; openKey : string = 'Software\NOKTA\NOKTA') : Variant;      þ
+function RegOku(dizi : string ; openKey : string = '') : Variant;
 var
    reg : tregistry;
    value : Variant;
 begin
    reg := Tregistry.Create;
    try
-   reg.OpenKey(openKey,True);'Software\NOKTA\NOKTA'
-   value := reg.ReadString(dizi);
-   reg.CloseKey;
-   reg.Free;
+     if isnull (openKey) then openkey := 'Software\NOKTA\NOKTA';
+
+     reg.OpenKey(openKey,True);
+     try
+       value := reg.ReadString(dizi);
+     finally
+       reg.CloseKey;
+     end;
+   finally
+     reg.Free;
+   end;
    Result := value;
 end;
 
@@ -527,8 +534,11 @@ begin
   try
     if IsNull (OpenKey) then OpenKey := 'Software\NOKTA\NOKTA';
     reg.OpenKey(openKey,True);
-    reg.WriteString(dizi,diziDegeri);
-    reg.CloseKey;
+    try
+      reg.WriteString(dizi,diziDegeri);
+    finally
+      reg.CloseKey;
+    end;
   finally
     reg.Free;
   end;
@@ -6976,13 +6986,8 @@ begin
 end;
 
 function aktifdonem: string;
-var
-  xx: TRegistry;
 begin
-  xx := TRegistry.Create;
-  xx.OpenKey('Software\NOKTA', True);
-  Result := xx.ReadString('DONEM');
-
+  Result := RegOku ('DONEM', 'Software\NOKTA');
 end;
 
 Function tariharalikkontrol(Tarih: Tdate; donem: string): string;
@@ -7665,40 +7670,40 @@ end;
 
 Function servertip(): string;
 VAR
-  Xy: TREGISTRy;
+  Xyx: TREGISTRy;
   CN: string;
 begin
-  Xy := TRegistry.Create;
-  Xy.OpenKey('Software\NOKTA\NOKTA', True);         þ
-  CN := Xy.ReadString('CS');
+  Xyx := TRegistry.Create;
+  try
+    Xyx.OpenKey('Software\NOKTA\NOKTA', True);
+    CN := Xyx.ReadString('CS');
 
-  if CN = 'ODBC' then
-  begin
-    Result := 'MSDASQL.1';
+    if CN = 'ODBC' then
+    begin
+      Result := 'MSDASQL.1';
+    end;
+    if CN = 'SQL' then
+    begin
+      Result := 'SQLOLEDB.1';
+    end;
+  finally
+    xyx.free;
   end;
-  if CN = 'SQL' then
-  begin
-    Result := 'SQLOLEDB.1';
-  end;
-
 end;
 
 Function serverismi(Adres, katalog: string): string;
 VAR
-  xx: TREGISTRy;
   s, s1, servername, sifre, user: string;
 
 begin
   user := '';
-  xx := TRegistry.Create;
-  xx.OpenKey('Software\NOKTA\NOKTA', True);       þ
   s := Adres;
-  s1 := xx.ReadString('CS');
+  s1 := RegOku ('CS');
 
-  user := xx.ReadString('dbuser');
+  user := RegOku ('dbuser');
   user := ifThen(user = '', 'Nokta', user);
 
-  sifre := xx.ReadString('dbsifre');
+  sifre := RegOku ('dbsifre');
   sifre := ifThen(sifre = '', '5353', sifre);
 
   if s1 = 'ODBC' then
@@ -7716,36 +7721,39 @@ begin
   end;
 
   Result := servername;
-
 end;
 
 Function serverismi(katalog: string): string;
 VAR
-  xx: TREGISTRy;
+  xxy: TREGISTRy;
   s, s1, servername, sifre: string;
 
 begin
 
-  xx := TRegistry.Create;
-  xx.OpenKey('Software\NOKTA\NOKTA', True);        þ
-  s := xx.ReadString('servername');
-  s1 := xx.ReadString('CS');
-  sifre := xx.ReadString('sifre');
+  xxy := TRegistry.Create;
+  try
+    xxy.OpenKey('Software\NOKTA\NOKTA', True);
+    s := xxy.ReadString('servername');
+    s1 := xxy.ReadString('CS');
+    sifre := xxy.ReadString('sifre');
 
-  if s1 = 'ODBC' then
-  begin
-    servername :=
-      'Provider=MSDASQL.1;Persist Security Info=False;User ID=SA;Data Source=SQL SERVER;Initial Catalog=' + katalog;
+    if s1 = 'ODBC' then
+    begin
+      servername :=
+        'Provider=MSDASQL.1;Persist Security Info=False;User ID=SA;Data Source=SQL SERVER;Initial Catalog=' + katalog;
+    end;
+
+    if s1 = 'SQL' then
+    begin
+      servername := 'Provider=SQLOLEDB.1;Password=' + sifre +
+        ';Persist Security Info=False;User ID=sa;Initial Catalog=' + katalog +
+        ';Data Source=' + s;
+    end;
+
+    Result := servername;
+  finally
+    xxy.Free;
   end;
-
-  if s1 = 'SQL' then
-  begin
-    servername := 'Provider=SQLOLEDB.1;Password=' + sifre +
-      ';Persist Security Info=False;User ID=sa;Initial Catalog=' + katalog +
-      ';Data Source=' + s;
-  end;
-
-  Result := servername;
 
 end;
 
@@ -8126,5 +8134,5 @@ function IsNull (const s: String): Boolean;
 begin
   Result := Trim (s) = '';
 end;
-
+   xxy xxy xxy Xyx RegOku RegYaz
 end.
