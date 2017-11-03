@@ -7670,24 +7670,16 @@ end;
 
 Function servertip(): string;
 VAR
-  Xyx: TREGISTRy;
   CN: string;
 begin
-  Xyx := TRegistry.Create;
-  try
-    Xyx.OpenKey('Software\NOKTA\NOKTA', True);
-    CN := Xyx.ReadString('CS');
-
-    if CN = 'ODBC' then
-    begin
-      Result := 'MSDASQL.1';
-    end;
-    if CN = 'SQL' then
-    begin
-      Result := 'SQLOLEDB.1';
-    end;
-  finally
-    xyx.free;
+  CN := RegOku ('CS');
+  if CN = 'ODBC' then
+  begin
+    Result := 'MSDASQL.1';
+  end;
+  if CN = 'SQL' then
+  begin
+    Result := 'SQLOLEDB.1';
   end;
 end;
 
@@ -8125,5 +8117,5 @@ function IsNull (const s: String): Boolean;
 begin
   Result := Trim (s) = '';
 end;
-   xxy xxy xxy Xyx RegOku RegYaz
+RegOku RegYaz
 end.
