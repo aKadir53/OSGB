@@ -7720,7 +7720,7 @@ VAR
   s, s1, servername, sifre: string;
 
 begin
-  s := RegOku ('servername');
+  s := RegOku ('OSGB_servername');
   s1 := RegOku ('CS');
   sifre := RegOku ('sifre');
 
@@ -8117,5 +8117,5 @@ function IsNull (const s: String): Boolean;
 begin
   Result := Trim (s) = '';
 end;
-RegOku RegYaz
+
 end.

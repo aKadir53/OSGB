@@ -444,7 +444,7 @@ begin
  Then begin
      if datalar.MasterBaglan(txtOsgbKodu.EditingValue,db,txtServerName.Text)
      Then begin
-         Regyaz('servername',Encode64(txtServerName.Text));
+         Regyaz('OSGB_servername',Encode64(txtServerName.Text));
          if datalar.Baglan(db,txtServerName.Text)
          then begin
            Regyaz('OSGB_db_name',Encode64(db));
@@ -502,13 +502,13 @@ end;
 
 procedure TfrmLogin.FormShow(Sender: TObject);
 begin
-   txtServerName.EditValue := Decode64(regOku('servername'));
+   txtServerName.EditValue := Decode64(regOku('OSGB_servername'));
    if Trim (txtServerName.EditValue) = '' then
    begin
      txtServerName.Text := '213.159.30.6';
      txtOsgbKodu.Text := '1001';
      Edit1.Text := 'demo';
-     {if RegOku('servername') = ''
+     {if RegOku('OSGB_servername') = ''
      Then
       LoginSayfalar.ActivePageIndex := 1
      Else
