@@ -161,6 +161,7 @@ type
     function ReceteImzalaSil : string;
   private
     { Private declarations }
+    FReg : TRegistry;
     function findMethod(dllHandle: Cardinal; methodName: string): FARPROC;
   public
     function Init(Sender: TObject) : Boolean; override;
@@ -202,7 +203,6 @@ var
   AdoHastaGelisDataSource : TDataSource;
   AdoHastaListe : TADOQuery;
   Pm : TComponent;
-  Reg : TRegistry;
   db : string;
 
 implementation
@@ -512,13 +512,13 @@ var
   okuS : string;
 begin
   inherited;
-    okuS := Reg.ReadString('oku');
+    okuS := FReg.ReadString('oku');
     if okuS = '1'
     Then Begin
       ADO_Recete.Refresh;
-      Reg.WriteString('oku','0');
+      FReg.WriteString('oku','0');
       TTimer(sender).Enabled := false;
-      Reg.Free;
+      FReg.Free;
     End;
 end;
 
@@ -553,9 +553,9 @@ var
   _exe : PAnsiChar;
   fark : double;
 begin
-  Reg := Tregistry.Create;
-  Reg.RootKey := HKEY_CURRENT_USER;
-  Reg.OpenKey('SOFTWARE\NOKTA\Eimza',True);
+  FReg := Tregistry.Create;
+  FReg.RootKey := HKEY_CURRENT_USER;
+  FReg.OpenKey('SOFTWARE\NOKTA\Eimza',True);
   Oku.Enabled := true;
   db := Decode64(RegOku('OSGB_db_name'));
 
