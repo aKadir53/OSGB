@@ -87,7 +87,7 @@ var
   List,List1,List3 : TListeAc;
   bransKodu,calismaTipi : TcxImageComboKadir;
 begin
-  Tag := TagAboutFrm;
+  Tag := TagfrmAbout;
   ClientHeight := formYukseklik;
   ClientWidth := formGenislik;
 

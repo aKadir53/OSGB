@@ -524,6 +524,7 @@ Const
   TagfrmSorgulamalar = 590;
   TagfrmSorguCalistir = 600;
   TagfrmIsKazasi = 610;
+  TagfrmAbout = 620;
 
   ExceleGonder = 9997;
   SeansTarihiUpdate = 0;
