@@ -45,7 +45,7 @@ uses message,Data_Modul,AnaUnit,message_y,popupForm,rapor,TedaviKart,Son6AylikTe
              MedulaKurumSifreDegis,
              Tnm_Doktor,LabTestAyarlari,
              PopupDBGridForm,PopupDBVerticalGridForm,
-             Tnm_Ilaclar, PersonelEgitimFrm;
+             Tnm_Ilaclar, PersonelEgitimFrm, About_Frm;
 
 
 
@@ -76,6 +76,7 @@ begin
      TagfrmTahliltakip : Result := -1;
      TagfrmTahlilsonucGir : Result := -1;
      TagfrmDoktorlar : Result := -1;
+     TagfrmAbout : Result := -1;
      TagfrmPersonelEgitim : Result := -1;
      TagfrmHemsireler : Result := -1;
      TagfrmMakina : Result := 89;
@@ -183,6 +184,7 @@ begin
    TagKurumSifreDegisForm : Result := TKurumSifreDegisForm;
 
    TagfrmDoktorlar : Result := TfrmDoktorlar;
+   TagfrmAbout : Result := TAboutFrm;
    TagfrmPersonelEgitim : Result := TfrmPersonelEgitim;
    TagfrmTestAyarlari : Result := TfrmTestAyarlari;
 
@@ -218,6 +220,7 @@ begin
    TagKurumSifreDegisForm : Result := KurumSifreDegisForm;
 
    TagfrmDoktorlar : Result := frmDoktorlar;
+   TagfrmAbout : Result := AboutFrm;
    TagfrmPersonelEgitim : Result := frmPersonelEgitim;
    TagfrmTestAyarlari : Result := frmTestAyarlari;
 
@@ -380,6 +383,7 @@ begin
     TagfrmFirmaKart : Application.CreateForm(TfrmFirmaKart,frmFirmaKart);
     TagfrmPopupDBGridForm,TagfrmBolum,TagfrmBirim,TagfrmSube: Application.CreateForm(TfrmPopupDBGridForm , frmPopupDBGridForm);
     TagfrmDoktorlar :  Application.CreateForm(TfrmDoktorlar, frmDoktorlar);
+    TagfrmAbout :  Application.CreateForm(TAboutFrm, AboutFrm);
     TagfrmPersonelEgitim :  Application.CreateForm(TfrmPersonelEgitim, frmPersonelEgitim);
     TagfrmKurumBilgi : Application.CreateForm(TfrmKurumBilgi, frmKurumBilgi);
     TagfrmReceteler : Application.CreateForm(TfrmReceteler, frmReceteler);
