@@ -13561,7 +13561,7 @@ object Form7: TForm7
     Active = True
     Connection = ADOConnection1
     CursorType = ctStatic
-    Filter = 'user='#39'Admin'#39
+    Filter = 'Kullanici='#39'Admin'#39
     TableName = 'Users'
     Left = 320
     Top = 504

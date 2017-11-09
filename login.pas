@@ -328,7 +328,7 @@ begin
 
         login.Active := true;
 
-        if login.Locate('user',edit1.Text,[]) = true then
+        if login.Locate('Kullanici',edit1.Text,[]) = true then
         begin
            if trim(login.FieldValues['password']) = edit2.Text
            then begin

@@ -208,11 +208,11 @@ begin
 
    if u = ''
    Then SQlstr := 'SELECT * FROM Users'
-   Else SQlstr := 'SELECT * FROM Users WHERE [User] = ''' + u + '''';
+   Else SQlstr := 'SELECT * FROM Users WHERE Kullanici = ''' + u + '''';
    Datalar.QuerySelect(Q_Pw, SQLstr);
    //Q_Pw.First;
    if Q_Pw.Eof Then exit;
-   txtName.Text := Q_Pw.FieldByName('user').asstring;
+   txtName.Text := Q_Pw.FieldByName('Kullanici').asstring;
    txtSifre.Text := '*********************'; //Q_Pw.FieldByName('PWord').asstring;
    txtSifreConfirm.Text := txtSifre.Text;
    txtAdiSoyadi.Text := Q_Pw.FieldByName('ADISOYADI').asstring;
@@ -331,7 +331,7 @@ begin
  //   Then Datalar.AdoConnection2.BeginTrans;
 
     {check whether data is already exists or not}
-    SQLstr := 'SELECT [user] FROM Users WHERE User = ''' + Trim(txtName.Text) + '''';
+    SQLstr := 'SELECT [Kullanici] FROM Users WHERE Kullanici = ''' + Trim(txtName.Text) + '''';
     if ( Datalar.FindData (Datalar.ADO_SQL2, SQLstr) = 1 ) // already exist
     then
      begin
@@ -344,7 +344,7 @@ begin
 
 
     SQLstr := 'INSERT INTO Users'+
-             '([user], Password, ADISOYADI , donem , [default],doktor ) ' +
+             '(Kullanici, Password, ADISOYADI , donem , [default],doktor ) ' +
              'VALUES (''' +
              Trim(txtName.Text) + ''', ''' +
              Password + ''', ''' +
@@ -393,7 +393,7 @@ begin
     Then begin
      SQLstr := 'UPDATE Users '+
                'SET ' + Password +
-               ' WHERE [User] = ''' + txtName.Text + ''' ';
+               ' WHERE Kullanici = ''' + txtName.Text + ''' ';
      Datalar.QueryExec (Q_Pw, SQLstr);
      Disable;
      exit;
@@ -406,7 +406,7 @@ begin
              'ADISOYADI = ''' + Trim(txtAdiSoyadi.Text) + ''', ' +
              '[default] = ''' + ifThen(txtZorunlu.Checked, '1', '0') + ''', ' +
              'doktor = ' + QuotedStr(txtDoktor.Text) +
-             ' WHERE [User] = ''' + txtName.Text + ''' ';
+             ' WHERE Kullanici = ''' + txtName.Text + ''' ';
 
     Datalar.QueryExec (Q_Pw, SQLstr);
 
@@ -689,8 +689,8 @@ begin
                           if opr = 0
                           Then begin
                                 if
-                                ListeGoster('[user], ADISOYADI ', 'Users',
-                                                    ' ORDER BY USER, ADISOYADI',' ORDER BY ADISOYADI, [USER]', '',
+                                ListeGoster('Kullanici, ADISOYADI ', 'Users',
+                                                    ' ORDER BY Kullanici, ADISOYADI',' ORDER BY ADISOYADI, Kullanici', '',
                                                     '', 'Kod', 'Adý Soyadý', '', pnlTitle.Caption,
                                                     TEditTyped(Sender).Text, TEditTyped(Sender), 25, 35, 0,
                                                     0, 0, 0, ord, 2, opr = 0,
@@ -729,8 +729,8 @@ begin
                           if opr = 3
                           Then begin
                                 if
-                                ListeGoster('user, ADISOYADI ', 'Users',
-                                                    ' ORDER BY user, ADISOYADI',' ORDER BY ADISOYADI, user', '',
+                                ListeGoster('Kullanici, ADISOYADI ', 'Users',
+                                                    ' ORDER BY user, ADISOYADI',' ORDER BY ADISOYADI, Kullanici', '',
                                                     '', 'Kod', 'Adý Soyadý', '', pnlTitle.Caption,
                                                     TEditTyped(Sender).Text, TEditTyped(Sender), 25, 35, 0,
                                                     0, 0, 0, ord, 2, opr = 0,

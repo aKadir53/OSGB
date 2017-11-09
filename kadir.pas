@@ -1315,7 +1315,7 @@ var
 begin
     ado := TadoQuery.Create(nil);
     ado.Connection := datalar.ADOConnection2;
-    sql := 'UPDATE Users SET Saat = GETDATE() WHERE [user] = ' + QuotedStr(KullaniciAdi);
+    sql := 'UPDATE Users SET Saat = GETDATE() WHERE Kullanici = ' + QuotedStr(KullaniciAdi);
     datalar.QueryExec(ado,sql);
     ado.Free;
 end;
@@ -8099,7 +8099,7 @@ begin
   then begin
     //güncellemeleri yap
     sql := 'update Users set password = ' + QuotedStr(datalar.SifreDegistir.Sifre)
-           + ' where [user] = ' + QuotedStr(datalar.username);
+           + ' where Kullanici = ' + QuotedStr(datalar.username);
     ado := TADOQuery.Create(nil);
     try
       datalar.QueryExec(ado,sql);
