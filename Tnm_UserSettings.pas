@@ -400,7 +400,6 @@ end;
 
 procedure TfrmUsers.cxKaydetClick(Sender: TObject);
 begin
-  inherited;
   if TcxButton(sender).Tag = 0
   then
    if TcxButtonEditKadir(FindComponent('password')).Text <> txtSifreTekrar.Text
@@ -408,7 +407,6 @@ begin
      ShowMessageSkin('Þifre Tekrarý Hatalý','','','info');
      exit;
     end;
-
   inherited;
   case TcxButton(sender).Tag  of
     2 : begin
