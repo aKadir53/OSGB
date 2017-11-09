@@ -15,14 +15,6 @@ uses
 type
   TAboutFrm = class(TGirisForm)
     procedure FormCreate(Sender: TObject);
-    procedure cxKaydetClick(Sender: TObject);
-    procedure cxTextEditKeyDown(Sender: TObject; var Key: Word;
-      Shift: TShiftState);
-    procedure cxButtonEditPropertiesButtonClick(Sender: TObject;
-      AButtonIndex: Integer);override;
-    procedure cxEditEnter(Sender: TObject);
-    procedure cxEditExit(Sender: TObject);
-    procedure ButtonClick(Sender: TObject);
   private
     { Private declarations }
   public
@@ -40,51 +32,9 @@ var
 implementation
 
 {$R *.dfm}
-procedure TAboutFrm.cxButtonEditPropertiesButtonClick(Sender: TObject;
-      AButtonIndex: Integer);
-begin
-  inherited;
-  if length(datalar.ButtonEditSecimlist) > 0 then
-  begin
-    enabled;
-  end;
-end;
-
-procedure TAboutFrm.ButtonClick(Sender: TObject);
-var
-  ID : integer;
-begin
-  TcxTextEditKadir(FindComponent('TDisID')).EditValue := ID;
-end;
-
-procedure TAboutFrm.cxEditEnter(Sender: TObject);
-begin
-  inherited;
-  //
-
-end;
-
-procedure TAboutFrm.cxEditExit(Sender: TObject);
-begin
-  inherited;
-  //
-
-end;
-
-procedure TAboutFrm.cxTextEditKeyDown(Sender: TObject; var Key: Word;
-  Shift: TShiftState);
-begin
-   inherited;
-  // if key  then
-
-
-end;
-
 procedure TAboutFrm.FormCreate(Sender: TObject);
 var
-  index,i : integer;
-  Ts,Ts1 : TStringList;
-  List,List1,List3 : TListeAc;
+  List : TListeAc;
   bransKodu,calismaTipi : TcxImageComboKadir;
 begin
   Tag := TagfrmAbout;
@@ -170,28 +120,6 @@ begin
   Disabled(self,True);
 
 
- end;
-
-
-
-
-
-procedure TAboutFrm.cxKaydetClick(Sender: TObject);
-begin
-  inherited;
-  case TcxButton(sender).Tag  of
-    0 : begin
-        // ShowMessage('Kaydet');
-        // ButonClick(self,'k');
-      //   Olustur(self,'Users');
-      //   setDataString(self,'ADISOYADI',100,10);
-
-        end;
-    1 : begin
-         // post;
-         //ShowMessage('Ýptal');
-    end;
-  end;
 end;
 
 end.
