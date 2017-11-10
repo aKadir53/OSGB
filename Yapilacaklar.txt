@@ -1,3 +1,5 @@
+yapýlacaklar
+---------------------------------
 osgb master tabloya lisans sayýsý bilgisi eklenecek.
 
 recete þablonlarý formunda çalýþmalar...
