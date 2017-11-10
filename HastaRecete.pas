@@ -613,13 +613,16 @@ begin
        Then Begin
         try
          ado := TADOQuery.Create(nil);
+         sql := 'delete ria from ReceteIlacAciklama ria inner join ReceteDetay rd on rd.id = ria.ReceteDetayID where rd.ReceteId = ' + ADO_Recete.fieldbyname('Id').AsString;
+         datalar.QueryExec(ado,sql);
+         sql := 'delete from ReceteTani where ReceteID = ' + ADO_Recete.fieldbyname('Id').AsString;
+         datalar.QueryExec(ado,sql);
+         sql := 'delete from ReceteDetay where ReceteID = ' + ADO_Recete.fieldbyname('Id').AsString;
+         datalar.QueryExec(ado,sql);
+         sql := 'delete from ReceteAciklama where ReceteID = ' + ADO_Recete.fieldbyname('Id').AsString;
+         datalar.QueryExec(ado,sql);
          sql := 'delete from recete where id = ' + ADO_Recete.fieldbyname('Id').AsString;
          datalar.QueryExec(ado,sql);
-        // sql := 'delete from receteAciklama where ReceteID = ' + ADO_Recete.fieldbyname('Id').AsString;
-        // datalar.QueryExec(ado,sql);
-        // sql := 'delete from ReceteDetay where ReceteID = ' + ADO_Recete.fieldbyname('Id').AsString;
-        // datalar.QueryExec(ado,sql);
-         //ADO_Recete.Delete;
          ShowMessageSkin('Reçete Ýptal Edildi','','','info');
          ADO_Recete.Active := false;
          ado_recete.Active := true;
