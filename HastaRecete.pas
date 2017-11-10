@@ -338,7 +338,7 @@ begin
        while not ADO_RECETE_DETAY.Eof do
        begin
 
-        sql := 'insert into ReceteDetaySablon (ReceteID,ilacKodu,ilacAdi,EtkenMadde,kullanimZaman,kullanimAdet,kullanZamanUnit '+
+        sql := 'insert into ReceteDetaySablon (ReceteSablonID,ilacKodu,ilacAdi,EtkenMadde,kullanimZaman,kullanimAdet,kullanZamanUnit '+
                                               ' ,kullanimSekli,kullanimYolu,kullanimAdet2,adet) ' +
                             ' values(' + id + ',' +
                                          QuotedStr(ADO_RECETE_DETAY.fieldbyname('ilacKodu').AsString) + ',' +
@@ -358,7 +358,7 @@ begin
          ADO_ReceteIlacAciklama.First;
          while not ADO_ReceteIlacAciklama.Eof do
          begin
-            sql := ' insert into ReceteIlacAciklamaSablon (receteDetayId,aciklamaTip,aciklama) ' +
+            sql := ' insert into ReceteIlacAciklamaSablon (ReceteDetaySablonId,aciklamaTip,aciklama) ' +
                                 ' values ( ' + idd + ',' +
                                 QuotedStr(ADO_ReceteIlacAciklama.fieldbyname('aciklamaTip').AsString) + ',' +
                                 QuotedStr(ADO_ReceteIlacAciklama.fieldbyname('aciklama').AsString) + ')';
@@ -373,7 +373,7 @@ begin
        ADO_receteAcikla.First;
        while not ADO_receteAcikla.Eof do
        begin
-         sql := 'insert into ReceteAciklamaSablon (receteId,aciklamaTip,aciklama) ' +
+         sql := 'insert into ReceteAciklamaSablon (receteSablonId,aciklamaTip,aciklama) ' +
                      'values ( ' + id + ',' +
                      QuotedStr(ADO_receteAcikla.fieldbyname('aciklamaTip').AsString) + ',' +
                      QuotedStr(ADO_receteAcikla.fieldbyname('aciklama').AsString) + ')';
@@ -385,7 +385,7 @@ begin
        ADO_receteTani.First;
        while not ADO_receteTani.Eof do
        begin
-         sql := 'insert into receteTaniSablon (receteId,taniKodu,tani) ' +
+         sql := 'insert into ReceteTaniSablon (ReceteSablonId,taniKodu,tani) ' +
                      'values ( ' + id + ',' +
                      QuotedStr(ADO_receteTani.fieldbyname('taniKodu').AsString) + ',' +
                      QuotedStr(ADO_receteTani.fieldbyname('tani').AsString) + ')';
@@ -419,7 +419,7 @@ begin
      ado := TADOQuery.Create(nil);
      adod := TADOQuery.Create(nil);
 
-     sql := 'select * from ReceteDetaySablon where ReceteId = ' + L[0].kolon1;
+     sql := 'select * from ReceteDetaySablon where ReceteSablonId = ' + L[0].kolon1;
      datalar.QuerySelect(ado,sql);
      while not ado.Eof do
      begin
@@ -434,7 +434,7 @@ begin
        ADO_RECETE_DETAY.FieldByName('kullanimYolu').AsString := ado.FieldByName('kullanimYolu').AsString;
        ADO_RECETE_DETAY.post;
 
-       sql := 'select * from ReceteIlacAciklamaSablon where receteDetayId = ' + ado.fieldbyname('id').AsString;
+       sql := 'select * from ReceteIlacAciklamaSablon where ReceteDetaySablonId = ' + ado.fieldbyname('id').AsString;
        datalar.QuerySelect(adod,sql);
        while not adod.Eof do
        begin
@@ -447,7 +447,7 @@ begin
        ado.Next;
      end;
 
-     sql := 'select * from ReceteTaniSablon where receteId = ' + L[0].kolon1;
+     sql := 'select * from ReceteTaniSablon where ReceteSablonId = ' + L[0].kolon1;
      datalar.QuerySelect(ado,sql);
      ado.First;
      while not ado.Eof do
@@ -464,7 +464,7 @@ begin
      end;
 
 
-     sql := 'select * from ReceteAciklamaSablon where receteId = ' + L[0].kolon1;
+     sql := 'select * from ReceteAciklamaSablon where ReceteSablonId = ' + L[0].kolon1;
      datalar.QuerySelect(ado,sql);
      while not ado.Eof do
      begin

@@ -109,11 +109,11 @@ begin
        Then Begin
        try
          ado := TADOQuery.Create(nil);
-         sql := 'delete from receteTaniSablon where ReceteID = ' + Sablonlar.fieldbyname('Id').AsString;
+         sql := 'delete from receteTaniSablon where ReceteSablonID = ' + Sablonlar.fieldbyname('Id').AsString;
          datalar.QueryExec(ado,sql);
-         sql := 'delete from receteAciklamaSablon where ReceteID = ' + Sablonlar.fieldbyname('Id').AsString;
+         sql := 'delete from receteAciklamaSablon where ReceteSablonID = ' + Sablonlar.fieldbyname('Id').AsString;
          datalar.QueryExec(ado,sql);
-         sql := 'delete from ReceteDetaySablon where ReceteID = ' + Sablonlar.fieldbyname('Id').AsString;
+         sql := 'delete from ReceteDetaySablon where ReceteSablonID = ' + Sablonlar.fieldbyname('Id').AsString;
          datalar.QueryExec(ado,sql);
          Sablonlar.Delete;
          ShowMessageSkin('Þablon Ýptal Edildi','','','info');
