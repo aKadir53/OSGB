@@ -218,13 +218,10 @@ function TfrmHastaRecete.ReceteImzalaGonder : string;
 var
   imzala : TReceteImzala;
   dllHandle: Cardinal;
-  msj ,receteId,TesisKodu: integer;
-  TS : TStringList;
+  receteId,TesisKodu: integer;
   recete,doktorKullanici,doktorsifre,pin,url: string;
   doktorTc : string;
   ss : PWideChar;
-  sonuc : boolean;
-  ado : TADOQuery;
   sql : string;
 begin
   url := (datalar.receteURL);
@@ -265,12 +262,8 @@ function TfrmHastaRecete.ReceteImzalaSil : string;
 var
   imzala : TReceteImzalaDelete;
   dllHandle: Cardinal;
-  msj : integer;
-  TS : TStringList;
   recete,doktorKullanici,doktorsifre,pin,doktorTc,TesisKodu,receteId,url: WideString;
   ss : PWideChar;
-  sonuc : boolean;
-  ado : TADOQuery;
   sql : string;
 begin
   url := datalar.receteURL;
@@ -308,7 +301,7 @@ end;
 
 procedure TfrmHastaRecete.MedEczane;
 var
-  d,u,s : string;
+  d : string;
 begin
   d := copy(ADO_Recete.FieldByName('doktor').asstring,1,4);
   MedEczaneGit(datalar._doktorReceteUser,datalar._doktorRecetePas,_TC_);
@@ -480,7 +473,7 @@ end;
 
 procedure TfrmHastaRecete.EreceteNoSmsSend;
 var
- tel,msj,Hata : string;
+ tel,msj : string;
 begin
   if (ADO_Recete.FieldByName('EreceteNo').AsString = '')
  // or (ADO_Recete.FieldByName('EreceteNo').AsString = '0000')
@@ -545,11 +538,9 @@ end;
 
 procedure TfrmHastaRecete.MedulaSend(islem : integer);
 var
-  dosyaNo , gelisNo , id , doktor: string;
  // receteCvp : SaglikTesisiReceteIslemleri1.EreceteGirisCevapDVO;
-  msj , Sonuc : string;
-  memo : Tmemo;
-  _dn_ ,_gn_ , _id_ , _d_ , _s , _p , _erNo_  : string;
+  Sonuc : string;
+  _dn_ ,_gn_ , _id_ , _d_ , _erNo_  : string;
   _exe : PAnsiChar;
   fark : double;
 begin
@@ -605,31 +596,47 @@ procedure TfrmHastaRecete.ReceteIptal;
 var
   sql : string;
   ado : TADOQuery;
+  b: Boolean;
 begin
    if (ADO_Recete.FieldByName('ereceteNo').AsString = '') or
-      (ADO_Recete.FieldByName('ereceteNo').AsString = '0000')
-   Then Begin
-       if MrYes = ShowMessageSkin('Reçete Ýptal Ediliyor Eminmisiniz ?','','','msg')
-       Then Begin
-        try
-         ado := TADOQuery.Create(nil);
-         sql := 'delete from recete where id = ' + ADO_Recete.fieldbyname('Id').AsString;
-         datalar.QueryExec(ado,sql);
-        // sql := 'delete from receteAciklama where ReceteID = ' + ADO_Recete.fieldbyname('Id').AsString;
-        // datalar.QueryExec(ado,sql);
-        // sql := 'delete from ReceteDetay where ReceteID = ' + ADO_Recete.fieldbyname('Id').AsString;
-        // datalar.QueryExec(ado,sql);
-         //ADO_Recete.Delete;
-         ShowMessageSkin('Reçete Ýptal Edildi','','','info');
-         ADO_Recete.Active := false;
-         ado_recete.Active := true;
-        except on e : Exception do
-        begin
-           ShowMessageSkin(e.Message,'','','info');
-        end;
-        end;
-        ado.Free;
-       End;
+      (ADO_Recete.FieldByName('ereceteNo').AsString = '0000') Then
+   Begin
+     if MrYes = ShowMessageSkin('Reçete Ýptal Ediliyor Eminmisiniz ?','','','msg') Then
+     Begin
+       ado := TADOQuery.Create(nil);
+       try
+         ado.Connection := DATALAR.ADOConnection2;
+         try
+           b := False;
+           ado.Connection.BeginTrans;
+           try
+             sql := 'delete ria from ReceteIlacAciklama ria inner join ReceteDetay rd on rd.id = ria.ReceteDetayID where rd.ReceteId = ' + ADO_Recete.fieldbyname('Id').AsString;
+             datalar.QueryExec(ado,sql);
+             sql := 'delete from ReceteTani where ReceteID = ' + ADO_Recete.fieldbyname('Id').AsString;
+             datalar.QueryExec(ado,sql);
+             sql := 'delete from ReceteDetay where ReceteID = ' + ADO_Recete.fieldbyname('Id').AsString;
+             datalar.QueryExec(ado,sql);
+             sql := 'delete from ReceteAciklama where ReceteID = ' + ADO_Recete.fieldbyname('Id').AsString;
+             datalar.QueryExec(ado,sql);
+             sql := 'delete from recete where id = ' + ADO_Recete.fieldbyname('Id').AsString;
+             datalar.QueryExec(ado,sql);
+             b := True;
+           finally
+             if b then ado.Connection.CommitTrans
+                  else ado.Connection.RollbackTrans;
+           end;
+           ShowMessageSkin('Reçete Ýptal Edildi','','','info');
+           ADO_Recete.Active := false;
+           ado_recete.Active := true;
+         except on e : Exception do
+         begin
+            ShowMessageSkin(e.Message,'','','info');
+         end;
+         end;
+       finally
+         ado.Free;
+       end;
+     End;
    End
    Else
     ShowMessageSkin('E-Reçete Kayýt No silmeden Reçete Silinemez','','','info');
@@ -844,7 +851,6 @@ end;
 
 procedure TfrmHastaRecete.TaniEkle;
 var
-  t : string;
   List : ArrayListeSecimler;
   I : integer;
   sql : string;
@@ -902,10 +908,6 @@ end;
 procedure TfrmHastaRecete.ilacEkle(islem : integer);
 var
   t : string;
-  List , ack : TStringList;
-  ado : TADOQuery;
-  key : word;
-  i : integer;
 begin
    if islem = ReceteIlacEkle
    then
@@ -1220,10 +1222,6 @@ end;
 
 
 procedure TfrmHastaRecete.FormCreate(Sender: TObject);
-var
-  index,i : integer;
-  Ts,Ts1 : TStringList;
-  List,List1 : TListeAc;
 begin
  //cxYeni.Visible := false;
   inherited;
