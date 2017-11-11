@@ -596,6 +596,7 @@ procedure TfrmHastaRecete.ReceteIptal;
 var
   sql : string;
   ado : TADOQuery;
+  b: Boolean;
 begin
    if (ADO_Recete.FieldByName('ereceteNo').AsString = '') or
       (ADO_Recete.FieldByName('ereceteNo').AsString = '0000') Then
@@ -604,17 +605,26 @@ begin
      Begin
        ado := TADOQuery.Create(nil);
        try
+         ado.Connection := DATALAR.ADOConnection2;
          try
-           sql := 'delete ria from ReceteIlacAciklama ria inner join ReceteDetay rd on rd.id = ria.ReceteDetayID where rd.ReceteId = ' + ADO_Recete.fieldbyname('Id').AsString;
-           datalar.QueryExec(ado,sql);
-           sql := 'delete from ReceteTani where ReceteID = ' + ADO_Recete.fieldbyname('Id').AsString;
-           datalar.QueryExec(ado,sql);
-           sql := 'delete from ReceteDetay where ReceteID = ' + ADO_Recete.fieldbyname('Id').AsString;
-           datalar.QueryExec(ado,sql);
-           sql := 'delete from ReceteAciklama where ReceteID = ' + ADO_Recete.fieldbyname('Id').AsString;
-           datalar.QueryExec(ado,sql);
-           sql := 'delete from recete where id = ' + ADO_Recete.fieldbyname('Id').AsString;
-           datalar.QueryExec(ado,sql);
+           b := False;
+           ado.Connection.BeginTrans;
+           try
+             sql := 'delete ria from ReceteIlacAciklama ria inner join ReceteDetay rd on rd.id = ria.ReceteDetayID where rd.ReceteId = ' + ADO_Recete.fieldbyname('Id').AsString;
+             datalar.QueryExec(ado,sql);
+             sql := 'delete from ReceteTani where ReceteID = ' + ADO_Recete.fieldbyname('Id').AsString;
+             datalar.QueryExec(ado,sql);
+             sql := 'delete from ReceteDetay where ReceteID = ' + ADO_Recete.fieldbyname('Id').AsString;
+             datalar.QueryExec(ado,sql);
+             sql := 'delete from ReceteAciklama where ReceteID = ' + ADO_Recete.fieldbyname('Id').AsString;
+             datalar.QueryExec(ado,sql);
+             sql := 'delete from recete where id = ' + ADO_Recete.fieldbyname('Id').AsString;
+             datalar.QueryExec(ado,sql);
+             b := True;
+           finally
+             if b then ado.Connection.CommitTrans
+                  else ado.Connection.RollbackTrans;
+           end;
            ShowMessageSkin('Reçete Ýptal Edildi','','','info');
            ADO_Recete.Active := false;
            ado_recete.Active := true;
