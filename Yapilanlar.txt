@@ -58,3 +58,4 @@ iþ kazasý ve meslek hastalýðý bildirim formu ekle ekraný ??? (Abdulkadir eklemiþ
 isg exe osgb exe kýsayolunu oluþturmalý (Abdulkadir ekledi)
 users tablosundaki user alaný insert'te setlenmiyor - User alanýný kaldýrdým koddan temizleyip Kullanici alaný ile deðiþtirdim.
 doktor þirket eþleþmesi yerine doktor þube eþleþmesi - þirket seçiminde þirket listesi için view yapýlýp þube / doktor gruplu þube joini yapýldý. bir þirketin tek bir þubesine bile baksa o doktorum listesine þirket gelecek. Not: kýrýlým sayýsý kadar listede þirket çoklamasý oluyor maalesef.
+reçete silmede foreign key hatasý veriyordu, önce detayýn detayý, sonra detay, en son master silinecek þekilde düzenleme yapýldý. Ýlave olarak Reçete ve detay tablolarýnýn kendi aralarýndaki foreign key tanýmlamalarý yapýldý.

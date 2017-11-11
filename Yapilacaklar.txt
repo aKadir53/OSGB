@@ -23,7 +23,6 @@ drersoy ile girince menü kayboldu. yeni kullanýcý açýlýnca grubuna göre yetki at
 kaydet sil düðmeleri alt menüden zor oluyormuþ
 yeni personel açarken verdiði null hatalý hatasý. Kadir'in notu:- label ve combo tagý -1 ya da -100 olmalý veritabanýna oku yaz yapmamalý.
 firma tanýmlama tehlike sýnýfý seçilebilir mi ?
-reçete silmede foreign key hatasý veriyor, detay önce silinmeli.
 
 ------------------------------------------------------------------------------------------------------------------------
 iptal olanlar
