@@ -13,7 +13,7 @@ uses
 
 
 type
-  TAboutFrm = class(TGirisForm)
+  TfrmAbout = class(TGirisForm)
     procedure FormCreate(Sender: TObject);
   private
     { Private declarations }
@@ -26,13 +26,13 @@ const _TableName_ = 'DoktorlarT';
       formYukseklik = 500;
 
 var
-  AboutFrm: TAboutFrm;
+  frmAbout: TfrmAbout;
 
 
 implementation
 
 {$R *.dfm}
-procedure TAboutFrm.FormCreate(Sender: TObject);
+procedure TfrmAbout.FormCreate(Sender: TObject);
 var
   List : TListeAc;
   bransKodu,calismaTipi : TcxImageComboKadir;
