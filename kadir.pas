@@ -278,7 +278,7 @@ procedure cxCheckListSec01(cL: TcxCheckListBox; c: string);
 function protokolGuncelle(Id, protokolNo, doktor: string): Boolean;
 function doktorKlinikKoduSaglikNet(doktor: string): string;
 function EnsonRaporProtokolNo: integer;
-function EnsonSeansProtokolNo(DosyaNo: string): string;
+function EnsonSeansProtokolNo(SirketKod,SubeKod: string): string;
 function InputBoxM(const ACaption, APrompt, ADefault: string): string;
 function InputQueryM(const ACaption, APrompt: string;
   var Value: string): Boolean;
@@ -2453,18 +2453,15 @@ begin
   ado.Free;
 end;
 
-function EnsonSeansProtokolNo(DosyaNo: string): string;
+function EnsonSeansProtokolNo(SirketKod,SubeKod: string): string;
 var
   sql: string;
   ado: TADOQuery;
 begin
   ado := TADOQuery.Create(nil);
   ado.Connection := datalar.ADOConnection2;
-  sql := 'SELECT top 1 ProtokolNo FROM Gelisler ' + ' WHERE ' +
-  // Rtarih = (SELECT MAX(RTarih) FROM  gelisdetay WHERE durum = 1 and dosyaNo = ' + QuotedStr(dosyaNo) + ')' +
-    'dosyaNo = ' + QuotedStr(DosyaNo) +  ' and ' +
-    'isnull(ProtokolNo,'''') <> '''''+
-    ' order by BHDAT desc';
+  sql := 'sp_YeniReceteProtokol ' + QuotedStr(SirketKod) + ',' +
+         QuotedStr(SubeKod);
   datalar.QuerySelect(ado, sql);
 
   if not ado.eof then

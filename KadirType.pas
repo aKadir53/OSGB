@@ -452,6 +452,7 @@ type
     F_mobilTel_ : string;
     F_sp_ : string;
     F_kod_ : string;
+    F_sube_ : string;
   End;
 
   TSifreDegistir = record

@@ -1169,7 +1169,7 @@ procedure TfrmHastaKart.cxButtonCClick(Sender: TObject);
 var
  List : TListeAc;
  _L_ : ArrayListeSecimler;
- _name_ : string;
+ _name_, tel,msj : string;
  F : TGirisForm;
  GirisFormRecord : TGirisFormRecord;
  Tab : TcxTabSheet;
@@ -1192,6 +1192,8 @@ begin
   GirisFormRecord.F_SigortaliTur_ := TcxImageComboKadir(FindComponent('Durum')).EditValue;
   GirisFormRecord.F_HastaAdSoyad_ := _HastaAdSoyad_;
   GirisFormRecord.F_mobilTel_ := TcxTextEdit(FindComponent('EV_TEL1')).Text;
+  GirisFormRecord.F_firmaKod_ := TcxLabel(FindComponent('LabelSirketKod')).Caption;
+  GirisFormRecord.F_sube_ := TcxImageComboKadir(FindComponent('sube')).EditValue;
 
 
 
@@ -1267,16 +1269,8 @@ begin
        end;
 
  -28 : begin
-        SMSSend(TcxTextEdit(FindComponent('EV_TEL1')).Text,'',_HastaAdSoyad_);
-
-        (*
-          Application.CreateForm(TfrmSMS, frmSMS);
-          frmSMS.dosyaNo := TcxTextEdit(FindComponent('EV_TEL1')).Text;
-          frmSMS.MobilTel := TcxTextEdit(FindComponent('EV_TEL1')).Text;
-        //  frmSMS.hasta := txtHastaAdi.Text + ' ' + txtSoyAdi.Text;
-          frmSMS.ShowModal;
-          frmSMS := nil;
-          *)
+         tel := dosyaNoTel(_dosyaNO_,TcxTextEdit(FindComponent('EV_TEL1')).Text);
+         SMSSend(tel,msj,_HastaAdSoyad_);
        end;
  -29 : begin
          HastaRaporlari;

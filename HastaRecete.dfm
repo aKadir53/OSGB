@@ -938,6 +938,7 @@ object frmHastaRecete: TfrmHastaRecete
       Tag = -12
       Caption = 'Re'#231'ete Onay'
       ImageIndex = 49
+      Visible = False
       OnClick = cxButtonCClick
     end
     object N101: TMenuItem
