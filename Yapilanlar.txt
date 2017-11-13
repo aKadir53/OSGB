@@ -1,0 +1,61 @@
+yapýlanlar
+---------------------------------
+iþe giriþ, iþten çýkýþ, iþe dönüþ, iþ kazasý, ... muayene tipleri
+doktor kartýna doktor cep telefonu yoksa eklenecek ok.
+personel taným bilgileri ekranýnda popup menü içinden hasta raporlarý ve ilaç tedavi kaldýrýlacak
+hasta kartýna durumda aktif pasif seçenekleri yanýna bir de yeni seçeneði eklenecek.
+aþý kartý taný kartý gibi þeylere yetki tanýmý kontrolü (userkontrolset ile çözüldü)
+hasta kartýna med eczane giriþi düðmesi eklenecek (popup menuye mi ???)
+firma tanýmlarýna doktor seçimi eklendi
+kullanýcý tanýum ekranýnda kullanýcý seçmeden sað tarafa formdaki diðer kontrollere müdahale edemesin. (Abdulkadir yapmýþ, ben de takliden firma kartlarýna ekledim)
+doktor þirket eþleþtirmeleri yapýlabilir (o þirkete yeni personel girildiðinde hangi doktora sms atacak) - Abdulkadir firmanýn tek doktoru olur diyerek firma kartýna ekledi
+fþrma kartlarýna telefon1 2 fax yetkili yetklitelef yetkilkimaili eklendi
+kontrol zorunlu vs bilgilerinin datasete yüklenip oradan kontrol edilmeleri
+registry sunucu IP ve osgb kodu boþ ise sabit IP ve OSGB1 atamasý
+listede seçmeden vazgeçince enable olmamasý (giriþ ünitesine diziye atama eklenip firma, doktor ve kullanýcý taným ekranlarýnda seçilmiþ seçilmemiþ kontrolü eklendi)
+excel altyapýsý sql unique index kontrolleri  (set nocount on eklendi, Abdulkadir test etmiþ, OK.)
+hasta kartý (personel kartý) üzerine firmasýný gösteren etiket...(label eklendi)
+firma kodunun ve isminin, þube kombosuna da baz teþkiðl etmesi lazým. adamýn firmasýnýn þubeleri gelmeli (filtre atamasý kayýt yüklendikten sonrasýna taþýnýp labelin captionu verildi)
+firma kartýna trigger eklendi, yeni firma insert olunca 00/Merkez þube ekleme iþi yapacak.
+þube tablosundan personel karta foreign key konuldu
+personel kart tablosunda þube primary key yapýldý
+view'ý kaldýracaðýz (doldur boþalt yaptýk)
+personel kartýndaki þube seçiminde komboya manuel eklediðimiz 00 merkezleri kaldýrdýk.
+þirket seçmeden giriþ yapmaya mani olundu
+-----------
+foreign keyler...
+doktor þirket arasý ok.
+firma doktor arasý ok.
+þube doktor arasý ok.
+reçete reçete detay arasý ok.
+reçete doktor arasý ok.
+user doktor arasý ok.
+user þirket arasý ok.
+-------------------
+ilk yapýda tek tek personel kartýndan eðitim açýp eklemek gerekiyordu
+personel_egitim tablosundan dosya no alanýný imha edip þirket için eðitim düzenleme ekranýna çevirdik
+daha sonra þirket eðitimlerine personel seçip atama yaptýrdýk.
+bu kapsamda;
+EÐÝTÝM EKRANINA eðitime personel ekle butonu eklendi
+butona basýnca liste açtýrýldý
+formun altýna grid eklenip listeden seçtikçe altýna eklenmesi saðlandý
+personel_egitim tablosuna egitimID ve PersonelDosyaNo alanlarýna göre Unique index eklendi
+o þirketin personellerinden o eðitimde eklenmemiþ olanlarýn listelenmesi saðlandý.
+personel ekleme gridinde kolonlarýn bandýný daralttýk
+iþ kazasýnýn altýna menüye personel eðitimleri eklendi
+personel kartýndaki eðitim düðmesi geri kapatýldý
+login ekranýnda registry'den sunucu ismi gelmezse userID yerine demo atamasý da yapýldý. demo kullanýcýsý için sabit olarak OSGB_UZMAN veritabanýna baðlanma ve sabit sunucu IP'sine baðlanma özelliði eklendi
+þirket tablosuna ssk (?) bölge müdürlüðü sicil numarasý eklendi. þube tablosuna da eklendi. þirket tablosunda bilgi deðiþtiðinde þube tablosunda ayný bilgiye sahip þube kayýtlarýnýn da eþ zamanlý güncellenmesi saðlandý (trigger)
+eðitimler ekranýnda þirket eðitimi seçerken gelen listedeki mantýksýz manasýz sütunlar yerine eðitim açýklamasý da getirildi
+eðitim seçiminde where ile o þirketin eðitimleri getirtilecek þekilde düzeltildi.
+login formu bekleyin resmi ortalanmasý...
+Egitim_Tnm tablosundaki süre ve açýklama alanlarý imha edildi.
+personel eðitim menüsü imaj 505 setlendi (sonra 486 oldu)
+gerçek veritabanlarýnda personel kartýna TCKIMLIKNO alaný üzerinden SirketKod, TCKIMLIKNO unique index
+eðitim ekranýna baský seçeneði eklendi
+eðitim sertifikasý baskýsý eklendi baský olarak
+iþ kazasý ve meslek hastalýðý bildirim formu ekle ekraný ??? (Abdulkadir eklemiþ)
+isg exe osgb exe kýsayolunu oluþturmalý (Abdulkadir ekledi)
+users tablosundaki user alaný insert'te setlenmiyor - User alanýný kaldýrdým koddan temizleyip Kullanici alaný ile deðiþtirdim.
+doktor þirket eþleþmesi yerine doktor þube eþleþmesi - þirket seçiminde þirket listesi için view yapýlýp þube / doktor gruplu þube joini yapýldý. bir þirketin tek bir þubesine bile baksa o doktorum listesine þirket gelecek. Not: kýrýlým sayýsý kadar listede þirket çoklamasý oluyor maalesef.
+reçete silmede foreign key hatasý veriyordu, önce detayýn detayý, sonra detay, en son master silinecek þekilde düzenleme yapýldý. Ýlave olarak Reçete ve detay tablolarýnýn kendi aralarýndaki foreign key tanýmlamalarý yapýldý.

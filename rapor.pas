@@ -8,7 +8,7 @@ uses
   frxDBSet,db, kadir,DBCtrls, frxExportPDF, frxExportRTF, frxExportXLS,
   frxExportXML, frxExportHTML, frxBarcode, frxDCtrl, ExtCtrls,
   frxDMPExport, frxChBox, frxRich, frxChart, frxGradient,frxRes,
-  rxPlacemnt, cxGraphics, cxLookAndFeels, cxLookAndFeelPainters, Menus,
+  cxGraphics, cxLookAndFeels, cxLookAndFeelPainters, Menus,
   cxButtons, frxADOComponents,
   frxExportMail, dxSkinsCore, dxSkinBlue, dxSkinCaramel, dxSkinCoffee,
   dxSkiniMaginary, dxSkinLilian, dxSkinLiquidSky, dxSkinLondonLiquidSky,
@@ -47,7 +47,6 @@ type
     frxCheckBoxObject1: TfrxCheckBoxObject;
     frxDotMatrixExport1: TfrxDotMatrixExport;
     frxGradientObject1: TfrxGradientObject;
-    FormStorage1: TFormStorage;
     PrinterSetupDialog1: TPrinterSetupDialog;
     PrintDialog1: TPrintDialog;
     frxDBDataset12: TfrxDBDataset;

@@ -316,9 +316,9 @@ object frmReceteSablon: TfrmReceteSablon
           item
             DynProps = <>
             EditButtons = <>
-            FieldName = 'receteId'
+            FieldName = 'receteSablonId'
             Footers = <>
-            Title.Caption = 'ReceteId'
+            Title.Caption = 'SablonId'
             Width = 22
           end
           item
@@ -356,7 +356,7 @@ object frmReceteSablon: TfrmReceteSablon
   object SablonDetay: TADOTable
     Connection = DATALAR.ADOConnection2
     CursorType = ctStatic
-    IndexFieldNames = 'ReceteID'
+    IndexFieldNames = 'ReceteSablonID'
     MasterFields = 'id'
     MasterSource = DataSource1
     TableName = 'ReceteDetaySablon'
@@ -376,7 +376,7 @@ object frmReceteSablon: TfrmReceteSablon
   object IlacAciklama: TADOTable
     Connection = DATALAR.ADOConnection2
     CursorType = ctStatic
-    IndexFieldNames = 'receteDetayId'
+    IndexFieldNames = 'receteDetaySablonId'
     MasterFields = 'id'
     MasterSource = DataSource1
     TableName = 'ReceteIlacAciklamaSablon'
@@ -391,7 +391,7 @@ object frmReceteSablon: TfrmReceteSablon
   object Aciklama: TADOTable
     Connection = DATALAR.ADOConnection2
     CursorType = ctStatic
-    IndexFieldNames = 'receteId'
+    IndexFieldNames = 'receteSablonId'
     MasterFields = 'id'
     MasterSource = DataSource1
     TableName = 'ReceteAciklamaSablon'
@@ -406,7 +406,7 @@ object frmReceteSablon: TfrmReceteSablon
   object Tani: TADOTable
     Connection = DATALAR.ADOConnection2
     CursorType = ctStatic
-    IndexFieldNames = 'receteId'
+    IndexFieldNames = 'receteSablonId'
     MasterFields = 'id'
     MasterSource = DataSource1
     TableName = 'ReceteTaniSablon'

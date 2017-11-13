@@ -18,8 +18,8 @@ uses Windows, Messages, SysUtils, Variants, Classes, Graphics, Vcl.Controls, Con
 
 procedure SMSSend(tel : string; Msj : string = '';Kisi : string ='');
 function WanIp(url : string = 'http://bot.whatismyipaddress.com') : string;
-procedure RegYaz(dizi , diziDegeri : string ; openKey : string = 'Software\NOKTA\NOKTA');
-function RegOku(dizi : string ; openKey : string = 'Software\NOKTA\NOKTA') : Variant;
+procedure RegYaz(dizi , diziDegeri : string ; openKey : string = '');
+function RegOku(dizi : string ; openKey : string = '') : Variant;
 function Songelis(DosyaNo: string): string;
 // function HGBal : string;
 // function MesajKontrol(id : string) : mesajBilgi;
@@ -505,28 +505,43 @@ begin
   end;
 end;
 
-function RegOku(dizi : string ; openKey : string = 'Software\NOKTA\NOKTA') : Variant;
+function RegOku(dizi : string ; openKey : string = '') : Variant;
 var
    reg : tregistry;
    value : Variant;
 begin
    reg := Tregistry.Create;
-   reg.OpenKey(openKey,True);
-   value := reg.ReadString(dizi);
-   reg.CloseKey;
-   reg.Free;
+   try
+     if isnull (openKey) then openkey := 'Software\NOKTA\NOKTA';
+
+     reg.OpenKey(openKey,True);
+     try
+       value := reg.ReadString(dizi);
+     finally
+       reg.CloseKey;
+     end;
+   finally
+     reg.Free;
+   end;
    Result := value;
 end;
 
-procedure RegYaz(dizi , diziDegeri : string ; openKey : string = 'Software\NOKTA\NOKTA');
+procedure RegYaz(dizi , diziDegeri : string ; openKey : string = '');
 var
-   reg : tregistry;
+  reg : tregistry;
 begin
-   reg := Tregistry.Create;
-   reg.OpenKey(openKey,True);
-   reg.WriteString(dizi,diziDegeri);
-   reg.CloseKey;
-   reg.Free;
+  reg := Tregistry.Create;
+  try
+    if IsNull (OpenKey) then OpenKey := 'Software\NOKTA\NOKTA';
+    reg.OpenKey(openKey,True);
+    try
+      reg.WriteString(dizi,diziDegeri);
+    finally
+      reg.CloseKey;
+    end;
+  finally
+    reg.Free;
+  end;
 end;
 
 function WanIp(url : string = 'http://bot.whatismyipaddress.com') : string;
@@ -1300,7 +1315,7 @@ var
 begin
     ado := TadoQuery.Create(nil);
     ado.Connection := datalar.ADOConnection2;
-    sql := 'UPDATE Users SET Saat = GETDATE() WHERE [user] = ' + QuotedStr(KullaniciAdi);
+    sql := 'UPDATE Users SET Saat = GETDATE() WHERE Kullanici = ' + QuotedStr(KullaniciAdi);
     datalar.QueryExec(ado,sql);
     ado.Free;
 end;
@@ -3129,7 +3144,7 @@ end;
 Procedure EpikrizYaz(DosyaNo, GelisNo : string; QR: Boolean ; DataSet : Tdataset = nil);
 var
   sql: string;
-  ado, ado1 , ado2 , ado3 , ado4 : TADOQuery;
+  ado, ado1 , ado2 , ado3 , ado4 , ado5 , ado6 , ado7 , ado8 , ado9 : TADOQuery;
   printT : TprintTip;
   TopluDataset : TDataSetKadir;
 begin
@@ -3148,6 +3163,7 @@ if DataSet = nil then
 
 
   ado := TADOQuery.Create(nil);
+  try
   ado.Connection := datalar.ADOConnection2;
   sql := 'sp_frmPersonelIseGirisMuayene ' + QuotedStr(DosyaNo) + ',' + gelisNo + ',' + QuotedStr('PK');
   datalar.QuerySelect(ado, sql);
@@ -3155,6 +3171,7 @@ if DataSet = nil then
   TopluDataset.Dataset0.name := 'IsyeriIsciBilgisi';
 
   ado1 := TADOQuery.Create(nil);
+  try
   ado1.Connection := datalar.ADOConnection2;
   sql := 'sp_frmPersonelIseGirisMuayene ' + QuotedStr(DosyaNo) + ',' + gelisNo + ',' + QuotedStr('TA12');
   datalar.QuerySelect(ado1, sql);
@@ -3162,32 +3179,97 @@ if DataSet = nil then
   TopluDataset.Dataset1.name := 'TIBBIANAMNEZ12';
 
   ado2 := TADOQuery.Create(nil);
+  try
   ado2.Connection := datalar.ADOConnection2;
   sql := 'sp_frmPersonelIseGirisMuayene ' + QuotedStr(DosyaNo) + ',' + gelisNo + ',' + QuotedStr('TA345678');
   datalar.QuerySelect(ado2, sql);
   TopluDataset.Dataset2 := ado2;
   TopluDataset.Dataset2.name := 'TIBBIANAMNEZ345678';
 
-  ado3 := TADOQuery.Create(nil);
+  ado3:= TADOQuery.Create(nil);
+  try
   ado3.Connection := datalar.ADOConnection2;
   sql := 'sp_frmPersonelIseGirisMuayene ' + QuotedStr(DosyaNo) + ',' + gelisNo + ',' + QuotedStr('TA9');
   datalar.QuerySelect(ado3, sql);
   TopluDataset.Dataset3 := ado3;
 
-
-  ado4 := TADOQuery.Create(nil);
+  ado4:= TADOQuery.Create(nil);
+  try
   ado4.Connection := datalar.ADOConnection2;
-  sql := 'select * from PersonelFoto where dosyaNo = ' + QuotedStr(DosyaNo);
+  sql := 'sp_frmPersonelIseGirisMuayene ' + QuotedStr(DosyaNo) + ',' + gelisNo + ',' + QuotedStr('TA10');
   datalar.QuerySelect(ado4, sql);
-  TopluDataset.Dataset4 := ado4;
+  TopluDataset.Dataset5 := ado4;
+
+  ado5:= TADOQuery.Create(nil);
+  try
+  ado5.Connection := datalar.ADOConnection2;
+  sql := 'sp_frmPersonelIseGirisMuayene ' + QuotedStr(DosyaNo) + ',' + gelisNo + ',' + QuotedStr('FM1-8');
+  datalar.QuerySelect(ado5, sql);
+  TopluDataset.Dataset6 := ado5;
+
+  ado6:= TADOQuery.Create(nil);
+  try
+  ado6.Connection := datalar.ADOConnection2;
+  sql := 'sp_frmPersonelIseGirisMuayene ' + QuotedStr(DosyaNo) + ',' + gelisNo + ',' + QuotedStr('FM9');
+  datalar.QuerySelect(ado6, sql);
+  TopluDataset.Dataset7 := ado6;
+
+  ado7:= TADOQuery.Create(nil);
+  try
+  ado7.Connection := datalar.ADOConnection2;
+  sql := 'sp_frmPersonelIseGirisMuayene ' + QuotedStr(DosyaNo) + ',' + gelisNo + ',' + QuotedStr('LB');
+  datalar.QuerySelect(ado7, sql);
+  TopluDataset.Dataset8 := ado7;
+
+  ado8:= TADOQuery.Create(nil);
+  try
+  ado8.Connection := datalar.ADOConnection2;
+  sql := 'sp_frmPersonelIseGirisMuayene ' + QuotedStr(DosyaNo) + ',' + gelisNo + ',' + QuotedStr('KS');
+  datalar.QuerySelect(ado8, sql);
+  TopluDataset.Dataset9 := ado8;
+
+
+  ado9 := TADOQuery.Create(nil);
+  try
+  ado9.Connection := datalar.ADOConnection2;
+  sql := 'select * from PersonelFoto where dosyaNo = ' + QuotedStr(DosyaNo);
+  datalar.QuerySelect(ado9, sql);
+  TopluDataset.Dataset4 := ado9;
 
   PrintYap('001','Ýþe Giriþ Muayene Formu','',TopluDataset,pTNone);
 
 //  if Assigned(ado) then ado.Free;
-  ado.Free;
-  ado1.Free;
-  ado3.Free;
-  ado4.free;
+  finally
+    ado9.free;
+  end;
+  finally
+    ado8.Free;
+  end;
+  finally
+    ado7.Free;
+  end;
+  finally
+    ado6.Free;
+  end;
+  finally
+    ado5.Free;
+  end;
+  finally
+    ado4.Free;
+  end;
+  finally
+    ado3.Free;
+  end;
+  finally
+    ado2.Free;
+
+  end;
+  finally
+    ado1.Free;
+  end;
+  finally
+    ado.Free;
+  end;
 end;
 
 function DiyalizPaketiUygula(DosyaNo, GelisNo, sablonId: string): integer;
@@ -6901,13 +6983,8 @@ begin
 end;
 
 function aktifdonem: string;
-var
-  xx: TRegistry;
 begin
-  xx := TRegistry.Create;
-  xx.OpenKey('Software\NOKTA', True);
-  Result := xx.ReadString('DONEM');
-
+  Result := RegOku ('DONEM', 'Software\NOKTA');
 end;
 
 Function tariharalikkontrol(Tarih: Tdate; donem: string): string;
@@ -7590,13 +7667,9 @@ end;
 
 Function servertip(): string;
 VAR
-  Xy: TREGISTRy;
   CN: string;
 begin
-  Xy := TRegistry.Create;
-  Xy.OpenKey('Software\NOKTA\NOKTA', True);
-  CN := Xy.ReadString('CS');
-
+  CN := RegOku ('CS');
   if CN = 'ODBC' then
   begin
     Result := 'MSDASQL.1';
@@ -7605,25 +7678,21 @@ begin
   begin
     Result := 'SQLOLEDB.1';
   end;
-
 end;
 
 Function serverismi(Adres, katalog: string): string;
 VAR
-  xx: TREGISTRy;
   s, s1, servername, sifre, user: string;
 
 begin
   user := '';
-  xx := TRegistry.Create;
-  xx.OpenKey('Software\NOKTA\NOKTA', True);
   s := Adres;
-  s1 := xx.ReadString('CS');
+  s1 := RegOku ('CS');
 
-  user := xx.ReadString('dbuser');
+  user := RegOku ('dbuser');
   user := ifThen(user = '', 'Nokta', user);
 
-  sifre := xx.ReadString('dbsifre');
+  sifre := RegOku ('dbsifre');
   sifre := ifThen(sifre = '', '5353', sifre);
 
   if s1 = 'ODBC' then
@@ -7641,21 +7710,16 @@ begin
   end;
 
   Result := servername;
-
 end;
 
 Function serverismi(katalog: string): string;
 VAR
-  xx: TREGISTRy;
   s, s1, servername, sifre: string;
 
 begin
-
-  xx := TRegistry.Create;
-  xx.OpenKey('Software\NOKTA\NOKTA', True);
-  s := xx.ReadString('servername');
-  s1 := xx.ReadString('CS');
-  sifre := xx.ReadString('sifre');
+  s := RegOku ('OSGB_servername');
+  s1 := RegOku ('CS');
+  sifre := RegOku ('sifre');
 
   if s1 = 'ODBC' then
   begin
@@ -7671,7 +7735,6 @@ begin
   end;
 
   Result := servername;
-
 end;
 
 function SQL_Host(var server: string; var user: string; var password: string;
@@ -8033,7 +8096,7 @@ begin
   then begin
     //güncellemeleri yap
     sql := 'update Users set password = ' + QuotedStr(datalar.SifreDegistir.Sifre)
-           + ' where [user] = ' + QuotedStr(datalar.username);
+           + ' where Kullanici = ' + QuotedStr(datalar.username);
     ado := TADOQuery.Create(nil);
     try
       datalar.QueryExec(ado,sql);

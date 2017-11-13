@@ -48,7 +48,8 @@ uses
   Sorgulamalar in 'Sorgulamalar.pas' {frmSorgulamalar},
   PopupDBVerticalGridForm in 'PopupDBVerticalGridForm.PAS' {frmPopupDBVerticalGridForm},
   IsKazasi in 'IsKazasi.pas' {frmIsKazasi},
-  LisansUzat in 'LisansUzat.pas' {frmLisansBilgisi};
+  LisansUzat in 'LisansUzat.pas' {frmLisansBilgisi},
+  About_Frm in 'About_Frm.pas' {AboutFrm};
 
 // KadirMedula3 in '..\..\medula3wsdl\KadirMedula3.pas';
 

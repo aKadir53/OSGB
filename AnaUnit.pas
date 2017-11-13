@@ -310,7 +310,7 @@ begin
 
 
   UserTable.Active := True;
-  UserTable.Filter := 'User = ' + QuotedStr(datalar.username);
+  UserTable.Filter := 'Kullanici = ' + QuotedStr(datalar.username);
   EventsTable.Active := True;
 
 (*

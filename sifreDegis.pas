@@ -64,7 +64,7 @@ begin
        if txtSifre.Text = txtTekrar.Text
        Then Begin
              sql := 'update Users set password = ' + QuotedStr(txtSifre.Text)
-                    + ' where [user] = ' + QuotedStr(datalar.username);
+                    + ' where Kullanici = ' + QuotedStr(datalar.username);
              ado := TADOQuery.Create(nil);
              datalar.QueryExec(ado,sql);
              ShowMessageSkin('Þifreniz Deðiþtirildi','','','info');

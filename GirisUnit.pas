@@ -1797,7 +1797,7 @@ begin
        (obje.ClassName = 'TcxDateEditKadir')
     then begin
       TcxdateEdit(obje).Properties.DateOnError := deNull;
-      TcxdateEdit(obje).Properties.ImmediateDropDownWhenKeyPressed := True;
+      //TcxdateEdit(obje).Properties.ImmediateDropDownWhenKeyPressed := True;
       TcxdateEdit(obje).Properties.ImmediatePost := True;
       TcxdateEdit(obje).Properties.MaxDate := strtodate('01.01.2500');
       TcxdateEdit(obje).Properties.MinDate := strtodate('01.01.1900');

@@ -1338,7 +1338,7 @@ object frmLogin: TfrmLogin
     ListeBaslik = #350'irketler'
     TColcount = 2
     TColsW = '50,200'
-    Table = 'SIRKETLER_TNM'
+    Table = 'SIRKETLER_TNM_view'
     Conn = DATALAR.ADOConnection2
     Filtercol = 0
     BaslikRenk = clBlack
