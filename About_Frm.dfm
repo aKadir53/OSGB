@@ -1,7 +1,7 @@
-object AboutFrm: TAboutFrm
+object frmAbout: TfrmAbout
   Left = 0
   Top = 0
-  Caption = 'AboutFrm'
+  Caption = 'frmAbout'
   ClientHeight = 307
   ClientWidth = 585
   Color = clBtnFace

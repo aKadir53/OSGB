@@ -204,7 +204,7 @@
 				<Form>frmLisansBilgisi</Form>
 			</DCCReference>
 			<DCCReference Include="About_Frm.pas">
-				<Form>AboutFrm</Form>
+				<Form>frmAbout</Form>
 			</DCCReference>
 			<BuildConfiguration Include="Debug">
 				<Key>Cfg_2</Key>
