@@ -1403,7 +1403,6 @@ object GirisForm: TGirisForm
         7935AE55479994CB0000000049454E44AE426082}
       Properties.GraphicClassName = 'TdxPNGImage'
       TabOrder = 0
-      ExplicitHeight = 58
       Height = 60
       Width = 65
     end
@@ -1427,8 +1426,6 @@ object GirisForm: TGirisForm
       StyleFocused.LookAndFeel.NativeStyle = True
       StyleHot.LookAndFeel.NativeStyle = True
       TabOrder = 1
-      ExplicitWidth = 430
-      ExplicitHeight = 58
       Height = 60
       Width = 432
       object pBar: TcxProgressBar
@@ -1438,7 +1435,6 @@ object GirisForm: TGirisForm
         TabOrder = 0
         Visible = False
         ExplicitTop = 39
-        ExplicitWidth = 426
         Width = 428
       end
     end

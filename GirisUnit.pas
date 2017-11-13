@@ -186,6 +186,7 @@ type
     F_mobilTel_ : string;
     F_sp_ : string;
     F_kod_ : string;
+    F_sube_ : string;
 
     { Private declarations }
   public
@@ -272,7 +273,7 @@ type
     property _mobilTel_ : string read F_mobilTel_ write F_mobilTel_;
     property _sp_ : string read F_sp_ write F_sp_;
     property _kod_ : string read F_kod_ write F_kod_;
-
+    property _sube_ : string read F_sube_ write F_sube_;
   end;
 
   const

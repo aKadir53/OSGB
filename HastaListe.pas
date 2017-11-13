@@ -149,7 +149,9 @@ begin
                                      _Dataset.FieldByName('HASTASOYADI').AsString;
 //  GirisFormRecord.F_TakipNo_ := _Dataset.FieldByName('TakýpNO').AsString;
   GirisFormRecord.F_TC_ := _Dataset.FieldByName('TCKimlikNo').AsString;
-//  GirisFormRecord.F_Doktor_ := _Dataset.FieldByName('doktor').AsString;
+
+  GirisFormRecord.F_firmaKod_ := _Dataset.FieldByName('SirketKod').AsString;
+  GirisFormRecord.F_sube_ := TcxImageComboKadir(FindComponent('sube')).EditText;
 
   case Tcontrol(sender).tag of
  -1 : begin

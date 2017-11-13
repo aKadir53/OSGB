@@ -293,6 +293,9 @@ begin
    TGirisForm(Form)._DevKurum_ := Values.F_DevKurum_;
    TGirisForm(Form)._SigortaliTur_ := Values.F_SigortaliTur_;
    TGirisForm(Form)._SeansSira_ := Values.F_SeansSira_;
+   TGirisForm(Form)._sube_ := Values.F_Sube_;
+   TGirisForm(Form)._firmaKod_ := Values.F_firmaKod_;
+
    TGirisForm(Form).Tag := FormTag;
    TgirisForm(Form).Parent := Tab;
    TGirisForm(Form).BringToFront;
@@ -430,7 +433,7 @@ begin
   TGirisForm(Form)._mobilTel_ := Value.F_mobilTel_;
   TGirisForm(Form)._sp_ := Value.F_sp_;
   TGirisForm(Form)._kod_ := Value.F_kod_;
-
+  TGirisForm(Form)._sube_ := Value.F_sube_;
 
   TgirisForm(Form).Caption := FormCaption(FormTag) + ' - ' + FormAltCaption(FormTag);
   if ik = ikEvet

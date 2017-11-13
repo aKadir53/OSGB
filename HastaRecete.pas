@@ -232,7 +232,6 @@ begin
   QuerySelect(sql);
 
 
-
   ss := 'Yok';
   receteId := (ADO_Recete.FieldByName('id').AsInteger);
   recete := (SelectAdo.FieldByName('recete').AsString);
@@ -246,7 +245,6 @@ begin
   dllHandle := LoadLibrary(LIB_DLL);
   if dllHandle = 0 then
     exit;
-
 
   @imzala := findMethod(dllHandle, 'ReceteImzalaGonder');
   if addr(imzala) <> nil then
@@ -572,9 +570,16 @@ begin
                               DurumGoster(True,False,'Reçeteniz Kayýt Ýçin Ýmzalanýyor...Lütfen Bekleyiniz...',1);
                               try
                                 Sonuc := ReceteImzalaGonder;
+                                if Copy(Sonuc,1,4) = '0000'
+                                then begin
+                                  ADO_Recete.edit;
+                                  ADO_Recete.FieldByName('eReceteNo').AsString := Copy(Sonuc,6,10);
+                                  ADO_Recete.post;
+                                end;
+
                               finally
                                 DurumGoster(False,False,'');
-                                ShowMessageSkin(Sonuc,'','','info');
+                                ShowMessageSkin(Sonuc,'Reçete Medulaya Gönderildi','','info');
                               end;
                            end
                            Else
@@ -586,9 +591,15 @@ begin
                             DurumGoster(True,False,'Reçete Silinmek Üzere Ýmzalanýyor...Lütfen Bekleyiniz...',1);
                             try
                               Sonuc := ReceteImzalaSil;
+                                if Sonuc = '0000'
+                                then begin
+                                  ADO_Recete.edit;
+                                  ADO_Recete.FieldByName('eReceteNo').AsString := '0000';
+                                  ADO_Recete.post;
+                                end;
                             finally
                               DurumGoster(False,False,'');
-                              ShowMessageSkin(Sonuc,'','','info');
+                              ShowMessageSkin(Sonuc,'Reçete Ýptal Edildi','','info');
                             end;
                       end;
 
@@ -613,6 +624,8 @@ begin
        Then Begin
         try
          ado := TADOQuery.Create(nil);
+         sql := 'delete from ReceteDetay where ReceteId = ' + ADO_Recete.fieldbyname('Id').AsString;
+         datalar.QueryExec(ado,sql);
          sql := 'delete from recete where id = ' + ADO_Recete.fieldbyname('Id').AsString;
          datalar.QueryExec(ado,sql);
         // sql := 'delete from receteAciklama where ReceteID = ' + ADO_Recete.fieldbyname('Id').AsString;
@@ -643,9 +656,9 @@ var
     ack : TStringList;
     j : integer;
 begin
-    datalar.YeniRecete.doktor := datalar.doktor;
-    datalar.YeniRecete.doktorAdi := doktorAdi(datalar.doktor);
-    datalar.YeniRecete.protokolNo := EnsonSeansProtokolNo(_dosyaNo_);
+    datalar.YeniRecete.doktor := datalar.doktorKodu;
+    datalar.YeniRecete.doktorAdi := doktorAdi(datalar.doktorKodu);
+    datalar.YeniRecete.protokolNo := EnsonSeansProtokolNo(_firmaKod_,_sube_);
     datalar.YeniRecete.Tarih := datetostr(date);
     datalar.YeniRecete.ReceteTuru := '1';
     datalar.YeniRecete.ReceteAltTuru := '1';
@@ -702,7 +715,7 @@ begin
               ADO_Recete.FieldByName('dosyaNo').AsString := _dosyaNo_;
               ADO_Recete.FieldByName('gelisNo').AsString := songel;
               ADO_Recete.FieldByName('recetetur').AsString := ado.fieldbyname('receteTur').AsString;
-              ADO_Recete.FieldByName('protokolNo').AsString := EnsonSeansProtokolNo(_dosyaNo_);
+              ADO_Recete.FieldByName('protokolNo').AsString := EnsonSeansProtokolNo(_firmaKod_,_sube_);
               ADO_Recete.FieldByName('doktor').AsString := datalar.YeniRecete.doktor+'-'+datalar.YeniRecete.doktorAdi;
               ADO_Recete.FieldByName('receteAltTur').AsString := ado.fieldbyname('receteAltTur').AsString;
          //   ADO_Recete.FieldByName('Tani').AsString := txtTani.Text;
@@ -1193,7 +1206,8 @@ begin
          end;
 
    -23 : begin
-           if ADO_Recete.FieldByName('ereceteNo').AsString = '0000'
+           if (ADO_Recete.FieldByName('ereceteNo').AsString = '0000') or
+              (ADO_Recete.FieldByName('ereceteNo').AsString = '')
            Then
              if MrYes = ShowMessageSkin('Ýlaç Reçeteden Çýkartýlýyor Eminmisiniz ?','','','msg')
              Then Begin
