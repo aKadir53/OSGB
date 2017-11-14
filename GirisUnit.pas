@@ -224,7 +224,10 @@ type
     procedure setDataStringKontrol(sender : Tform;obje : TControl; fieldName,caption : string;
      parent : TdxLayoutGroup;grup : string ;uzunluk : integer ; Yukseklik : integer = 0 ; Aling : TAlign = alNone);
     procedure setDataStringBLabel(sender : Tform ; Name : string;
-     parent : TdxLayoutGroup;grup : string;uzunluk : integer;caption : string = '';parentCaption : string = '';fieldName : string = '');
+     parent : TdxLayoutGroup;grup : string;uzunluk : integer;caption : string = '';parentCaption : string = '';fieldName : string = '';
+     pBoldText: Boolean = True;
+     pTextColor: TColor = clRed;
+     pHorzAlignment: TcxEditHorzAlignment = taLeftJustify);
     procedure addButton(sender : Tform ;cxButton:TcxButtonKadir;
                         Name ,captionItem,captionButton: string; parent : TdxLayoutGroup;
                         grup : string;uzunluk : integer;
@@ -454,8 +457,7 @@ end;
 procedure TGirisForm.DiyalizTedavi_UF_KontrolleriniFormaEkle(Grp : TdxLayoutGroup);
 begin
     setDataStringBLabel(self,'lblBostatir2',kolon2,'',1,'','');
-    setDataStringBLabel(self,'kiloOrder',Grp,'',126,'Kilo Order');
-    TcxLabel(FindComponent('labelkiloOrder')).Properties.Alignment.Horz := taCenter;
+    setDataStringBLabel(self,'kiloOrder',Grp,'',126,'Kilo Order', '', '', True, clRed, taCenter);
     setDataStringCurr(self,'GIRISKILO','Giriþ Kilo',Grp,'',60,'#.#0',0);
     setDataStringCurr(self,'kilo','Kuru Kilo',Grp,'',60,'#.#0',0);
     setDataStringCurr(self,'CEKILECEKSIVI','Ç.Sývý',Grp,'',60,'#.#0',0);
@@ -485,8 +487,7 @@ begin
     D := TcxComboBox.Create(self);
     D.Properties.DropDownListStyle := lsFixedList;
 
-    setDataStringBLabel(self,'tedaviOrder',Grp,'',290,'Tedavi Order');
-    TcxLabel(FindComponent('labeltedaviOrder')).Properties.Alignment.Horz := taCenter;
+    setDataStringBLabel(self,'tedaviOrder',Grp,'',290,'Tedavi Order', '', '', True, clRed, taCenter);
 
     d.Name := 'txtDializorCinsi';
     ComboDoldurName('',D);
@@ -1530,7 +1531,10 @@ end;
 
 
 procedure TGirisForm.setDataStringBLabel(sender : Tform ; Name : string;
-     parent : TdxLayoutGroup;grup : string;uzunluk : integer;caption : string = '';parentCaption : string = '';fieldName : string = '');
+     parent : TdxLayoutGroup;grup : string;uzunluk : integer;caption : string = '';parentCaption : string = '';fieldName : string = '';
+     pBoldText: Boolean = True;
+     pTextColor: TColor = clRed;
+     pHorzAlignment: TcxEditHorzAlignment = taLeftJustify);
 var
   cxLabel : TcxLabel;
   dxLaB : TdxLayoutItem;
@@ -1544,8 +1548,12 @@ begin
   cxLabel.Caption := caption;
   cxLabel.Transparent := true;
   cxLabel.AutoSize := false;
-  cxLabel.Style.Font.Style := cxLabel.Style.Font.Style + [fsBold];
-  cxLabel.Style.TextColor := clRed;
+  if pBoldText then
+    cxLabel.Style.Font.Style := cxLabel.Style.Font.Style + [fsBold]
+   else
+    cxLabel.Style.Font.Style := cxLabel.Style.Font.Style - [fsBold];
+  cxLabel.Style.TextColor := pTextColor;
+  cxLabel.Properties.Alignment.Horz := pHorzAlignment;
   cxLabel.Style.BorderStyle := ebsFlat;
   dxLaB := TdxLayoutGroup(parent).CreateItemForControl(cxLabel);
   dxLaB.Name := 'dxLaC'+Name;

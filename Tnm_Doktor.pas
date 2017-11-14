@@ -153,8 +153,7 @@ begin
   setDataStringC(self,'uzman','Uzman mý?',Kolon1,'',80,'Evet,Hayýr');
   setDataStringC(self,'durum','Durum',Kolon1,'',80,'Aktif,Pasif');
 
-  setDataStringBLabel(self,'CalismaBilgisi',sayfa2_Kolon1,'',290,'Seans Çalýþma Bilgisi');
-  TcxLabel(FindComponent('labelCalismaBilgisi')).Properties.Alignment.Horz := taCenter;
+  setDataStringBLabel(self,'CalismaBilgisi',sayfa2_Kolon1,'',290,'Seans Çalýþma Bilgisi', '', '', True, clRed, taCenter);
   setDataStringC(self,'pazartesi','Pazatesi',sayfa2_Kolon1,'',80,'0,1,1-2,1-3,2,2-3,3');
   setDataStringC(self,'sali','Salý',sayfa2_Kolon1,'',80,'0,1,1-2,1-3,2,2-3,3');
   setDataStringC(self,'carsamba','Çarþamba',sayfa2_Kolon1,'',80,'0,1,1-2,1-3,2,2-3,3');
