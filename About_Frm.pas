@@ -23,6 +23,10 @@ type
     { Public declarations }
   end;
 
+const _TableName_ = 'DoktorlarT';
+      formGenislik = 500;
+      formYukseklik = 500;
+
 var
   frmAbout: TfrmAbout;
 
@@ -30,6 +34,14 @@ var
 implementation
 
 {$R *.dfm}
+procedure TfrmAbout.FormCreate(Sender: TObject);
+var
+  List : TListeAc;
+  bransKodu,calismaTipi : TcxImageComboKadir;
+begin
+  Tag := TagfrmAbout;
+  ClientHeight := formYukseklik;
+  ClientWidth := formGenislik;
 
   indexFieldName := 'kod';
   TableName := _TableName_;
