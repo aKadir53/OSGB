@@ -162,7 +162,7 @@ type
     F_gelisNO_ : string;
     F_provizyonTarihi_ : string;
     F_TakipNo_ : string;
-    F_ilkTakipNo_ : string;
+    //F_ilkTakipNo_ : string;
     F_BasvuruNo_ : string;
     F_DiyalizTedaviTipi_ : string;
     F_Doktor_ : string;
@@ -625,7 +625,6 @@ end;
 
 procedure TGirisForm.cxPanelButtonEnabled(yeni,kaydet,sil : boolean);
 var
-  tb : TWinControl;
   i : integer;
   mi : TMenuItem;
 begin
@@ -826,9 +825,6 @@ function TGirisForm.FormInputZorunluKontrol(form : Tform) : Boolean;
 var
  i : integer;
  _Obje_ : TcxCustomEdit;
- C : TcxTabSheet;
- F : Tform;
- N : string;
 begin
   FormInputZorunluKontrol := False;
   for i := 0 to form.ComponentCount - 1 do
@@ -872,9 +868,6 @@ procedure TGirisForm.KontrolEditValueClear;
 var
  i : integer;
  _Obje_ : TcxCustomEdit;
- SQL : TADOQuery;
- _Table_,_text_ ,_oldvalue_,_kolon1_: string;
- g : TGraphic;
 begin
   for i := 0 to self.ComponentCount - 1 do
   begin
@@ -909,7 +902,7 @@ var
  _Obje_ : TcxCustomEdit;
 
  SQL : TADOQuery;
- _Table_,_text_ ,_oldvalue_,_kolon1_: string;
+ _Table_,_text_ ,_kolon1_: string;
  g : TGraphic;
 begin
 // sqlRun dataset nesnesindeki kayýt kntrollere yerleþtiriliyor.
@@ -940,8 +933,8 @@ begin
         if TcxCustomEdit(self.Components[i]).Name = 'txtSifreTekrar' then Continue;
         if TcxCustomEdit(self.Components[i]).Tag = -100 then Continue;
         if TcxImage(self.Components[i]).Tag = -1 then Continue;
+      _obje_ := TcxCustomEdit(self.Components[i]);
       try
-        _obje_ := TcxCustomEdit(self.Components[i]);
 
        if (self.Components[i].ClassName = 'TcxLabel') and
            (TcxLabel(self.Components[i]).Tag = -200)
@@ -1045,7 +1038,6 @@ procedure TGirisForm.cxButtonEditPropertiesButtonClick(Sender: TObject;
   AButtonIndex: Integer);
 var
   list : ArrayListeSecimler;
-  key : word;
   where,prm : string;
 begin
 // buttonedit buton cliklendiðinde tabloda konumlanýlacak kayýt için list açýyor.Bu listen kayýt
@@ -1093,7 +1085,6 @@ procedure TGirisForm.cGridcxButtonEditPropertiesButtonClick(Sender: TObject;
   AButtonIndex: Integer);
 var
   list : ArrayListeSecimler;
-  key : word;
 begin
  // TcxButtonEditKadir(TcxGridDBColumn(sender).Properties).ListeAc.Table := 'PersonelKart';
 
@@ -1115,56 +1106,51 @@ begin
   cxGridGirisrisTableView.ClearItems;
   for i := 0 to self.ComponentCount - 1 do
   begin
-     if
-       (self.Components[i].ClassName = 'TcxTextEdit') or
-       (self.Components[i].ClassName = 'TcxButtonEdit') or
-       (self.Components[i].ClassName = 'TcxButtonEditKadir') or
-       (self.Components[i].ClassName = 'TcxComboBox') or
-       (self.Components[i].ClassName = 'TcxMemo') or
-       (self.Components[i].ClassName = 'TcxImageComboBox') or
-       (self.Components[i].ClassName = 'TcxImage') or
-       (self.Components[i].ClassName = 'TcxCheckBox') or
-       (self.Components[i].ClassName = 'TcxCurrencyEdit') or
-       (self.Components[i].ClassName = 'TcxRadioGroup') or
-       (self.Components[i].ClassName = 'TcxDateEdit')
-     then begin
-          colon := (cxGridGirisrisTableView as TcxGridDBTableView).CreateColumn;
-          colon.DataBinding.FieldName := self.Components[i].Name;
-          colon.Name := 'Column'+self.Components[i].Name;
-          try colon.Width := TcxTextEdit(self.Components[i]).Width; except colon.Width := 50 end;
-          try colon.Caption := self.Components[i].Name except colon.Caption := '' end;
-     end;
+    colon := nil;
+    if
+      (self.Components[i].ClassName = 'TcxTextEdit') or
+      (self.Components[i].ClassName = 'TcxButtonEdit') or
+      (self.Components[i].ClassName = 'TcxButtonEditKadir') or
+      (self.Components[i].ClassName = 'TcxComboBox') or
+      (self.Components[i].ClassName = 'TcxMemo') or
+      (self.Components[i].ClassName = 'TcxImageComboBox') or
+      (self.Components[i].ClassName = 'TcxImage') or
+      (self.Components[i].ClassName = 'TcxCheckBox') or
+      (self.Components[i].ClassName = 'TcxCurrencyEdit') or
+      (self.Components[i].ClassName = 'TcxRadioGroup') or
+      (self.Components[i].ClassName = 'TcxDateEdit')
+    then begin
+      colon := (cxGridGirisrisTableView as TcxGridDBTableView).CreateColumn;
+      colon.DataBinding.FieldName := self.Components[i].Name;
+      colon.Name := 'Column'+self.Components[i].Name;
+      try colon.Width := TcxTextEdit(self.Components[i]).Width; except colon.Width := 50 end;
+      try colon.Caption := self.Components[i].Name except colon.Caption := '' end;
+    end;
 
 
-     if (self.Components[i].ClassName = 'TcxTextEdit')
-     Then begin
-       TcxGridDBColumn(colon).PropertiesClass:= TcxTextEditProperties;
-     end
-     else
-     if (self.Components[i].ClassName = 'TcxButtonEditKadir')
-     then begin
-       TcxGridDBColumn(colon).PropertiesClass := TcxButtonEditProperties;
-       TcxButtonEditKadir(TcxGridDBColumn(colon).Properties).ListeAc := TcxButtonEditKadir(self.Components[i]).ListeAc;
-       TcxGridDBColumn(colon).Properties.OnButtonClick := cGridcxButtonEditPropertiesButtonClick;
-     end;
-
-
-      (*
-       (self.Components[i].ClassName = 'TcxButtonEdit') or
-       (self.Components[i].ClassName = 'TcxButtonEditKadir') or
-       (self.Components[i].ClassName = 'TcxComboBox') or
-       (self.Components[i].ClassName = 'TcxMemo') or
-       (self.Components[i].ClassName = 'TcxImageComboBox') or
-       (self.Components[i].ClassName = 'TcxImage') or
-       (self.Components[i].ClassName = 'TcxCheckBox') or
-       (self.Components[i].ClassName = 'TcxCurrencyEdit')
-         *)
+    if (self.Components[i].ClassName = 'TcxTextEdit')
+    Then begin
+      TcxGridDBColumn(colon).PropertiesClass:= TcxTextEditProperties;
+    end
+    else
+    if (self.Components[i].ClassName = 'TcxButtonEditKadir')
+    then begin
+      TcxGridDBColumn(colon).PropertiesClass := TcxButtonEditProperties;
+      TcxButtonEditKadir(TcxGridDBColumn(colon).Properties).ListeAc := TcxButtonEditKadir(self.Components[i]).ListeAc;
+      TcxGridDBColumn(colon).Properties.OnButtonClick := cGridcxButtonEditPropertiesButtonClick;
+    end;
+     (*
+      (self.Components[i].ClassName = 'TcxButtonEdit') or
+      (self.Components[i].ClassName = 'TcxButtonEditKadir') or
+      (self.Components[i].ClassName = 'TcxComboBox') or
+      (self.Components[i].ClassName = 'TcxMemo') or
+      (self.Components[i].ClassName = 'TcxImageComboBox') or
+      (self.Components[i].ClassName = 'TcxImage') or
+      (self.Components[i].ClassName = 'TcxCheckBox') or
+      (self.Components[i].ClassName = 'TcxCurrencyEdit')
+        *)
 
   end;
-
-
-
-
 end;
 
 procedure TGirisForm.PropertiesValidate(Sender: TObject;
@@ -1264,7 +1250,6 @@ end;
 procedure TGirisForm.cxTextEditBKeyDown(Sender: TObject; var Key: Word;
   Shift: TShiftState);
 var
-   list : ArrayListeSecimler;
    key_ : word;
    shift_ :TShiftState;
    tus : TShortCut;
@@ -1310,7 +1295,6 @@ var
 //  cxButton : TcxButton;
   dxLa : TdxLayoutItem;
   dxLaG : TdxLayoutGroup;
-  SpaceItem : TdxLayoutEmptySpaceItem;
 begin
   if cxButton = nil
   then cxButton := TcxButtonKadir.Create(self);
@@ -1351,12 +1335,15 @@ var
   cxImage : TcxImage;
   dxLa : TdxLayoutItem;
   dxLaG : TdxLayoutGroup;
-  SpaceItem : TdxLayoutEmptySpaceItem;
 begin
-  cxImage := TcxImage.Create(self);
-  cxImage.Name := Name;
-  cxImage.Properties.GraphicClassName := 'TJPEGImage';
-  cxImage.Properties.Stretch := True;
+  cxImage := TcxImage (Sender.FindComponent (Name));
+  if not Assigned (cxImage) then
+  begin
+    cxImage := TcxImage.Create(self);
+    cxImage.Name := Name;
+    cxImage.Properties.GraphicClassName := 'TJPEGImage';
+    cxImage.Properties.Stretch := True;
+  end;
   dxLa := TdxLayoutGroup(parent).CreateItemForControl(cxImage);
   dxLa.Name := 'dxLaB'+Name;
   dxLa.AlignHorz := ahLeft;
@@ -1389,7 +1376,6 @@ var
   cxEdit : TcxTextEditKadir;
   dxLa : TdxLayoutItem;
   dxLaG : TdxLayoutGroup;
-  SpaceItem : TdxLayoutEmptySpaceItem;
 begin
   cxEdit := TcxTextEditKadir.Create(self);
 
@@ -1435,7 +1421,6 @@ var
   cxEdit : TcxMemo;
   dxLa : TdxLayoutItem;
   dxLaG : TdxLayoutGroup;
-  SpaceItem : TdxLayoutEmptySpaceItem;
 begin
   cxEdit := TcxMemo.Create(self);
   cxEdit.Name := fieldName;
@@ -1756,7 +1741,6 @@ procedure TGirisForm.setDataStringKontrol(sender : Tform;obje : TControl; fieldN
 var
   dxLaC : TdxLayoutItem;
   dxLaGC : TdxLayoutGroup;
-  ICitem : TcxImageComboBoxItems;
 begin
   if obje = nil then exit;
   try obje.Name := fieldName; except on e: exception do ShowMessageSkin (e.Message, '', '', 'info'); end;
@@ -1845,14 +1829,11 @@ end;
 
 function TGirisForm.PostSQL(sp_Sql : string) : Boolean;
 var
- i , x , r: integer;
- _Obje_ : TcxCustomEdit;
- jp : TJPEGImage;
- jpgFile,sql,s,value: string;
- prm : array of string;
+ i : integer;
+ sql,s,value: string;
  ado : TADOQuery;
 begin
-  x := 0;
+  Result := False;
   for i := 0 to self.ComponentCount - 1 do
   begin
     if ((self.Components[i].ClassName = 'TcxTextEdit') or
@@ -1882,18 +1863,17 @@ begin
 
   sql :=  Format(sp_Sql,[copy(s,2,5000),indexFieldValue]);
 
+  ado := TADOQuery.Create(nil);
   try
-   ado := TADOQuery.Create(nil);
-   ado.Connection := datalar.ADOConnection2;
-   datalar.QueryExec(ado,sql);
-   PostSQL := True;
-   ado.Free;
-  except on e : Exception do
-   begin
-     PostSQL := False;
-     ShowMessageSkin(e.Message,'','','info');
-     ado.Free;
-   end;
+    try
+      ado.Connection := datalar.ADOConnection2;
+      datalar.QueryExec(ado,sql);
+      PostSQL := True;
+    except on e : Exception do
+      ShowMessageSkin(e.Message,'','','info');
+    end;
+  finally
+    ado.Free;
   end;
 
 end;
@@ -1906,116 +1886,119 @@ var
  jp : TJPEGImage;
 begin
 // formdaki kontrollerin deðerleri kontrollerin tipi ve ismine göre tabloya kayýt ediliyor
+  Result := False;
+  if FormInputZorunluKontrol(self) then exit;
 
-if FormInputZorunluKontrol(self) then exit;
+  try
+    if sqlRun.State <> dsNewValue then sqlRun.Edit;
+    for i := 0 to self.ComponentCount - 1 do
+    begin
+      if (self.Components[i].ClassName = 'TcxTextEdit') or
+         (self.Components[i].ClassName = 'TcxTextEditKadir') or
+         (self.Components[i].ClassName = 'TcxButtonEdit') or
+         (self.Components[i].ClassName = 'TcxButtonEditKadir') or
+         (self.Components[i].ClassName = 'TcxComboBox') or
+         (self.Components[i].ClassName = 'TcxMemo') or
+         (self.Components[i].ClassName = 'TcxImageComboBox') or
+         (self.Components[i].ClassName = 'TcxImageComboKadir') or
+         (self.Components[i].ClassName = 'TcxImage') or
+         (self.Components[i].ClassName = 'TcxCheckBox') or
+         (self.Components[i].ClassName = 'TcxCurrencyEdit') or
+         (self.Components[i].ClassName = 'TcxDateEdit') or
+         (self.Components[i].ClassName = 'TcxDateEditKadir') or
+         (self.Components[i].ClassName = 'TcxCheckGroup')
+      then begin
+        //_obje_ := nil;
+        if TcxCustomEdit(self.Components[i]).Name = 'txtSifreTekrar' then Continue;
+        if TcxCustomEdit(self.Components[i]).Tag = -100 then Continue;
+        if TcxImage(self.Components[i]).Tag = -1 then Continue;
 
-try
-  if sqlRun.State <> dsNewValue then sqlRun.Edit;
-  for i := 0 to self.ComponentCount - 1 do
-  begin
-    if (self.Components[i].ClassName = 'TcxTextEdit') or
-       (self.Components[i].ClassName = 'TcxTextEditKadir') or
-       (self.Components[i].ClassName = 'TcxButtonEdit') or
-       (self.Components[i].ClassName = 'TcxButtonEditKadir') or
-       (self.Components[i].ClassName = 'TcxComboBox') or
-       (self.Components[i].ClassName = 'TcxMemo') or
-       (self.Components[i].ClassName = 'TcxImageComboBox') or
-       (self.Components[i].ClassName = 'TcxImageComboKadir') or
-       (self.Components[i].ClassName = 'TcxImage') or
-       (self.Components[i].ClassName = 'TcxCheckBox') or
-       (self.Components[i].ClassName = 'TcxCurrencyEdit') or
-       (self.Components[i].ClassName = 'TcxDateEdit') or
-       (self.Components[i].ClassName = 'TcxDateEditKadir') or
-       (self.Components[i].ClassName = 'TcxCheckGroup')
-    then begin
-       if TcxCustomEdit(self.Components[i]).Name = 'txtSifreTekrar' then Continue;
-       if TcxCustomEdit(self.Components[i]).Tag = -100 then Continue;
-       if TcxImage(self.Components[i]).Tag = -1 then Continue;
-
-       _obje_ := TcxCustomEdit(self.Components[i]);
+        _obje_ := TcxCustomEdit(self.Components[i]);
 
 
-       if ((self.Components[i].ClassName = 'TcxImageComboKadir') or
-          (self.Components[i].ClassName = 'TcxImageComboBox')) and
-          (TcxImageComboBox(_obje_).EditText = '')
-       Then Begin
-         Continue;
-       End
-       Else
-       if (self.Components[i].ClassName = 'TcxImage')
-       Then Begin
-         if TcxImage(self.Components[i]).Picture.Graphic <> nil
-         Then begin
-           jp := TJpegimage.Create;
-           jp.Assign(TcxImage(self.Components[i]).Picture);
-           sqlRun.FieldByName(_Obje_.Name).Assign(jp);
-           jp.Free;
-         end;
-       End
-       else
-       if (self.Components[i].ClassName = 'TcxButtonEditKadir') and
-          (TcxButtonEditKadir(self.Components[i]).indexField = True) and
-          (sqlRun.State in [dsNewValue,dsInsert])
-       Then begin
-         sqlRun.FieldByName(_Obje_.Name).AsString := _Obje_.EditingValue;
-         if (sqlRun.FieldByName(_Obje_.Name) is TStringField)
-           and IsNull (sqlRun.FieldByName(_Obje_.Name).AsString) then sqlRun.FieldByName(_Obje_.Name).Clear;
-
-       end
-       else
-       if (self.Components[i].ClassName = 'TcxButtonEditKadir') and
-          (TcxButtonEditKadir(self.Components[i]).indexField = True) and
-          (sqlRun.State in [dsEdit])
-       Then begin
-
-       end
-       else
-       if (self.Components[i].ClassName = 'TcxDateEditKadir')  or
-          (self.Components[i].ClassName = 'TcxDateEdit')
-       Then Begin
-          if (TcxDateEditKadir(_Obje_).BosOlamaz = True) and (TcxDateEdit(_Obje_).Text = '')
-          then begin
-          //  self.ActiveControl := TcxDateEditKadir(_obje_);
-          //  ShowMessageSkin(TcxTextEditKadir(_obje_).Name,'Zorunlu Alan','','info');
-          //  exit;
-          end
-          else
-          if TcxDateEdit(_Obje_).EditValue <> Null
-          then
-            if TcxDateEditKadir(_Obje_).ValueTip = tvDate
-            then
-              sqlRun.FieldByName(_Obje_.Name).AsVariant :=  TcxDateEditKadir(_Obje_).GetValue('YYYY-MM-DD hh:mm') //tarihal(TcxDateEdit(_Obje_).Date)
-              else
-               sqlRun.FieldByName(_Obje_.Name).AsVariant :=  TcxDateEditKadir(_Obje_).GetValue('YYYYMMDD') //tarihal(TcxDateEdit(_Obje_).Date)
-
-          else
-           sqlRun.FieldByName(_Obje_.Name).AsVariant := null;
-       End
-       else
-        if (TcxTextEditKadir(_obje_).BosOlamaz = True) and (TcxTextEditKadir(_obje_).Text = '')
-         Then begin
-           // self.ActiveControl := TcxTextEditKadir(_obje_);
-           // ShowMessageSkin(TcxTextEditKadir(_obje_).Name,'Zorunlu Alan','','info');
-           // exit;
-         end
+        if ((self.Components[i].ClassName = 'TcxImageComboKadir') or
+           (self.Components[i].ClassName = 'TcxImageComboBox')) and
+           (TcxImageComboBox(_obje_).EditText = '')
+        Then Begin
+          Continue;
+        End
+        Else
+        if (self.Components[i].ClassName = 'TcxImage')
+        Then Begin
+          if TcxImage(self.Components[i]).Picture.Graphic <> nil
+          Then begin
+            jp := TJpegimage.Create;
+            try
+              jp.Assign(TcxImage(self.Components[i]).Picture);
+              sqlRun.FieldByName(_Obje_.Name).Assign(jp);
+            finally
+              jp.Free;
+            end;
+          end;
+        End
         else
-        begin
-          sqlRun.FieldByName(_Obje_.Name).AsVariant := _Obje_.EditingValue;
+        if (self.Components[i].ClassName = 'TcxButtonEditKadir') and
+           (TcxButtonEditKadir(self.Components[i]).indexField = True) and
+           (sqlRun.State in [dsNewValue,dsInsert])
+        Then begin
+          sqlRun.FieldByName(_Obje_.Name).AsString := _Obje_.EditingValue;
           if (sqlRun.FieldByName(_Obje_.Name) is TStringField)
             and IsNull (sqlRun.FieldByName(_Obje_.Name).AsString) then sqlRun.FieldByName(_Obje_.Name).Clear;
-        end;
 
+        end
+        else
+        if (self.Components[i].ClassName = 'TcxButtonEditKadir') and
+           (TcxButtonEditKadir(self.Components[i]).indexField = True) and
+           (sqlRun.State in [dsEdit])
+        Then begin
+
+        end
+        else
+        if (self.Components[i].ClassName = 'TcxDateEditKadir')  or
+           (self.Components[i].ClassName = 'TcxDateEdit')
+        Then Begin
+           if (TcxDateEditKadir(_Obje_).BosOlamaz = True) and (TcxDateEdit(_Obje_).Text = '')
+           then begin
+           //  self.ActiveControl := TcxDateEditKadir(_obje_);
+           //  ShowMessageSkin(TcxTextEditKadir(_obje_).Name,'Zorunlu Alan','','info');
+           //  exit;
+           end
+           else
+           if TcxDateEdit(_Obje_).EditValue <> Null
+           then
+             if TcxDateEditKadir(_Obje_).ValueTip = tvDate
+             then
+               sqlRun.FieldByName(_Obje_.Name).AsVariant :=  TcxDateEditKadir(_Obje_).GetValue('YYYY-MM-DD hh:mm') //tarihal(TcxDateEdit(_Obje_).Date)
+               else
+                sqlRun.FieldByName(_Obje_.Name).AsVariant :=  TcxDateEditKadir(_Obje_).GetValue('YYYYMMDD') //tarihal(TcxDateEdit(_Obje_).Date)
+
+           else
+            sqlRun.FieldByName(_Obje_.Name).AsVariant := null;
+        End
+        else
+         if (TcxTextEditKadir(_obje_).BosOlamaz = True) and (TcxTextEditKadir(_obje_).Text = '')
+          Then begin
+            // self.ActiveControl := TcxTextEditKadir(_obje_);
+            // ShowMessageSkin(TcxTextEditKadir(_obje_).Name,'Zorunlu Alan','','info');
+            // exit;
+          end
+         else
+         begin
+           sqlRun.FieldByName(_Obje_.Name).AsVariant := _Obje_.EditingValue;
+           if (sqlRun.FieldByName(_Obje_.Name) is TStringField)
+             and IsNull (sqlRun.FieldByName(_Obje_.Name).AsString) then sqlRun.FieldByName(_Obje_.Name).Clear;
+         end;
+
+      end;
+    end;
+    sqlRun.Post;
+    post := True;
+  except on e : Exception do
+    begin
+     post := false;
+     ShowMessageSkin(e.Message,'','','info');
     end;
   end;
-  sqlRun.Post;
-  post := True;
-except on e : Exception do
-  begin
-   post := false;
-   ShowMessageSkin(e.Message,'','','info');
-  end;
-end;
-
 end;
 
 
@@ -2046,26 +2029,27 @@ begin
 // Caption,fieldname,kolon,grup,uzunluk
 
   sql := Format(selectTableDescColumn,[#39+TableName+#39]);
- try
   ado := TADOQuery.Create(nil);
-  ado.Connection := DATALAR.ADOConnection2;
-  datalar.QuerySelect(ado,sql);
-  while not ado.eof do
-  begin
-     col := ado.FieldByName('Column').AsString;
-     desc := ado.FieldByName('Description').AsString;
-     prm := TStringList.Create;
-     Split(',',desc,prm);
-     grup := TdxLayoutGroup(FindComponent(prm[1]));
-     setDataString(self,col,prm[0], grup, prm[2],strtoint(prm[3]));
-   ado.Next;
+  try
+    prm := TStringList.Create;
+    try
+      ado.Connection := DATALAR.ADOConnection2;
+      datalar.QuerySelect(ado,sql);
+      while not ado.eof do
+      begin
+        col := ado.FieldByName('Column').AsString;
+        desc := ado.FieldByName('Description').AsString;
+        Split(',',desc,prm);
+        grup := TdxLayoutGroup(FindComponent(prm[1]));
+        setDataString(self,col,prm[0], grup, prm[2],strtoint(prm[3]));
+        ado.Next;
+      end;
+    finally
+      prm.Free;
+    end;
+  finally
+    ado.Free;
   end;
-  ado.Free;
-  prm.Free;
- except
-   ado.Free;
-   prm.Free;
- end;
 end;
 
 
@@ -2271,8 +2255,6 @@ begin
 end;
 
 procedure TGirisForm.FormShow(Sender: TObject);
-var
-g : TGraphic;
 begin
  // if not _HastaBilgileriniCaptionGoster_
  // then Caption := 'Mavi Nokta Bilgi Tek.';
