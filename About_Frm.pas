@@ -24,7 +24,7 @@ type
   end;
 
 const formGenislik = 600;
-      formYukseklik = 500;
+      formYukseklik = 378;
 
 var
   frmAbout: TfrmAbout;
@@ -51,7 +51,7 @@ begin
   end
   else clHostNameColor := clGreen;
 
-  Olustur(self,TableName,'Doktor Taným',22);
+  //Olustur(self,TableName,'Doktor Taným',22);
   setDataImage(self,'Image1abx','',Kolon1,'',155,121);
   setDataStringBLabel(self,'CRX',Kolon1,'',155,'Copyright Mavi Nokta Bilgi Teknolojileri, 1996-2017', '', '', False, clBlack, taCenter);
   TcxLabel(FindComponent('labelCRX')).Properties.WordWrap := True;
@@ -89,8 +89,10 @@ begin
   TcxLabel(FindComponent('labelYasalUyari2')).AutoSize := True;
   TcxLabel(FindComponent('labelYasalUyari2')).AutoSize := False;
 
-  SayfaCaption('Yazýlým Bilgileri', '', '', '', '');
-
+  SayfaCaption('', '', '', '', '');
+  cxPanel.Visible := False;
+  Image1.Visible := False;
+  Image2.Visible := False;
   Disabled(self,True);
 end;
 
