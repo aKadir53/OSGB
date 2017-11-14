@@ -23,8 +23,7 @@ type
     { Public declarations }
   end;
 
-const _TableName_ = 'DoktorlarT';
-      formGenislik = 500;
+const formGenislik = 600;
       formYukseklik = 500;
 
 var
@@ -36,93 +35,80 @@ implementation
 {$R *.dfm}
 procedure TfrmAbout.FormCreate(Sender: TObject);
 var
-  List : TListeAc;
-  bransKodu,calismaTipi : TcxImageComboKadir;
+  HostName : String;
+  clHostNameColor : TColor;
 begin
   Tag := TagfrmAbout;
   ClientHeight := formYukseklik;
   ClientWidth := formGenislik;
 
-  indexFieldName := 'kod';
-  TableName := _TableName_;
-  Olustur(self,_TableName_,'Doktor Taným',22);
+  indexFieldName := '';
+  TableName := '';
+  if not GetLocalHostName (HostName) then
+  begin
+    HostName := '<okunamadý>';
+    clHostNameColor := clRed;
+  end
+  else clHostNameColor := clGreen;
 
+  Olustur(self,TableName,'Doktor Taným',22);
+  setDataImage(self,'Image1abx','',Kolon1,'',155,121);
 
-  List := TListeAc.Create(nil);
+  setDataStringBLabel(self,'Firma1',Kolon2,'Grup001',100,'Yayýncý Firma');
+  TcxLabel(FindComponent('labelFirma1')).Style.TextColor := clBlack;
+  TcxLabel(FindComponent('labelFirma1')).Style.Font.style := TcxLabel(FindComponent('labelFirma1')).Style.Font.style - [fsBold];
+  setDataStringBLabel(self,'Firma2',Kolon2,'Grup001',216,'Mavi Nokta Bilgi Teknolojileri Ltd.Þti.');
+  TcxLabel (FindComponent ('labelFirma2')).Style.TextColor := clGreen;
 
-  List.Table := 'DoktorlarT';
+  setDataStringBLabel(self,'Firma3',Kolon2,'Grup005',100,'web adresi');
+  TcxLabel(FindComponent('labelFirma3')).Style.TextColor := clBlack;
+  TcxLabel(FindComponent('labelFirma3')).Style.Font.Style := TcxLabel(FindComponent('labelFirma3')).Style.Font.Style - [fsBold];
+  setDataStringBLabel(self,'Firma4',Kolon2,'Grup005',216,'www.noktayazilim.net');
+  TcxLabel (FindComponent ('labelFirma4')).Style.TextColor := clGreen;
 
-  List.kolonlar.Add('kod');// := Ts;
-  List.kolonlar.Add('tanimi'); // := Ts;
+  setDataStringBLabel(self,'Prg1',Kolon2,'Grup002',100,'Program Tanýmý');
+  TcxLabel(FindComponent('labelPrg1')).Style.TextColor := clBlack;
+  TcxLabel(FindComponent('labelPrg1')).Style.Font.Style := TcxLabel(FindComponent('labelPrg1')).Style.Font.Style - [fsBold];
+  setDataStringBLabel(self,'Prg2',Kolon2,'Grup002',216,'Ýþyeri Hekimliði E-Reçete Modülü');
+  TcxLabel (FindComponent ('labelPrg2')).Style.TextColor := clGreen;
 
+  setDataStringBLabel(self,'Prg3',Kolon2,'Grup006',100,'Sürüm Numarasý');
+  TcxLabel(FindComponent('labelPrg3')).Style.TextColor := clBlack;
+  TcxLabel(FindComponent('labelPrg3')).Style.Font.Style := TcxLabel(FindComponent('labelPrg3')).Style.Font.Style - [fsBold];
+  setDataStringBLabel(self,'Prg4',Kolon2,'Grup006',216,DATALAR.versiyon);
+  TcxLabel (FindComponent ('labelPrg4')).Style.TextColor := clGreen;
 
-  List.KolonBasliklari.Add('Doktor Kodu');// := Ts1;
-  List.KolonBasliklari.Add('Doktor Adi');// := Ts1;
-  List.TColcount := 2;
-  List.TColsW := '50,200';
-  List.ListeBaslik := 'Doktorlar';
-  List.Name := 'kod';
-  List.Conn := Datalar.ADOConnection2;
-  List.SkinName := 'coffee';//AnaForm.dxSkinController1.SkinName;
+  setDataStringBLabel(self,'Lisans',Kolon2,'',322,'Lisans Bilgileri');
+  TcxLabel(FindComponent('labelLisans')).Properties.Alignment.Horz := taCenter;
 
-  setDataImage(self,'Image1abx','Foto',Kolon1,'',155,121);
-  setDataStringB(self,'kod','Doktor Kodu',Kolon2,'',70,List,True,nil);
+  setDataStringBLabel(self,'Bilgisayar1',Kolon2,'Grup003',100,'Bilgisayar');
+  TcxLabel(FindComponent('labelBilgisayar1')).Style.TextColor := clBlack;
+  TcxLabel(FindComponent('labelBilgisayar1')).Style.Font.Style := TcxLabel(FindComponent('labelBilgisayar1')).Style.Font.Style - [fsBold];
+  setDataStringBLabel(self,'Bilgisayar2',Kolon2,'Grup003',216,HostName);
+  TcxLabel (FindComponent ('labelBilgisayar2')).Style.TextColor := clHostNameColor;
 
-  setDataString(self,'tanimi','Adý Soyadý',Kolon2,'',200,True);
-  setDataString(self,'tcKimlikNo','TC Kimlik No',Kolon2,'',150,True);
+  setDataStringBLabel(self,'Lisans1',Kolon2,'Grup004',100,'Lisans Durumu');
+  TcxLabel(FindComponent('labelLisans1')).Style.TextColor := clBlack;
+  TcxLabel(FindComponent('labelLisans1')).Style.Font.Style := TcxLabel(FindComponent('labelLisans1')).Style.Font.Style - [fsBold];
+  setDataStringBLabel(self,'Lisans2',Kolon2,'Grup004',216,'Bilinmiyor');
+  TcxLabel (FindComponent ('labelLisans2')).Style.TextColor := clGreen;
 
-  bransKodu := TcxImageComboKadir.Create(self);
-  bransKodu.Conn := Datalar.ADOConnection2;
-  bransKodu.TableName := 'SERVIS_TNM';
-  bransKodu.ValueField := 'kod';
-  bransKodu.DisplayField := 'tanimi';
-  bransKodu.BosOlamaz := True;
-  bransKodu.Filter := '';
-  OrtakEventAta(bransKodu);
-  setDataStringKontrol(self,bransKodu,'bransKodu','Branþ Kodu',Kolon2,'',120);
+  setDataStringBLabel(self,'YasalUyari1',Kolon2,'',322,'Yasal Uyarý');
+  TcxLabel(FindComponent('labelYasalUyari1')).Properties.Alignment.Horz := taCenter;
+  setDataStringBLabel(self,'YasalUyari2',Kolon2,'',322,
+    'Kullanmakta olduðunuz Ýþyeri Hekimliði E-Reçete Modülü programý '+
+    'Telif Yasalarý ve diðer yasal mevzuatlarla koruma altýna alýnmýþ olup,'+
+    ' tamamýnýn veya bir bölümünün izinsiz bir þekilde kullandýrýlmasý, kopyalanmasý'+
+    ' veya taþýnmasý ve bu durumun tarafýmýzca tespiti halinde hukuki müeyyideler'+
+    ' iþletilecektir');
+  TcxLabel(FindComponent('labelYasalUyari2')).Properties.Alignment.Horz := taCenter;
+  TcxLabel(FindComponent('labelYasalUyari2')).Properties.WordWrap := True;
+  TcxLabel(FindComponent('labelYasalUyari2')).AutoSize := True;
+  TcxLabel(FindComponent('labelYasalUyari2')).AutoSize := False;
 
-
-
-  setDataString(self,'tescilNo','Tescil No',Kolon2,'',80,True);
-  setDataString(self,'eReceteKullanici','Reçete Kullanýcý Adý',Kolon2,'cc',100,True);
-  setDataString(self,'eReceteSifre','Reçete Þifresi',Kolon2,'',100,True);
-  setDataString(self,'pin','Ýmza Token Pin',Kolon2,'',50);
-  setDataString(self,'TesisKodu','Tesis Kodu',Kolon2,'',100);
-  setDataString(self,'GSM','GSM',Kolon2,'',100);
-  setDataString(self,'EPosta','E-Posta',Kolon2,'',200);
- // setDataString(self,'TDisID','TDis ID',Kolon2,'TDIS',80);
- // addButton(self,nil,'btnTDis','','TDIS ID Getir',Kolon2,'TDIS',120,ButtonClick);
-  setDataString(self,'sertifika','Sertifika',Kolon2,'',80);
-
-
-  calismaTipi := TcxImageComboKadir.Create(self);
-  calismaTipi.Conn := nil;
-  calismaTipi.BosOlamaz := True;
-  calismaTipi.ItemList := '0;Tam Zamanlý,1;Yarý Zamanlý';
-  calismaTipi.Filter := '';
-  OrtakEventAta(calismaTipi);
-  setDataStringKontrol(self,calismaTipi,'calismaTipi','Çalýþma Tipi',Kolon2,'',120);
-
-  setDataStringC(self,'uzman','Uzman mý?',Kolon2,'',80,'Evet,Hayýr');
-  setDataStringC(self,'durum','Durum',Kolon2,'',80,'Aktif,Pasif');
-
-  setDataStringBLabel(self,'CalismaBilgisi',sayfa2_Kolon2,'',290,'Seans Çalýþma Bilgisi');
-  TcxLabel(FindComponent('labelCalismaBilgisi')).Properties.Alignment.Horz := taCenter;
-  setDataStringC(self,'pazartesi','Pazatesi',sayfa2_Kolon2,'',80,'0,1,1-2,1-3,2,2-3,3');
-  setDataStringC(self,'sali','Salý',sayfa2_Kolon2,'',80,'0,1,1-2,1-3,2,2-3,3');
-  setDataStringC(self,'carsamba','Çarþamba',sayfa2_Kolon2,'',80,'0,1,1-2,1-3,2,2-3,3');
-  setDataStringC(self,'persembe','Perþembe',sayfa2_Kolon2,'',80,'0,1,1-2,1-3,2,2-3,3');
-  setDataStringC(self,'cuma','Cuma',sayfa2_Kolon2,'',80,'0,1,1-2,1-3,2,2-3,3');
-  setDataStringC(self,'cumartesi','Cumartesi',sayfa2_Kolon2,'',80,'0,1,1-2,1-3,2,2-3,3');
-
- // setDataImage(self,'foto','Foto',Kolon3,'',120,100);
-
-  SayfaCaption('Taným Bilgileri','Çalýþma Bilgileri','','','');
-
+  SayfaCaption('Yazýlým Bilgileri', '', '', '', '');
 
   Disabled(self,True);
-
-
 end;
 
 end.

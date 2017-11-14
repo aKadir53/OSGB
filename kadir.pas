@@ -196,6 +196,7 @@ function raporTakipNoToraporNo(raporTakipNo: string): string;
 function doktorBrans(kod: string): string;
 function doktorReceteBrans(kod: string): string;
 function LocalIP(var IP: string): Boolean;
+function GetLocalHostName(var pHostName: string): Boolean;
 procedure HTTPbaglan(HTTP: THTTPRIO);
 // procedure HastaTakipBulP(Bilgi : THastaKabul;tarih1,tarih2 : string);
 //procedure datasetiDoldur(_takipNo, tedaviTuru, _basvuru: string);
@@ -4607,6 +4608,21 @@ begin
   finally
     WSACleanup;
   end
+end;
+
+function GetLocalHostName(var pHostName: string): Boolean;
+var
+  LocalMachine: PChar;
+  Len: DWord;
+begin
+  Len := MAX_COMPUTERNAME_LENGTH + 1;
+  GetMem(LocalMachine,Len);
+  try
+    result := GetComputerName(LocalMachine,Len);
+    if Result then pHostName := LocalMachine;
+  finally
+    FreeMem(LocalMachine,Len);
+  end;
 end;
 
 function raporTakipNobul(DosyaNo: string): string;
