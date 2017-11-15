@@ -1,0 +1,1 @@
+upx paket.exe

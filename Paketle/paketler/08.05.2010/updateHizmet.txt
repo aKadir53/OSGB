@@ -1,0 +1,2 @@
+update HIZMET
+SET  KSATISF00 = 145

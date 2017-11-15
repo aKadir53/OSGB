@@ -1,0 +1,3 @@
+delete from HIZMET
+where code <> '704230'
+
