@@ -1,0 +1,150 @@
+ALTER PROCEDURE [dbo].[sp_MedulaDataset] @TakipNo varchar(8) , @DataSet varchar(20)
+AS
+declare  @knr varchar(6), @snr varchar(3),
+        @doktor varchar(10),@serviskodu varchar(10),@servis varchar(50),@tarih varchar(10),
+        @ambu varchar(1),@CikisTarih varchar(10),@TaburcuKodu varchar(2),
+        @Sonucu varchar(1000),@IstisnaiDurum varchar(2) , @Sonucaciklama varchar(1000),
+        @TesisKodu varchar(10) ,@kod varchar(7) , @hastatip varchar(1),@FirmaAdi varchar(100),@SUT varchar(10)
+      --,@TakipNo varchar(8), @DataSet varchar(15)
+
+--set @TakipNo = '12345678'
+
+select @SUT = SLXX from parametreler where SLB = 'SUT' and SLK = '33'
+
+
+select @TesisKodu = slb from Parametreler
+where slk = '99'
+
+select @knr = g.dosyaNo ,@snr = g.gelisNo , @hastaTip = h.hastatip ,
+       @tarih = g.BHDAT,@TaburcuKodu = g.taburcu 
+from Gelisler g
+    left join HastaKart h on h.dosyaNo = g.dosyaNo 
+where g.takIpno = @takipno
+
+select @FirmaAdi = merkezAdi from merkezBilgisi
+
+
+select @servis = (case when isnull(SLXX,'') = '' then '1062' else SLXX end)
+from parametreler 
+where SLK = '33' and SLB = 'BRANS' 
+
+if @Dataset = 'Giris'
+begin
+
+set @SonucAciklama = 'DIYALIZ'
+
+
+set @ambu = 'Y'
+
+--set @TaburcuKodu = '2'
+set @Sonucu = @Sonucaciklama
+set @IstisnaiDurum = '0'
+
+select @CikisTarih = convert(varchar,max(GT.UTarih),112)       
+from Gelisler G 
+   inner join GelisDetay GT on GT.dosyaNo = G.dosyaNo and GT.gelisNo = G.gelisNo 
+where G.TakIpNo = @TakipNo and gt.durum = 1
+
+
+
+select *
+from
+(
+select @TakipNo as takipNo,@TesisKodu as saglikTesisKodu,
+@servis as bransKodu,dbo.bransKoduToAdi(@servis) as Badi,
+@ambu as tedaviTuru,
+'1' as sorguTuru, @knr+@snr as protokolNo,@CikisTarih as hastaCikisTarihi,
+@TaburcuKodu as taburcuKodu,@Sonucu as sonucAciklama,@IstisnaiDurum as istisnaiDurum,
+@FirmaAdi as FirmaAdi,@tarih as TakipTarih
+) as OdemeSorguGirisDVO
+
+end
+
+
+if @Dataset = 'Tani'
+begin
+
+select 
+(case isnull(@hastatip,'0') 
+when '0' then 'N18'
+when '' then 'N18'
+else 'N17' end) as taniKodu,
+'2' as taniTipi,'E' as birincilTani,'1' as hizmetSunucuRefNo 
+
+end
+
+--*** Tani Bilgisi
+
+
+--***Rapor Bilgisi
+if @Dataset = 'Rapor'
+begin
+
+	select r.raporNo as raporNo,r.verenTesisKodu as raporVerenTesisKodu,
+           r.raporTarihi as raporVerilisTarihi,1 as hizmetSununuRefNo , R.raporTakipNo,
+           RD.*,h.*
+    from gelisler G
+	     left join HastaKart H on H.dosyaNo = G.dosyaNo
+         left join Raporlar R on r.dosyaNo = g.dosyaNo and R.aktif = 1
+         left join RaporDetay RD on RD.raporNo = R.raporNo and r.dosyaNo = Rd.dosyaNo
+	where G.dosyaNo = @knr and g.gelisNo = @snr and R.aktif = 1
+end
+
+--***Rapor Bilgisi
+
+if @Dataset = 'Diger'
+begin
+	select @SUT as butKodu,1 as adet,GD.UTarih as islemTarihi,D.TescilNo as drTescilNo,
+    D.Brans as bransKodu,
+    --@servis as bransKodu,
+    dbo.bransKoduToAdi(D.Brans) as Badi,
+
+	GD.sirano as hizmetSunucuRefNo,GD.TalepSira as islemSiraNo,'145' as KSATISF,hz.name1,'0' as islemDurum 
+	from Gelisler G
+		 inner join GelisDetay GD on GD.gelisNo = G.gelisNo and GD.dosyaNo = G.dosyaNo
+		 left join doktorlar d on D.kod = GD.doktor
+         left join HIZMET Hz on Hz.BUT = '704230' 
+	where G.dosyaNo = @knr and G.gelisNo = @snr and GD.durum = 1
+end
+
+if @Dataset = 'Tahlil'
+begin
+  select h.code as butKodu,h.adet as adet,h.tarIh as islemTarihi,d.TescilNo as doktorTescilNo,
+   --@servis as bransKodu,dbo.bransKoduToAdi(@servis) as Badi,
+dbo.branskodubul(h.code) as bransKodu,dbo.bransKoduToAdi(dbo.branskodubul(h.code)) as Badi,   
+h.SIRANO as hizmetSunucuRefNo,'0' as KSATISF,h.name1,'0' as islemDurum
+  from hareketler h
+    inner join gelisler g on g.dosyaNo = h.dosyaNo and g.gelisno = h.gelisNo
+    inner join DOKTORLAR d on d.kod = g.Doktor
+   -- left join HIZMET Hz on Hz.BUT = h.code 
+  where h.dosyaNo = @knr and h.gelisno = @snr and h.onay = 1
+
+end
+
+
+if @Dataset = 'Hastayatis'
+begin
+
+	select '510120' as butKodu,
+	convert(varchar,b.UTarih,112) as YatisBaslangicTarihi,
+	convert(varchar,b.UTarih,112) as YatisBitisTarihi,
+	d.TescilNo as doktorTescilNo,
+	@servis as bransKodu,
+	1 as hizmetSunucuRefNo,'0' as islemDurum
+	from GelisDetay b
+		left join Gelisler  G on g.dosyaNo = b.dosyaNo and g.gelisNo = b.gelisNo
+		left join doktorlar d on d.kod = b.Doktor
+	where b.dosyaNo = @knr and b.gelisNo = @snr and b.durum = 1
+
+end
+
+if @Dataset = 'Dosya'
+begin
+   select h.dosyaNo,h.HASTAADI,h.HASTASOYADI,h.TCKIMLIKNO,h.KARNENO,h.sicilNo,
+          r.raporno,R.raporTakipNo 
+    from hastakart h
+         left join Raporlar R on r.dosyaNo = h.dosyaNo and R.aktif = 1
+         left join RaporDetay RD on RD.raporNo = R.raporNo and r.dosyaNo = Rd.dosyaNo
+	where h.dosyaNo = @knr and R.aktif = 1
+
+end

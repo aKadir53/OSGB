@@ -1,0 +1,60 @@
+﻿	<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+		<PropertyGroup>
+			<ProjectGuid>{8E21D570-0B0A-4E60-8E2F-4D16FD12F24C}</ProjectGuid>
+		</PropertyGroup>
+		<ItemGroup>
+			<Projects Include="Paket.dproj">
+				<Dependencies/>
+			</Projects>
+			<Projects Include="..\muh.dproj">
+				<Dependencies/>
+			</Projects>
+			<Projects Include="C:\Dializ2007\Musteriler\Project4.dproj">
+				<Dependencies/>
+			</Projects>
+		</ItemGroup>
+		<ProjectExtensions>
+			<Borland.Personality>Default.Personality.12</Borland.Personality>
+			<Borland.ProjectType/>
+			<BorlandProject>
+				<Default.Personality/>
+			</BorlandProject>
+		</ProjectExtensions>
+		<Target Name="Paket">
+			<MSBuild Projects="Paket.dproj"/>
+		</Target>
+		<Target Name="Paket:Clean">
+			<MSBuild Targets="Clean" Projects="Paket.dproj"/>
+		</Target>
+		<Target Name="Paket:Make">
+			<MSBuild Targets="Make" Projects="Paket.dproj"/>
+		</Target>
+		<Target Name="muh">
+			<MSBuild Projects="..\muh.dproj"/>
+		</Target>
+		<Target Name="muh:Clean">
+			<MSBuild Targets="Clean" Projects="..\muh.dproj"/>
+		</Target>
+		<Target Name="muh:Make">
+			<MSBuild Targets="Make" Projects="..\muh.dproj"/>
+		</Target>
+		<Target Name="Project4">
+			<MSBuild Projects="C:\Dializ2007\Musteriler\Project4.dproj"/>
+		</Target>
+		<Target Name="Project4:Clean">
+			<MSBuild Targets="Clean" Projects="C:\Dializ2007\Musteriler\Project4.dproj"/>
+		</Target>
+		<Target Name="Project4:Make">
+			<MSBuild Targets="Make" Projects="C:\Dializ2007\Musteriler\Project4.dproj"/>
+		</Target>
+		<Target Name="Build">
+			<CallTarget Targets="Paket;muh;Project4"/>
+		</Target>
+		<Target Name="Clean">
+			<CallTarget Targets="Paket:Clean;muh:Clean;Project4:Clean"/>
+		</Target>
+		<Target Name="Make">
+			<CallTarget Targets="Paket:Make;muh:Make;Project4:Make"/>
+		</Target>
+		<Import Project="$(BDS)\Bin\CodeGear.Group.Targets" Condition="Exists('$(BDS)\Bin\CodeGear.Group.Targets')"/>
+	</Project>
