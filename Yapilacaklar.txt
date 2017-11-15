@@ -25,6 +25,12 @@ yeni personel açarken verdiði null hatalý hatasý. Kadir'in notu:- label ve combo
 firma tanýmlama tehlike sýnýfý seçilebilir mi ?
 reçete ilaç seçiminde arama kutusu ve boþsa ilaç gelmemesi. sýk kullanýlanlar geliyorsa orayý elleme ama tiki kaldýrýrsa arama kurusunda deðer olana kadar dataseti açmama vs...
 
+gerçek ortam mý test ortamý mý seçeneði kontrol edilecek
+gerçek url / test url adres kontrolü yapýlacak
+doktor bilgileri (tckimlik, parola, þifre, pin, tesis kodu)
+tesis kodu (ornek: 11349903 (istanbul) il koduna göre 34 yerine o ilin kodu yazýlacak)
+reçeteyi kaydederken doktor tesis kodu, reçete silerken kurum þifre bilgilerindeki tesis kodu alýnmýþ, doktorun tesis kodu alýnacak
+
 
 ------------------------------------------------------------------------------------------------------------------------
 iptal olanlar
