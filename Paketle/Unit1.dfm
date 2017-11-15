@@ -116,6 +116,10 @@ object frmPaket: TfrmPaket
     object cxTabSheet2: TcxTabSheet
       Caption = 'Rapor Dizayn'
       ImageIndex = 1
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       object DBMemo2: TDBMemo
         Left = 0
         Top = 266
@@ -188,7 +192,6 @@ object frmPaket: TfrmPaket
       Height = 26
       Caption = 'Exe '#39'leri Sunucuya G'#246'nder'
       Enabled = False
-      Visible = False
       OnClick = SpeedButton3Click
     end
     object ComboBox1: TComboBox
@@ -198,14 +201,11 @@ object frmPaket: TfrmPaket
       Height = 21
       ItemIndex = 1
       TabOrder = 0
-      Text = 'DiyalizV4'
+      Text = 'OSGB'
       OnChange = ComboBox1Change
       Items.Strings = (
         ''
-        'DiyalizV4'
-        'Klinik'
-        'FTR'
-        'RO')
+        'OSGB')
     end
     object Versiyon: TMemo
       Left = 207
@@ -263,8 +263,8 @@ object frmPaket: TfrmPaket
     OnNewRecord = table1NewRecord
     Parameters = <>
     SQL.Strings = (
-      'select * from UPDATE_CMD'
-      'where Modul = '#39'4'#39
+      'select * from UPDATE_CMD_OSGB'
+      'where Modul = '#39'O'#39
       'order by ID')
     Left = 536
     Top = 104

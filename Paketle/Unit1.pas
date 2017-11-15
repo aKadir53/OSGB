@@ -133,10 +133,8 @@ end;
 
 procedure TfrmPaket.table1NewRecord(DataSet: TDataSet);
 begin
-  table1.FieldByName('MODUL').AsString := '4';
-  table1.FieldByName('TIPI').AsString := '4';
-  table1.FieldByName('REV').AsString := txtRev.Text;
-
+  table1.FieldByName('MODUL').AsString := 'O';
+  table1.FieldByName('TIPI').AsString := 'C';
 end;
 
 Function TfrmPaket.DosyaKopyala(sSrc : string;sDest : string) : integer;
@@ -172,9 +170,7 @@ end;
 procedure TfrmPaket.FormCreate(Sender: TObject);
 begin
 
- txtRev.Text := ParamStr(1);
-
-//  Versiyon.Lines.LoadFromFile('D:\Projeler\DELPHI\Diyaliz\Dializ2007_M3\diyalizVersiyon.txt');
+ txtRev.Lines.LoadFromFile('D:\Projeler\DELPHI\OSGB\win32\debug\OSGBupdate.txt');
 end;
 
 procedure TfrmPaket.SpeedButton2Click(Sender: TObject);
@@ -242,10 +238,10 @@ begin
   try
     table1.Last;
     txtRev.Lines.Text := table1.FieldByName('ID').AsString;
-    txtRev.Lines.SaveToFile('D:\Projeler\DELPHI\Diyaliz\Dializ_M4\UpdateV4.txt');
+    txtRev.Lines.SaveToFile('D:\Projeler\DELPHI\OSGB\win32\debug\OSGBupdate.txt');
     IdFTP1.Connect();
     Application.ProcessMessages;
-    IdFTP1.Put('D:\Projeler\DELPHI\Diyaliz\Dializ_M4\UpdateV4.txt','/httpdocs/UpdateV4.txt',false);
+    IdFTP1.Put('D:\Projeler\DELPHI\OSGB\win32\debug\OSGBupdate.txt','/httpdocs/OSGBupdate.txt',false);
   except on e : Exception do
     begin
        ShowMessageSkin('Hata : ' + e.Message,'','','info');
