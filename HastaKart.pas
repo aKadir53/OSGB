@@ -371,7 +371,7 @@ begin
           '@dosyaNo = ' + #39 + dosyaNo.Text + #39 + ',' +
           '@gelisNo = 0 ,' +
           '@BHDAT = ' + #39 + tarihal(_Tarih_) + #39 + ',' +
-          '@doktor = ' + #39 + '' + #39 + ',' +
+          '@doktor = ' + #39 + DATALAR.doktorKodu + #39 + ',' +
           '@SERVIS = ' + #39 + '' + #39 + ',' +
           '@TEDAVITURU = ' + #39 + TedaviTuru + #39 + ',' +
           '@Kullanici = ' + #39 + datalar.username + #39 + ',' +
