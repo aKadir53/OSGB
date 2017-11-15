@@ -1,4 +1,4 @@
-program PaketV4;
+program PaketOSGB;
 
 uses
   Forms,
