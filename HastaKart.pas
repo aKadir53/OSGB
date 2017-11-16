@@ -295,6 +295,7 @@ procedure TfrmHastaKart.gelisSil;
 var
   ado : TADOQuery;
   sql : string;
+  bSucc: Boolean;
 begin
    if _gelisNo_ = '' then exit;
 
@@ -309,13 +310,21 @@ begin
    try
      ado.Connection := datalar.ADOConnection2;
      try
-       sql := 'Delete from PersoneliseGirisMuayene where Personelkodu = ' + QuotedStr (DosyaNo.Text) +
-              ' and gelisNo = ' + _gelisNo_;
-       datalar.QueryExec(ado, sql);
-       sql := 'Delete from Gelisler where dosyaNo = ' + QuotedStr (DosyaNo.Text) +
-              ' and gelisNo = ' + _gelisNo_;
-       datalar.QueryExec(ado, sql);
+       bSucc := False;
+       ado.Connection.BeginTrans;
+       try
+         sql := 'Delete from PersoneliseGirisMuayene where Personelkodu = ' + QuotedStr (DosyaNo.Text) +
+                ' and gelisNo = ' + _gelisNo_;
+         datalar.QueryExec(ado, sql);
+         sql := 'Delete from Gelisler where dosyaNo = ' + QuotedStr (DosyaNo.Text) +
+                ' and gelisNo = ' + _gelisNo_;
+         datalar.QueryExec(ado, sql);
+         bSucc := True;
+       finally
+         if bSucc then ado.Connection.CommitTrans
+         else ado.Connection.RollbackTrans;
 
+       end;
 
        Gelisler(DosyaNo.Text);
      except on e : exception do
