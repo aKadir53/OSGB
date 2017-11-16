@@ -264,7 +264,6 @@ end;
 
 procedure TfrmHastaKart.gelisDuzenle;
 var
- x ,satir : integer;
  hata : string;
 begin
     datalar.GelisDuzenleRecord.TedaviYontemi := ADO_Gelisler.FieldByName('TEDAVITURU').AsString;
@@ -295,7 +294,6 @@ end;
 procedure TfrmHastaKart.gelisSil;
 var
   ado : TADOQuery;
-  ug,s,p : integer;
   sql : string;
 begin
    if _gelisNo_ = '' then exit;
@@ -303,33 +301,38 @@ begin
 
    if UserRight('Muayene Ýþlemleri', 'Sil') = False
    then begin
-       ShowMessageSkin('Bu Ýþlem Ýçin Yetkiniz Bulunmamaktadýr !','','','info');
-       exit;
+     ShowMessageSkin('Bu Ýþlem Ýçin Yetkiniz Bulunmamaktadýr !','','','info');
+     exit;
    end;
 
    ado := TADOQuery.Create(nil);
-   ado.Connection := datalar.ADOConnection2;
    try
-       sql := 'Delete from Gelisler where dosyaNo = ' + #39 + DosyaNo.Text + #39 +
+     ado.Connection := datalar.ADOConnection2;
+     try
+       sql := 'Delete from PersoneliseGirisMuayene where Personelkodu = ' + QuotedStr (DosyaNo.Text) +
               ' and gelisNo = ' + _gelisNo_;
-       datalar.QueryExec(ado,sql);
+       datalar.QueryExec(ado, sql);
+       sql := 'Delete from Gelisler where dosyaNo = ' + QuotedStr (DosyaNo.Text) +
+              ' and gelisNo = ' + _gelisNo_;
+       datalar.QueryExec(ado, sql);
 
 
-       ado.Free;
        Gelisler(DosyaNo.Text);
-   except on e : exception do
-     begin
-      ShowMessageSkin(e.Message,'','','info');
-      ado.Free;
-      exit;
+     except on e : exception do
+       begin
+        ShowMessageSkin(e.Message,'','','info');
+        exit;
+       end;
      end;
+   finally
+     ado.Free;
    end;
 end;
 
 
 procedure TfrmHastaKart.gelisAc;
 var
-  sql , Gelis , error ,Tarih , TedaviTuru : string;
+  sql , Gelis , error , TedaviTuru : string;
   _tarih_ : Tdate;
 begin
 
@@ -415,9 +418,6 @@ begin
 end;
 
 procedure TfrmHastaKart.Gelisler(kartNo : string);
-var
-  sql : string;
-  i : integer;
 begin
  HastaGelis(kartNo,ADO_Gelisler);
 end;
@@ -605,10 +605,6 @@ procedure TfrmHastaKart.cxButtonEditPropertiesButtonClick(Sender: TObject;
   AButtonIndex: Integer);
 var
  g : TGraphic;
- imgList : TcxImageList;
- i : integer;
- pngbmp: TPngImage;
- bmp: TBitmap;
 begin
   inherited;
 
@@ -734,8 +730,6 @@ begin
 end;
 
 procedure TfrmHastaKart.Combo;
-var
-  sql : string;
 begin
   (*
    datalar.ADO_SQL.Close;
@@ -768,7 +762,6 @@ function TfrmHastaKart.Init(Sender : TObject) : Boolean;
 var
   key : word;
   sql : string;
-  t1,t2 : Tdate;
   ado : TADOQuery;
 begin
 
@@ -778,7 +771,7 @@ begin
   if _dosyaNo_ = '' then
   begin
      ado := TADOQuery.Create(nil);
-     t2 := ayliktarih(date,t1);
+     //t2x := ayliktarih(date,t1);
      sql := 'select top 1 dosyaNo from PersonelKart ' +
             ' where sirketKod = ' + QuotedStr(datalar.AktifSirket) +
             ' and Aktif = 1 ' +
@@ -808,17 +801,12 @@ end;
 
 procedure TfrmHastaKart.FormCreate(Sender: TObject);
 var
-  index,i : integer;
-  Ts,Ts1,Ts3 : TStringList;
-  List,List1,List3,IL_KODLARI,ILCE_KODLARI,BUCAK_KODLARI,
-  KOY_KODLARI,MAHALLE_KODLARI,UYRUK : TListeAc;
-  cxBtnkod : TcxButtonKadir;
-  merkezdeBaslangic,BASLANGIC,ilkTaniTarihi : TcxDateEditKadir;
+  List,
+  UYRUK : TListeAc;
+  BASLANGIC : TcxDateEditKadir;
   EV_SEHIR ,EV_ILCE ,EV_BUCAK , EV_KOY,EV_MAHALLE : TcxImageComboKadir;
   DEV_KURUM,Kurum,EGITIM : TcxImageComboKadir;
-  askerlik,ozur,bolum,birim,risk,statu,muayenePeryot,Subeler,sirketlerx: TcxImageComboKadir;
-  D : TcxComboBox;
-  Tab : TcxTabSheet;
+  askerlik,ozur,bolum,birim,risk,muayenePeryot,Subeler,sirketlerx: TcxImageComboKadir;
 begin
   USER_ID.Tag := 0;
   sirketKod.Tag := 0;
@@ -1107,8 +1095,6 @@ begin
 end;
 
 procedure TfrmHastaKart.seansGunleriPropertiesEditValueChanged(Sender: TObject);
-var
- s : string;
 begin
   inherited;
 //  s := seansGunleri.EditingValue;
@@ -1118,8 +1104,6 @@ begin
 end;
 
 procedure TfrmHastaKart.cxKaydetClick(Sender: TObject);
-var
-  g : TGraphic;
 begin
 
     case TControl(sender).Tag  of
@@ -1172,7 +1156,6 @@ var
  _name_, tel,msj : string;
  F : TGirisForm;
  GirisFormRecord : TGirisFormRecord;
- Tab : TcxTabSheet;
 begin
   datalar.KontrolUserSet := False;
   inherited;
