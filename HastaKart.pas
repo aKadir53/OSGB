@@ -175,18 +175,21 @@ begin
 
   if IseGirisMuayene.Dataset.FieldByName('ValueTip').AsString = 'R'
   then begin
-        ValuesCombo := TStringList.Create;
-        ValueObjeValues := IseGirisMuayene.Dataset.FieldByName('ValueObjeValues').AsString;
-        GridListValue.PropertiesClassName := 'TcxRadioGroupProperties';
-        TcxRadioGroupProperties(GridListValue.Properties).Items.Clear;
-        ExtractStrings([','], [], PChar(ValueObjeValues),ValuesCombo);
-        for ValueCombo in  ValuesCombo  do
-        begin
-          item := TcxRadioGroupProperties(GridListValue.Properties).Items.Add;
-          item.Caption := ValueCombo;
-          item.Value := ValueCombo;
-        end;
-        ValuesCombo.Free;
+    ValuesCombo := TStringList.Create;
+    try
+      ValueObjeValues := IseGirisMuayene.Dataset.FieldByName('ValueObjeValues').AsString;
+      GridListValue.PropertiesClassName := 'TcxRadioGroupProperties';
+      TcxRadioGroupProperties(GridListValue.Properties).Items.Clear;
+      ExtractStrings([','], [], PChar(ValueObjeValues),ValuesCombo);
+      for ValueCombo in  ValuesCombo  do
+      begin
+        item := TcxRadioGroupProperties(GridListValue.Properties).Items.Add;
+        item.Caption := ValueCombo;
+        item.Value := ValueCombo;
+      end;
+    finally
+      ValuesCombo.Free;
+    end;
   end
   else
   if IseGirisMuayene.Dataset.FieldByName('ValueTip').AsString = 'B'
@@ -202,28 +205,34 @@ begin
     if length(IseGirisMuayene.Dataset.FieldByName('ValueTip').AsString) = 2
     then begin
       ValuesCombo := TStringList.Create;
-      ValueObjeValues := IseGirisMuayene.Dataset.FieldByName('defaultValue').AsString;
-      GridListDesc.Options.Editing := True;
-      GridListDesc.PropertiesClassName := 'TcxComboBoxProperties';
-      TcxComboBoxProperties(GridListDesc.Properties).Items.Clear;
-      ExtractStrings([','], [], PChar(ValueObjeValues),ValuesCombo);
-      for ValueCombo in  ValuesCombo  do
-      begin
-       TcxComboBoxProperties(GridListDesc.Properties).Items.Add(ValueCombo);
+      try
+        ValueObjeValues := IseGirisMuayene.Dataset.FieldByName('defaultValue').AsString;
+        GridListDesc.Options.Editing := True;
+        GridListDesc.PropertiesClassName := 'TcxComboBoxProperties';
+        TcxComboBoxProperties(GridListDesc.Properties).Items.Clear;
+        ExtractStrings([','], [], PChar(ValueObjeValues),ValuesCombo);
+        for ValueCombo in  ValuesCombo  do
+        begin
+         TcxComboBoxProperties(GridListDesc.Properties).Items.Add(ValueCombo);
+        end;
+      finally
+        ValuesCombo.Free;
       end;
-      ValuesCombo.Free;
     end;
     GridListDesc.Options.Editing:= True;
     ValuesCombo := TStringList.Create;
-    ValueObjeValues := IseGirisMuayene.Dataset.FieldByName('ValueObjeValues').AsString;
-    GridListValue.PropertiesClassName := 'TcxComboBoxProperties';
-    TcxComboBoxProperties(GridListValue.Properties).Items.Clear;
-    ExtractStrings([','], [], PChar(ValueObjeValues),ValuesCombo);
-    for ValueCombo in  ValuesCombo  do
-    begin
-     TcxComboBoxProperties(GridListValue.Properties).Items.Add(ValueCombo);
+    try
+      ValueObjeValues := IseGirisMuayene.Dataset.FieldByName('ValueObjeValues').AsString;
+      GridListValue.PropertiesClassName := 'TcxComboBoxProperties';
+      TcxComboBoxProperties(GridListValue.Properties).Items.Clear;
+      ExtractStrings([','], [], PChar(ValueObjeValues),ValuesCombo);
+      for ValueCombo in  ValuesCombo  do
+      begin
+       TcxComboBoxProperties(GridListValue.Properties).Items.Add(ValueCombo);
+      end;
+    finally
+      ValuesCombo.Free;
     end;
-    ValuesCombo.Free;
   end
   else
   begin
@@ -577,11 +586,14 @@ var
 begin
   dosyaNo := TcxButtonEditKadir(FindComponent('dosyaNo')).Text;
   ado := TADOQuery.Create(nil);
-  sql := 'if not exists(select dosyaNo from PersonelFoto where dosyaNo = ' + QuotedStr(dosyaNo) + ')' +
-         ' insert into PersonelFoto (dosyaNo,foto,tip) ' +
-         ' values (' + QuotedStr(dosyaNo) + ',NULL,''H'')';
-  datalar.QueryExec(ado,sql);
-  ado.Free;
+  try
+    sql := 'if not exists(select dosyaNo from PersonelFoto where dosyaNo = ' + QuotedStr(dosyaNo) + ')' +
+           ' insert into PersonelFoto (dosyaNo,foto,tip) ' +
+           ' values (' + QuotedStr(dosyaNo) + ',NULL,''H'')';
+    datalar.QueryExec(ado,sql);
+  finally
+    ado.Free;
+  end;
 
 end;
 
@@ -597,16 +609,22 @@ begin
   datalar.ADO_FOTO.Edit;
 
   Fo := TFileOpenDialog.Create(nil);
-  fo.Execute;
-  filename := fo.FileName;
-  fo.Free;
+  try
+    if not fo.Execute then Exit;
+    filename := fo.FileName;
+  finally
+    fo.Free;
+  end;
   Foto.Picture.LoadFromFile(filename);
 
   jp := TJpegimage.Create;
-  jp.Assign(FOTO.Picture);
-  datalar.ADO_FOTO.FieldByName('Foto').Assign(jp);
-  datalar.ADO_FOTO.Post;
-  jp.Free;
+  try
+    jp.Assign(FOTO.Picture);
+    datalar.ADO_FOTO.FieldByName('Foto').Assign(jp);
+    datalar.ADO_FOTO.Post;
+  finally
+    jp.Free;
+  end;
 end;
 
 
@@ -647,16 +665,11 @@ begin
             end
             else
             FOTO.Picture.Assign(nil);
-           except
+           finally
              g.Free;
            end;
-
            Gelisler(TcxButtonEditKadir(sender).Text);
-
       //     _gelisNO_ := ADO_Gelisler.FieldByName('gelisNO').AsString;
-
-
-
        end;
 
 
@@ -779,15 +792,18 @@ begin
 
   if _dosyaNo_ = '' then
   begin
-     ado := TADOQuery.Create(nil);
-     //t2x := ayliktarih(date,t1);
-     sql := 'select top 1 dosyaNo from PersonelKart ' +
-            ' where sirketKod = ' + QuotedStr(datalar.AktifSirket) +
-            ' and Aktif = 1 ' +
-            ' order by dosyaNo';
-     datalar.QuerySelect(ado,sql);
-     _dosyaNo_ := ado.Fields[0].AsString;
-     ado.Free;
+    ado := TADOQuery.Create(nil);
+    try
+      //t2x := ayliktarih(date,t1);
+      sql := 'select top 1 dosyaNo from PersonelKart ' +
+             ' where sirketKod = ' + QuotedStr(datalar.AktifSirket) +
+             ' and Aktif = 1 ' +
+             ' order by dosyaNo';
+      datalar.QuerySelect(ado,sql);
+      _dosyaNo_ := ado.Fields[0].AsString;
+    finally
+      ado.Free;
+    end;
   end;
 
   key := 13;
