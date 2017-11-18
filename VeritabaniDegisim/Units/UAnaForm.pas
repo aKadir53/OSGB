@@ -4,7 +4,7 @@ interface
 
 uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
-  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.Buttons, StrUtils;
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.Buttons, StrUtils, FileCtrl;
 
 type
   TAnaForm = class(TForm)
@@ -106,11 +106,11 @@ var
   bTamam, xTran, xCreate, xUpdateLines, xSadeceYeni, xTxtUzanti, xSadeceDegisenler, xAraDegisiklikler, xOtomatikGuncelleme : Boolean;
   sFileExt, sFolderBase, sTmpDesc : String;
 begin
-  if not UserRec.IsAdmin then
+  {if not UserRec.IsAdmin then
   begin
     FSWarnMessage ('Bu Ýþlem Ýçin Yetkiniz Yok!!!');
     Exit;
-  end;
+  end;{}
   if FSMessage ('Bu Ýþlem Veritabaný Üzerinde Bulunan SQL Nesnelerinin SQL Kodlarýný Klasör Yapýsý Ýçinde Oluþturacaktýr.'#13#10#13#10'Devam etmek istiyor musunuz ?', mtConfirmation, [mbYes, mbNo], 0) <> mrYes then Exit;
   if not SelectDirectory (sFolderBase, [], 0) then Exit;
   if Copy (sFolderBase, Length (sFolderBase), 1) <> '\' then sFolderBase := sFolderBase + '\';
