@@ -2,7 +2,7 @@ unit UGenel;
 
 interface
 
-uses ADODB, Classes;
+uses ADODB, Classes, Forms, system.UITypes;
 
 type
   TFSStringArray = array of String;
@@ -12,7 +12,7 @@ type
     destructor Destroy; override;
   end;
 
-function FSMessage(const sMessage : String): TModalResult;
+function FSMessage(const sMessage : String; const dlgType : TMsgDlgType; const Buttons : TMsgDlgButtons; const HelpCtx: Integer): TModalResult;
 procedure FSWarnMessage(const sMessage : String);
 function IsNull (const s: String): Boolean;
 function GetSQLValue (const sValue : String): String;overload;
@@ -21,15 +21,17 @@ function GetSQLValue (const fValue : double): String;overload;
 function GetSQLValue1 (const sValue : String): String;overload;
 function GetSQLValue1 (const iValue : Integer): String;overload;
 function GetSQLValue1 (const fValue : double): String;overload;
+function CreateFSQuery: TFSQuery;
 
 implementation
 
 uses SysUtils, Dialogs;
 
-'Otomatik Güncelleme seçeneði seçildiðinde, dosyasý üretilen yeni hali ile karþýlaþtýrma bilgisi otomatik olarak güncellenecektir.'#13#10#13#10+
-                        'Bu durumda ayný dosyalarý tekrar oluþturmak istediðinizde nesneler deðiþmemiþ olarak gözükecektir.'#13#10#13#10+
-                        'Bu sebeple oluþturulan dosyalarý kaybetmemeniz gerekmektedir'#13#10#13#10+
-                        'Devam Etmek Ýstiyor Musunuz ?', mtConfirmation, [mbNo, mbYes], 0
+function FSMessage(const sMessage : String; const dlgType : TMsgDlgType; const Buttons : TMsgDlgButtons; const HelpCtx: Integer): TModalResult;
+begin
+  Result := MessageDlg(sMessage, dlgType, Buttons, HelpCtx);
+end;
+
 
 procedure FSWarnMessage(const sMessage : String);
 begin
@@ -69,6 +71,11 @@ end;
 function GetSQLValue1 (const fValue : double): String;
 begin
   Result := FloatToStr (fValue);
+end;
+
+function CreateFSQuery: TFSQuery;
+begin
+  Result := TFSQuery.Create (nil);
 end;
 
 { TFSQuery }
