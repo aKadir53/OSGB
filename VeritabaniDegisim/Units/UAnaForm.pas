@@ -4,12 +4,22 @@ interface
 
 uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
-  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.Buttons, StrUtils, FileCtrl;
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.Buttons, StrUtils, FileCtrl,
+  Vcl.StdCtrls;
 
 type
   TAnaForm = class(TForm)
     btnIslemYap: TSpeedButton;
+    xTran: TCheckBox;
+    xCreate: TCheckBox;
+    xUpdateLines: TCheckBox;
+    xSadeceYeni: TCheckBox;
+    xTxtUzanti: TCheckBox;
+    xSadeceDegisenler: TCheckBox;
+    xAraDegisiklikler: TCheckBox;
+    xOtomatikGuncelleme: TCheckBox;
     procedure btnIslemYapClick(Sender: TObject);
+    procedure FormCreate(Sender: TObject);
   private
     { Private declarations }
     procedure VeriTabaniNesneleriDegisimKontrol (const bTip: boolean);
@@ -24,7 +34,19 @@ implementation
 
 {$R *.dfm}
 
-uses UGenel;
+uses UGenel, NThermo;
+
+procedure TAnaForm.FormCreate(Sender: TObject);
+begin
+  xTran.Checked := True;
+  xCreate.Checked := False;
+  xUpdateLines.Checked := True;
+  xSadeceYeni.Checked := False;
+  xTxtUzanti.Checked := False;
+  xSadeceDegisenler.Checked := True;
+  xAraDegisiklikler.Checked := False;
+  xOtomatikGuncelleme.Checked := False;
+end;
 
 procedure TAnaForm.VeriTabaniNesneleriDegisimKontrol (const bTip: boolean);
 
@@ -103,7 +125,7 @@ var
   aSL1, aSL2 : TStringList;
   aTypes, aOwners, aNames : TFSStringArray;
   aNew : array of Boolean;
-  bTamam, xTran, xCreate, xUpdateLines, xSadeceYeni, xTxtUzanti, xSadeceDegisenler, xAraDegisiklikler, xOtomatikGuncelleme : Boolean;
+  bTamam : Boolean;
   sFileExt, sFolderBase, sTmpDesc : String;
 begin
   {if not UserRec.IsAdmin then
@@ -124,37 +146,15 @@ begin
     try
       xQuery := CreateFSQuery();
       try
-        xTran := True;
-        xCreate := False;
-        xUpdateLines := True;
-        xSadeceYeni := False;
-        xTxtUzanti := False;
-        xSadeceDegisenler := True;
-        xAraDegisiklikler := False;
-        xOtomatikGuncelleme := False;
-        if FSInputBox ('Veritabaný Bileþen Ýhraç Seçenekleri',
-                       ['Transaction Kodlarýný Ekle',
-                        '"ALTER" yerine "CREATE" Üret',
-                        'Güncelleme Kaydý Satýrlarýný Ekle',
-                        'Sadece Yeni Hâlini Üret',
-                        '.TXT Uzantýlý Olarak Kaydet',
-                        'Sadece Deðiþenlerin Kodunu Üret',
-                        'Ara Deðiiþiklikleri de Tara',
-                        'Güncellemeyi Otomatik Yap'],
-                       [FSCheck, FSCheck, FSCheck, FSCheck, FSCheck, FSCheck, FSCheck, FSCheck],
-                       [True, True, True, True, True, True, True, True],
-                       [False, False, False, False, False, False, False, False],
-                       [1, 1, 1, 1, 1, 1, 1, 1],
-                       [@xTran, @xCreate, @xUpdateLines, @xSadeceYeni, @xTxtUzanti, @xSadeceDegisenler, @xAraDegisiklikler, @xOtomatikGuncelleme]) <> mrOK then Exit;
-        if ((not xSadeceDegisenler)
-            or (not xUpdateLines))
-          and xOtomatikGuncelleme then
+        if ((not xSadeceDegisenler.Checked)
+            or (not xUpdateLines.Checked))
+          and xOtomatikGuncelleme.Checked then
         begin
           FSWarnMessage('Deðiþmeyenlerin de getirildiði veya Güncelleme satýrlarýnýn eklenmediði durumda otomatik güncelleme çalýþtýrýlmayacak !!!');
-          xOtomatikGuncelleme := False;
+          xOtomatikGuncelleme.Checked := False;
         end;
 
-        if xOtomatikGuncelleme then
+        if xOtomatikGuncelleme.Checked then
         begin
           if FSMessage ('Otomatik Güncelleme seçeneði seçildiðinde, dosyasý üretilen yeni hali ile karþýlaþtýrma bilgisi otomatik olarak güncellenecektir.'#13#10#13#10+
                         'Bu durumda ayný dosyalarý tekrar oluþturmak istediðinizde nesneler deðiþmemiþ olarak gözükecektir.'#13#10#13#10+
@@ -162,7 +162,7 @@ begin
                         'Devam Etmek Ýstiyor Musunuz ?', mtConfirmation, [mbNo, mbYes], 0) <> mrYes then Exit;
         end;
 
-        if xTxtUzanti then
+        if xTxtUzanti.Checked then
           sFileExt := '.TXT'
          else
           sFileExt := '.SQL';
@@ -175,7 +175,7 @@ begin
             begin
               if not UpdateThermo(zQuery.RecNo - 1, iThermo1, zQuery.FieldByName ('DBName').AsString) then Exit;
 
-              if not xSadeceDegisenler then
+              if not xSadeceDegisenler.Checked then
                 if not QueryExec (xQuery, 'delete from [' + zQuery.FieldByName ('DBNAme').AsString + '].dbo.vw_sys_x') then Exit;
               if not QueryOpen (xQuery, 'exec [' + zQuery.FieldByName ('DBNAme').AsString + '].dbo.sp_vw_sys_check null, null') then Exit;
               aSL1 := TStringList.create;
@@ -206,7 +206,7 @@ begin
                       end;
                       iThermo3 := aSL2.IndexOf(sTmpDesc);
                       if (xQuery.FieldByName ('X').AsInteger > 0) and (iThermo3 >= 0) then aNew [iThermo3] := True;
-                      if xSadeceYeni and (xQuery.FieldByName ('X').AsInteger < 0) then
+                      if xSadeceYeni.Checked and (xQuery.FieldByName ('X').AsInteger < 0) then
                       begin
                         xQuery.Next;
                         Continue;
@@ -217,9 +217,9 @@ begin
                                                   xQuery.FieldByName ('name').AsString,
                                                   xQuery.FieldByName ('LastDate').AsString,
                                                   xQuery.FieldByName ('LastHost').AsString,
-                                                  xCreate,
-                                                  xUpdateLines,
-                                                  xTran);
+                                                  xCreate.Checked,
+                                                  xUpdateLines.Checked,
+                                                  xTran.Checked);
 
                       aSL1.SaveToFile(
                         GetFileName (
@@ -232,13 +232,13 @@ begin
                           aSL2.IndexOf(sTmpDesc) >= 0,
                           0));
                       iSayi2 := iSayi2 + 1;
-                      if xAraDegisiklikler and (xQuery.FieldByName ('X').AsInteger < 0) and (zQuery.FieldByName ('TrackTableExists').AsBoolean) then
+                      if xAraDegisiklikler.Checked and (xQuery.FieldByName ('X').AsInteger < 0) and (zQuery.FieldByName ('TrackTableExists').AsBoolean) then
                       begin
                         if not QueryOpen (yQuery,
                           'select EventDate, Alltext, HostName, DatabaseName, SchemaName'#13#10 +
                           'from [' + zQuery.FieldByName ('DBNAme').AsString + '].dbo.vw_DDLEvents E'#13#10 +
                           'where ObjectName = ' + GetSQLValue1 (xQuery.FieldByName ('name').AsString) + ''#13#10 +
-                          '  and E.EventDate >= ' + GetSQLValue1 (xQuery.FieldByName ('LastDate').AsString, FSDateTime) + ''#13#10 +
+                          '  and E.EventDate >= ' + GetSQLValue1 (StrToDatetime(xQuery.FieldByName ('LastDate').AsString)) + ''#13#10 +
                           '  and E.SchemaName = ' + GetSQLValue1 (xQuery.FieldByName ('OwnerName').AsString) + ''#13#10 +
                           'order by E.EventDate') then Exit;
                         ShowThermo(iThermo3, 'Ara Deðiþiklikler Oluþturuluyor...', 0, yQuery.RecordCount, 0);
@@ -252,9 +252,9 @@ begin
                                                         xQuery.FieldByName ('name').AsString,
                                                         yQuery.FieldByName ('EventDate').AsString,
                                                         yQuery.FieldByName ('HostName').AsString,
-                                                        xCreate,
-                                                        xUpdateLines,
-                                                        xTran);
+                                                        xCreate.Checked,
+                                                        xUpdateLines.Checked,
+                                                        xTran.Checked);
                             aSL1.SaveToFile(
                               GetFileName (
                                 sFolderBase,
@@ -273,7 +273,7 @@ begin
                         end;
                       end;
                       if xQuery.FieldByName ('X').AsInteger > 0 then iSayi1 := iSayi1 + 1;
-                      if (xQuery.FieldByName ('X').AsInteger > 0) and xOtomatikGuncelleme and (xSadeceDegisenler) then
+                      if (xQuery.FieldByName ('X').AsInteger > 0) and xOtomatikGuncelleme.Checked and (xSadeceDegisenler.Checked) then
                       begin
                         if not QueryExec (yQuery,
                                           'exec [' + zQuery.FieldByName ('DBNAme').AsString + '].dbo.sp_vw_sys_upd '+
@@ -295,7 +295,7 @@ begin
                       end;
                       xQuery.Next;
                     end;
-                    if xOtomatikGuncelleme and (xSadeceDegisenler) then
+                    if xOtomatikGuncelleme.Checked and (xSadeceDegisenler.Checked) then
                       for iThermo3 := 0 to aSL2.Count - 1 do
                         if not aNew [iThermo3] then
                           if not QueryExec(yQuery,
@@ -321,7 +321,7 @@ begin
           end;
           bTamam := True;
         finally
-          if bTamam and xSadeceDegisenler then FSCommit
+          if bTamam and xSadeceDegisenler.Checked then FSCommit
           else FSRollBack;
         end;
         FSMessage('Ýþlem Tamamlandý, Toplam '+ IntToStr (iSayi1) +' SQL Nesnesine Ait '+ IntToStr (iSayi2) +' Adet Dosya Kaydedildi');

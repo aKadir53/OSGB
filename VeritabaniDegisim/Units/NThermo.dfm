@@ -982,9 +982,6 @@ object NThermoDlgFrm: TNThermoDlgFrm
     Font.Height = -11
     Font.Name = 'Tahoma'
     Font.Style = [fsBold]
-    ParentFont = False
-    TabOrder = 2
-    OnClick = btStopClick
     Glyph.Data = {
       76010000424D7601000000000000760000002800000020000000100000000100
       04000000000000010000130B0000130B00001000000000000000000000000000
@@ -999,6 +996,9 @@ object NThermoDlgFrm: TNThermoDlgFrm
       70E337F33333333337F3E0FFFFFFFFFFF0E337FFFFFFFFFFF7F3E00000000000
       00E33777777777777733EEEEEEEEEEEEEEE33333333333333333}
     NumGlyphs = 2
+    ParentFont = False
+    TabOrder = 2
+    OnClick = btStopClick
   end
   object tcDelay: TTimer
     Enabled = False
