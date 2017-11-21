@@ -4,8 +4,8 @@ interface
 
 uses
   SysUtils, WinTypes, WinProcs, Messages, Classes, Graphics, Controls,
-  Forms, Dialogs, StdCtrls, ExtCtrls, Buttons, ComCtrls, GIFImage, ImgList,
-  CheckLst;
+  Forms, Dialogs, StdCtrls, ExtCtrls, Buttons, ComCtrls, {GIFImage,} ImgList,
+  CheckLst, Vcl.Imaging.GIFImg;
 
 type
   TThermoDateCountRec = record
@@ -64,7 +64,7 @@ procedure ArrangeThermoForms;
 
 implementation
 
-uses Genel, DateUtils, Windows;
+uses DateUtils, Windows;
 
 //function UpdateThermoEx (lCur : LongInt; const ThermoNumber: Integer; const sMsg : string; const b, bPre: Boolean): Boolean;
 
@@ -75,6 +75,10 @@ var
   NThermoDlgFrmList : array of TNThermoDlgFrm;
   NThermoLastUpdated : TDatetime;
 
+const
+  FSShowThermoDialogs : Boolean = True;
+  FSThermoRefreshInterval : Integer = 2;
+  FSThermoDefaultDelay : Integer = 3;
 
 function UpdateThermoEx (lCur : LongInt; const ThermoNumber: Integer; const sMsg : string; const b, bPre: Boolean): Boolean;
 const

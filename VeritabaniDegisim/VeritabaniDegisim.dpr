@@ -3,7 +3,8 @@ program VeritabaniDegisim;
 uses
   Vcl.Forms,
   UAnaForm in 'Units\UAnaForm.pas' {AnaForm},
-  UGenel in 'Units\UGenel.pas';
+  UGenel in 'Units\UGenel.pas',
+  NThermo in 'Units\NThermo.pas' {NThermoDlgFrm};
 
 {$R *.res}
 
