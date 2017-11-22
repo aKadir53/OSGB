@@ -77,8 +77,8 @@ var
 
 const
   FSShowThermoDialogs : Boolean = True;
-  FSThermoRefreshInterval : Integer = 2;
-  FSThermoDefaultDelay : Integer = 3;
+  FSThermoRefreshInterval : Integer = 1;
+  FSThermoDefaultDelay : Integer = 0;
 
 function UpdateThermoEx (lCur : LongInt; const ThermoNumber: Integer; const sMsg : string; const b, bPre: Boolean): Boolean;
 const
