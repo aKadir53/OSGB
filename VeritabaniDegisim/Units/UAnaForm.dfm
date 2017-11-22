@@ -11,6 +11,7 @@ object AnaForm: TAnaForm
   Font.Name = 'Tahoma'
   Font.Style = []
   OldCreateOrder = False
+  OnClose = FormClose
   OnCreate = FormCreate
   DesignSize = (
     527
@@ -158,6 +159,7 @@ object AnaForm: TAnaForm
     Height = 97
     ItemHeight = 13
     TabOrder = 9
+    OnClick = clbSunucuClick
   end
   object txtServerName: TEdit
     Left = 96

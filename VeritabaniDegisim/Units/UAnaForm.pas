@@ -5,7 +5,7 @@ interface
 uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.Buttons, StrUtils, FileCtrl,
-  Vcl.StdCtrls, Vcl.CheckLst;
+  Vcl.StdCtrls, Vcl.CheckLst, UGenel;
 
 type
   TAnaForm = class(TForm)
@@ -32,9 +32,20 @@ type
     procedure btnIslemYapClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure btnTestConnectionClick(Sender: TObject);
+    procedure clbSunucuClick(Sender: TObject);
+    procedure FormClose(Sender: TObject; var Action: TCloseAction);
   private
     { Private declarations }
+    FServers: TServerConnectionParameters;
     procedure VeriTabaniNesneleriDegisimKontrol (const bTip: boolean);
+    procedure TestConnection;
+    function GetServerItemString (const aRec : TServerConnectionParameterRec): String;overload;
+    procedure SetEditValues (const aRec : TServerConnectionParameterRec);overload;
+    function GetServerItemString (const iIndex : Integer): String;overload;
+    procedure LoadServers;
+    procedure SaveServers;
+    function GetIniFileName: String;
+    procedure FillServersToList;
   public
     { Public declarations }
   end;
@@ -46,11 +57,39 @@ implementation
 
 {$R *.dfm}
 
-uses UGenel, NThermo;
+uses NThermo;
+
+const
+  csSunucuSayisi = 'SunucuSayisi';
+  csSunucuAdi = 'SunucuAdi%0:d';
+  csKullaniciAdi = 'KullaniciAdi%0:d';
+  csSifre = 'Sifre%0:d';
+  csVeritabani = 'Veritabani%0:d';
 
 procedure TAnaForm.btnTestConnectionClick(Sender: TObject);
 begin
-  testconnection;
+  TestConnection;
+end;
+
+procedure TAnaForm.clbSunucuClick(Sender: TObject);
+begin
+  if (TCheckListBox (Sender).Items.Count > 0)
+    and (TCheckListBox (Sender).ItemIndex >= 0) then
+    SetEditValues (FServers [TCheckListBox (Sender).ItemIndex]);
+end;
+
+procedure TAnaForm.FillServersToList;
+var
+  i: Integer;
+begin
+  clbSunucu.Items.Clear;
+  for i := Low (FServers) to High (FServers) do
+    clbSunucu.Items.Add(GetServerItemString(i));
+end;
+
+procedure TAnaForm.FormClose(Sender: TObject; var Action: TCloseAction);
+begin
+  SaveServers;
 end;
 
 procedure TAnaForm.FormCreate(Sender: TObject);
@@ -64,6 +103,99 @@ begin
   xAraDegisiklikler.Checked := False;
   xOtomatikGuncelleme.Checked := False;
   xDosyaTarihleriniAta.Checked := True;
+  LoadServers;
+end;
+
+function TAnaForm.GetServerItemString(
+  const aRec: TServerConnectionParameterRec): String;
+begin
+  Result := aRec.sServerName + ' - ' + aRec.sUserName + ' - ' + aRec.sDefaultDBName;
+end;
+
+function TAnaForm.GetIniFileName: String;
+begin
+  Result := ChangeFileExt (ParamStr(0), '.INI');
+end;
+
+function TAnaForm.GetServerItemString(const iIndex: Integer): String;
+begin
+  Result := GetServerItemString (fservers [iIndex]);
+end;
+
+procedure TAnaForm.LoadServers;
+var
+  sFileName : String;
+  aStringList : TStringList;
+  i, iServerCount: Integer;
+begin
+  sFileName := GetIniFileName;
+  if FileExists (sFileName) then
+  begin
+    aStringList := TStringList.create;
+    try
+      aStringList.LoadFromFile(sFileName);
+      iServerCount := StrToIntDef (aStringList.Values [csSunucuSayisi], -1);
+      SetLength (FServers, iServerCount);
+      for i := 0 to iServerCount - 1 do
+      begin
+        FServers [i].sServerName := aStringList.Values [Format (csSunucuAdi, [i + 1])];
+        FServers [i].sUserName := aStringList.Values [Format (csKullaniciAdi, [i + 1])];
+        FServers [i].sPassword := aStringList.Values [Format (csSifre, [i + 1])];
+        FServers [i].sDefaultDBName := aStringList.Values [Format (csVeritabani, [i + 1])];
+      end;
+      FillServersToList;
+    finally
+      aStringList.Free;
+    end;
+  end;
+end;
+
+procedure TAnaForm.SaveServers;
+var
+  sFileName : String;
+  aStringList : TStringList;
+  i, iServerCount: Integer;
+begin
+  sFileName := GetIniFileName;
+  aStringList := TStringList.create;
+  try
+    aStringList.Values [csSunucuSayisi] := IntToStr (High (FServers) + 1);
+    for i := 0 to High (FServers) do
+    begin
+      aStringList.Values [Format (csSunucuAdi, [i + 1])] := FServers [i].sServerName;
+      aStringList.Values [Format (csKullaniciAdi, [i + 1])] := FServers [i].sUserName;
+      aStringList.Values [Format (csSifre, [i + 1])] := FServers [i].sPassword;
+      aStringList.Values [Format (csVeritabani, [i + 1])] := FServers [i].sDefaultDBName;
+    end;
+    aStringList.SaveToFile(sFileName);
+  finally
+    aStringList.Free;
+  end;
+end;
+
+procedure TAnaForm.SetEditValues(const aRec: TServerConnectionParameterRec);
+begin
+  txtServerName.Text := arec.sServerName;
+  txtUserName.Text := arec.sUserName;
+  txtPassword.Text := arec.sPassword;
+  txtDBName.Text := arec.sDefaultDBName;
+end;
+
+procedure TAnaForm.TestConnection;
+var
+  bBasarili : Boolean;
+  iServerIndex : Integer;
+begin
+  bBasarili := CreateNewConnection (txtServerName.Text,txtUserName.Text, txtPassword.Text, txtDBName.Text);
+  if bBasarili then
+  begin
+    iServerIndex := ServerConnectionParameterIndex (FServers, ServerConnectionParameterRec (txtServerName.Text, txtUserName.Text, txtPassword.Text, txtDBName.Text));
+    if iServerIndex < 0 then
+    begin
+      ServerConnectionParameterAdd (FServers, ServerConnectionParameterRec (txtServerName.Text, txtUserName.Text, txtPassword.Text, txtDBName.Text));
+      FillServersToList;
+    end;
+  end;
 end;
 
 procedure TAnaForm.VeriTabaniNesneleriDegisimKontrol (const bTip: boolean);

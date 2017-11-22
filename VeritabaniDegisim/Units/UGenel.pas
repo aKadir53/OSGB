@@ -5,6 +5,15 @@ interface
 uses ADODB, Classes, Forms, system.UITypes;
 
 type
+  TServerConnectionParameterRec = record
+    sServerName : String;
+    sUserName : String;
+    sPassword : String;
+    sDefaultDBName : String;
+  end;
+
+  TServerConnectionParameters = array of TServerConnectionParameterRec;
+
   TFSStringArray = array of String;
 
   TFSQuery = class (TADOQuery)
@@ -29,7 +38,11 @@ procedure FSBeginTrans;
 procedure FSCommit;
 procedure FSRollback;
 function ExistsRecord (var aQuery : TFSQuery) : Boolean;
-function CreateNewConnection (const ServerName, UserName, Password, DBName : String): Boolean;
+function CreateNewConnection (const pServerName, pUserName, pPassword, pDBName : String): Boolean;overload;
+function CreateNewConnection (const aParamRec: TServerConnectionParameterRec): Boolean;overload;
+function ServerConnectionParameterRec (const pServerName, pUserName, pPassword, pDBName : String): TServerConnectionParameterRec;
+function ServerConnectionParameterIndex (const aList: TServerConnectionParameters; const aRec: TServerConnectionParameterRec): Integer;
+function ServerConnectionParameterAdd (var aList: TServerConnectionParameters; const aRec: TServerConnectionParameterRec): Integer;
 
 implementation
 
@@ -129,7 +142,7 @@ begin
   Result := aQuery.RecordCount > 0;
 end;
 
-function CreateNewConnection (const ServerName, UserName, Password, DBName : String): Boolean;
+function CreateNewConnection (const pServerName, pUserName, pPassword, pDBName : String): Boolean;
 var
   bCreated: Boolean;
 begin
@@ -137,19 +150,63 @@ begin
   bCreated := Assigned (FDefaultConnection);
   if Not bCreated then
   begin
-    FDefaultConnection := TADOConnection.Create;
-    FDefaultConnection.ConnectionString := '';
+    FDefaultConnection := TADOConnection.Create (Application);
   end
   else begin
-
+    FDefaultConnection.Connected := False;
   end;
-     ADOConnection2.Connected := false;
-
-     ADOConnection2.ConnectionString :=
-     'Provider=SQLOLEDB.1;Password=5353;Persist Security Info=True;User ID=Nokta;Initial Catalog=' + _db_ +';Data Source='+servername;
-     ADOConnection2.Connected := True;
-     Result := True;
+  try
+    FDefaultConnection.ConnectionString :=
+       'Provider=SQLOLEDB.1;Password='+pPassword+';Persist Security Info=True;User ID='+pUserName+';Initial Catalog=' + pDBName +';Data Source='+pServerName;
+    FDefaultConnection.Connected := True;
+    Result := True;
+  finally
+    if (not bCreated) and (not Result)  then
+      FreeAndNil(FDefaultConnection);
+  end;
 end;
+
+function CreateNewConnection (const aParamRec: TServerConnectionParameterRec): Boolean;overload;
+begin
+  Result := CreateNewConnection(aParamRec.sServerName, aParamRec.sUserName, aParamRec.sPassword, aParamRec.sDefaultDBName);
+end;
+
+function ServerConnectionParameterRec (const pServerName, pUserName, pPassword, pDBName : String): TServerConnectionParameterRec;
+begin
+  Result.sServerName := pServerName;
+  Result.sUserName := pUserName;
+  Result.sPassword := pPassword;
+  Result.sDefaultDBName := pDBName;
+end;
+
+function ServerConnectionParameterIndex (const aList: TServerConnectionParameters; const aRec: TServerConnectionParameterRec): Integer;
+var
+  i : Integer;
+begin
+  Result := -1;
+  i := Low (aList);
+  while (i <= High (aList)) and (Result = -1) do
+  begin
+    if AnsiSameText (aList [i].sServerName, aRec.sServerName)
+      and AnsiSameText (aList [i].sUserName, aRec.sUserName)
+      and AnsiSameText (aList [i].sDefaultDBName, aRec.sDefaultDBName) then
+      Result := i;
+    i := i + 1;
+  end;
+end;
+
+function ServerConnectionParameterAdd (var aList: TServerConnectionParameters; const aRec: TServerConnectionParameterRec): Integer;
+var
+  i : Integer;
+begin
+  SetLength (aList, High (aList) + 2);
+  aList [High (aList)].sServerName := aRec.sServerName;
+  aList [High (aList)].sUserName := aRec.sUserName;
+  aList [High (aList)].sPassword := aRec.sPassword;
+  aList [High (aList)].sDefaultDBName := aRec.sDefaultDBName;
+  Result := High (aList);
+end;
+
 { TFSQuery }
 
 constructor TFSQuery.Create(AOwner: TComponent);
