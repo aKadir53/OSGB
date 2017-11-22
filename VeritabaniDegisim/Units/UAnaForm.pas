@@ -5,7 +5,7 @@ interface
 uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.Buttons, StrUtils, FileCtrl,
-  Vcl.StdCtrls;
+  Vcl.StdCtrls, Vcl.CheckLst;
 
 type
   TAnaForm = class(TForm)
@@ -17,9 +17,21 @@ type
     xTxtUzanti: TCheckBox;
     xSadeceDegisenler: TCheckBox;
     xAraDegisiklikler: TCheckBox;
+    xDosyaTarihleriniAta: TCheckBox;
     xOtomatikGuncelleme: TCheckBox;
+    clbSunucu: TCheckListBox;
+    txtServerName: TEdit;
+    txtUserName: TEdit;
+    txtPassword: TEdit;
+    txtDBName: TEdit;
+    lblServerName: TLabel;
+    lblUserName: TLabel;
+    lblPassword: TLabel;
+    lblDBName: TLabel;
+    btnTestConnection: TSpeedButton;
     procedure btnIslemYapClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
+    procedure btnTestConnectionClick(Sender: TObject);
   private
     { Private declarations }
     procedure VeriTabaniNesneleriDegisimKontrol (const bTip: boolean);
@@ -36,6 +48,11 @@ implementation
 
 uses UGenel, NThermo;
 
+procedure TAnaForm.btnTestConnectionClick(Sender: TObject);
+begin
+  testconnection;
+end;
+
 procedure TAnaForm.FormCreate(Sender: TObject);
 begin
   xTran.Checked := True;
@@ -46,6 +63,7 @@ begin
   xSadeceDegisenler.Checked := True;
   xAraDegisiklikler.Checked := False;
   xOtomatikGuncelleme.Checked := False;
+  xDosyaTarihleriniAta.Checked := True;
 end;
 
 procedure TAnaForm.VeriTabaniNesneleriDegisimKontrol (const bTip: boolean);
