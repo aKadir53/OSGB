@@ -27,10 +27,10 @@ procedure FSWarnMessage(const sMessage : String);
 function IsNull (const s: String): Boolean;
 function GetSQLValue (const sValue : String): String;overload;
 function GetSQLValue (const iValue : Integer): String;overload;
-function GetSQLValue (const fValue : double): String;overload;
+//function GetSQLValue (const fValue : double): String;overload;
 function GetSQLValue1 (const sValue : String): String;overload;
 function GetSQLValue1 (const iValue : Integer): String;overload;
-function GetSQLValue1 (const fValue : double): String;overload;
+//function GetSQLValue1 (const fValue : double): String;overload;
 function CreateFSQuery: TFSQuery;
 function QueryOpen (var aQuery : TFSQuery; const sSQL : String): boolean;
 function QueryExec (var aQuery : TFSQuery; const sSQL : String): boolean;
@@ -43,6 +43,7 @@ function CreateNewConnection (const aParamRec: TServerConnectionParameterRec): B
 function ServerConnectionParameterRec (const pServerName, pUserName, pPassword, pDBName : String): TServerConnectionParameterRec;
 function ServerConnectionParameterIndex (const aList: TServerConnectionParameters; const aRec: TServerConnectionParameterRec): Integer;
 function ServerConnectionParameterAdd (var aList: TServerConnectionParameters; const aRec: TServerConnectionParameterRec): Integer;
+function ConnectionReference: TADOConnection;
 
 implementation
 
@@ -82,10 +83,10 @@ begin
   Result := GetSQLValue1 (iValue) + ',';
 end;
 
-function GetSQLValue (const fValue : double): String;
+{function GetSQLValue (const fValue : double): String;
 begin
   Result := GetSQLValue1 (fValue) + ',';
-end;
+end;{}
 
 function GetSQLValue1 (const sValue : String): String;
 begin
@@ -97,10 +98,10 @@ begin
   Result := IntToStr (iValue);
 end;
 
-function GetSQLValue1 (const fValue : double): String;
+{function GetSQLValue1 (const fValue : double): String;
 begin
   Result := FloatToStr (fValue);
-end;
+end;{}
 
 function CreateFSQuery: TFSQuery;
 begin
@@ -196,8 +197,6 @@ begin
 end;
 
 function ServerConnectionParameterAdd (var aList: TServerConnectionParameters; const aRec: TServerConnectionParameterRec): Integer;
-var
-  i : Integer;
 begin
   SetLength (aList, High (aList) + 2);
   aList [High (aList)].sServerName := aRec.sServerName;
@@ -205,6 +204,11 @@ begin
   aList [High (aList)].sPassword := aRec.sPassword;
   aList [High (aList)].sDefaultDBName := aRec.sDefaultDBName;
   Result := High (aList);
+end;
+
+function ConnectionReference: TADOConnection;
+begin
+  Result := FDefaultConnection;
 end;
 
 { TFSQuery }

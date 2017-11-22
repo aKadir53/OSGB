@@ -71,6 +71,15 @@ object AnaForm: TAnaForm
     Caption = 'Ba'#287'lant'#305'y'#305' Test Et...'
     OnClick = btnTestConnectionClick
   end
+  object LabelConnection: TLabel
+    Left = 231
+    Top = 8
+    Width = 75
+    Height = 226
+    AutoSize = False
+    Caption = 'Ba'#287'lant'#305' Bilgileri'
+    WordWrap = True
+  end
   object xTran: TCheckBox
     Left = 312
     Top = 40
@@ -188,5 +197,10 @@ object AnaForm: TAnaForm
     Width = 121
     Height = 21
     TabOrder = 13
+  end
+  object aTimer: TTimer
+    OnTimer = aTimerTimer
+    Left = 224
+    Top = 8
   end
 end
