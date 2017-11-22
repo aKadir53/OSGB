@@ -1,0 +1,29 @@
+BEGIN TRAN
+GO
+/*
+**	Retrieve the owner object(s) of a given property
+*/
+ALTER procedure dbo.dt_getobjwithprop_u
+	@property varchar(30),
+	@uvalue nvarchar(255)
+as
+	set nocount on
+
+	if (@property is null) or (@property = '')
+	begin
+		raiserror('Must specify a property name.',-1,-1)
+		return (1)
+	end
+
+	if (@uvalue is null)
+		select objectid id from dbo.dtproperties
+			where property=@property
+
+	else
+		select objectid id from dbo.dtproperties
+			where property=@property and uvalue=@uvalue
+GO
+exec sp_vw_sys_upd 'P ', 'dbo', 'dt_getobjwithprop_u'
+GO
+COMMIT
+GO
