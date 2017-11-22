@@ -5,7 +5,7 @@ interface
 uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.Buttons, StrUtils, FileCtrl,
-  Vcl.StdCtrls, Vcl.CheckLst, UGenel;
+  Vcl.StdCtrls, Vcl.CheckLst, UGenel, Vcl.ExtCtrls;
 
 type
   TAnaForm = class(TForm)
@@ -29,11 +29,14 @@ type
     lblPassword: TLabel;
     lblDBName: TLabel;
     btnTestConnection: TSpeedButton;
+    aTimer: TTimer;
+    LabelConnection: TLabel;
     procedure btnIslemYapClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure btnTestConnectionClick(Sender: TObject);
     procedure clbSunucuClick(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
+    procedure aTimerTimer(Sender: TObject);
   private
     { Private declarations }
     FServers: TServerConnectionParameters;
@@ -57,7 +60,7 @@ implementation
 
 {$R *.dfm}
 
-uses NThermo;
+uses ADODB, NThermo;
 
 const
   csSunucuSayisi = 'SunucuSayisi';
@@ -154,7 +157,7 @@ procedure TAnaForm.SaveServers;
 var
   sFileName : String;
   aStringList : TStringList;
-  i, iServerCount: Integer;
+  i: Integer;
 begin
   sFileName := GetIniFileName;
   aStringList := TStringList.create;
@@ -276,7 +279,7 @@ var
   aTypes, aOwners, aNames : TFSStringArray;
   aNew : array of Boolean;
   bTamam : Boolean;
-  sFileExt, sFolderBase, sTmpDesc : String;
+  sFileExt, sFolderBase, sTmpDesc, sFileName : String;
 begin
   {if not UserRec.IsAdmin then
   begin
@@ -370,9 +373,7 @@ begin
                                                   xCreate.Checked,
                                                   xUpdateLines.Checked,
                                                   xTran.Checked);
-
-                      aSL1.SaveToFile(
-                        GetFileName (
+                      sFileName := GetFileName (
                           sFolderBase,
                           xQuery.FieldByName ('Folder').AsString,
                           xQuery.FieldByName ('name').AsString,
@@ -380,7 +381,12 @@ begin
                           xQuery.FieldByName ('FileNameOwner').AsString,
                           xQuery.FieldByName ('X').AsInteger < 0,
                           aSL2.IndexOf(sTmpDesc) >= 0,
-                          0));
+                          0);
+                      aSL1.SaveToFile(sFileName);
+                      if xDosyaTarihleriniAta.Checked and (not xQuery.FieldByName ('LastDate').IsNull) then
+                      begin
+                        FileSetDate (sFileName, DateTimeToFileDate(xQuery.FieldByName ('LastDate').AsDateTime));
+                      end;
                       iSayi2 := iSayi2 + 1;
                       if xAraDegisiklikler.Checked and (xQuery.FieldByName ('X').AsInteger < 0) and (zQuery.FieldByName ('TrackTableExists').AsBoolean) then
                       begin
@@ -388,7 +394,7 @@ begin
                           'select EventDate, Alltext, HostName, DatabaseName, SchemaName'#13#10 +
                           'from [' + zQuery.FieldByName ('DBNAme').AsString + '].dbo.vw_DDLEvents E'#13#10 +
                           'where ObjectName = ' + GetSQLValue1 (xQuery.FieldByName ('name').AsString) + ''#13#10 +
-                          '  and E.EventDate >= ' + GetSQLValue1 (StrToDatetime(xQuery.FieldByName ('LastDate').AsString)) + ''#13#10 +
+                          '  and E.EventDate >= ' + GetSQLValue1 (FormatDatetime('yyyymmdd hh:nn:ss.zzz', xQuery.FieldByName ('LastDate').AsDateTime)) + ''#13#10 +
                           '  and E.SchemaName = ' + GetSQLValue1 (xQuery.FieldByName ('OwnerName').AsString) + ''#13#10 +
                           'order by E.EventDate') then Exit;
                         ShowThermo(iThermo3, 'Ara Deðiþiklikler Oluþturuluyor...', 0, yQuery.RecordCount, 0);
@@ -405,8 +411,7 @@ begin
                                                         xCreate.Checked,
                                                         xUpdateLines.Checked,
                                                         xTran.Checked);
-                            aSL1.SaveToFile(
-                              GetFileName (
+                            sFileName := GetFileName (
                                 sFolderBase,
                                 xQuery.FieldByName ('Folder').AsString,
                                 xQuery.FieldByName ('name').AsString,
@@ -414,7 +419,12 @@ begin
                                 xQuery.FieldByName ('FileNameOwner').AsString,
                                 False,
                                 True,
-                                yQuery.RecNo));
+                                yQuery.RecNo);
+                            aSL1.SaveToFile(sFileName);
+                            if xDosyaTarihleriniAta.Checked and (not yQuery.FieldByName ('EventDate').IsNull)then
+                            begin
+                              FileSetDate (sFileName, DateTimeToFileDate(yQuery.FieldByName ('EventDate').AsDateTime));
+                            end;
                             iSayi2 := iSayi2 + 1;
                             yQuery.Next;
                           end;
@@ -484,6 +494,21 @@ begin
   finally
     zQuery.Free;
   end;
+end;
+
+procedure TAnaForm.aTimerTimer(Sender: TObject);
+var
+  sStr : String;
+  aConn : TADOCOnnection;
+begin
+  sStr := 'Bileþen Durumu: ';
+  aConn := ConnectionReference;
+  if Assigned (aConn) then sStr := sStr + 'var' else sStr := sStr + 'yok';
+  sStr := sStr + #13#10'Baðlantý Durumu: ';
+  if Assigned (aConn) and aConn.Connected then sStr := sStr + 'var' else sStr := sStr + 'yok';
+  sStr := sStr + #13#10'Baðlantý Bilgileri: ';
+  if Assigned (aConn) and aConn.Connected then sStr := sStr + aConn.ConnectionString else sStr := sStr + 'yok';
+  LabelConnection.Caption := sStr;
 end;
 
 procedure TAnaForm.btnIslemYapClick(Sender: TObject);
