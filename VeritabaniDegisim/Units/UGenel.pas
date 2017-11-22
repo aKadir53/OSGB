@@ -29,6 +29,7 @@ procedure FSBeginTrans;
 procedure FSCommit;
 procedure FSRollback;
 function ExistsRecord (var aQuery : TFSQuery) : Boolean;
+function CreateNewConnection (const ServerName, UserName, Password, DBName : String): Boolean;
 
 implementation
 
@@ -126,6 +127,28 @@ end;
 function ExistsRecord (var aQuery : TFSQuery) : Boolean;
 begin
   Result := aQuery.RecordCount > 0;
+end;
+
+function CreateNewConnection (const ServerName, UserName, Password, DBName : String): Boolean;
+var
+  bCreated: Boolean;
+begin
+  Result := False;
+  bCreated := Assigned (FDefaultConnection);
+  if Not bCreated then
+  begin
+    FDefaultConnection := TADOConnection.Create;
+    FDefaultConnection.ConnectionString := '';
+  end
+  else begin
+
+  end;
+     ADOConnection2.Connected := false;
+
+     ADOConnection2.ConnectionString :=
+     'Provider=SQLOLEDB.1;Password=5353;Persist Security Info=True;User ID=Nokta;Initial Catalog=' + _db_ +';Data Source='+servername;
+     ADOConnection2.Connected := True;
+     Result := True;
 end;
 { TFSQuery }
 
