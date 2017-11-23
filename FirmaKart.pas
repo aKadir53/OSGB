@@ -287,7 +287,7 @@ begin
   datalar.ADO_FOTO.Edit;
 
   Fo := TFileOpenDialog.Create(nil);x
-  fo.Execute;
+  fo.Execute;          x
   filename := fo.FileName;
   fo.Free;
   Foto.Picture.LoadFromFile(filename);

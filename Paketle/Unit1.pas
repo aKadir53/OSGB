@@ -176,7 +176,7 @@ end;
 procedure TfrmPaket.SpeedButton2Click(Sender: TObject);
 begin
 
-   OpenDialog1.Execute;
+   OpenDialog1.Execute;      x
    DBMemo1.Lines.LoadFromFile(OpenDialog1.FileName);
 
 end;

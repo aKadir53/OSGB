@@ -106,7 +106,7 @@ var
 begin
 
   openD := TOpenDialog.Create(nil);x
-  openD.execute;
+  openD.execute;      x
   dosya := openD.filename;
 
   v := CreateOleObject('Excel.Application');

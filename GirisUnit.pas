@@ -571,7 +571,7 @@ begin
         if TcxGridKadir(self.Components[i]).ExceleGonder = True
         Then begin
            DosyaKaydet.FileName := TcxGridKadir(self.Components[i]).ExcelFileName+'.XLS';
-           DosyaKaydet.Execute;
+           DosyaKaydet.Execute;x
            try
               ExportGridToExcel(DosyaKaydet.FileName,TcxGridKadir(self.Components[i]),False,True);
            except on e : Exception do

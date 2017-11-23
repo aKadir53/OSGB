@@ -464,7 +464,7 @@ var
   sonsatir , x : integer;
 begin
   openD := TOpenDialog.Create(nil);
-  openD.execute;
+  openD.execute;   x
   dosya := openD.filename;
 
   v := CreateOleObject('Excel.Application');
