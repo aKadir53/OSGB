@@ -108,7 +108,7 @@ begin
        if MrYes = ShowMessageSkin('Þablon Ýptal Ediliyor Eminmisiniz ?','','','msg')
        Then Begin
        try
-         ado := TADOQuery.Create(nil);
+         ado := TADOQuery.Create(nil);x
          sql := 'delete from receteTaniSablon where ReceteSablonID = ' + Sablonlar.fieldbyname('Id').AsString;
          datalar.QueryExec(ado,sql);
          sql := 'delete from receteAciklamaSablon where ReceteSablonID = ' + Sablonlar.fieldbyname('Id').AsString;

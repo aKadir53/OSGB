@@ -266,7 +266,7 @@ var
  ado : TADOQuery;
 begin
   dosyaNo := TcxButtonEditKadir(FindComponent('sirketKod')).Text;
-  ado := TADOQuery.Create(nil);
+  ado := TADOQuery.Create(nil);x
   sql := 'if not exists(select sirketKod from FirmaLogo where sirketKod = ' + QuotedStr(dosyaNo) + ')' +
          ' insert into FirmaLogo (sirketKod,logo,tip) ' +
          ' values (' + QuotedStr(sirketKod.Text) + ',NULL,''H'')';
@@ -286,13 +286,13 @@ begin
   datalar.ADO_FOTO.Open;
   datalar.ADO_FOTO.Edit;
 
-  Fo := TFileOpenDialog.Create(nil);
+  Fo := TFileOpenDialog.Create(nil);x
   fo.Execute;
   filename := fo.FileName;
   fo.Free;
   Foto.Picture.LoadFromFile(filename);
 
-  jp := TJpegimage.Create;
+  jp := TJpegimage.Create;x
   jp.Assign(FOTO.Picture);
   datalar.ADO_FOTO.FieldByName('Logo').Assign(jp);
   datalar.ADO_FOTO.Post;
@@ -336,7 +336,7 @@ begin
              datalar.ADO_Foto.SQL.Text := Format(FotoTable,[#39+_dosyaNo_+#39]);
              datalar.ADO_FOTO.Open;
 
-             g := TJpegimage.Create;
+             g := TJpegimage.Create;x
              try
               if datalar.ADO_FOTO.FieldByName('logo').AsVariant <> Null
               Then begin

@@ -409,8 +409,8 @@ begin
 
    if L[0].kolon1 <> ''
    Then Begin
-     ado := TADOQuery.Create(nil);
-     adod := TADOQuery.Create(nil);
+     ado := TADOQuery.Create(nil);x
+     adod := TADOQuery.Create(nil);x
 
      sql := 'select * from ReceteDetaySablon where ReceteSablonId = ' + L[0].kolon1;
      datalar.QuerySelect(ado,sql);
@@ -544,7 +544,7 @@ var
   _exe : PAnsiChar;
   fark : double;
 begin
-  FReg := Tregistry.Create;
+  FReg := Tregistry.Create;x
   FReg.RootKey := HKEY_CURRENT_USER;
   FReg.OpenKey('SOFTWARE\NOKTA\Eimza',True);
   Oku.Enabled := true;

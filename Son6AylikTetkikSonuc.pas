@@ -101,7 +101,7 @@ begin
    TetkikSonucGridKolonGizle;
 
    sql := 'exec sp_HastaTetkikTakipPIVOT ' + QuotedStr(_dosyaNo_) + ',' + QuotedStr(_Tarih) + ',' + '0';
-   ado := TADOQuery.Create(nil);
+   ado := TADOQuery.Create(nil);x
    datalar.QuerySelect(ado,sql);
 
    while not ado.Eof do

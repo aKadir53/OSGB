@@ -87,7 +87,7 @@ var
 begin
   if ADO_WebServisErisim.FieldByName('ValueObje').AsString = 'C'
   then begin
-    ValuesCombo := TStringList.Create;
+    ValuesCombo := TStringList.Create;x
     ValueObjeValues := ADO_WebServisErisim.FieldByName('ValueObjeValues').AsString;
     GridListValue.PropertiesClassName := 'TcxComboBoxProperties';
     TcxComboBoxProperties(GridListValue.Properties).Items.Clear;

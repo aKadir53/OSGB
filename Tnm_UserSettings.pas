@@ -356,7 +356,7 @@ var
   sql,kullanici,sqlUserGroup,sqlUserGroupMenu : string;
 begin
    try
-    ado := TADOQuery.Create(nil);
+    ado := TADOQuery.Create(nil);x
     if Tip = ugUser then
     begin
       kullanici := TcxButtonEditKadir(FindComponent('kullanici')).Text;

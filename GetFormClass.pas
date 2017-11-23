@@ -137,7 +137,7 @@ var
   ado : TADOQuery;
 begin
    sql := 'select formCaption from FormCaption where formTag = ' + inttostr(formId);
-   ado := TADOQuery.Create(nil);
+   ado := TADOQuery.Create(nil);x
    datalar.QuerySelect(ado,sql);
    if not ado.Eof then
      FormCaption := ado.Fields[0].AsString;
@@ -150,7 +150,7 @@ var
   ado : TADOQuery;
 begin
    sql := 'select formAltCaption from FormCaption where formTag = ' + inttostr(formId);
-   ado := TADOQuery.Create(nil);
+   ado := TADOQuery.Create(nil);x
    datalar.QuerySelect(ado,sql);
    if not ado.Eof then
      FormAltCaption := ado.Fields[0].AsString;

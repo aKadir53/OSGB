@@ -558,7 +558,7 @@ begin
 
       if Master.Connected = True then
       begin
-         ado := TADOQuery.Create(nil);
+         ado := TADOQuery.Create(nil);x
          ado.Connection := Master;
          QuerySelect(ado,'select db from OSGB_TNM where OSGB_KOD = ' + QuotedStr(MasterKod));
          if not ado.Eof
@@ -648,7 +648,7 @@ var
   ado : TADOQuery;
 begin
    WebErisimBilgi := '';
-   ado := TADOQuery.Create(nil);
+   ado := TADOQuery.Create(nil);x
    ado.Connection := datalar.ADOConnection2;
    sql := 'select Value from WebServisErisimBilgileri '  +
           'where slk = ' + QuotedStr(slk) + ' and slb = ' + QuotedStr(slb);
@@ -664,7 +664,7 @@ var
 begin
 
   try
-    ado := TADOQuery.Create(nil);
+    ado := TADOQuery.Create(nil);x
     ado.Connection := datalar.ADOConnection2;
     WanIpURL := WebErisimBilgi('WIP','00');
     _medulaOrtam_ := WebErisimBilgi('98','00');
@@ -754,7 +754,7 @@ begin
    SetLength(R, SOAPRequest.Size);
    SOAPRequest.Position := 0;
    SOAPRequest.Read(R[1], Length(R));
-   m := TStringList.Create;
+   m := TStringList.Create;x
    m.Add(FormatXMLData(R));
    m.SaveToFile('MalAlim.XML');
    m.Free;
@@ -765,7 +765,7 @@ procedure TDATALAR.MetdataAfterExecute(const MethodName: string;
 var
  T : TstringList;
 begin
-   T := TstringList.Create;
+   T := TstringList.Create;x
    SOAPResponse.Position := 0;
    t.LoadFromStream(SOAPResponse);
    t.SaveToFile('MetdataCvp.xml');
@@ -786,8 +786,8 @@ var
   Body , xmlKaydet: TStringList;
 begin
 
-  StrList1 := TStringList.Create;
-  Body := TStringList.Create;
+  StrList1 := TStringList.Create;x
+  Body := TStringList.Create;x
 
   SetLength(Request, SOAPRequest.Size);
   SOAPRequest.Position := 0;
@@ -841,7 +841,7 @@ procedure TDATALAR.MetDataCAfterExecute(const MethodName: string;
 var
  T : TstringList;
 begin
-   T := TstringList.Create;
+   T := TstringList.Create;x
    SOAPResponse.Position := 0;
    t.LoadFromStream(SOAPResponse);
    t.SaveToFile('MetdataCikisCvp.xml');
@@ -852,7 +852,7 @@ procedure TDATALAR.MetDataCBeforeExecute(const MethodName: string;
 var
  T : TstringList;
 begin
-   T := TstringList.Create;
+   T := TstringList.Create;x
    SOAPRequest.Position := 0;
    t.LoadFromStream(SOAPRequest);
    t.SaveToFile('MetdataCikis.xml');
@@ -878,7 +878,7 @@ begin
    SetLength(R, SOAPResponse.Size);
    SOAPResponse.Position := 0;
    SOAPResponse.Read(R[1], Length(R));
-   m := TStringList.Create;
+   m := TStringList.Create;x
    m.Add(FormatXMLData(R));
    m.SaveToFile('GemsoftCevap.XML');
    TenayMNTRequest := m.Text;
@@ -895,7 +895,7 @@ begin
    SetLength(R, SOAPRequest.Size);
    SOAPRequest.Position := 0;
    SOAPRequest.Read(R[1], Length(R));
-   memo := Tmemo.Create(nil);
+   memo := Tmemo.Create(nil);x
    memo.Parent := AnaForm;
    memo.Lines.Add(FormatXMLData(R));
    memo.Lines.SaveToFile('Gemsoft.XML');
@@ -905,7 +905,7 @@ procedure Tdatalar.QueryExec (Q: TADOQuery = nil ; sql : string = '');
 var
    sql2 :string;
 begin
-    if Q = nil then Q := TADOQuery.Create(nil);
+    if Q = nil then Q := TADOQuery.Create(nil);x
     if Q.Connection = nil then Q.Connection := ADOConnection2;
 
     sql2 := sql;
@@ -944,7 +944,7 @@ begin
 //      if  (Pos ('GROUP BY',AnsiUpperCase(sql)) = 0)
 //      and (Pos ('ORDER BY',AnsiUpperCase(sql)) = 0)
 //      Then sql := sql + ' WITH(NOLOCK) ';
-    if Assigned(Q) = false then Q := TADOQuery.Create(nil);
+    if Assigned(Q) = false then Q := TADOQuery.Create(nil);x
     if Q.Connection = nil then Q.Connection := ADOConnection2;
 
     Q.Close;
@@ -967,7 +967,7 @@ begin
 //      if  (Pos ('GROUP BY',AnsiUpperCase(sql)) = 0)
 //      and (Pos ('ORDER BY',AnsiUpperCase(sql)) = 0)
 //      Then sql := sql + ' WITH(NOLOCK) ';
-    Q := TADOQuery.Create(nil);
+    Q := TADOQuery.Create(nil);x
     Q.Connection := ADOConnection2;
 
     Q.Close;
@@ -1002,7 +1002,7 @@ begin
    SetLength(R, SOAPResponse.Size);
    SOAPResponse.Position := 0;
    SOAPResponse.Read(R[1], Length(R));
-   memo := Tmemo.Create(nil);
+   memo := Tmemo.Create(nil);x
    memo.Parent := AnaForm;
    memo.Lines.Add(FormatXMLData(R));
    memo.Lines.SaveToFile('BIOCevap.XML');
@@ -1019,7 +1019,7 @@ begin
    SetLength(R, SOAPRequest.Size);
    SOAPRequest.Position := 0;
    SOAPRequest.Read(R[1], Length(R));
-   memo := Tmemo.Create(nil);
+   memo := Tmemo.Create(nil);x
    memo.Parent := AnaForm;
    memo.Lines.Add(FormatXMLData(R));
    memo.Lines.SaveToFile('BIO.XML');
@@ -1035,7 +1035,7 @@ begin
    SetLength(R, SOAPResponse.Size);
    SOAPResponse.Position := 0;
    SOAPResponse.Read(R[1], Length(R));
-   memo := Tmemo.Create(nil);
+   memo := Tmemo.Create(nil);x
    memo.Parent := AnaForm;
    memo.Lines.Add(FormatXMLData(R));
    memo.Lines.SaveToFile('MNTCevap.XML');
@@ -1055,7 +1055,7 @@ begin
    SetLength(R, SOAPRequest.Size);
    SOAPRequest.Position := 0;
    SOAPRequest.Read(R[1], Length(R));
-   memo := Tmemo.Create(nil);
+   memo := Tmemo.Create(nil);x
    memo.Parent := AnaForm;
    memo.Lines.Add(FormatXMLData(R));
    memo.Lines.SaveToFile('MNT.XML');
@@ -1072,7 +1072,7 @@ begin
    SetLength(R, SOAPResponse.Size);
    SOAPResponse.Position := 0;
    SOAPResponse.Read(R[1], Length(R));
-   memo := Tmemo.Create(nil);
+   memo := Tmemo.Create(nil);x
    memo.Parent := AnaForm;
    memo.Lines.Add(FormatXMLData(R));
    memo.Lines.SaveToFile('TenayV2Cvp.XML');
@@ -1089,7 +1089,7 @@ begin
    SetLength(R, SOAPRequest.Size);
    SOAPRequest.Position := 0;
    SOAPRequest.Read(R[1], Length(R));
-   memo := Tmemo.Create(nil);
+   memo := Tmemo.Create(nil);x
    memo.Parent := AnaForm;
    memo.Lines.Add(FormatXMLData(R));
    memo.Lines.SaveToFile('TenayV2.XML');
@@ -1106,7 +1106,7 @@ begin
    SetLength(R, SOAPRequest.Size);
    SOAPRequest.Position := 0;
    SOAPRequest.Read(R[1], Length(R));
-   memo := Tmemo.Create(nil);
+   memo := Tmemo.Create(nil);x
    memo.Parent := AnaForm;
    memo.Lines.Add(FormatXMLData(R));
    memo.Lines.SaveToFile('UmitHast.XML');
@@ -1123,7 +1123,7 @@ begin
    SetLength(R, SOAPResponse.Size);
    SOAPResponse.Position := 0;
    SOAPResponse.Read(R[1], Length(R));
-   memo := Tmemo.Create(nil);
+   memo := Tmemo.Create(nil);x
    memo.Parent := AnaForm;
    memo.Lines.Add(FormatXMLData(R));
    memo.Lines.SaveToFile('VenturaCevap.XML');
@@ -1140,7 +1140,7 @@ begin
    SetLength(R, SOAPRequest.Size);
    SOAPRequest.Position := 0;
    SOAPRequest.Read(R[1], Length(R));
-   memo := Tmemo.Create(nil);
+   memo := Tmemo.Create(nil);x
    memo.Parent := AnaForm;
    memo.Lines.Add(FormatXMLData(R));
    memo.Lines.SaveToFile('Ventura.XML');
@@ -1152,7 +1152,7 @@ procedure TDATALAR.WinsoftAfterExecute(const MethodName: string;
 var
  T : TstringList;
 begin
-   T := TstringList.Create;
+   T := TstringList.Create;x
    SOAPResponse.Position := 0;
    t.LoadFromStream(SOAPResponse);
    t.SaveToFile('winsoftCvp.xml');
@@ -1164,7 +1164,7 @@ procedure TDATALAR.WinsoftBeforeExecute(const MethodName: string;
 var
  T : TstringList;
 begin
-   T := TstringList.Create;
+   T := TstringList.Create;x
    SOAPRequest.Position := 0;
    t.LoadFromStream(SOAPRequest);
    t.SaveToFile('winsoft.xml');
@@ -1221,8 +1221,8 @@ var
   Body , xmlKaydet: TStringList;
 begin
 
-  StrList1 := TStringList.Create;
-  Body := TStringList.Create;
+  StrList1 := TStringList.Create;x
+  Body := TStringList.Create;x
 
   SetLength(Request, SOAPRequest.Size);
   SOAPRequest.Position := 0;
@@ -1312,7 +1312,7 @@ begin
    SOAPResponse.Position := 0;
    SOAPResponse.Read(R[1], Length(R));
 
-   m := TStringList.Create;
+   m := TStringList.Create;x
  //  memo := Tmemo.Create(nil);
  //  memo.Parent := AnaForm;
    m.Add(FormatXMLData(R));
@@ -1334,7 +1334,7 @@ begin
    SetLength(R, SOAPRequest.Size);
    SOAPRequest.Position := 0;
    SOAPRequest.Read(R[1], Length(R));
-   m := TStringList.Create;
+   m := TStringList.Create;x
    m.Add(FormatXMLData(R));
    m.SaveToFile('yardimciIslem.XML');
    m.Free;
@@ -1357,7 +1357,7 @@ begin
    SetLength(R, SOAPResponse.Size);
    SOAPResponse.Position := 0;
    SOAPResponse.Read(R[1], Length(R));
-   memo := Tmemo.Create(nil);
+   memo := Tmemo.Create(nil);x
    memo.Parent := AnaForm;
    memo.Lines.Add(FormatXMLData(R));
    memo.Lines.SaveToFile('TakipCvp.XML');
@@ -1375,7 +1375,7 @@ begin
    SetLength(R, SOAPRequest.Size);
    SOAPRequest.Position := 0;
    SOAPRequest.Read(R[1], Length(R));
-   memo := Tmemo.Create(nil);
+   memo := Tmemo.Create(nil);x
    memo.Parent := AnaForm;
    memo.Lines.Add(FormatXMLData(R));
    memo.Lines.SaveToFile('Takip.XML');
@@ -1392,7 +1392,7 @@ begin
    SetLength(R, SOAPResponse.Size);
    SOAPResponse.Position := 0;
    SOAPResponse.Read(R[1], Length(R));
-   memo := Tmemo.Create(nil);
+   memo := Tmemo.Create(nil);x
    memo.Parent := AnaForm;
    memo.Lines.Add(FormatXMLData(R));
    memo.Lines.SaveToFile('DiabetTakipCvp.XML');
@@ -1412,8 +1412,8 @@ var
   Body , xmlKaydet: TStringList;
 begin
 
-  StrList1 := TStringList.Create;
-  Body := TStringList.Create;
+  StrList1 := TStringList.Create;x
+  Body := TStringList.Create;x
 
   SetLength(Request, SOAPRequest.Size);
   SOAPRequest.Position := 0;
@@ -1513,7 +1513,7 @@ begin
    SetLength(R, SOAPResponse.Size);
    SOAPResponse.Position := 0;
    SOAPResponse.Read(R[1], Length(R));
-   memo := TStringList.Create;
+   memo := TStringList.Create;x
    memo.Add(FormatXMLData(R));
    memo.SaveToFile('DYOBCVP.XML');
    DyobRequest := memo.Text;
@@ -1532,7 +1532,7 @@ var
   Body , xmlKaydet: TStringList;
   memo : TStringList;
 begin
-   memo := TStringList.Create;
+   memo := TStringList.Create;x
    SetLength(Request, SOAPRequest.Size);
    SOAPRequest.Position := 0;
    SOAPRequest.Read(Request[1], Length(Request));
@@ -1553,7 +1553,7 @@ var
   sil : boolean;
 //  Bilgi : IXMLTestSonuclariType;
 begin
-   StrList1 := TStringList.Create;
+   StrList1 := TStringList.Create;x
    SetLength(R, SOAPResponse.Size);
    SOAPResponse.Position := 0;
    SOAPResponse.Read(R[1], Length(R));
@@ -1593,7 +1593,7 @@ var
   s : string;
   sil : boolean;
 begin
-   StrList1 := TStringList.Create;
+   StrList1 := TStringList.Create;x
    SetLength(R, SOAPResponse.Size);
    SOAPResponse.Position := 0;
    SOAPResponse.Read(R[1], Length(R));
@@ -1608,7 +1608,7 @@ procedure TDATALAR.ESYBeforeExecute(const MethodName: string;
 var
  T : TstringList;
 begin
-   T := TstringList.Create;
+   T := TstringList.Create;x
    SOAPRequest.Position := 0;
    t.LoadFromStream(SOAPRequest);
    t.SaveToFile('ESY.xml');
@@ -1624,7 +1624,7 @@ var
   Response: UTF8String;
   StrList1: TStringList;
 begin
-   StrList1 := TStringList.Create;
+   StrList1 := TStringList.Create;x
 
    SetLength(R, SOAPResponse.Size);
    SOAPResponse.Position := 0;
@@ -1649,8 +1649,8 @@ var
   Body , xmlKaydet: TStringList;
 begin
 
-  StrList1 := TStringList.Create;
-  Body := TStringList.Create;
+  StrList1 := TStringList.Create;x
+  Body := TStringList.Create;x
 
   SetLength(Request, SOAPRequest.Size);
   SOAPRequest.Position := 0;
@@ -1764,7 +1764,7 @@ begin
    SetLength(R, SOAPRequest.Size);
    SOAPRequest.Position := 0;
    SOAPRequest.Read(R[1], Length(R));
-   memo := Tmemo.Create(nil);
+   memo := Tmemo.Create(nil);x
    memo.Parent := AnaForm;
    memo.Lines.Add(FormatXMLData(R));
    memo.Lines.SaveToFile('MNT.XML');
@@ -1782,7 +1782,7 @@ begin
    SetLength(R, SOAPResponse.Size);
    SOAPResponse.Position := 0;
    SOAPResponse.Read(R[1], Length(R));
-   memo := Tmemo.Create(nil);
+   memo := Tmemo.Create(nil);x
    memo.Parent := AnaForm;
    memo.Lines.Add(FormatXMLData(R));
    memo.Lines.SaveToFile('RaporKayitCvp.XML');
@@ -1803,8 +1803,8 @@ var
   Body , xmlKaydet: TStringList;
 begin
 
-  StrList1 := TStringList.Create;
-  Body := TStringList.Create;
+  StrList1 := TStringList.Create;x
+  Body := TStringList.Create;x
 
   SetLength(Request, SOAPRequest.Size);
   SOAPRequest.Position := 0;
@@ -1842,7 +1842,7 @@ procedure TDATALAR.IntermediaAfterExecute(const MethodName: string;
 var
  T : TstringList;
 begin
-   T := TstringList.Create;
+   T := TstringList.Create;x
    SOAPResponse.Position := 0;
    t.LoadFromStream(SOAPResponse);
    t.SaveToFile('IntermediaCvp.xml');
@@ -1853,7 +1853,7 @@ procedure TDATALAR.IntermediaBeforeExecute(const MethodName: string;
 var
  T : TstringList;
 begin
-   T := TstringList.Create;
+   T := TstringList.Create;x
    SOAPRequest.Position := 0;
    t.LoadFromStream(SOAPRequest);
    t.SaveToFile('Intermedia.xml');
@@ -1870,7 +1870,7 @@ begin
    SetLength(R, SOAPRequest.Size);
    SOAPRequest.Position := 0;
    SOAPRequest.Read(R[1], Length(R));
-   memo := Tmemo.Create(nil);
+   memo := Tmemo.Create(nil);x
    memo.Parent := AnaForm;
    memo.Lines.Add(FormatXMLData(R));
    memo.Lines.SaveToFile('ITS.XML');
@@ -1882,7 +1882,7 @@ procedure TDATALAR.LabVBeforeExecute(const MethodName: String;
  var
   memo : Tmemo;
 begin
-   memo := TMemo.Create(nil);
+   memo := TMemo.Create(nil);x
    memo.Parent := AnaForm;
    memo.Lines.Text := SOAPRequest;
    memo.Lines.SaveToFile('sorgu.XML');
@@ -1902,7 +1902,7 @@ procedure TDATALAR.LabAfterExecute(const MethodName: string;
 var
  T : TstringList;
 begin
-   T := TstringList.Create;
+   T := TstringList.Create;x
    SOAPResponse.Position := 0;
    t.LoadFromStream(SOAPResponse);
    t.SaveToFile('medilisCvp.xml');
@@ -1913,7 +1913,7 @@ procedure TDATALAR.LabBeforeExecute(const MethodName: string;
 var
  T : TstringList;
 begin
-   T := TstringList.Create;
+   T := TstringList.Create;x
    SOAPRequest.Position := 0;
    t.LoadFromStream(SOAPRequest);
    t.SaveToFile('medilis.xml');
@@ -1938,7 +1938,7 @@ var
   s : string;
   sil : boolean;
 begin
-   StrList1 := TStringList.Create;
+   StrList1 := TStringList.Create;x
    SetLength(R, SOAPResponse.Size);
    SOAPResponse.Position := 0;
    SOAPResponse.Read(R[1], Length(R));
@@ -1953,7 +1953,7 @@ procedure TDATALAR.LiosBeforeExecute(const MethodName: string;
 var
  T : TstringList;
 begin
-   T := TstringList.Create;
+   T := TstringList.Create;x
    SOAPRequest.Position := 0;
    t.LoadFromStream(SOAPRequest);
    t.SaveToFile('Lios.xml');
@@ -2001,7 +2001,7 @@ var
   Response: UTF8String;
   StrList1: TStringList;
 begin
-   StrList1 := TStringList.Create;
+   StrList1 := TStringList.Create;x
 
    SetLength(R, SOAPResponse.Size);
    SOAPResponse.Position := 0;
@@ -2040,8 +2040,8 @@ var
   Body , xmlKaydet: TStringList;
 begin
 
-  StrList1 := TStringList.Create;
-  Body := TStringList.Create;
+  StrList1 := TStringList.Createx;
+  Body := TStringList.Create;x
 
   SetLength(Request, SOAPRequest.Size);
   SOAPRequest.Position := 0;
@@ -2138,7 +2138,7 @@ begin
    SetLength(R, SOAPResponse.Size);
    SOAPResponse.Position := 0;
    SOAPResponse.Read(R[1], Length(R));
-   memo := Tmemo.Create(nil);
+   memo := Tmemo.Create(nil);x
    memo.Parent := AnaForm;
    memo.Lines.Add(FormatXMLData(R));
    memo.Lines.SaveToFile('C:\Noktav3\HttpCvp\wsHizmetKayitCvp_' + inttostr(HizmetKayit.tag) + '_' + FormatDateTime('DDMMYYYY_HHMMSS',now)  + '_.XML');
@@ -2163,8 +2163,8 @@ var
   Body , xmlKaydet: TStringList;
 begin
 
-  StrList1 := TStringList.Create;
-  Body := TStringList.Create;
+  StrList1 := TStringList.Create;x
+  Body := TStringList.Create;x
 
   SetLength(Request, SOAPRequest.Size);
   SOAPRequest.Position := 0;
@@ -2229,7 +2229,7 @@ begin
    SetLength(R, SOAPResponse.Size);
    SOAPResponse.Position := 0;
    SOAPResponse.Read(R[1], Length(R));
-   memo := Tmemo.Create(nil);
+   memo := Tmemo.Create(nil);x
    memo.Parent := AnaForm;
    try
      memo.Lines.Add(FormatXMLData(R));
@@ -2266,8 +2266,8 @@ begin
   end
   else ns := 'http://servisler.ws.gss.sgk.gov.tr';
 
-  StrList1 := TStringList.Create;
-  Body := TStringList.Create;
+  StrList1 := TStringList.Create;x
+  Body := TStringList.Createx;
 
   SetLength(Request, SOAPRequest.Size);
   SOAPRequest.Position := 0;
@@ -2369,8 +2369,8 @@ begin
 
   ns := 'http://servisler.ws.gss.sgk.gov.tr';
 
-  StrList1 := TStringList.Create;
-  Body := TStringList.Create;
+  StrList1 := TStringList.Create;x
+  Body := TStringList.Create;x
 
   SetLength(Request, SOAPRequest.Size);
   SOAPRequest.Position := 0;
@@ -2463,7 +2463,7 @@ begin
    SetLength(R, SOAPResponse.Size);
    SOAPResponse.Position := 0;
    SOAPResponse.Read(R[1], Length(R));
-   memo := Tmemo.Create(nil);
+   memo := Tmemo.Create(nil);x
    memo.Parent := AnaForm;
    memo.Lines.Add(FormatXMLData(R));
    memo.Lines.SaveToFile('ReferansCvp.XML');
@@ -2602,7 +2602,7 @@ begin
    SetLength(R, SOAPRequest.Size);
    SOAPRequest.Position := 0;
    SOAPRequest.Read(R[1], Length(R));
-   memo := Tmemo.Create(nil);
+   memo := Tmemo.Create(nil);x
    memo.Parent := AnaForm;
    memo.Lines.Add(FormatXMLData(R));
    memo.Lines.SaveToFile('Referans.XML');
@@ -2620,7 +2620,7 @@ var
   s : string;
   sil : boolean;
 begin
-   StrList1 := TStringList.Create;
+   StrList1 := TStringList.Create;x
    SetLength(R, SOAPResponse.Size);
    SOAPResponse.Position := 0;
    SOAPResponse.Read(R[1], Length(R));
@@ -2634,7 +2634,7 @@ procedure TDATALAR.servis_BeforeExecute(const MethodName: string;
 var
  T : TstringList;
 begin
-   T := TstringList.Create;
+   T := TstringList.Create;x
    SOAPRequest.Position := 0;
    t.LoadFromStream(SOAPRequest);
    t.SaveToFile('onlineProtokol.xml');
@@ -2651,7 +2651,7 @@ begin
    SetLength(R, SOAPResponse.Size);
    SOAPResponse.Position := 0;
    SOAPResponse.Read(R[1], Length(R));
-   memo := Tmemo.Create(nil);
+   memo := Tmemo.Create(nil);x
    memo.Parent := AnaForm;
    memo.Lines.Add(FormatXMLData(R));
    memo.Lines.SaveToFile('SistemCvp.XML');
@@ -2669,7 +2669,7 @@ begin
    SetLength(R, SOAPRequest.Size);
    SOAPRequest.Position := 0;
    SOAPRequest.Read(R[1], Length(R));
-   memo := Tmemo.Create(nil);
+   memo := Tmemo.Create(nil);x
    memo.Parent := AnaForm;
    memo.Lines.Add(FormatXMLData(R));
    memo.Lines.SaveToFile('Sistem.XML');
@@ -2731,7 +2731,7 @@ procedure TDATALAR.AENAfterExecute(const MethodName: string;
 var
  T : TstringList;
 begin
-   T := TstringList.Create;
+   T := TstringList.Create;x
    SOAPResponse.Position := 0;
    t.LoadFromStream(SOAPResponse);
    t.SaveToFile('AENCvp.xml');
@@ -2743,7 +2743,7 @@ procedure TDATALAR.AENBeforeExecute(const MethodName: string;
 var
  T : TstringList;
 begin
-   T := TstringList.Create;
+   T := TstringList.Create;x
    SOAPRequest.Position := 0;
    t.LoadFromStream(SOAPRequest);
    t.SaveToFile('AEN.xml');
@@ -2755,7 +2755,7 @@ procedure TDATALAR.AhenkAfterExecute(const MethodName: string;
 var
  T : TstringList;
 begin
-   T := TstringList.Create;
+   T := TstringList.Create;x
    SOAPResponse.Position := 0;
    t.LoadFromStream(SOAPResponse);
    t.SaveToFile('medilisCvp.xml');
@@ -2766,7 +2766,7 @@ procedure TDATALAR.AhenkBeforeExecute(const MethodName: string;
 var
  T : TstringList;
 begin
-   T := TstringList.Create;
+   T := TstringList.Create;x
    SOAPRequest.Position := 0;
    t.LoadFromStream(SOAPRequest);
    t.SaveToFile('medilis.xml');
@@ -2778,7 +2778,7 @@ procedure TDATALAR.AlisAfterExecute(const MethodName: string;
 var
  T : TstringList;
 begin
-   T := TstringList.Create;
+   T := TstringList.Create;x
    SOAPResponse.Position := 0;
    t.LoadFromStream(SOAPResponse);
    t.SaveToFile('AlisCvp.xml');
@@ -2789,7 +2789,7 @@ procedure TDATALAR.AlisBeforeExecute(const MethodName: string;
 var
  T : TstringList;
 begin
-   T := TstringList.Create;
+   T := TstringList.Create;x
    SOAPRequest.Position := 0;
    t.LoadFromStream(SOAPRequest);
    t.SaveToFile('Alis.xml');
@@ -2815,7 +2815,7 @@ begin
    SetLength(R, SOAPResponse.Size);
    SOAPResponse.Position := 0;
    SOAPResponse.Read(R[1], Length(R));
-   memo := Tmemo.Create(nil);
+   memo := Tmemo.Create(nil);x
    memo.Parent := AnaForm;
    memo.Lines.Add(FormatXMLData(R));
    memo.Lines.SaveToFile('BioCvp.XML');
@@ -2832,7 +2832,7 @@ begin
    SetLength(R, SOAPRequest.Size);
    SOAPRequest.Position := 0;
    SOAPRequest.Read(R[1], Length(R));
-   memo := Tmemo.Create(nil);
+   memo := Tmemo.Create(nil);x
    memo.Parent := AnaForm;
    memo.Lines.Add(FormatXMLData(R));
    memo.Lines.SaveToFile('Bio.XML');
@@ -2848,7 +2848,7 @@ begin
    SetLength(R, SOAPResponse.Size);
    SOAPResponse.Position := 0;
    SOAPResponse.Read(R[1], Length(R));
-   memo := Tmemo.Create(nil);
+   memo := Tmemo.Create(nil);x
    memo.Parent := AnaForm;
    memo.Lines.Add(FormatXMLData(R));
    memo.Lines.SaveToFile('CentroCevap.XML');
@@ -2868,8 +2868,8 @@ var
   BodyBegin , BodyEnd , ii ,s : integer;
   Body , xmlKaydet: TStringList;
 begin
-  StrList1 := TStringList.Create;
-  Body := TStringList.Create;
+  StrList1 := TStringList.Create;x
+  Body := TStringList.Create;x
 
   SetLength(Request, SOAPRequest.Size);
   SOAPRequest.Position := 0;
@@ -2911,7 +2911,7 @@ begin
    SetLength(R, SOAPResponse.Size);
    SOAPResponse.Position := 0;
    SOAPResponse.Read(R[1], Length(R));
-   memo := Tmemo.Create(nil);
+   memo := Tmemo.Create(nil);x
    memo.Parent := AnaForm;
    memo.Lines.Add(FormatXMLData(R));
    memo.Lines.SaveToFile('DermanCevap.XML');
@@ -2928,7 +2928,7 @@ begin
    SetLength(R, SOAPRequest.Size);
    SOAPRequest.Position := 0;
    SOAPRequest.Read(R[1], Length(R));
-   memo := Tmemo.Create(nil);
+   memo := Tmemo.Create(nil);x
    memo.Parent := AnaForm;
    memo.Lines.Add(FormatXMLData(R));
    memo.Lines.SaveToFile('Derman.XML');
@@ -2944,7 +2944,7 @@ begin
    SetLength(R, SOAPResponse.Size);
    SOAPResponse.Position := 0;
    SOAPResponse.Read(R[1], Length(R));
-   memo := Tmemo.Create(nil);
+   memo := Tmemo.Create(nil);x
    memo.Parent := AnaForm;
    memo.Lines.Add(FormatXMLData(R));
    memo.Lines.SaveToFile('DuzenCevap.XML');
@@ -2962,7 +2962,7 @@ begin
    SetLength(R, SOAPRequest.Size);
    SOAPRequest.Position := 0;
    SOAPRequest.Read(R[1], Length(R));
-   memo := Tmemo.Create(nil);
+   memo := Tmemo.Create(nil);x
    memo.Parent := AnaForm;
    memo.Lines.Add(FormatXMLData(R));
    memo.Lines.SaveToFile('Duzen.XML');

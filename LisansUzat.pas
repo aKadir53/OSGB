@@ -82,7 +82,7 @@ begin
   key := strtofloat(txtBasla.Text) - strtoint(datalar.osgbKodu);
   key := key / strtoint(datalar.osgbKodu);
 
-  ado := TADOQuery.Create(nil);
+  ado := TADOQuery.Create(nil);x
   ado.Connection := datalar.ADOConnection2;
   sql := ' begin try select cast('+ QuotedStr(floattostr(key)) + ' as datetime) lisans   end try   BEGIN CATCH   END CATCH ';
   datalar.QuerySelect(ado,sql);
@@ -135,10 +135,10 @@ begin
   LisansAl.URL := 'https://'+datalar.LisansAlURL+'/noktaservice.asmx';
 
   kurum := datalar.osgbKodu;
-  Kb := KurumBilgi.Create;
-  K := KurumBilgiGrs.Create;
+  Kb := KurumBilgi.Create;x
+  K := KurumBilgiGrs.Createx;
   K.kurumkod := kurum;
-  FHC := FaturaHastaCount.Create;
+  FHC := FaturaHastaCount.Createx;
 
   t := copy(tarihal(Date-30),1,6);
   try

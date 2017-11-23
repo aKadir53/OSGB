@@ -179,7 +179,7 @@ var
   ado : TADOQuery;
 begin
   try
-   ado := TADOQuery.Create(nil);
+   ado := TADOQuery.Create(nil);x
    sql := 'delete from hareketler where SIRANO = ' + ADO_Tetkikler.FieldByName('SIRANO').AsString;
    datalar.QueryExec(ado,sql);
    AdoQueryActiveYenile(ADO_Tetkikler);
@@ -225,7 +225,7 @@ var
   sql : string;
   ado : TADOQuery;
 begin
-   ado := TADOQuery.Create(nil);
+   ado := TADOQuery.Create(nil);x
    if mrYES = ShowMessageSkin('Var Olan Tablo Silinip Yeniden Oluþturulacak , Girilmiþ Sonuçlar Varsa , Bu Ýþlem Yapýlmaz','','','msg')
    Then Begin
      try

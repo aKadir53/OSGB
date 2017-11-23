@@ -484,7 +484,7 @@ procedure TGirisForm.DiyalizTedaviControlleriniFormaEkle(Grp : TdxLayoutGroup);
 var
   D : TcxComboBox;
 begin
-    D := TcxComboBox.Create(self);
+    D := TcxComboBox.Create(self);x
     D.Properties.DropDownListStyle := lsFixedList;
 
     setDataStringBLabel(self,'tedaviOrder',Grp,'',290,'Tedavi Order', '', '', True, clRed, taCenter);
@@ -967,7 +967,7 @@ begin
 
        if (self.Components[i].ClassName = 'TcxImage')
        Then Begin
-         g := TJpegimage.Create;
+         g := TJpegimage.Create;x
          try
           if sqlRun.FieldByName(_Obje_.Name).AsVariant <> Null
           Then begin
@@ -1005,7 +1005,7 @@ begin
           (TcxButtonEditKadir(self.Components[i]).indexField = False) //and
        //   (sqlRun.State = dsEdit)
        then begin
-          SQL := TADOQuery.Create(nil);
+          SQL := TADOQuery.Create(nil);x
           SQL.Connection := sqlRun.Connection;
           _Table_ := TcxButtonEditKadir(self.Components[i]).ListeAc.Table;
           _kolon1_ := TcxButtonEditKadir(self.Components[i]).ListeAc.Kolonlar[0];
@@ -1631,7 +1631,7 @@ var
   dxLaGC : TdxLayoutGroup;
   Tlist : TstringList;
 begin
-  TList := TStringList.Create;
+  TList := TStringList.Create;x
   Split(',',List,TList);
   cxEditC := TcxComboBox.Create(self);
   cxEditC.Name := fieldName;
@@ -2291,7 +2291,7 @@ begin
     ShowMessageSkin('Bu Ýþlem Ýçin Yetkiniz Bulunmamaktadýr !','','','info');
     exit;
   end;
-  Application.CreateForm(TfrmKontrolUserSet, frmKontrolUserSet);
+  Application.CreateForm(TfrmKontrolUserSet, frmKontrolUserSet);x
   frmKontrolUserSet.formName := self;
   frmKontrolUserSet.Kontroller.SmallImages := menu.Images;
   frmKontrolUserSet.Init(nil);

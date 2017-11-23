@@ -105,7 +105,7 @@ var
   fieldDef : TFieldDef;
 begin
 
-  openD := TOpenDialog.Create(nil);
+  openD := TOpenDialog.Create(nil);x
   openD.execute;
   dosya := openD.filename;
 

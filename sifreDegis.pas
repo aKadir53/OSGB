@@ -51,7 +51,7 @@ begin
        Then Begin
              sql := 'update DoktorEreceteSifre set ereceteSifre = ' + QuotedStr(txtSifre.Text)
                     + ' where doktorKodu = ' + QuotedStr(doktorKullanici);
-             ado := TADOQuery.Create(nil);
+             ado := TADOQuery.Create(nil);x
              datalar.QueryExec(ado,sql);
              ShowMessageSkin('Þifreniz Deðiþtirildi','','','info');
              ado.Free;
@@ -65,7 +65,7 @@ begin
        Then Begin
              sql := 'update Users set password = ' + QuotedStr(txtSifre.Text)
                     + ' where Kullanici = ' + QuotedStr(datalar.username);
-             ado := TADOQuery.Create(nil);
+             ado := TADOQuery.Create(nil);x
              datalar.QueryExec(ado,sql);
              ShowMessageSkin('Þifreniz Deðiþtirildi','','','info');
              ado.Free;

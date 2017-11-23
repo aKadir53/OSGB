@@ -131,7 +131,7 @@ var
    ado : TADOQuery;
 begin
   _form_ := _tani;
-  ado := TADOQuery.Create(nil);
+  ado := TADOQuery.Create(nil);x
   try
     ADO_ILACSARF.Close;
     ADO_ILACSARF.SQL.Clear;
@@ -240,7 +240,7 @@ begin
 
               frmHastaRecete.ADO_RECETE_DETAY.Post;
 
-              ado := TADOQuery.Create(nil);
+              ado := TADOQuery.Create(nil);x
 
               sql := 'update ilacListesi set sikKullan = 1 where barkod = ' + QuotedStr(Eklenenler.fieldbyname('ETKENMADDE').AsString);
               datalar.QueryExec(ado,sql);

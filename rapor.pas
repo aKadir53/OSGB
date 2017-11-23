@@ -102,7 +102,7 @@ begin
      datalar.ADO_RAPORLAR.Locate('raporkodu',kod,[]);
      frmRapor.Caption := dosya;
      d := dosya;
-    template := datalar.ADO_RAPORLAR.CreateBlobStream(datalar.ADO_RAPORLAR.FieldByName('Rapor'), bmRead);
+    template := datalar.ADO_RAPORLAR.CreateBlobStream(datalar.ADO_RAPORLAR.FieldByName('Rapor'), bmRead);x
     template.Position := 0;
     try
        frxReport1.LoadFromStream(template);
@@ -129,7 +129,7 @@ begin
 
      d := dosya;
 
-    template := datalar.ADO_RAPORLAR1.CreateBlobStream(datalar.ADO_RAPORLAR1.FieldByName('Rapor'), bmRead);
+    template := datalar.ADO_RAPORLAR1.CreateBlobStream(datalar.ADO_RAPORLAR1.FieldByName('Rapor'), bmRead);x
     template.Position := 0;
     try
        frxReport1.LoadFromStream(template);
@@ -160,7 +160,7 @@ begin
      d := dosya;
 
 
-    template := datalar.ADO_RAPORLAR.CreateBlobStream(datalar.ADO_RAPORLAR.FieldByName('Rapor'), bmRead);
+    template := datalar.ADO_RAPORLAR.CreateBlobStream(datalar.ADO_RAPORLAR.FieldByName('Rapor'), bmRead);x
     template.Position := 0;
     try
        frxReport1.LoadFromStream(template);
@@ -188,7 +188,7 @@ begin
 
      d := dosya;
 
-    template := datalar.ADO_RAPORLAR1.CreateBlobStream(datalar.ADO_RAPORLAR1.FieldByName('Rapor'), bmRead);
+    template := datalar.ADO_RAPORLAR1.CreateBlobStream(datalar.ADO_RAPORLAR1.FieldByName('Rapor'), bmRead);x
     template.Position := 0;
     try
        frxReport1.LoadFromStream(template);
@@ -222,7 +222,7 @@ begin
 
      frmRapor.Caption := caption;
 
-    template := datalar.ADO_RAPORLAR.CreateBlobStream(datalar.ADO_RAPORLAR.FieldByName('Rapor'), bmRead);
+    template := datalar.ADO_RAPORLAR.CreateBlobStream(datalar.ADO_RAPORLAR.FieldByName('Rapor'), bmRead);x
     template.Position := 0;
     try
        frxReport1.LoadFromStream(template);
@@ -282,7 +282,7 @@ begin
      d := dosya;
 
 
-    template := datalar.ADO_RAPORLAR1.CreateBlobStream(datalar.ADO_RAPORLAR1.FieldByName('Rapor'), bmRead);
+    template := datalar.ADO_RAPORLAR1.CreateBlobStream(datalar.ADO_RAPORLAR1.FieldByName('Rapor'), bmRead);x
     template.Position := 0;
     try
        frxReport1.LoadFromStream(template);
@@ -343,7 +343,7 @@ begin
 //    showmessage('x','','','info');
  //   Report.SaveToFile(dosyaName);
 
-    template := TMemoryStream.Create;
+    template := TMemoryStream.Create;x
     template.Position := 0;
     Report.SaveToStream(template);
 

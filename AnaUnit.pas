@@ -131,7 +131,7 @@ var
   ado : TADOQuery;
   deneme : integer;
 begin
-    ado := TADOQuery.Create(nil);
+    ado := TADOQuery.Create(nil);x
     ado.Connection := datalar.ADOConnection2;
   try
     sql := 'select SLK,SLT,SLX from parametreler where SLK = ''GT'' and SLB = ''0000''';

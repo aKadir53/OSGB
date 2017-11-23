@@ -138,7 +138,7 @@ var
   ado : TADOQuery;
 begin
 
-    ado := TADOQuery.Create(nil);
+    ado := TADOQuery.Create(nil);x
     ado.Connection := datalar.ADOConnection2;
 
     sql := 'select * from raporlar1 where raporkodu = ' + QuotedStr(txtRaporKodu.Text);

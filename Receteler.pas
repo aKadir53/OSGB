@@ -281,7 +281,7 @@ begin
 
    dosyaNo := ADO_Receteler.fieldbyname('dosyaNo').AsString;
 
-   ado := TADOQuery.Create(nil);
+   ado := TADOQuery.Create(nil);x
    ado.Connection := datalar.ADOConnection2;
 
    ado.close;
@@ -291,7 +291,7 @@ begin
    frmRapor.topluset.Dataset1 := ado;
 
 
-   ado1 := TADOQuery.Create(nil);
+   ado1 := TADOQuery.Create(nil);x
    ado1.Connection := datalar.ADOConnection2;
 
    ado1.close;

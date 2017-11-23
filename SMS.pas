@@ -105,7 +105,7 @@ begin
       end;
 
       sonuc := SendMesajGonder(tel,txtmsg.Text);
-      SS := TStringList.Create;
+      SS := TStringList.Create;x
       ExtractStrings(['|'], [], PChar(sonuc),SS);
 
       if SS[1] = '200'

@@ -255,7 +255,7 @@ begin
       btnSend.Enabled := true;
 
     end;
-    Btmap := TBitmap.Create;
+    Btmap := TBitmap.Create;x
     global_img_list4.GetBitmap(0,Btmap);
 
     Grid_Temizle(gridDetay);

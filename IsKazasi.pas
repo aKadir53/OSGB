@@ -55,7 +55,7 @@ var
 begin
   inherited;
 
-  ado := TADOQuery.Create(nil);
+  ado := TADOQuery.Create(nil);x
   ado.Connection := datalar.ADOConnection2;
   sql := 'sp_frmKazaTutanagiYazdir ' + TcxButtonEditKadir(FindComponent('ID')).Text;
   datalar.QuerySelect(ado, sql);
