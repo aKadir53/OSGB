@@ -128,10 +128,8 @@ end;
 procedure TfrmIlacSarf.Tanilar(_tani , t : string);
 var
    sql ,grup : string;
-   ado : TADOQuery;
 begin
   _form_ := _tani;
-  ado := TADOQuery.Create(nil);x
   try
     ADO_ILACSARF.Close;
     ADO_ILACSARF.SQL.Clear;
@@ -240,32 +238,34 @@ begin
 
               frmHastaRecete.ADO_RECETE_DETAY.Post;
 
-              ado := TADOQuery.Create(nil);x
+              ado := TADOQuery.Create(nil);
+              try
+                sql := 'update ilacListesi set sikKullan = 1 where barkod = ' + QuotedStr(Eklenenler.fieldbyname('ETKENMADDE').AsString);
+                datalar.QueryExec(ado,sql);
 
-              sql := 'update ilacListesi set sikKullan = 1 where barkod = ' + QuotedStr(Eklenenler.fieldbyname('ETKENMADDE').AsString);
-              datalar.QueryExec(ado,sql);
+                sql := 'IF EXISTS (SELECT * FROM ilacListesi WHERE barkod = ' + QuotedStr(Eklenenler.fieldbyname('ETKENMADDE').AsString) + ')' +
+                        ' BEGIN ' +
+                        '  UPDATE ilacListesi ' +
+                        '  SET kulYol = ' + QuotedStr(Eklenenler.fieldbyname('Kyolu').AsString) + ',' +
+                        '  ICD = ' + QuotedStr(Eklenenler.fieldbyname('tani').AsString) +
+                        '  where barkod = ' + QuotedStr(Eklenenler.fieldbyname('ETKENMADDE').AsString) +
+                        ' END';
+                datalar.QueryExec(ado,sql);
 
-              sql := 'IF EXISTS (SELECT * FROM ilacListesi WHERE barkod = ' + QuotedStr(Eklenenler.fieldbyname('ETKENMADDE').AsString) + ')' +
-                      ' BEGIN ' +
-                      '  UPDATE ilacListesi ' +
-                      '  SET kulYol = ' + QuotedStr(Eklenenler.fieldbyname('Kyolu').AsString) + ',' +
-                      '  ICD = ' + QuotedStr(Eklenenler.fieldbyname('tani').AsString) +
-                      '  where barkod = ' + QuotedStr(Eklenenler.fieldbyname('ETKENMADDE').AsString) +
-                      ' END';
-              datalar.QueryExec(ado,sql);
+                (*
+                ack := IlacReceteAciklama(_dosyaNo_,_gelisNo_,Eklenenler.fieldbyname('ETKENMADDE').AsString,
+                                            inttostr(frmHastaRecete.ADO_RECETE_DETAY.FieldByName('kullanimAdet2').AsInteger *
+                                                     frmHastaRecete.ADO_RECETE_DETAY.FieldByName('kullanimAdet').AsInteger)
+                                            );
+                  *)
 
-              (*
-              ack := IlacReceteAciklama(_dosyaNo_,_gelisNo_,Eklenenler.fieldbyname('ETKENMADDE').AsString,
-                                          inttostr(frmHastaRecete.ADO_RECETE_DETAY.FieldByName('kullanimAdet2').AsInteger *
-                                                   frmHastaRecete.ADO_RECETE_DETAY.FieldByName('kullanimAdet').AsInteger)
-                                          );
-                *)
-
-               sql := 'delete from ReceteIlacAciklama where receteDetayId = ' + frmHastaRecete.ADO_RECETE_DETAY.fieldbyname('id').AsString;
-               datalar.QueryExec(ado,sql);
-               ado.Free;
-               frmHastaRecete.ADO_ReceteIlacAciklama.Active := false;
-               frmHastaRecete.ADO_ReceteIlacAciklama.Active := true;
+                 sql := 'delete from ReceteIlacAciklama where receteDetayId = ' + frmHastaRecete.ADO_RECETE_DETAY.fieldbyname('id').AsString;
+                 datalar.QueryExec(ado,sql);
+              finally
+                 ado.Free;
+              end;
+              frmHastaRecete.ADO_ReceteIlacAciklama.Active := false;
+              frmHastaRecete.ADO_ReceteIlacAciklama.Active := true;
 
             (*
               for j := 0 to ack.Count-1 do

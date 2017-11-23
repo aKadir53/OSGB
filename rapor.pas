@@ -93,24 +93,24 @@ implementation
 
 procedure TfrmRapor.raporData(dataset : TADOQuery ; kod , dosya , yazici : string);
 var
-    template : TStream;
-    yol ,_server : string;
-    i : integer;
+  template : TStream;
+  yol ,_server : string;
+  i : integer;
 begin
-     _printer := yazici;
-     datalar.ADO_RAPORLAR.Active := true;
-     datalar.ADO_RAPORLAR.Locate('raporkodu',kod,[]);
-     frmRapor.Caption := dosya;
-     d := dosya;
-    template := datalar.ADO_RAPORLAR.CreateBlobStream(datalar.ADO_RAPORLAR.FieldByName('Rapor'), bmRead);x
+  _printer := yazici;
+  datalar.ADO_RAPORLAR.Active := true;
+  datalar.ADO_RAPORLAR.Locate('raporkodu',kod,[]);
+  frmRapor.Caption := dosya;
+  d := dosya;
+  template := datalar.ADO_RAPORLAR.CreateBlobStream(datalar.ADO_RAPORLAR.FieldByName('Rapor'), bmRead);
+  try
     template.Position := 0;
-    try
-       frxReport1.LoadFromStream(template);
-       frxDBDataset1.DataSet := dataset;
-      // frxReport1.ShowReport;
-    finally
-          template.Free;
-    end; 
+    frxReport1.LoadFromStream(template);
+    frxDBDataset1.DataSet := dataset;
+    // frxReport1.ShowReport;
+  finally
+    template.Free;
+  end;
 
 end;
 
@@ -121,23 +121,23 @@ var
     yol ,_server : string;
     i : integer;
 begin
-     _printer := yazici;
+  _printer := yazici;
 
-     datalar.ADO_RAPORLAR1.Active := true;
-     datalar.ADO_RAPORLAR1.Locate('raporkodu',kod,[]);
-          frmRapor.Caption := dosya;
+  datalar.ADO_RAPORLAR1.Active := true;
+  datalar.ADO_RAPORLAR1.Locate('raporkodu',kod,[]);
+       frmRapor.Caption := dosya;
 
-     d := dosya;
+  d := dosya;
 
-    template := datalar.ADO_RAPORLAR1.CreateBlobStream(datalar.ADO_RAPORLAR1.FieldByName('Rapor'), bmRead);x
+  template := datalar.ADO_RAPORLAR1.CreateBlobStream(datalar.ADO_RAPORLAR1.FieldByName('Rapor'), bmRead);
+  try
     template.Position := 0;
-    try
-       frxReport1.LoadFromStream(template);
-       frxDBDataset1.DataSet := dataset;
-      // frxReport1.ShowReport;
-    finally
-          template.Free;
-    end; 
+    frxReport1.LoadFromStream(template);
+    frxDBDataset1.DataSet := dataset;
+    // frxReport1.ShowReport;
+  finally
+        template.Free;
+  end;
 
 end;
 
@@ -150,118 +150,116 @@ var
     yol ,_server : string;
     i : integer;
 begin
-     _printer := yazici;
+  _printer := yazici;
 
-     frmRapor.Caption := dosya;
+  frmRapor.Caption := dosya;
 
-     datalar.ADO_RAPORLAR.Active := true;
-     datalar.ADO_RAPORLAR.Locate('raporkodu',kod,[]);
+  datalar.ADO_RAPORLAR.Active := true;
+  datalar.ADO_RAPORLAR.Locate('raporkodu',kod,[]);
 
-     d := dosya;
+  d := dosya;
 
 
-    template := datalar.ADO_RAPORLAR.CreateBlobStream(datalar.ADO_RAPORLAR.FieldByName('Rapor'), bmRead);x
+  template := datalar.ADO_RAPORLAR.CreateBlobStream(datalar.ADO_RAPORLAR.FieldByName('Rapor'), bmRead);
+  try
     template.Position := 0;
-    try
-       frxReport1.LoadFromStream(template);
-       frxDBDataset1.DataSet := dataset;
-      // frxReport1.ShowReport;
-    finally
-          template.Free;
-    end;
+    frxReport1.LoadFromStream(template);
+    frxDBDataset1.DataSet := dataset;
+    // frxReport1.ShowReport;
+  finally
+    template.Free;
+  end;
 
 end;
 
 
 procedure TfrmRapor.rapor1Dataset(dataset : Tdataset ; kod , dosya , yazici : string);
 var
-    template : TStream;
-    yol ,_server : string;
-    i : integer;
+  template : TStream;
+  yol ,_server : string;
+  i : integer;
 begin
-     _printer := yazici;
+  _printer := yazici;
 
-     frmRapor.Caption := dosya;
+  frmRapor.Caption := dosya;
 
-     datalar.ADO_RAPORLAR1.Active := true;
-     datalar.ADO_RAPORLAR1.Locate('raporkodu',kod,[]);
+  datalar.ADO_RAPORLAR1.Active := true;
+  datalar.ADO_RAPORLAR1.Locate('raporkodu',kod,[]);
 
-     d := dosya;
+  d := dosya;
 
-    template := datalar.ADO_RAPORLAR1.CreateBlobStream(datalar.ADO_RAPORLAR1.FieldByName('Rapor'), bmRead);x
+  template := datalar.ADO_RAPORLAR1.CreateBlobStream(datalar.ADO_RAPORLAR1.FieldByName('Rapor'), bmRead);
+  try
     template.Position := 0;
-    try
-       frxReport1.LoadFromStream(template);
-       frxDBDataset1.DataSet := dataset;
-      // frxReport1.ShowReport;
-    finally
-          template.Free;
-    end;
-
-
+    frxReport1.LoadFromStream(template);
+    frxDBDataset1.DataSet := dataset;
+    // frxReport1.ShowReport;
+  finally
+    template.Free;
+  end;
 end;
 
 
 procedure TfrmRapor.raporData1(dataset : TDataSetKadir ; kod , caption : string;formId : string = '' ;printTip : TprintTip = pTNone;printer : string = '');
 var
-    template : TStream;
-    yol ,_server : string;
-    i : integer;
+  template : TStream;
+  yol ,_server : string;
+  i : integer;
 begin
-     datalar.ADO_RAPORLAR.Active := true;
-     datalar.ADO_RAPORLAR.First;
+  datalar.ADO_RAPORLAR.Active := true;
+  datalar.ADO_RAPORLAR.First;
 
-     if datalar.ADO_RAPORLAR.Locate('raporkodu',kod,[]) = False
-     Then begin
-       datalar.ADO_RAPORLAR.append;
-       datalar.ADO_RAPORLAR.FieldByName('raporKodu').AsString := kod;
-       datalar.ADO_RAPORLAR.FieldByName('rapor').AsString := '';
-       datalar.ADO_RAPORLAR.Post;
-     end;
+  if datalar.ADO_RAPORLAR.Locate('raporkodu',kod,[]) = False
+  Then begin
+    datalar.ADO_RAPORLAR.append;
+    datalar.ADO_RAPORLAR.FieldByName('raporKodu').AsString := kod;
+    datalar.ADO_RAPORLAR.FieldByName('rapor').AsString := '';
+    datalar.ADO_RAPORLAR.Post;
+  end;
 
 
-     frmRapor.Caption := caption;
+  frmRapor.Caption := caption;
 
-    template := datalar.ADO_RAPORLAR.CreateBlobStream(datalar.ADO_RAPORLAR.FieldByName('Rapor'), bmRead);x
+  template := datalar.ADO_RAPORLAR.CreateBlobStream(datalar.ADO_RAPORLAR.FieldByName('Rapor'), bmRead);
+  try
     template.Position := 0;
-    try
-       frxReport1.LoadFromStream(template);
-       frxDBDataset0.DataSet := dataset.Dataset0;
-       frxDBDataset00.DataSet := dataset.Dataset00;
-       frxDBDataset1.DataSet := dataset.Dataset1;
-       frxDBDataset2.DataSet := dataset.Dataset2;
-       frxDBDataset3.DataSet := dataset.Dataset3;
-       frxDBDataset4.DataSet := dataset.Dataset4;
-       frxDBDataset5.DataSet := dataset.Dataset5;
-       frxDBDataset6.DataSet := dataset.Dataset6;
-       frxDBDataset7.DataSet := dataset.Dataset7;
-       frxDBDataset8.DataSet := dataset.Dataset8;
-       frxDBDataset9.DataSet := dataset.Dataset9;
-       frxDBDataset10.DataSet := dataset.Dataset10;
-       frxDBDataset11.DataSet := dataset.Dataset11;
-       frxDBDataset12.DataSet := dataset.Dataset12;
-    finally
-          template.Free;
-    end;
+    frxReport1.LoadFromStream(template);
+    frxDBDataset0.DataSet := dataset.Dataset0;
+    frxDBDataset00.DataSet := dataset.Dataset00;
+    frxDBDataset1.DataSet := dataset.Dataset1;
+    frxDBDataset2.DataSet := dataset.Dataset2;
+    frxDBDataset3.DataSet := dataset.Dataset3;
+    frxDBDataset4.DataSet := dataset.Dataset4;
+    frxDBDataset5.DataSet := dataset.Dataset5;
+    frxDBDataset6.DataSet := dataset.Dataset6;
+    frxDBDataset7.DataSet := dataset.Dataset7;
+    frxDBDataset8.DataSet := dataset.Dataset8;
+    frxDBDataset9.DataSet := dataset.Dataset9;
+    frxDBDataset10.DataSet := dataset.Dataset10;
+    frxDBDataset11.DataSet := dataset.Dataset11;
+    frxDBDataset12.DataSet := dataset.Dataset12;
+  finally
+    template.Free;
+  end;
 
-    if printTip = pTYazdir
-    then begin
-     frxReport1.PrepareReport;
-     frxReport1.PrintOptions.ShowDialog := false;
-     frxReport1.Print;
-    end
-    else
-    if printTip in [pTOnIzle,pTDizayn] then
-    begin
-       frxReport1.PreviewOptions.Buttons := [pbPrint, pbLoad, pbSave, pbExport, pbZoom, pbFind, pbOutline, pbPageSetup, pbTools, pbEdit, pbNavigator];
-       frxReport1.PrintOptions.ShowDialog := True;
-       if printer <> ''
-       Then begin
-            frxReport1.PrintOptions.Printer := printer;
-            frxReport1.SelectPrinter;
-       End;
-       if printTip = pTOnIzle then frxReport1.ShowReport else frxReport1.DesignReport;
-    end;
+  if printTip = pTYazdir
+  then begin
+   frxReport1.PrepareReport;
+   frxReport1.PrintOptions.ShowDialog := false;
+   frxReport1.Print;
+  end
+  else
+  if printTip in [pTOnIzle,pTDizayn] then
+  begin
+    frxReport1.PreviewOptions.Buttons := [pbPrint, pbLoad, pbSave, pbExport, pbZoom, pbFind, pbOutline, pbPageSetup, pbTools, pbEdit, pbNavigator];
+    frxReport1.PrintOptions.ShowDialog := True;
+    if printer <> ''
+    Then begin
+      frxReport1.PrintOptions.Printer := printer;
+      frxReport1.SelectPrinter;
+    End;
+    if printTip = pTOnIzle then frxReport1.ShowReport else frxReport1.DesignReport;
+  end;
 
 end;
 
@@ -273,43 +271,39 @@ var
 begin
 
   //  frxReport1.Variables.AddVariable('Sabitler','Donem','ÞUBAT');
-     datalar.ADO_RAPORLAR1.Active := false;
-     datalar.ADO_RAPORLAR1.Active := true;
-     datalar.ADO_RAPORLAR1.Locate('raporkodu',kod,[]);
+  datalar.ADO_RAPORLAR1.Active := false;
+  datalar.ADO_RAPORLAR1.Active := true;
+  datalar.ADO_RAPORLAR1.Locate('raporkodu',kod,[]);
 
   //   memo.DataSource := datalar.ADO_RAPORLAR;
-         frmRapor.Caption := dosya;
-     d := dosya;
+  frmRapor.Caption := dosya;
+  d := dosya;
 
 
-    template := datalar.ADO_RAPORLAR1.CreateBlobStream(datalar.ADO_RAPORLAR1.FieldByName('Rapor'), bmRead);x
+  template := datalar.ADO_RAPORLAR1.CreateBlobStream(datalar.ADO_RAPORLAR1.FieldByName('Rapor'), bmRead);
+  try
     template.Position := 0;
-    try
-       frxReport1.LoadFromStream(template);
-       frxDBDataset0.DataSet := dataset.Dataset0;
-       frxDBDataset0.DataSet.Name := dataset.Dataset0.name;
+    frxReport1.LoadFromStream(template);
+    frxDBDataset0.DataSet := dataset.Dataset0;
+    frxDBDataset0.DataSet.Name := dataset.Dataset0.name;
 
-       frxDBDataset1.DataSet := dataset.Dataset1;
-       frxDBDataset1.DataSet.name := dataset.Dataset1.name;
-       frxDBDataset2.DataSet := dataset.Dataset2;
-       frxDBDataset3.DataSet := dataset.Dataset3;
-       frxDBDataset4.DataSet := dataset.Dataset4;
-       frxDBDataset5.DataSet := dataset.Dataset5;
-       frxDBDataset6.DataSet := dataset.Dataset6;
-       frxDBDataset7.DataSet := dataset.Dataset7;
-       frxDBDataset8.DataSet := dataset.Dataset8;
-       frxDBDataset9.DataSet := dataset.Dataset9;
-       frxDBDataset10.DataSet := dataset.Dataset10;
-       frxDBDataset11.DataSet := dataset.Dataset11;
-       frxDBDataset12.DataSet := dataset.Dataset12;
-
-      // frxReport1.ShowReport;
-    finally
-          template.Free;
-    end;
-
-
-
+    frxDBDataset1.DataSet := dataset.Dataset1;
+    frxDBDataset1.DataSet.name := dataset.Dataset1.name;
+    frxDBDataset2.DataSet := dataset.Dataset2;
+    frxDBDataset3.DataSet := dataset.Dataset3;
+    frxDBDataset4.DataSet := dataset.Dataset4;
+    frxDBDataset5.DataSet := dataset.Dataset5;
+    frxDBDataset6.DataSet := dataset.Dataset6;
+    frxDBDataset7.DataSet := dataset.Dataset7;
+    frxDBDataset8.DataSet := dataset.Dataset8;
+    frxDBDataset9.DataSet := dataset.Dataset9;
+    frxDBDataset10.DataSet := dataset.Dataset10;
+    frxDBDataset11.DataSet := dataset.Dataset11;
+    frxDBDataset12.DataSet := dataset.Dataset12;
+    // frxReport1.ShowReport;
+  finally
+    template.Free;
+  end;
 end;
 
 
@@ -336,47 +330,44 @@ begin
 end;
 
 function TfrmRapor.frxDesigner1SaveReport(Report: TfrxReport;
-SaveAs: Boolean): Boolean;
+  SaveAs: Boolean): Boolean;
 var
-   template : TStream;
+  template : TStream;
 begin
 //    showmessage('x','','','info');
  //   Report.SaveToFile(dosyaName);
 
-    template := TMemoryStream.Create;x
+  template := TMemoryStream.Create;
+  try
     template.Position := 0;
     Report.SaveToStream(template);
-
-
     if datalar.ADO_RAPORLAR.Active = true
     Then Begin
-
-        datalar.ADO_RAPORLAR.Edit;
-        try
-           datalar.ADO_RAPORLAR.DisableControls;
-           datalar.ADO_RAPORLAR.FieldByName('raporAdi').AsString := d;
-           (datalar.ADO_RAPORLAR.FieldByName('rapor') as TBlobField).LoadFromStream(template);
-           datalar.ADO_RAPORLAR.Post;
-        finally
-               datalar.ADO_RAPORLAR.EnableControls;
-        end;
-
+      datalar.ADO_RAPORLAR.Edit;
+      try
+         datalar.ADO_RAPORLAR.DisableControls;
+         datalar.ADO_RAPORLAR.FieldByName('raporAdi').AsString := d;
+         (datalar.ADO_RAPORLAR.FieldByName('rapor') as TBlobField).LoadFromStream(template);
+         datalar.ADO_RAPORLAR.Post;
+      finally
+        datalar.ADO_RAPORLAR.EnableControls;
+      end;
     End
     Else
     Begin
-
-        datalar.ADO_RAPORLAR1.Edit;
-        try
-           datalar.ADO_RAPORLAR1.DisableControls;
-           datalar.ADO_RAPORLAR1.FieldByName('raporAdi').AsString := d;
-           (datalar.ADO_RAPORLAR1.FieldByName('rapor') as TBlobField).LoadFromStream(template);
-           datalar.ADO_RAPORLAR1.Post;
-        finally
-               datalar.ADO_RAPORLAR1.EnableControls;
-        end;
-
-
+      datalar.ADO_RAPORLAR1.Edit;
+      try
+         datalar.ADO_RAPORLAR1.DisableControls;
+         datalar.ADO_RAPORLAR1.FieldByName('raporAdi').AsString := d;
+         (datalar.ADO_RAPORLAR1.FieldByName('rapor') as TBlobField).LoadFromStream(template);
+         datalar.ADO_RAPORLAR1.Post;
+      finally
+        datalar.ADO_RAPORLAR1.EnableControls;
+      end;
     End;
+  finally
+    template.Free;
+  end;
 
 end;
 

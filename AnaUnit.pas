@@ -131,54 +131,57 @@ var
   ado : TADOQuery;
   deneme : integer;
 begin
-    ado := TADOQuery.Create(nil);x
-    ado.Connection := datalar.ADOConnection2;
+  ado := TADOQuery.Create(nil);
   try
-    sql := 'select SLK,SLT,SLX from parametreler where SLK = ''GT'' and SLB = ''0000''';
-    datalar.QuerySelect(ado,sql);
-    Guncel := ado.Fieldbyname('SLX').AsString;
-
-    if datalar.ADOConnection1.Connected = false
-    then begin
-             deneme := 1;
-             while deneme < 3 do
-             begin
-                  try
-                     SQL_Host_Baglan;
-                     deneme := 3;
-                  except
-                        deneme := deneme + 1;
-                  end;
-             end;
-
-             if DATALAR.ADOConnection1.Connected = false
-             then begin
-                exit;
-             end;
-    end;
-
+    ado.Connection := datalar.ADOConnection2;
     try
-      datalar.Ado_Guncellemeler.Connection := datalar.ADOConnection1;
-      sql := 'select * from UPDATE_CMD where ID > ' + guncel + ' and Modul = ''D''' +
-             ' Order by ID ';
-      datalar.QuerySelect(datalar.Ado_Guncellemeler,sql);
-    except on e : Exception do
-     begin
-        ShowMessageSkin(e.Message,'','','info');
-     end;
+      sql := 'select SLK,SLT,SLX from parametreler where SLK = ''GT'' and SLB = ''0000''';
+      datalar.QuerySelect(ado,sql);
+      Guncel := ado.Fieldbyname('SLX').AsString;
+
+      if datalar.ADOConnection1.Connected = false
+      then begin
+               deneme := 1;
+               while deneme < 3 do
+               begin
+                    try
+                       SQL_Host_Baglan;
+                       deneme := 3;
+                    except
+                          deneme := deneme + 1;
+                    end;
+               end;
+
+               if DATALAR.ADOConnection1.Connected = false
+               then begin
+                  exit;
+               end;
+      end;
+
+      try
+        datalar.Ado_Guncellemeler.Connection := datalar.ADOConnection1;
+        sql := 'select * from UPDATE_CMD where ID > ' + guncel + ' and Modul = ''D''' +
+               ' Order by ID ';
+        datalar.QuerySelect(datalar.Ado_Guncellemeler,sql);
+      except on e : Exception do
+       begin
+          ShowMessageSkin(e.Message,'','','info');
+       end;
+      end;
+
+      if not datalar.Ado_Guncellemeler.Eof
+      then begin
+        GuncellemeKontrol := True
+      end
+      else
+        GuncellemeKontrol := False;
+    except
+
     end;
-
-    if not datalar.Ado_Guncellemeler.Eof
-    then begin
-      GuncellemeKontrol := True
-    end
-    else
-      GuncellemeKontrol := False;
-  except
-
+  finally
+    ado.Free;
   end;
 
-  ado.Free;
 
 end;
 
