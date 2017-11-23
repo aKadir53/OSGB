@@ -31,6 +31,7 @@ type
     btnTestConnection: TSpeedButton;
     aTimer: TTimer;
     LabelConnection: TLabel;
+    xDosyaIsimleriniKlasoreYedir: TCheckBox;
     procedure btnIslemYapClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure btnTestConnectionClick(Sender: TObject);
@@ -106,6 +107,7 @@ begin
   xAraDegisiklikler.Checked := False;
   xOtomatikGuncelleme.Checked := False;
   xDosyaTarihleriniAta.Checked := True;
+  xDosyaIsimleriniKlasoreYedir.Checked := False;
   LoadServers;
 end;
 
@@ -216,8 +218,22 @@ procedure TAnaForm.VeriTabaniNesneleriDegisimKontrol (const bTip: boolean);
   function GetFileName (const sFolderBase, sFolder, sName, sFileExt, sFileNameOwner: String; const bEski, bEskisiVar: Boolean; const iSubNum : Integer): String;
   var
     iTmp : Integer;
+    sDosyaKlasorEklenti : String;
   begin
-    Result := sFolderBase + sFolder;
+    sDosyaKlasorEklenti := '';
+    if bEski then
+      sDosyaKlasorEklenti := sDosyaKlasorEklenti + '_Eski'
+     else
+      if bEskisiVar then
+        sDosyaKlasorEklenti := sDosyaKlasorEklenti + '_Yeni';
+    if iSubNum > 0 then sDosyaKlasorEklenti := sDosyaKlasorEklenti + '_' + FormatFloat('####', iSubNum);
+    if xDosyaIsimleriniKlasoreYedir.Checked then
+      if Copy (sDosyaKlasorEklenti, Length (sDosyaKlasorEklenti), 1) <> '\' then
+        sDosyaKlasorEklenti := sDosyaKlasorEklenti + '\';
+
+    Result := sFolderBase;
+    if xDosyaIsimleriniKlasoreYedir.Checked then Result := Result + sDosyaKlasorEklenti;
+    Result := Result  + sFolder;
     if Copy (Result, length (Result), 1) <> '\' then Result := Result + '\';
     if not ForceDirectories(Result) then
     begin
@@ -225,12 +241,7 @@ procedure TAnaForm.VeriTabaniNesneleriDegisimKontrol (const bTip: boolean);
     end;
     Result := Result + sName;
     if not IsNull (sFileNameOwner) then Result := Result + '(' + sFileNameOwner + ')';
-    if bEski then
-      Result := Result + '_Eski'
-     else
-      if bEskisiVar then
-        Result := Result + '_Yeni';
-     if iSubNum > 0 then Result := Result + '_' + FormatFloat('####', iSubNum);
+    if not xDosyaIsimleriniKlasoreYedir.Checked then Result := Result + sDosyaKlasorEklenti;
     iTmp := 0;
     repeat
       iTmp := iTmp + 1;

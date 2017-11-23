@@ -82,7 +82,7 @@ object AnaForm: TAnaForm
   end
   object xTran: TCheckBox
     Left = 312
-    Top = 40
+    Top = 32
     Width = 184
     Height = 17
     Alignment = taLeftJustify
@@ -91,7 +91,7 @@ object AnaForm: TAnaForm
   end
   object xCreate: TCheckBox
     Left = 312
-    Top = 58
+    Top = 50
     Width = 184
     Height = 17
     Alignment = taLeftJustify
@@ -100,7 +100,7 @@ object AnaForm: TAnaForm
   end
   object xUpdateLines: TCheckBox
     Left = 312
-    Top = 76
+    Top = 68
     Width = 184
     Height = 17
     Alignment = taLeftJustify
@@ -109,7 +109,7 @@ object AnaForm: TAnaForm
   end
   object xSadeceYeni: TCheckBox
     Left = 312
-    Top = 94
+    Top = 86
     Width = 184
     Height = 17
     Alignment = taLeftJustify
@@ -118,7 +118,7 @@ object AnaForm: TAnaForm
   end
   object xTxtUzanti: TCheckBox
     Left = 312
-    Top = 112
+    Top = 104
     Width = 184
     Height = 17
     Alignment = taLeftJustify
@@ -127,7 +127,7 @@ object AnaForm: TAnaForm
   end
   object xSadeceDegisenler: TCheckBox
     Left = 312
-    Top = 130
+    Top = 122
     Width = 184
     Height = 17
     Alignment = taLeftJustify
@@ -136,7 +136,7 @@ object AnaForm: TAnaForm
   end
   object xAraDegisiklikler: TCheckBox
     Left = 312
-    Top = 148
+    Top = 140
     Width = 184
     Height = 17
     Alignment = taLeftJustify
@@ -145,21 +145,21 @@ object AnaForm: TAnaForm
   end
   object xDosyaTarihleriniAta: TCheckBox
     Left = 312
-    Top = 184
+    Top = 176
     Width = 184
     Height = 17
     Alignment = taLeftJustify
     Caption = 'Dosya Tarihlerini Script Tarihi Yap'
-    TabOrder = 7
+    TabOrder = 8
   end
   object xOtomatikGuncelleme: TCheckBox
     Left = 312
-    Top = 166
+    Top = 158
     Width = 184
     Height = 17
     Alignment = taLeftJustify
     Caption = 'G'#252'ncellemeyi Otomatik Yap'
-    TabOrder = 8
+    TabOrder = 7
   end
   object clbSunucu: TCheckListBox
     Left = 8
@@ -197,6 +197,15 @@ object AnaForm: TAnaForm
     Width = 121
     Height = 21
     TabOrder = 13
+  end
+  object xDosyaIsimleriniKlasoreYedir: TCheckBox
+    Left = 312
+    Top = 194
+    Width = 184
+    Height = 17
+    Alignment = taLeftJustify
+    Caption = 'Dosya '#304'simlerini Klas'#246're Yedir'
+    TabOrder = 14
   end
   object aTimer: TTimer
     OnTimer = aTimerTimer
