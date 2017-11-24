@@ -1,6 +1,6 @@
 BEGIN TRAN
 GO
--- [CMPTR] - [24.10.2017 11:33:29]
+-- [CMPTR] - [24.10.2017 11:38:22]
 ALTER  --  ALTER
  TRIGGER [dbo].[SIRKETLER_TNM_TRG]
    ON  [dbo].[SIRKETLER_TNM]
@@ -12,8 +12,8 @@ BEGIN
   --firma kartý bilgileri güncellendiðinde ayný bilgi þubede merkezdeki ile ayný deðere sahipse onlarý da deðiþtirir.
   if exists (select 1 from inserted)
   begin
-    insert into SIRKET_SUBE_TNM (SirketKod, subeKod, subeTanim, SubeDoktor, BolgeMudurlukSicilNo)
-    select SirketKod, '00' subeKod, 'MERKEZ' subeTanim, doktor, BolgeMudurlukSicilNo
+    insert into SIRKET_SUBE_TNM (SirketKod, subeKod, subeTanim, SubeDoktor, BolgeMudurlukSicilNo, subeSiciNo)
+    select SirketKod, '00' subeKod, 'MERKEZ' subeTanim, doktor, BolgeMudurlukSicilNo, IsyeriSicilNo
     from inserted s
     where not exists (select 1 from SIRKET_SUBE_TNM sb where sb.sirketKod = s.SirketKod and sb.subeKod = '00')
   end

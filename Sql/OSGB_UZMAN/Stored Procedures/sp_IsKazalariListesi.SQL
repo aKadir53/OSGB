@@ -1,17 +1,17 @@
 BEGIN TRAN
 GO
--- [CMPTR] - [27.10.2017 14:19:07]
+-- [CMPTR] - [27.10.2017 14:19:27]
 alter -- ALTER
   procedure dbo.sp_IsKazalariListesi @IlkTarih datetime, @SonTarih datetime
 as
 begin
   select 
-    year (KazaTarihi) [Kaza Yýlý], 
-    month (KazaTarihi) [Kaza Ayý],
     IK.PersonelDosyaNo, 
     IK.ID, 
     IK.DuzenlemeTarihi, 
     KazaTarihi [Kaza Tarihi], 
+    year (KazaTarihi) [Kaza Yýlý], 
+    month (KazaTarihi) [Kaza Ayý],
     IK.KazaTarihiIsBasiSaati, 
     IK.KazaninMeydanaGelBolum, 
     BL.tanimi [Kaza Bölümü], 

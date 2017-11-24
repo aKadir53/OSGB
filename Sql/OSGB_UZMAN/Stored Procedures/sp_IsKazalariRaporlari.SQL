@@ -1,6 +1,6 @@
 BEGIN TRAN
 GO
--- [CMPTR] - [27.10.2017 11:24:46]
+-- [CMPTR] - [27.10.2017 11:28:57]
 alter -- ALTER
   procedure dbo.sp_IsKazalariRaporlari
 as

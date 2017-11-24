@@ -1,6 +1,6 @@
 BEGIN TRAN
 GO
--- [CMPTR2] - [25.09.2017 17:06:51]
+-- [CMPTR2] - [25.09.2017 17:07:30]
 ALTER PROCEDURE [dbo].[sp_frmPersonelListesi] @ap varchar(5) = '1',@ktip varchar(10) = '1'
 AS
 select *,(case when isnull(diger,'') = '' then '0' else '1' end) ozeldurum , 
@@ -13,6 +13,7 @@ from Personelkart h
  --LEFT JOIN makinalar m ON m.makinaNo = h.makinaNo
  left join SKRS_IL_KODLARI IK on Ik.KODU = h.EV_SEHIR
  left join SKRS_ILCE_KODLARI ILCK on ILCK.KODU = H.EV_ILCE
+ left join SKRS_MAHALLE_KODLARI MK on MK.KODU = H.EV_MAHALLE
 where aktif = @ap
 and h.SirketKod = @ktip
 order by h.HASTAADI,h.HASTASOYADI
