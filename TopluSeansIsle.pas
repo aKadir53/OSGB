@@ -1134,7 +1134,7 @@ begin
   inherited;
   if ACol = 10
   then begin
-    List := ListeAc1.ListeGetir;
+    List := ListeAc1.xListeGetir;
 
     gridHastalar.Cells[acol,arow] := List[0].kolon1;
     gridHastalar.BtnEdit.Text := List[0].kolon1;
@@ -2490,7 +2490,7 @@ var
   List : ArrayListeSecimler;
 begin
   ListeAc2.Where := 'dosyaNo = ' + QuotedStr(ADOQuery1.FieldByName('dosyaNo').AsString);
-  List := ListeAc2.ListeGetir;
+  List := ListeAc2.xListeGetir;
   ADOQuery1.Edit;
   ADOQuery1.FieldByName('raporTakipNo').AsString := List[0].kolon1;
   ADOQuery1.Post;

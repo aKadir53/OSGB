@@ -489,7 +489,7 @@ begin
     else
       ListeAc1.Where := '';
 
-    List := ListeAc1.ListeGetir;
+    List := ListeAc1.xListeGetir;
     txtSirket.Text := list[0].kolon2;
     txtDonemler.Text := list[0].kolon1;
     datalar.AktifSirketAdi := txtSirket.Text;
