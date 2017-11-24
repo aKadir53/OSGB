@@ -1,6 +1,6 @@
 BEGIN TRAN
 GO
--- [CMPTR2] - [14.10.2017 22:11:25]
+-- [CMPTR] - [16.10.2017 15:14:01]
 ALTER PROCEDURE [dbo].[sp_YeniPersonelHastaKarti]
 @SirketKod varchar(10),
 @TCKIMLIKNO varchar(15),
@@ -22,62 +22,74 @@ ALTER PROCEDURE [dbo].[sp_YeniPersonelHastaKarti]
 @USER_ID varchar(20)
 
 AS
+begin
+  set nocount on
+  Declare @dosyaNo float , @dn varchar(6)
 
-Declare @dosyaNo float , @dn varchar(6)
-
-set @Dn = DBO.DOSYANOAL(0)
-set @dosyano = @dn
-exec sp_DosyaNoYaz @DosyaNo
-
-INSERT INTO [PERSONELKART]
- ([DOSYANO],
-  [SirketKod],
-  [TCKIMLIKNO],
-  [HASTAADI],
-  [HASTASOYADI],
-  [CINSIYETI],
-  [MEDENI],
-  [BABAADI],
-  [ANAADI],
-  [EV_SEHIR],
-  [EV_TEL1],
-  [EV_TEL2],
- -- [EMAIL],
-  [DOGUMYERI],
-  [DOGUMTARIHI],
-  [UYRUGU],
-  [BASLANGIC],
-  [KANGRUBU],
-  [USER_ID]
-)
-VALUES(
-  @Dn,
-  @SirketKod,
-  @TCKIMLIKNO,
-  @HASTAADI,
-  @HASTASOYADI,
-  @CINSIYETI,
-  @MEDENI,
-  @BABAADI,
-  @ANAADI,
-  @EV_SEHIR,
-  @EV_TEL1,
-  @EV_TEL2,
- -- @EMAIL,
-  @DOGUMYERI,
-  @DOGUMTARIHI,
-  @UYRUGU,
-  @Baslangic,
-  @KanGrubu,
-  @USER_ID
-
-
-
-)
+  set @Dn = DBO.DOSYANOAL(0)
+  set @dosyano = @dn
+  exec sp_DosyaNoYaz @DosyaNo
+  set nocount off
+  INSERT INTO [PERSONELKART]
+   ([DOSYANO],
+    [SirketKod],
+    [TCKIMLIKNO],
+    [HASTAADI],
+    [HASTASOYADI],
+    [CINSIYETI],
+    [MEDENI],
+    [BABAADI],
+    [ANAADI],
+    [EV_SEHIR],
+    [EV_TEL1],
+    [EV_TEL2],
+   -- [EMAIL],
+    [DOGUMYERI],
+    [DOGUMTARIHI],
+    [UYRUGU],
+    [BASLANGIC],
+    [KANGRUBU],
+    [USER_ID]
+  )
+  VALUES(
+    @Dn,
+    @SirketKod,
+    @TCKIMLIKNO,
+    @HASTAADI,
+    @HASTASOYADI,
+    @CINSIYETI,
+    @MEDENI,
+    @BABAADI,
+    @ANAADI,
+    @EV_SEHIR,
+    @EV_TEL1,
+    @EV_TEL2,
+   -- @EMAIL,
+    @DOGUMYERI,
+    @DOGUMTARIHI,
+    @UYRUGU,
+    @Baslangic,
+    @KanGrubu,
+    @USER_ID
 
 
 
---SELECT @DOSYANO as DosyaNo
+  )
+
+
+
+  --SELECT @DOSYANO as DosyaNo
+
+
+
+
+
+
+
+
+
+
+end
 GO
 exec sp_vw_sys_upd 'P ', 'dbo', 'sp_YeniPersonelHastaKarti'
 GO

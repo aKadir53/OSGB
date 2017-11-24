@@ -1,6 +1,6 @@
 BEGIN TRAN
 GO
--- [CMPTR2] - [28.10.2017 12:34:47]
+-- [CMPTR2] - [28.10.2017 12:40:18]
 ALTER PROCEDURE [dbo].[sp_frmPersonelIseGirisMuayene] @dosyaNo varchar(6) = '',@gelisNo int,@grup varchar(20) = ''
 AS
 
@@ -13,7 +13,7 @@ end
 
 if @grup = 'TA12'
 begin
-select 
+select 'Aþaðýdaki yakýnmalardan herhangi birini yaþadýnýz mý?' soru,
   
 MS.PersonelKodu, s.tanimi MuayeneSoru,MG.tanimi, MS.GrupKod,MS.altGrupKod,Ms.value,MS.aciklama,
 (case when MS.value = 'Evet' then 'X' else '' end) Evet,

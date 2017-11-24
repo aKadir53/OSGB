@@ -1,11 +1,11 @@
 BEGIN TRAN
 GO
--- [CMPTR] - [25.10.2017 16:20:20]
+-- [CMPTR] - [25.10.2017 16:27:00]
 alter -- ALTER
   procedure dbo.sp_frmPersonelEgitim @EgitimId int, @PersonelDosyaNo varchar (6) = null
 as 
 begin
-  select 1 
+  select * 
   from dbo.Egitimler E
   inner join dbo.Egitim_Tnm et on et.Kod = e.EgitimKod
   inner join dbo.Personel_Egitim pe on pe.EgitimID = e.id
