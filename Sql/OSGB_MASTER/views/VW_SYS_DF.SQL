@@ -1,6 +1,6 @@
 BEGIN TRAN
 GO
--- [CMPTR] - [12.10.2017 17:51:06]
+-- [CMPTR] - [12.10.2017 17:51:11]
 alter -- ALTER
   view dbo.VW_SYS_DF 
 as

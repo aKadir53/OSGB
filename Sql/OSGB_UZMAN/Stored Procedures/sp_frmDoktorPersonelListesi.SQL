@@ -1,7 +1,7 @@
 BEGIN TRAN
 GO
--- [CMPTR2] - [17.10.2017 11:14:44]
-alter PROCEDURE [dbo].[sp_frmDoktorPersonelListesi] @firma varchar(10) = '',@ap int = 1,@doktor varchar(4)
+-- [CMPTR] - [18.10.2017 14:43:30]
+ALTER PROCEDURE [dbo].[sp_frmDoktorPersonelListesi] @firma varchar(10) = '',@ap int = 1,@doktor varchar(4)
 AS
 select h.*,(case when isnull(diger,'') = '' then '0' else '1' end) ozeldurum , 
 (case when (CHARINDEX('5',h.GELHAST) > 0 OR CHARINDEX('7',h.GELHAST) > 0) THEN '1' ELSE '' END) Diabet,
@@ -15,7 +15,7 @@ isnull(DATEDIFF(D,(select max(cast(BHDAT as datetime)) from gelisler where dosya
 h.HASTAADI+ ' '+h.HASTASOYADI ADI , s.tanimi,cast(BASLANGIC as datetime) iseBaslama,isnull(s.sube,'00') Sube,isnull(sb.subeTanim,'MERKEZ') subeTanim
 from Personelkart h
 left join SIRKETLER_TNM s on s.SirketKod = h.SirketKod
-left join SIRKET_SUBE_TNM sb on sb.subeKod = h.Sube
+left join SIRKET_SUBE_TNM sb on sb.sirketKod = h.SirketKod and sb.subeKod = h.Sube
  left join Kurumlar k on k.kurum = h.kurum
  left join SKRS_IL_KODLARI IK on Ik.KODU = h.EV_SEHIR
  left join SKRS_ILCE_KODLARI ILCK on ILCK.KODU = H.EV_ILCE

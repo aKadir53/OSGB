@@ -1,13 +1,13 @@
 BEGIN TRAN
 GO
--- [CMPTR2] - [02.10.2017 11:40:00]
-alter PROCEDURE [dbo].[sp_frmPersonelIseGirisMuayene] @dosyaNo varchar(6) = ''
+-- [CMPTR2] - [12.10.2017 17:06:44]
+ALTER PROCEDURE [dbo].[sp_frmPersonelIseGirisMuayene] @dosyaNo varchar(6) = '',@gelisNo int
 AS
 
 if not exists(select * from PersoneliseGirisMuayene where PersonelKodu = @dosyaNo)
 begin
-	insert into PersoneliseGirisMuayene (PersonelKodu,grupKod,altgrupKod,SoruId)
-	select @dosyaNo,grupKod,altGrupKod,id from IseGirisMuayeneSorulari
+	insert into PersoneliseGirisMuayene (PersonelKodu,gelisNo,grupKod,altgrupKod,SoruId)
+	select @dosyaNo,@gelisNo,grupKod,altGrupKod,id from IseGirisMuayeneSorulari
 end
 
 

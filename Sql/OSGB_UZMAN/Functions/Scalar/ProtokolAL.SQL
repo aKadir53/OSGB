@@ -1,7 +1,8 @@
 BEGIN TRAN
 GO
--- [CMPTR2] - [30.10.2017 15:13:29]
-alter FUNCTION [dbo].[ProtokolAL] (@sirketKod varchar(10),@subeKod varchar(10))
+-- [CMPTR] - [16.11.2017 11:17:18]
+ALTER -- ALTER
+  FUNCTION [dbo].[ProtokolAL] (@sirketKod varchar(10),@subeKod varchar(10))
 RETURNS int
 AS
 BEGIN

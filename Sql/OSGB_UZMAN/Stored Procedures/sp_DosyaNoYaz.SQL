@@ -1,10 +1,10 @@
 BEGIN TRAN
 GO
--- [CMPTR] - [16.10.2017 15:11:56]
+-- [CMPTR] - [17.10.2017 07:45:45]
 ALTER PROCEDURE [dbo].[sp_DosyaNoYaz] @DosyaNo float, @t varchar(10) = 'DN'
 AS
 begin
-  set nocount on
+  --set nocount on
   if @t = 'DN'
   begin
     update PARAMETRELER
@@ -18,7 +18,7 @@ begin
     set SLX = @DosyaNo
     where SLK='00' and SLB='01' and SLT='FIRMANO'
   end
-  set nocount off
+  --set nocount off
 end
 GO
 exec sp_vw_sys_upd 'P ', 'dbo', 'sp_DosyaNoYaz'

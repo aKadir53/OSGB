@@ -1,24 +1,17 @@
 BEGIN TRAN
 GO
--- [CMPTR2] - [07.10.2017 10:21:23]
+-- [CMPTR2] - [07.10.2017 10:24:33]
 ALTER PROCEDURE [dbo].[sp_Receteler](@tarih1 VARCHAR(10),@tarih2 VARCHAR(10),@tip VARCHAR(1) = '')
 as
 BEGIN
 	
 IF @tip = ''
 BEGIN
-	select r.*,h.HASTAADI, h.HASTASOYADI,h.TCKIMLIKNO,
-		   cast(t.kutuAdet AS VARCHAR) + '   Kutu ['+t.ilacAdi+']' EpoKutuAdet_IlacAdi
+	select r.*,h.HASTAADI, h.HASTASOYADI,h.TCKIMLIKNO,h.SirketKod
 	from recete r  
 	join Personelkart h on h.dosyaNo = r.dosyaNO  
-	left JOIN
-		(SELECT receteID,ilackodu,ilacAdi,SUM(adet) kutuAdet FROM recetedetay rd
-		JOIN Ilaclar I on I.code = rd.ilacKodu
-		WHERE I.GRUP = 1 
-		GROUP BY rd.ReceteId,rd.ilacKodu,rd.ilacAdi) t ON t.ReceteId = r.id
-
 	where convert(varchar,tarih,112) between @tarih1 and @tarih2 
-order by id DESC,h.HASTAADI,h.HASTASOYADI	
+	order by h.SirketKod,id DESC,h.HASTAADI,h.HASTASOYADI	
 END	
 	
 	

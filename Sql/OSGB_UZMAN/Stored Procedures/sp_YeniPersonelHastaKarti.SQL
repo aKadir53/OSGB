@@ -1,6 +1,6 @@
 BEGIN TRAN
 GO
--- [CMPTR2] - [14.10.2017 17:58:29]
+-- [CMPTR2] - [14.10.2017 17:58:41]
 alter PROCEDURE [dbo].[sp_YeniPersonelHastaKarti]
 @TCKIMLIKNO varchar(15),
 @HASTAADI varchar(50),
@@ -25,7 +25,7 @@ alter PROCEDURE [dbo].[sp_YeniPersonelHastaKarti]
 
 AS
 
---begin tran
+
 
 Declare @dosyaNo float , @dn varchar(6)
 
@@ -83,13 +83,6 @@ VALUES(
 
 )
 
-
---if @@error <> 0  begin
---rollback tran
---end
---else begin
---commit tran
---end
 
 
 SELECT @DOSYANO as DosyaNo
