@@ -32,12 +32,16 @@ type
     aTimer: TTimer;
     LabelConnection: TLabel;
     xDosyaIsimleriniKlasoreYedir: TCheckBox;
+    lblLocalFolder: TLabel;
+    txtLocalFolder: TEdit;
+    btnLocalFolder: TSpeedButton;
     procedure btnIslemYapClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure btnTestConnectionClick(Sender: TObject);
     procedure clbSunucuClick(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure aTimerTimer(Sender: TObject);
+    procedure btnLocalFolderClick(Sender: TObject);
   private
     { Private declarations }
     FServers: TServerConnectionParameters;
@@ -69,6 +73,7 @@ const
   csKullaniciAdi = 'KullaniciAdi%0:d';
   csSifre = 'Sifre%0:d';
   csVeritabani = 'Veritabani%0:d';
+  csYerelIhracKlasoru = 'KlasorYolu%0:d';
 
 procedure TAnaForm.btnTestConnectionClick(Sender: TObject);
 begin
@@ -147,6 +152,7 @@ begin
         FServers [i].sUserName := aStringList.Values [Format (csKullaniciAdi, [i + 1])];
         FServers [i].sPassword := aStringList.Values [Format (csSifre, [i + 1])];
         FServers [i].sDefaultDBName := aStringList.Values [Format (csVeritabani, [i + 1])];
+        FServers [i].sLocalExportFolder := aStringList.Values [Format (csYerelIhracKlasoru, [i + 1])];
       end;
       FillServersToList;
     finally
@@ -171,6 +177,7 @@ begin
       aStringList.Values [Format (csKullaniciAdi, [i + 1])] := FServers [i].sUserName;
       aStringList.Values [Format (csSifre, [i + 1])] := FServers [i].sPassword;
       aStringList.Values [Format (csVeritabani, [i + 1])] := FServers [i].sDefaultDBName;
+      aStringList.Values [Format (csYerelIhracKlasoru, [i + 1])] := FServers [i].sLocalExportFolder;
     end;
     aStringList.SaveToFile(sFileName);
   finally
@@ -184,6 +191,7 @@ begin
   txtUserName.Text := arec.sUserName;
   txtPassword.Text := arec.sPassword;
   txtDBName.Text := arec.sDefaultDBName;
+  txtLocalFolder.Text := arec.sLocalExportFolder;
 end;
 
 procedure TAnaForm.TestConnection;
@@ -194,10 +202,10 @@ begin
   bBasarili := CreateNewConnection (txtServerName.Text,txtUserName.Text, txtPassword.Text, txtDBName.Text);
   if bBasarili then
   begin
-    iServerIndex := ServerConnectionParameterIndex (FServers, ServerConnectionParameterRec (txtServerName.Text, txtUserName.Text, txtPassword.Text, txtDBName.Text));
+    iServerIndex := ServerConnectionParameterIndex (FServers, ServerConnectionParameterRec (txtServerName.Text, txtUserName.Text, txtPassword.Text, txtDBName.Text, txtLocalFolder.Text));
     if iServerIndex < 0 then
     begin
-      ServerConnectionParameterAdd (FServers, ServerConnectionParameterRec (txtServerName.Text, txtUserName.Text, txtPassword.Text, txtDBName.Text));
+      ServerConnectionParameterAdd (FServers, ServerConnectionParameterRec (txtServerName.Text, txtUserName.Text, txtPassword.Text, txtDBName.Text, txtLocalFolder.Text));
       FillServersToList;
     end;
   end;
@@ -235,7 +243,7 @@ procedure TAnaForm.VeriTabaniNesneleriDegisimKontrol (const bTip: boolean);
     if xDosyaIsimleriniKlasoreYedir.Checked then Result := Result + sDosyaKlasorEklenti;
     Result := Result  + sFolder;
     if Copy (Result, length (Result), 1) <> '\' then Result := Result + '\';
-    if not ForceDirectories(Result) then
+    if not System.SysUtils.ForceDirectories(Result) then
     begin
       FSWarnMessage('[' + Result + '] klasörü açýlamadý !');
     end;
@@ -491,6 +499,8 @@ begin
             FreeThermo(iThermo1);
           end;
           bTamam := True;
+          if bTamam then dsfls
+
         finally
           if bTamam and xSadeceDegisenler.Checked then FSCommit
           else FSRollBack;
@@ -527,5 +537,22 @@ begin
   VeriTabaniNesneleriDegisimKontrol(True);
 end;
 
-end.
+procedure TAnaForm.btnLocalFolderClick(Sender: TObject);
+var
+  sFolder : String;
+  iServer : Integer;
+begin
+  sFolder := txtLocalFolder.Text;
+  if IsNull (sFolder) then sFolder := ExtractFilePath(sFolder);
 
+  if SelectDirectory (sFolder, [], 0) then
+  begin
+    txtLocalFolder.Text := sFolder;
+    iServer := ServerConnectionParameterIndex(FServers, ServerConnectionParameterRec(txtServerName.Text, txtUserName.Text, txtPassword.Text, txtDBName.Text, txtLocalFolder.Text));
+    if iServer >= 0 then
+      FServers [iServer].sLocalExportFolder := sFolder;
+  end;
+
+end;
+
+end.
