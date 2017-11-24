@@ -107,10 +107,6 @@ begin
 end;
 
 procedure TfrmKurumBilgi.cxButtonCClick(Sender: TObject);
-var
-  Form : TGirisForm;
-  r : integer;
-  dosyaNo : string;
 begin
    inherited;
    SifreBilgisiDegis(Tcontrol(sender).Tag);
@@ -118,7 +114,6 @@ end;
 
 procedure TfrmKurumBilgi.SifreBilgisiDegis(Tag : integer);
 var
- sql : string;
  F : TGirisForm;
  GirisRecord : TGirisFormRecord;
 begin
@@ -189,8 +184,6 @@ begin
 end;
 
 procedure TfrmKurumBilgi.sBitBtn1Click(Sender: TObject);
-var
-   sql , _durum : string;
 begin
 {
    if TurkCharKontrol(txtSifre.Text) = True

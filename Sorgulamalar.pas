@@ -95,11 +95,6 @@ implementation
 {$R *.dfm}
 
 function TfrmSorgulamalar.Init(Sender : TObject) : Boolean;
-var
-  key : word;
-  sql : string;
-  t1,t2 : Tdate;
-  ado : TADOQuery;
 begin
   Result := False;
   if not inherited Init(Sender) then exit;
@@ -241,8 +236,6 @@ end;
 procedure TfrmSorgulamalar.btnSQLRunClick(Sender: TObject);
 var
   sql : string;
-  dset : TDataSet;
-  ds : TDataSource;
 begin
     ADO_SQL11.close;
     ADO_SQL11.SQL.Clear;
@@ -280,6 +273,7 @@ var
   _Kind : TcxSummaryKind;
 begin
   inherited;
+  _Kind := skNone;
   if TMenuItem(sender).Tag = 0
   Then
    _Kind := skSum
@@ -320,7 +314,6 @@ end;
 procedure TfrmSorgulamalar.Raporlar;
 var
   sql : string;
-  s : integer;
 begin
   sql := 'select * from raporlar1';
   datalar.QuerySelect(ADO_SQL1,sql);

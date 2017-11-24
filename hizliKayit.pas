@@ -100,9 +100,8 @@ implementation
 procedure TfrmHizliKayit.ExcelToGrid;
 var
   openD : TOpenDialog;
-  dosya ,sql : string;
+  dosya : string;
   sonsatir ,sonColon, x : integer;
-  fieldDef : TFieldDef;
 begin
 
   openD := TOpenDialog.Create(nil);
@@ -125,6 +124,8 @@ begin
 
   sonsatir := v.Range[Char(96 + 1) + IntToStr(65536)].end[3].Rows.Row;
   sonColon := sayfa.UsedRange.Columns.Count;
+  if SonColon > 5 then ;;
+
   for x := 2 to sonsatir do
   begin
     MemTable_Personel.append;
@@ -151,8 +152,7 @@ end;
 
 procedure TfrmHizliKayit.GridToPersonelKartTable;
 var
-  dosya ,sql : string;
-  sonsatir ,sonColon, x : integer;
+  sql : string;
 begin
   MemTable_Personel.First;
   while not MemTable_Personel.eof do
@@ -197,13 +197,6 @@ end;
 
 
 procedure TfrmHizliKayit.cxButtonCClick(Sender: TObject);
-var
- List : TListeAc;
- _L_ : ArrayListeSecimler;
- _name_ : string;
- F : TGirisForm;
- GirisFormRecord : TGirisFormRecord;
- Tab : TcxTabSheet;
 begin
   datalar.KontrolUserSet := False;
   inherited;

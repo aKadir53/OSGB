@@ -56,10 +56,6 @@ uses data_modul;
 {$R *.dfm}
 
 procedure TfrmLisansBilgisi.LisansBilgisi;
-var
-     sql , _now , sistemnow , basla , bitis , kurum: string;
-     sayi1,sayi2,sayi3,sayi4,sayi5,sayi6 : string;
-     limit : integer;
 begin
   //  LisansBilgileri(sistemnow,basla,bitis,kurum,limit);
     txtBasla.Text := Datalar.LisansBasla;
@@ -73,7 +69,7 @@ end;
 
 procedure TfrmLisansBilgisi.btnUygulaClick(Sender: TObject);
 var
-  sql , _kurum : string;
+  sql : string;
   key : real;
   ado : TADOQuery;
 begin
@@ -127,10 +123,7 @@ var
   K : KurumBilgiGrs;
   FHC : FaturaHastaCount;
   kurum : WideString;
-  key : real;
-  sql : string;
   t : string;
-  ado : TADOQuery;
 
 begin
 

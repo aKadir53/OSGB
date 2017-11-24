@@ -242,7 +242,6 @@ function FormINIT(FormTag : Integer;MidiForm : TForm;
                   Tab : TcxTabSheet = nil;ik : izinKontrol = ikHayir;
                   izinPrm : string = '') : TGirisForm;
 var
-  f : Tcomponent;
   Form : TGirisForm;
 begin
    izinPrm := ifThen(izinPrm = '',FormAltCaption(FormTag),izinPrm);
@@ -316,7 +315,6 @@ function FormINIT(FormTag : Integer;MidiForm : TForm;Value : String = '';
                    Tab : TcxTabSheet = nil;ik : izinKontrol = ikHayir;
                    izinPrm : string = '') : TGirisForm;
 var
-  f : Tcomponent;
   Form : TGirisForm;
 begin
    izinPrm := ifThen(izinPrm = '',FormAltCaption(FormTag),izinPrm);
@@ -374,7 +372,6 @@ end;
 function FormINIT(FormTag : Integer; Value : TGirisFormRecord;ik : izinKontrol = ikHayir;izinPrm : string = '') : TGirisForm;
 var
   Form : TGirisForm;
-  FormC : TComponentClass;
 begin
    izinPrm := ifThen(izinPrm = '',FormAltCaption(FormTag),izinPrm);
    if ik = ikEvet

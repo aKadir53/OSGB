@@ -116,7 +116,6 @@ implementation
 
 procedure TfrmFirmaKart.ButtonClick(Sender: TObject);
 var
-  ID : integer;
   F : TGirisForm;
   GirisRecord : TGirisFormRecord;
 begin
@@ -312,10 +311,6 @@ procedure TfrmFirmaKart.cxButtonEditPropertiesButtonClick(Sender: TObject;
   AButtonIndex: Integer);
 var
  g : TGraphic;
- imgList : TcxImageList;
- i : integer;
- pngbmp: TPngImage;
- bmp: TBitmap;
 begin
   inherited;
   if length(datalar.ButtonEditSecimlist) > 0 then
@@ -414,9 +409,6 @@ end;
 function TfrmFirmaKart.Init(Sender : TObject) : Boolean;
 var
   key : word;
-  sql : string;
-  t1,t2 : Tdate;
-  ado : TADOQuery;
 begin
 
   Result := False;
@@ -448,14 +440,8 @@ end;
 
 procedure TfrmFirmaKart.FormCreate(Sender: TObject);
 var
-  index,i : integer;
-  Ts,Ts1,Ts3 : TStringList;
-  List,List1,List3 : TListeAc;
-  cxBtnkod : TcxButtonKadir;
-  merkezdeBaslangic,BASLANGIC,ilkTaniTarihi : TcxDateEdit;
-  SEHIR ,ILCE ,BUCAK ,KOY,MAHALLE,DEV_KURUM,Kurum,EGITIM, doktor : TcxImageComboKadir;
-  D : TcxComboBox;
-  Tab : TcxTabSheet;
+  List : TListeAc;
+  SEHIR ,ILCE ,BUCAK ,KOY,MAHALLE,doktor : TcxImageComboKadir;
 begin
   // Burdaki User_ID ve sirketKod base formda dolduruluyor. Visible false (true set etmeyin)
   // Eðer kayýt eklediðiniz tabloda bu alanlar varsa ve bunlarý otomatik set etmek isterseniz
@@ -607,8 +593,6 @@ begin
 
 
 procedure TfrmFirmaKart.seansGunleriPropertiesEditValueChanged(Sender: TObject);
-var
- s : string;
 begin
   inherited;
 //  s := seansGunleri.EditingValue;
@@ -618,8 +602,6 @@ begin
 end;
 
 procedure TfrmFirmaKart.cxKaydetClick(Sender: TObject);
-var
-  g : TGraphic;
 begin
   datalar.KontrolUserSet := False;
   inherited;
@@ -656,7 +638,6 @@ var
  _name_ : string;
  F : TGirisForm;
  GirisFormRecord : TGirisFormRecord;
- Tab : TcxTabSheet;
 begin
   datalar.KontrolUserSet := False;
   inherited;

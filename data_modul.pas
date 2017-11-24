@@ -919,7 +919,7 @@ procedure Tdatalar.QueryExec (Q: TADOQuery = nil ; sql : string = '');
 var
    sql2 :string;
 begin
-    if Q = nil then Q := TADOQuery.Create(nil);
+    if Q = nil then Q := TADOQuery.Create(nil);þ
 
     if Q.Connection = nil then Q.Connection := ADOConnection2;
 

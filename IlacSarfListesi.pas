@@ -113,8 +113,6 @@ end;
 
 
 procedure TfrmIlacSarf.TanilarCombo;
-var
-   sql : string;
 begin
   (*
      sql := 'select SLB,SLT from hizmet_gruplari ' +
@@ -127,7 +125,7 @@ end;
 
 procedure TfrmIlacSarf.Tanilar(_tani , t : string);
 var
-   sql ,grup : string;
+   sql : string;
 begin
   _form_ := _tani;
   try
@@ -139,10 +137,8 @@ begin
   except
   end;
 end;
+
 procedure TfrmIlacSarf.Gruplar;
-var
-   sql : string;
-   x : integer;
 begin
  (*
     sql := 'select SLB,SLT from hizmet_gruplari';
@@ -183,11 +179,8 @@ end;
 
 procedure TfrmIlacSarf.btnSendClick(Sender: TObject);
 var
-   i,j ,x: integer;
-   s , txt , _tani_ ,sql , keys , peryot,peryotAdet ,doz1,doz2: string;
-   Teshis : TStringList;
-   Tani : TStringList;
-   ack : TStringList;
+   i,x: integer;
+   s , _tani_ ,sql , keys , doz1,doz2: string;
    ado : TADOQuery;
    unite : real;
 begin
@@ -224,8 +217,8 @@ begin
 
               frmHastaRecete.ADO_RECETE_DETAY.FieldByName('kullanimAdet2').AsString := doz1;
 
+              unite := 1 * strtofloat(doz2);//IlacKoduToUnite(Eklenenler.fieldbyname('ETKENMADDE').AsString,_dosyaNo_,_gelisNo_,peryot,peryotAdet)
               try
-                unite := 1 * strtofloat(doz2);//IlacKoduToUnite(Eklenenler.fieldbyname('ETKENMADDE').AsString,_dosyaNo_,_gelisNo_,peryot,peryotAdet)
 
                 frmHastaRecete.ADO_RECETE_DETAY.FieldByName('kullanZamanUnit').AsString := '3';
                 frmHastaRecete.ADO_RECETE_DETAY.FieldByName('kullanimZaman').AsString := '1';
@@ -327,8 +320,8 @@ begin
 end;
 
 procedure TfrmIlacSarf.DBGridEh1DblClick(Sender: TObject);
-var
-   key : word;
+//var
+//   key : word;
 begin
      (*
      key := vk_return;

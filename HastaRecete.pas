@@ -604,11 +604,12 @@ begin
                       end;
 
      // _exe :=  PAnsiChar(AnsiString('C:\NoktaV3\E-imza\imza.exe ' + 'D' + ' '+ _id_ + ' ' + _erNo_ + ' ' + _d_ + ' ' + datalar.AktifSirket));
-   ReceteMedulaOnay :
+   ReceteMedulaOnay : begin
       _exe :=  PAnsiChar(AnsiString('C:\NoktaV3\E-imza\imza_OSGB.exe ' + 'O' + ' '+ _id_ + ' ' + _erNo_ + ' ' + _d_));
+      WinExec(_exe ,SW_SHOW);
+   end;
   end;
 
-  WinExec(_exe,SW_SHOW);
 
 end;
 
