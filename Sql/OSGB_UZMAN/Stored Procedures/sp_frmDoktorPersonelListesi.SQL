@@ -1,6 +1,6 @@
 BEGIN TRAN
 GO
--- [CMPTR] - [18.10.2017 15:57:31]
+-- [CMPTR] - [18.10.2017 15:58:18]
 ALTER PROCEDURE [dbo].[sp_frmDoktorPersonelListesi] @firma varchar(10) = '',@ap int = 1,@doktor varchar(4)
 AS
 select h.Sube,  h.*,(case when isnull(diger,'') = '' then '0' else '1' end) ozeldurum , 
@@ -12,7 +12,7 @@ IK.ADI il,ILCK.ADI ilce,MK.ADI mahalle,dbo.fn_yasTarih(h.doGUMTARIHI,getdate()) 
 isnull(h.MuayenePeryot,0) + (select max(cast(BHDAT as datetime)) from gelisler where dosyaNo = h.dosyaNo and TEDAVITURU = '2') SonrakiPeryodikMuayeneTarihi,
 isnull(h.MuayenePeryot,0) - 
 isnull(DATEDIFF(D,(select max(cast(BHDAT as datetime)) from gelisler where dosyaNo = h.dosyaNo and TEDAVITURU = '2'),getdate()),0) MuayeneKalanGun,
-h.HASTAADI+ ' '+h.HASTASOYADI ADI , s.tanimi,cast(BASLANGIC as datetime) iseBaslama,isnull(h.sube,'00') Sube,isnull(sb.subeTanim,'MERKEZ') subeTanim
+h.HASTAADI+ ' '+h.HASTASOYADI ADI , s.tanimi,cast(BASLANGIC as datetime) iseBaslama,h.sube Sube,sb.subeTanim subeTanim
 from Personelkart h
 left join SIRKETLER_TNM s on s.SirketKod = h.SirketKod
 left join SIRKET_SUBE_TNM sb on sb.sirketKod = h.SirketKod and sb.subeKod = h.sube
