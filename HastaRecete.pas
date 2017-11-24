@@ -410,62 +410,69 @@ begin
    if L[0].kolon1 <> ''
    Then Begin
      ado := TADOQuery.Create(nil);
-     adod := TADOQuery.Create(nil);
+     try
+       adod := TADOQuery.Create(nil);
+       try
+         sql := 'select * from ReceteDetaySablon where ReceteSablonId = ' + L[0].kolon1;
+         datalar.QuerySelect(ado,sql);
+         while not ado.Eof do
+         begin
+           ADO_RECETE_DETAY.Append;
+           ADO_RECETE_DETAY.FieldByName('ilacKodu').AsString := ado.FieldByName('ilacKodu').AsString;
+           ADO_RECETE_DETAY.FieldByName('ilacAdi').AsString := ado.FieldByName('ilacAdi').AsString;
+           ADO_RECETE_DETAY.FieldByName('adet').AsInteger := ado.FieldByName('adet').AsInteger;
+           ADO_RECETE_DETAY.FieldByName('kullanZamanUnit').AsString := ado.FieldByName('kullanZamanUnit').AsString;
+           ADO_RECETE_DETAY.FieldByName('kullanimZaman').AsString := ado.FieldByName('kullanimZaman').AsString;
+           ADO_RECETE_DETAY.FieldByName('kullanimAdet2').AsInteger := ado.FieldByName('kullanimAdet2').AsInteger;
+           ADO_RECETE_DETAY.FieldByName('kullanimAdet').AsFloat := ado.FieldByName('kullanimAdet').AsFloat;
+           ADO_RECETE_DETAY.FieldByName('kullanimYolu').AsString := ado.FieldByName('kullanimYolu').AsString;
+           ADO_RECETE_DETAY.post;
 
-     sql := 'select * from ReceteDetaySablon where ReceteSablonId = ' + L[0].kolon1;
-     datalar.QuerySelect(ado,sql);
-     while not ado.Eof do
-     begin
-       ADO_RECETE_DETAY.Append;
-       ADO_RECETE_DETAY.FieldByName('ilacKodu').AsString := ado.FieldByName('ilacKodu').AsString;
-       ADO_RECETE_DETAY.FieldByName('ilacAdi').AsString := ado.FieldByName('ilacAdi').AsString;
-       ADO_RECETE_DETAY.FieldByName('adet').AsInteger := ado.FieldByName('adet').AsInteger;
-       ADO_RECETE_DETAY.FieldByName('kullanZamanUnit').AsString := ado.FieldByName('kullanZamanUnit').AsString;
-       ADO_RECETE_DETAY.FieldByName('kullanimZaman').AsString := ado.FieldByName('kullanimZaman').AsString;
-       ADO_RECETE_DETAY.FieldByName('kullanimAdet2').AsInteger := ado.FieldByName('kullanimAdet2').AsInteger;
-       ADO_RECETE_DETAY.FieldByName('kullanimAdet').AsFloat := ado.FieldByName('kullanimAdet').AsFloat;
-       ADO_RECETE_DETAY.FieldByName('kullanimYolu').AsString := ado.FieldByName('kullanimYolu').AsString;
-       ADO_RECETE_DETAY.post;
-
-       sql := 'select * from ReceteIlacAciklamaSablon where ReceteDetaySablonId = ' + ado.fieldbyname('id').AsString;
-       datalar.QuerySelect(adod,sql);
-       while not adod.Eof do
-       begin
-         ADO_ReceteIlacAciklama.Append;
-         ADO_ReceteIlacAciklama.FieldByName('aciklamaTip').AsString := adod.FieldByName('aciklamaTip').AsString;
-         ADO_ReceteIlacAciklama.FieldByName('aciklama').AsString := adod.FieldByName('aciklama').AsString;
-         ADO_ReceteIlacAciklama.post;
-         adod.Next;
-       end;
-       ado.Next;
-     end;
-
-     sql := 'select * from ReceteTaniSablon where ReceteSablonId = ' + L[0].kolon1;
-     datalar.QuerySelect(ado,sql);
-     ado.First;
-     while not ado.Eof do
-     begin
-         try
-          ADO_receteTani.Append;
-          ADO_receteTani.FieldByName('taniKodu').AsString := ado.FieldByName('taniKodu').AsString;
-          ADO_receteTani.FieldByName('tani').AsString := ado.FieldByName('tani').AsString;
-          ADO_receteTani.post;
-         except
-          ADO_receteTani.Cancel;
+           sql := 'select * from ReceteIlacAciklamaSablon where ReceteDetaySablonId = ' + ado.fieldbyname('id').AsString;
+           datalar.QuerySelect(adod,sql);
+           while not adod.Eof do
+           begin
+             ADO_ReceteIlacAciklama.Append;
+             ADO_ReceteIlacAciklama.FieldByName('aciklamaTip').AsString := adod.FieldByName('aciklamaTip').AsString;
+             ADO_ReceteIlacAciklama.FieldByName('aciklama').AsString := adod.FieldByName('aciklama').AsString;
+             ADO_ReceteIlacAciklama.post;
+             adod.Next;
+           end;
+           ado.Next;
          end;
-         ado.Next;
-     end;
+
+         sql := 'select * from ReceteTaniSablon where ReceteSablonId = ' + L[0].kolon1;
+         datalar.QuerySelect(ado,sql);
+         ado.First;
+         while not ado.Eof do
+         begin
+           try
+             ADO_receteTani.Append;
+             ADO_receteTani.FieldByName('taniKodu').AsString := ado.FieldByName('taniKodu').AsString;
+             ADO_receteTani.FieldByName('tani').AsString := ado.FieldByName('tani').AsString;
+             ADO_receteTani.post;
+           except
+              ADO_receteTani.Cancel;
+           end;
+           ado.Next;
+         end;
 
 
-     sql := 'select * from ReceteAciklamaSablon where ReceteSablonId = ' + L[0].kolon1;
-     datalar.QuerySelect(ado,sql);
-     while not ado.Eof do
-     begin
-         ADO_receteAcikla.Append;
-         ADO_receteAcikla.FieldByName('aciklamaTip').AsString := ado.FieldByName('aciklamaTip').AsString;
-         ADO_receteAcikla.FieldByName('aciklama').AsString := ado.FieldByName('aciklama').AsString;
-         ADO_receteAcikla.post;
-         ado.Next;
+         sql := 'select * from ReceteAciklamaSablon where ReceteSablonId = ' + L[0].kolon1;
+         datalar.QuerySelect(ado,sql);
+         while not ado.Eof do
+         begin
+             ADO_receteAcikla.Append;
+             ADO_receteAcikla.FieldByName('aciklamaTip').AsString := ado.FieldByName('aciklamaTip').AsString;
+             ADO_receteAcikla.FieldByName('aciklama').AsString := ado.FieldByName('aciklama').AsString;
+             ADO_receteAcikla.post;
+             ado.Next;
+         end;
+       finally
+         adod.Free;
+       end;
+     finally
+       ado.Free;
      end;
    End;
 end;

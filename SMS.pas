@@ -106,14 +106,17 @@ begin
 
       sonuc := SendMesajGonder(tel,txtmsg.Text);
       SS := TStringList.Create;
-      ExtractStrings(['|'], [], PChar(sonuc),SS);
+      try
+        ExtractStrings(['|'], [], PChar(sonuc),SS);
 
-      if SS[1] = '200'
-      then
-        ShowMessageSkin('Mesaj Gönderildi','','','info')
-      else
-       ShowMessageSkin('Hata : ' + SS[2] ,'','','info');
-
+        if SS[1] = '200'
+        then
+          ShowMessageSkin('Mesaj Gönderildi','','','info')
+        else
+         ShowMessageSkin('Hata : ' + SS[2] ,'','','info');
+      finally
+        SS.Free;
+      end;
     finally
       frmSMS.Caption := 'SMS Gönderim  [' + hasta + ']';
 

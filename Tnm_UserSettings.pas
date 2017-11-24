@@ -355,45 +355,47 @@ var
   ado : TADOQuery;
   sql,kullanici,sqlUserGroup,sqlUserGroupMenu : string;
 begin
-   try
+  try
     ado := TADOQuery.Create(nil);
-    if Tip = ugUser then
-    begin
-      kullanici := TcxButtonEditKadir(FindComponent('kullanici')).Text;
-      sqlUserGroup := 'UserSettings';
-      sqlUserGroupMenu := 'UserMenuSettings';
-    end
-    else
-    begin
-      kullanici := UserGroup.FieldByName('KODU').AsString;
-      sqlUserGroup := 'UserGroupSettings';
-      sqlUserGroupMenu := 'UserGroupMenuSettings';
+    try
+      if Tip = ugUser then
+      begin
+        kullanici := TcxButtonEditKadir(FindComponent('kullanici')).Text;
+        sqlUserGroup := 'UserSettings';
+        sqlUserGroupMenu := 'UserMenuSettings';
+      end
+      else
+      begin
+        kullanici := UserGroup.FieldByName('KODU').AsString;
+        sqlUserGroup := 'UserGroupSettings';
+        sqlUserGroupMenu := 'UserGroupMenuSettings';
+      end;
+
+      sql := 'INSERT INTO '+ sqlUserGroupMenu +'(Kullanici,	Menu,ID,Izin) ' +
+              'select ' + QuotedStr(kullanici) + ',M.MainMenu,M.KAYITID,0 from  MenuIslem M ' +
+              '  left join '+sqlUserGroupMenu +' U on U.ID = M.KAYITID AND U.Kullanici = ' + QuotedStr(kullanici) +
+              ' WHERE U.ID IS null ';
+      datalar.QueryExec(ado,sql);
+
+      sql := 'INSERT INTO '+ sqlUserGroup +'(Kullanici,Modul,Islem,Izin) ' +
+              'select ' + QuotedStr(kullanici) + ',M.Modul,M.Islem,0 from  ModulIslem M ' +
+              '  left join '+sqlUserGroup +' U on U.Modul = M.Modul AND U.Islem = M.Islem AND U.Kullanici = ' + QuotedStr(kullanici) +
+              ' WHERE U.Modul IS null ';
+
+      datalar.QueryExec(ado,sql);
+
+
+      User_Menu_Settings.Active := false;
+      User_Menu_Settings.Active := True;
+      UserSettings.Active := false;
+      UserSettings.Active := true;
+    finally
+      ado.Free;
     end;
-
-     sql := 'INSERT INTO '+ sqlUserGroupMenu +'(Kullanici,	Menu,ID,Izin) ' +
-             'select ' + QuotedStr(kullanici) + ',M.MainMenu,M.KAYITID,0 from  MenuIslem M ' +
-             '  left join '+sqlUserGroupMenu +' U on U.ID = M.KAYITID AND U.Kullanici = ' + QuotedStr(kullanici) +
-             ' WHERE U.ID IS null ';
-     datalar.QueryExec(ado,sql);
-
-     sql := 'INSERT INTO '+ sqlUserGroup +'(Kullanici,Modul,Islem,Izin) ' +
-             'select ' + QuotedStr(kullanici) + ',M.Modul,M.Islem,0 from  ModulIslem M ' +
-             '  left join '+sqlUserGroup +' U on U.Modul = M.Modul AND U.Islem = M.Islem AND U.Kullanici = ' + QuotedStr(kullanici) +
-             ' WHERE U.Modul IS null ';
-
-     datalar.QueryExec(ado,sql);
-
-     ado.Free;
-
-     User_Menu_Settings.Active := false;
-     User_Menu_Settings.Active := True;
-     UserSettings.Active := false;
-     UserSettings.Active := true;
 
    except on e : exception do
     begin
       ShowMessageSkin(e.Message,'','','info');
-      ado.Free;
     end;
    end;
 end;

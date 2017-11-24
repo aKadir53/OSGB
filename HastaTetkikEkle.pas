@@ -179,15 +179,17 @@ var
   ado : TADOQuery;
 begin
   try
-   ado := TADOQuery.Create(nil);
-   sql := 'delete from hareketler where SIRANO = ' + ADO_Tetkikler.FieldByName('SIRANO').AsString;
-   datalar.QueryExec(ado,sql);
-   AdoQueryActiveYenile(ADO_Tetkikler);
-   ado.Free;
+    ado := TADOQuery.Create(nil);
+    try
+      sql := 'delete from hareketler where SIRANO = ' + ADO_Tetkikler.FieldByName('SIRANO').AsString;
+      datalar.QueryExec(ado,sql);
+      AdoQueryActiveYenile(ADO_Tetkikler);
+    finally
+      ado.Free;
+    end;
   except on e : Exception do
    begin
       ShowMessageSkin(e.Message,'','','info');
-      ado.Free;
    end;
   end;
 end;
@@ -225,23 +227,26 @@ var
   sql : string;
   ado : TADOQuery;
 begin
-   ado := TADOQuery.Create(nil);
-   if mrYES = ShowMessageSkin('Var Olan Tablo Silinip Yeniden Oluþturulacak , Girilmiþ Sonuçlar Varsa , Bu Ýþlem Yapýlmaz','','','msg')
-   Then Begin
-     try
-       sql := 'exec sp_hastaLabIsle ' + QuotedStr(_dosyaNo_) + ',' +
-               _gelisNo_ + ',' + QuotedStr(tarihal(date())) + ',' + inttostr(-1*grup);
-       datalar.QueryExec(ado,sql);
-       AdoQueryActiveYenile(ADO_Tetkikler);
-     except on e : Exception do
-        begin
-            ShowMessageSkin('Hata :' + e.Message,'','','info');
-            exit;
-        end;
-     end;
-     ShowMessageSkin('Hizmetler Eklendi','','','info');
-     ado.Free;
-   End;
+  ado := TADOQuery.Create(nil);
+  try
+    if mrYES = ShowMessageSkin('Var Olan Tablo Silinip Yeniden Oluþturulacak , Girilmiþ Sonuçlar Varsa , Bu Ýþlem Yapýlmaz','','','msg')
+    Then Begin
+      try
+        sql := 'exec sp_hastaLabIsle ' + QuotedStr(_dosyaNo_) + ',' +
+                _gelisNo_ + ',' + QuotedStr(tarihal(date())) + ',' + inttostr(-1*grup);
+        datalar.QueryExec(ado,sql);
+        AdoQueryActiveYenile(ADO_Tetkikler);
+      except on e : Exception do
+         begin
+             ShowMessageSkin('Hata :' + e.Message,'','','info');
+             exit;
+         end;
+      end;
+      ShowMessageSkin('Hizmetler Eklendi','','','info');
+    End;
+  finally
+    ado.Free;
+  end;
 end;
 
 

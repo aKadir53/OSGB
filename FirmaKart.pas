@@ -267,12 +267,14 @@ var
 begin
   dosyaNo := TcxButtonEditKadir(FindComponent('sirketKod')).Text;
   ado := TADOQuery.Create(nil);
-  sql := 'if not exists(select sirketKod from FirmaLogo where sirketKod = ' + QuotedStr(dosyaNo) + ')' +
-         ' insert into FirmaLogo (sirketKod,logo,tip) ' +
-         ' values (' + QuotedStr(sirketKod.Text) + ',NULL,''H'')';
-  datalar.QueryExec(ado,sql);
-  ado.Free;
-
+  try
+    sql := 'if not exists(select sirketKod from FirmaLogo where sirketKod = ' + QuotedStr(dosyaNo) + ')' +
+           ' insert into FirmaLogo (sirketKod,logo,tip) ' +
+           ' values (' + QuotedStr(sirketKod.Text) + ',NULL,''H'')';
+    datalar.QueryExec(ado,sql);
+  finally
+    ado.Free;
+  end;
 end;
 
 procedure TfrmFirmaKart.FotoEkle;
@@ -287,16 +289,22 @@ begin
   datalar.ADO_FOTO.Edit;
 
   Fo := TFileOpenDialog.Create(nil);
-  fo.Execute;
-  filename := fo.FileName;
-  fo.Free;
+  try
+    if not fo.Execute then Exit;
+    filename := fo.FileName;
+  finally
+    fo.Free;
+  end;
   Foto.Picture.LoadFromFile(filename);
 
   jp := TJpegimage.Create;
-  jp.Assign(FOTO.Picture);
-  datalar.ADO_FOTO.FieldByName('Logo').Assign(jp);
-  datalar.ADO_FOTO.Post;
-  jp.Free;
+  try
+    jp.Assign(FOTO.Picture);
+    datalar.ADO_FOTO.FieldByName('Logo').Assign(jp);
+    datalar.ADO_FOTO.Post;
+  finally
+    jp.Free;
+  end;
 end;
 
 
@@ -338,21 +346,20 @@ begin
 
              g := TJpegimage.Create;
              try
-              if datalar.ADO_FOTO.FieldByName('logo').AsVariant <> Null
-              Then begin
-                g.Assign(datalar.ADO_FOTO.FieldByName('logo'));
-                FOTO.Picture.Assign(g);
-              end
-              else
-              FOTO.Picture.Assign(nil);
-             except
+               try
+                 if datalar.ADO_FOTO.FieldByName('logo').AsVariant <> Null
+                 Then begin
+                   g.Assign(datalar.ADO_FOTO.FieldByName('logo'));
+                   FOTO.Picture.Assign(g);
+                 end
+                 else
+                 FOTO.Picture.Assign(nil);
+               except
+               end;
+             finally
                g.Free;
              end;
-
-
          end;
-
-
      end;
   end;
 end;
@@ -802,6 +809,5 @@ begin
 
   end;
 end;
-
 
 end.

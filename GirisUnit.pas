@@ -484,32 +484,33 @@ procedure TGirisForm.DiyalizTedaviControlleriniFormaEkle(Grp : TdxLayoutGroup);
 var
   D : TcxComboBox;
 begin
-    D := TcxComboBox.Create(self);
+  D := TcxComboBox.Create(self);
+  try
     D.Properties.DropDownListStyle := lsFixedList;
 
     setDataStringBLabel(self,'tedaviOrder',Grp,'',290,'Tedavi Order', '', '', True, clRed, taCenter);
 
-    d.Name := 'txtDializorCinsi';
+    D.Name := 'txtDializorCinsi';
     ComboDoldurName('',D);
     setDataStringC(self,'DC','Diyalizör Cinsi',Grp,'',120,D.Properties.Items);
 
-    d.Name := 'txtDializorTipi';
+    D.Name := 'txtDializorTipi';
     ComboDoldurName('',D);
     setDataStringC(self,'DS','Diyalizör Tipi',Grp,'',120,D.Properties.Items);
 
-    d.Name := 'txtDializat';
+    D.Name := 'txtDializat';
     ComboDoldurName('',D);
     setDataStringC(self,'D','Diyalizat',Grp,'',120,D.Properties.Items);
 
-    d.Name := 'txtDamarGiris';
+    D.Name := 'txtDamarGiris';
     ComboDoldurName('',D);
     setDataStringC(self,'GIRISYOLU','Damar Giriþ',Grp,'',120,D.Properties.Items);
 
-    d.Name := 'txtYA';
+    D.Name := 'txtYA';
     ComboDoldurName('',D);
     setDataStringC(self,'YA','Yüzey Alan',Grp,'',120,D.Properties.Items);
 
-    d.Name := 'txtHipar';
+    D.Name := 'txtHipar';
     ComboDoldurName('',D);
     setDataStringC(self,'HEPARINTIP','Heparin Tip',Grp,'',120,'Standart,DüþükMolekül,Diðer');
     setDataStringC(self,'HEPARIN','Heparin',Grp,'Hep',120,D.Properties.Items);
@@ -531,10 +532,9 @@ begin
     TcxComboBox(FindComponent('HCOOO')).Properties.OnEditValueChanged := PropertiesEditValueChanged;
     TcxComboBox(FindComponent('APH')).Properties.OnEditValueChanged := PropertiesEditValueChanged;
     TcxComboBox(FindComponent('Na')).Properties.OnEditValueChanged := PropertiesEditValueChanged;
-
-
-
+  finally
     D.Free;
+  end;
 end;
 
 
@@ -571,7 +571,7 @@ begin
         if TcxGridKadir(self.Components[i]).ExceleGonder = True
         Then begin
            DosyaKaydet.FileName := TcxGridKadir(self.Components[i]).ExcelFileName+'.XLS';
-           DosyaKaydet.Execute;
+           if not DosyaKaydet.Execute then Exit;
            try
               ExportGridToExcel(DosyaKaydet.FileName,TcxGridKadir(self.Components[i]),False,True);
            except on e : Exception do
@@ -969,12 +969,15 @@ begin
        Then Begin
          g := TJpegimage.Create;
          try
-          if sqlRun.FieldByName(_Obje_.Name).AsVariant <> Null
-          Then begin
-            g.Assign(sqlRun.FieldByName(_Obje_.Name));
-            TcxImage(self.Components[i]).Picture.Assign(g);
-          end;
-         except
+           try
+            if sqlRun.FieldByName(_Obje_.Name).AsVariant <> Null
+            Then begin
+              g.Assign(sqlRun.FieldByName(_Obje_.Name));
+              TcxImage(self.Components[i]).Picture.Assign(g);
+            end;
+           except
+           end;
+         finally
            g.Free;
          end;
        End
@@ -1006,18 +1009,21 @@ begin
        //   (sqlRun.State = dsEdit)
        then begin
           SQL := TADOQuery.Create(nil);
-          SQL.Connection := sqlRun.Connection;
-          _Table_ := TcxButtonEditKadir(self.Components[i]).ListeAc.Table;
-          _kolon1_ := TcxButtonEditKadir(self.Components[i]).ListeAc.Kolonlar[0];
-          _text_ := TcxButtonEditKadir(self.Components[i]).Text;
-          SQL.SQL.Text := Format(selectSQL,[_table_,
-                                      _kolon1_ + '=' + #39+_text_+#39]);
-          SQl.Open;
-        //  TcxButtonEditKadir(self.Components[i]).tanimDeger := SQL.FieldByName(TcxButtonEditKadir(self.Components[i]).tanim).AsString;
-          if TcxButtonEditKadir(self.Components[i]).tanim <> ''
-          then
-          TcxLabel(FindComponent('label'+TcxButtonEditKadir(self.Components[i]).Name)).Caption := SQL.FieldByName(TcxButtonEditKadir(self.Components[i]).tanim).AsString;
-          SQL.Free;
+          try
+            SQL.Connection := sqlRun.Connection;
+            _Table_ := TcxButtonEditKadir(self.Components[i]).ListeAc.Table;
+            _kolon1_ := TcxButtonEditKadir(self.Components[i]).ListeAc.Kolonlar[0];
+            _text_ := TcxButtonEditKadir(self.Components[i]).Text;
+            SQL.SQL.Text := Format(selectSQL,[_table_,
+                                        _kolon1_ + '=' + #39+_text_+#39]);
+            SQl.Open;
+          //  TcxButtonEditKadir(self.Components[i]).tanimDeger := SQL.FieldByName(TcxButtonEditKadir(self.Components[i]).tanim).AsString;
+            if TcxButtonEditKadir(self.Components[i]).tanim <> ''
+            then
+            TcxLabel(FindComponent('label'+TcxButtonEditKadir(self.Components[i]).Name)).Caption := SQL.FieldByName(TcxButtonEditKadir(self.Components[i]).tanim).AsString;
+          finally
+            SQL.Free;
+          end;
        end;
 
         except on e : Exception do
@@ -1632,12 +1638,15 @@ var
   Tlist : TstringList;
 begin
   TList := TStringList.Create;
-  Split(',',List,TList);
-  cxEditC := TcxComboBox.Create(self);
-  cxEditC.Name := fieldName;
-  cxEditC.Text := '';
-  cxEditC.Properties.Items := TList;
-  TList.Free;
+  try
+    Split(',',List,TList);
+    cxEditC := TcxComboBox.Create(self);
+    cxEditC.Name := fieldName;
+    cxEditC.Text := '';
+    cxEditC.Properties.Items := TList;
+  finally
+    TList.Free;
+  end;
   cxEditC.Properties.DropDownListStyle := lsFixedList;
   dxLaC := TdxLayoutGroup(parent).CreateItemForControl(cxEditC);
   dxLaC.Name := 'dxLa'+fieldName;
@@ -2292,11 +2301,14 @@ begin
     exit;
   end;
   Application.CreateForm(TfrmKontrolUserSet, frmKontrolUserSet);
-  frmKontrolUserSet.formName := self;
-  frmKontrolUserSet.Kontroller.SmallImages := menu.Images;
-  frmKontrolUserSet.Init(nil);
-  frmKontrolUserSet.ShowModal;
-  freeAndNil(frmKontrolUserSet);
+  try
+    frmKontrolUserSet.formName := self;
+    frmKontrolUserSet.Kontroller.SmallImages := menu.Images;
+    frmKontrolUserSet.Init(nil);
+    frmKontrolUserSet.ShowModal;
+  finally
+    freeAndNil(frmKontrolUserSet);
+  end;
   datalar.KontrolZorunlu.Active := False;
   datalar.KontrolZorunlu.Active := True;
 end;

@@ -45,34 +45,40 @@ var
    sql : string;
    ado : TADOQuery;
 begin
-     if sifreTip = ReceteSifre
-     then begin
-       if txtSifre.Text = txtTekrar.Text
-       Then Begin
-             sql := 'update DoktorEreceteSifre set ereceteSifre = ' + QuotedStr(txtSifre.Text)
-                    + ' where doktorKodu = ' + QuotedStr(doktorKullanici);
-             ado := TADOQuery.Create(nil);
-             datalar.QueryExec(ado,sql);
-             ShowMessageSkin('Þifreniz Deðiþtirildi','','','info');
-             ado.Free;
-             close;
-       End else
-        ShowMessageSkin('Þifre Tekrarý Hatalý','','','info');
-     end
-     else
-     begin
-       if txtSifre.Text = txtTekrar.Text
-       Then Begin
-             sql := 'update Users set password = ' + QuotedStr(txtSifre.Text)
-                    + ' where Kullanici = ' + QuotedStr(datalar.username);
-             ado := TADOQuery.Create(nil);
-             datalar.QueryExec(ado,sql);
-             ShowMessageSkin('Þifreniz Deðiþtirildi','','','info');
-             ado.Free;
-             close;
-       End else
-        ShowMessageSkin('Þifre Tekrarý Hatalý','','','info');
-     end;
+  if sifreTip = ReceteSifre
+  then begin
+    if txtSifre.Text = txtTekrar.Text
+    Then Begin
+      sql := 'update DoktorEreceteSifre set ereceteSifre = ' + QuotedStr(txtSifre.Text)
+             + ' where doktorKodu = ' + QuotedStr(doktorKullanici);
+      ado := TADOQuery.Create(nil);
+      try
+        datalar.QueryExec(ado,sql);
+        ShowMessageSkin('Þifreniz Deðiþtirildi','','','info');
+        close;
+      finally
+        ado.Free;
+      end;
+    End else
+     ShowMessageSkin('Þifre Tekrarý Hatalý','','','info');
+  end
+  else
+  begin
+    if txtSifre.Text = txtTekrar.Text
+    Then Begin
+      sql := 'update Users set password = ' + QuotedStr(txtSifre.Text)
+             + ' where Kullanici = ' + QuotedStr(datalar.username);
+      ado := TADOQuery.Create(nil);
+      try
+        datalar.QueryExec(ado,sql);
+        ShowMessageSkin('Þifreniz Deðiþtirildi','','','info');
+        close;
+      finally
+        ado.Free;
+      end;
+    End else
+     ShowMessageSkin('Þifre Tekrarý Hatalý','','','info');
+  end;
 
 end;
 

@@ -88,15 +88,18 @@ begin
   if ADO_WebServisErisim.FieldByName('ValueObje').AsString = 'C'
   then begin
     ValuesCombo := TStringList.Create;
-    ValueObjeValues := ADO_WebServisErisim.FieldByName('ValueObjeValues').AsString;
-    GridListValue.PropertiesClassName := 'TcxComboBoxProperties';
-    TcxComboBoxProperties(GridListValue.Properties).Items.Clear;
-    Split(',',ValueObjeValues,ValuesCombo);
-    for ValueCombo in  ValuesCombo  do
-    begin
-     TcxComboBoxProperties(GridListValue.Properties).Items.Add(ValueCombo);
+    try
+      ValueObjeValues := ADO_WebServisErisim.FieldByName('ValueObjeValues').AsString;
+      GridListValue.PropertiesClassName := 'TcxComboBoxProperties';
+      TcxComboBoxProperties(GridListValue.Properties).Items.Clear;
+      Split(',',ValueObjeValues,ValuesCombo);
+      for ValueCombo in  ValuesCombo  do
+      begin
+        TcxComboBoxProperties(GridListValue.Properties).Items.Add(ValueCombo);
+      end;
+    finally
+      ValuesCombo.Free;
     end;
-    ValuesCombo.Free;
   end
   else
     GridListValue.PropertiesClassName := 'TcxTextEditProperties';
@@ -326,7 +329,4 @@ sql :=
 end;
 
 end.
-
-
-
 

@@ -54,17 +54,17 @@ var
   TopluDataset : TDataSetKadir;
 begin
   inherited;
-
   ado := TADOQuery.Create(nil);
-  ado.Connection := datalar.ADOConnection2;
-  sql := 'sp_frmKazaTutanagiYazdir ' + TcxButtonEditKadir(FindComponent('ID')).Text;
-  datalar.QuerySelect(ado, sql);
-  TopluDataset.Dataset0 := ado;
-  TopluDataset.Dataset0.Name := 'IsKazalari';
-
-  PrintYap('003','Ýþ Kazasý Tutanak','',TopluDataset,pTNone);
-  ado.free;
-
+  try
+    ado.Connection := datalar.ADOConnection2;
+    sql := 'sp_frmKazaTutanagiYazdir ' + TcxButtonEditKadir(FindComponent('ID')).Text;
+    datalar.QuerySelect(ado, sql);
+    TopluDataset.Dataset0 := ado;
+    TopluDataset.Dataset0.Name := 'IsKazalari';
+    PrintYap('003','Ýþ Kazasý Tutanak','',TopluDataset,pTNone);
+  finally
+    ado.free;
+  end;
 end;
 
 procedure TfrmIsKazasi.cxButtonEditPropertiesButtonClick(Sender: TObject;
