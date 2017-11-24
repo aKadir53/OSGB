@@ -1,6 +1,6 @@
 BEGIN TRAN
 GO
--- [CMPTR] - [17.10.2017 07:45:49]
+-- [CMPTR] - [17.10.2017 07:46:05]
 ALTER PROCEDURE [dbo].[sp_YeniPersonelHastaKarti]
 @SirketKod varchar(10),
 @TCKIMLIKNO varchar(15),
@@ -23,13 +23,13 @@ ALTER PROCEDURE [dbo].[sp_YeniPersonelHastaKarti]
 
 AS
 begin
-  set nocount on
+  --set nocount on
   Declare @dosyaNo float , @dn varchar(6)
 
   set @Dn = DBO.DOSYANOAL(0)
   set @dosyano = @dn
   exec sp_DosyaNoYaz @DosyaNo
-  set nocount off
+  --set nocount off
   INSERT INTO [PERSONELKART]
    ([DOSYANO],
     [SirketKod],

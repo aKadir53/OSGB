@@ -1,7 +1,7 @@
 BEGIN TRAN
 GO
--- [CMPTR2] - [28.09.2017 17:21:32]
-ALTER PROCEDURE [dbo].[sp_frmPersonelListesi] @firma varchar(10) = '',@ap int = 1,@gun int = 0
+-- [CMPTR2] - [28.09.2017 17:27:31]
+ALTER PROCEDURE [dbo].[sp_frmPersonelListesi] @firma varchar(10) = '',@ap int = 1
 AS
 select *,(case when isnull(diger,'') = '' then '0' else '1' end) ozeldurum , 
 (case when (CHARINDEX('5',h.GELHAST) > 0 OR CHARINDEX('7',h.GELHAST) > 0) THEN '1' ELSE '' END) Diabet,
@@ -19,8 +19,8 @@ from Personelkart h
  left join SKRS_ILCE_KODLARI ILCK on ILCK.KODU = H.EV_ILCE
  left join SKRS_MAHALLE_KODLARI MK on MK.KODU = H.EV_MAHALLE
 where aktif = @ap and
-sirketKod like  '%' + @firma + '%' and 
-isnull(h.MuayenePeryot,0) - isnull((select DATEDIFF(D,cast(BHDAT as datetime),getdate()) from gelisler where dosyaNo = h.dosyaNo and TEDAVITURU = '2'),0) <= @gun 
+sirketKod like  '%' + @firma + '%' --and 
+--isnull(h.MuayenePeryot,0) - isnull((select DATEDIFF(D,cast(BHDAT as datetime),getdate()) from gelisler where dosyaNo = h.dosyaNo and TEDAVITURU = '2'),0) <= @gun 
 
 
 order by h.HASTAADI,h.HASTASOYADI
