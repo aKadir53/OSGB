@@ -1,6 +1,6 @@
 BEGIN TRAN
 GO
--- [CMPTR2] - [28.09.2017 17:18:47]
+-- [CMPTR2] - [28.09.2017 17:20:12]
 ALTER PROCEDURE [dbo].[sp_frmPersonelListesi] @firma varchar(10) = '',@ap int = 1,@gun int = 0
 AS
 select *,(case when isnull(diger,'') = '' then '0' else '1' end) ozeldurum , 
@@ -20,7 +20,7 @@ from Personelkart h
  left join SKRS_IL_KODLARI IK on Ik.KODU = h.EV_SEHIR
  left join SKRS_ILCE_KODLARI ILCK on ILCK.KODU = H.EV_ILCE
  left join SKRS_MAHALLE_KODLARI MK on MK.KODU = H.EV_MAHALLE
-where --aktif = @ap and
+where aktif = @ap and
 sirketKod like  '%' + @firma + '%' and 
 isnull(h.MuayenePeryot,0) - isnull((select DATEDIFF(D,cast(BHDAT as datetime),getdate()) from gelisler where dosyaNo = h.dosyaNo and TEDAVITURU = '2'),0) <= @gun 
 
