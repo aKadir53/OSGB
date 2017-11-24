@@ -266,13 +266,15 @@ var
  ado : TADOQuery;
 begin
   dosyaNo := TcxButtonEditKadir(FindComponent('sirketKod')).Text;
-  ado := TADOQuery.Create(nil);x
-  sql := 'if not exists(select sirketKod from FirmaLogo where sirketKod = ' + QuotedStr(dosyaNo) + ')' +
-         ' insert into FirmaLogo (sirketKod,logo,tip) ' +
-         ' values (' + QuotedStr(sirketKod.Text) + ',NULL,''H'')';
-  datalar.QueryExec(ado,sql);
-  ado.Free;
-
+  ado := TADOQuery.Create(nil);
+  try
+    sql := 'if not exists(select sirketKod from FirmaLogo where sirketKod = ' + QuotedStr(dosyaNo) + ')' +
+           ' insert into FirmaLogo (sirketKod,logo,tip) ' +
+           ' values (' + QuotedStr(sirketKod.Text) + ',NULL,''H'')';
+    datalar.QueryExec(ado,sql);
+  finally
+    ado.Free;
+  end;
 end;
 
 procedure TfrmFirmaKart.FotoEkle;
@@ -286,17 +288,23 @@ begin
   datalar.ADO_FOTO.Open;
   datalar.ADO_FOTO.Edit;
 
-  Fo := TFileOpenDialog.Create(nil);x
-  fo.Execute;          x
-  filename := fo.FileName;
-  fo.Free;
+  Fo := TFileOpenDialog.Create(nil);
+  try
+    if not fo.Execute then Exit;
+    filename := fo.FileName;
+  finally
+    fo.Free;
+  end;
   Foto.Picture.LoadFromFile(filename);
 
-  jp := TJpegimage.Create;x
-  jp.Assign(FOTO.Picture);
-  datalar.ADO_FOTO.FieldByName('Logo').Assign(jp);
-  datalar.ADO_FOTO.Post;
-  jp.Free;
+  jp := TJpegimage.Create;
+  try
+    jp.Assign(FOTO.Picture);
+    datalar.ADO_FOTO.FieldByName('Logo').Assign(jp);
+    datalar.ADO_FOTO.Post;
+  finally
+    jp.Free;
+  end;
 end;
 
 
@@ -336,23 +344,22 @@ begin
              datalar.ADO_Foto.SQL.Text := Format(FotoTable,[#39+_dosyaNo_+#39]);
              datalar.ADO_FOTO.Open;
 
-             g := TJpegimage.Create;x
+             g := TJpegimage.Create;
              try
-              if datalar.ADO_FOTO.FieldByName('logo').AsVariant <> Null
-              Then begin
-                g.Assign(datalar.ADO_FOTO.FieldByName('logo'));
-                FOTO.Picture.Assign(g);
-              end
-              else
-              FOTO.Picture.Assign(nil);
-             except
+               try
+                 if datalar.ADO_FOTO.FieldByName('logo').AsVariant <> Null
+                 Then begin
+                   g.Assign(datalar.ADO_FOTO.FieldByName('logo'));
+                   FOTO.Picture.Assign(g);
+                 end
+                 else
+                 FOTO.Picture.Assign(nil);
+               except
+               end;
+             finally
                g.Free;
              end;
-
-
          end;
-
-
      end;
   end;
 end;
@@ -802,6 +809,5 @@ begin
 
   end;
 end;
-
 
 end.

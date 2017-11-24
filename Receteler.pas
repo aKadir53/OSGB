@@ -273,49 +273,55 @@ var
   x : integer;
 begin
 
-   for x := 0 to Recete.Controller.SelectedRowCount - 1 do
-   begin
-       id := id + ',' + inttostr(Recete.DataController.GetValue(Recete.Controller.SelectedRows[x].RecordIndex,
-                                                                Recete.DataController.GetItemByFieldName('id').Index));
-   end;
+  for x := 0 to Recete.Controller.SelectedRowCount - 1 do
+  begin
+      id := id + ',' + inttostr(Recete.DataController.GetValue(Recete.Controller.SelectedRows[x].RecordIndex,
+                                                               Recete.DataController.GetItemByFieldName('id').Index));
+  end;
 
-   dosyaNo := ADO_Receteler.fieldbyname('dosyaNo').AsString;
+  dosyaNo := ADO_Receteler.fieldbyname('dosyaNo').AsString;
 
-   ado := TADOQuery.Create(nil);x
-   ado.Connection := datalar.ADOConnection2;
+  ado := TADOQuery.Create(nil);
+  try
+    ado.Connection := datalar.ADOConnection2;
 
-   ado.close;
-   ado.SQL.Clear;
-   sql := 'exec sp_epikriz ' + QuotedStr(dosyaNo) + ',' + QuotedStr('Kurum');
-   datalar.QuerySelect(ado,sql);
-   frmRapor.topluset.Dataset1 := ado;
-
-
-   ado1 := TADOQuery.Create(nil);x
-   ado1.Connection := datalar.ADOConnection2;
-
-   ado1.close;
-   ado1.SQL.Clear;
+    ado.close;
+    ado.SQL.Clear;
+    sql := 'exec sp_epikriz ' + QuotedStr(dosyaNo) + ',' + QuotedStr('Kurum');
+    datalar.QuerySelect(ado,sql);
+    frmRapor.topluset.Dataset1 := ado;
 
 
-   sql := ' select * from Recete R ' +
-            'left join receteDetay D on R.id = D.ReceteId ' +
-            'left join gelisler g on g.dosyaNO = R.dosyaNo and g.gelisNo = R.gelisNo ' +
-            'left join ILACLAR I on I.code = D.ilacKodu ' +
-            'left join PersonelKart H on H.dosyaNo = R.dosyaNo ' +
-            ' where convert(varchar,R.Tarih,112) between ' + txtTopPanelTarih1.GetSQLValue +
-            ' and ' + txtTopPanelTarih1.GetSQLValue +
-            ' and r.id IN (select datavalue from dbo.StrToTable(' + QuotedStr(copy(id,2,500)) + ','',''))' +
-            ' order by R.id';
+    ado1 := TADOQuery.Create(nil);
+    try
+      ado1.Connection := datalar.ADOConnection2;
 
-   datalar.QuerySelect(ado1,sql);
-   frmRapor.topluset.Dataset2 := ado1;
+      ado1.close;
+      ado1.SQL.Clear;
 
 
-  frmRapor.raporData1(frmRapor.topluset ,'050T','\Reçete Yazdýr Toplu');
-  frmRapor.ShowModal;
-  ado.Free;
-  ado1.Free;
+      sql := ' select * from Recete R ' +
+               'left join receteDetay D on R.id = D.ReceteId ' +
+               'left join gelisler g on g.dosyaNO = R.dosyaNo and g.gelisNo = R.gelisNo ' +
+               'left join ILACLAR I on I.code = D.ilacKodu ' +
+               'left join PersonelKart H on H.dosyaNo = R.dosyaNo ' +
+               ' where convert(varchar,R.Tarih,112) between ' + txtTopPanelTarih1.GetSQLValue +
+               ' and ' + txtTopPanelTarih1.GetSQLValue +
+               ' and r.id IN (select datavalue from dbo.StrToTable(' + QuotedStr(copy(id,2,500)) + ','',''))' +
+               ' order by R.id';
+
+      datalar.QuerySelect(ado1,sql);
+      frmRapor.topluset.Dataset2 := ado1;
+
+
+      frmRapor.raporData1(frmRapor.topluset ,'050T','\Reçete Yazdýr Toplu');
+      frmRapor.ShowModal;
+    finally
+      ado1.Free;
+    end;
+  finally
+    ado.Free;
+  end;
 
 end;
 

@@ -136,12 +136,15 @@ var
   sql : string;
   ado : TADOQuery;
 begin
-   sql := 'select formCaption from FormCaption where formTag = ' + inttostr(formId);
-   ado := TADOQuery.Create(nil);x
-   datalar.QuerySelect(ado,sql);
-   if not ado.Eof then
-     FormCaption := ado.Fields[0].AsString;
-  ado.Free;
+  sql := 'select formCaption from FormCaption where formTag = ' + inttostr(formId);
+  ado := TADOQuery.Create(nil);
+  try
+    datalar.QuerySelect(ado,sql);
+    if not ado.Eof then
+      FormCaption := ado.Fields[0].AsString;
+  finally
+    ado.Free;
+  end;
 end;
 
 function FormAltCaption(formId : integer) : String;
@@ -149,13 +152,15 @@ var
   sql : string;
   ado : TADOQuery;
 begin
-   sql := 'select formAltCaption from FormCaption where formTag = ' + inttostr(formId);
-   ado := TADOQuery.Create(nil);x
-   datalar.QuerySelect(ado,sql);
-   if not ado.Eof then
-     FormAltCaption := ado.Fields[0].AsString;
-
-  ado.free;
+  sql := 'select formAltCaption from FormCaption where formTag = ' + inttostr(formId);
+  ado := TADOQuery.Create(nil);
+  try
+    datalar.QuerySelect(ado,sql);
+    if not ado.Eof then
+      FormAltCaption := ado.Fields[0].AsString;
+  finally
+    ado.free;
+  end;
 end;
 
 function FormClass(formId : integer) : TComponentClass;
@@ -481,6 +486,5 @@ begin
    end;
    result := TForm(Form);
 end;
-
 
 end.

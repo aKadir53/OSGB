@@ -105,10 +105,13 @@ var
   fieldDef : TFieldDef;
 begin
 
-  openD := TOpenDialog.Create(nil);x
-  openD.execute;      x
-  dosya := openD.filename;
-
+  openD := TOpenDialog.Create(nil);
+  try
+    if not openD.Execute then Exit;
+    dosya := openD.FileName;
+  finally
+    openD.Free;
+  end;
   v := CreateOleObject('Excel.Application');
   try
     v.Workbooks.Open(dosya);
