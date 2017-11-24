@@ -1,6 +1,6 @@
 BEGIN TRAN
 GO
--- [CMPTR2] - [24.10.2017 22:59:37]
+-- [CMPTR2] - [24.10.2017 23:02:40]
 ALTER PROCEDURE [dbo].[sp_frmKazaTutanagiYazdir] @ID int
 AS
 
@@ -10,7 +10,7 @@ from IsKazalari I
 join PersonelKart P on P.dosyaNo = I.PersonelDosyaNo
 left join SIRKETLER_TNM S on S.SirketKod = P.SirketKod
 join SIRKET_SUBE_TNM sb on sb.sirketKod = P.SirketKod and sb.subeKod = P.Sube
-left join Bolumler b on b.kod = P.Bolum
+left join Bolumler b on b.kod = I.KazaninMeydanaGelBolum
 left join Uzuvlar U on U.kod = I.KazadaYaralananUzuv
 
 where I.ID = @ID

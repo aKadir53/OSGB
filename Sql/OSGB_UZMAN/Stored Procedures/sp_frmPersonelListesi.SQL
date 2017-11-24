@@ -1,7 +1,7 @@
 BEGIN TRAN
 GO
--- [CMPTR2] - [28.09.2017 17:08:40]
-ALTER PROCEDURE [dbo].[sp_frmPersonelListesi] @firma varchar(10) = '0001',@ap int = 1,@gun int = 0
+-- [CMPTR2] - [28.09.2017 17:09:36]
+ALTER PROCEDURE [dbo].[sp_frmPersonelListesi] @firma varchar(10) = '',@ap int = 1,@gun int = 0
 AS
 select *,(case when isnull(diger,'') = '' then '0' else '1' end) ozeldurum , 
 (case when (CHARINDEX('5',h.GELHAST) > 0 OR CHARINDEX('7',h.GELHAST) > 0) THEN '1' ELSE '' END) Diabet,

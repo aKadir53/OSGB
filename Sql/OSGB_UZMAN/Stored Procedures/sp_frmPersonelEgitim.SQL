@@ -1,6 +1,6 @@
 BEGIN TRAN
 GO
--- [CMPTR] - [25.10.2017 16:19:55]
+-- [CMPTR] - [25.10.2017 16:20:04]
 alter -- ALTER
   procedure dbo.sp_frmPersonelEgitim @EgitimId int, @PersonelDosyaNo varchar (6) = null
 as 
