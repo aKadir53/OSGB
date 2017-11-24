@@ -405,7 +405,7 @@ var
   ado , adod : TADOQuery;
   L : ArrayListeSecimler;
 begin
-   L := ReceteSablonAc.ListeGetir;
+   L := ReceteSablonAc.xListeGetir;
 
    if L[0].kolon1 <> ''
    Then Begin
@@ -895,7 +895,7 @@ begin
    TaniListe.Where := ifThen(cxChkSIK.Checked,'Sikkullan > 0','');
    TaniListe.SkinName := AnaForm.dxSkinController1.SkinName;
    TaniListe.SiralamaKolonu := ifThen(cxChkSIK.Checked,'Sikkullan Desc,TANI','TANI');
-   List := TaniListe.ListeGetir;
+   List := TaniListe.xListeGetir;
 
    for I := 0 to length(List) - 1 do
    begin

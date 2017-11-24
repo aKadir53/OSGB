@@ -272,7 +272,7 @@ var
 begin
   User_Kontrol_Settings.Active := false;
   ListeAc1.SkinName := AnaForm.dxSkinController1.SkinName;
-  List := ListeAc1.ListeGetir;
+  List := ListeAc1.xListeGetir;
   txtKullanici.Text := list[0].kolon1;
   User_Kontrol_Settings.Filter := 'kullanici = ' + QuotedStr(txtKullanici.Text);
   User_Kontrol_Settings.Filtered := True;

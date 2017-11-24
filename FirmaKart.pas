@@ -192,7 +192,7 @@ procedure TfrmFirmaKart.txtNaceKodPropertiesButtonClick(Sender: TObject;
 var
   List : ArrayListeSecimler;
 begin
-   List := ListeNaceKods.ListeGetir;
+   List := ListeNaceKods.xListeGetir;
    TcxTextEditKadir(FindComponent('naceKod')).EditValue := List[0].kolon1;
    TcxTextEditKadir(FindComponent('anaFaliyet')).EditValue := List[0].kolon2;
    TcxTextEditKadir(FindComponent('tehlikeSinifi')).EditValue := List[0].kolon4;
@@ -671,7 +671,7 @@ begin
             List.SkinName := AnaForm.dxSkinController1.SkinName;
             List.Grup := True;
 
-            _L_ := List.ListeGetir;
+            _L_ := List.xListeGetir;
             _name_ := TcxButtonKadir(sender).ButtonName;
             _name_ := StringReplace(_name_,'cxBtn','',[rfReplaceAll]);
             TcxButtonEditKadir(FindComponent(_name_)).Text := _L_[0].kolon1;
