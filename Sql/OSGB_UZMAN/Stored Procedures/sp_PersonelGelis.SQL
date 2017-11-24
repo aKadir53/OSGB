@@ -1,6 +1,6 @@
 BEGIN TRAN
 GO
--- [CMPTR2] - [28.09.2017 22:55:59]
+-- [CMPTR2] - [28.09.2017 22:56:00]
 alter PROCEDURE [dbo].[sp_PersonelGelis] @dosyaNO varchar(10)
 AS
 select dosyaNO,gelisNo,cast(BHDAT as datetime) Tarih,

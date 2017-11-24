@@ -1,6 +1,6 @@
 BEGIN TRAN
 GO
--- [CMPTR] - [18.10.2017 15:13:47]
+-- [CMPTR] - [18.10.2017 15:18:56]
 ALTER PROCEDURE [dbo].[sp_frmDoktorPersonelListesi] @firma varchar(10) = '',@ap int = 1,@doktor varchar(4)
 AS
 select h.*,(case when isnull(diger,'') = '' then '0' else '1' end) ozeldurum , 
