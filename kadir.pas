@@ -7200,7 +7200,7 @@ end;
 function ShowMessage(msg1, msg2, msg3: string; t: string): word;
 var
   i: integer;
-  s, msg: string;
+  s: string;
 
 begin
 
@@ -7297,9 +7297,6 @@ end;
 
 
 function ShowPopupForm(Caption : string; Tag : integer): word;
-var
-  i: integer;
-  s, msg: string;
 begin
     Application.CreateForm(TfrmPopup, frmPopup);
     frmPopup._islem_ := Tag;
@@ -7313,10 +7310,6 @@ end;
 
 
 function ShowMessageSkin(msg1, msg2, msg3: string; t: string): word;
-var
-  i: integer;
-  s, msg: string;
-
 begin
 
   if frmMessage_y = nil Then
@@ -7416,7 +7409,7 @@ var
   ds: Char;
   y, a, g: string;
 begin
-  ds := DateSeparator;
+  ds := FormatSettings.DateSeparator;
   y := copy(t, 1, 4);
   a := copy(t, 5, 2);
   g := copy(t, 7, 2);
@@ -7427,7 +7420,7 @@ end;
 
 function tarihal(t: Tdate): string;
 var
-  sonuct, s: string;
+  s: string;
 begin
   s := datetostr(t);
   Result := copy(s, 7, 4) + copy(s, 4, 2) + copy(s, 1, 2);
@@ -7630,11 +7623,10 @@ end;
 Function bakim(b: TADOConnection; donem: string): string;
 VAR
   sql: string;
-  ay, alan, alan1: string;
+  alan, alan1: string;
   ay1: integer;
   // adoconnection1:tadoconnection1;
   kadir1: TADOCommand;
-  baglan: TADOConnection;
 begin
 
   // hafýzada bir adocommand oluþturuluyor...
@@ -7786,7 +7778,7 @@ end;
 
 procedure SQL_Host_Baglan;
 var
-  sql, servername, s, u, p, db: string;
+  servername, s, u, p, db: string;
 begin
   if SQL_Host(s, u, p, db) = True Then
   Begin

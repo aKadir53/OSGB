@@ -95,9 +95,7 @@ end;
 
 function TfrmIlaclar.Init(Sender: TObject) : Boolean;
 var
-  index,i : integer;
-  Ts,Ts1,Ts3 : TStringList;
-  List,TaniList,List3 : TListeAc;
+  List,TaniList : TListeAc;
   cxBtnkod,cxBtnGrup ,cxBtnEtken: TcxButtonKadir;
   IlacGrup,etkenMadde,tetkikSonuc,aktif,tip,kulYol,RecTip : TcxImageComboKadir;
 begin
