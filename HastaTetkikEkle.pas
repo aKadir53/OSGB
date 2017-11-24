@@ -196,8 +196,6 @@ end;
 
 procedure TfrmHastaTetkikEkle.TetkikEkle;
 var
-  sql : string;
-  ado : TADOQuery;
   List : ArrayListeSecimler;
 begin
    if cxTabTetkik.TabIndex = 0
@@ -251,9 +249,6 @@ end;
 
 
 procedure TfrmHastaTetkikEkle.ItemClick(Sender: TObject);
-var
-  GirisRecord : TGirisFormRecord;
-  F : TGirisForm;
 begin
     case TMenuItem(sender).Tag of
    -1,-3,-6,-12 : begin
@@ -293,8 +288,7 @@ end;
 procedure TfrmHastaTetkikEkle.ktvClick(Sender: TObject);
 var
    CaxP , G_ure , C_ure, demir , demirbaglama : double;
-   ca , p , URR , Kt_VB , Kt_vj: double;
-   x : integer;
+   ca , p , URR , Kt_VB: double;
    Ts : string;
 begin
 
@@ -332,8 +326,7 @@ end;
 procedure TfrmHastaTetkikEkle.spKtvClick(Sender: TObject);
 var
    CaxP , G_ure , C_ure , iKilo , kilofark , g,c ,Dca  ,alb : double;
-   x : integer;
-   ca , p , URR , Kt_VB , Kt_vj: double;
+   ca , p , URR , Kt_VB: double;
 begin
 
     iKilo := idealKilo(_dosyaNo_);
@@ -405,10 +398,6 @@ begin
 end;
 
 procedure TfrmHastaTetkikEkle.FormCreate(Sender: TObject);
-var
-  index,i : integer;
-  Ts,Ts1 : TStringList;
-  List,List1 : TListeAc;
 begin
  //cxYeni.Visible := false;
   inherited;

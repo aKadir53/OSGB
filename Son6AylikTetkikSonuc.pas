@@ -66,6 +66,7 @@ function TfrmSon6AylikTetkikSonuc.Init(Sender: TObject) : Boolean;
 begin
  inherited;
  Listele;
+ Result := True;
 end;
 
 procedure TfrmSon6AylikTetkikSonuc.TetkikSonucGridKolonGizle;
@@ -88,7 +89,7 @@ end;
 procedure TfrmSon6AylikTetkikSonuc.Listele;
 var
   sql ,_Tarih: string;
-  TT, t , i : integer;
+  i : integer;
   ado : TADOQuery;
 begin
   _Tarih := NoktasizTarih(_provizyonTarihi_);
@@ -96,8 +97,6 @@ begin
     sql := 'exec sp_HastaTetkikTakipPIVOT ' + QuotedStr(_dosyaNo_) + ',' + QuotedStr(_Tarih) + ',' + '1';
     datalar.QuerySelect(ADO_Tetkikler,sql);
 
-    TT := strtoint(COPY(_Tarih,5,2));
-    t := 0;
     TetkikSonucGridKolonGizle;
 
     sql := 'exec sp_HastaTetkikTakipPIVOT ' + QuotedStr(_dosyaNo_) + ',' + QuotedStr(_Tarih) + ',' + '0';
@@ -142,10 +141,6 @@ begin
 end;
 
 procedure TfrmSon6AylikTetkikSonuc.FormCreate(Sender: TObject);
-var
-  index,i : integer;
-  Ts,Ts1 : TStringList;
-  List,List1 : TListeAc;
 begin
   Tag := TagfrmSon6AylikTetkikSonuc;
   ClientHeight := formYukseklik;

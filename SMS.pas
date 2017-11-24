@@ -63,7 +63,6 @@ function TfrmSMS.SendMesajGonder(tel,mesaj : string) : string;
 var
   SendMesaj : TSendMesaj;
   dllHandle: Cardinal;
-  msj,Basarili : integer;
   _sonuc_ : string;
 begin
   SendMesajGonder := '';

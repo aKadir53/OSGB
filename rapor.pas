@@ -94,8 +94,6 @@ implementation
 procedure TfrmRapor.raporData(dataset : TADOQuery ; kod , dosya , yazici : string);
 var
   template : TStream;
-  yol ,_server : string;
-  i : integer;
 begin
   _printer := yazici;
   datalar.ADO_RAPORLAR.Active := true;
@@ -118,8 +116,6 @@ end;
 procedure TfrmRapor.rapor1Data(dataset : TADOQuery ; kod , dosya , yazici : string);
 var
     template : TStream;
-    yol ,_server : string;
-    i : integer;
 begin
   _printer := yazici;
 
@@ -147,8 +143,6 @@ end;
 procedure TfrmRapor.raporDataset(dataset : Tdataset ; kod , dosya , yazici : string);
 var
     template : TStream;
-    yol ,_server : string;
-    i : integer;
 begin
   _printer := yazici;
 
@@ -176,8 +170,6 @@ end;
 procedure TfrmRapor.rapor1Dataset(dataset : Tdataset ; kod , dosya , yazici : string);
 var
   template : TStream;
-  yol ,_server : string;
-  i : integer;
 begin
   _printer := yazici;
 
@@ -203,8 +195,6 @@ end;
 procedure TfrmRapor.raporData1(dataset : TDataSetKadir ; kod , caption : string;formId : string = '' ;printTip : TprintTip = pTNone;printer : string = '');
 var
   template : TStream;
-  yol ,_server : string;
-  i : integer;
 begin
   datalar.ADO_RAPORLAR.Active := true;
   datalar.ADO_RAPORLAR.First;
@@ -266,8 +256,6 @@ end;
 procedure TfrmRapor.rapor1Data1(dataset : TDataSetKadir ; kod , dosya : string);
 var
     template : TStream;
-    yol ,_server : string;
-    i : integer;
 begin
 
   //  frxReport1.Variables.AddVariable('Sabitler','Donem','ÞUBAT');
@@ -336,6 +324,8 @@ var
 begin
 //    showmessage('x','','','info');
  //   Report.SaveToFile(dosyaName);
+  Result := False;
+  if not Result then ;;;
 
   template := TMemoryStream.Create;
   try
@@ -349,6 +339,7 @@ begin
          datalar.ADO_RAPORLAR.FieldByName('raporAdi').AsString := d;
          (datalar.ADO_RAPORLAR.FieldByName('rapor') as TBlobField).LoadFromStream(template);
          datalar.ADO_RAPORLAR.Post;
+         Result := True;
       finally
         datalar.ADO_RAPORLAR.EnableControls;
       end;
@@ -361,6 +352,7 @@ begin
          datalar.ADO_RAPORLAR1.FieldByName('raporAdi').AsString := d;
          (datalar.ADO_RAPORLAR1.FieldByName('rapor') as TBlobField).LoadFromStream(template);
          datalar.ADO_RAPORLAR1.Post;
+         Result := True;
       finally
         datalar.ADO_RAPORLAR1.EnableControls;
       end;
@@ -372,12 +364,10 @@ begin
 end;
 
 function TfrmRapor.frxDesigner1LoadReport(Report: TfrxReport): Boolean;
-var
-   template : TStream;
 begin
 
     showmessage('y','','','info');
-
+    result := True;
 (*
     template := TMemoryStream.Create;
     template.Position := 0;
@@ -428,9 +418,6 @@ begin
 end;
 
 procedure TfrmRapor.btnYazdirClick(Sender: TObject);
-var
-  durum : boolean;
-  FReport : TfrxReport;
 begin
 
      frxReport1.PrepareReport;
@@ -441,8 +428,6 @@ begin
 end;
 
 procedure TfrmRapor.btnYazdir_Click(Sender: TObject);
-var
-  durum : boolean;
 begin
 //     frxReport1.PreviewOptions.Buttons := [pbPrint];
 
