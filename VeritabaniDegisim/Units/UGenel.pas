@@ -6,7 +6,7 @@ uses ADODB, Classes, Forms, system.UITypes;
 
 type
   TServerConnectionParameterRec = record
-    sServerNamex : String;
+    sServerName : String;
     sUserName : String;
     sPassword : String;
     sDefaultDBName : String;
@@ -41,7 +41,7 @@ procedure FSRollback;
 function ExistsRecord (var aQuery : TFSQuery) : Boolean;
 function CreateNewConnection (const pServerName, pUserName, pPassword, pDBName : String): Boolean;overload;
 function CreateNewConnection (const aParamRec: TServerConnectionParameterRec): Boolean;overload;
-function ServerConnectionParameterRec (const pServerName, pUserName, pPassword, pDBName : String): TServerConnectionParameterRec;
+function ServerConnectionParameterRec (const pServerName, pUserName, pPassword, pDBName, pLocalExportFolder : String): TServerConnectionParameterRec;
 function ServerConnectionParameterIndex (const aList: TServerConnectionParameters; const aRec: TServerConnectionParameterRec): Integer;
 function ServerConnectionParameterAdd (var aList: TServerConnectionParameters; const aRec: TServerConnectionParameterRec): Integer;
 function ConnectionReference: TADOConnection;
@@ -173,12 +173,13 @@ begin
   Result := CreateNewConnection(aParamRec.sServerName, aParamRec.sUserName, aParamRec.sPassword, aParamRec.sDefaultDBName);
 end;
 
-function ServerConnectionParameterRec (const pServerName, pUserName, pPassword, pDBName : String): TServerConnectionParameterRec;
+function ServerConnectionParameterRec (const pServerName, pUserName, pPassword, pDBName, pLocalExportFolder : String): TServerConnectionParameterRec;
 begin
   Result.sServerName := pServerName;
   Result.sUserName := pUserName;
   Result.sPassword := pPassword;
   Result.sDefaultDBName := pDBName;
+  Result.sLocalExportFolder := pLocalExportFolder;
 end;
 
 function ServerConnectionParameterIndex (const aList: TServerConnectionParameters; const aRec: TServerConnectionParameterRec): Integer;
@@ -204,6 +205,7 @@ begin
   aList [High (aList)].sUserName := aRec.sUserName;
   aList [High (aList)].sPassword := aRec.sPassword;
   aList [High (aList)].sDefaultDBName := aRec.sDefaultDBName;
+  aList [High (aList)].sLocalExportFolder := aRec.sLocalExportFolder;
   Result := High (aList);
 end;
 

@@ -64,8 +64,8 @@ object AnaForm: TAnaForm
     FocusControl = txtDBName
   end
   object btnTestConnection: TSpeedButton
-    Left = 100
-    Top = 201
+    Left = 101
+    Top = 217
     Width = 117
     Height = 22
     Caption = 'Ba'#287'lant'#305'y'#305' Test Et...'
@@ -79,6 +79,23 @@ object AnaForm: TAnaForm
     AutoSize = False
     Caption = 'Ba'#287'lant'#305' Bilgileri'
     WordWrap = True
+  end
+  object lblLocalFolder: TLabel
+    Left = 8
+    Top = 202
+    Width = 82
+    Height = 13
+    AutoSize = False
+    Caption = 'Dosya Yolu'
+    FocusControl = txtLocalFolder
+  end
+  object btnLocalFolder: TSpeedButton
+    Left = 196
+    Top = 195
+    Width = 22
+    Height = 22
+    Caption = '...'
+    OnClick = btnLocalFolderClick
   end
   object xTran: TCheckBox
     Left = 312
@@ -206,6 +223,14 @@ object AnaForm: TAnaForm
     Alignment = taLeftJustify
     Caption = 'Dosya '#304'simlerini Klas'#246're Yedir'
     TabOrder = 14
+  end
+  object txtLocalFolder: TEdit
+    Left = 96
+    Top = 195
+    Width = 98
+    Height = 21
+    ReadOnly = True
+    TabOrder = 15
   end
   object aTimer: TTimer
     OnTimer = aTimerTimer
