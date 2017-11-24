@@ -205,7 +205,9 @@ var
   list : ArrayListeSecimler;
   key : word;
 begin
-  list := PersonelList.xListeGetir;
+  list := PersonelList.ListeGetir;
+  if High (list) < 0 then Exit;
+
   Datalar.ButtonEditSecimlist := List;
   Ado.FieldByName('PersoneldosyaNo').AsString := List[0].kolon1;
 

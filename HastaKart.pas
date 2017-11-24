@@ -1232,11 +1232,14 @@ begin
             List.SkinName := AnaForm.dxSkinController1.SkinName;
             List.Grup := True;
 
-            _L_ := List.xListeGetir;
-            _name_ := TcxButtonKadir(sender).ButtonName;
-            _name_ := StringReplace(_name_,'cxBtn','',[rfReplaceAll]);
-            TcxButtonEditKadir(FindComponent(_name_)).Text := _L_[0].kolon1;
-            TcxButtonEditKadir(FindComponent('tanimi')).Text := _L_[0].kolon2;
+            _L_ := List.ListeGetir;
+            if High (_L_) >= 0 then
+            begin
+              _name_ := TcxButtonKadir(sender).ButtonName;
+              _name_ := StringReplace(_name_,'cxBtn','',[rfReplaceAll]);
+              TcxButtonEditKadir(FindComponent(_name_)).Text := _L_ [0].kolon1;
+              TcxButtonEditKadir(FindComponent('tanimi')).Text := _L_ [0].kolon2;
+            end;
         end;
     1 : begin
          // post;

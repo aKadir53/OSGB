@@ -405,8 +405,8 @@ var
   ado , adod : TADOQuery;
   L : ArrayListeSecimler;
 begin
-   L := ReceteSablonAc.xListeGetir;
-
+   L := ReceteSablonAc.ListeGetir;
+   if High (L) < 0 then Exit;
    if L[0].kolon1 <> ''
    Then Begin
      ado := TADOQuery.Create(nil);
@@ -895,19 +895,19 @@ begin
    TaniListe.Where := ifThen(cxChkSIK.Checked,'Sikkullan > 0','');
    TaniListe.SkinName := AnaForm.dxSkinController1.SkinName;
    TaniListe.SiralamaKolonu := ifThen(cxChkSIK.Checked,'Sikkullan Desc,TANI','TANI');
-   List := TaniListe.xListeGetir;
+   List := TaniListe.ListeGetir;
 
    for I := 0 to length(List) - 1 do
    begin
     try
-       if not ADO_receteTani.Locate('taniKodu',list[I].kolon1,[])
+       if not ADO_receteTani.Locate('taniKodu',List[I].kolon1,[])
        then begin
          ADO_receteTani.Append;
-         ADO_receteTani.FieldByName('taniKodu').AsString := list[I].kolon1;
-         ADO_receteTani.FieldByName('tani').AsString := list[I].kolon2;
+         ADO_receteTani.FieldByName('taniKodu').AsString := List[I].kolon1;
+         ADO_receteTani.FieldByName('tani').AsString := List[I].kolon2;
          ADO_receteTani.post;
 
-         sql := 'update icd_teshisleri set Sikkullan = Sikkullan + 1 where ICDKODU = ' + QuotedStr(list[I].kolon1);
+         sql := 'update icd_teshisleri set Sikkullan = Sikkullan + 1 where ICDKODU = ' + QuotedStr(List[I].kolon1);
          ado := TADOQuery.Create(nil);
          try
            ado.Connection := DATALAR.ADOConnection2;
