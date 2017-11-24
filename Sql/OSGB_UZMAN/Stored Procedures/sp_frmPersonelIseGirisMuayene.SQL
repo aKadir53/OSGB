@@ -1,6 +1,6 @@
 BEGIN TRAN
 GO
--- [CMPTR2] - [28.10.2017 11:34:56]
+-- [CMPTR2] - [28.10.2017 11:35:05]
 ALTER PROCEDURE [dbo].[sp_frmPersonelIseGirisMuayene] @dosyaNo varchar(6) = '',@gelisNo int,@grup varchar(20) = ''
 AS
 
@@ -42,7 +42,7 @@ begin
 select 
   
 MS.PersonelKodu, s.tanimi MuayeneSoru,MS.GrupKod,MS.altGrupKod,Ms.value,MS.aciklama,
-(case when MS.value = 'Evet' then 'X' else '' end) Evet,
+--(case when MS.value = 'Evet' then 'X' else '' end) Evet,
 (case when MS.value = 'Hayýr' then 'X' else '' end) Hayir,
 (case  MS.altGrupKod
 when 3 then 'Evet ise taný' 

@@ -1,11 +1,11 @@
 BEGIN TRAN
 GO
--- [CMPTR2] - [09.08.2017 03:19:18]
-alter FUNCTION [dbo].[fn_KLINIK_KALITE_BILGISI] (@tarih1 varchar(10) , @tarih2 varchar(10))
-RETURNS varchar(5000)
+-- [CMPTR2] - [09.08.2017 23:01:24]
+ALTER FUNCTION [dbo].[fn_KLINIK_KALITE_BILGISI] (@tarih1 varchar(10) , @tarih2 varchar(10))
+RETURNS varchar(max)
 AS
 BEGIN
-declare @s varchar(5000)
+declare @s varchar(max)
 
 SET @s = ''
 					

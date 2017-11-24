@@ -1,6 +1,6 @@
 BEGIN TRAN
 GO
--- [CMPTR2] - [14.10.2017 18:30:18]
+-- [CMPTR2] - [14.10.2017 18:31:57]
 alter PROCEDURE [dbo].[sp_YeniPersonelHastaKarti]
 @SirketKod varchar(10),
 @TCKIMLIKNO varchar(15),
@@ -80,7 +80,7 @@ VALUES(
 
 
 
-SELECT @DOSYANO as DosyaNo
+--SELECT @DOSYANO as DosyaNo
 GO
 exec sp_vw_sys_upd 'P ', 'dbo', 'sp_YeniPersonelHastaKarti'
 GO

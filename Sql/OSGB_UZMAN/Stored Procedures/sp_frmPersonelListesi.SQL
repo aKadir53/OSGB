@@ -1,12 +1,13 @@
 BEGIN TRAN
 GO
--- [CMPTR2] - [25.09.2017 17:09:12]
+-- [CMPTR2] - [25.09.2017 17:10:18]
 ALTER PROCEDURE [dbo].[sp_frmPersonelListesi] @ap varchar(5) = '1',@ktip varchar(10) = '1'
 AS
 select *,(case when isnull(diger,'') = '' then '0' else '1' end) ozeldurum , 
 (case when (CHARINDEX('5',h.GELHAST) > 0 OR CHARINDEX('7',h.GELHAST) > 0) THEN '1' ELSE '' END) Diabet,
 (case when isnull(AntiHbs,'') = '' THEN '0' ELSE AntiHbs END) 'AntiHbs',
-IK.ADI il,ILCK.ADI ilce,MK.ADI mahalle 
+IK.ADI il,ILCK.ADI ilce,MK.ADI mahalle,dbo.fn_yasTarih(h.doGUMTARIHI,getdate())
+ 
 
 from Personelkart h
 -- left join gelisler g on g.dosyano = h.dosyano --and g.gelisno = (select max(gelisno) from gelisler where dosyano = h.dosyano)
