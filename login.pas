@@ -125,9 +125,6 @@ uses AnaUnit, data_modul;
 
 
 function TfrmLogin.SUTKODU : string;
-var
-  sql : string;
-  ADO : TadoQuery;
 begin
  //   ado := TadoQuery.Create(self);
   //  ado.Connection := datalar.ADOConnection2;
@@ -176,9 +173,6 @@ begin
 end;
 
 procedure Thread1;
-  var
-    i: Integer;
-    tSql : string;
 begin
  //  datalar.bt := 0;
 //   frmLogin.txtip.Caption := 'Lisans Alýnýyor....';
@@ -189,9 +183,8 @@ begin
 //   else
 //      datalar.bt := 2;
 end;
+
 procedure Thread2;
-var
-   i: Integer;
 begin
 
 //   TfrmLogin.Shape1.Brush.Color := clWhite;
@@ -255,8 +248,8 @@ procedure TfrmLogin.FormCreate(Sender: TObject);
 begin
    LoginSayfalar.ActivePageIndex := 0;
    Edit1.Text := RegOku ('LastLogin');
-   DecimalSeparator := '.';
-   ThousandSeparator := ',';
+   FormatSettings.DecimalSeparator := '.';
+   FormatSettings.ThousandSeparator := ',';
 end;
 
 procedure TfrmLogin.FormActivate(Sender: TObject);
@@ -343,7 +336,7 @@ begin
                //SUTKODU;
                datalar.doktorKodu := login.FieldByName('doktor').AsString;
                AnaForm.dxSkinController1.SkinName := login.FieldByName('userSkin').AsString;
-               DateSeparator := '.';
+               FormatSettings.DateSeparator := '.';
                LoginSayfalar.ActivePageIndex := 2;
                Application.ProcessMessages;
                datalar.login;
@@ -413,8 +406,8 @@ end;
 procedure TfrmLogin.FormClose(Sender: TObject; var Action: TCloseAction);
 begin
 
-  DecimalSeparator := '.';
-  ThousandSeparator := ',';
+  FormatSettings.DecimalSeparator := '.';
+  FormatSettings.ThousandSeparator := ',';
   action := cafree;
 
 end;
@@ -489,7 +482,9 @@ begin
     else
       ListeAc1.Where := '';
 
-    List := ListeAc1.xListeGetir;
+    List := ListeAc1.ListeGetir;
+    if High (List) < 0 then Exit;
+
     txtSirket.Text := list[0].kolon2;
     txtDonemler.Text := list[0].kolon1;
     datalar.AktifSirketAdi := txtSirket.Text;

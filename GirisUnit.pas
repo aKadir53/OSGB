@@ -296,7 +296,7 @@ type
 var
   GirisForm: TGirisForm;
   _SQLRUN_ : string;
-  L : TListeAc;
+  Lxxxx : TListeAc;
   oldRenk : TColor;
 implementation
 
