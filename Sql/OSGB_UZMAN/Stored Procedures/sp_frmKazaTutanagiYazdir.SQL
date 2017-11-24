@@ -1,27 +1,17 @@
 BEGIN TRAN
 GO
--- [CMPTR2] - [24.10.2017 15:56:56]
-alter PROCEDURE [dbo].[sp_frmKazaTutanagiYazdir] @ID int
+-- [CMPTR2] - [24.10.2017 22:50:43]
+ALTER PROCEDURE [dbo].[sp_frmKazaTutanagiYazdir] @ID int
 AS
 
+select * from IsKazalari I
+join PersonelKart P on P.dosyaNo = I.PersonelDosyaNo
+join SIRKETLER_TNM S on S.Sirketkod = P.SirketKod
+join SIRKET_SUBE_TNM sb on sb.sirketKod = S.SirketKod and sb.subeKod = P.Sube
+join Bolumler b on b.kod = P.Bolum
+join Uzuvlar U on U.kod = I.KazadaYaralananUzuv
 
-ALTER TABLE [dbo].[portfoyKontak](
-	[kurumKodu] [varchar](10) NOT NULL,
-	[Tarih] [datetime] NOT NULL,
-	[saat] [datetime] NOT NULL,
-	[id] [int] IDENTITY(1,1) NOT NULL,
-	[Aciklama] [varchar](500) NULL,
-	[durum] [varchar](50) NULL,
-	[Tip] [varchar](1) NULL,
-	[Hatýrlatma] [datetime] NULL,
- CONSTRAINT [PK_portfoyKontak] PRIMARY KEY CLUSTERED 
-(
-	[kurumKodu] ASC,
-	[Tarih] ASC,
-	[saat] ASC,
-	[id] ASC
-)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
-) ON [PRIMARY]
+where I.ID = @ID
 GO
 exec sp_vw_sys_upd 'P ', 'dbo', 'sp_frmKazaTutanagiYazdir'
 GO

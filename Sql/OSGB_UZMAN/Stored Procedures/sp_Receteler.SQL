@@ -1,6 +1,6 @@
 BEGIN TRAN
 GO
--- [CMPTR2] - [07.10.2017 12:22:02]
+-- [CMPTR2] - [07.10.2017 12:23:01]
 ALTER PROCEDURE [dbo].[sp_Receteler](@sirketKod varchar(10) = '',@tarih1 VARCHAR(10),@tarih2 VARCHAR(10),@tip VARCHAR(1) = '')
 as
 BEGIN
@@ -10,7 +10,7 @@ BEGIN
 	select r.*,h.HASTAADI, h.HASTASOYADI,h.TCKIMLIKNO,h.SirketKod
 	from recete r  
 	join Personelkart h on h.dosyaNo = r.dosyaNO  
-	where convert(varchar,tarih,112) between @tarih1 and @tarih2 
+	where h.SirketKod like  '%'+@sirketKod+'%' and convert(varchar,tarih,112) between @tarih1 and @tarih2 
 	order by h.SirketKod,id DESC,h.HASTAADI,h.HASTASOYADI	
 END	
 	

@@ -1,6 +1,6 @@
 BEGIN TRAN
 GO
--- [CMPTR] - [24.10.2017 11:09:07]
+-- [CMPTR] - [24.10.2017 11:33:29]
 ALTER  --  ALTER
  TRIGGER [dbo].[SIRKETLER_TNM_TRG]
    ON  [dbo].[SIRKETLER_TNM]
@@ -9,6 +9,7 @@ AS
 BEGIN
   set nocount on
   --firma kartý insert olmuþsa ve þube tablosunda 00 kodlu yoksa ekler...
+  --firma kartý bilgileri güncellendiðinde ayný bilgi þubede merkezdeki ile ayný deðere sahipse onlarý da deðiþtirir.
   if exists (select 1 from inserted)
   begin
     insert into SIRKET_SUBE_TNM (SirketKod, subeKod, subeTanim, SubeDoktor, BolgeMudurlukSicilNo)
@@ -16,15 +17,38 @@ BEGIN
     from inserted s
     where not exists (select 1 from SIRKET_SUBE_TNM sb where sb.sirketKod = s.SirketKod and sb.subeKod = '00')
   end
-  -- firma kartý update olmuþsa ve bölge müdürlük sicil no deðiþmiþse ve herhangi bir þubenin bölge müdürlük sicil no deðeri ana firma kartýnýn eski sicil no deðeri ile ayný ise o þubelerin bölge müdürlük sicil numaralarýný 
+  -- ÜÖ 20171024 firma kartý update olmuþsa.... 
   if exists (select 1 from inserted) and exists (select 1 from deleted)
   begin
+    -- ÜÖ 20171024 ve bölge müdürlük sicil no deðiþmiþse 
+    --             ve herhangi bir þubenin bölge müdürlük sicil no deðeri ana firma kartýnýn eski sicil no deðeri ile ayný ise 
+    --             o þubelerin bölge müdürlük sicil numaralarýný merkezinki ile birlikte deðiþtir
     update Sube set sube.BolgeMudurlukSicilNo = ins.BolgeMudurlukSicilNo 
     from inserted ins
     inner join deleted del on del.SirketKod = ins.SirketKod
       and ISNULL (del.BolgeMudurlukSicilNo, '') <> IsNull (ins.BolgeMudurlukSicilNo, '')
     inner join SIRKET_SUBE_TNM sube on sube.sirketKod = del.SirketKod
       and ISNULL (sube.BolgeMudurlukSicilNo, '') = ISNULL (del.BolgeMudurlukSicilNo, '')
+
+    -- ÜÖ 20171024 ve doktor deðiþmiþse 
+    --             ve herhangi bir þubenin doktor deðeri ana firma kartýnýn eski doktor deðeri ile ayný ise 
+    --             o þubelerin doktorlarýný merkezinki ile birlikte deðiþtir
+    update Sube set sube.subedoktor = ins.doktor 
+    from inserted ins
+    inner join deleted del on del.SirketKod = ins.SirketKod
+      and ISNULL (del.doktor, '') <> IsNull (ins.doktor, '')
+    inner join SIRKET_SUBE_TNM sube on sube.sirketKod = del.SirketKod
+      and ISNULL (sube.subedoktor, '') = ISNULL (del.doktor, '')
+
+    -- ÜÖ 20171024 ve iþyeri sicili deðiþmiþse 
+    --             ve herhangi bir þubenin iþyeri sicili deðeri ana firma kartýnýn eski iþyeri sicili deðeri ile ayný ise 
+    --             o þubelerin iþyeri sicililerini merkezinki ile birlikte deðiþtir
+    update Sube set sube.subeSiciNo = ins.IsyeriSicilNo 
+    from inserted ins
+    inner join deleted del on del.SirketKod = ins.SirketKod
+      and ISNULL (del.IsyeriSicilNo, '') <> IsNull (ins.IsyeriSicilNo, '')
+    inner join SIRKET_SUBE_TNM sube on sube.sirketKod = del.SirketKod
+      and ISNULL (sube.subeSiciNo, '') = ISNULL (del.IsyeriSicilNo, '')
   end
   set nocount off
 END

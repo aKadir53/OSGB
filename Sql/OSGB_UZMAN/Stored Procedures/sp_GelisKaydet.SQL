@@ -1,6 +1,6 @@
 BEGIN TRAN
 GO
--- [CMPTR2] - [27.09.2017 00:52:53]
+-- [CMPTR2] - [27.09.2017 00:55:34]
 ALTER PROCEDURE [dbo].[sp_GelisKaydet]
 @dosyaNo varchar(6),
 @gelisNo int,
@@ -23,9 +23,10 @@ set @PN = ''
 			IF @doktor = ''
 			select @doktor = kod from doktorlar where durum = 'Aktif'
 
-			select @SERVIS = (case when isnull(SLXX,'') = '' then 1062 else SLXX end) 
-			from parametreler
-			where SLK = '33' and SLB = 'BRANS'
+			set @SERVIS = '4667'
+			--select @SERVIS = (case when isnull(SLXX,'') = '' then 1062 else SLXX end) 
+			--from parametreler
+			--where SLK = '33' and SLB = 'BRANS'
 
 			--exec sp_TaniEkle @dosyaNo,@gelisno
 

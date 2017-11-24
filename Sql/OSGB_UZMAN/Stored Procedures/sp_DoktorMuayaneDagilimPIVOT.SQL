@@ -1,6 +1,6 @@
 BEGIN TRAN
 GO
--- [CMPTR2] - [21.10.2017 10:01:59]
+-- [CMPTR2] - [21.10.2017 10:02:54]
 ALTER PROCEDURE [dbo].[sp_DoktorMuayaneDagilimPIVOT] @Yil varchar(10),@DoktorKodu varchar(4) = ''
 AS
 BEGIN
@@ -47,7 +47,6 @@ END
 		where g.doktor like '%'+@DoktorKodu+'%'
 		group by d.tanimi,Tanim,bhdat
 
-
 	 ) as t
 
 	PIVOT
@@ -55,7 +54,7 @@ END
 	max(s)
 	FOR tarIh IN ([OCAK],[SUBAT],[MART],[NISAN],[MAYIS],[HAZIRAN],[TEMMUZ],[AGUSTOS],[EYLUL],[EKIM],[KASIM],[ARALIK]) 
 	) AS p
-	
+			order by tanimi
 
 
 

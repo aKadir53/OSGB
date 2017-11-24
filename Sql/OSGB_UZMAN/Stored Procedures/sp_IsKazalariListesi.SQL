@@ -1,23 +1,45 @@
 BEGIN TRAN
 GO
--- [CMPTR] - [27.10.2017 14:11:50]
+-- [CMPTR] - [27.10.2017 14:19:07]
 alter -- ALTER
   procedure dbo.sp_IsKazalariListesi @IlkTarih datetime, @SonTarih datetime
 as
 begin
-  select BL.tanimi [Kaza Bölümü], 
+  select 
+    year (KazaTarihi) [Kaza Yýlý], 
+    month (KazaTarihi) [Kaza Ayý],
+    IK.PersonelDosyaNo, 
+    IK.ID, 
+    IK.DuzenlemeTarihi, 
     KazaTarihi [Kaza Tarihi], 
-	year (KazaTarihi) [Kaza Yýlý], 
-	month (KazaTarihi) [Kaza Ayý],
-    KazaSonucuBirGunIstirahatAlan [1 Gün Ýstirahat],
-    KazaSonucuikiGunIstirahatAlan [2 Gün Ýstirahat],
-    KazaSonucuUcGunIstirahatAlan [3 Gün Ýstirahat],
-    KazaSonucuUcGunFazlaIstirahatAlan [4+x Gün Ýstirahat],
-    KazaSonucuHafifYarali [Hafif Yaralý Sayýsý],
-    KazaSonucuUzuvKaybi [Uzuv Kaybý],
-    KazaSonucuYaraliSayisi [Yaralý Sayýsý],
-    KazaSonucuOluSayisi [Ölü Sayýsý],
-	IK.*
+    IK.KazaTarihiIsBasiSaati, 
+    IK.KazaninMeydanaGelBolum, 
+    BL.tanimi [Kaza Bölümü], 
+    IK.KazadaYaralananUzuv, 
+    IK.YaralanmaSekli, 
+    IK.BirinciDereceYakin, 
+    IK.BirinciDereceYakinAdres, 
+    IK.MeslekHastTaniTarihi, 
+    IK.MeslekHastTani, 
+    IK.MeslekHastTaniileSevkEdilenPerCalBolumIs, 
+    IK.MeslekHastSaptanmaSekli, 
+    IK.KazaSonucuOluSayisi [Ölü Sayýsý],
+    IK.KazaSonucuYaraliSayisi [Yaralý Sayýsý],
+    IK.KazaSonucuUzuvKaybi [Uzuv Kaybý],
+    IK.KazaSonucuHafifYarali [Hafif Yaralý Sayýsý],
+    IK.KazaSonucuBirGunIstirahatAlan [1 Gün Ýstirahat],
+    IK.KazaSonucuikiGunIstirahatAlan [2 Gün Ýstirahat],
+    IK.KazaSonucuUcGunIstirahatAlan [3 Gün Ýstirahat],
+    IK.KazaSonucuUcGunFazlaIstirahatAlan [4+x Gün Ýstirahat],
+    IK.KazaGorenVarmi, 
+    IK.Sahit1, 
+    IK.Sahit1Adres, 
+    IK.Sahit2, 
+    IK.Sahit2Adres, 
+    IK.Sahit3, 
+    IK.Sahit3Adres, 
+    IK.KazaSebebOlusSekli, 
+    IK.IsverenveyaVekili
   from dbo.IsKazalari IK
   left outer join Bolumler BL on BL.kod = IK.KazaninMeydanaGelBolum
   where IK.KazaTarihi between @IlkTarih and @SonTarih

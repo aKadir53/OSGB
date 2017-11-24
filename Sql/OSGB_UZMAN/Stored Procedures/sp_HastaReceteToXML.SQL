@@ -1,6 +1,6 @@
 BEGIN TRAN
 GO
--- [CMPTR2] - [06.10.2017 20:43:23]
+-- [CMPTR] - [11.10.2017 16:23:34]
 ALTER PROCEDURE [dbo].[sp_HastaReceteToXML](@receteId int)
 as
 BEGIN
@@ -13,7 +13,7 @@ BEGIN
 	@user varchar(20),
 	@sifre varchar(20)
 
-	select @tesisKodu = value from WebServisErisimBilgileri where SLK = '99' and SLB = '00'
+--	select @tesisKodu = value from WebServisErisimBilgileri where SLK = '99' and SLB = '00'
 
 	set @receteIlacBilgisi = ''
 	set @receteTaniBilgisi = ''
@@ -38,7 +38,8 @@ BEGIN
 			@doktorTc = d.tcKimlikNo,
 			@user = d.eReceteKullanici,
 			@sifre = d.eReceteSifre,
-			@pin = d.pin	
+			@pin = d.pin, 
+			@tesisKodu = d.Tesiskodu
 	from recete r  
 	join Personelkart h on h.dosyaNo = r.dosyaNO
 	left join gelisler g on g.dosyaNo = r.dosyaNO and g.gelisNo = r.gelisNo  

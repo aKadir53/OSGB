@@ -1,8 +1,9 @@
 BEGIN TRAN
 GO
--- [CMPTR] - [12.10.2017 15:32:54]
+-- [CMPTR] - [12.10.2017 15:33:27]
 alter--ALTER
   view dbo.VW_MuayeneTipleri
+with schemabinding
 AS
 select cast (1 as int) Kod, cast ('Ýþe Giriþ Muayenesi' as varchar (20)) Tanim
 UNION ALL

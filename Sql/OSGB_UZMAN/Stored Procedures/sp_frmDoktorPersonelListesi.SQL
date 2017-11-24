@@ -1,6 +1,6 @@
 BEGIN TRAN
 GO
--- [CMPTR] - [18.10.2017 15:03:55]
+-- [CMPTR] - [18.10.2017 15:06:20]
 ALTER PROCEDURE [dbo].[sp_frmDoktorPersonelListesi] @firma varchar(10) = '',@ap int = 1,@doktor varchar(4)
 AS
 select h.*,(case when isnull(diger,'') = '' then '0' else '1' end) ozeldurum , 
@@ -15,14 +15,14 @@ isnull(DATEDIFF(D,(select max(cast(BHDAT as datetime)) from gelisler where dosya
 h.HASTAADI+ ' '+h.HASTASOYADI ADI , s.tanimi,cast(BASLANGIC as datetime) iseBaslama,isnull(s.sube,'00') Sube,isnull(sb.subeTanim,'MERKEZ') subeTanim
 from Personelkart h
 left join SIRKETLER_TNM s on s.SirketKod = h.SirketKod
-left join SIRKET_SUBE_TNM sb on sb.sirketKod = h.SirketKod and sb.subeKod = h.Sube
+left join SIRKET_SUBE_TNM sb on sb.sirketKod = h.SirketKod and sb.subeKod = isnull(h.sube,'00')
  left join Kurumlar k on k.kurum = h.kurum
  left join SKRS_IL_KODLARI IK on Ik.KODU = h.EV_SEHIR
  left join SKRS_ILCE_KODLARI ILCK on ILCK.KODU = H.EV_ILCE
  left join SKRS_MAHALLE_KODLARI MK on MK.KODU = H.EV_MAHALLE
 where h.aktif = @ap and
 h.sirketKod like  '%' + @firma + '%' and
-((s.doktor = @doktor and isnull(s.sube,'00') = '00') or sb.subeDoktor = @doktor)
+((s.doktor = @doktor) or sb.subeDoktor = @doktor)
 order by h.SirketKod,sb.subeKod,h.HASTAADI,h.HASTASOYADI
 GO
 exec sp_vw_sys_upd 'P ', 'dbo', 'sp_frmDoktorPersonelListesi'
