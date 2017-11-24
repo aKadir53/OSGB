@@ -1,6 +1,6 @@
 BEGIN TRAN
 GO
--- [CMPTR2] - [28.10.2017 12:10:53]
+-- [CMPTR2] - [28.10.2017 12:16:39]
 ALTER PROCEDURE [dbo].[sp_frmPersonelIseGirisMuayene] @dosyaNo varchar(6) = '',@gelisNo int,@grup varchar(20) = ''
 AS
 
@@ -72,9 +72,9 @@ MS.PersonelKodu, s.tanimi MuayeneSoru,MS.GrupKod,MS.altGrupKod,Ms.value,MS.acikl
 (case when MS.value = 'Hayýr' then 'X' else '' end) Hayir,
 (case when MS.value = 'Býrakmýþ' then 'X' else '' end) Birakmis,
 
-(case  when (MS.altGrupKod = 9 and MS.value = 'Býrakmýþ' and S.id = 32) then MS.value else '' end) Birakmisiseayyýlonce,
+(case  when (MS.altGrupKod = 9 and MS.value = 'Býrakmýþ' and S.id = 32) then MS.value else '' end) Birakmisiseayyilonce,
 (case  when (MS.altGrupKod = 9 and MS.value = 'Býrakmýþ' and S.id = 33) then MS.value else '' end) Ayyilicmis,
-(case  when (MS.altGrupKod = 9 and MS.value = 'Býrakmýþ' and S.id = 34) then MS.value else '' end) Adetguniçmis	,
+(case  when (MS.altGrupKod = 9 and MS.value = 'Býrakmýþ' and S.id = 34) then MS.value else '' end) Adetgunicmis	,
 (case  when (MS.altGrupKod = 9 and MS.value = 'Evet' and S.id = 30) then MS.value else '' end) yildir,
 (case  when (MS.altGrupKod = 9 and MS.value = 'Evet' and S.id = 31) then MS.value else '' end) adetGun   
 

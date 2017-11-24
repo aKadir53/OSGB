@@ -1,9 +1,15 @@
 BEGIN TRAN
 GO
--- [CMPTR2] - [21.10.2017 10:21:05]
-ALTER PROCEDURE [dbo].[sp_Receteler](@sirketKod varchar(10) = '',@tarih1 VARCHAR(10),@tarih2 VARCHAR(10),@tip VARCHAR(1) = '')
+-- [CMPTR2] - [21.10.2017 10:27:34]
+ALTER PROCEDURE [dbo].[sp_Receteler](@sirketKod varchar(10) = '',@IlkTarih dateTime,@SonTarih datetime,@tip VARCHAR(1) = '')
 as
 BEGIN
+
+declare @tarih1 VARCHAR(10),@tarih2 VARCHAR(10)
+
+set @tarih1 = convert(varchar,@IlkTarih,112)
+set @tarih2 = convert(varchar,@SonTarih,112)
+
 	
 IF @tip = ''
 BEGIN
