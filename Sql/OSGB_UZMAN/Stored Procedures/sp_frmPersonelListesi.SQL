@@ -1,6 +1,6 @@
 BEGIN TRAN
 GO
--- [CMPTR2] - [25.09.2017 16:41:36]
+-- [CMPTR2] - [25.09.2017 16:42:14]
 ALTER PROCEDURE [dbo].[sp_frmPersonelListesi] @ap varchar(5) = '1',@ktip varchar(10) = '1'
 AS
 select *,(case when isnull(diger,'') = '' then '0' else '1' end) ozeldurum , 
@@ -8,7 +8,7 @@ select *,(case when isnull(diger,'') = '' then '0' else '1' end) ozeldurum ,
 (case when isnull(AntiHbs,'') = '' THEN '0' ELSE AntiHbs END) 'AntiHbs' 
 
 from Personelkart h
- left join gelisler g on g.dosyano = h.dosyano --and g.gelisno = (select max(gelisno) from gelisler where dosyano = h.dosyano)
+-- left join gelisler g on g.dosyano = h.dosyano --and g.gelisno = (select max(gelisno) from gelisler where dosyano = h.dosyano)
  left join Kurumlar k on k.kurum = h.kurum
  --LEFT JOIN makinalar m ON m.makinaNo = h.makinaNo
 where aktif = @ap

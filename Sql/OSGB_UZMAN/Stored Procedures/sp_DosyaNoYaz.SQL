@@ -1,6 +1,6 @@
 BEGIN TRAN
 GO
--- [CMPTR] - [17.10.2017 07:45:45]
+-- [CMPTR] - [17.10.2017 07:46:09]
 ALTER PROCEDURE [dbo].[sp_DosyaNoYaz] @DosyaNo float, @t varchar(10) = 'DN'
 AS
 begin

@@ -1,6 +1,6 @@
 BEGIN TRAN
 GO
--- [CMPTR2] - [14.10.2017 17:58:41]
+-- [CMPTR2] - [14.10.2017 18:10:25]
 alter PROCEDURE [dbo].[sp_YeniPersonelHastaKarti]
 @TCKIMLIKNO varchar(15),
 @HASTAADI varchar(50),
@@ -19,8 +19,7 @@ alter PROCEDURE [dbo].[sp_YeniPersonelHastaKarti]
 @baslangic varchar(10),
 @kanGrubu varchar(1),
 @USER_ID varchar(20),
-@DATE_ALTER varchar(20),
-@vatandasTip VARCHAR(1) = '0'
+@DATE_ALTER varchar(20)
 
 
 AS
@@ -55,8 +54,8 @@ INSERT INTO [HASTAKART]
   [BASLANGIC],
   [KANGRUBU],
   [USER_ID],
-  [DATE_CREATE],
-  [vatandasTip]
+  [DATE_CREATE]
+
 
 )
 VALUES(
@@ -78,8 +77,8 @@ VALUES(
   @Baslangic,
   @KanGrubu,
   @USER_ID,
-  @DATE_CREATE,
-  @vatandasTip
+  @DATE_CREATE
+
 
 )
 

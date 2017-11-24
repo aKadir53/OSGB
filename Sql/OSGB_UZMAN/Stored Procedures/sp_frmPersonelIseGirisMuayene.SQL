@@ -1,6 +1,6 @@
 BEGIN TRAN
 GO
--- [CMPTR2] - [12.10.2017 17:06:44]
+-- [CMPTR2] - [19.10.2017 15:16:59]
 ALTER PROCEDURE [dbo].[sp_frmPersonelIseGirisMuayene] @dosyaNo varchar(6) = '',@gelisNo int
 AS
 
@@ -16,7 +16,7 @@ select MS.PersonelKodu, s.tanimi MuayeneSoru,MS.GrupKod,MS.altGrupKod,
        replicate('0',2-len(cast(MS.GrupKod as varchar)))+cast(MS.GrupKod as varchar) + ' - ' + MG.tanimi GrupTanimi,
 	   replicate('0',2-len(cast(MS.altGrupKod as varchar)))+cast(MS.altGrupKod as varchar) +' - ' + MAG.tanimi altGrupTanimi,
 	   MS.value,MS.tarih,MS.aciklama,
-     V.tanimi valueObjevalues,valueTip,defaultValue,d.*
+     V.tanimi valueObjevalues,valueTip,defaultValue,MS.gelisNo,d.*
 from PersoneliseGirisMuayene MS
 join IseGirisMuayeneSorulari S on S.id = MS.SoruId
 join IseGirisMuayeneGruplari MG on MG.kod = MS.grupKod

@@ -1,6 +1,6 @@
 BEGIN TRAN
 GO
--- [CMPTR2] - [21.10.2017 09:55:42]
+-- [CMPTR2] - [21.10.2017 09:59:22]
 ALTER PROCEDURE [dbo].[sp_DoktorMuayaneDagilimPIVOT] @Yil varchar(10),@DoktorKodu varchar(4) = ''
 AS
 BEGIN
@@ -41,10 +41,11 @@ END
    from
 	(
 
-		select count(*) s , Tanim,doktor,dbo.aytoadi(substring(g.bhdat,5,2)) tarIh from VW_MuayeneTipleri mt
+		select count(*) s , Tanim,d.tanimi,dbo.aytoadi(substring(g.bhdat,5,2)) tarIh from VW_MuayeneTipleri mt
 		join gelisler g on g.TEDAVITURU = mt.Kod
+		join DoktorlarT d on d.kod = g.doktor
 		where g.doktor like '%'+@DoktorKodu+'%'
-		group by Tanim,doktor,bhdat
+		group by Tanim,d.tanimi,bhdat
 
 
 	 ) as t

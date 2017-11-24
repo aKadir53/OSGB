@@ -1,6 +1,6 @@
 BEGIN TRAN
 GO
--- [CMPTR] - [27.10.2017 12:40:52]
+-- [CMPTR] - [27.10.2017 12:41:13]
 alter -- ALTER
   procedure dbo.sp_IsKazalariListesi @IlkTarih datetime, @SonTarih datetime
 as
@@ -16,7 +16,8 @@ begin
     KazaSonucuHafifYarali [Hafif Yaralý Sayýsý],
     KazaSonucuUzuvKaybi [Uzuv Kaybý],
     KazaSonucuYaraliSayisi [Yaralý Sayýsý],
-    KazaSonucuOluSayisi [Ölü Sayýsý]
+    KazaSonucuOluSayisi [Ölü Sayýsý],
+	IK.*
   from dbo.IsKazalari IK
   left outer join Bolumler BL on BL.kod = IK.KazaninMeydanaGelBolum
   where IK.KazaTarihi between @IlkTarih and @SonTarih

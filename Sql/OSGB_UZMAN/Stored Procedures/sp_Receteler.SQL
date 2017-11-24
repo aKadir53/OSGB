@@ -1,6 +1,6 @@
 BEGIN TRAN
 GO
--- [CMPTR2] - [07.10.2017 10:24:33]
+-- [CMPTR2] - [07.10.2017 10:25:13]
 ALTER PROCEDURE [dbo].[sp_Receteler](@tarih1 VARCHAR(10),@tarih2 VARCHAR(10),@tip VARCHAR(1) = '')
 as
 BEGIN
@@ -25,7 +25,7 @@ BEgin
 			   rd.ilacKodu, rd.ilacAdi, rd.kullanimZaman, rd.kullanZamanUnit,
 		   rd.kullanimSekli, rky.tanimi kullanimYolu, 
 		   cast(rd.kullanimAdet AS VARCHAR)  + 'X' + cast(rd.kullanimAdet2 AS VARCHAR) doz
-		   , rd.adet 
+		   , rd.adet,h.SirketKod 
 	from recete r  
 	join Personelkart h on h.dosyaNo = r.dosyaNO  
 	JOIN receteDetay rd ON rd.ReceteID = r.id	

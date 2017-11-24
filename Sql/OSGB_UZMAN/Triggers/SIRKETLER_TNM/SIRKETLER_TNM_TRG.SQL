@@ -1,13 +1,14 @@
 BEGIN TRAN
 GO
--- [CMPTR] - [23.10.2017 18:39:57]
+-- [CMPTR] - [24.10.2017 10:47:42]
 ALTER  --  ALTER
  TRIGGER [dbo].[SIRKETLER_TNM_TRG]
    ON  [dbo].[SIRKETLER_TNM]
-   AFTER DELETE,INSERT
+   AFTER DELETE,INSERT, UPDATE
 AS 
 BEGIN
   set nocount on
+  --firma kartý insert olmuþsa ve þube tablosunda 00 kodlu yoksa ekler...
   insert into SIRKET_SUBE_TNM (SirketKod, subeKod, subeTanim, SubeDoktor, BolgeMudurlukSicilNo)
   select SirketKod, '00' subeKod, 'MERKEZ' subeTanim, doktor, BolgeMudurlukSicilNo
   from inserted s

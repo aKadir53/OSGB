@@ -1,6 +1,6 @@
 BEGIN TRAN
 GO
--- [CMPTR] - [12.10.2017 15:32:15]
+-- [CMPTR] - [12.10.2017 15:32:29]
 alter--ALTER
   view dbo.VW_MuayeneTipleri
 AS

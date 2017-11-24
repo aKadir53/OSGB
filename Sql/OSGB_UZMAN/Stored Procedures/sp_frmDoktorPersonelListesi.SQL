@@ -1,6 +1,6 @@
 BEGIN TRAN
 GO
--- [CMPTR] - [18.10.2017 14:43:30]
+-- [CMPTR] - [18.10.2017 15:01:31]
 ALTER PROCEDURE [dbo].[sp_frmDoktorPersonelListesi] @firma varchar(10) = '',@ap int = 1,@doktor varchar(4)
 AS
 select h.*,(case when isnull(diger,'') = '' then '0' else '1' end) ozeldurum , 
@@ -22,7 +22,7 @@ left join SIRKET_SUBE_TNM sb on sb.sirketKod = h.SirketKod and sb.subeKod = h.Su
  left join SKRS_MAHALLE_KODLARI MK on MK.KODU = H.EV_MAHALLE
 where h.aktif = @ap and
 h.sirketKod like  '%' + @firma + '%' and
-(s.doktor = @doktor or sb.subeDoktor = @doktor)
+((s.doktor = @doktor and h.Sube is null) or sb.subeDoktor = @doktor)
 order by h.SirketKod,sb.subeKod,h.HASTAADI,h.HASTASOYADI
 GO
 exec sp_vw_sys_upd 'P ', 'dbo', 'sp_frmDoktorPersonelListesi'

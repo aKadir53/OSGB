@@ -1,6 +1,6 @@
 BEGIN TRAN
 GO
--- [CMPTR2] - [27.09.2017 00:24:01]
+-- [CMPTR2] - [27.09.2017 00:44:00]
 ALTER PROCEDURE [dbo].[sp_GelisKaydet]
 @dosyaNo varchar(6),
 @gelisNo int,
@@ -8,7 +8,8 @@ ALTER PROCEDURE [dbo].[sp_GelisKaydet]
 @doktor varchar(4),
 @SERVIS varchar(4),
 @TEDAVITURU varchar(1),
-@Kullanici varchar(20)
+@Kullanici varchar(20),
+@sirketKod varchar(6)
 
 AS
 
