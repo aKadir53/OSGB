@@ -64,6 +64,7 @@ procedure TfrmPersonelEgitim.ButtonClick(Sender: TObject);
 var
   i : Integer;
   sTmp: String;
+  ado : TADOQuery;
 begin
   if TcxButtonKadir (Sender).ButtonName = 'btnPersonelEkle' then
   begin
@@ -93,7 +94,7 @@ begin
     sTmp := EgitimPersonel.Dataset.FieldByName ('id').AsString;
     if not IsNull (sTmp) then
     begin
-      datalar.QueryExec(nil, 'delete from Personel_Egitim where id = '+ sTmp);
+      datalar.QueryExec(ado, 'delete from Personel_Egitim where id = '+ sTmp);
       EgitimPersonel.Dataset.Active := False;
       EgitimPersonel.Dataset.Active := True;
     end;
