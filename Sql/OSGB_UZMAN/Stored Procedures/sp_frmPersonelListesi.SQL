@@ -1,6 +1,6 @@
 BEGIN TRAN
 GO
--- [CMPTR2] - [28.09.2017 17:09:36]
+-- [CMPTR2] - [28.09.2017 17:14:22]
 ALTER PROCEDURE [dbo].[sp_frmPersonelListesi] @firma varchar(10) = '',@ap int = 1,@gun int = 0
 AS
 select *,(case when isnull(diger,'') = '' then '0' else '1' end) ozeldurum , 
@@ -11,7 +11,7 @@ IK.ADI il,ILCK.ADI ilce,MK.ADI mahalle,dbo.fn_yasTarih(h.doGUMTARIHI,getdate()) 
 (select max(cast(BHDAT as datetime)) from gelisler where dosyaNo = h.dosyaNo and TEDAVITURU = '2') EnsonkiPeryodikMuayeneTarihi,
 isnull(h.MuayenePeryot,0) + (select max(cast(BHDAT as datetime)) from gelisler where dosyaNo = h.dosyaNo and TEDAVITURU = '2') SonrakiPeryodikMuayeneTarihi,
 isnull(h.MuayenePeryot,0) - 
-isnull((select DATEDIFF(D,cast(BHDAT as datetime),getdate()) from gelisler where dosyaNo = h.dosyaNo and TEDAVITURU = '2'),0) MuayeneKalanGun
+isnull((select top 1 DATEDIFF(D,cast(BHDAT as datetime),getdate()) from gelisler where dosyaNo = h.dosyaNo and TEDAVITURU = '2' order by BHDAT desc),0) MuayeneKalanGun
 
 from Personelkart h
 -- left join gelisler g on g.dosyano = h.dosyano --and g.gelisno = (select max(gelisno) from gelisler where dosyano = h.dosyano)

@@ -1,7 +1,7 @@
 BEGIN TRAN
 GO
--- [CMPTR2] - [14.10.2017 21:53:42]
-alter PROCEDURE [dbo].[sp_YeniPersonelHastaKarti]
+-- [CMPTR2] - [14.10.2017 22:11:25]
+ALTER PROCEDURE [dbo].[sp_YeniPersonelHastaKarti]
 @SirketKod varchar(10),
 @TCKIMLIKNO varchar(15),
 @HASTAADI varchar(50),
