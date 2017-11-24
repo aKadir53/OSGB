@@ -1,8 +1,8 @@
 BEGIN TRAN
 GO
--- [CMPTR] - [25.10.2017 10:40:53]
+-- [CMPTR] - [26.10.2017 16:23:12]
 ALTER -- ALTER 
-  procedure [dbo].[sp_SearchStringInDB] @SearchStr varchar (100), @ResultCaseSensitive bit, @SearchCaseSensitive bit, @TableWildCard varchar (20), @FieldWildCard varchar (20)
+  procedure [dbo].[sp_SearchStringInDB] @SearchStr varchar (100), @ResultCaseSensitive bit, @SearchCaseSensitive bit, @TableWildCard varchar (20), @FieldWildCard varchar (20), @ShowResults bit
 as
 begin
   -- ‹÷ 20150521 case sensitive parametresi eklendi...
@@ -131,6 +131,12 @@ begin
   close abc
 
   deallocate abc
+  if IsNull (@ShowResults, 0) = 1
+    select * 
+	from SearchResults 
+	where SearchID = @SearchID
+   else
+    PRINT 'SearchID = ' + cast (@searchID as varchar)
   SET NOCOUNT OFF
 end
 GO

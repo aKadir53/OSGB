@@ -1,16 +1,14 @@
 BEGIN TRAN
 GO
--- [CMPTR2] - [14.10.2017 17:57:47]
+-- [CMPTR2] - [14.10.2017 17:58:29]
 alter PROCEDURE [dbo].[sp_YeniPersonelHastaKarti]
-
-@CINSIYETI varchar(1),
-@MEDENI varchar(1),
+@TCKIMLIKNO varchar(15),
 @HASTAADI varchar(50),
 @HASTASOYADI varchar(50),
+@CINSIYETI varchar(1),
+@MEDENI varchar(1),
 @BABAADI varchar(50),
 @ANAADI varchar(50),
-@EV_ADRES varchar(60),
-@EV_PK varchar(8),
 @EV_SEHIR varchar(20),
 @EV_TEL1 varchar(15),
 @EV_TEL2 varchar(15),
@@ -18,7 +16,6 @@ alter PROCEDURE [dbo].[sp_YeniPersonelHastaKarti]
 @DOGUMYERI varchar(20),
 @DOGUMTARIHI varchar(10),
 @UYRUGU varchar(6),
-@TCKIMLIKNO varchar(15),
 @baslangic varchar(10),
 @kanGrubu varchar(1),
 @USER_ID varchar(20),

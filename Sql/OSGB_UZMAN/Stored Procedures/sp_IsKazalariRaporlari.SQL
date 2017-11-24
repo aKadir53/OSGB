@@ -1,11 +1,12 @@
 BEGIN TRAN
 GO
--- [CMPTR] - [27.10.2017 11:22:14]
+-- [CMPTR] - [27.10.2017 11:23:31]
 alter -- ALTER
   procedure dbo.sp_IsKazalariRaporlari
 as
 begin
-  select 1
+  select *
+  from dbo.IsKazalari
 end
 GO
 exec sp_vw_sys_upd 'P ', 'dbo', 'sp_IsKazalariRaporlari'

@@ -1,7 +1,7 @@
 BEGIN TRAN
 GO
--- [CMPTR2] - [21.10.2017 09:46:27]
-ALTER PROCEDURE [dbo].[sp_DoktorMuayaneDagilimPIVOT] @Yil varchar(10)
+-- [CMPTR2] - [21.10.2017 09:54:20]
+ALTER PROCEDURE [dbo].[sp_DoktorMuayaneDagilimPIVOT] @Yil varchar(10),@DoktorKodu varchar(4) = ''
 AS
 BEGIN
 

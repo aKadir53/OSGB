@@ -1,6 +1,6 @@
 BEGIN TRAN
 GO
--- [CMPTR2] - [06.10.2017 12:45:32]
+-- [CMPTR2] - [06.10.2017 13:54:49]
 ALTER PROCEDURE [dbo].[sp_HastaReceteToXML](@receteId int)
 as
 BEGIN
@@ -92,7 +92,7 @@ BEGIN
 
 	select 
 		'<?xml version="1.0" encoding="iso-8859-9"?>'+
-		'<ereceteBilgisi xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">' +
+		'<ereceteBilgisi>'+-- xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">' +
 	    @receteBaslik + @receteIlacBilgisi + @receteTaniBilgisi + isnull(@receteAck,'') +
 		'</ereceteBilgisi>'
 

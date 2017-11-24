@@ -1,6 +1,6 @@
 BEGIN TRAN
 GO
--- [CMPTR2] - [09.08.2017 22:47:42]
+-- [CMPTR2] - [09.08.2017 22:48:37]
 ALTER FUNCTION [dbo].[fn_KLINIK_KALITE_BILGISI_table] (@tarih1 VARCHAR(10) , @tarih2 VARCHAR(10))
 RETURNS @t TABLE (sayi int,Adi varchar(500),kodu int)
 AS
@@ -13,7 +13,7 @@ BEGIN
 	select
 	(
 	select count(*) from hareketler h
-	join  GUN_SONU_OZET_VERISI V on V.KODU = VV.KODU
+	join  SKRS_GUN_SONU_OZET_VERISI V on V.KODU = VV.KODU
 	where TARIH between @tarih1 and @tarih2 and 
 	(case when V.KODU = 25 then gd else 0 end between (case when V.KODU = 25 then 0.1 else 0 end) and (case when V.KODU = 25 then 6.999 else 0 end)) and
 	(case when V.KODU = 26 then gd else 0 end between (case when V.KODU = 26 then 7 else 0 end) and (case when V.KODU = 26 then 9 else 0 end)) and

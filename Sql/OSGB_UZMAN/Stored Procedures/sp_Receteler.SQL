@@ -1,6 +1,6 @@
 BEGIN TRAN
 GO
--- [CMPTR2] - [07.10.2017 10:19:10]
+-- [CMPTR2] - [07.10.2017 10:21:23]
 ALTER PROCEDURE [dbo].[sp_Receteler](@tarih1 VARCHAR(10),@tarih2 VARCHAR(10),@tip VARCHAR(1) = '')
 as
 BEGIN
@@ -27,7 +27,7 @@ IF @tip = 'G'
 BEgin
 	select r.receteTur, r.protokolNo, r.doktor, r.tarih, r.Tani, r.eReceteNo,
 		   r.receteAltTur, r.DosyaNo, r.gelisNo,
-		   'Reçete Tarihi : ' + convert(VARCHAR,r.tarih,105) + ' | Reçete ID : ' + cast(r.id AS VARCHAR) + ' | Reçete Turu : ' + substring(r.receteTur,5,10) + ' | Protokol No : ' + r.protokolNo + ' | E-Reçete No : ' + r.eReceteNo  id,
+		   'Reçete Tarihi : ' + convert(VARCHAR,r.tarih,105) + ' | Reçete ID : ' + cast(r.id AS VARCHAR) + ' | Reçete Turu : ' + r.receteTur + ' | Protokol No : ' + r.protokolNo + ' | E-Reçete No : ' + r.eReceteNo  id,
 		   h.HASTAADI+ ' ' + h.HASTASOYADI + ' | ' + h.TCKIMLIKNO HASTAADI,
 			   rd.ilacKodu, rd.ilacAdi, rd.kullanimZaman, rd.kullanZamanUnit,
 		   rd.kullanimSekli, rky.tanimi kullanimYolu, 

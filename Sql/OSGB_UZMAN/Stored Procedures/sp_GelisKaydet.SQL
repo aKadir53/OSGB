@@ -1,6 +1,6 @@
 BEGIN TRAN
 GO
--- [CMPTR2] - [02.06.2017 15:51:29]
+-- [CMPTR2] - [02.06.2017 15:51:51]
 ALTER PROCEDURE [dbo].[sp_GelisKaydet]
 @dosyaNo varchar(6),
 @gelisNo int,
@@ -9,8 +9,8 @@ ALTER PROCEDURE [dbo].[sp_GelisKaydet]
 @doktor varchar(4),
 @SERVIS varchar(4),
 @TEDAVITURU varchar(1),
-@HastaTop float,
-@KurumTop float,
+@HastaTop float = 0,
+@KurumTop float = 0,
 @Kullanici varchar(20),
 @tip varchar(1) = 'O',
 @HCOOO varchar(10) = '',

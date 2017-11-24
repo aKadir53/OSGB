@@ -1,6 +1,6 @@
 BEGIN TRAN
 GO
--- [CMPTR] - [24.10.2017 11:43:29]
+-- [CMPTR] - [24.10.2017 11:43:30]
  alter  -- ALTER
  
  View vw_DDLEvents   as 

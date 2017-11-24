@@ -1,6 +1,6 @@
 BEGIN TRAN
 GO
--- [CMPTR] - [18.10.2017 15:39:11]
+-- [CMPTR] - [18.10.2017 15:51:35]
 ALTER  --  ALTER
  TRIGGER [dbo].[SIRKETLER_TNM_TRG]
    ON  [dbo].[SIRKETLER_TNM]
@@ -11,7 +11,7 @@ BEGIN
   insert into SIRKET_SUBE_TNM (SirketKod, subeKod, subeTanim, SubeDoktor)
   select SirketKod, '00' subeKod, 'MERKEZ' subeTanim, doktor
   from inserted s
-  where not exists (select 1 from SIRKET_SUBE_TNM sb where sb.sirketKod = s.SirketKod and sb.subeKod = s.Sube)
+  where not exists (select 1 from SIRKET_SUBE_TNM sb where sb.sirketKod = s.SirketKod and sb.subeKod = '00')
   set nocount off
 END
 GO

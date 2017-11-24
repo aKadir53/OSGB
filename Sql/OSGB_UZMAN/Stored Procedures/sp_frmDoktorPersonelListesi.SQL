@@ -1,6 +1,6 @@
 BEGIN TRAN
 GO
--- [CMPTR2] - [17.10.2017 11:14:22]
+-- [CMPTR2] - [17.10.2017 11:14:44]
 alter PROCEDURE [dbo].[sp_frmDoktorPersonelListesi] @firma varchar(10) = '',@ap int = 1,@doktor varchar(4)
 AS
 select h.*,(case when isnull(diger,'') = '' then '0' else '1' end) ozeldurum , 
@@ -14,8 +14,8 @@ isnull(h.MuayenePeryot,0) -
 isnull(DATEDIFF(D,(select max(cast(BHDAT as datetime)) from gelisler where dosyaNo = h.dosyaNo and TEDAVITURU = '2'),getdate()),0) MuayeneKalanGun,
 h.HASTAADI+ ' '+h.HASTASOYADI ADI , s.tanimi,cast(BASLANGIC as datetime) iseBaslama,isnull(s.sube,'00') Sube,isnull(sb.subeTanim,'MERKEZ') subeTanim
 from Personelkart h
-left join SIRKETLER_TNM s on s.SirketKod = h.SirketKod and s.doktor = @doktor
-left join SIRKET_SUBE_TNM sb on sb.subeKod = h.Sube and sb.subedoktor = @doktor
+left join SIRKETLER_TNM s on s.SirketKod = h.SirketKod
+left join SIRKET_SUBE_TNM sb on sb.subeKod = h.Sube
  left join Kurumlar k on k.kurum = h.kurum
  left join SKRS_IL_KODLARI IK on Ik.KODU = h.EV_SEHIR
  left join SKRS_ILCE_KODLARI ILCK on ILCK.KODU = H.EV_ILCE

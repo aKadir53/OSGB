@@ -1,6 +1,6 @@
 BEGIN TRAN
 GO
--- [CMPTR2] - [25.09.2017 16:38:30]
+-- [CMPTR2] - [25.09.2017 16:40:21]
 ALTER PROCEDURE [dbo].[sp_frmPersonelListesi] @ap varchar(5) = '1',@ktip varchar(2) = '1'
 AS
 select *,(case when isnull(diger,'') = '' then '0' else '1' end) ozeldurum , 
@@ -11,8 +11,7 @@ from Personelkart h
  left join gelisler g on g.dosyano = h.dosyano --and g.gelisno = (select max(gelisno) from gelisler where dosyano = h.dosyano)
  left join Kurumlar k on k.kurum = h.kurum
  --LEFT JOIN makinalar m ON m.makinaNo = h.makinaNo
-where aktif in
-(select datavalue from dbo.strtotable((case when @ap = '1' then '1,2' else '0' end),','))
+where aktif = @ap
 and h.SirketKod = @ktip
 order by h.HASTAADI,h.HASTASOYADI
 GO

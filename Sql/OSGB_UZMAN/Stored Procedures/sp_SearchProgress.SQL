@@ -1,6 +1,6 @@
 BEGIN TRAN
 GO
--- [CMPTR] - [25.10.2017 10:41:25]
+-- [CMPTR] - [25.10.2017 10:41:26]
 ALTER -- ALTER 
   procedure [dbo].[sp_SearchProgress]
 as

@@ -1,6 +1,6 @@
 BEGIN TRAN
 GO
--- [CMPTR] - [12.10.2017 17:41:12]
+-- [CMPTR] - [12.10.2017 17:41:14]
 alter -- ALTER
   procedure sp_vw_sys_upd @xtype sysname, @xownername sysname, @xobjectname sysname 
 as
