@@ -677,7 +677,7 @@ begin
           'yupass = ' + QuotedStr(gelisBilgisi.Yupass) +
           ' where dosyaNo = ' + #39 + gelisBilgisi.dosyaNo + #39 +
           ' and gelisNo = ' + gelisBilgisi.gelisNo;
-   datalar.QueryExec(nil,sql);
+   datalar.QueryExec(ado,sql);
    GelisDuzenle := True;
   Except on e : Exception do
    begin

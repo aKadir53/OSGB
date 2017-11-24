@@ -527,7 +527,7 @@ type
    function QuerySelect (Q: TADOQuery; sql:string) : Boolean;overload;
   // function QuerySelect (sql:string;Q: TADOQuery = nil) : Boolean;overload;
    function QuerySelect (sql:string) : TADOQuery; overload;
-   procedure QueryExec (Q: TADOQuery = nil ; sql : string = '');
+   procedure QueryExec (var Q: TADOQuery; sql : string);
    function FindData (Q: TADOQuery; sql: string): integer;
    procedure Login;
    function WebErisimBilgi(slk,slb : string) : string;
@@ -915,37 +915,50 @@ begin
    end;
 end;
 
-procedure Tdatalar.QueryExec (Q: TADOQuery = nil ; sql : string = '');
+procedure Tdatalar.QueryExec (var Q: TADOQuery; sql : string);
 var
-   sql2 :string;
+  //sql2 :string;
+  bLocalCreated: Boolean;
 begin
-    if Q = nil then Q := TADOQuery.Create(nil);þ
-
+  bLocalCreated := False;
+  if Q = nil then
+  begin
+    Q := TADOQuery.Create(nil);
+    bLocalCreated := True;
+  end;
+  try
     if Q.Connection = nil then Q.Connection := ADOConnection2;
 
-    sql2 := sql;
+    //sql2 := sql;
     Q.Close;
     Q.SQL.Clear;
     Q.SQL.Add (sql);
-//    Q.Prepare;
+    //    Q.Prepare;
     Q.ExecSQL;
-    Q := nil;
-    //Çalýþan SQL li tutar
+  finally
+    if bLocalCreated then
+    begin
+      FreeAndNil (Q);
+    end;
+  end;
 
-    try
-     sql := StringReplace(sql,'''','`',[rfReplaceAll]);
-     sql := '`' + sql + '`';
- //    Q_LogADO.SQL.Text := 'INSERT INTO MUHQLog (SIRGUM_KUL,DATA_NESNESI,SQL_TEXT) '
- //                       + 'VALUES ('''  + ''',''' + Q.Name + ''',''' + Copy(sql,1,8000) + ''')';
-     //ShowMessage(Q_LogADO.SQL.Text);
- //    Q_LogADO.ExecSQL;
-    except end;
+  //Çalýþan SQL li tutar
 
-//    if Pos('DELETE FROM muh_fis_hareket ',UPPERCASE(sql2)) <> 0
-//    Then begin
-//      sql2 := StringReplace(sql2, 'DELETE FROM muh_fis_hareket ','DELETE FROM ' +  'muh_fis_hareket ',[rfIgnoreCase]);
-//      QueryExec(Q, sql2);
-//    end;
+  try
+    //sql := StringReplace(sql,'''','`',[rfReplaceAll]);
+    //sql := '`' + sql + '`';
+    //    Q_LogADO.SQL.Text := 'INSERT INTO MUHQLog (SIRGUM_KUL,DATA_NESNESI,SQL_TEXT) '
+    //                       + 'VALUES ('''  + ''',''' + Q.Name + ''',''' + Copy(sql,1,8000) + ''')';
+        //ShowMessage(Q_LogADO.SQL.Text);
+    //    Q_LogADO.ExecSQL;
+  except
+  end;
+
+  //    if Pos('DELETE FROM muh_fis_hareket ',UPPERCASE(sql2)) <> 0
+  //    Then begin
+  //      sql2 := StringReplace(sql2, 'DELETE FROM muh_fis_hareket ','DELETE FROM ' +  'muh_fis_hareket ',[rfIgnoreCase]);
+  //      QueryExec(Q, sql2);
+  //    end;
 
 end;
 
