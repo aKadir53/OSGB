@@ -1,10 +1,12 @@
 BEGIN TRAN
 GO
--- [CMPTR2] - [24.10.2017 22:51:40]
+-- [CMPTR2] - [24.10.2017 22:53:17]
 ALTER PROCEDURE [dbo].[sp_frmKazaTutanagiYazdir] @ID int
 AS
 
-select I.*,P.*,S.*,sb.*,b.tanimi bolum,u.tanimi uzuv from IsKazalari I
+select I.*,P.*,S.*,sb.*,b.tanimi bolum,u.tanimi uzuv, 
+dbo.fn_yasTarih(cast(P.DOGUMTARIHI as datetime),I.KazaTarihi) yas
+from IsKazalari I
 join PersonelKart P on P.dosyaNo = I.PersonelDosyaNo
 join SIRKETLER_TNM S on S.Sirketkod = P.SirketKod
 join SIRKET_SUBE_TNM sb on sb.sirketKod = S.SirketKod and sb.subeKod = P.Sube

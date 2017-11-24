@@ -1,6 +1,6 @@
 BEGIN TRAN
 GO
--- [CMPTR] - [11.10.2017 16:24:48]
+-- [CMPTR2] - [13.10.2017 17:53:55]
 ALTER PROCEDURE [dbo].[sp_HastaReceteToXML](@receteId int)
 as
 BEGIN
@@ -28,7 +28,7 @@ BEGIN
 			'<receteTuru>'+ r.receteTur +'</receteTuru>'+
 			 case when isnull(g.TakýpNo,'1AB') = '' then '<takipNo/>' else '<takipNo>'+ isnull(g.TakýpNo,'1AB') +'</takipNo>' end +
 			'<tcKimlikNo>'+ h.TCKIMLIKNO +'</tcKimlikNo>'+
-			'<tesisKodu>'+@tesisKodu +'</tesisKodu>'+
+			'<tesisKodu>'+ d.Tesiskodu +'</tesisKodu>'+
 			'<seriNo>'+'1'+'</seriNo>'+
 			'<doktorBransKodu>'+ d.bransKodu +'</doktorBransKodu>'+
 			'<doktorSertifikaKodu>'+ isnull(d.sertifika,'0') +'</doktorSertifikaKodu>' +

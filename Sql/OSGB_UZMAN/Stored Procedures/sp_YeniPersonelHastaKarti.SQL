@@ -1,6 +1,6 @@
 BEGIN TRAN
 GO
--- [CMPTR2] - [14.10.2017 18:14:34]
+-- [CMPTR2] - [14.10.2017 18:17:52]
 alter PROCEDURE [dbo].[sp_YeniPersonelHastaKarti]
 @SirketKod varchar(10),
 @TCKIMLIKNO varchar(15),
@@ -13,7 +13,7 @@ alter PROCEDURE [dbo].[sp_YeniPersonelHastaKarti]
 @EV_SEHIR varchar(20),
 @EV_TEL1 varchar(15),
 @EV_TEL2 varchar(15),
-@EMAIL varchar(60),
+--@EMAIL varchar(60),
 @DOGUMYERI varchar(20),
 @DOGUMTARIHI varchar(10),
 @UYRUGU varchar(6),
@@ -48,7 +48,7 @@ INSERT INTO [HASTAKART]
   [EV_SEHIR],
   [EV_TEL1],
   [EV_TEL2],
-  [EMAIL],
+ -- [EMAIL],
   [DOGUMYERI],
   [DOGUMTARIHI],
   [UYRUGU],
@@ -72,7 +72,7 @@ VALUES(
   @EV_SEHIR,
   @EV_TEL1,
   @EV_TEL2,
-  @EMAIL,
+ -- @EMAIL,
   @DOGUMYERI,
   @DOGUMTARIHI,
   @UYRUGU,
