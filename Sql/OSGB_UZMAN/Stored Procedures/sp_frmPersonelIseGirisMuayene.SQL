@@ -1,6 +1,6 @@
 BEGIN TRAN
 GO
--- [CMPTR2] - [19.10.2017 15:16:59]
+-- [CMPTR2] - [19.10.2017 15:17:54]
 ALTER PROCEDURE [dbo].[sp_frmPersonelIseGirisMuayene] @dosyaNo varchar(6) = '',@gelisNo int
 AS
 
@@ -24,7 +24,7 @@ join IseGirisMuayeneAltGruplari MAG on MS.altGrupKod = MAG.Kod and MS.grupKod = 
 left join valueObjeValues V on V.kod = S.valueObjevalues
 join gelisler g on g.dosyaNo = @dosyaNo and g.TEDAVITURU = '1'
 join DoktorlarT d on d.kod = g.doktor
-where PersonelKodu = @dosyaNo
+where PersonelKodu = @dosyaNo and MS.gelisNo = @gelisNo
 order by MS.GrupKod,MS.altGrupKod
 GO
 exec sp_vw_sys_upd 'P ', 'dbo', 'sp_frmPersonelIseGirisMuayene'

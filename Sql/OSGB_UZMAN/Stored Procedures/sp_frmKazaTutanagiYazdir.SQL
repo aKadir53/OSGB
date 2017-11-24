@@ -1,19 +1,27 @@
 BEGIN TRAN
 GO
--- [CMPTR2] - [24.10.2017 14:06:27]
+-- [CMPTR2] - [24.10.2017 15:56:56]
 alter PROCEDURE [dbo].[sp_frmKazaTutanagiYazdir] @ID int
 AS
 
-select I.*,P.*,S.*,SB.*,U.tanimi UzuvAdi,B.tanimi BolumAdi ,
-dbo.fn_yasTarih(cast(P.DOGUMTARIHI as datetime), I.KazaTarihi) PersonelYasi
 
-from IsKazalari I
-join PersonelKart P on P.dosyaNO = I.PersonelDosyaNo
-join SIRKETLER_TNM S on S.sirketKod = P.sirketKod
-join SIRKET_SUBE_TNM SB on SB.SirketKod = P.SirketKod and  P.Sube = SB.subeKod
-join Bolumler B on B.kod = I.KazaninMeydanaGelBolum
-join Uzuvlar U on U.kod = I.KazadaYaralananUzuv
-where I.ID = @ID
+ALTER TABLE [dbo].[portfoyKontak](
+	[kurumKodu] [varchar](10) NOT NULL,
+	[Tarih] [datetime] NOT NULL,
+	[saat] [datetime] NOT NULL,
+	[id] [int] IDENTITY(1,1) NOT NULL,
+	[Aciklama] [varchar](500) NULL,
+	[durum] [varchar](50) NULL,
+	[Tip] [varchar](1) NULL,
+	[Hatýrlatma] [datetime] NULL,
+ CONSTRAINT [PK_portfoyKontak] PRIMARY KEY CLUSTERED 
+(
+	[kurumKodu] ASC,
+	[Tarih] ASC,
+	[saat] ASC,
+	[id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
 GO
 exec sp_vw_sys_upd 'P ', 'dbo', 'sp_frmKazaTutanagiYazdir'
 GO

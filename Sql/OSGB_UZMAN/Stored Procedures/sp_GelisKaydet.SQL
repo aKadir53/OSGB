@@ -1,6 +1,6 @@
 BEGIN TRAN
 GO
--- [CMPTR2] - [27.09.2017 00:44:00]
+-- [CMPTR2] - [27.09.2017 00:52:53]
 ALTER PROCEDURE [dbo].[sp_GelisKaydet]
 @dosyaNo varchar(6),
 @gelisNo int,
@@ -29,8 +29,8 @@ set @PN = ''
 
 			--exec sp_TaniEkle @dosyaNo,@gelisno
 
-			insert into Gelisler (dosyaNo,GelisNo,BHDAT,doktor,SERVIS,TEDAVITURU,Kullanici,PROTOKOLNO)
-			values (@dosyaNo,@gelisNo,@BHDAT,@doktor,@SERVIS,'G',@Kullanici,@PN)
+			insert into Gelisler (dosyaNo,GelisNo,BHDAT,doktor,SERVIS,TEDAVITURU,Kullanici,PROTOKOLNO,sirketKod)
+			values (@dosyaNo,@gelisNo,@BHDAT,@doktor,@SERVIS,@TEDAVITURU,@Kullanici,@PN,@sirketKod)
 
 		--	exec sp_hastaLabIsle @dosyaNo,@gelisno,@BHDAT,'',@htip
 

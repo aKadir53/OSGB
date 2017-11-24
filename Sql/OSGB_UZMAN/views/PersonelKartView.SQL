@@ -1,7 +1,10 @@
 BEGIN TRAN
 GO
--- [CMPTR2] - [24.10.2017 12:22:01]
-EXECUTE sp_updateextendedproperty N'MS_DiagramPaneCount', @v, N'SCHEMA', N'dbo', N'VIEW', N'PersonelKartView', NULL, NULL
+-- [CMPTR] - [24.10.2017 18:40:10]
+ALTER VIEW [dbo].[PersonelKartView]
+AS
+SELECT        dosyaNo, HASTAADI + ' ' + HASTASOYADI AS Adi, TCKIMLIKNO, DOGUMTARIHI, Aktif, SirketKod
+FROM            dbo.PersonelKart
 GO
 exec sp_vw_sys_upd 'V ', 'dbo', 'PersonelKartView'
 GO

@@ -1,7 +1,7 @@
 BEGIN TRAN
 GO
--- [CMPTR2] - [07.10.2017 10:25:13]
-ALTER PROCEDURE [dbo].[sp_Receteler](@tarih1 VARCHAR(10),@tarih2 VARCHAR(10),@tip VARCHAR(1) = '')
+-- [CMPTR2] - [07.10.2017 12:22:02]
+ALTER PROCEDURE [dbo].[sp_Receteler](@sirketKod varchar(10) = '',@tarih1 VARCHAR(10),@tarih2 VARCHAR(10),@tip VARCHAR(1) = '')
 as
 BEGIN
 	

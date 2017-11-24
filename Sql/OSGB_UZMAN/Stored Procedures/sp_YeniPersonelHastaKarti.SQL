@@ -1,7 +1,8 @@
 BEGIN TRAN
 GO
--- [CMPTR2] - [14.10.2017 18:10:25]
+-- [CMPTR2] - [14.10.2017 18:12:03]
 alter PROCEDURE [dbo].[sp_YeniPersonelHastaKarti]
+@SirketKod varchar(10),
 @TCKIMLIKNO varchar(15),
 @HASTAADI varchar(50),
 @HASTASOYADI varchar(50),
@@ -36,6 +37,7 @@ exec sp_DosyaNoYaz @DosyaNo
 
 INSERT INTO [HASTAKART]
  ([DOSYANO],
+  [SirketKod],
   [TCKIMLIKNO],
   [HASTAADI],
   [HASTASOYADI],
