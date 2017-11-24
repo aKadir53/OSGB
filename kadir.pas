@@ -464,8 +464,12 @@ var
   sonsatir , x : integer;
 begin
   openD := TOpenDialog.Create(nil);
-  openD.execute;   x
-  dosya := openD.filename;
+  try
+    if not openD.execute then Exit;
+    dosya := openD.filename;
+  finally
+    openD.Free;
+  end;
 
   v := CreateOleObject('Excel.Application');
   try

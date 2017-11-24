@@ -6,10 +6,11 @@ uses ADODB, Classes, Forms, system.UITypes;
 
 type
   TServerConnectionParameterRec = record
-    sServerName : String;
+    sServerNamex : String;
     sUserName : String;
     sPassword : String;
     sDefaultDBName : String;
+    sLocalExportFolder : String;
   end;
 
   TServerConnectionParameters = array of TServerConnectionParameterRec;

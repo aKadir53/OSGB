@@ -82,15 +82,19 @@ begin
   key := strtofloat(txtBasla.Text) - strtoint(datalar.osgbKodu);
   key := key / strtoint(datalar.osgbKodu);
 
-  ado := TADOQuery.Create(nil);x
-  ado.Connection := datalar.ADOConnection2;
-  sql := ' begin try select cast('+ QuotedStr(floattostr(key)) + ' as datetime) lisans   end try   BEGIN CATCH   END CATCH ';
-  datalar.QuerySelect(ado,sql);
-  if ado.Eof
-  Then Begin
-    ShowMessageSkin('Key Hatalý','','','info');
-    exit;
-  End;
+  ado := TADOQuery.Create(nil);
+  try
+    ado.Connection := datalar.ADOConnection2;
+    sql := ' begin try select cast('+ QuotedStr(floattostr(key)) + ' as datetime) lisans   end try   BEGIN CATCH   END CATCH ';
+    datalar.QuerySelect(ado,sql);
+    if ado.Eof
+    Then Begin
+      ShowMessageSkin('Key Hatalý','','','info');
+      exit;
+    End;
+  finally
+    ado.Free;
+  end;
 
   txtLisansCaption.Caption := FormattedTarih(floattostr(key));
 
@@ -135,29 +139,36 @@ begin
   LisansAl.URL := 'https://'+datalar.LisansAlURL+'/noktaservice.asmx';
 
   kurum := datalar.osgbKodu;
-  Kb := KurumBilgi.Create;x
-  K := KurumBilgiGrs.Createx;
-  K.kurumkod := kurum;
-  FHC := FaturaHastaCount.Createx;
-
-  t := copy(tarihal(Date-30),1,6);
+  Kb := KurumBilgi.Create;
   try
-      FHC.KurumKod := kurum;
-      Kb := (LisansAl as NoktaServiceSoap).LisansBitis(K);
-      txtBasla.Text := kb.Lisans;
-
-      if Kb.SonucKodu = '0000'
-      then begin
-        btnUygula.Click;
-        ShowMessageSkin(kb.SonucMesaj,'Lisansýnýz Uygulandý.','','info');
-
+    K := KurumBilgiGrs.Create;
+    try
+      K.kurumkod := kurum;
+      FHC := FaturaHastaCount.Create;
+      try
+        t := copy(tarihal(Date-30),1,6);
+        try
+            FHC.KurumKod := kurum;
+            Kb := (LisansAl as NoktaServiceSoap).LisansBitis(K);
+            txtBasla.Text := Kb.Lisans;
+            if Kb.SonucKodu = '0000'
+            then begin
+              btnUygula.Click;
+              ShowMessageSkin(kb.SonucMesaj,'Lisansýnýz Uygulandý.','','info');
+           end;
+        except on e : Exception do
+         begin
+          ShowMessageSkin(e.Message,'','','info');
+         end;
+        end;
+      finally
+        FHC.Free;
       end;
-      kb.Free;
-      k.Free;
-  except on e : Exception do
-   begin
-    ShowMessageSkin(e.Message,'','','info');
-   end;
+    finally
+      K.Free;
+    end;
+  finally
+    kb.Free;
   end;
 
 
