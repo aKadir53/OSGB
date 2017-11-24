@@ -1,6 +1,5 @@
 BEGIN TRAN
 GO
--- [CMPTR2] - [26.09.2017 14:46:14]
 ALTER FUNCTION [dbo].[KODAL] (@t varchar(10) = 'DN')
 RETURNS varchar(6)
 AS

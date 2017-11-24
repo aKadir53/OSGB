@@ -1,6 +1,5 @@
 BEGIN TRAN
 GO
--- [CMPTR2] - [24.10.2017 23:04:43]
 ALTER PROCEDURE [dbo].[sp_frmKazaTutanagiYazdir] @ID int
 AS
 

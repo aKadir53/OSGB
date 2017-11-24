@@ -1,7 +1,6 @@
 BEGIN TRAN
 GO
--- [CMPTR] - [16.11.2017 11:17:18]
-ALTER -- ALTER
+ALTER -- CREATE
   FUNCTION [dbo].[ProtokolAL] (@sirketKod varchar(10),@subeKod varchar(10))
 RETURNS int
 AS

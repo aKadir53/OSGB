@@ -1,6 +1,5 @@
 BEGIN TRAN
 GO
--- [CMPTR2] - [11.08.2017 12:26:21]
 ALTER FUNCTION [dbo].[fn_KLINIK_KALITE_BILGISI] (@tarih1 varchar(10) , @tarih2 varchar(10),@sifirOlanGoster int = 1)
 RETURNS varchar(max)
 AS

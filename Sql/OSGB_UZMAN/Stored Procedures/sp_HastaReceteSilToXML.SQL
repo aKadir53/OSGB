@@ -1,6 +1,5 @@
 BEGIN TRAN
 GO
--- [CMPTR2] - [06.10.2017 10:53:19]
 ALTER PROCEDURE [dbo].[sp_HastaReceteSilToXML](@receteId int)
 as
 BEGIN

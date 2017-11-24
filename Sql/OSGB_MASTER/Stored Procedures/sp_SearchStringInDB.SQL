@@ -1,6 +1,5 @@
 BEGIN TRAN
 GO
--- [CMPTR] - [01.11.2017 09:16:55]
  ALTER 
   procedure [dbo].[sp_SearchStringInDB] @SearchStr varchar (100), @ResultCaseSensitive bit, @SearchCaseSensitive bit, @TableWildCard varchar (20), @FieldWildCard varchar (20), @ShowResults bit
 as

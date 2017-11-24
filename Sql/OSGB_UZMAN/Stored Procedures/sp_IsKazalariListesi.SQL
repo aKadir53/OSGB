@@ -1,7 +1,6 @@
 BEGIN TRAN
 GO
--- [CMPTR] - [27.10.2017 14:19:27]
-alter -- ALTER
+ALTER -- create
   procedure dbo.sp_IsKazalariListesi @IlkTarih datetime, @SonTarih datetime
 as
 begin

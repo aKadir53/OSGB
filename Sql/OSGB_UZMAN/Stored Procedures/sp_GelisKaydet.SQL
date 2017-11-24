@@ -1,6 +1,5 @@
 BEGIN TRAN
 GO
--- [CMPTR] - [15.11.2017 15:31:55]
 ALTER PROCEDURE [dbo].[sp_GelisKaydet]
 @dosyaNo varchar(6),
 @gelisNo int,

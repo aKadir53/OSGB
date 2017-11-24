@@ -1,6 +1,5 @@
 BEGIN TRAN
 GO
--- [CMPTR] - [17.11.2017 17:34:33]
 ALTER VIEW [dbo].[Doktorlar]
 AS
 SELECT     kod AS kod, tanimi AS ADI, tescilNo AS TescilNo, bransKodu AS Brans, durum AS durum, sertifika AS sertifika, tcKimlikNo AS TCKimlik, receteBrans AS ReceteBrans, null AS SertifikaNo, 

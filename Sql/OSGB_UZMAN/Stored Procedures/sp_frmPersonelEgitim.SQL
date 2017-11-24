@@ -1,19 +1,22 @@
 BEGIN TRAN
 GO
--- [CMPTR] - [25.10.2017 16:38:49]
-alter -- ALTER
-  procedure dbo.sp_frmPersonelEgitim @EgitimId int, @PersonelDosyaNo varchar (6) = null
+ALTER -- create
+  procedure dbo.sp_frmPersonelEgitim @EgitimId int = 0, @PersonelDosyaNo varchar (6) = ''
 as 
 begin
-  select st.tanimi SirketAdi, pk.HASTAADI + ' ' + pk.HASTASOYADI PersonelAdiSoyadi, E.Egitimci, E.BaslamaTarihi, E.Sure, E.EgitimYeri, E.EgitimIcerigi
+  select st.tanimi SirketAdi, pk.HASTAADI + ' ' + pk.HASTASOYADI PersonelAdiSoyadi, cast (convert (varchar, E.BaslamaTarihi, 112) as datetime) BaslamaTarihi, cast (E.Sure as varchar) + ' Saat' Sure, E.EgitimYeri, E.EgitimIcerigi, dt.tanimi EgitimiVeren, IsNull (e.SertifikaNo + '/', '') + pe.PersonelDosyaNo SertifikaNo,
+    left (convert (varchar, E.BaslamaTarihi, 108),5) BaslamaSaati,
+	st.Adres Adresi, st.Tel1, st.Tel2, st.Fax, st.yetkilimail EPosta, e.EgitimTuru, cast ('' as varchar (10)) SOZ, e.Sure SureSaat, et.tanimi EgitimAdi, e.BaslamaTarihi BaslamaZamani, pk.SirketKod, pk.dosyaNo
   from dbo.Egitimler E
   inner join dbo.Egitim_Tnm et on et.Kod = e.EgitimKod
   inner join dbo.Personel_Egitim pe on pe.EgitimID = e.id
   inner join dbo.PersonelKart pk on pk.Sirketkod = E.sirketkod
     and pk.DosyaNo = pE.personelDosyaNo
-  inner join SIRKETLER_TNM st on st.SirketKod = e.SirketKod
-  where E.id = @EgitimId
-    and (@PersonelDosyaNo is null or pe.PersonelDosyaNo = @PersonelDosyaNo)
+  inner join dbo.SIRKETLER_TNM st on st.SirketKod = e.SirketKod
+  inner join dbo.DoktorlarT dt on dt.kod = e.egitimci
+  where (IsNull (@EgitimId, 0) = 0 or E.id = @EgitimId)
+    and (IsNull (@PersonelDosyaNo, '') = '' or pe.PersonelDosyaNo = @PersonelDosyaNo)
+  order by et.tanimi, e.id, PersonelAdiSoyadi
 end
 GO
 exec sp_vw_sys_upd 'P ', 'dbo', 'sp_frmPersonelEgitim'

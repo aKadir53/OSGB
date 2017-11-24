@@ -1,7 +1,6 @@
 BEGIN TRAN
 GO
--- [CMPTR] - [12.10.2017 15:33:27]
-alter--ALTER
+ALTER--create
   view dbo.VW_MuayeneTipleri
 with schemabinding
 AS

@@ -1,6 +1,5 @@
 BEGIN TRAN
 GO
--- [CMPTR2] - [21.10.2017 10:07:41]
 ALTER PROCEDURE [dbo].[sp_DoktorMuayaneDagilimPIVOT] @Yil varchar(10),@DoktorKodu varchar(4) = ''
 AS
 BEGIN

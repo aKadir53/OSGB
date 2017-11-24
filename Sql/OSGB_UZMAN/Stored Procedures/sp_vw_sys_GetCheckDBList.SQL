@@ -1,7 +1,6 @@
 BEGIN TRAN
 GO
--- [CMPTR] - [12.10.2017 17:38:55]
-alter -- ALTER
+ALTER -- create
   procedure [dbo].[sp_vw_sys_GetCheckDBList]
 as
 begin

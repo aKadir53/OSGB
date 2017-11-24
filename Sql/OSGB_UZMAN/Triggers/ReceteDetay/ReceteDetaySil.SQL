@@ -1,6 +1,5 @@
 BEGIN TRAN
 GO
--- [CMPTR2] - [29.09.2017 00:38:16]
 ALTER TRIGGER [dbo].[ReceteDetaySil]
    ON  dbo.ReceteDetay
    AFTER DELETE,INSERT

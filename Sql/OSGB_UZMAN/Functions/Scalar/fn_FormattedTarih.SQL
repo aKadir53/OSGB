@@ -1,6 +1,5 @@
 BEGIN TRAN
 GO
--- [CMPTR2] - [06.10.2017 11:01:15]
 ALTER FUNCTION [dbo].[fn_FormattedTarih] (@format varchar(12),@tarih DATETIME)
 RETURNS varchar(20)
 AS

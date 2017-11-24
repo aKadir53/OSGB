@@ -1,6 +1,5 @@
 BEGIN TRAN
 GO
--- [CMPTR] - [12.10.2017 17:28:55]
 ALTER -- drop
   VIEW [dbo].[VW_Sys2]
 AS

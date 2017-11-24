@@ -1,6 +1,5 @@
 BEGIN TRAN
 GO
--- [CMPTR] - [16.10.2017 15:09:15]
 ALTER FUNCTION [dbo].[DOSYANOAL] (@t float)
 RETURNS varchar(6)
 AS

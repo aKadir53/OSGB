@@ -1,7 +1,10 @@
 BEGIN TRAN
 GO
--- [CMPTR2] - [20.10.2017 19:26:49]
-EXECUTE sp_addextendedproperty N'MS_DiagramPaneCount', @v, N'SCHEMA', N'dbo', N'VIEW', N'VW_Spler', NULL, NULL
+ALTER VIEW dbo.VW_Spler
+AS
+SELECT        id, name
+FROM            sys.sysobjects
+WHERE        (xtype = 'P') AND (category = 0)
 GO
 exec sp_vw_sys_upd 'V ', 'dbo', 'VW_Spler'
 GO

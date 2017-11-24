@@ -1,6 +1,5 @@
 BEGIN TRAN
 GO
--- [CMPTR2] - [27.09.2017 00:30:25]
 ALTER PROCEDURE [dbo].[sp_HastaGelisleri]
 @dosyaNo varchar(6)
 AS

@@ -1,7 +1,6 @@
 BEGIN TRAN
 GO
--- [CMPTR] - [26.10.2017 16:23:12]
-ALTER -- ALTER 
+ALTER -- CREATE 
   procedure [dbo].[sp_SearchStringInDB] @SearchStr varchar (100), @ResultCaseSensitive bit, @SearchCaseSensitive bit, @TableWildCard varchar (20), @FieldWildCard varchar (20), @ShowResults bit
 as
 begin

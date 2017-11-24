@@ -1,7 +1,6 @@
 BEGIN TRAN
 GO
--- [CMPTR] - [16.11.2017 11:14:47]
-ALTER -- ALTER
+ALTER -- create
   PROCEDURE [dbo].[sp_YeniReceteProtokol] @sirketKod varchar(10),@subeKod varchar(10)
 AS
 begin

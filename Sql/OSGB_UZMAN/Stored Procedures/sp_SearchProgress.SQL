@@ -1,7 +1,6 @@
 BEGIN TRAN
 GO
--- [CMPTR] - [25.10.2017 10:41:26]
-ALTER -- ALTER 
+ALTER -- CREATE 
   procedure [dbo].[sp_SearchProgress]
 as
 begin

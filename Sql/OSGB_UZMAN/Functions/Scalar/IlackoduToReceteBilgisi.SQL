@@ -1,6 +1,5 @@
 BEGIN TRAN
 GO
--- [CMPTR2] - [27.09.2017 01:39:55]
 ALTER FUNCTION [dbo].[IlackoduToReceteBilgisi] (@kod varchar(20) , @dosyaNo varchar(6) , @gelisNo int , @doz int = 1)
 RETURNS varchar(500)
 AS

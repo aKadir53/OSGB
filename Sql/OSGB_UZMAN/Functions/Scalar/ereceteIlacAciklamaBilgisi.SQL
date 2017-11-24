@@ -1,6 +1,5 @@
 BEGIN TRAN
 GO
--- [CMPTR2] - [06.10.2017 10:56:23]
 ALTER FUNCTION [dbo].[ereceteIlacAciklamaBilgisi] (@receteDetayId int)
 RETURNS varchar(500)
 AS

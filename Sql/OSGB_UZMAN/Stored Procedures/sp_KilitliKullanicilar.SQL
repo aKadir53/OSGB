@@ -1,6 +1,5 @@
 BEGIN TRAN
 GO
--- [CMPTR] - [12.10.2017 17:35:47]
  ALTER
   procedure [dbo].[sp_KilitliKullanicilar] @full bit = null
 as

@@ -1,6 +1,5 @@
 BEGIN TRAN
 GO
--- [CMPTR2] - [27.09.2017 00:50:04]
 ALTER FUNCTION [dbo].[ProtokolUret] (@dosyaNo varchar(6),@gelisno int)
 RETURNS varchar(50)
 AS

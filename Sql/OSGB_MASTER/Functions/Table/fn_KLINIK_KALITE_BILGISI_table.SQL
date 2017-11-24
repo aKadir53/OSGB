@@ -1,6 +1,5 @@
 BEGIN TRAN
 GO
--- [CMPTR2] - [09.08.2017 22:48:37]
 ALTER FUNCTION [dbo].[fn_KLINIK_KALITE_BILGISI_table] (@tarih1 VARCHAR(10) , @tarih2 VARCHAR(10))
 RETURNS @t TABLE (sayi int,Adi varchar(500),kodu int)
 AS
