@@ -1,6 +1,6 @@
 BEGIN TRAN
 GO
--- [CMPTR] - [27.10.2017 11:30:05]
+-- [CMPTR] - [27.10.2017 11:30:16]
 alter -- ALTER
   procedure dbo.sp_IsKazalariRaporlari @IlkTarih datetime, @SonTarih datetime
 as

@@ -1,7 +1,7 @@
 BEGIN TRAN
 GO
--- [CMPTR2] - [27.10.2017 18:41:33]
-ALTER PROCEDURE [dbo].[sp_frmPersonelIseGirisMuayene] @dosyaNo varchar(6) = '',@gelisNo int,@grup int = 0
+-- [CMPTR2] - [28.10.2017 11:34:56]
+ALTER PROCEDURE [dbo].[sp_frmPersonelIseGirisMuayene] @dosyaNo varchar(6) = '',@gelisNo int,@grup varchar(20) = ''
 AS
 
 if not exists(select * from PersoneliseGirisMuayene where PersonelKodu = @dosyaNo)
@@ -11,7 +11,33 @@ begin
 end
 
 
-if @grup = 8
+if @grup = 'TA12'
+begin
+select 
+  
+MS.PersonelKodu, s.tanimi MuayeneSoru,MS.GrupKod,MS.altGrupKod,Ms.value,MS.aciklama,
+--(case when MS.value = 'Evet' then 'X' else '' end) Evet,
+(case when MS.value = 'Hayýr' then 'X' else '' end) Hayir,
+(case  MS.altGrupKod
+when 3 then 'Evet ise taný' 
+when 4 then 'Evet ise neden' 
+when 5 then 'Evet ise ne oldu' 
+when 6 then 'Evet ise sonuç' 
+when 7 then 'Evet ise nedir ve oraný' 
+when 8 then 'Evet ise nedir' 	   
+end) EvetBaslik
+from PersoneliseGirisMuayene MS
+join IseGirisMuayeneSorulari S on S.id = MS.SoruId
+join IseGirisMuayeneGruplari MG on MG.kod = MS.grupKod
+join IseGirisMuayeneAltGruplari MAG on MS.altGrupKod = MAG.Kod and MS.grupKod = MAG.grupKod
+left join valueObjeValues V on V.kod = S.valueObjevalues
+join gelisler g on g.dosyaNo = @dosyaNo and g.TEDAVITURU = '1'
+join DoktorlarT d on d.kod = g.doktor
+where PersonelKodu = @dosyaNo and MS.gelisNo = 1 and MS.grupKod = 1 and MS.altGrupKod in (1,2)
+order by MS.GrupKod,MS.altGrupKod
+end
+
+if @grup = 'TA345678'
 begin
 select 
   
