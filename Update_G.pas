@@ -193,8 +193,6 @@ begin
 end;
 
 Procedure TfrmUpdate.TMemoFieldToTMemo;
-VAR
-   aBlobStream : TBlobStream;
 Begin
 //   aBlobStream := TBlobStream.Create(tblobfield(TQuery.fieldbyname('SQL')), bmRead);
 //   Memo1.Lines.LoadFromStream( aBlobStream );
@@ -205,8 +203,7 @@ procedure TfrmUpdate.UpdateSQL;
 var
    sql : string;
    i ,deneme : integer;
-   aBlobStream : TBlobStream;
-   Btmap : TBitmap;
+   //Btmap : TBitmap;
 
 begin
     sql := 'select SLK,SLT,SLX from parametreler where SLK = ''GT'' and SLB = ''0000''';
@@ -255,8 +252,8 @@ begin
       btnSend.Enabled := true;
 
     end;
-    Btmap := TBitmap.Create;x
-    global_img_list4.GetBitmap(0,Btmap);
+    //Btmap := TBitmap.Create;x
+    //global_img_list4.GetBitmap(0,Btmap);
 
     Grid_Temizle(gridDetay);
 
@@ -412,9 +409,6 @@ begin
 end;
 
 procedure TfrmUpdate.btnListeClick(Sender: TObject);
-var
-   sql : string;
-   ado : TADOQuery;
 begin
    guncellemeIslemi := 'No';
    GuncellemeBilgileri;
@@ -484,7 +478,7 @@ end;
 
 procedure TfrmUpdate.RaporDizaynlar1Click(Sender: TObject);
 var
-  r ,kaynak , hedef : integer;
+  r {,kaynak , hedef{} : integer;
   kod : string;
 begin
 
@@ -493,8 +487,8 @@ begin
     ADO_RaporlarKaynak.Open;
     ADO_RaporlarHedef.Open;
 
-    kaynak := ADO_RaporlarKaynak.RecordCount;
-    hedef := ADO_RaporlarHedef.RecordCount;
+    //kaynak := ADO_RaporlarKaynak.RecordCount;
+    //hedef := ADO_RaporlarHedef.RecordCount;
 
     for r := 1 to ADO_RaporlarKaynak.RecordCount do
     Begin
