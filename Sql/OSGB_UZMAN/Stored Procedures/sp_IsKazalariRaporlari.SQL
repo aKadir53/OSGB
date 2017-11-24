@@ -1,11 +1,11 @@
 BEGIN TRAN
 GO
--- [CMPTR] - [27.10.2017 12:21:50]
+-- [CMPTR] - [27.10.2017 12:23:10]
 alter -- ALTER
   procedure dbo.sp_IsKazalariRaporlari @IlkTarih datetime, @SonTarih datetime, @TarihGoster bit = 0, @YilGoster bit = 0, @AyGoster bit = 0, @BolumGoster bit = 1
 as
 begin
-  select BL.tanimi KazaBolumu, 
+  select case when @BolumGoster = 1 then BL.tanimi else null end KazaBolumu, 
     case when @TarihGoster = 1 then KazaTarihi else null end KazaTarihi, 
 	case when @TarihGoster = 1 or @YilGoster = 1 or @AyGoster = 1  then year (KazaTarihi) else null end KazaYil, 
 	case when @TarihGoster = 1 or @AyGoster = 1  then month (KazaTarihi) else null end KazaAy,
@@ -23,7 +23,8 @@ begin
   where IK.KazaTarihi between @IlkTarih and @SonTarih
   group by BL.Tanimi, case when @TarihGoster = 1 then KazaTarihi else null end,
     case when @TarihGoster = 1 or @YilGoster = 1 or @AyGoster = 1  then year (KazaTarihi) else null end,
-	case when @TarihGoster = 1 or @AyGoster = 1  then month (KazaTarihi) else null end
+	case when @TarihGoster = 1 or @AyGoster = 1  then month (KazaTarihi) else null end,
+	case when @BolumGoster = 1 then BL.tanimi else null end
 end
 GO
 exec sp_vw_sys_upd 'P ', 'dbo', 'sp_IsKazalariRaporlari'

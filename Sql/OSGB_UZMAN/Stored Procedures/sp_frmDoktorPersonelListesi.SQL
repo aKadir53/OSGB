@@ -1,9 +1,9 @@
 BEGIN TRAN
 GO
--- [CMPTR] - [18.10.2017 15:19:24]
+-- [CMPTR] - [18.10.2017 15:20:02]
 ALTER PROCEDURE [dbo].[sp_frmDoktorPersonelListesi] @firma varchar(10) = '',@ap int = 1,@doktor varchar(4)
 AS
-select h.*,(case when isnull(diger,'') = '' then '0' else '1' end) ozeldurum , 
+select h.Sube, h.*,(case when isnull(diger,'') = '' then '0' else '1' end) ozeldurum , 
 (case when (CHARINDEX('5',h.GELHAST) > 0 OR CHARINDEX('7',h.GELHAST) > 0) THEN '1' ELSE '' END) Diabet,
 (case when isnull(AntiHbs,'') = '' THEN '0' ELSE AntiHbs END) 'AntiHbs',
 IK.ADI il,ILCK.ADI ilce,MK.ADI mahalle,dbo.fn_yasTarih(h.doGUMTARIHI,getdate()) yas, 

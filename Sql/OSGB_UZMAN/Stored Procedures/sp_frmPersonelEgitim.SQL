@@ -1,6 +1,6 @@
 BEGIN TRAN
 GO
--- [CMPTR] - [25.10.2017 16:18:47]
+-- [CMPTR] - [25.10.2017 16:19:55]
 alter -- ALTER
   procedure dbo.sp_frmPersonelEgitim @EgitimId int, @PersonelDosyaNo varchar (6) = null
 as 
@@ -12,6 +12,7 @@ begin
   inner join dbo.PersonelKart pk on pk.Sirketkod = E.sirketkod
     and pk.DosyaNo = pE.personelDosyaNo
   where E.id = @EgitimId
+    and (@PersonelDosyaNo is null or pe.PersonelDosyaNo = @PersonelDosyaNo)
 end
 GO
 exec sp_vw_sys_upd 'P ', 'dbo', 'sp_frmPersonelEgitim'

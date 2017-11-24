@@ -1,7 +1,7 @@
 BEGIN TRAN
 GO
--- [CMPTR2] - [09.08.2017 23:04:27]
-ALTER FUNCTION [dbo].[fn_KLINIK_KALITE_BILGISI] (@tarih1 varchar(10) , @tarih2 varchar(10))
+-- [CMPTR2] - [11.08.2017 12:26:21]
+ALTER FUNCTION [dbo].[fn_KLINIK_KALITE_BILGISI] (@tarih1 varchar(10) , @tarih2 varchar(10),@sifirOlanGoster int = 1)
 RETURNS varchar(max)
 AS
 BEGIN
@@ -14,9 +14,8 @@ SET @s = ''
             '<KLINIK_KALITE_TANIM version="1" codeSystemGuid="4fa9b630-c081-44e1-8b8c-0ef0f967c17d" code="'+cast(kodu as varchar)+'" value="'+ADi+'" />'+
             '<KLINIK_KALITE_SAYI value="'+cast(sayi as varchar)+'" />'+
         '</KLINIK_KALITE_BILGISI>'				 
-	 from dbo.fn_KLINIK_KALITE_BILGISI_table(@tarih1,@tarih2) tmp
-	 where sayi > 0	 
-
+	 from dbo.fn_KLINIK_KALITE_BILGISI_table(@tarih1,@tarih2) tmp	 
+	 where sayi >= @sifirOlanGoster
 
 
 return(@s)

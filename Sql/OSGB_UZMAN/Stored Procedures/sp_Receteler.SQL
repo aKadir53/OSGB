@@ -1,6 +1,6 @@
 BEGIN TRAN
 GO
--- [CMPTR2] - [21.10.2017 10:27:34]
+-- [CMPTR2] - [21.10.2017 10:30:04]
 ALTER PROCEDURE [dbo].[sp_Receteler](@sirketKod varchar(10) = '',@IlkTarih dateTime,@SonTarih datetime,@tip VARCHAR(1) = '')
 as
 BEGIN
@@ -13,7 +13,7 @@ set @tarih2 = convert(varchar,@SonTarih,112)
 	
 IF @tip = ''
 BEGIN
-	select r.*,h.HASTAADI, h.HASTASOYADI,h.TCKIMLIKNO,h.SirketKod,s.tanimi
+	select r.*,d.tanimi DoktorAdi, h.HASTAADI, h.HASTASOYADI,h.TCKIMLIKNO,h.SirketKod,s.tanimi
 	from recete r  
 	join Personelkart h on h.dosyaNo = r.dosyaNO  
     join SIRKETLER_TNM s on s.SirketKod = h.sirketKod	
