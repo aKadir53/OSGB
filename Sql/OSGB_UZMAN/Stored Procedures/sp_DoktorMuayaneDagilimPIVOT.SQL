@@ -1,7 +1,63 @@
 BEGIN TRAN
 GO
--- [CMPTR] - [19.10.2017 15:42:53]
---Bos
+-- [CMPTR2] - [20.10.2017 15:42:53]
+ALTER PROCEDURE [dbo].[sp_DoktorMuayaneDagilimPIVOT] @yil varchar(10),@f INT = 0
+AS
+BEGIN
+
+declare @ay1 datetime,@ay2 datetime
+declare @t table (ay varchar(2),yil varchar(4))
+
+declare @t1 datetime , @t2 datetime
+
+set @ay2 = cast(@yil as datetime)
+set @ay1 = DATEADD(MM, -6, @ay2)
+
+while not @ay1 > @ay2 
+begin
+   insert into @t
+   SELECT MONTH(@ay1),YEAR(@ay1)  
+   set @ay1 = DATEADD(MM, 1, @ay1)
+end
+
+set @ay1 = DATEADD(MM, -5, @ay2)
+
+
+IF @f = -1
+BEGIN
+ set @ay2 = cast(substring(@yil,1,4)+'1231' as datetime)
+ set @ay1 = cast(substring(@yil,1,4)+'0101' as datetime)	
+END
+
+
+if @f = 0
+begin
+ select (replicate('0',2-len(ay)) +ay) ay,yil,dbo.aytoadi(replicate('0',2-len(ay)) +ay) ad from @t
+ order by yil+(replicate('0',2-len(ay)) +ay)  desc
+END
+
+   select p.*
+   from
+	(
+
+		select count(*) s , Tanim ,dbo.aytoadi(substring(g.bhdat,5,2)) tarIh from VW_MuayeneTipleri mt
+		join gelisler g on g.TEDAVITURU = mt.Kod
+		group by Tanim,bhdat
+
+
+	 ) as t
+
+	PIVOT
+	(
+	max(s)
+	FOR tarIh IN ([OCAK],[SUBAT],[MART],[NISAN],[MAYIS],[HAZIRAN],[TEMMUZ],[AGUSTOS],[EYLUL],[EKIM],[KASIM],[ARALIK]) 
+	) AS p
+	
+
+
+
+
+END
 GO
 exec sp_vw_sys_upd 'P ', 'dbo', 'sp_DoktorMuayaneDagilimPIVOT'
 GO

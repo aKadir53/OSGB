@@ -1,7 +1,11 @@
 BEGIN TRAN
 GO
--- [CMPTR] - [19.10.2017 19:26:49]
---Bos
+-- [CMPTR2] - [20.10.2017 19:26:49]
+ALTER VIEW dbo.VW_Spler
+AS
+SELECT        id, name
+FROM            sys.sysobjects
+WHERE        (xtype = 'P') AND (category = 0)
 GO
 exec sp_vw_sys_upd 'V ', 'dbo', 'VW_Spler'
 GO

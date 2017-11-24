@@ -1,7 +1,47 @@
 BEGIN TRAN
 GO
--- [CMPTR] - [08.08.2017 03:10:32]
---Bos
+-- [CMPTR2] - [09.08.2017 03:10:32]
+ALTER FUNCTION [dbo].[fn_KLINIK_KALITE_BILGISI] (@tarih1 VARCHAR(10) , @tarih2 VARCHAR(10))
+RETURNS @t TABLE (sayi int,Adi varchar(500),kodu int)
+AS
+BEGIN
+
+    insert @t (sayi,Adi,kodu)	
+	
+	select * from 
+	(
+	select
+	(
+	select count(*) from hareketler h
+	join  SKRS.dbo.GUN_SONU_OZET_VERISI V on V.KODU = VV.KODU
+	where TARIH between @tarih1 and @tarih2 and 
+	(case when V.KODU = 25 then gd else 0 end between (case when V.KODU = 25 then 0.1 else 0 end) and (case when V.KODU = 25 then 6.999 else 0 end)) and
+	(case when V.KODU = 26 then gd else 0 end between (case when V.KODU = 26 then 7 else 0 end) and (case when V.KODU = 26 then 9 else 0 end)) and
+	case when V.KODU = 27 then gd else 0 end > (case when V.KODU = 27 then 9 else -1 end) and 
+	case when V.KODU = 29 then gd else 0 end > (case when V.KODU = 29 then 0.1 else -1 end) and 
+	(case when V.KODU = 31 then gd else 0 end between (case when V.KODU = 31 then 0.1 else 0 end) and (case when V.KODU = 31 then 100 else 0 end)) and
+	case when V.KODU = 41 then onay else 0 end = (case when V.KODU = 41 then 1 else 0 end) and 	
+	case when V.KODU = 46 then onay else 0 end = (case when V.KODU = 46 then 1 else 0 end) and 
+	case when V.KODU = 53 then gd else 0 end > (case when V.KODU = 53 then 0.1 else -1 end) and
+	case when V.KODU = 52 then onay else 0 end = (case when V.KODU = 52 then 1 else 0 end) and 	 
+	case when V.KODU = 28 then onay else 0 end = (case when V.KODU = 28 then 1 else 0 end) and 	
+	case when V.KODU = 24 then onay else 0 end = (case when V.KODU = 24 then 1 else 0 end) and 	
+	case when V.KODU = 23 then onay else 0 end = (case when V.KODU = 23 then 1 else 0 end) and 	
+	case when V.KODU = 30 then onay else 0 end = (case when V.KODU = 30 then 1 else 0 end) and
+	case when V.KODU = 35 then onay else 0 end = (case when V.KODU = 35 then 1 else 0 end) and 
+	case when V.KODU = 36 then onay else 0 end = (case when V.KODU = 36 then 1 else 0 end) and 		 							
+	code in (
+	select REFERANS_KOD from SKRS.dbo.GUN_SONU_OZET_VERISI OV
+	join SKRS.dbo.GUN_SONU_OZET_REFERANS R on R.GUNSONU_ID = OV.KODU
+	where GUNSONU_ID = VV.KODU)
+	) as KLINIK_KALITE_SAYI , VV.ADI,VV.KODU
+	from SKRS.dbo.GUN_SONU_OZET_VERISI VV
+	) tmp 
+	where KLINIK_KALITE_SAYI > 0
+	--SELECT * FROM @table
+	return
+
+end
 GO
 exec sp_vw_sys_upd 'FN', 'dbo', 'fn_KLINIK_KALITE_BILGISI'
 GO
