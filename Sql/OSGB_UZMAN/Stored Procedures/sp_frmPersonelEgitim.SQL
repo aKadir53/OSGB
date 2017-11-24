@@ -1,7 +1,7 @@
 BEGIN TRAN
 GO
--- [CMPTR] - [25.10.2017 15:59:34]
-ALTER
+-- [CMPTR] - [25.10.2017 15:59:35]
+alter -- ALTER
   procedure dbo.sp_frmPersonelEgitim 
 as 
 begin

@@ -1,10 +1,10 @@
 BEGIN TRAN
 GO
--- [CMPTR2] - [01.11.2017 16:47:57]
+-- [CMPTR] - [15.11.2017 11:58:09]
 ALTER PROCEDURE [dbo].[sp_YeniReceteProtokol] @sirketKod varchar(10),@subeKod varchar(10)
 
 AS
-
+begin
 --begin tran
 
 Declare @dosyaNo int
@@ -17,6 +17,7 @@ where sirketKod = @sirketKod and subeKod = @subeKod
 
 
 SELECT @DOSYANO as ProtokolNo
+end
 GO
 exec sp_vw_sys_upd 'P ', 'dbo', 'sp_YeniReceteProtokol'
 GO

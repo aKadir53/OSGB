@@ -1,11 +1,11 @@
 BEGIN TRAN
 GO
--- [CMPTR2] - [02.06.2017 15:50:10]
+-- [CMPTR2] - [02.06.2017 15:51:29]
 ALTER PROCEDURE [dbo].[sp_GelisKaydet]
 @dosyaNo varchar(6),
 @gelisNo int,
 @BHDAT varchar(10),
-@SEVKGECSURE int,
+@SEVKGECSURE int = 0,
 @doktor varchar(4),
 @SERVIS varchar(4),
 @TEDAVITURU varchar(1),

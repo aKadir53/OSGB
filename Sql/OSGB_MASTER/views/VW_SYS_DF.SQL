@@ -1,7 +1,7 @@
 BEGIN TRAN
 GO
--- [CMPTR] - [12.10.2017 17:51:05]
- ALTER
+-- [CMPTR] - [12.10.2017 17:51:06]
+alter -- ALTER
   view dbo.VW_SYS_DF 
 as
 select xtype, Returns, OwnerName, name, OwnerID, AllText, sum (x) X, MAX (LastDate) LastDate, MAX (LastHost) LastHost, Folder, MAX (FileNameOwner) FileNameOwner

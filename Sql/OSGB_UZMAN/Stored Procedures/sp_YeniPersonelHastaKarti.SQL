@@ -1,7 +1,7 @@
 BEGIN TRAN
 GO
--- [CMPTR2] - [14.10.2017 17:55:04]
-ALTER PROCEDURE [dbo].[sp_YeniPersonelHastaKarti]
+-- [CMPTR2] - [14.10.2017 17:57:47]
+alter PROCEDURE [dbo].[sp_YeniPersonelHastaKarti]
 
 @CINSIYETI varchar(1),
 @MEDENI varchar(1),
@@ -22,7 +22,7 @@ ALTER PROCEDURE [dbo].[sp_YeniPersonelHastaKarti]
 @baslangic varchar(10),
 @kanGrubu varchar(1),
 @USER_ID varchar(20),
-@DATE_CREATE varchar(20),
+@DATE_ALTER varchar(20),
 @vatandasTip VARCHAR(1) = '0'
 
 
@@ -40,10 +40,11 @@ exec sp_DosyaNoYaz @DosyaNo
 
 INSERT INTO [HASTAKART]
  ([DOSYANO],
-  [CINSIYETI],
-  [MEDENI],
+  [TCKIMLIKNO],
   [HASTAADI],
   [HASTASOYADI],
+  [CINSIYETI],
+  [MEDENI],
   [BABAADI],
   [ANAADI],
   [EV_SEHIR],
@@ -53,10 +54,8 @@ INSERT INTO [HASTAKART]
   [DOGUMYERI],
   [DOGUMTARIHI],
   [UYRUGU],
-  [TCKIMLIKNO],
   [Durum],
   [BASLANGIC],
-  [HUVIYETTARIHI],
   [KANGRUBU],
   [USER_ID],
   [DATE_CREATE],
@@ -65,10 +64,11 @@ INSERT INTO [HASTAKART]
 )
 VALUES(
   @Dn,
-  @CINSIYETI,
-  @MEDENI,
+  @TCKIMLIKNO,
   @HASTAADI,
   @HASTASOYADI,
+  @CINSIYETI,
+  @MEDENI,
   @BABAADI,
   @ANAADI,
   @EV_SEHIR,
@@ -78,7 +78,6 @@ VALUES(
   @DOGUMYERI,
   @DOGUMTARIHI,
   @UYRUGU,
-  @TCKIMLIKNO,
   @Baslangic,
   @KanGrubu,
   @USER_ID,

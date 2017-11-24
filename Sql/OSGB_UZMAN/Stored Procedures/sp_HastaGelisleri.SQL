@@ -1,13 +1,21 @@
 BEGIN TRAN
 GO
--- [CMPTR2] - [06.06.2017 10:25:46]
+-- [CMPTR2] - [06.06.2017 10:33:21]
 ALTER PROCEDURE [dbo].[sp_HastaGelisleri]
 @dosyaNo varchar(6)
 AS
 select GelisNo,TakIpNo,cast(BHDAT as datetime)  as Tarih,
        SERVIS,TEDAVITURU,Doktor,kullanici,
        AcilmisSeans,GelinenSeans,SeanDurum,CIKTAR,taburcu,BasvuruNo,ilkTakipNo,TaniIslemSiraNo,
-       PROTOKOLNO,SNProtokolNo,isnull(g.KanAlinanSeans,0) KanAlinanSeans , diyalizTedaviYontemi,yupass
+       PROTOKOLNO,SNProtokolNo,isnull(g.KanAlinanSeans,0) KanAlinanSeans , 
+       case diyalizTedaviYontemi
+         when '0' then '1'
+         when '1' then 'P'
+         When '2' then 'A'
+         else '' end diyalizTedaviYontemi
+       
+       ,
+       yupass
 from Gelisler g
 --inner join doktorlar d on d.kod = g.doktor
 where DOSYANO = @dosyano

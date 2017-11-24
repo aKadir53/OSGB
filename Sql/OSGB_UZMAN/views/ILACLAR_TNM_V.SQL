@@ -1,11 +1,7 @@
 BEGIN TRAN
 GO
 -- [CMPTR2] - [15.09.2017 15:23:57]
-ALTER VIEW dbo.ILACLAR_TNM_V
-AS
-SELECT        I.kod, I.GRUP, I.kisaTanimi, I.tanimi, I.unite, I.firma, I.etkenMadde, I.RecTipi, I.ubbcode, I.BUT, I.tetkikSonuc, I.aktif, I.tip, I.Tani, I.id, g.tanimi AS grupKoduTanimi
-FROM            dbo.ILACLAR_ANAGRUP_TNM AS g INNER JOIN
-                         dbo.ILACLAR_TNM AS I ON I.GRUP = g.kod
+EXECUTE sp_updateextendedproperty N'MS_DiagramPaneCount', @v, N'SCHEMA', N'dbo', N'VIEW', N'ILACLAR_TNM_V', NULL, NULL
 GO
 exec sp_vw_sys_upd 'V ', 'dbo', 'ILACLAR_TNM_V'
 GO

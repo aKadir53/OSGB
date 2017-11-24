@@ -1,12 +1,13 @@
 BEGIN TRAN
 GO
--- [CMPTR2] - [24.10.2017 13:35:07]
-ALTER PROCEDURE [dbo].[sp_frmKazaTutanagiYazdir] @ID int
+-- [CMPTR2] - [24.10.2017 13:58:11]
+alter PROCEDURE [dbo].[sp_frmKazaTutanagiYazdir] @ID int
 AS
 
-select I.*,P.*,S.*,U.tanimi UzuvAdi,B.tanimi BolumAdi from IsKazalari I
+select I.*,P.*,S.*,SB.*,U.tanimi UzuvAdi,B.tanimi BolumAdi from IsKazalari I
 join PersonelKart P on P.dosyaNO = I.PersonelDosyaNo
 join SIRKETLER_TNM S on S.sirketKod = P.sirketKod
+join SIRKET_SUBE_TNM SB on P.Sube = SB.subeKod
 join Bolumler B on B.kod = I.KazaninMeydanaGelBolum
 join Uzuvlar U on U.kod = I.KazadaYaralananUzuv
 where I.ID = @ID

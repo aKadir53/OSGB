@@ -1,7 +1,7 @@
 BEGIN TRAN
 GO
--- [CMPTR] - [12.10.2017 17:42:50]
-ALTER
+-- [CMPTR] - [12.10.2017 17:43:09]
+alter -- ALTER
   procedure dbo.sp_vw_sys_check @replaceCRLF varchar (10) = null, @replaceTabs varchar (10) = null 
 as
 begin

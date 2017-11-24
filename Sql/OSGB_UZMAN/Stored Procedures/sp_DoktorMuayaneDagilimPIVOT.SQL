@@ -1,14 +1,15 @@
 BEGIN TRAN
 GO
--- [CMPTR2] - [20.10.2017 15:42:53]
-ALTER PROCEDURE [dbo].[sp_DoktorMuayaneDagilimPIVOT] @yil varchar(10),@f INT = 0
+-- [CMPTR2] - [21.10.2017 09:46:27]
+ALTER PROCEDURE [dbo].[sp_DoktorMuayaneDagilimPIVOT] @Yil varchar(10)
 AS
 BEGIN
 
-declare @ay1 datetime,@ay2 datetime
+declare @ay1 datetime,@ay2 datetime,@f int
 declare @t table (ay varchar(2),yil varchar(4))
 
 declare @t1 datetime , @t2 datetime
+set @f = -1
 
 set @ay2 = cast(@yil as datetime)
 set @ay1 = DATEADD(MM, -6, @ay2)

@@ -1,7 +1,7 @@
 BEGIN TRAN
 GO
--- [CMPTR] - [27.10.2017 12:38:57]
-ALTER
+-- [CMPTR] - [27.10.2017 12:38:59]
+alter -- ALTER
   procedure dbo.sp_IsKazalariListesi @IlkTarih datetime, @SonTarih datetime, @TarihGoster bit = 0, @YilGoster bit = 0, @AyGoster bit = 0, @BolumGoster bit = 1
 as
 begin

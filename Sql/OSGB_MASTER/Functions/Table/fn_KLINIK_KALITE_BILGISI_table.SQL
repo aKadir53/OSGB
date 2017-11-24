@@ -1,6 +1,6 @@
 BEGIN TRAN
 GO
--- [CMPTR2] - [09.08.2017 22:43:29]
+-- [CMPTR2] - [09.08.2017 22:47:42]
 ALTER FUNCTION [dbo].[fn_KLINIK_KALITE_BILGISI_table] (@tarih1 VARCHAR(10) , @tarih2 VARCHAR(10))
 RETURNS @t TABLE (sayi int,Adi varchar(500),kodu int)
 AS
@@ -13,7 +13,7 @@ BEGIN
 	select
 	(
 	select count(*) from hareketler h
-	join  SKRS.dbo.GUN_SONU_OZET_VERISI V on V.KODU = VV.KODU
+	join  GUN_SONU_OZET_VERISI V on V.KODU = VV.KODU
 	where TARIH between @tarih1 and @tarih2 and 
 	(case when V.KODU = 25 then gd else 0 end between (case when V.KODU = 25 then 0.1 else 0 end) and (case when V.KODU = 25 then 6.999 else 0 end)) and
 	(case when V.KODU = 26 then gd else 0 end between (case when V.KODU = 26 then 7 else 0 end) and (case when V.KODU = 26 then 9 else 0 end)) and
@@ -31,11 +31,11 @@ BEGIN
 	case when V.KODU = 35 then onay else 0 end = (case when V.KODU = 35 then 1 else 0 end) and 
 	case when V.KODU = 36 then onay else 0 end = (case when V.KODU = 36 then 1 else 0 end) and 		 							
 	code in (
-	select REFERANS_KOD from SKRS.dbo.GUN_SONU_OZET_VERISI OV
-	join SKRS.dbo.GUN_SONU_OZET_REFERANS R on R.GUNSONU_ID = OV.KODU
+	select REFERANS_KOD from SKRS_GUN_SONU_OZET_VERISI OV
+	join SKRS_GUN_SONU_OZET_REFERANS R on R.GUNSONU_ID = OV.KODU
 	where GUNSONU_ID = VV.KODU)
 	) as KLINIK_KALITE_SAYI , VV.ADI,VV.KODU
-	from SKRS.dbo.GUN_SONU_OZET_VERISI VV
+	from SKRS_GUN_SONU_OZET_VERISI VV
 	) tmp 
 	where KODU not in(16,17,19,20,22,54,55,56,66,63) --KLINIK_KALITE_SAYI > 0
 	--SELECT * FROM @table
@@ -55,6 +55,12 @@ BEGIN
 	join Recete I on I.dosyaNo = g.dosyaNo and I.gelisNo = g.gelisNo
 	join ReceteDetay rd on rd.ReceteID = I.id
 	where BHDAT between @tarih1 and @tarih2
+	
+	union all
+
+	select count(*),'Günübirlik sayýsý',19
+	from gelisler 
+	where BHDAT between @tarih1 and @tarih2 and TEDAVITURU = 'G'
 
 	return
 

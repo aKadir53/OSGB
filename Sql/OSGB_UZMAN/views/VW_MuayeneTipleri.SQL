@@ -1,7 +1,7 @@
 BEGIN TRAN
 GO
--- [CMPTR] - [12.10.2017 15:29:25]
-ALTER
+-- [CMPTR] - [12.10.2017 15:29:27]
+alter--ALTER
   view dbo.VW_MuayeneTipleri
 AS
 select cast (1 as int) Kod, cast ('Ýþe Giriþ Muayenesi' as varchar (20)) Tanim

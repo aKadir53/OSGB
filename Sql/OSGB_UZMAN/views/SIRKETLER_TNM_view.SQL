@@ -1,7 +1,7 @@
 BEGIN TRAN
 GO
--- [CMPTR] - [09.11.2017 17:42:27]
-ALTER
+-- [CMPTR] - [09.11.2017 17:43:37]
+alter -- ALTER
   view dbo.SIRKETLER_TNM_view
 as
 Select * 

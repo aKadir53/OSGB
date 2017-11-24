@@ -1,7 +1,7 @@
 BEGIN TRAN
 GO
--- [CMPTR2] - [01.10.2017 19:09:57]
-ALTER PROCEDURE [dbo].[sp_frmPersonelIseGirisMuayene] @dosyaNo varchar(6) = ''
+-- [CMPTR2] - [02.10.2017 11:39:17]
+alter PROCEDURE [dbo].[sp_frmPersonelIseGirisMuayene] @dosyaNo varchar(6) = ''
 AS
 
 if not exists(select * from PersoneliseGirisMuayene where PersonelKodu = @dosyaNo)
@@ -22,6 +22,7 @@ join IseGirisMuayeneSorulari S on S.id = MS.SoruId
 join IseGirisMuayeneGruplari MG on MG.kod = MS.grupKod
 join IseGirisMuayeneAltGruplari MAG on MS.altGrupKod = MAG.Kod and MS.grupKod = MAG.grupKod
 left join valueObjeValues V on V.kod = S.valueObjevalues
+join gelisler g on g.dosyaNo = @dosyaNo and g.TEDAVITURU = '1'
 where PersonelKodu = @dosyaNo
 order by MS.GrupKod,MS.altGrupKod
 GO

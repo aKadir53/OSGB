@@ -1,11 +1,7 @@
 BEGIN TRAN
 GO
--- [CMPTR2] - [24.10.2017 10:53:37]
-ALTER VIEW dbo.IsKazalariView
-AS
-SELECT        I.PersonelDosyaNo, I.ID, I.DuzenlemeTarihi, I.KazaTarihi, P.HASTAADI, P.HASTASOYADI
-FROM            dbo.IsKazalari AS I INNER JOIN
-                         dbo.PersonelKart AS P ON P.dosyaNo = I.PersonelDosyaNo
+-- [CMPTR2] - [24.10.2017 10:53:40]
+EXECUTE sp_addextendedproperty N'MS_DiagramPane1', @v, N'SCHEMA', N'dbo', N'VIEW', N'IsKazalariView', NULL, NULL
 GO
 exec sp_vw_sys_upd 'V ', 'dbo', 'IsKazalariView'
 GO

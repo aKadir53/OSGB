@@ -1,7 +1,7 @@
 BEGIN TRAN
 GO
--- [CMPTR] - [12.10.2017 17:40:06]
-ALTER
+-- [CMPTR] - [12.10.2017 17:40:08]
+alter -- ALTER
   procedure [dbo].[sp_vw_sys_GetCheckDBList]
 as
 begin
