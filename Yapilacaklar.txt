@@ -31,6 +31,13 @@ doktor bilgileri (tckimlik, parola, þifre, pin, tesis kodu)
 tesis kodu (ornek: 11349903 (istanbul) il koduna göre 34 yerine o ilin kodu yazýlacak)
 reçeteyi kaydederken doktor tesis kodu, reçete silerken kurum þifre bilgilerindeki tesis kodu alýnmýþ, doktorun tesis kodu alýnacak
 
+hasta kartýnda yazdýrma düðmesi ??
+eðitimlerde eðitim numarasý veritabanýndan güncellenmiyor.
+eðitim formunda Yeni (!) düðmesine basmadan kayýt girince sapýtýyor
+kullanýcý yetki ayarlarýnda kaydet'e basýnca gridde alt üst satýra geçilmemiþse o satýrý kaydetmeden kapatýyor (datasetleri tarayýp post metodunu çaðýrmak lazým)
+
+reçete ilaç gridinde kayýt yokken çift týklanmasý durumunda pencere açýlmada hata çýkýyor, açtýrmamak lazým
+
 
 ------------------------------------------------------------------------------------------------------------------------
 iptal olanlar
@@ -46,6 +53,10 @@ eðitimler ekranýnda bir de eðitim seçme için o genel seçilebilir parametreler ek
       --Ýþ kazalarýnýn departmanlara göre daðýlýmý…
       --Yazýlan reçetelerin ilaç isimlerine göre daðýlýmý…
       --Ve daha bir çok kritere göre alýnan yüzlerce rapor… sayýlabilir.    
+
+acil durum eylem planý
+risk analizi
+
 
 bitlisin önünde daðlar
 bir ay doðar
