@@ -208,7 +208,7 @@ begin
   List.Where := 'SirketKod = ' + QuotedStr (DATALAR.AktifSirket);
   setDataStringB(self,'id','Eðitim No.',Kolon1,'',70,List,True,nil, 'tanimi', '', False, True, -100);
 
-  setDataStringB(self,'SirketKod','Þirket Kodu',Kolon1,'',100,nil, True, SirketKod);
+  setDataStringB(self,'SirketKod'x,'Þirket Kodu',Kolon1,'',100,nil, True, SirketKod);
   SirketKod.Properties.ReadOnly := True;
 
   kombo := TcxImageComboKadir.Create(self);

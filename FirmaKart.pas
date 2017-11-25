@@ -119,7 +119,7 @@ var
   F : TGirisForm;
   GirisRecord : TGirisFormRecord;
 begin
-  GirisRecord.F_firmaKod_ := TcxButtonEditKadir(FindComponent('sirketKod')).EditValue;
+  GirisRecord.F_firmaKod_ := TcxButtonEditKadir(FindComponent('SirketKod'x)).EditValue;
   GirisRecord.F_HastaAdSoyad_ := TcxTextEditKadir(FindComponent('tanimi')).EditValue;
   F := FormINIT(TagfrmSube,GirisRecord,ikHayir,'');
   if F <> nil then F.ShowModal;
@@ -265,7 +265,7 @@ var
  sql,dosyaNo : string;
  ado : TADOQuery;
 begin
-  dosyaNo := TcxButtonEditKadir(FindComponent('sirketKod')).Text;
+  dosyaNo := TcxButtonEditKadir(FindComponent('SirketKod'x)).Text;
   ado := TADOQuery.Create(nil);
   try
     sql := 'if not exists(select sirketKod from FirmaLogo where sirketKod = ' + QuotedStr(dosyaNo) + ')' +
@@ -283,7 +283,7 @@ var
  filename,dosyaNo : string;
  jp : TJPEGImage;
 begin
-  dosyaNo := TcxButtonEditKadir(FindComponent('sirketKod')).Text;
+  dosyaNo := TcxButtonEditKadir(FindComponent('SirketKod'x)).Text;
   datalar.ADO_Foto.SQL.Text := Format(FotoTable,[#39+dosyaNo+#39]);
   datalar.ADO_FOTO.Open;
   datalar.ADO_FOTO.Edit;
@@ -461,7 +461,7 @@ begin
 
 
 
-  indexFieldName := 'sirketKod';
+  indexFieldName := 'SirketKod'x;
   TableName := _TableName_;
   Olustur(self,_TableName_,'Firma Taným Kartý',22,sqlInsert);
 
@@ -472,10 +472,10 @@ begin
 
   List := ListeAcCreate('SIRKETLER_TNM','sirketKod,tanimi,Aktif',
                        'SirketKod,Sirket,Durum',
-                       '50,250,50','sirketKod','Firma Listesi','',5,True);
+                       '50,250,50','SirketKod'x,'Firma Listesi','',5,True);
 
 
-  setDataStringB(self,'sirketKod','Þirket Kodu',Kolon1,'',80,List,True,sirketKod,'','',True,True,1);
+  setDataStringB(self,'SirketKod'x,'Þirket Kodu',Kolon1,'',80,List,True,sirketKod,'','',True,True,1);
   setDataString(self,'tanimi','Firma Adý  ',Kolon1,'',350,True);
   setDataStringKontrol(self,NaceKod, 'NaceKod','Nace Kodu  ',Kolon1,'',130);
   setDataString(self,'anaFaliyet','Firma Ana Faaliye',Kolon1,'',450,True);
