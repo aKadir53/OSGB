@@ -940,10 +940,12 @@ begin
        if (self.Components[i].ClassName = 'TcxLabel') and
            (TcxLabel(self.Components[i]).Tag = -200)
        Then begin
-          _obje_ := TcxLabel(self.Components[i]);
-          TcxLabel(_obje_).Caption := sqlRun.FieldByName(
-                        copy(_Obje_.Name,6,50)).AsVariant;
-          Continue;
+         _obje_ := TcxLabel(self.Components[i]);
+         if sqlRun.FieldByName(copy(_Obje_.Name,6,50)) is TStringField then
+           TcxLabel(_obje_).Caption := sqlRun.FieldByName(copy(_Obje_.Name,6,50)).AsString
+          else
+           TcxLabel(_obje_).Caption := sqlRun.FieldByName(copy(_Obje_.Name,6,50)).AsVariant;
+         Continue;
        end
        else
 
