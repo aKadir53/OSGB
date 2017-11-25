@@ -439,7 +439,7 @@ uses message,AnaUnit,message_y,popupForm,rapor,TedaviKart,Son6AylikTetkikSonuc,
 
 procedure LisansUzat;
 begin
-    Application.CreateForm(TfrmLisansBilgisi, frmLisansBilgisi);
+    Application.CreateForm(TfrmLisansBilgisi, frmLisansBilgisi);x
     frmLisansBilgisi.LisansBilgisi;
     frmLisansBilgisi.ShowModal;
     frmLisansBilgisi := nil;
@@ -561,7 +561,7 @@ end;
 
 procedure SMSSend(tel : string; Msj : string = '';Kisi : string ='');
 begin
-    Application.CreateForm(TfrmSMS, frmSMS);
+    Application.CreateForm(TfrmSMS, frmSMS);x
     frmSMS.mesaj := Msj;
     frmSMS.MobilTel := tel;
     frmSMS.hasta := Kisi;
@@ -575,7 +575,7 @@ var
   ado : TADOQuery;
   sql : string;
 begin
-  ado := TADOQuery.Create(nil);
+  ado := TADOQuery.Create(nil);x
   ado.Connection := datalar.ADOConnection2;
   sql := Format(_SqlSelect_,[Columns,Table,Where]);
   datalar.QuerySelect(ado,sql);
@@ -862,7 +862,7 @@ var
   ado : TADOQuery;
 begin
  try
-  ado := TADOQuery.Create(nil);
+  ado := TADOQuery.Create(nil);x
   sql := 'update ilacListesi set ICD = ' + QuotedStr(TaniKodu) +
          ',kulYol = ' + kulYol +
          ',doz = ' +  doz +
@@ -909,7 +909,7 @@ end;
 
 procedure PrintYap(raporKodu,caption,formId : string; Data: TDataSetKadir; yazdirmaTipi : TprintTip = pTNone);
 begin
-    Application.CreateForm(TfrmRapor, frmRapor);
+    Application.CreateForm(TfrmRapor, frmRapor);x
     frmRapor.raporData1(Data ,raporKodu,caption,formId,yazdirmaTipi);
     if yazdirmaTipi = pTNone then frmRapor.ShowModal;
     FreeAndNil(frmRapor);
@@ -947,7 +947,7 @@ begin
        exit;
    end;
    *)
-  Application.CreateForm(TfrmHastaTetkikEkle, frmHastaTetkikEkle);
+  Application.CreateForm(TfrmHastaTetkikEkle, frmHastaTetkikEkle);x
   frmHastaTetkikEkle._dosyaNo_ := dosyaNo;
   frmHastaTetkikEkle._gelisNO_ := gelisNo;
   frmHastaTetkikEkle.Sonuclar;
@@ -959,7 +959,7 @@ end;
 
 procedure Son6AylikTetkikSonuc(dosyaNo,Tarih : string);
 begin
-  Application.CreateForm(TfrmSon6AylikTetkikSonuc, frmSon6AylikTetkikSonuc);
+  Application.CreateForm(TfrmSon6AylikTetkikSonuc, frmSon6AylikTetkikSonuc);x
   frmSon6AylikTetkikSonuc._dosyaNO_ := dosyaNo;
   frmSon6AylikTetkikSonuc._provizyonTarihi_ := Tarih;
   frmSon6AylikTetkikSonuc.Listele;
@@ -992,7 +992,7 @@ end;
 
 procedure SifreDegistir(newSifre : string ; sifreTip : integer);
 begin
-    Application.CreateForm(TfrmSifreDegis, frmSifreDegis);
+    Application.CreateForm(TfrmSifreDegis, frmSifreDegis);x
     frmSifreDegis.doktorKullanici := datalar.doktorKodu;
     frmSifreDegis.sifreTip := sifreTip;
     frmSifreDegis.ShowModal;
@@ -1003,7 +1003,7 @@ procedure cxExceleGonder(grid : TcxGrid ; dosyaName : string);
 var
  SaveDlg : TSaveDialog;
 begin
-    SaveDlg := TSaveDialog.Create(nil);
+    SaveDlg := TSaveDialog.Create(nil);ç
     SaveDlg.FileName := dosyaName;
     if SaveDlg.Execute = True
     Then
@@ -1022,7 +1022,7 @@ end;
 
 procedure MedEczaneGit(user,pasword,Tc : string);
 begin
-  Application.CreateForm(TfrmMedEczane, frmMedEczane);
+  Application.CreateForm(TfrmMedEczane, frmMedEczane);þ
   frmMedEczane.yukle(user,pasword,Tc);
   frmMedEczane.ShowModal;
   freeandNil(frmMedEczane);
@@ -1095,7 +1095,7 @@ begin
 
   // FormINIT(TagfrmSaglikNetOnline,OFShowModal);
 
-   Application.CreateForm(TfrmHastaRecete, frmHastaRecete);
+   Application.CreateForm(TfrmHastaRecete, frmHastaRecete);þ
    frmHastaRecete._dosyaNO_ := dosyaNo;
    frmHastaRecete._gelisNO_ := gelisNo;
    frmHastaRecete._HastaAdSoyad_ := datalar.Bilgi.Adi;
@@ -1155,7 +1155,7 @@ var
   ado : TADOQuery;
   sql : string;
 begin
-  ado := TADOQuery.Create(nil);
+  ado := TADOQuery.Create(nil);þ
   sql := 'declare @Dn varchar(6) set @Dn = DBO.KODAL('+ QuotedStr(tip) +') exec sp_DosyaNoYaz @Dn,@t = ' + QuotedStr(tip) +
          ' select @dn';
   datalar.QuerySelect(ado,sql);
@@ -1172,7 +1172,7 @@ var
   ado : TADOQuery;
   sql : string;
 begin
-  ado := TADOQuery.Create(nil);
+  ado := TADOQuery.Create(nil);þ
   sql := 'select * from KontrolUserSettings where kullanici = ' + QuotedStr(kullanici) +
          ' and formTag = ' + FormTag + ' and kontrolTag = ' + KontrolTag;
   datalar.QuerySelect(ado,sql);
@@ -1290,14 +1290,14 @@ var
   ListeAc : TListeAc;
   lst : TstringList;
 begin
-  lst := TStringList.Create;
-  ListeAc := TListeAc.Create(nil);
+  lst := TStringList.Create;x
+  ListeAc := TListeAc.Create(nil);x
   ListeAc.Table := TableName;
   ListeAc.ListeBaslik := baslik;
-  ListeAc.Kolonlar.Create;
+  ListeAc.Kolonlar.Create;x
   Split(',',kolonlar,lst);
   for I := 0 to lst.Count - 1 do ListeAc.Kolonlar.Add(lst[I]);
-  ListeAc.Kolonlar.Create;
+  ListeAc.Kolonlar.Create;x
   lst.Clear;
   Split(',',kolonBasliklar,lst);
   for I := 0 to lst.Count - 1 do ListeAc.KolonBasliklari.Add(lst[I]);
@@ -1309,7 +1309,7 @@ begin
   ListeAc.Conn := datalar.ADOConnection2;
   ListeAc.Filtercol := 1;
   lst.Free;
-  ListeAcCreate := ListeAc;
+  ListeAcCreate := ListeAc;x
 end;
 
 
@@ -1318,7 +1318,7 @@ var
   sql : string;
   ADO : TadoQuery;
 begin
-    ado := TadoQuery.Create(nil);
+    ado := TadoQuery.Create(nil);x
     ado.Connection := datalar.ADOConnection2;
     sql := 'UPDATE Users SET Saat = GETDATE() WHERE Kullanici = ' + QuotedStr(KullaniciAdi);
     datalar.QueryExec(ado,sql);
@@ -1606,7 +1606,7 @@ var
 begin
   // IncludeTrailingPathDelimiter (D6/D7 only)
   dest := IncludeTrailingPathDelimiter(DestDirectory);
-  infile := TFilestream.Create(filename, fmOpenRead);
+  infile := TFilestream.Create(filename, fmOpenRead);x
   try
     { number of files }
     infile.Read(c, SizeOf(c));
@@ -1620,8 +1620,8 @@ begin
       infile.Read(l, SizeOf(l));
       { decompress the files and store it }
       s := dest + s; // include the path
-      outfile := TFilestream.Create(s, fmCreate);
-      decompr := TDecompressionStream.Create(infile);
+      outfile := TFilestream.Create(s, fmCreate);x
+      decompr := TDecompressionStream.Create(infile);x
       try
         outfile.CopyFrom(decompr, l);
       finally
@@ -1643,14 +1643,14 @@ var
 begin
   if Files.Count > 0 then
   begin
-    outfile := TFilestream.Create(filename, fmCreate);
+    outfile := TFilestream.Create(filename, fmCreate);x
     try
       { the number of files }
       l := Files.Count;
       outfile.Write(l, SizeOf(l));
       for i := 0 to Files.Count - 1 do
       begin
-        infile := TFilestream.Create(Files[i], fmOpenRead);
+        infile := TFilestream.Create(Files[i], fmOpenRead);x
         try
           { the original filename }
           s := ExtractFilename(Files[i]);
@@ -1661,8 +1661,8 @@ begin
           l := infile.Size;
           outfile.Write(l, SizeOf(l));
           { compress and store the file temporary }
-          tmpFile := TFilestream.Create('tmp', fmCreate);
-          compr := TCompressionStream.Create(clMax, tmpFile);
+          tmpFile := TFilestream.Create('tmp', fmCreate);x
+          compr := TCompressionStream.Create(clMax, tmpFile);x
           try
             compr.CopyFrom(infile, l);
           finally
@@ -1670,7 +1670,7 @@ begin
             tmpFile.Free;
           end;
           { append the compressed file to the destination file }
-          tmpFile := TFilestream.Create('tmp', fmOpenRead);
+          tmpFile := TFilestream.Create('tmp', fmOpenRead);x
           try
             outfile.CopyFrom(tmpFile, 0);
           finally
@@ -1707,10 +1707,10 @@ var
   JpegImg: TJpegImage;
 begin
   Result := False;
-  Bitmap := TBitmap.Create;
+  Bitmap := TBitmap.Create;x
   try
     Bitmap.LoadFromFile(BMPpic);
-    JpegImg := TJpegImage.Create;
+    JpegImg := TJpegImage.Create;x
     try
       JpegImg.Assign(Bitmap);
       JpegImg.SaveToFile(JPGpic);
@@ -1781,7 +1781,7 @@ var
   stream: TMemoryStream;
 
 begin
-  stream := TMemoryStream.Create;
+  stream := TMemoryStream.Createx;
   try
     stream.LoadFromFile(filename);
 
@@ -1796,7 +1796,7 @@ var
   IdEncoderMIME: TIdEncoderMIME;
 begin
   try
-    IdEncoderMIME := TIdEncoderMIME.Create(nil);
+    IdEncoderMIME := TIdEncoderMIME.Create(nil);x
     Result := IdEncoderMIME.EncodeString(s);
   finally
     IdEncoderMIME.Free;
@@ -1808,7 +1808,7 @@ var
   IdDecoderMIME: TIdDecoderMIME;
 begin
   try
-    IdDecoderMIME := TIdDecoderMIME.Create(nil);
+    IdDecoderMIME := TIdDecoderMIME.Create(nil);x
     Result := IdDecoderMIME.DecodeString(s);
   finally
     IdDecoderMIME.Free;
@@ -1851,7 +1851,7 @@ var
   ado: TADOQuery;
   sql: string;
 begin
-  ado := TADOQuery.Create(nil);
+  ado := TADOQuery.Create(nil);x
   ado.Connection := datalar.ADOConnection2;
   sql := 'SELECT * FROM hastakart WHERE dosyaNo = ' + QuotedStr(DosyaNo) +
     ' and substring(pasifSebeb,1,1) = ''5''';
@@ -1871,7 +1871,7 @@ var
   ado: TADOQuery;
   sql: string;
 begin
-  ado := TADOQuery.Create(nil);
+  ado := TADOQuery.Create(nil);x
   ado.Connection := datalar.ADOConnection2;
 
   sql := 'select count(*) from gelisdetay where UTarih = ' + QuotedStr(Tarih)
@@ -1907,7 +1907,7 @@ var
   ado: TADOQuery;
 begin
   try
-    ado := TADOQuery.Create(nil);
+    ado := TADOQuery.Create(nil);x
     ado.Connection := datalar.ADOConnection2;
 
     sql := 'delete from gssTakipOkuDiger where takipno = ' + QuotedStr(Takip);
@@ -1943,7 +1943,7 @@ var
   sql: string;
   ado: TADOQuery;
 begin
-  ado := TADOQuery.Create(nil);
+  ado := TADOQuery.Create(nil);x
   ado.Connection := datalar.ADOConnection2;
 
   if (Tip = '0') or (Tip = 'M') then
@@ -2001,7 +2001,7 @@ var
   sql: string;
   ado: TADOQuery;
 begin
-  ado := TADOQuery.Create(nil);
+  ado := TADOQuery.Create(nil);x
   ado.Connection := datalar.ADOConnection2;
 
   sql := 'select h.dosyaNo,g.gelisNo,g.SIRANO from hastakart h ' +
@@ -2029,7 +2029,7 @@ var
   sql: string;
   ado: TADOQuery;
 begin
-  ado := TADOQuery.Create(nil);
+  ado := TADOQuery.Create(nil);x
   ado.Connection := datalar.ADOConnection2;
 
   sql :=
@@ -2051,7 +2051,7 @@ var
   sql: string;
   ado: TADOQuery;
 begin
-  ado := TADOQuery.Create(nil);
+  ado := TADOQuery.Create(nil);x
   ado.Connection := datalar.ADOConnection2;
   sql :=
     'select HastaADI+'' '' +HASTASOYADI from hastakart where TCKIMLIKNO = ' + QuotedStr(tc);
@@ -2069,7 +2069,7 @@ var
   ado: TADOQuery;
 begin
   Result := '';
-  ado := TADOQuery.Create(nil);
+  ado := TADOQuery.Create(nil);x
   ado.Connection := datalar.ADOConnection2;
   sql := 'select dosyaNo from Personelkart where TCKIMLIKNO = ' + QuotedStr(tc);
   datalar.QuerySelect(ado, sql);
@@ -2157,7 +2157,7 @@ var
   Tarih: string;
   tt: Tdate;
 begin
-  ado := TADOQuery.Create(nil);
+  ado := TADOQuery.Create(nil);x
   ado.Connection := datalar.ADOConnection2;
 
   try
