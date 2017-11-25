@@ -263,7 +263,7 @@ begin
   sirketler := TcxImageComboKadir.Create(self);
   sirketler.Conn := Datalar.ADOConnection2;
   sirketler.TableName := 'SIRKETLER_TNM';
-  sirketler.ValueField := 'sirketKod';
+  sirketler.ValueField := 'SirketKod'x;
   sirketler.DisplayField := 'Tanimi';
   sirketler.BosOlamaz := False;
   sirketler.Filter := '';

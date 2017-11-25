@@ -573,7 +573,7 @@ object GirisForm: TGirisForm
       Visible = False
       Width = 58
     end
-    object sirketKod: TcxButtonEditKadir
+    object sirketKodx: TcxButtonEditKadir
       Tag = -100
       Left = 208
       Top = 6
