@@ -2203,7 +2203,7 @@ var
   ado: TADOQuery;
   fark: integer;
 begin
-  ado := TADOQuery.Create(nil);
+  ado := TADOQuery.Create(nil);x
   ado.Connection := datalar.ADOConnection2;
   sql := 'select slx , datediff(d,cast(SLVV as datetime),getdate()), ' +
     ' SLVV from parametreler where slk = ''30'' and slb = ''02''';
@@ -2224,7 +2224,7 @@ var
   sql: string;
   ado: TADOQuery;
 begin
-  ado := TADOQuery.Create(nil);
+  ado := TADOQuery.Create(nil);x
   ado.Connection := datalar.ADOConnection2;
   sql := 'select datavalue from dbo.strtotable(' + QuotedStr(text)
     + ',' + QuotedStr(ayirac) + ')';
@@ -2247,7 +2247,7 @@ var
   sql: string;
   ado: TADOQuery;
 begin
-  ado := TADOQuery.Create(nil);
+  ado := TADOQuery.Create(nil);x
   ado.Connection := datalar.ADOConnection2;
 
   sql := 'select max(gelisNo) from gelisler where dosyaNo = ' + QuotedStr
@@ -2268,7 +2268,7 @@ var
   sql: string;
   ado: TADOQuery;
 begin
-  ado := TADOQuery.Create(nil);
+  ado := TADOQuery.Createx(nil);
   ado.Connection := datalar.ADOConnection2;
 
   sql := 'select SLB,SLT from parametreler where SLk = ''97''';
@@ -2332,7 +2332,7 @@ var
   ButtonTop, ButtonWidth, ButtonHeight: Integer;
 begin
   Result := False;
-  Form := TForm.Create(Application);
+  Form := TForm.Create(Application);x
   with Form do
     try
 
@@ -2343,7 +2343,7 @@ begin
       ClientWidth := MulDiv(180, DialogUnits.x, 4);
       PopupMode := pmAuto;
       Position := poScreenCenter;
-      Prompt := TLabel.Create(Form);
+      Prompt := TLabel.Create(Form);x
       with Prompt do
       begin
         Parent := Form;
@@ -2354,7 +2354,7 @@ begin
         WordWrap := True;
 
       end;
-      Edit := TEdit.Create(Form);
+      Edit := TEdit.Create(Form);x
       with Edit do
       begin
         Parent := Form;
@@ -2369,7 +2369,7 @@ begin
       ButtonTop := Edit.Top + Edit.Height + 15;
       ButtonWidth := MulDiv(50, DialogUnits.x, 4);
       ButtonHeight := MulDiv(14, DialogUnits.y, 8);
-      with TButton.Create(Form) do
+      with TButton.Create(Form) dox
       begin
         Parent := Form;
         Caption := SMsgDlgOK;
@@ -2378,7 +2378,7 @@ begin
         SetBounds(MulDiv(38, DialogUnits.x, 4), ButtonTop, ButtonWidth,
           ButtonHeight);
       end;
-      with TButton.Create(Form) do
+      with TButton.Create(Form) do x
       begin
         Parent := Form;
         Caption := SMsgDlgCancel;
@@ -2449,7 +2449,7 @@ var
   sql: string;
   ado: TADOQuery;
 begin
-  ado := TADOQuery.Create(nil);
+  ado := TADOQuery.Create(nil);x
   ado.Connection := datalar.ADOConnection2;
   sql :=
     'declare @SLX int select @SLX = isnull(SLX,0) from parametreler where SLK = ''00'' and SLB = ''21''' + ' update parametreler set SLX  = @SLX+1 from parametreler where SLK = ''00'' and SLB = ''21''' + ' select @SLX+1 ';
@@ -2463,7 +2463,7 @@ var
   sql: string;
   ado: TADOQuery;
 begin
-  ado := TADOQuery.Create(nil);
+  ado := TADOQuery.Create(nil);x
   ado.Connection := datalar.ADOConnection2;
   sql := 'sp_YeniReceteProtokol ' + QuotedStr(SirketKod) + ',' +
          QuotedStr(SubeKod);
@@ -2483,7 +2483,7 @@ var
   sql: string;
   ado: TADOQuery;
 begin
-  ado := TADOQuery.Create(nil);
+  ado := TADOQuery.Create(nil);x
   ado.Connection := datalar.ADOConnection2;
   sql := 'select isnull(SLZ,0) from doktorlar d ' +
     'join servIsler s on s.kodu = cast(d.Brans as varchar) ' +
@@ -2505,7 +2505,7 @@ var
 begin
   yil := copy(tarihal(date()), 1, 4);
 
-  ado := TADOQuery.Create(nil);
+  ado := TADOQuery.Create(nil);x
   ado.Connection := datalar.ADOConnection2;
 
   sql := 'update gelisDetay set SNPROTOKOLNO = ' + QuotedStr(protokolNo)
@@ -2529,7 +2529,7 @@ var
   ado: TADOQuery;
 begin
   try
-    ado := TADOQuery.Create(nil);
+    ado := TADOQuery.Create(nil);x
     ado.Connection := datalar.ADOConnection2;
     sql :=
       'select unite = isnull(UNITE,1),isnull(dbo.IlackoduPeryot(' + QuotedStr
@@ -2617,7 +2617,7 @@ begin
     cL.Items[r].Checked := False;
   end;
 
-  t := tstringlist.Create;
+  t := tstringlist.Create;x
 
   Split(',', c, t);
 
@@ -2743,7 +2743,7 @@ var
 begin
 
   try
-    ado := TADOQuery.Create(nil);
+    ado := TADOQuery.Create(nil);x
     ado.Connection := datalar.ADOConnection2;
 
     sql := 'select * from ilacListesi where barkod = ' + QuotedStr(barkod);
@@ -2776,7 +2776,7 @@ begin
   Tel := '';
   if Telefon = '' then
   begin
-    ado := TADOQuery.Create(nil);
+    ado := TADOQuery.Create(nil);x
     ado.Connection := datalar.ADOConnection2;
     sql := 'select EV_TEL1  from Personelkart where dosyaNO = ' + QuotedStr(DosyaNo);
     datalar.QuerySelect(ado, sql);
@@ -2803,7 +2803,7 @@ var
   sql: string;
   ado: TADOQuery;
 begin
-  ado := TADOQuery.Create(nil);
+  ado := TADOQuery.Create(nil);x
   ado.Connection := datalar.ADOConnection2;
   sql := 'select TCKIMLIKNO  from hastakart where dosyaNO = ' + QuotedStr
     (DosyaNo);
@@ -2819,7 +2819,7 @@ var
   sql: string;
   ado: TADOQuery;
 begin
-  ado := TADOQuery.Create(nil);
+  ado := TADOQuery.Create(nil);x
   ado.Connection := datalar.ADOConnection2;
   sql :=
     'select TCKIMLIKNO ,IDEALKiLO from hastakart where dosyaNO = ' + QuotedStr
@@ -2837,7 +2837,7 @@ var
   sql: string;
   ado: TADOQuery;
 begin
-  ado := TADOQuery.Create(nil);
+  ado := TADOQuery.Create(nil);x
   ado.Connection := datalar.ADOConnection2;
   sql :=
     'select HASTAADI + '' '' + HASTASOYADI from hastakart where dosyaNO = ' + QuotedStr(DosyaNo);
@@ -2854,7 +2854,7 @@ var
   sql: string;
   ado : TADOQuery;
 begin
-  ado := TADOQuery.Create(nil);
+  ado := TADOQuery.Create(nil);x
   ado.Connection := datalar.ADOConnection2;
   sql :=
     'select name1,ALIMBIRIM,TANIM,kdv from ILACSARF Where Code = ' + #39 +
@@ -2885,7 +2885,7 @@ begin
     Exit;
   end;
 
-  ado := TADOQuery.Create(nil);
+  ado := TADOQuery.Create(nil);x
   ado.Connection := datalar.ADOConnection2;
 
   sql :=
@@ -2909,7 +2909,7 @@ var
   sql, s: string;
   List: tstringlist;
 begin
-  ado := TADOQuery.Create(nil);
+  ado := TADOQuery.Create(nil);x
   ado.Connection := datalar.ADOConnection2;
 
   sql := 'select isnull(Tani,''''),icd.TANI from ILACLAR I ' +
@@ -2927,10 +2927,10 @@ var
   sql, s, d: string;
   List: tstringlist;
 begin
-  ado := TADOQuery.Create(nil);
+  ado := TADOQuery.Create(nil);x
   ado.Connection := datalar.ADOConnection2;
 
-  List := tstringlist.Create;
+  List := tstringlist.Create;x
   try
     sql := 'select dbo.IlackoduToReceteBilgisi(' + QuotedStr(kod)
       + ',' + QuotedStr(_dosyaNo) + ',' + GelisNo + ',' + doz + ')';
@@ -2996,7 +2996,7 @@ var
   gun, _kalangun: double;
   ado: TADOQuery;
 begin
-  ado := TADOQuery.Create(nil);
+  ado := TADOQuery.Create(nil);x
   ado.Connection := datalar.ADOConnection2;
 
   sql := 'select convert(varchar,BitisTarihi,112) from Raporlar where Aktif = ''1'' and dosyaNo = ' + #39 + _dosyaNo + #39;
@@ -3039,7 +3039,7 @@ var
   gun: integer;
   ado: TADOQuery;
 begin
-  ado := TADOQuery.Create(nil);
+  ado := TADOQuery.Create(nil);x
   ado.Connection := datalar.ADOConnection2;
   sql := 'select SLY from Parametreler  where SLK = ''30'' and SLB = ''01''';
   datalar.QuerySelect(ado, sql);
@@ -3167,7 +3167,7 @@ if DataSet = nil then
 //  TopluDataset.Dataset1 := DataSet;
 
 
-  ado := TADOQuery.Create(nil);
+  ado := TADOQuery.Create(nil);x
   try
   ado.Connection := datalar.ADOConnection2;
   sql := 'sp_frmPersonelIseGirisMuayene ' + QuotedStr(DosyaNo) + ',' + gelisNo + ',' + QuotedStr('PK');
@@ -3282,10 +3282,10 @@ var
   sql: string;
   ado, ADO_ILACKULLANIM: TADOQuery;
 begin
-  ado := TADOQuery.Create(nil);
+  ado := TADOQuery.Create(nil);x
   ado.Connection := datalar.ADOConnection2;
 
-  ADO_ILACKULLANIM := TADOQuery.Create(nil);
+  ADO_ILACKULLANIM := TADOQuery.Create(nil);x
   ADO_ILACKULLANIM.Connection := datalar.ADOConnection2;
 
   sql := 'select distinct stokkodu,stokadi,DS.grup,miktar,I.medulaGitsin, ' +
@@ -3361,7 +3361,7 @@ var
   sql: string;
   ado: TADOQuery;
 begin
-  ado := TADOQuery.Create(nil);
+  ado := TADOQuery.Create(nil);x
   ado.Connection := datalar.ADOConnection2;
 
   sql := 'select mind,maxd from Labtestler ' + ' where butkodu = ' + QuotedStr
@@ -3400,7 +3400,7 @@ var
   sql: string;
   ado : TADOQuery;
 begin
-  ado := TADOQuery.Create(nil);
+  ado := TADOQuery.Create(nil);x
   ado.Connection := datalar.ADOConnection2;
   sql := 'select * from HizmetFaturalari where sira = ' + ifThen(Id = '', '0',
     Id);
@@ -3417,7 +3417,7 @@ var
   sql: string;
   ado : TADOQuery;
 begin
-  ado := TADOQuery.Create(nil);
+  ado := TADOQuery.Create(nil);x
   ado.Connection := datalar.ADOConnection2;
   sql := 'select * from stokFaturalari where sira = ' + ifThen(Id = '', '0',
     Id);
@@ -3434,7 +3434,7 @@ var
   sql: string;
   ado : TADOQuery;
 begin
-  ado := TADOQuery.Create(nil);
+  ado := TADOQuery.Create(nil);x
   ado.Connection := datalar.ADOConnection2;
   sql := 'select muhSorgu from carikartlar where carihesapKodu = ' + QuotedStr
     (cariKod);
@@ -3449,7 +3449,7 @@ var
   sql: string;
   ado : TADOQuery;
 begin
-  ado := TADOQuery.Create(nil);
+  ado := TADOQuery.Create(nil);x
   ado.Connection := datalar.ADOConnection2;
   sql := 'select cariAd from saticilar where carikod = ' + QuotedStr(cariKod);
   datalar.QuerySelect(ado, sql);
@@ -3519,7 +3519,7 @@ var
   sql: string;
   ado : TADOQuery;
 begin
-  ado := TADOQuery.Create(nil);
+  ado := TADOQuery.Create(nil);x
   ado.Connection := datalar.ADOConnection2;
   sql :=
     'insert into parametreler (SLK,SLB,SLT) values (' + #39 + '40' + #39 +
@@ -3535,7 +3535,7 @@ var
   sql: string;
   ado : TADOQuery;
 begin
-  ado := TADOQuery.Create(nil);
+  ado := TADOQuery.Create(nil);x
   ado.Connection := datalar.ADOConnection2;
   sql := 'delete from parametreler where SLK = ' + #39 + '40' + #39 +
     ' and SLB = ' + #39 + Tip + #39 + ' and SLT = ' + #39 + ifade + #39;
@@ -3550,7 +3550,7 @@ var
   sql, deger: string;
   ado : TADOQuery;
 begin
-  ado := TADOQuery.Create(nil);
+  ado := TADOQuery.Create(nil);x
   ado.Connection := datalar.ADOConnection2;
   _say := _form.ComponentCount - 1;
 
@@ -3606,7 +3606,7 @@ begin
   if turId = '147' then
     turId := '0';
 
-  ado := TADOQuery.Create(nil);
+  ado := TADOQuery.Create(nil);x
   ado.Connection := datalar.ADOConnection2;
   sql :=
     'select butKodu,minD,maxD from Labtestler where islemkodu = ' + QuotedStr
@@ -3685,7 +3685,7 @@ begin
   if turId = '147' then
     turId := '0';
 
-  ado := TADOQuery.Create(nil);
+  ado := TADOQuery.Create(nil);x
   ado.Connection := datalar.ADOConnection2;
 
   sql := 'select TurId from Labtestler where islemkodu = ' + QuotedStr(kod);
@@ -3766,7 +3766,7 @@ var
   ado: TADOQuery;
   x: integer;
 begin
-  ado := TADOQuery.Create(nil);
+  ado := TADOQuery.Create(nil);x
   ado.Connection := datalar.ADOConnection2;
   sql :=
     'select islemKodu,islemKoduC,isnull(TurId,0) from Labtestler where butKodu = ' + QuotedStr(kod);
@@ -3795,7 +3795,7 @@ var
   sql: string;
   ado: TADOQuery;
 begin
-  ado := TADOQuery.Create(nil);
+  ado := TADOQuery.Create(nil);x
   ado.Connection := datalar.ADOConnection2;
   sql := 'select butkodu from Labtestler where islemKodu = ' + QuotedStr(kod);
 
@@ -3810,7 +3810,7 @@ var
   sql: string;
   ado: TADOQuery;
 begin
-  ado := TADOQuery.Create(nil);
+  ado := TADOQuery.Create(nil);x
   ado.Connection := datalar.ADOConnection2;
   sql := 'select butKodu  from Labtestler where SGKTip = ' + QuotedStr(kod);
 
@@ -3825,7 +3825,7 @@ var
   sql: string;
   ado: TADOQuery;
 begin
-  ado := TADOQuery.Create(nil);
+  ado := TADOQuery.Create(nil);x
   ado.Connection := datalar.ADOConnection2;
 
   sql := ' select IdealKilo from hastaKart where dosyaNo = ' + QuotedStr
@@ -3843,7 +3843,7 @@ var
   sql: string;
   ado: TADOQuery;
 begin
-  ado := TADOQuery.Create(nil);
+  ado := TADOQuery.Create(nil);x
   ado.Connection := datalar.ADOConnection2;
 
   sql :=
@@ -3866,7 +3866,7 @@ var
   sql: string;
   ado: TADOQuery;
 begin
-  ado := TADOQuery.Create(nil);
+  ado := TADOQuery.Create(nil);x
   ado.Connection := datalar.ADOConnection2;
 
   sql := 'select top 1 GIRISKILO,CIKISKILO from gelisdetay ' +
@@ -3891,7 +3891,7 @@ var
   sql: string;
   ado: TADOQuery;
 begin
-  ado := TADOQuery.Create(nil);
+  ado := TADOQuery.Create(nil);x
   ado.Connection := datalar.ADOConnection2;
 
   sql :=
@@ -3911,7 +3911,7 @@ var
   sql: string;
   ado: TADOQuery;
 begin
-  ado := TADOQuery.Create(nil);
+  ado := TADOQuery.Create(nil);x
   ado.Connection := datalar.ADOConnection2;
 
   sql :=
@@ -3934,7 +3934,7 @@ var
   sql: string;
 begin
   try
-    ado := TADOQuery.Create(nil);
+    ado := TADOQuery.Create(nil);x
     ado.Connection := datalar.ADOConnection2;
     sql := 'select hataCozum from medulaHataCozum where hataKodu = ' + QuotedStr
       (hatakodu);
@@ -3954,7 +3954,7 @@ var
   ado: TADOQuery;
 begin
   try
-    ado := TADOQuery.Create(nil);
+    ado := TADOQuery.Create(nil);x
     ado.Connection := datalar.ADOConnection2;
 
     if Tip = '0' Then
@@ -3984,7 +3984,7 @@ var
   sql: string;
   ado : TADOQuery;
 begin
-  ado := TADOQuery.Create(nil);
+  ado := TADOQuery.Createx(nil);
   ado.Connection := datalar.ADOConnection2;
   sql := 'select * from EK10 where code = ' + QuotedStr(code);
 
@@ -4001,7 +4001,7 @@ var
   sql: string;
   ado: TADOQuery;
 begin
-  ado := TADOQuery.Create(nil);
+  ado := TADOQuery.Createx(nil);
   ado.Connection := datalar.ADOConnection2;
   sql := 'select KSATISF00 from HIZMET where code = ' + QuotedStr('704230');
   datalar.QuerySelect(ado, sql);
@@ -4015,7 +4015,7 @@ var
   sql: string;
   ado: TADOQuery;
 begin
-  ado := TADOQuery.Create(nil);
+  ado := TADOQuery.Createx(nil);
   ado.Connection := datalar.ADOConnection2;
   sql := 'select Tanimi from labtestler where butKodu = ' + QuotedStr(kod);
   datalar.QuerySelect(ado, sql);
@@ -4029,7 +4029,7 @@ var
   sql: string;
   ado: TADOQuery;
 begin
-  ado := TADOQuery.Create(nil);
+  ado := TADOQuery.Createx(nil);
   ado.Connection := datalar.ADOConnection2;
   sql := 'select SLXX as brans from parametreler where slk = ''33'' and slb = ''BRANS''';
   datalar.QuerySelect(ado, sql);
@@ -4043,7 +4043,7 @@ var
   sql, sql1: string;
   ado : TADOQuery;
 begin
-  ado := TADOQuery.Create(nil);
+  ado := TADOQuery.Createx(nil);
   ado.Connection := datalar.ADOConnection2;
 
   sql := 'select * from PersonelFoto where dosyaNo = ' + QuotedStr(DosyaNo);
@@ -4120,7 +4120,7 @@ var
   sql: string;
   ado : TADOQuery;
 begin
-  ado := TADOQuery.Create(nil);
+  ado := TADOQuery.Createx(nil);
   ado.Connection := datalar.ADOConnection2;
 
   sql := 'select * from parametreler where slk = ''99''';
@@ -4139,7 +4139,7 @@ var
   ado : TADOQuery;
 begin
   try
-    ado := TADOQuery.Create(nil);
+    ado := TADOQuery.Createx(nil);
     ado.Connection := datalar.ADOConnection2;
 
     sql :=
@@ -4254,7 +4254,7 @@ var
   sql, seans, gunler: string;
   ado : TADOQuery;
 begin
-  ado := TADOQuery.Create(nil);
+  ado := TADOQuery.Createx(nil);
   ado.Connection := datalar.ADOConnection2;
   sql :=
     'select seansgunleri from HastaKart where dosyaNo =  ' + #39 +
@@ -4293,7 +4293,7 @@ var
   sql: string;
   ado : TADOQuery;
 begin
-  ado := TADOQuery.Create(nil);
+  ado := TADOQuery.Createx(nil);
   ado.Connection := datalar.ADOConnection2;
   sql := 'select * from merkezBilgisi';
   datalar.QuerySelect(ado, sql);
@@ -4634,7 +4634,7 @@ var
   sql: string;
   ado : TADOQuery;
 begin
-  ado := TADOQuery.Create(nil);
+  ado := TADOQuery.Createx(nil);
   ado.Connection := datalar.ADOConnection2;
 
   sql := 'select raporTakipno from raporlar ' +
@@ -4651,7 +4651,7 @@ var
   sql: string;
   ado : TADOQuery;
 begin
-  ado := TADOQuery.Create(nil);
+  ado := TADOQuery.Createx(nil);
   ado.Connection := datalar.ADOConnection2;
 
   sql := 'select raporNo from raporlar ' +
@@ -4673,7 +4673,7 @@ var
   x: integer;
   ado : TADOQuery;
 begin
-  ado := TADOQuery.Create(nil);
+  ado := TADOQuery.Createx(nil);
   ado.Connection := datalar.ADOConnection2;
 
   sql := 'select sertifika from Doktorlar where kod = ' + QuotedStr(kod);
@@ -4693,7 +4693,7 @@ var
   x: integer;
   ado : TADOQuery;
 begin
-  ado := TADOQuery.Create(nil);
+  ado := TADOQuery.Createx(nil);
   ado.Connection := datalar.ADOConnection2;
 
   sql := 'select sertifikaNo from Doktorlar where kod = ' + QuotedStr(kod);
@@ -4713,7 +4713,7 @@ var
   sql: string;
   ado : TADOQuery;
 begin
-  ado := TADOQuery.Create(nil);
+  ado := TADOQuery.Createx(nil);
   ado.Connection := datalar.ADOConnection2;
   sql := 'select kod from Doktorlar where TescilNo = ' + QuotedStr(Tescil);
   datalar.QuerySelect(ado, sql);
@@ -4727,7 +4727,7 @@ var
   sql: string;
   ado: TADOQuery;
 begin
-  ado := TADOQuery.Create(nil);
+  ado := TADOQuery.Createx(nil);
   ado.Connection := datalar.ADOConnection2;
   sql := 'select TescilNo from Doktorlar where kod = ' + QuotedStr(kod);
   datalar.QuerySelect(ado, sql);
@@ -4741,7 +4741,7 @@ var
   sql: string;
   ado : TADOQuery;
 begin
-  ado := TADOQuery.Create(nil);
+  ado := TADOQuery.Createx(nil);
   ado.Connection := datalar.ADOConnection2;
 
   sql := 'select kod from doktorlar where TescilNo = ' + #39 + doktor + #39;
@@ -4759,7 +4759,7 @@ var
   ado: TADOQuery;
 begin
 
-  ado := TADOQuery.Create(nil);
+  ado := TADOQuery.Createx(nil);
   ado.Connection := datalar.ADOConnection2;
 
   sql := 'select TcKimlik from Doktorlar where TescilNo = ' + QuotedStr(kod);
@@ -4775,7 +4775,7 @@ var
   sql: string;
   ado : TADOQuery;
 begin
-  ado := TADOQuery.Create(nil);
+  ado := TADOQuery.Createx(nil);
   ado.Connection := datalar.ADOConnection2;
 
   sql := 'select sertifika from Doktorlar where tescilNo = ' + QuotedStr
@@ -4792,7 +4792,7 @@ var
   ado: TADOQuery;
 begin
 
-  ado := TADOQuery.Create(nil);
+  ado := TADOQuery.Createx(nil);
   ado.Connection := datalar.ADOConnection2;
 
   sql := 'select kod from Doktorlar where TCkimlik = ' + QuotedStr(tc);
@@ -4809,7 +4809,7 @@ var
   ado: TADOQuery;
 begin
 
-  ado := TADOQuery.Create(nil);
+  ado := TADOQuery.Createx(nil);
   ado.Connection := datalar.ADOConnection2;
 
   sql := 'select top 1 TANI from icd_teshisleri where ICDKODU = ' + QuotedStr
@@ -4826,7 +4826,7 @@ var
   sql: string;
   ado: TADOQuery;
 begin
-  ado := TADOQuery.Create(nil);
+  ado := TADOQuery.Createx(nil);
   ado.Connection := datalar.ADOConnection2;
 
   sql := 'select TcKimlik from Doktorlar where kod = ' + QuotedStr(kod);
@@ -4841,7 +4841,7 @@ var
   sql: string;
   ado: TADOQuery;
 begin
-  ado := TADOQuery.Create(nil);
+  ado := TADOQuery.Create(nil);x
   ado.Connection := datalar.ADOConnection2;
 
   sql := 'select ADI from Doktorlar where kod = ' + QuotedStr(kod);
@@ -4857,7 +4857,7 @@ var
   ado: TADOQuery;
   H: TSGKBilgileri;
 begin
-  ado := TADOQuery.Create(nil);
+  ado := TADOQuery.Create(nil);x
   ado.Connection := datalar.ADOConnection2;
   sql := 'select k.kod,k.ad,d.kod dkod,d.ad dad from HastaKart h ' +
     'join DevredilenKurum k on h.kurumTip = k.kod ' +
@@ -4881,7 +4881,7 @@ var
   ado: TADOQuery;
 begin
 
-  ado := TADOQuery.Create(nil);
+  ado := TADOQuery.Create(nil);x
   ado.Connection := datalar.ADOConnection2;
 
   sql := 'select doktorKodu,ereceteKullaniciAdi,ereceteSifre from DoktorEreceteSifre where doktorKodu = ' + QuotedStr(kod);
@@ -4900,7 +4900,7 @@ var
   ado : TADOQuery;
 begin
 
-  ado := TADOQuery.Create(nil);
+  ado := TADOQuery.Create(nil);x
   ado.Connection := datalar.ADOConnection2;
   sql :=
     'select SLY FROM Parametreler WHERE SLK = ''02'' and SLB = ' + QuotedStr
@@ -4917,7 +4917,7 @@ var
   ado : TADOQuery;
 begin
 
-  ado := TADOQuery.Create(nil);
+  ado := TADOQuery.Create(nil);x
   ado.Connection := datalar.ADOConnection2;
   sql :=
     'select SLT1 FROM Parametreler WHERE SLK = ''02'' and SLB = ' + QuotedStr
@@ -4936,7 +4936,7 @@ var
   ado : TADOQuery;
 begin
 
-  ado := TADOQuery.Create(nil);
+  ado := TADOQuery.Create(nil);x
   ado.Connection := datalar.ADOConnection2;
   sql := 'select convert(varchar,getdate(),112) as kontrolTarih';
   datalar.QuerySelect(ado, sql);
@@ -4971,7 +4971,7 @@ var
   sql, Tarih, kontrolTarih, bitisTarih: string;
   ado : TADOQuery;
 begin
-  ado := TADOQuery.Create(nil);
+  ado := TADOQuery.Create(nil);x
   ado.Connection := datalar.ADOConnection2;
 
 
@@ -5025,7 +5025,7 @@ var
   i: integer;
   ado : TADOQuery;
 begin
-  ado := TADOQuery.Create(nil);
+  ado := TADOQuery.Create(nil);x
   ado.Connection := datalar.ADOConnection2;
   sql := 'select TakýpNo from Gelisler where dosyaNo = ' + #39 + DosyaNo + #39;
   datalar.QuerySelect(ado, sql);
@@ -5048,7 +5048,7 @@ var
   i: integer;
   ado: TADOQuery;
 begin
-  ado := TADOQuery.Create(nil);
+  ado := TADOQuery.Create(nil);x
   ado.Connection := datalar.ADOConnection2;
   sql := 'select TakýpNo from Gelisler where dosyaNo = ' + QuotedStr(DosyaNo)
     + ' and gelisNo = ' + GelisNo;
@@ -5115,7 +5115,7 @@ var
   sql: string;
   ado : TADOQuery;
 begin
-  ado := TADOQuery.Create(nil);
+  ado := TADOQuery.Create(nil);x
   ado.Connection := datalar.ADOConnection2;
   sql := 'select SLX from parametreler where SLK = ''GT'' and SLB = ''0001''';
   datalar.QuerySelect(ado, sql);
@@ -5215,7 +5215,7 @@ var
   ado : TADOQuery;
 begin
   try
-  ado := TADOQuery.Create(nil);
+  ado := TADOQuery.Create(nil);x
   ado.Connection := datalar.ADOConnection2;
     sql := 'select SLX from parametreler where SLK = ''GT''';
     datalar.QuerySelect(ado, sql);
@@ -5928,7 +5928,7 @@ var
 begin
   izinU := False;
   izinUG := False;
-  adoUG := TADOQuery.Create(nil);
+  adoUG := TADOQuery.Create(nil);x
   datalar.QuerySelect(adoUG,
    'SELECT US.Izin FROM UserGroupSettings US ' +
    'join Users U on U.Grup = US.kullanici ' +
@@ -6669,7 +6669,7 @@ var
 begin
   // _bmp2 := TBitmap.Create;
   // BitBtn2ATBtn(_frm);
-  _ms := TMemoryStream.Create;
+  _ms := TMemoryStream.Create;x
 
   {
     if _frm.KeyPreview = False
@@ -6757,7 +6757,7 @@ begin
 
       if TEdit(_Kontrol).Width > 0 Then
       begin
-        _bmp := TBitmap.Create;
+        _bmp := TBitmap.Create;x
       //  TEdit(_Kontrol).NumGlyphs := 1;
         image.GetBitmap(0, _bmp);
    //     TEdit(_Kontrol).Glyph := _bmp;
@@ -6825,7 +6825,7 @@ begin
         end
         else begin }
       // }
-      _bmp := TBitmap.Create;
+      _bmp := TBitmap.Create;x
       image.GetBitmap(_Kontrol.tag, _bmp);
       TBitBtn(_Kontrol).Glyph := _bmp;
       _bmp.Free;
@@ -6836,7 +6836,7 @@ begin
     if (_Kontrol.tag > 0) and (_Kontrol is TBitBtn)
        Then
     begin
-      _bmp := TBitmap.Create;
+      _bmp := TBitmap.Create;x
       // global_img_list2.GetBitmap(_Kontrol.Tag, _bmp);
       // if TBitBtn(_Kontrol).NumGlyphs = 2
       // Then global_img_list2.GetBitmap(_Kontrol.Tag, _bmp)
@@ -6914,7 +6914,7 @@ var
   sql, kodsql, durumsql: string;
   ado: TADOQuery;
 begin
-  ado := TADOQuery.Create(nil);
+  ado := TADOQuery.Create(nil);x
   ado.Connection := datalar.ADOConnection2;
 
   if kod = '' then
@@ -6944,7 +6944,7 @@ var
   sql, kodsql, durumsql: string;
   ado: TADOQuery;
 begin
-  ado := TADOQuery.Create(nil);
+  ado := TADOQuery.Create(nil);x
   ado.Connection := datalar.ADOConnection2;
 
   sql := 'SELECT  sutKodu,count(*) SeansSayi ' +
@@ -7206,7 +7206,7 @@ begin
 
   if frmMessage = nil Then
   begin
-    frmMessage := TfrmMessage.Create(Application);
+    frmMessage := TfrmMessage.Create(Application);x
   end
   else
   begin
@@ -7298,7 +7298,7 @@ end;
 
 function ShowPopupForm(Caption : string; Tag : integer): word;
 begin
-    Application.CreateForm(TfrmPopup, frmPopup);
+    Application.CreateForm(TfrmPopup, frmPopup);x
     frmPopup._islem_ := Tag;
     frmPopup._caption_ := Caption;
     frmPopup.ShowModal;
@@ -7314,7 +7314,7 @@ begin
 
   if frmMessage_y = nil Then
   begin
-    frmMessage_y := TfrmMessage_y.Create(Application);
+    frmMessage_y := TfrmMessage_y.Create(Application);x
   end
   else
   begin
@@ -7487,7 +7487,7 @@ begin
       'select SLT from Parametreler where SLK = ''40'' and SLB = ' + QuotedStr
       (c.Name);
 
-  Q := TADOQuery.Create(nil);
+  Q := TADOQuery.Create(nil);x
   Q.Connection := datalar.ADOConnection2;
 
   Q.sql.Add(sql);
@@ -7513,7 +7513,7 @@ begin
       'select SLT from Parametreler where SLK = ''40'' and SLB = ' + QuotedStr
       (c.Name);
 
-  Q := TADOQuery.Create(nil);
+  Q := TADOQuery.Create(nil);x
   Q.Connection := datalar.ADOConnection2;
 
   Q.sql.Add(sql);
@@ -7555,7 +7555,7 @@ procedure ComboDoldur3(sql: string; c: TcxComboBox; alan: integer;
 var
   ado: TADOQuery;
 begin
-  ado := TADOQuery.Create(nil);
+  ado := TADOQuery.Create(nil);x
   ado.Connection := datalar.ADOConnection2;
   ado.sql.text := '';
   ado.sql.Add(sql);
@@ -7581,7 +7581,7 @@ begin
     'select SLT from Parametreler where SLK = ''40'' and SLB = ' + QuotedStr
     (name);
 
-  Q := TADOQuery.Create(nil);
+  Q := TADOQuery.Create(nil);x
   Q.Connection := datalar.ADOConnection2;
 
   Q.sql.Add(_sql_);
@@ -7604,7 +7604,7 @@ var
 begin
   _sql_ := 'select * from doktorlar where durum = ' + QuotedStr('Aktif');
 
-  Q := TADOQuery.Create(nil);
+  Q := TADOQuery.Create(nil);x
   Q.Connection := datalar.ADOConnection2;
 
   Q.sql.Add(_sql_);
@@ -7630,7 +7630,7 @@ VAR
 begin
 
   // hafýzada bir adocommand oluþturuluyor...
-  kadir1 := TADOCommand.Create(kadir1);
+  kadir1 := TADOCommand.Create(kadir1);x
   kadir1.Connection := b;
   kadir1.ConnectionString := serverismi(donem);
 
@@ -7756,7 +7756,7 @@ var
   ado: TADOQuery;
 begin
   try
-    ado := TADOQuery.Create(nil);
+    ado := TADOQuery.Create(nil);x
     ado.Connection := datalar.ADOConnection2;
 
     sql :=
@@ -7810,7 +7810,7 @@ begin
 
   try
     // hafýzada bir adocommand oluþturuluyor...
-    kadir1 := TADOCommand.Create(kadir1);
+    kadir1 := TADOCommand.Create(kadir1);x
     kadir1.ConnectionString := conn;
     // serverismi('MUHASEBE');
 
@@ -8031,7 +8031,7 @@ begin
   End
   Else
   begin
-    ado := TADOQuery.Create(nil);
+    ado := TADOQuery.Create(nil);x
     ado.Connection := datalar.ADOConnection2;
     sql := 'select takipNo from kurumFatura ' + ' where takipNo = ' + QuotedStr
       (_Takip) + ' and isnull(GSSFaturaTeslimNo,'''') <> ''''';
