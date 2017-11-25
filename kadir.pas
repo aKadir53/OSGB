@@ -1312,29 +1312,30 @@ end;
 function ListeAcCreate(TableName,kolonlar,kolonBasliklar,kolonGenislik,name,baslik,where : string;colcount : integer;Grup : boolean = false) : TListeAc;
 var
   I : integer;
-  ListeAc : TListeAc;
-  lst : TstringList;
+  lstx : TstringList;
 begin
-  lst := TStringList.Create;x
-  ListeAc := TListeAc.Create(nil);x
-  ListeAc.Table := TableName;
-  ListeAc.ListeBaslik := baslik;
-  ListeAc.Kolonlar.Create;x
-  Split(',',kolonlar,lst);
-  for I := 0 to lst.Count - 1 do ListeAc.Kolonlar.Add(lst[I]);
-  ListeAc.Kolonlar.Create;x
-  lst.Clear;
-  Split(',',kolonBasliklar,lst);
-  for I := 0 to lst.Count - 1 do ListeAc.KolonBasliklari.Add(lst[I]);
-  ListeAc.TColsW := kolonGenislik;
-  ListeAc.Name := name;
-  ListeAc.Where := where;
-  ListeAc.TColcount := colcount;
-  ListeAc.SkinName := AnaForm.dxSkinController1.SkinName;
-  ListeAc.Conn := datalar.ADOConnection2;
-  ListeAc.Filtercol := 1;
-  lst.Free;
-  ListeAcCreate := ListeAc;x
+  lstx := TStringList.Create;
+  try
+    Result := TListeAc.Create(nil);
+    Result.Table := TableName;
+    Result.ListeBaslik := baslik;
+    Result.Kolonlar.Create;
+    Split(',',kolonlar,lstx);
+    for I := 0 to lstx.Count - 1 do Result.Kolonlar.Add(lstx[I]);
+    Result.Kolonlar.Create;
+    lstx.Clear;
+    Split(',',kolonBasliklar,lstx);
+    for I := 0 to lstx.Count - 1 do Result.KolonBasliklari.Add(lstx[I]);
+    Result.TColsW := kolonGenislik;
+    Result.Name := name;
+    Result.Where := where;
+    Result.TColcount := colcount;
+    Result.SkinName := AnaForm.dxSkinController1.SkinName;
+    Result.Conn := datalar.ADOConnection2;
+    Result.Filtercol := 1;
+  finally
+    lstx.Free;
+  end;
 end;
 
 
@@ -1343,11 +1344,14 @@ var
   sql : string;
   ADO : TadoQuery;
 begin
-    ado := TadoQuery.Create(nil);x
+  ado := TadoQuery.Create(nil);
+  try
     ado.Connection := datalar.ADOConnection2;
     sql := 'UPDATE Users SET Saat = GETDATE() WHERE Kullanici = ' + QuotedStr(KullaniciAdi);
     datalar.QueryExec(ado,sql);
+  finally
     ado.Free;
+  end;
 end;
 
 
@@ -1626,36 +1630,39 @@ procedure DecompressFiles(const filename, DestDirectory: String);
 var
   dest, s: String;
   decompr: TDecompressionStream;
-  infile, outfile: TFilestream;
+  infilex, outfilex: TFilestream;
   i, l, c: Integer;
 begin
   // IncludeTrailingPathDelimiter (D6/D7 only)
   dest := IncludeTrailingPathDelimiter(DestDirectory);
-  infile := TFilestream.Create(filename, fmOpenRead);x
+  infilex := TFilestream.Create(filename, fmOpenRead);
   try
     { number of files }
-    infile.Read(c, SizeOf(c));
+    infilex.Read(c, SizeOf(c));
     for i := 1 to c do
     begin
       { read filename }
-      infile.Read(l, SizeOf(l));
+      infilex.Read(l, SizeOf(l));
       SetLength(s, l);
-      infile.Read(s[1], l);
+      infilex.Read(s[1], l);
       { read filesize }
-      infile.Read(l, SizeOf(l));
+      infilex.Read(l, SizeOf(l));
       { decompress the files and store it }
       s := dest + s; // include the path
-      outfile := TFilestream.Create(s, fmCreate);x
-      decompr := TDecompressionStream.Create(infile);x
+      outfilex := TFilestream.Create(s, fmCreate);
       try
-        outfile.CopyFrom(decompr, l);
+        decompr := TDecompressionStream.Create(infilex);
+        try
+          outfilex.CopyFrom(decompr, l);
+        finally
+          decompr.Free;
+        end;
       finally
-        outfile.Free;
-        decompr.Free;
+        outfilex.Free;
       end;
     end;
   finally
-    infile.Free;
+    infilex.Free;
   end;
 end;
 
@@ -1668,14 +1675,14 @@ var
 begin
   if Files.Count > 0 then
   begin
-    outfile := TFilestream.Create(filename, fmCreate);x
+    outfile := TFilestream.Create(filename, fmCreate);
     try
       { the number of files }
       l := Files.Count;
       outfile.Write(l, SizeOf(l));
       for i := 0 to Files.Count - 1 do
       begin
-        infile := TFilestream.Create(Files[i], fmOpenRead);x
+        infile := TFilestream.Create(Files[i], fmOpenRead);
         try
           { the original filename }
           s := ExtractFilename(Files[i]);
@@ -1686,16 +1693,19 @@ begin
           l := infile.Size;
           outfile.Write(l, SizeOf(l));
           { compress and store the file temporary }
-          tmpFile := TFilestream.Create('tmp', fmCreate);x
-          compr := TCompressionStream.Create(clMax, tmpFile);x
+          tmpFile := TFilestream.Create('tmp', fmCreate);
           try
-            compr.CopyFrom(infile, l);
+            compr := TCompressionStream.Create(clMax, tmpFile);
+            try
+              compr.CopyFrom(infile, l);
+            finally
+              compr.Free;
+            end;
           finally
-            compr.Free;
             tmpFile.Free;
           end;
           { append the compressed file to the destination file }
-          tmpFile := TFilestream.Create('tmp', fmOpenRead);x
+          tmpFile := TFilestream.Create('tmp', fmOpenRead);
           try
             outfile.CopyFrom(tmpFile, 0);
           finally
@@ -1732,10 +1742,10 @@ var
   JpegImg: TJpegImage;
 begin
   Result := False;
-  Bitmap := TBitmap.Create;x
+  Bitmap := TBitmap.Create;
   try
     Bitmap.LoadFromFile(BMPpic);
-    JpegImg := TJpegImage.Create;x
+    JpegImg := TJpegImage.Create;
     try
       JpegImg.Assign(Bitmap);
       JpegImg.SaveToFile(JPGpic);
@@ -1806,7 +1816,7 @@ var
   stream: TMemoryStream;
 
 begin
-  stream := TMemoryStream.Createx;
+  stream := TMemoryStream.Create;
   try
     stream.LoadFromFile(filename);
 
@@ -1820,8 +1830,8 @@ function Encode64(s: string): string;
 var
   IdEncoderMIME: TIdEncoderMIME;
 begin
+  IdEncoderMIME := TIdEncoderMIME.Create(nil);
   try
-    IdEncoderMIME := TIdEncoderMIME.Create(nil);x
     Result := IdEncoderMIME.EncodeString(s);
   finally
     IdEncoderMIME.Free;
@@ -1832,8 +1842,8 @@ function Decode64(s: string): string;
 var
   IdDecoderMIME: TIdDecoderMIME;
 begin
+  IdDecoderMIME := TIdDecoderMIME.Create(nil);
   try
-    IdDecoderMIME := TIdDecoderMIME.Create(nil);x
     Result := IdDecoderMIME.DecodeString(s);
   finally
     IdDecoderMIME.Free;
@@ -1876,19 +1886,20 @@ var
   ado: TADOQuery;
   sql: string;
 begin
-  ado := TADOQuery.Create(nil);x
-  ado.Connection := datalar.ADOConnection2;
-  sql := 'SELECT * FROM hastakart WHERE dosyaNo = ' + QuotedStr(DosyaNo) +
-    ' and substring(pasifSebeb,1,1) = ''5''';
-  datalar.QuerySelect(ado, sql);
+  ado := TADOQuery.Create(nil);
+  try
+    ado.Connection := datalar.ADOConnection2;
+    sql := 'SELECT * FROM hastakart WHERE dosyaNo = ' + QuotedStr(DosyaNo) +
+      ' and substring(pasifSebeb,1,1) = ''5''';
+    datalar.QuerySelect(ado, sql);
 
-  if not ado.eof then
-    HastaOlmusmu := True
-  else
-    HastaOlmusmu := False;
-
-  ado.Free;
-
+    if not ado.eof then
+      HastaOlmusmu := True
+    else
+      HastaOlmusmu := False;
+  finally
+    ado.Free;
+  end;
 end;
 
 function DoktorSeansHastaSayiKontrol(doktor, seans, Tarih: string): Boolean;
@@ -1896,22 +1907,24 @@ var
   ado: TADOQuery;
   sql: string;
 begin
-  ado := TADOQuery.Create(nil);x
-  ado.Connection := datalar.ADOConnection2;
+  ado := TADOQuery.Create(nil);
+  try
+    ado.Connection := datalar.ADOConnection2;
 
-  sql := 'select count(*) from gelisdetay where UTarih = ' + QuotedStr(Tarih)
-    + ' and doktor = ' + QuotedStr(doktor) + ' and seans = ' + QuotedStr
-    (seans) + ' and durum = 1';
-  datalar.QuerySelect(ado, sql);
+    sql := 'select count(*) from gelisdetay where UTarih = ' + QuotedStr(Tarih)
+      + ' and doktor = ' + QuotedStr(doktor) + ' and seans = ' + QuotedStr
+      (seans) + ' and durum = 1';
+    datalar.QuerySelect(ado, sql);
 
-  if ado.Fields[0].Value >= 30 then
-  begin
-    DoktorSeansHastaSayiKontrol := False;
-  end
-  else
-    DoktorSeansHastaSayiKontrol := True;
-  ado.Free;
-
+    if ado.Fields[0].Value >= 30 then
+    begin
+      DoktorSeansHastaSayiKontrol := False;
+    end
+    else
+      DoktorSeansHastaSayiKontrol := True;
+  finally
+    ado.Free;
+  end;
 end;
 
 function HastaKabul0543HatasiTakipAl(SonucMesaj: string): string;
@@ -1932,35 +1945,37 @@ var
   ado: TADOQuery;
 begin
   try
-    ado := TADOQuery.Create(nil);x
-    ado.Connection := datalar.ADOConnection2;
+    ado := TADOQuery.Create(nil);
+    try
+      ado.Connection := datalar.ADOConnection2;
 
-    sql := 'delete from gssTakipOkuDiger where takipno = ' + QuotedStr(Takip);
-    ado.sql.Clear;
-    datalar.QueryExec(ado, sql);
+      sql := 'delete from gssTakipOkuDiger where takipno = ' + QuotedStr(Takip);
+      ado.sql.Clear;
+      datalar.QueryExec(ado, sql);
 
-    sql := 'delete from gssTakipOkuTahlil where takipno = ' + QuotedStr(Takip);
-    ado.sql.Clear;
-    datalar.QueryExec(ado, sql);
+      sql := 'delete from gssTakipOkuTahlil where takipno = ' + QuotedStr(Takip);
+      ado.sql.Clear;
+      datalar.QueryExec(ado, sql);
 
-    sql :=
-      'delete from gssTakipOkuTetkikvdRadyoloji where takipno = ' + QuotedStr
-      (Takip);
-    ado.sql.Clear;
-    datalar.QueryExec(ado, sql);
+      sql :=
+        'delete from gssTakipOkuTetkikvdRadyoloji where takipno = ' + QuotedStr
+        (Takip);
+      ado.sql.Clear;
+      datalar.QueryExec(ado, sql);
 
-    sql := 'delete from gssTakipOkuTahlilSonuc where takipno = ' + QuotedStr
-      (Takip);
-    ado.sql.Clear;
-    datalar.QueryExec(ado, sql);
+      sql := 'delete from gssTakipOkuTahlilSonuc where takipno = ' + QuotedStr
+        (Takip);
+      ado.sql.Clear;
+      datalar.QueryExec(ado, sql);
+    finally
+      ado.Free;
+    end;
   except
     on e: exception do
     begin
       ShowMessageSkin(e.Message, '', '', 'info');
     end;
   end;
-
-  ado.Free;
 end;
 
 function sutKodu(Tip: string = '0'): string;
@@ -1968,23 +1983,27 @@ var
   sql: string;
   ado: TADOQuery;
 begin
-  ado := TADOQuery.Create(nil);x
-  ado.Connection := datalar.ADOConnection2;
+  ado := TADOQuery.Create(nil);
+  try
+    ado.Connection := datalar.ADOConnection2;
 
-  if (Tip = '0') or (Tip = 'M') then
-  begin
-    datalar.DigerIslemTalebi.sutKodu := 'P704230';
-    sutKodu := 'P704230';
-  end
-  else if (Tip = '4') or (Tip = '7') then
-  begin
-    datalar.DigerIslemTalebi.sutKodu := 'P704234';
-    sutKodu := 'P704234';
-  end
-  else if (Tip = '3') or (Tip = 'E') then
-  begin
-    datalar.DigerIslemTalebi.sutKodu := 'P704233';
-    sutKodu := 'P704233';
+    if (Tip = '0') or (Tip = 'M') then
+    begin
+      datalar.DigerIslemTalebi.sutKodu := 'P704230';
+      sutKodu := 'P704230';
+    end
+    else if (Tip = '4') or (Tip = '7') then
+    begin
+      datalar.DigerIslemTalebi.sutKodu := 'P704234';
+      sutKodu := 'P704234';
+    end
+    else if (Tip = '3') or (Tip = 'E') then
+    begin
+      datalar.DigerIslemTalebi.sutKodu := 'P704233';
+      sutKodu := 'P704233';
+    end;
+  finally
+    ado.free;
   end;
   (*
     try
@@ -2026,27 +2045,28 @@ var
   sql: string;
   ado: TADOQuery;
 begin
-  ado := TADOQuery.Create(nil);x
-  ado.Connection := datalar.ADOConnection2;
+  ado := TADOQuery.Create(nil);
+  try
+    ado.Connection := datalar.ADOConnection2;
 
-  sql := 'select h.dosyaNo,g.gelisNo,g.SIRANO from hastakart h ' +
-    ' join gelisler g on g.dosyaNo = h.dosyaNo ' + ' where TCKIMLIKNO = ' +
-    QuotedStr(tc) + ' and g.bhdat between ' + QuotedStr(tarih1)
-    + ' and ' + QuotedStr(tarih2);
-  datalar.QuerySelect(ado, sql);
+    sql := 'select h.dosyaNo,g.gelisNo,g.SIRANO from hastakart h ' +
+      ' join gelisler g on g.dosyaNo = h.dosyaNo ' + ' where TCKIMLIKNO = ' +
+      QuotedStr(tc) + ' and g.bhdat between ' + QuotedStr(tarih1)
+      + ' and ' + QuotedStr(tarih2);
+    datalar.QuerySelect(ado, sql);
 
-  if not ado.eof then
-  begin
-    DosyaNo := ado.FieldByName('dosyaNo').AsString;
-    GelisNo := ado.FieldByName('gelisNO').AsString;
-    id := ado.FieldByName('SIRANO').AsString;
-    TCdenDosyaNoGelisNo := 1;
-  end
-  else
-    TCdenDosyaNoGelisNo := 0;
-
-  ado.Free;
-
+    if not ado.eof then
+    begin
+      DosyaNo := ado.FieldByName('dosyaNo').AsString;
+      GelisNo := ado.FieldByName('gelisNO').AsString;
+      id := ado.FieldByName('SIRANO').AsString;
+      TCdenDosyaNoGelisNo := 1;
+    end
+    else
+      TCdenDosyaNoGelisNo := 0;
+  finally
+    ado.Free;
+  end;
 end;
 
 function KanAlimTarihi(DosyaNo, GelisNo: string): string;
@@ -2054,19 +2074,21 @@ var
   sql: string;
   ado: TADOQuery;
 begin
-  ado := TADOQuery.Create(nil);x
-  ado.Connection := datalar.ADOConnection2;
+  ado := TADOQuery.Create(nil);
+  try
+    ado.Connection := datalar.ADOConnection2;
 
-  sql :=
-    'select UTarih from gelisDetay where KanAlindimi = 1 and dosyaNo = '
-    + QuotedStr(DosyaNo) + ' and gelisNo = ' + GelisNo;
+    sql :=
+      'select UTarih from gelisDetay where KanAlindimi = 1 and dosyaNo = '
+      + QuotedStr(DosyaNo) + ' and gelisNo = ' + GelisNo;
 
-  datalar.QuerySelect(ado, sql);
+    datalar.QuerySelect(ado, sql);
 
-  if not ado.eof then
-    KanAlimTarihi := ado.Fields[0].AsString;
-
-  ado.Free;
+    if not ado.eof then
+      KanAlimTarihi := ado.Fields[0].AsString;
+  finally
+    ado.Free;
+  end;
 end;
 
 
@@ -2076,16 +2098,17 @@ var
   sql: string;
   ado: TADOQuery;
 begin
-  ado := TADOQuery.Create(nil);x
-  ado.Connection := datalar.ADOConnection2;
-  sql :=
-    'select HastaADI+'' '' +HASTASOYADI from hastakart where TCKIMLIKNO = ' + QuotedStr(tc);
-  datalar.QuerySelect(ado, sql);
+  ado := TADOQuery.Create(nil);
+  try
+    ado.Connection := datalar.ADOConnection2;
+    sql :=
+      'select HastaADI+'' '' +HASTASOYADI from hastakart where TCKIMLIKNO = ' + QuotedStr(tc);
+    datalar.QuerySelect(ado, sql);
 
-  Result := ado.Fields[0].AsString;
-
-  ado.Free;
-
+    Result := ado.Fields[0].AsString;
+  finally
+    ado.Free;
+  end;
 end;
 
 function TCtoDosyaNo(tc: string): string;
@@ -2094,12 +2117,15 @@ var
   ado: TADOQuery;
 begin
   Result := '';
-  ado := TADOQuery.Create(nil);x
-  ado.Connection := datalar.ADOConnection2;
-  sql := 'select dosyaNo from Personelkart where TCKIMLIKNO = ' + QuotedStr(tc);
-  datalar.QuerySelect(ado, sql);
-  Result := ado.Fields[0].AsString;
-  ado.Free;
+  ado := TADOQuery.Create(nil);
+  try
+    ado.Connection := datalar.ADOConnection2;
+    sql := 'select dosyaNo from Personelkart where TCKIMLIKNO = ' + QuotedStr(tc);
+    datalar.QuerySelect(ado, sql);
+    Result := ado.Fields[0].AsString;
+  finally
+    ado.Free;
+  end;
 end;
 
 procedure Sonucyaz(s, Takip: string; x: integer; hatalar: tstringlist);
@@ -2182,22 +2208,23 @@ var
   Tarih: string;
   tt: Tdate;
 begin
-  ado := TADOQuery.Create(nil);x
-  ado.Connection := datalar.ADOConnection2;
-
+  ado := TADOQuery.Create(nil);
   try
-    sql := 'select DOGUMTARIHI from hastakart where TCKIMLIKNO = ' + QuotedStr
-      (tc);
-    datalar.QuerySelect(ado, sql);
+    ado.Connection := datalar.ADOConnection2;
 
-    Tarih := ado.Fields[0].AsString;
-    tt := tarihyap(Tarih);
-    TcdenYasHesapla := tarihFarki(date, tt);
-  except
+    try
+      sql := 'select DOGUMTARIHI from hastakart where TCKIMLIKNO = ' + QuotedStr
+        (tc);
+      datalar.QuerySelect(ado, sql);
+
+      Tarih := ado.Fields[0].AsString;
+      tt := tarihyap(Tarih);
+      TcdenYasHesapla := tarihFarki(date, tt);
+    except
+    end;
+  finally
+    ado.Free;
   end;
-
-  ado.Free;
-
 end;
 
 function tarihFarki(tarih1, tarih2: Tdate): TYas;
@@ -2228,20 +2255,21 @@ var
   ado: TADOQuery;
   fark: integer;
 begin
-  ado := TADOQuery.Create(nil);x
-  ado.Connection := datalar.ADOConnection2;
-  sql := 'select slx , datediff(d,cast(SLVV as datetime),getdate()), ' +
-    ' SLVV from parametreler where slk = ''30'' and slb = ''02''';
+  ado := TADOQuery.Create(nil);
+  try
+    ado.Connection := datalar.ADOConnection2;
+    sql := 'select slx , datediff(d,cast(SLVV as datetime),getdate()), ' +
+      ' SLVV from parametreler where slk = ''30'' and slb = ''02''';
 
-  datalar.QuerySelect(ado, sql);
+    datalar.QuerySelect(ado, sql);
 
-  if ado.Fields[1].asinteger >= ado.Fields[0].asinteger Then
-    YedeklemeUyari := ado.Fields[1].asinteger
-  Else
-    YedeklemeUyari := 0;
-
-  ado.Free;
-
+    if ado.Fields[1].asinteger >= ado.Fields[0].asinteger Then
+      YedeklemeUyari := ado.Fields[1].asinteger
+    Else
+      YedeklemeUyari := 0;
+  finally
+    ado.Free;
+  end;
 end;
 
 procedure strtostrings(ayirac: string; text: string; const Strings: TStrings);
@@ -2249,22 +2277,23 @@ var
   sql: string;
   ado: TADOQuery;
 begin
-  ado := TADOQuery.Create(nil);x
-  ado.Connection := datalar.ADOConnection2;
-  sql := 'select datavalue from dbo.strtotable(' + QuotedStr(text)
-    + ',' + QuotedStr(ayirac) + ')';
-  datalar.QuerySelect(ado, sql);
+  ado := TADOQuery.Create(nil);
+  try
+    ado.Connection := datalar.ADOConnection2;
+    sql := 'select datavalue from dbo.strtotable(' + QuotedStr(text)
+      + ',' + QuotedStr(ayirac) + ')';
+    datalar.QuerySelect(ado, sql);
 
-  Strings.Clear;
-  while not ado.eof do
-  begin
-    if Length(ado.Fields[0].AsString) > 0 then
-      Strings.Add(ado.Fields[0].AsString);
-    ado.Next;
+    Strings.Clear;
+    while not ado.eof do
+    begin
+      if Length(ado.Fields[0].AsString) > 0 then
+        Strings.Add(ado.Fields[0].AsString);
+      ado.Next;
+    end;
+  finally
+    ado.Free;
   end;
-
-  ado.Free;
-
 end;
 
 function Songelis(DosyaNo: string): string;
@@ -2272,20 +2301,21 @@ var
   sql: string;
   ado: TADOQuery;
 begin
-  ado := TADOQuery.Create(nil);x
-  ado.Connection := datalar.ADOConnection2;
+  ado := TADOQuery.Create(nil);
+  try
+    ado.Connection := datalar.ADOConnection2;
 
-  sql := 'select max(gelisNo) from gelisler where dosyaNo = ' + QuotedStr
-    (DosyaNo);
-  datalar.QuerySelect(ado, sql);
+    sql := 'select max(gelisNo) from gelisler where dosyaNo = ' + QuotedStr
+      (DosyaNo);
+    datalar.QuerySelect(ado, sql);
 
-  if ado.eof then
-    Result := '1'
-  else
-    Result := ado.Fields[0].AsString;
-
-  ado.Free;
-
+    if ado.eof then
+      Result := '1'
+    else
+      Result := ado.Fields[0].AsString;
+  finally
+    ado.Free;
+  end;
 end;
 
 function MernisUserPass(var userid: string; var pasword: string): Boolean;
@@ -2293,27 +2323,28 @@ var
   sql: string;
   ado: TADOQuery;
 begin
-  ado := TADOQuery.Createx(nil);
-  ado.Connection := datalar.ADOConnection2;
+  ado := TADOQuery.Create(nil);
+  try
+    ado.Connection := datalar.ADOConnection2;
 
-  sql := 'select SLB,SLT from parametreler where SLk = ''97''';
-  datalar.QuerySelect(ado, sql);
+    sql := 'select SLB,SLT from parametreler where SLk = ''97''';
+    datalar.QuerySelect(ado, sql);
 
-  if ado.eof then
-  begin
-    Result := False;
+    if ado.eof then
+    begin
+      Result := False;
 
-  end
-  else
-  begin
-    Result := True;
-    userid := ado.FieldByName('SLB').AsString;
-    pasword := ado.FieldByName('SLT').AsString;
+    end
+    else
+    begin
+      Result := True;
+      userid := ado.FieldByName('SLB').AsString;
+      pasword := ado.FieldByName('SLT').AsString;
+    end;
+    ado.close;
+  finally
+    ado.Free;
   end;
-
-  ado.close;
-  ado.Free;
-
 end;
 
 function GetAveCharSize(Canvas: TCanvas): TPoint;
@@ -2357,10 +2388,9 @@ var
   ButtonTop, ButtonWidth, ButtonHeight: Integer;
 begin
   Result := False;
-  Form := TForm.Create(Application);x
+  Form := TForm.Create(Application);
   with Form do
     try
-
       Canvas.Font := Font;
       DialogUnits := GetAveCharSize(Canvas);
       BorderStyle := bsDialog;
@@ -2368,7 +2398,7 @@ begin
       ClientWidth := MulDiv(180, DialogUnits.x, 4);
       PopupMode := pmAuto;
       Position := poScreenCenter;
-      Prompt := TLabel.Create(Form);x
+      Prompt := TLabel.Create(Form);
       with Prompt do
       begin
         Parent := Form;
@@ -2379,7 +2409,7 @@ begin
         WordWrap := True;
 
       end;
-      Edit := TEdit.Create(Form);x
+      Edit := TEdit.Create(Form);
       with Edit do
       begin
         Parent := Form;
@@ -2394,7 +2424,7 @@ begin
       ButtonTop := Edit.Top + Edit.Height + 15;
       ButtonWidth := MulDiv(50, DialogUnits.x, 4);
       ButtonHeight := MulDiv(14, DialogUnits.y, 8);
-      with TButton.Create(Form) dox
+      with TButton.Create(Form) do
       begin
         Parent := Form;
         Caption := SMsgDlgOK;
@@ -2403,7 +2433,7 @@ begin
         SetBounds(MulDiv(38, DialogUnits.x, 4), ButtonTop, ButtonWidth,
           ButtonHeight);
       end;
-      with TButton.Create(Form) do x
+      with TButton.Create(Form) do
       begin
         Parent := Form;
         Caption := SMsgDlgCancel;
@@ -2474,13 +2504,16 @@ var
   sql: string;
   ado: TADOQuery;
 begin
-  ado := TADOQuery.Create(nil);x
-  ado.Connection := datalar.ADOConnection2;
-  sql :=
-    'declare @SLX int select @SLX = isnull(SLX,0) from parametreler where SLK = ''00'' and SLB = ''21''' + ' update parametreler set SLX  = @SLX+1 from parametreler where SLK = ''00'' and SLB = ''21''' + ' select @SLX+1 ';
-  datalar.QuerySelect(ado, sql);
-  EnsonRaporProtokolNo := ado.Fields[0].AsInteger;
-  ado.Free;
+  ado := TADOQuery.Create(nil);
+  try
+    ado.Connection := datalar.ADOConnection2;
+    sql :=
+      'declare @SLX int select @SLX = isnull(SLX,0) from parametreler where SLK = ''00'' and SLB = ''21''' + ' update parametreler set SLX  = @SLX+1 from parametreler where SLK = ''00'' and SLB = ''21''' + ' select @SLX+1 ';
+    datalar.QuerySelect(ado, sql);
+    EnsonRaporProtokolNo := ado.Fields[0].AsInteger;
+  finally
+    ado.Free;
+  end;
 end;
 
 function EnsonSeansProtokolNo(SirketKod,SubeKod: string): string;
@@ -2488,19 +2521,20 @@ var
   sql: string;
   ado: TADOQuery;
 begin
-  ado := TADOQuery.Create(nil);x
-  ado.Connection := datalar.ADOConnection2;
-  sql := 'sp_YeniReceteProtokol ' + QuotedStr(SirketKod) + ',' +
-         QuotedStr(SubeKod);
-  datalar.QuerySelect(ado, sql);
+  ado := TADOQuery.Create(nil);
+  try
+    ado.Connection := datalar.ADOConnection2;
+    sql := 'sp_YeniReceteProtokol ' + QuotedStr(SirketKod) + ',' +
+           QuotedStr(SubeKod);
+    datalar.QuerySelect(ado, sql);
 
-  if not ado.eof then
-    EnsonSeansProtokolNo := ado.Fields[0].AsString
-  else
-    EnsonSeansProtokolNo := '0';
-
-  ado.Free;
-
+    if not ado.eof then
+      EnsonSeansProtokolNo := ado.Fields[0].AsString
+    else
+      EnsonSeansProtokolNo := '0';
+  finally
+    ado.Free;
+  end;
 end;
 
 function doktorKlinikKoduSaglikNet(doktor: string): string;
@@ -2508,19 +2542,20 @@ var
   sql: string;
   ado: TADOQuery;
 begin
-  ado := TADOQuery.Create(nil);x
-  ado.Connection := datalar.ADOConnection2;
-  sql := 'select isnull(SLZ,0) from doktorlar d ' +
-    'join servIsler s on s.kodu = cast(d.Brans as varchar) ' +
-    ' where d.kod = ' + QuotedStr(doktor);
-  datalar.QuerySelect(ado, sql);
-  if not ado.eof then
-    doktorKlinikKoduSaglikNet := ado.Fields[0].AsString
-  else
-    doktorKlinikKoduSaglikNet := '0';
-
-  ado.Free;
-
+  ado := TADOQuery.Create(nil);
+  try
+    ado.Connection := datalar.ADOConnection2;
+    sql := 'select isnull(SLZ,0) from doktorlar d ' +
+      'join servIsler s on s.kodu = cast(d.Brans as varchar) ' +
+      ' where d.kod = ' + QuotedStr(doktor);
+    datalar.QuerySelect(ado, sql);
+    if not ado.eof then
+      doktorKlinikKoduSaglikNet := ado.Fields[0].AsString
+    else
+      doktorKlinikKoduSaglikNet := '0';
+  finally
+    ado.Free;
+  end;
 end;
 
 function protokolGuncelle(Id, protokolNo, doktor: string): Boolean;
@@ -2530,21 +2565,22 @@ var
 begin
   yil := copy(tarihal(date()), 1, 4);
 
-  ado := TADOQuery.Create(nil);x
-  ado.Connection := datalar.ADOConnection2;
+  ado := TADOQuery.Create(nil);
+  try
+    ado.Connection := datalar.ADOConnection2;
 
-  sql := 'update gelisDetay set SNPROTOKOLNO = ' + QuotedStr(protokolNo)
-    + ' where sirano = ' + Id + ' select @@error ';
+    sql := 'update gelisDetay set SNPROTOKOLNO = ' + QuotedStr(protokolNo)
+      + ' where sirano = ' + Id + ' select @@error ';
 
-  datalar.QuerySelect(ado, sql);
+    datalar.QuerySelect(ado, sql);
 
-  if ado.Fields[0].AsInteger = 0 then
-    Result := True
-  Else
-    Result := False;
-
-  ado.Free;
-
+    if ado.Fields[0].AsInteger = 0 then
+      Result := True
+    Else
+      Result := False;
+  finally
+    ado.Free;
+  end;
 end;
 
 function IlacKoduToUnite(code, dosya, gelis: string;
@@ -2554,34 +2590,35 @@ var
   ado: TADOQuery;
 begin
   try
-    ado := TADOQuery.Create(nil);x
-    ado.Connection := datalar.ADOConnection2;
-    sql :=
-      'select unite = isnull(UNITE,1),isnull(dbo.IlackoduPeryot(' + QuotedStr
-      (code) + ',' + QuotedStr(dosya) + ',' + gelis + '),3)' +
-      ' ,isnull(dbo.IlackoduPeryotAdet(' + QuotedStr(code) + ',' + QuotedStr
-      (dosya) + ',' + gelis + '),  1)' + ' from ILACLAR where code = ' +
-      QuotedStr(code);
-    datalar.QuerySelect(ado, sql);
+    ado := TADOQuery.Create(nil);
+    try
+      ado.Connection := datalar.ADOConnection2;
+      sql :=
+        'select unite = isnull(UNITE,1),isnull(dbo.IlackoduPeryot(' + QuotedStr
+        (code) + ',' + QuotedStr(dosya) + ',' + gelis + '),3)' +
+        ' ,isnull(dbo.IlackoduPeryotAdet(' + QuotedStr(code) + ',' + QuotedStr
+        (dosya) + ',' + gelis + '),  1)' + ' from ILACLAR where code = ' +
+        QuotedStr(code);
+      datalar.QuerySelect(ado, sql);
 
-    if not ado.eof then
-    begin
-      Result := ado.Fields[0].AsFloat;
-      peryot := ado.Fields[1].AsString;
-      peryotAdet := ado.Fields[2].AsString;
-    end
-    else
-    begin
-      Result := 1;
-      peryot := '3';
-      peryotAdet := '1';
+      if not ado.eof then
+      begin
+        Result := ado.Fields[0].AsFloat;
+        peryot := ado.Fields[1].AsString;
+        peryotAdet := ado.Fields[2].AsString;
+      end
+      else
+      begin
+        Result := 1;
+        peryot := '3';
+        peryotAdet := '1';
+      end;
+    finally
+      ado.Free;
     end;
   except
 
   end;
-
-  ado.Free;
-
 end;
 
 function cxCheckListSecili01(c: TcxCheckListBox): string;
@@ -2642,18 +2679,18 @@ begin
     cL.Items[r].Checked := False;
   end;
 
-  t := tstringlist.Create;x
+  t := tstringlist.Create;
+  try
+    Split(',', c, t);
 
-  Split(',', c, t);
-
-  for r := 0 to t.Count - 1 do
-  begin
-    if t[r] <> '' Then
-      cL.Items[strtoint(t[r])].Checked := True;
+    for r := 0 to t.Count - 1 do
+    begin
+      if t[r] <> '' Then
+        cL.Items[strtoint(t[r])].Checked := True;
+    end;
+  finally
+    t.Free;
   end;
-
-  t.Free;
-
 end;
 
 function provizyonTakipTiptoReceteTip(Tip: string): integer;
@@ -2764,32 +2801,30 @@ function receteIlacBilgisiGetir(barkod: string): TReceteIlacBilgisi;
 var
   sql: string;
   ado: TADOQuery;
-  ilacBilgisi: TReceteIlacBilgisi;
 begin
 
   try
-    ado := TADOQuery.Create(nil);x
-    ado.Connection := datalar.ADOConnection2;
+    ado := TADOQuery.Create(nil);
+    try
+      ado.Connection := datalar.ADOConnection2;
 
-    sql := 'select * from ilacListesi where barkod = ' + QuotedStr(barkod);
-    datalar.QuerySelect(ado, sql);
+      sql := 'select * from ilacListesi where barkod = ' + QuotedStr(barkod);
+      datalar.QuerySelect(ado, sql);
 
-    if not ado.eof then
-    begin
-      ilacBilgisi.kodu := ado.FieldByName('barkod').AsString;
-      ilacBilgisi.adi := ado.FieldByName('ilacAdi').AsString;
-      ilacBilgisi.aktif := ado.FieldByName('aktif').AsInteger;
-      ilacBilgisi.adoz := ado.FieldByName('ambalajMiktar').AsFloat;
-      ilacBilgisi.tekdoz := ado.FieldByName('tekDozMiktar').AsFloat;
+      if not ado.eof then
+      begin
+        Result.kodu := ado.FieldByName('barkod').AsString;
+        Result.adi := ado.FieldByName('ilacAdi').AsString;
+        Result.aktif := ado.FieldByName('aktif').AsInteger;
+        Result.adoz := ado.FieldByName('ambalajMiktar').AsFloat;
+        Result.tekdoz := ado.FieldByName('tekDozMiktar').AsFloat;
+      end;
+    finally
+      ado.Free;
     end;
 
   except
   end;
-
-  Result := ilacBilgisi;
-
-  ado.Free;
-
 end;
 
 function DosyaNoTel(DosyaNo: string; Telefon : string = ''): string;
@@ -2801,12 +2836,15 @@ begin
   Tel := '';
   if Telefon = '' then
   begin
-    ado := TADOQuery.Create(nil);x
-    ado.Connection := datalar.ADOConnection2;
-    sql := 'select EV_TEL1  from Personelkart where dosyaNO = ' + QuotedStr(DosyaNo);
-    datalar.QuerySelect(ado, sql);
-    Tel := ado.Fields[0].AsString;
-    ado.Free;
+    ado := TADOQuery.Create(nil);
+    try
+      ado.Connection := datalar.ADOConnection2;
+      sql := 'select EV_TEL1  from Personelkart where dosyaNO = ' + QuotedStr(DosyaNo);
+      datalar.QuerySelect(ado, sql);
+      Tel := ado.Fields[0].AsString;
+    finally
+      ado.Free;
+    end;
   end
   Else
    Tel := Telefon;
@@ -2828,15 +2866,17 @@ var
   sql: string;
   ado: TADOQuery;
 begin
-  ado := TADOQuery.Create(nil);x
-  ado.Connection := datalar.ADOConnection2;
-  sql := 'select TCKIMLIKNO  from hastakart where dosyaNO = ' + QuotedStr
-    (DosyaNo);
-  datalar.QuerySelect(ado, sql);
+  ado := TADOQuery.Create(nil);
+  try
+    ado.Connection := datalar.ADOConnection2;
+    sql := 'select TCKIMLIKNO  from hastakart where dosyaNO = ' + QuotedStr
+      (DosyaNo);
+    datalar.QuerySelect(ado, sql);
 
-  Result := ado.Fields[0].AsString;
-
-  ado.Free;
+    Result := ado.Fields[0].AsString;
+  finally
+    ado.Free;
+  end;
 end;
 
 function DosyaNoTC(DosyaNo: string; var idealKilo: string): string; overload;
@@ -8150,7 +8190,7 @@ end;
 function IsNull (const s: String): Boolean;
 begin
   Result := Trim (s) = '';
-end;
+end; lstx infilex outfilex
    çaðrýldýðý yerler kontrol edilecekler:
-   SQLSelectToDataSet
+   SQLSelectToDataSet ListeAcCreate
 end.
