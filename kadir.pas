@@ -439,10 +439,13 @@ uses message,AnaUnit,message_y,popupForm,rapor,TedaviKart,Son6AylikTetkikSonuc,
 
 procedure LisansUzat;
 begin
-    Application.CreateForm(TfrmLisansBilgisi, frmLisansBilgisi);x
+  Application.CreateForm(TfrmLisansBilgisi, frmLisansBilgisi);
+  try
     frmLisansBilgisi.LisansBilgisi;
     frmLisansBilgisi.ShowModal;
-    frmLisansBilgisi := nil;
+  finally
+    FreeAndNil (frmLisansBilgisi);
+  end;
 end;
 
 procedure OnlineDestekOpen;
@@ -561,25 +564,25 @@ end;
 
 procedure SMSSend(tel : string; Msj : string = '';Kisi : string ='');
 begin
-    Application.CreateForm(TfrmSMS, frmSMS);x
+  Application.CreateForm(TfrmSMS, frmSMS);
+  try
     frmSMS.mesaj := Msj;
     frmSMS.MobilTel := tel;
     frmSMS.hasta := Kisi;
     frmSMS.ShowModal;
-    frmSMS := nil;
-
+  finally
+    freeandnil (frmSMS);
+  end;
 end;
 
 function SQLSelectToDataSet(Columns,Table,Where : string) : TADOQuery;
 var
-  ado : TADOQuery;
   sql : string;
 begin
-  ado := TADOQuery.Create(nil);x
-  ado.Connection := datalar.ADOConnection2;
+  Result := TADOQuery.Create(nil);
+  Result.Connection := datalar.ADOConnection2;
   sql := Format(_SqlSelect_,[Columns,Table,Where]);
-  datalar.QuerySelect(ado,sql);
-  SQLSelectToDataSet := ado;
+  datalar.QuerySelect(Result,sql);
 end;
 
 function GridCellToString(Grid : TcxGridDBTableView; ColonName : string ; Row : integer) : Variant;
@@ -861,23 +864,24 @@ var
   sql , tani : string;
   ado : TADOQuery;
 begin
- try
-  ado := TADOQuery.Create(nil);x
-  sql := 'update ilacListesi set ICD = ' + QuotedStr(TaniKodu) +
-         ',kulYol = ' + kulYol +
-         ',doz = ' +  doz +
-         ',adet = ' + adet +
-         ' where barkod = ' + QuotedStr(barkod);
-  datalar.QueryExec(ado,sql);
-  ShowMessageSkin('Ýlaç Taný Ýliþkilendirildi','','','info');
-  ado.Free;
- except on e : exception do
-  begin
-    ShowMessageSkin(e.Message,'','','info');
-    ado.Free;
-    exit;
+  try
+    ado := TADOQuery.Create(nil);
+    try
+      sql := 'update ilacListesi set ICD = ' + QuotedStr(TaniKodu) +
+             ',kulYol = ' + kulYol +
+             ',doz = ' +  doz +
+             ',adet = ' + adet +
+             ' where barkod = ' + QuotedStr(barkod);
+      datalar.QueryExec(ado,sql);
+      ShowMessageSkin('Ýlaç Taný Ýliþkilendirildi','','','info');
+    finally
+      ado.Free;
+    end;
+  except on e : exception do
+   begin
+     ShowMessageSkin(e.Message,'','','info');
+   end;
   end;
- end;
 end;
 
 procedure ReceteIlacAckTaniEkleMedula(islem : integer ; dosyaNo,gelisNo,ereceteNo,id,doktor,taniKodu,ackId : string);
@@ -909,10 +913,13 @@ end;
 
 procedure PrintYap(raporKodu,caption,formId : string; Data: TDataSetKadir; yazdirmaTipi : TprintTip = pTNone);
 begin
-    Application.CreateForm(TfrmRapor, frmRapor);x
+  Application.CreateForm(TfrmRapor, frmRapor);
+  try
     frmRapor.raporData1(Data ,raporKodu,caption,formId,yazdirmaTipi);
     if yazdirmaTipi = pTNone then frmRapor.ShowModal;
+  finally
     FreeAndNil(frmRapor);
+  end;
 end;
 
 
@@ -947,24 +954,30 @@ begin
        exit;
    end;
    *)
-  Application.CreateForm(TfrmHastaTetkikEkle, frmHastaTetkikEkle);x
-  frmHastaTetkikEkle._dosyaNo_ := dosyaNo;
-  frmHastaTetkikEkle._gelisNO_ := gelisNo;
-  frmHastaTetkikEkle.Sonuclar;
-  frmHastaTetkikEkle._provizyonTarihi_ := Tarih;
-  frmHastaTetkikEkle.ShowModal;
-  freeAndNil(frmHastaTetkikEkle);
+  Application.CreateForm(TfrmHastaTetkikEkle, frmHastaTetkikEkle);
+  try
+    frmHastaTetkikEkle._dosyaNo_ := dosyaNo;
+    frmHastaTetkikEkle._gelisNO_ := gelisNo;
+    frmHastaTetkikEkle.Sonuclar;
+    frmHastaTetkikEkle._provizyonTarihi_ := Tarih;
+    frmHastaTetkikEkle.ShowModal;
+  finally
+    freeAndNil(frmHastaTetkikEkle);
+  end;
 end;
 
 
 procedure Son6AylikTetkikSonuc(dosyaNo,Tarih : string);
 begin
-  Application.CreateForm(TfrmSon6AylikTetkikSonuc, frmSon6AylikTetkikSonuc);x
-  frmSon6AylikTetkikSonuc._dosyaNO_ := dosyaNo;
-  frmSon6AylikTetkikSonuc._provizyonTarihi_ := Tarih;
-  frmSon6AylikTetkikSonuc.Listele;
-  frmSon6AylikTetkikSonuc.ShowModal;
-  FreeAndNil(frmSon6AylikTetkikSonuc);
+  Application.CreateForm(TfrmSon6AylikTetkikSonuc, frmSon6AylikTetkikSonuc);
+  try
+    frmSon6AylikTetkikSonuc._dosyaNO_ := dosyaNo;
+    frmSon6AylikTetkikSonuc._provizyonTarihi_ := Tarih;
+    frmSon6AylikTetkikSonuc.Listele;
+    frmSon6AylikTetkikSonuc.ShowModal;
+  finally
+    FreeAndNil(frmSon6AylikTetkikSonuc);
+  end;
 end;
 
 
@@ -992,45 +1005,50 @@ end;
 
 procedure SifreDegistir(newSifre : string ; sifreTip : integer);
 begin
-    Application.CreateForm(TfrmSifreDegis, frmSifreDegis);x
+  Application.CreateForm(TfrmSifreDegis, frmSifreDegis);
+  try
     frmSifreDegis.doktorKullanici := datalar.doktorKodu;
     frmSifreDegis.sifreTip := sifreTip;
     frmSifreDegis.ShowModal;
+  finally
     FreeAndNil(frmSifreDegis);
+  end;
 end;
 
 procedure cxExceleGonder(grid : TcxGrid ; dosyaName : string);
 var
- SaveDlg : TSaveDialog;
+  SaveDlg : TSaveDialog;
 begin
-    SaveDlg := TSaveDialog.Create(nil);ç
+  SaveDlg := TSaveDialog.Create(nil);
+  try
     SaveDlg.FileName := dosyaName;
-    if SaveDlg.Execute = True
-    Then
-      DosyaName := SaveDlg.FileName;
+    if not SaveDlg.Execute Then Exit;
+    DosyaName := SaveDlg.FileName;
     try
-        ExportGridToExcel(dosyaName,grid,False,True);
+      ExportGridToExcel(dosyaName,grid,False,True);
     except on e : Exception do
-       begin
-            ShowMessageSkin('Hata Oluþtu : ' + e.Message,'','','info');
-            exit;
-       end;
+    begin
+      ShowMessageSkin('Hata Oluþtu : ' + e.Message,'','','info');
+      exit;
     end;
-       ShowMessageSkin(DosyaName + ' ',' Baþarý ile Kaydedildi','','info');
+    end;
+    ShowMessageSkin(DosyaName + ' ',' Baþarý ile Kaydedildi','','info');
+  finally
+    SaveDlg.Free;
+  end;
 end;
 
 
 procedure MedEczaneGit(user,pasword,Tc : string);
 begin
-  Application.CreateForm(TfrmMedEczane, frmMedEczane);þ
-  frmMedEczane.yukle(user,pasword,Tc);
-  frmMedEczane.ShowModal;
-  freeandNil(frmMedEczane);
+  Application.CreateForm(TfrmMedEczane, frmMedEczane);
+  try
+    frmMedEczane.yukle(user,pasword,Tc);
+    frmMedEczane.ShowModal;
+  finally
+    freeandNil(frmMedEczane);
+  end;
 end;
-
-
-
-
 
 procedure GetBuildInfo(const AppName: string; var V1, V2, V3,V4: Word);
 var
@@ -1092,18 +1110,19 @@ begin
        exit;
    end;
    *)
-
   // FormINIT(TagfrmSaglikNetOnline,OFShowModal);
-
-   Application.CreateForm(TfrmHastaRecete, frmHastaRecete);þ
-   frmHastaRecete._dosyaNO_ := dosyaNo;
-   frmHastaRecete._gelisNO_ := gelisNo;
-   frmHastaRecete._HastaAdSoyad_ := datalar.Bilgi.Adi;
-   frmHastaRecete._provizyonTarihi_ := datalar.Bilgi.ProvizyonTarihi;
-   frmHastaRecete.ReceteGetir(dosyaNo,gelisNo);
-   frmHastaRecete.ShowModal;
-  // frmHastaRecete := nil;
-   FreeAndNil(frmHastaRecete);
+  Application.CreateForm(TfrmHastaRecete, frmHastaRecete);
+  try
+    frmHastaRecete._dosyaNO_ := dosyaNo;
+    frmHastaRecete._gelisNO_ := gelisNo;
+    frmHastaRecete._HastaAdSoyad_ := datalar.Bilgi.Adi;
+    frmHastaRecete._provizyonTarihi_ := datalar.Bilgi.ProvizyonTarihi;
+    frmHastaRecete.ReceteGetir(dosyaNo,gelisNo);
+    frmHastaRecete.ShowModal;
+   // frmHastaRecete := nil;
+  finally
+    FreeAndNil(frmHastaRecete);
+  end;
 end;
 
 procedure IlacTedaviKarti(dosyaNo,gelisNo,Tarih : string ; islem : integer = 99999);
@@ -1155,16 +1174,19 @@ var
   ado : TADOQuery;
   sql : string;
 begin
-  ado := TADOQuery.Create(nil);þ
-  sql := 'declare @Dn varchar(6) set @Dn = DBO.KODAL('+ QuotedStr(tip) +') exec sp_DosyaNoYaz @Dn,@t = ' + QuotedStr(tip) +
-         ' select @dn';
-  datalar.QuerySelect(ado,sql);
-  if not ado.Eof
-  then
-    dosyaNoYeniNumaraAl := ado.Fields[0].AsString
-  else
-    dosyaNoYeniNumaraAl := '0';
-  ado.Free;
+  ado := TADOQuery.Create(nil);
+  try
+    sql := 'declare @Dn varchar(6) set @Dn = DBO.KODAL('+ QuotedStr(tip) +') exec sp_DosyaNoYaz @Dn,@t = ' + QuotedStr(tip) +
+           ' select @dn';
+    datalar.QuerySelect(ado,sql);
+    if not ado.Eof
+    then
+      dosyaNoYeniNumaraAl := ado.Fields[0].AsString
+    else
+      dosyaNoYeniNumaraAl := '0';
+  finally
+    ado.Free;
+  end;
 end;
 
 function KontrolUsers(FormTag,KontrolTag : string ; kullanici : string) : Boolean;
@@ -1172,12 +1194,15 @@ var
   ado : TADOQuery;
   sql : string;
 begin
-  ado := TADOQuery.Create(nil);þ
-  sql := 'select * from KontrolUserSettings where kullanici = ' + QuotedStr(kullanici) +
-         ' and formTag = ' + FormTag + ' and kontrolTag = ' + KontrolTag;
-  datalar.QuerySelect(ado,sql);
-  KontrolUsers := ado.Eof;
-  ado.Free;
+  ado := TADOQuery.Create(nil);
+  try
+    sql := 'select * from KontrolUserSettings where kullanici = ' + QuotedStr(kullanici) +
+           ' and formTag = ' + FormTag + ' and kontrolTag = ' + KontrolTag;
+    datalar.QuerySelect(ado,sql);
+    KontrolUsers := ado.Eof;
+  finally
+    ado.Free;
+  end;
 end;
 
 
@@ -8126,5 +8151,6 @@ function IsNull (const s: String): Boolean;
 begin
   Result := Trim (s) = '';
 end;
-
+   çaðrýldýðý yerler kontrol edilecekler:
+   SQLSelectToDataSet
 end.
