@@ -1158,9 +1158,10 @@ end;
 procedure TfrmHastaRecete.cxGridReceteAciklamaDblClick(Sender: TObject);
 begin
   inherited;
-    datalar.ReceteAciklama.ackKod := ADO_receteAcikla.FieldByName('aciklamaTip').AsString;
-    datalar.ReceteAciklama.ack := ADO_receteAcikla.FieldByName('aciklama').AsString;
-    AckEkle(ReceteAckDuzenle);
+  if ADO_receteAcikla.RecordCount <= 0 then Exit;
+  datalar.ReceteAciklama.ackKod := ADO_receteAcikla.FieldByName('aciklamaTip').AsString;
+  datalar.ReceteAciklama.ack := ADO_receteAcikla.FieldByName('aciklama').AsString;
+  AckEkle(ReceteAckDuzenle);
 end;
 
 procedure TfrmHastaRecete.cxGridReceteDblClick(Sender: TObject);
@@ -1168,36 +1169,37 @@ var
  B : TBookmark;
 begin
   inherited;
-    datalar.YeniRecete.doktor := copy(ADO_Recete.FieldByName('doktor').AsString,1,4);
-    datalar.YeniRecete.doktorAdi := copy(ADO_Recete.FieldByName('doktor').AsString,6,100);
-    datalar.YeniRecete.protokolNo := ADO_Recete.FieldByName('ProtokolNo').AsString;
-    datalar.YeniRecete.Tarih := ADO_Recete.FieldByName('tarih').AsString;
-    datalar.YeniRecete.ReceteTuru := ADO_Recete.FieldByName('ReceteTur').AsString;
-    datalar.YeniRecete.ReceteAltTuru := ADO_Recete.FieldByName('ReceteAltTur').AsString;
+  datalar.YeniRecete.doktor := copy(ADO_Recete.FieldByName('doktor').AsString,1,4);
+  datalar.YeniRecete.doktorAdi := copy(ADO_Recete.FieldByName('doktor').AsString,6,100);
+  datalar.YeniRecete.protokolNo := ADO_Recete.FieldByName('ProtokolNo').AsString;
+  datalar.YeniRecete.Tarih := ADO_Recete.FieldByName('tarih').AsString;
+  datalar.YeniRecete.ReceteTuru := ADO_Recete.FieldByName('ReceteTur').AsString;
+  datalar.YeniRecete.ReceteAltTuru := ADO_Recete.FieldByName('ReceteAltTur').AsString;
 
-    if mrYes = ShowPopupForm('Reçete Düzenle',ReceteDuzenle)
-    then begin
-         B := ADO_Recete.Bookmark;
-         ADO_Recete.Edit;
-         ADO_Recete.FieldByName('tarih').AsString := datalar.YeniRecete.Tarih;
-         ADO_Recete.FieldByName('ReceteTur').AsString := datalar.YeniRecete.ReceteTuru;
-         ADO_Recete.FieldByName('ReceteAltTur').AsString := datalar.YeniRecete.ReceteAltTuru;
-         ADO_Recete.FieldByName('doktor').AsString := datalar.YeniRecete.doktor;//+'-'+datalar.YeniRecete.doktorAdi;
-         ADO_Recete.FieldByName('protokolNo').AsString := datalar.YeniRecete.protokolNo;//+'-'+datalar.YeniRecete.doktorAdi;
+  if mrYes = ShowPopupForm('Reçete Düzenle',ReceteDuzenle)
+  then begin
+    B := ADO_Recete.Bookmark;
+    ADO_Recete.Edit;
+    ADO_Recete.FieldByName('tarih').AsString := datalar.YeniRecete.Tarih;
+    ADO_Recete.FieldByName('ReceteTur').AsString := datalar.YeniRecete.ReceteTuru;
+    ADO_Recete.FieldByName('ReceteAltTur').AsString := datalar.YeniRecete.ReceteAltTuru;
+    ADO_Recete.FieldByName('doktor').AsString := datalar.YeniRecete.doktor;//+'-'+datalar.YeniRecete.doktorAdi;
+    ADO_Recete.FieldByName('protokolNo').AsString := datalar.YeniRecete.protokolNo;//+'-'+datalar.YeniRecete.doktorAdi;
 
-         ADO_Recete.Post;
-         ADO_Recete.Active := false;
-         ADO_Recete.Active := True;
-         ADO_Recete.GotoBookmark(B);
-    end;
+    ADO_Recete.Post;
+    ADO_Recete.Active := false;
+    ADO_Recete.Active := True;
+    ADO_Recete.GotoBookmark(B);
+  end;
 end;
 
 procedure TfrmHastaRecete.cxGridReceteIlacAciklamaDblClick(Sender: TObject);
 begin
   inherited;
-    datalar.ReceteAciklama.ackKod := ADO_receteIlacAciklama.FieldByName('aciklamaTip').AsString;
-    datalar.ReceteAciklama.ack := ADO_receteIlacAciklama.FieldByName('aciklama').AsString;
-    AckEkle(ReceteIlacAckDuzenle);
+  if ADO_ReceteIlacAciklama.RecordCount <= 0 then Exit;
+  datalar.ReceteAciklama.ackKod := ADO_receteIlacAciklama.FieldByName('aciklamaTip').AsString;
+  datalar.ReceteAciklama.ack := ADO_receteIlacAciklama.FieldByName('aciklama').AsString;
+  AckEkle(ReceteIlacAckDuzenle);
 end;
 
 procedure TfrmHastaRecete.E1Click(Sender: TObject);
@@ -1285,26 +1287,23 @@ procedure TfrmHastaRecete.gridIlaclarDblClick(Sender: TObject);
 begin
   inherited;
 
-     case TcxGrid(Sender).tag  of
-     0 : begin
-           datalar.ReceteSatir.barkod := ADO_RECETE_DETAY.FieldByName('ilacKodu').AsString;
-           datalar.ReceteSatir.barkodadi := ADO_RECETE_DETAY.FieldByName('ilacAdi').AsString;
-           datalar.ReceteSatir.kutuadet := ADO_RECETE_DETAY.FieldByName('adet').AsInteger;
-           datalar.ReceteSatir.peryot := ADO_RECETE_DETAY.FieldByName('kullanZamanUnit').AsInteger;
-           datalar.ReceteSatir.peryotAdet := ADO_RECETE_DETAY.FieldByName('kullanimZaman').AsInteger;
-           datalar.ReceteSatir.doz1 := ADO_RECETE_DETAY.FieldByName('kullanimAdet2').AsInteger;
-           datalar.ReceteSatir.doz2 := ADO_RECETE_DETAY.FieldByName('kullanimAdet').AsInteger;
-           datalar.ReceteSatir.kulyol := ADO_RECETE_DETAY.FieldByName('kullanimYolu').AsString;
+  case TcxGrid(Sender).tag  of
+    0 : begin
+      if ADO_RECETE_DETAY.RecordCount < 1 then Exit;
+      datalar.ReceteSatir.barkod := ADO_RECETE_DETAY.FieldByName('ilacKodu').AsString;
+      datalar.ReceteSatir.barkodadi := ADO_RECETE_DETAY.FieldByName('ilacAdi').AsString;
+      datalar.ReceteSatir.kutuadet := ADO_RECETE_DETAY.FieldByName('adet').AsInteger;
+      datalar.ReceteSatir.peryot := ADO_RECETE_DETAY.FieldByName('kullanZamanUnit').AsInteger;
+      datalar.ReceteSatir.peryotAdet := ADO_RECETE_DETAY.FieldByName('kullanimZaman').AsInteger;
+      datalar.ReceteSatir.doz1 := ADO_RECETE_DETAY.FieldByName('kullanimAdet2').AsInteger;
+      datalar.ReceteSatir.doz2 := ADO_RECETE_DETAY.FieldByName('kullanimAdet').AsInteger;
+      datalar.ReceteSatir.kulyol := ADO_RECETE_DETAY.FieldByName('kullanimYolu').AsString;
+      ilacEkle(ReceteIlacDuzenle);
+    end;
+    1 : begin
 
-           ilacEkle(ReceteIlacDuzenle);
-         end;
-
-     1 : begin
-
-         end;
-
-
-     end;
+    end;
+  end;
 
 end;
 
