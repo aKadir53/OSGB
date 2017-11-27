@@ -61,3 +61,4 @@ doktor þirket eþleþmesi yerine doktor þube eþleþmesi - þirket seçiminde þirket l
 reçete silmede foreign key hatasý veriyordu, önce detayýn detayý, sonra detay, en son master silinecek þekilde düzenleme yapýldý. Ýlave olarak Reçete ve detay tablolarýnýn kendi aralarýndaki foreign key tanýmlamalarý yapýldý.
 Projeye about frm (Hakkýnda formu) eklendi. Firma logosu, Firma ismi, bilgisayar ismi, web adresi, lisans durumu, programýn telif yasalarý ile koruma altýnda olduðu ve yetkisiz veya izinsiz þekilde kurulum, mavi nokta bilgi teknolojileri Ltd. þti. Ýþ yeri Hekimliði E-Reçete programý vs bilgiler gösterildi.
 reçete ilaç, Taný açýklama ve ilaç açýklama gridlerinde kayýt yokken çift týklanmasý durumunda pencere açýlmada hata çýkmasýna karþýlýk datasetin kayýt sayýsý bilgisi kontrol edildi.
+yeni personel açarken verdiði null hatalý hatasý için variant çevrimi yerine asString düzeltmesi
