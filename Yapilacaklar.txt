@@ -35,10 +35,6 @@ hasta kartýnda yazdýrma düðmesi ??
 eðitimlerde eðitim numarasý veritabanýndan güncellenmiyor.
 eðitim formunda Yeni (!) düðmesine basmadan kayýt girince sapýtýyor
 kullanýcý yetki ayarlarýnda kaydet'e basýnca gridde alt üst satýra geçilmemiþse o satýrý kaydetmeden kapatýyor (datasetleri tarayýp post metodunu çaðýrmak lazým)
-
-reçete ilaç gridinde kayýt yokken çift týklanmasý durumunda pencere açýlmada hata çýkýyor, açtýrmamak lazým
-
-
 ------------------------------------------------------------------------------------------------------------------------
 iptal olanlar
 
