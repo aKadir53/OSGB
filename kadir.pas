@@ -630,7 +630,7 @@ end;
 procedure SatiriRenklendir(Grid: TAdvStringGrid; Satir, ColonSayisi: integer;
   renk: tcolor);
 var
-  s, x: integer;
+  x: integer;
 begin
   for x := 0 to ColonSayisi do
   begin
@@ -666,7 +666,6 @@ var
   ado : TADOQuery;
   sql : string;
 begin
-  GelisDuzenle := false;
   try
    sql := 'update Gelisler set TakýpNo = ' + #39 + GelisBilgisi.TakipNo + #39 + ',' +
           'BHDAT = ' + #39 + tarihal(GelisBilgisi.GirisTarihi) + #39 + ',' +
@@ -681,11 +680,11 @@ begin
           ' where dosyaNo = ' + #39 + gelisBilgisi.dosyaNo + #39 +
           ' and gelisNo = ' + gelisBilgisi.gelisNo;
    datalar.QueryExec(ado,sql);
-   GelisDuzenle := True;
+   Result := True;
   Except on e : Exception do
    begin
     Hata := e.Message;
-    GelisDuzenle := false;
+    Result := false;
    end;
   end;
 end;
@@ -774,7 +773,6 @@ end;
 
 function KontrolZorunlumu(formTag : integer;KontrolName : string) : Boolean;
 var
-  ado : TADOQuery;
   sql : string;
 begin
    KontrolZorunlumu := False;
@@ -804,9 +802,6 @@ function FormInputZorunluKontrolPaint(form : Tform ; Renk : TColor) : Boolean;
 var
  i : integer;
  _Obje_ : TcxCustomEdit;
- C : TcxTabSheet;
- F : Tform;
- N : string;
 begin
   for i := 0 to form.ComponentCount - 1 do
   begin
@@ -861,7 +856,7 @@ end;
 
 procedure TaniIlaciliskilendir(TaniKodu,kulyol,doz,adet,barkod : string);
 var
-  sql , tani : string;
+  sql : string;
   ado : TADOQuery;
 begin
   try
@@ -886,8 +881,7 @@ end;
 
 procedure ReceteIlacAckTaniEkleMedula(islem : integer ; dosyaNo,gelisNo,ereceteNo,id,doktor,taniKodu,ackId : string);
 var
-  msj : string;
-  _dn_ ,_gn_ , _id_ , _d_ , _s , _p , barkod , icd , _ack_ , _ackId_ , acktur : string;
+  _dn_ ,_gn_ , _id_ , _d_ , _s , icd , _ackId_ : string;
   _exe : PAnsiChar;
 
 begin
@@ -926,8 +920,6 @@ end;
 
 
 procedure AdoQueryActiveYenile(ado : TADOQuery);
-var
-  bm : TBookmark;
 begin
  // bm := ado.Bookmark;
   ado.Active := false;
@@ -1156,9 +1148,6 @@ end;
 
 
 function TakipMeduladanSil(TakipNo : string) : string;
-var
-  _takip , _gelis , sql , msg : string;
-
 begin
 
    if mrYes = ShowMessageSkin('Takip Ýptal Edilecek Eminmisiniz ?','','','msg')
@@ -1209,10 +1198,8 @@ end;
 procedure PopupMenuToToolBarEnabled(AOwner : TComponent ; TB : TToolbar ; Menu : TPopupMenu);
 var
   mi : TMenuItem;
-  misub : TMenuItem;
   TBBDown : TMenuItem;
   TBB : TToolButton;
-  pmenu : TPopupMenu;
   i,r : integer;
 begin
   for mi in Menu.Items do
@@ -1586,7 +1573,7 @@ var
   FromF, ToF: File;
   NumRead, NumWritten: Longint;
   Buf: Array [1 .. 2048] of byte;
-  Total: Longint;
+  //Total: Longint;
 begin
   AssignFile(FromF, _from_);
   Reset(FromF, 1); { Record size = 1 }
@@ -1597,7 +1584,7 @@ begin
   repeat
     BlockRead(FromF, Buf, SizeOf(Buf), NumRead);
     BlockWrite(ToF, Buf, NumRead, NumWritten);
-    inc(Total, NumWritten);
+    //inc(Total, NumWritten);
   until (NumRead = 0) or (NumWritten <> NumRead);
   CloseFile(FromF);
   CloseFile(ToF);
@@ -1742,6 +1729,7 @@ var
   JpegImg: TJpegImage;
 begin
   Result := False;
+  if not Result then;;;
   Bitmap := TBitmap.Create;
   try
     Bitmap.LoadFromFile(BMPpic);
@@ -1751,10 +1739,10 @@ begin
       JpegImg.SaveToFile(JPGpic);
       Result := True;
     finally
-      JpegImg.Free
+      JpegImg.Free;
     end;
   finally
-    Bitmap.Free
+    Bitmap.Free;
   end;
 end;
 
@@ -1980,7 +1968,6 @@ end;
 
 function sutKodu(Tip: string = '0'): string;
 var
-  sql: string;
   ado: TADOQuery;
 begin
   ado := TADOQuery.Create(nil);
@@ -2229,12 +2216,12 @@ end;
 
 function tarihFarki(tarih1, tarih2: Tdate): TYas;
 var
-  yil1, yil2, aylik, gunluk: double;
-  fyil, ay, gun: integer;
+  aylik, gunluk: double;
+  fyil, ay: integer;
   farkGun: double;
 begin
-  yil1 := strtoint(copy(tarihal(tarih1), 1, 4));
-  yil2 := strtoint(copy(tarihal(tarih2), 1, 4));
+  //yil1 := strtoint(copy(tarihal(tarih1), 1, 4));
+  //yil2 := strtoint(copy(tarihal(tarih2), 1, 4));
   farkGun := (tarih1 - tarih2);
 
   fyil := floor((tarih1 - tarih2) / 365.25);
@@ -2253,7 +2240,6 @@ function YedeklemeUyari: integer;
 var
   sql: string;
   ado: TADOQuery;
-  fark: integer;
 begin
   ado := TADOQuery.Create(nil);
   try
@@ -2589,6 +2575,9 @@ var
   sql: string;
   ado: TADOQuery;
 begin
+  Result := 1;
+  peryot := '3';
+  peryotAdet := '1';
   try
     ado := TADOQuery.Create(nil);
     try
@@ -2641,7 +2630,6 @@ end;
 procedure cxCheckListSec01(cL: TcxCheckListBox; c: string);
 var
   r: integer;
-  t: tstringlist;
 begin
   for r := 0 to cL.Items.Count - 1 do
   begin
@@ -2829,7 +2817,7 @@ end;
 
 function DosyaNoTel(DosyaNo: string; Telefon : string = ''): string;
 var
-  sql, Tel, kod: string;
+  sql, Tel: string;
   ado: TADOQuery;
 
 begin
@@ -2977,8 +2965,7 @@ end;
 function IlacReceteTaniEkle(_dosyaNo, GelisNo, kod: string): String;
 var
   ado: TADOQuery;
-  sql, s: string;
-  List: tstringlist;
+  sql: string;
 begin
   ado := TADOQuery.Create(nil);
   try
@@ -3067,6 +3054,7 @@ var
   gun, _kalangun: double;
   ado: TADOQuery;
 begin
+  Result := -2;
   ado := TADOQuery.Create(nil);
   try
     ado.Connection := datalar.ADOConnection2;
@@ -3109,7 +3097,6 @@ end;
 function sureKontrol: Boolean;
 var
   sql: string;
-  gun: integer;
   ado: TADOQuery;
 begin
   ado := TADOQuery.Create(nil);
@@ -3225,7 +3212,6 @@ Procedure EpikrizYaz(DosyaNo, GelisNo : string; QR: Boolean ; DataSet : Tdataset
 var
   sql: string;
   ado, ado1 , ado2 , ado3 , ado4 , ado5 , ado6 , ado7 , ado8 , ado9 : TADOQuery;
-  printT : TprintTip;
   TopluDataset : TDataSetKadir;
 begin
 (*
@@ -3457,10 +3443,10 @@ end;
 
 function kareBarkodOku(Kb: string; Gsindex: integer): TKareBarkod;
 var
-  b: integer;
+  //b: integer;
   KbO: TKareBarkod;
 begin
-  b := Length(Kb);
+  //b := Length(Kb);
   KbO.barkodNo := copy(Kb, 3, 14);
 
   KbO.seriNo := copy(Kb, 19, Gsindex - 19);
@@ -4269,6 +4255,7 @@ var
   ado : TADOQuery;
 begin
   Result := False;
+  if not Result then;;;
   ado := TADOQuery.Create(nil);
   try
     ado.Connection := datalar.ADOConnection2;
@@ -4295,8 +4282,6 @@ end;
 
 function LisansKontrol(var fark: double): Boolean;
 var
-  Tarih, basla, bitis, kurum: string;
-  limit: integer;
   _fark: double;
   _bitis: Tdate;
 begin
@@ -4330,9 +4315,9 @@ begin
 end;
 
 function EnSonRunTarih: Boolean;
-var
-  sql, _now, sistemnow, basla, bitis, kurum, s: string;
-  limit: integer;
+//var
+//  sql, _now, sistemnow, basla, bitis, kurum, s: string;
+  //limit: integer;
 
 begin
   (*
@@ -4488,8 +4473,8 @@ StringMaskele := TempPass;
 end;
 
 function TakipSistemdeVarmi(Takip: string): string;
-var
-  sql: string;
+//var
+//  sql: string;
 begin
  // datalar.ADO_SQL.close;
 //  datalar.ADO_SQL.sql.Clear;
@@ -4802,7 +4787,7 @@ end;
 
 function doktorSertifika(kod: string): string;
 var
-  sql, s, t: string;
+  sql: string;
   x: integer;
   ado : TADOQuery;
 begin
@@ -4825,7 +4810,7 @@ end;
 
 function doktorSertifikaNo(kod: string): string;
 var
-  sql, s, t: string;
+  sql: string;
   x: integer;
   ado : TADOQuery;
 begin
@@ -5219,7 +5204,6 @@ end;
 function gelisToTakip(DosyaNo, GelisNo: string): String;
 var
   sql, text: string;
-  i: integer;
   ado: TADOQuery;
 begin
   ado := TADOQuery.Create(nil);
@@ -5389,7 +5373,7 @@ end;
 
 function REV: string;
 var
-  sql, mesaj: string;
+  sql: string;
   _sonSQLID: integer;
   ado : TADOQuery;
 begin
@@ -5415,8 +5399,7 @@ end;
 
 function mesaj: string;
 var
-  sql, _mesaj, dosya: string;
-  _sonSQLID: integer;
+  _mesaj, dosya: string;
 begin
   dosya := 'http://www.noktayazilim.net/mesaj_' + tarihal(date()) + '.txt';
   datalar.http2.ConnectTimeout := 10000;
@@ -5532,7 +5515,7 @@ begin
 
   try
     Tarih := strtodate(_Tarih);
-    Result := True;
+    Result := Tarih > -1000000;
   except
     Result := False;
 
@@ -5582,9 +5565,9 @@ end;
 
 procedure SeperatorDegis;
 begin
-  DecimalSeparator := '.';
-  ThousandSeparator := ',';
-  DateSeparator := '.';
+  FormatSettings.DecimalSeparator := '.';
+  FormatSettings.ThousandSeparator := ',';
+  FormatSettings.DateSeparator := '.';
 end;
 
 
@@ -5597,8 +5580,6 @@ var
   _say, x: integer;
 
 begin
-  _say := _form.ComponentCount - 1;
-
   _say := _form.ComponentCount - 1;
 
   for x := 0 to _say do
@@ -5713,8 +5694,6 @@ var
   _say, x: integer;
 
 begin
-  _say := _form.ComponentCount - 1;
-
   _say := _form.ComponentCount - 1;
 
   for x := 0 to _say do
@@ -6106,10 +6085,8 @@ end;
 function UserRight(M, Islem: string): Boolean;
 var
  adoUG : TADOQuery;
- izinU,izinUG : Boolean;
+ izinUG : Boolean;
 begin
-  izinU := False;
-  izinUG := False;
   adoUG := TADOQuery.Create(nil);
   try
     datalar.QuerySelect(adoUG,
@@ -6144,9 +6121,6 @@ begin
 end;
 
 function AktifYil(donem: string): string;
-var
-  x: integer;
-  sql: string;
 begin
   // sql := 'select * from muh_donemler where donem = ' + #39 + donem + #39;
   // datalar.QuerySelect(datalar.ADO_SQL2,sql);
@@ -6173,7 +6147,7 @@ function ayaditoay(ayadi: string; yil: string = ''): Tdate;
 var
   Tarih: Tdate;
 begin
-
+  Tarih := Encodedate (1900, 1, 1);
   if yil = '' Then
     yil := copy(datetostr(date()), 7, 4);
 
@@ -6250,7 +6224,7 @@ var
 
 begin
 
-  sp := DateSeparator;
+  sp := FormatSettings.DateSeparator;
   s := '01' + sp + copy(tarihal(Tarih), 5, 2) + sp + copy(tarihal(Tarih), 1, 4);
   ay := strtoint(copy(tarihal(Tarih), 5, 2));
 
@@ -6273,7 +6247,7 @@ var
 
 begin
 
-  sp := DateSeparator;
+  sp := FormatSettings.DateSeparator;
   s := '01' + sp + copy(tarihal(Tarih), 5, 2) + sp + copy(tarihal(Tarih), 1, 4);
 
   ay := strtoint(copy(tarihal(Tarih), 5, 2));
@@ -6299,7 +6273,7 @@ var
 
 begin
 
-  sp := DateSeparator;
+  sp := FormatSettings.DateSeparator;
   s := '01' + sp + copy(tarihal(Tarih), 5, 2) + sp + copy(tarihal(Tarih), 1, 4);
 
   ay := strtoint(copy(tarihal(Tarih), 5, 2));
@@ -6330,7 +6304,7 @@ begin
     _yil_ := copy(datetostr(date()), 7, 4);
   Tarih := ayaditoay(ayadi, _yil_);
 
-  sp := DateSeparator;
+  sp := FormatSettings.DateSeparator;
   s := '01' + sp + copy(tarihal(Tarih), 5, 2) + sp + copy(tarihal(Tarih), 1, 4);
   ay := strtoint(copy(tarihal(Tarih), 5, 2));
 
@@ -6415,7 +6389,7 @@ var
   i: integer;
   sp: Char;
 begin
-  sp := ThousandSeparator;
+  sp := FormatSettings.ThousandSeparator;
   if (trim(txt) = '') OR (trim(txt) = '0.00') Then
     txt := '0'
   Else
@@ -6573,7 +6547,7 @@ var
   ds: Char;
 begin
   decodedate(date, y, M, d);
-  ds := DateSeparator;
+  ds := FormatSettings.DateSeparator;
   yil := IntToStr(y);
   ay := IntToStr(M);
   gun := IntToStr(d);
@@ -6593,6 +6567,8 @@ var
   TComp_: TComponent;
 begin
   Result := False;
+  if not Result then;;;
+
   for i := 0 to _frm.ComponentCount - 1 do
   begin
     TComp_ := _frm.Components[i];
@@ -6709,6 +6685,7 @@ var
   TComp_: TComponent;
 begin
   Result := False;
+  if not Result then;;;
   for i := 0 to _pnl.ControlCount - 1 do
   begin
     TComp_ := _pnl.Controls[i];
@@ -6847,8 +6824,7 @@ procedure GorselAyar(_frm: TForm; image: TImageList);
 var
   say: word;
   _Kontrol: TComponent;
-  _bmp, _bmp2: TBitmap;
-  _comp: TComponent;
+  _bmp: TBitmap;
 begin
   // _bmp2 := TBitmap.Create;
   // BitBtn2ATBtn(_frm);
@@ -7132,7 +7108,7 @@ end;
 function TakipKontrolDonemSeansSayisi(donem: string; var P704230, P704233,
   P704234: integer): integer;
 var
-  sql, kodsql, durumsql: string;
+  sql: string;
   ado: TADOQuery;
 begin
   ado := TADOQuery.Create(nil);
@@ -7186,7 +7162,6 @@ end;
 
 function sirket(donem: string): string;
 var
-  x: integer;
   sql: string;
 begin
   sql := 'select merkezAdi from merkezBilgisi';
@@ -7276,7 +7251,7 @@ var
   d, M, y: string;
   ds: Char;
 begin
-  ds := DateSeparator;
+  ds := FormatSettings.DateSeparator;
   if ((trim(StringReplace(t, ds, '', [rfReplaceAll])) = '') OR
       (t = '  /  /    ') OR (t = '  .  .    ')) Then
   begin
@@ -7300,7 +7275,7 @@ var
   d, M, y: string;
   ds: Char;
 begin
-  ds := DateSeparator;
+  ds := FormatSettings.DateSeparator;
   if ((trim(StringReplace(t, ds, '', [rfReplaceAll])) = '') OR
       (t = '  /  /    ') OR (t = '  .  .    ')) Then
   begin
@@ -7330,7 +7305,7 @@ begin
     FormattedTarih := '';
     Exit;
   end;
-  ds := DateSeparator;
+  ds := FormatSettings.DateSeparator;
   // sysDecimalSeparator := DecimalSeparator;
   // DecimalSeparator := '/';
   d := t;
@@ -7348,14 +7323,14 @@ function FormattedTarihYYMMGG(t, s: string): string;
 var
   d, M, y: string;
   // sysDecimalSeparator :Char;
-  ds: Char;
+  //_ds: Char;
 begin
   if trim(t) = '' Then
   begin
     FormattedTarihYYMMGG := '';
     Exit;
   end;
-  ds := DateSeparator;
+  //_ds := DateSeparator;
   // sysDecimalSeparator := DecimalSeparator;
   // DecimalSeparator := '/';
   d := t;
@@ -7373,8 +7348,8 @@ function numTOtxt_M(d: extended; p: integer): string;
 var
   i: integer;
 begin
-  DecimalSeparator := '.';
-  ThousandSeparator := ',';
+  FormatSettings.DecimalSeparator := '.';
+  FormatSettings.ThousandSeparator := ',';
   if (p = -3) Then
   begin
     i := trunc(d / 1000);
@@ -7391,12 +7366,8 @@ end;
 
 
 function ShowMessage(msg1, msg2, msg3: string; t: string): word;
-var
-  i: integer;
-  s: string;
-
 begin
-
+  Result := mrNone;
   if frmMessage = nil Then
   begin
     frmMessage := TfrmMessage.Create(Application);
@@ -7484,7 +7455,7 @@ begin
     frmmessage.Caption := frmData.CompanyName; }
   // frmMessage.Position := poDesktopCenter;
   frmMessage.ShowModal;
-  ShowMessage := frmMessage.ModalResult;
+  Result := frmMessage.ModalResult;
 end;
 
 
@@ -7509,7 +7480,7 @@ function ShowMessageSkin(msg1, msg2, msg3: string; t: string): word;
 var
   bBenActim: Boolean;
 begin
-
+  Result := mrNone;
   if frmMessage_y = nil Then
   begin
     frmMessage_y := TfrmMessage_y.Create(Application);
@@ -7599,7 +7570,7 @@ begin
       frmmessage.Caption := frmData.CompanyName; }
     // frmMessage.Position := poDesktopCenter;
     frmMessage_y.ShowModal;
-    ShowMessageSkin := frmMessage_y.ModalResult;
+    Result := frmMessage_y.ModalResult;
   finally
     if bBenActim then FreeandNil (frmMessage_y);
   end;
@@ -7975,9 +7946,9 @@ var
   sql: string;
   ado: TADOQuery;
 begin
-  Result := False;
   ado := TADOQuery.Create(nil);
   try
+    Result := False;
     ado.Connection := datalar.ADOConnection2;
 
     sql :=
@@ -8273,18 +8244,15 @@ end;
 function secilisatirbilgisi(Grid: TAdvStringGrid; col: integer;
   col1: integer): string;
 var
-  z, x, u: integer;
+  x, u: integer;
   doktorkod: string;
-  seciliadet: integer;
 begin
   doktorkod := '';
   for x := 1 to Grid.RowCount - 1 do
   begin
     if Grid.Cells[col, x] = 'T' then
     begin
-      seciliadet := seciliadet + 1;
       doktorkod := doktorkod + Grid.Cells[col1, x] + ',';
-      z := x;
     end;
   end;
   u := Length(doktorkod);
@@ -8297,18 +8265,15 @@ end;
 function notsecilisatirbilgisi(Grid: TAdvStringGrid; col: integer;
   col1: integer): string;
 var
-  z, x, u: integer;
+  x, u: integer;
   doktorkod: string;
-  seciliadet: integer;
 begin
   doktorkod := '';
   for x := 1 to Grid.RowCount - 1 do
   begin
     if Grid.Cells[col, x] <> 'T' then
     begin
-      seciliadet := seciliadet + 1;
       doktorkod := doktorkod + Grid.Cells[col1, x] + ',';
-      z := x;
     end;
   end;
   u := Length(doktorkod);
@@ -8320,7 +8285,6 @@ end;
 
 procedure SifreDegistir;
 var
- B : TBookmark;
  ado : TadoQuery;
 begin
   datalar.SifreDegistir.KullaniciAdi := DATALAR.username;
@@ -8349,5 +8313,5 @@ begin
   Result := Trim (s) = '';
 end;
    //çaðrýldýðý yerler kontrol edilecekler:
-   //SQLSelectToDataSet ListeAcCreate
+   //SQLSelectToDataSet ListeAcCreate BuyukHarf SayisalVeri NextKontrol TurkCharKontrol FormInputZorunluKontrolPaint
 end.
