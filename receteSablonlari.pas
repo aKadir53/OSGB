@@ -105,22 +105,25 @@ var
   sql : string;
   ado : TADOQuery;
 begin
-       if MrYes = ShowMessageSkin('Þablon Ýptal Ediliyor Eminmisiniz ?','','','msg')
-       Then Begin
-       try
-         ado := TADOQuery.Create(nil);
-         sql := 'delete from receteTaniSablon where ReceteSablonID = ' + Sablonlar.fieldbyname('Id').AsString;
-         datalar.QueryExec(ado,sql);
-         sql := 'delete from receteAciklamaSablon where ReceteSablonID = ' + Sablonlar.fieldbyname('Id').AsString;
-         datalar.QueryExec(ado,sql);
-         sql := 'delete from ReceteDetaySablon where ReceteSablonID = ' + Sablonlar.fieldbyname('Id').AsString;
-         datalar.QueryExec(ado,sql);
-         Sablonlar.Delete;
-         ShowMessageSkin('Þablon Ýptal Edildi','','','info');
-       except
-       end;
+  if MrYes = ShowMessageSkin('Þablon Ýptal Ediliyor Eminmisiniz ?','','','msg')
+  Then Begin
+    try
+      ado := TADOQuery.Create(nil);
+      try
+      sql := 'delete from receteTaniSablon where ReceteSablonID = ' + Sablonlar.fieldbyname('Id').AsString;
+      datalar.QueryExec(ado,sql);
+      sql := 'delete from receteAciklamaSablon where ReceteSablonID = ' + Sablonlar.fieldbyname('Id').AsString;
+      datalar.QueryExec(ado,sql);
+      sql := 'delete from ReceteDetaySablon where ReceteSablonID = ' + Sablonlar.fieldbyname('Id').AsString;
+      datalar.QueryExec(ado,sql);
+      Sablonlar.Delete;
+      ShowMessageSkin('Þablon Ýptal Edildi','','','info');
+      finally
         ado.Free;
-       End;
+      end;
+    except
+    end;
+  End;
 end;
 
 end.

@@ -95,9 +95,7 @@ end;
 
 function TfrmIlaclar.Init(Sender: TObject) : Boolean;
 var
-  index,i : integer;
-  Ts,Ts1,Ts3 : TStringList;
-  List,TaniList,List3 : TListeAc;
+  List,TaniList : TListeAc;
   cxBtnkod,cxBtnGrup ,cxBtnEtken: TcxButtonKadir;
   IlacGrup,etkenMadde,tetkikSonuc,aktif,tip,kulYol,RecTip : TcxImageComboKadir;
 begin
@@ -412,10 +410,13 @@ begin
             List.Grup := True;
 
             _L_ := List.ListeGetir;
-            _name_ := TcxButtonKadir(sender).ButtonName;
-            _name_ := StringReplace(_name_,'cxBtn','',[rfReplaceAll]);
-            TcxButtonEditKadir(FindComponent(_name_)).Text := _L_[0].kolon1;
-            TcxButtonEditKadir(FindComponent('tanimi')).Text := _L_[0].kolon2;
+            if High (_L_) >= 0 then
+            begin
+              _name_ := TcxButtonKadir(sender).ButtonName;
+              _name_ := StringReplace(_name_,'cxBtn','',[rfReplaceAll]);
+              TcxButtonEditKadir(FindComponent(_name_)).Text := _L_ [0].kolon1;
+              TcxButtonEditKadir(FindComponent('tanimi')).Text := _L_ [0].kolon2;
+            end;
         end;
     1 : begin
           F := FormINIT(TagfrmIlacAnaGrup,GirisRecord,ikHayir,'');
@@ -431,6 +432,5 @@ begin
 
   end;
 end;
-
 
 end.

@@ -527,7 +527,7 @@ type
    function QuerySelect (Q: TADOQuery; sql:string) : Boolean;overload;
   // function QuerySelect (sql:string;Q: TADOQuery = nil) : Boolean;overload;
    function QuerySelect (sql:string) : TADOQuery; overload;
-   procedure QueryExec (Q: TADOQuery = nil ; sql : string = '');
+   procedure QueryExec (var Q: TADOQuery; sql : string);
    function FindData (Q: TADOQuery; sql: string): integer;
    procedure Login;
    function WebErisimBilgi(slk,slb : string) : string;
@@ -548,35 +548,37 @@ uses AnaUnit,kadir;
 
 function TDatalar.MasterBaglan(MasterKod : string ; var DB : string ; Server : string = '') : Boolean;
 var
- ado : TADOQuery;
+  ado : TADOQuery;
 begin
-     servername := Server;
-     Master.Connected := false;
-     Master.ConnectionString :=
-     'Provider=SQLOLEDB.1;Password=5353;Persist Security Info=True;User ID=Nokta;Initial Catalog=OSGB_MASTER;Data Source='+servername;
-     Master.Connected := True;
+  servername := Server;
+  Master.Connected := false;
+  Master.ConnectionString :=
+  'Provider=SQLOLEDB.1;Password=5353;Persist Security Info=True;User ID=Nokta;Initial Catalog=OSGB_MASTER;Data Source='+servername;
+  Master.Connected := True;
 
-      if Master.Connected = True then
-      begin
-         ado := TADOQuery.Create(nil);
-         ado.Connection := Master;
-         QuerySelect(ado,'select db from OSGB_TNM where OSGB_KOD = ' + QuotedStr(MasterKod));
-         if not ado.Eof
-         then Begin
-             DB := ado.Fields[0].AsString;
-         End;
-         Result := True;
-         ado.Free;
-      end
-      else
-      ShowMessageSkin('Master Sunucu Baðlantýsý Saðlanamadý','','','info');
+  if Master.Connected = True then
+  begin
+    ado := TADOQuery.Create(nil);
+    try
+      ado.Connection := Master;
+      QuerySelect(ado,'select db from OSGB_TNM where OSGB_KOD = ' + QuotedStr(MasterKod));
+      if not ado.Eof
+      then Begin
+        DB := ado.Fields[0].AsString;
+      End;
+      Result := True;
+    finally
+      ado.Free;
+    end;
+  end
+  else
+    ShowMessageSkin('Master Sunucu Baðlantýsý Saðlanamadý','','','info');
 end;
 
 
 function TDatalar.Baglan(db : string = '' ; Server : string = ''; username : String = '') : Boolean;
 var
- iniFiles : TIniFile;
- _db_ : string;
+  _db_ : string;
 begin
   Result := False;
   try
@@ -649,12 +651,15 @@ var
 begin
    WebErisimBilgi := '';
    ado := TADOQuery.Create(nil);
-   ado.Connection := datalar.ADOConnection2;
-   sql := 'select Value from WebServisErisimBilgileri '  +
-          'where slk = ' + QuotedStr(slk) + ' and slb = ' + QuotedStr(slb);
-   datalar.QuerySelect(ado,sql);
-   WebErisimBilgi := ado.Fields[0].AsString;
-   ado.Free;
+   try
+     ado.Connection := datalar.ADOConnection2;
+     sql := 'select Value from WebServisErisimBilgileri '  +
+            'where slk = ' + QuotedStr(slk) + ' and slb = ' + QuotedStr(slb);
+     datalar.QuerySelect(ado,sql);
+     WebErisimBilgi := ado.Fields[0].AsString;
+   finally
+     ado.Free;
+   end;
 end;
 
 procedure TDATALAR.Login;
@@ -662,84 +667,82 @@ var
   sql,kurum : string;
   ado : TADOQuery;
 begin
-
   try
     ado := TADOQuery.Create(nil);
-    ado.Connection := datalar.ADOConnection2;
-    WanIpURL := WebErisimBilgi('WIP','00');
-    _medulaOrtam_ := WebErisimBilgi('98','00');
-   if _medulaOrtam_ = 'Gerçek'
-   Then begin
-     receteURL := WebErisimBilgi('MDL','05');
-   end
-   Else
-   begin
-     receteURL := WebErisimBilgi('MDL','15');
-   end;
-    _tesisKodu := WebErisimBilgi('99','00');
-    _Kurumkod := strtoint(_tesisKodu);
+    try
+      ado.Connection := datalar.ADOConnection2;
+      WanIpURL := WebErisimBilgi('WIP','00');
+      _medulaOrtam_ := WebErisimBilgi('98','00');
+      if _medulaOrtam_ = 'Gerçek'
+      Then begin
+        receteURL := WebErisimBilgi('MDL','05');
+      end
+      Else
+      begin
+        receteURL := WebErisimBilgi('MDL','15');
+      end;
+      _tesisKodu := WebErisimBilgi('99','00');
+      _Kurumkod := strtoint(_tesisKodu);
 
-    _username := WebErisimBilgi('99','02');
-    _sifre := WebErisimBilgi('99','01');
+      _username := WebErisimBilgi('99','02');
+      _sifre := WebErisimBilgi('99','01');
 
-    _donemuser := WebErisimBilgi('991','00');
-    _donemsifre := WebErisimBilgi('991','01');
-    _donemGoster := strtoint(ifThen(WebErisimBilgi('99','02') = 'Evet','1','0'));
-    _KurumSKRS_ := WebErisimBilgi('90','02');
-    //_userSaglikNet_ := WebErisimBilgi('90','00');
-    //_passSaglikNet_ := WebErisimBilgi('90','01');
-
-
-    sql := 'select * from DoktorlarT where Kod = ' + QuotedStr(datalar.doktorKodu);
-    datalar.QuerySelect(ado,sql);
-    _doktorReceteUser := ado.fieldbyname('eReceteKullanici').AsString;
-    _doktorRecetePas :=  ado.fieldbyname('eReceteSifre').AsString;
+      _donemuser := WebErisimBilgi('991','00');
+      _donemsifre := WebErisimBilgi('991','01');
+      _donemGoster := strtoint(ifThen(WebErisimBilgi('99','02') = 'Evet','1','0'));
+      _KurumSKRS_ := WebErisimBilgi('90','02');
+      //_userSaglikNet_ := WebErisimBilgi('90','00');
+      //_passSaglikNet_ := WebErisimBilgi('90','01');
 
 
-
-    sql := 'SELECT MerkezKodu,MerkezAdi FROM merkezBilgisi';
-    datalar.QuerySelect(ado,sql);
-    _merkezAdi := ado.fieldbyname('merkezAdi').AsString;
-    osgbKodu := ado.fieldbyname('merkezKodu').AsString;
-
-    LisansBilgileri(LisansTarih,LisansBasla,LisansBitis,kurum,LisansLimit);
-
-    sql := 'select SLVV from parametreler where slk = ''GA'' and SLB = ''00''';
-    datalar.QuerySelect(ado,sql);
-    LisansALUrl := ado.fieldbyname('SLVV').AsString;
-
-    SMSHesapUser := WebErisimBilgi('SMS','00');
-    SMSHesapSifre := WebErisimBilgi('SMS','01');
-    SMSHesapFrom := WebErisimBilgi('SMS','02');
+      sql := 'select * from DoktorlarT where Kod = ' + QuotedStr(datalar.doktorKodu);
+      datalar.QuerySelect(ado,sql);
+      _doktorReceteUser := ado.fieldbyname('eReceteKullanici').AsString;
+      _doktorRecetePas :=  ado.fieldbyname('eReceteSifre').AsString;
 
 
-    sql := 'select SLX from parametreler where slk = ''00'' and SLB = ''UD''';
-    datalar.QuerySelect(ado,sql);
-    AlpemixRun := ado.fieldbyname('SLX').AsString;
 
-    //sql := 'select SLXX from parametreler where slk = ''00'' and SLB = ''IS''';
-    //datalar.QuerySelect(ado,sql);
-    //ImajFTPServer := ado.fieldbyname('SLXX').AsString;
+      sql := 'SELECT MerkezKodu,MerkezAdi FROM merkezBilgisi';
+      datalar.QuerySelect(ado,sql);
+      _merkezAdi := ado.fieldbyname('merkezAdi').AsString;
+      osgbKodu := ado.fieldbyname('merkezKodu').AsString;
 
-    AlpemixGrupAdi := WebErisimBilgi('UD','00');
-    if AlpemixGrupAdi <> ''
-    then begin
-     // AlpemixGrupAdi := WebErisimBilgi('UD','00');
-      AlpemixGrupParola := WebErisimBilgi('UD','01');
-    end
-    else
-    begin
-      AlpemixGrupAdi := 'DIYALIZLER';
-      AlpemixGrupParola := 'Diyaliz123';
+      LisansBilgileri(LisansTarih,LisansBasla,LisansBitis,kurum,LisansLimit);
+
+      sql := 'select SLVV from parametreler where slk = ''GA'' and SLB = ''00''';
+      datalar.QuerySelect(ado,sql);
+      LisansALUrl := ado.fieldbyname('SLVV').AsString;
+
+      SMSHesapUser := WebErisimBilgi('SMS','00');
+      SMSHesapSifre := WebErisimBilgi('SMS','01');
+      SMSHesapFrom := WebErisimBilgi('SMS','02');
+
+
+      sql := 'select SLX from parametreler where slk = ''00'' and SLB = ''UD''';
+      datalar.QuerySelect(ado,sql);
+      AlpemixRun := ado.fieldbyname('SLX').AsString;
+
+      //sql := 'select SLXX from parametreler where slk = ''00'' and SLB = ''IS''';
+      //datalar.QuerySelect(ado,sql);
+      //ImajFTPServer := ado.fieldbyname('SLXX').AsString;
+
+      AlpemixGrupAdi := WebErisimBilgi('UD','00');
+      if AlpemixGrupAdi <> ''
+      then begin
+       // AlpemixGrupAdi := WebErisimBilgi('UD','00');
+        AlpemixGrupParola := WebErisimBilgi('UD','01');
+      end
+      else
+      begin
+        AlpemixGrupAdi := 'DIYALIZLER';
+        AlpemixGrupParola := 'Diyaliz123';
+      end;
+    finally
+      ado.Free;
     end;
-
   except
 
   end;
-
-
-  ado.Free;
-
 end;
 
 
@@ -747,7 +750,6 @@ end;
 procedure TDATALAR.MalAlimBeforeExecute(const MethodName: string;
   SOAPRequest: TStream);
 var
-  memo : Tmemo;
   m : TStringList;
   R: UTF8String;
 begin
@@ -755,21 +757,27 @@ begin
    SOAPRequest.Position := 0;
    SOAPRequest.Read(R[1], Length(R));
    m := TStringList.Create;
-   m.Add(FormatXMLData(R));
-   m.SaveToFile('MalAlim.XML');
-   m.Free;
+   try
+     m.Add(FormatXMLData(R));
+     m.SaveToFile('MalAlim.XML');
+   finally
+     m.Free;
+   end;
 end;
 
 procedure TDATALAR.MetdataAfterExecute(const MethodName: string;
   SOAPResponse: TStream);
 var
- T : TstringList;
+  T : TstringList;
 begin
-   T := TstringList.Create;
-   SOAPResponse.Position := 0;
-   t.LoadFromStream(SOAPResponse);
-   t.SaveToFile('MetdataCvp.xml');
-   t.Free;
+  T := TstringList.Create;
+  try
+    SOAPResponse.Position := 0;
+    t.LoadFromStream(SOAPResponse);
+    t.SaveToFile('MetdataCvp.xml');
+  finally
+    t.Free;
+  end;
 end;
 
 
@@ -777,63 +785,58 @@ procedure TDATALAR.MetdataBeforeExecute(const MethodName: string;
   SOAPRequest: TStream);
 var
   Request: UTF8String;
-  Request1: UTF8String;
   StrList1: TStringList;
-  I : integer;
-  HeaderBegin , HeaderEnd : integer;
-  Header  : Widestring;
-  BodyBegin , BodyEnd , ii ,s : integer;
-  Body , xmlKaydet: TStringList;
 begin
 
   StrList1 := TStringList.Create;
-  Body := TStringList.Create;
-
-  SetLength(Request, SOAPRequest.Size);
-  SOAPRequest.Position := 0;
-  SOAPRequest.Read(Request[1], Length(Request));
-  StrList1.add(Request);
-
-
-  //StrList1.LoadFromFile('met.xml');
-  StrList1.SaveToFile('Metdata.xml');
-
- // SOAPRequest.Position := 0;
- // StrList1.SaveToStream(SOAPRequest);
-
- (*
-
-  StrList1.text := StringReplace(StrList1.text,'<SOAP-ENV:Body SOAP-ENV:encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" xmlns:NS2="urn:MeddataLabServiceIntf">',
-                                               '<SOAP-ENV:Body xmlns:NS1="urn:MeddataLabServiceIntf-IMeddataLabService" xmlns:NS2="urn:MeddataLabServiceIntf" SOAP-ENV:encodingStyle="http://schemas.xmlsoap.org/soap/encoding/">',[RfReplaceAll]);
-
-  StrList1.text := StringReplace(StrList1.text,'<NS1:istekyap xmlns:NS1="urn:MeddataLabServiceIntf-IMeddataLabService">',
-                                               '<NS1:istekyap>',[RfReplaceAll]);
+  try
+    SetLength(Request, SOAPRequest.Size);
+    SOAPRequest.Position := 0;
+    SOAPRequest.Read(Request[1], Length(Request));
+    StrList1.add(Request);
 
 
-  StrList1.text := UTF8Encode(StrList1.text);
+    //StrList1.LoadFromFile('met.xml');
+    StrList1.SaveToFile('Metdata.xml');
+
+   // SOAPRequest.Position := 0;
+   // StrList1.SaveToStream(SOAPRequest);
+
+   (*
+
+    StrList1.text := StringReplace(StrList1.text,'<SOAP-ENV:Body SOAP-ENV:encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" xmlns:NS2="urn:MeddataLabServiceIntf">',
+                                                 '<SOAP-ENV:Body xmlns:NS1="urn:MeddataLabServiceIntf-IMeddataLabService" xmlns:NS2="urn:MeddataLabServiceIntf" SOAP-ENV:encodingStyle="http://schemas.xmlsoap.org/soap/encoding/">',[RfReplaceAll]);
+
+    StrList1.text := StringReplace(StrList1.text,'<NS1:istekyap xmlns:NS1="urn:MeddataLabServiceIntf-IMeddataLabService">',
+                                                 '<NS1:istekyap>',[RfReplaceAll]);
+
+
+    StrList1.text := UTF8Encode(StrList1.text);
 
 
 
-  SOAPRequest.Position := 0;
-  StrList1.SaveToStream(SOAPRequest);
+    SOAPRequest.Position := 0;
+    StrList1.SaveToStream(SOAPRequest);
 
-  SetLength(Request, SOAPRequest.Size);
-  SOAPRequest.Position := 0;
-  SOAPRequest.Read(Request[1], Length(Request));
+    SetLength(Request, SOAPRequest.Size);
+    SOAPRequest.Position := 0;
+    SOAPRequest.Read(Request[1], Length(Request));
 
- // StrList1.add(FormatXMLData(Request));
-  StrList1.SaveToFile('Metdata1.xml');
+   // StrList1.add(FormatXMLData(Request));
+    StrList1.SaveToFile('Metdata1.xml');
 
 
-  StrList1.Free;
 
-   *)
+     *)
 
-  // T := TstringList.Create;
-  // SOAPRequest.Position := 0;
- //  t.LoadFromStream(SOAPRequest);
- //  t.SaveToFile('Metdata.xml');
- //  t.Free;
+    // T := TstringList.Create;
+    // SOAPRequest.Position := 0;
+    //  t.LoadFromStream(SOAPRequest);
+    //  t.SaveToFile('Metdata.xml');
+    //  t.Free;
+  finally
+    StrList1.Free;
+  end;
 end;
 
 procedure TDATALAR.MetDataCAfterExecute(const MethodName: string;
@@ -842,10 +845,13 @@ var
  T : TstringList;
 begin
    T := TstringList.Create;
-   SOAPResponse.Position := 0;
-   t.LoadFromStream(SOAPResponse);
-   t.SaveToFile('MetdataCikisCvp.xml');
-   t.Free;
+   try
+     SOAPResponse.Position := 0;
+     t.LoadFromStream(SOAPResponse);
+     t.SaveToFile('MetdataCikisCvp.xml');
+   finally
+     t.Free;
+   end;
 end;
 procedure TDATALAR.MetDataCBeforeExecute(const MethodName: string;
   SOAPRequest: TStream);
@@ -853,10 +859,13 @@ var
  T : TstringList;
 begin
    T := TstringList.Create;
-   SOAPRequest.Position := 0;
-   t.LoadFromStream(SOAPRequest);
-   t.SaveToFile('MetdataCikis.xml');
-   t.Free;
+   try
+     SOAPRequest.Position := 0;
+     t.LoadFromStream(SOAPRequest);
+     t.SaveToFile('MetdataCikis.xml');
+   finally
+     t.Free;
+   end;
 end;
 
 function TDatalar.FindData (Q: TADOQuery; sql: string): integer;
@@ -871,7 +880,6 @@ end;
 procedure TDATALAR.GemsoftAfterExecute(const MethodName: string;
   SOAPResponse: TStream);
 var
-  memo : Tmemo;
   m : TStringList;
   R: UTF8String;
 begin
@@ -879,58 +887,78 @@ begin
    SOAPResponse.Position := 0;
    SOAPResponse.Read(R[1], Length(R));
    m := TStringList.Create;
-   m.Add(FormatXMLData(R));
-   m.SaveToFile('GemsoftCevap.XML');
-   TenayMNTRequest := m.Text;
-   m.Free;
-
+   try
+     m.Add(FormatXMLData(R));
+     m.SaveToFile('GemsoftCevap.XML');
+     TenayMNTRequest := m.Text;
+   finally
+     m.Free;
+   end;
 end;
+
 procedure TDATALAR.GemsoftBeforeExecute(const MethodName: string;
   SOAPRequest: TStream);
 var
   memo : Tmemo;
-  m : TStringList;
   R: UTF8String;
 begin
    SetLength(R, SOAPRequest.Size);
    SOAPRequest.Position := 0;
    SOAPRequest.Read(R[1], Length(R));
    memo := Tmemo.Create(nil);
-   memo.Parent := AnaForm;
-   memo.Lines.Add(FormatXMLData(R));
-   memo.Lines.SaveToFile('Gemsoft.XML');
-   memo.Free;
+   try
+     memo.Parent := AnaForm;
+     memo.Lines.Add(FormatXMLData(R));
+     memo.Lines.SaveToFile('Gemsoft.XML');
+   finally
+     memo.Free;
+   end;
 end;
-procedure Tdatalar.QueryExec (Q: TADOQuery = nil ; sql : string = '');
+
+procedure Tdatalar.QueryExec (var Q: TADOQuery; sql : string);
 var
-   sql2 :string;
+  //sql2 :string;
+  bLocalCreated: Boolean;
 begin
-    if Q = nil then Q := TADOQuery.Create(nil);
+  bLocalCreated := False;
+  if Q = nil then
+  begin
+    Q := TADOQuery.Create(nil);
+    bLocalCreated := True;
+  end;
+  try
     if Q.Connection = nil then Q.Connection := ADOConnection2;
 
-    sql2 := sql;
+    //sql2 := sql;
     Q.Close;
     Q.SQL.Clear;
     Q.SQL.Add (sql);
-//    Q.Prepare;
+    //    Q.Prepare;
     Q.ExecSQL;
-    Q := nil;
-    //Çalýþan SQL li tutar
+  finally
+    if bLocalCreated then
+    begin
+      FreeAndNil (Q);
+    end;
+  end;
 
-    try
-     sql := StringReplace(sql,'''','`',[rfReplaceAll]);
-     sql := '`' + sql + '`';
- //    Q_LogADO.SQL.Text := 'INSERT INTO MUHQLog (SIRGUM_KUL,DATA_NESNESI,SQL_TEXT) '
- //                       + 'VALUES ('''  + ''',''' + Q.Name + ''',''' + Copy(sql,1,8000) + ''')';
-     //ShowMessage(Q_LogADO.SQL.Text);
- //    Q_LogADO.ExecSQL;
-    except end;
+  //Çalýþan SQL li tutar
 
-//    if Pos('DELETE FROM muh_fis_hareket ',UPPERCASE(sql2)) <> 0
-//    Then begin
-//      sql2 := StringReplace(sql2, 'DELETE FROM muh_fis_hareket ','DELETE FROM ' +  'muh_fis_hareket ',[rfIgnoreCase]);
-//      QueryExec(Q, sql2);
-//    end;
+  try
+    //sql := StringReplace(sql,'''','`',[rfReplaceAll]);
+    //sql := '`' + sql + '`';
+    //    Q_LogADO.SQL.Text := 'INSERT INTO MUHQLog (SIRGUM_KUL,DATA_NESNESI,SQL_TEXT) '
+    //                       + 'VALUES ('''  + ''',''' + Q.Name + ''',''' + Copy(sql,1,8000) + ''')';
+        //ShowMessage(Q_LogADO.SQL.Text);
+    //    Q_LogADO.ExecSQL;
+  except
+  end;
+
+  //    if Pos('DELETE FROM muh_fis_hareket ',UPPERCASE(sql2)) <> 0
+  //    Then begin
+  //      sql2 := StringReplace(sql2, 'DELETE FROM muh_fis_hareket ','DELETE FROM ' +  'muh_fis_hareket ',[rfIgnoreCase]);
+  //      QueryExec(Q, sql2);
+  //    end;
 
 end;
 
@@ -954,12 +982,10 @@ begin
     Q.SQL.Add (sql);
 //    Q.Prepare;
     Q.Open;
-
+    Result := True;
 end;
 
 function Tdatalar.QuerySelect (sql:string) : TADOQuery;
-var
-  Q : TADOQuery;
 begin
 //    if Pos ('WHERE',AnsiUpperCase(sql)) <> 0
 //    Then sql := StringReplace(sql,'WHERE','WITH(NOLOCK) WHERE',[rfReplaceAll,rfIgnoreCase])
@@ -967,184 +993,201 @@ begin
 //      if  (Pos ('GROUP BY',AnsiUpperCase(sql)) = 0)
 //      and (Pos ('ORDER BY',AnsiUpperCase(sql)) = 0)
 //      Then sql := sql + ' WITH(NOLOCK) ';
-    Q := TADOQuery.Create(nil);
-    Q.Connection := ADOConnection2;
+    Result := TADOQuery.Create(nil);
+    Result.Connection := ADOConnection2;
 
-    Q.Close;
-    Q.SQL.Clear ;
+    Result.Close;
+    Result.SQL.Clear ;
     if Copy(AnsiUppercase(sql) ,1, 6) = 'SELECT'
     Then sql := 'SET TRANSACTION ISOLATION LEVEL READ UNCOMMITTED  '+ sql;
-    Q.SQL.Add (sql);
+    Result.SQL.Add (sql);
 //    Q.Prepare;
-    Q.Open;
-    QuerySelect := Q;
+    Result.Open;
 end;
 
 procedure TDATALAR.pcarihareketlerAfterScroll(DataSet: TDataSet);
-var
-bk1:real;
 begin
-
-
+//
 end;
+
 procedure TDATALAR.TempConnectionAfterConnect(Sender: TObject);
 begin
-    bt := 1;
+  bt := 1;
 end;
 
 procedure TDATALAR.TenayBIOAfterExecute(const MethodName: string;
   SOAPResponse: TStream);
 var
   memo : Tmemo;
-  m : TStringList;
   R: UTF8String;
 begin
-   SetLength(R, SOAPResponse.Size);
-   SOAPResponse.Position := 0;
-   SOAPResponse.Read(R[1], Length(R));
-   memo := Tmemo.Create(nil);
-   memo.Parent := AnaForm;
-   memo.Lines.Add(FormatXMLData(R));
-   memo.Lines.SaveToFile('BIOCevap.XML');
-   TenayBIORequest := memo.Lines.Text;
-   memo.Free;
+  SetLength(R, SOAPResponse.Size);
+  SOAPResponse.Position := 0;
+  SOAPResponse.Read(R[1], Length(R));
+  memo := Tmemo.Create(nil);
+  try
+    memo.Parent := AnaForm;
+    memo.Lines.Add(FormatXMLData(R));
+    memo.Lines.SaveToFile('BIOCevap.XML');
+    TenayBIORequest := memo.Lines.Text;
+  finally
+    memo.Free;
+  end;
 end;
+
 procedure TDATALAR.TenayBIOBeforeExecute(const MethodName: string;
   SOAPRequest: TStream);
 var
   memo : Tmemo;
-  m : TStringList;
   R: UTF8String;
 begin
    SetLength(R, SOAPRequest.Size);
    SOAPRequest.Position := 0;
    SOAPRequest.Read(R[1], Length(R));
    memo := Tmemo.Create(nil);
-   memo.Parent := AnaForm;
-   memo.Lines.Add(FormatXMLData(R));
-   memo.Lines.SaveToFile('BIO.XML');
-   memo.Free;
+   try
+     memo.Parent := AnaForm;
+     memo.Lines.Add(FormatXMLData(R));
+     memo.Lines.SaveToFile('BIO.XML');
+   finally
+     memo.Free;
+   end;
 end;
 procedure TDATALAR.TenayMNTAfterExecute(const MethodName: string;
   SOAPResponse: TStream);
 var
   memo : Tmemo;
-  m : TStringList;
   R: UTF8String;
 begin
    SetLength(R, SOAPResponse.Size);
    SOAPResponse.Position := 0;
    SOAPResponse.Read(R[1], Length(R));
    memo := Tmemo.Create(nil);
-   memo.Parent := AnaForm;
-   memo.Lines.Add(FormatXMLData(R));
-   memo.Lines.SaveToFile('MNTCevap.XML');
-   TenayMNTRequest := memo.Lines.Text;
-   memo.Free;
+   try
+     memo.Parent := AnaForm;
+     memo.Lines.Add(FormatXMLData(R));
+     memo.Lines.SaveToFile('MNTCevap.XML');
+     TenayMNTRequest := memo.Lines.Text;
+   finally
+     memo.Free;
+   end;
 end;
 
 procedure TDATALAR.TenayMNTBeforeExecute(const MethodName: string;
   SOAPRequest: TStream);
 var
   memo : Tmemo;
-  m : TStringList;
   R: UTF8String;
   met : string;
 begin
-   met := MethodName;
-   SetLength(R, SOAPRequest.Size);
-   SOAPRequest.Position := 0;
-   SOAPRequest.Read(R[1], Length(R));
-   memo := Tmemo.Create(nil);
-   memo.Parent := AnaForm;
-   memo.Lines.Add(FormatXMLData(R));
-   memo.Lines.SaveToFile('MNT.XML');
-   memo.Free;
+  met := MethodName;
+  SetLength(R, SOAPRequest.Size);
+  SOAPRequest.Position := 0;
+  SOAPRequest.Read(R[1], Length(R));
+  memo := Tmemo.Create(nil);
+  try
+    memo.Parent := AnaForm;
+    memo.Lines.Add(FormatXMLData(R));
+    memo.Lines.SaveToFile('MNT.XML');
+  finally
+    memo.Free;
+  end;
 end;
 
 procedure TDATALAR.TenayV2AfterExecute(const MethodName: string;
   SOAPResponse: TStream);
 var
   memo : Tmemo;
-  m : TStringList;
   R: UTF8String;
 begin
-   SetLength(R, SOAPResponse.Size);
-   SOAPResponse.Position := 0;
-   SOAPResponse.Read(R[1], Length(R));
-   memo := Tmemo.Create(nil);
-   memo.Parent := AnaForm;
-   memo.Lines.Add(FormatXMLData(R));
-   memo.Lines.SaveToFile('TenayV2Cvp.XML');
-   memo.Free;
+  SetLength(R, SOAPResponse.Size);
+  SOAPResponse.Position := 0;
+  SOAPResponse.Read(R[1], Length(R));
+  memo := Tmemo.Create(nil);
+  try
+    memo.Parent := AnaForm;
+    memo.Lines.Add(FormatXMLData(R));
+    memo.Lines.SaveToFile('TenayV2Cvp.XML');
+  finally
+    memo.Free;
+  end;
 end;
 
 procedure TDATALAR.TenayV2BeforeExecute(const MethodName: string;
   SOAPRequest: TStream);
 var
   memo : Tmemo;
-  m : TStringList;
   R: UTF8String;
 begin
-   SetLength(R, SOAPRequest.Size);
-   SOAPRequest.Position := 0;
-   SOAPRequest.Read(R[1], Length(R));
-   memo := Tmemo.Create(nil);
-   memo.Parent := AnaForm;
-   memo.Lines.Add(FormatXMLData(R));
-   memo.Lines.SaveToFile('TenayV2.XML');
-   memo.Free;
+  SetLength(R, SOAPRequest.Size);
+  SOAPRequest.Position := 0;
+  SOAPRequest.Read(R[1], Length(R));
+  memo := Tmemo.Create(nil);
+  try
+    memo.Parent := AnaForm;
+    memo.Lines.Add(FormatXMLData(R));
+    memo.Lines.SaveToFile('TenayV2.XML');
+  finally
+    memo.Free;
+  end;
 end;
 
 procedure TDATALAR.UmitHastBeforeExecute(const MethodName: string;
   SOAPRequest: TStream);
 var
   memo : Tmemo;
-  m : TStringList;
   R: UTF8String;
 begin
-   SetLength(R, SOAPRequest.Size);
-   SOAPRequest.Position := 0;
-   SOAPRequest.Read(R[1], Length(R));
-   memo := Tmemo.Create(nil);
-   memo.Parent := AnaForm;
-   memo.Lines.Add(FormatXMLData(R));
-   memo.Lines.SaveToFile('UmitHast.XML');
-   memo.Free;
+  SetLength(R, SOAPRequest.Size);
+  SOAPRequest.Position := 0;
+  SOAPRequest.Read(R[1], Length(R));
+  memo := Tmemo.Create(nil);
+  try
+    memo.Parent := AnaForm;
+    memo.Lines.Add(FormatXMLData(R));
+    memo.Lines.SaveToFile('UmitHast.XML');
+  finally
+    memo.Free;
+  end;
 end;
 
 procedure TDATALAR.VenturaAfterExecute(const MethodName: string;
   SOAPResponse: TStream);
 var
   memo : Tmemo;
-  m : TStringList;
   R: UTF8String;
 begin
    SetLength(R, SOAPResponse.Size);
    SOAPResponse.Position := 0;
    SOAPResponse.Read(R[1], Length(R));
    memo := Tmemo.Create(nil);
-   memo.Parent := AnaForm;
-   memo.Lines.Add(FormatXMLData(R));
-   memo.Lines.SaveToFile('VenturaCevap.XML');
-   TenayMNTRequest := memo.Lines.Text;
-   memo.Free;
+   try
+     memo.Parent := AnaForm;
+     memo.Lines.Add(FormatXMLData(R));
+     memo.Lines.SaveToFile('VenturaCevap.XML');
+     TenayMNTRequest := memo.Lines.Text;
+   finally
+     memo.Free;
+   end;
 end;
+
 procedure TDATALAR.VenturaBeforeExecute(const MethodName: string;
   SOAPRequest: TStream);
 var
   memo : Tmemo;
-  m : TStringList;
   R: UTF8String;
 begin
-   SetLength(R, SOAPRequest.Size);
-   SOAPRequest.Position := 0;
-   SOAPRequest.Read(R[1], Length(R));
-   memo := Tmemo.Create(nil);
-   memo.Parent := AnaForm;
-   memo.Lines.Add(FormatXMLData(R));
-   memo.Lines.SaveToFile('Ventura.XML');
-   memo.Free;
+  SetLength(R, SOAPRequest.Size);
+  SOAPRequest.Position := 0;
+  SOAPRequest.Read(R[1], Length(R));
+  memo := Tmemo.Create(nil);
+  try
+    memo.Parent := AnaForm;
+    memo.Lines.Add(FormatXMLData(R));
+    memo.Lines.SaveToFile('Ventura.XML');
+  finally
+    memo.Free;
+  end;
 end;
 
 procedure TDATALAR.WinsoftAfterExecute(const MethodName: string;
@@ -1152,31 +1195,34 @@ procedure TDATALAR.WinsoftAfterExecute(const MethodName: string;
 var
  T : TstringList;
 begin
-   T := TstringList.Create;
-   SOAPResponse.Position := 0;
-   t.LoadFromStream(SOAPResponse);
-   t.SaveToFile('winsoftCvp.xml');
-   t.Free;
+  T := TstringList.Create;
+  try
+    SOAPResponse.Position := 0;
+    t.LoadFromStream(SOAPResponse);
+    t.SaveToFile('winsoftCvp.xml');
+  finally
+    t.Free;
+  end;
 end;
 
 procedure TDATALAR.WinsoftBeforeExecute(const MethodName: string;
   SOAPRequest: TStream);
 var
- T : TstringList;
+  T : TstringList;
 begin
-   T := TstringList.Create;
-   SOAPRequest.Position := 0;
-   t.LoadFromStream(SOAPRequest);
-   t.SaveToFile('winsoft.xml');
-   t.Free;
+  T := TstringList.Create;
+  try
+    SOAPRequest.Position := 0;
+    t.LoadFromStream(SOAPRequest);
+    t.SaveToFile('winsoft.xml');
+  finally
+    t.Free;
+  end;
 end;
 
 procedure TDATALAR.yardimciIslemAfterExecute(const MethodName: string;
   SOAPResponse: TStream);
 var
-  memo : Tmemo;
-  m : TStringList;
-  R: UTF8String;
   XMLDoc: IXMLDocument;
 
 begin
@@ -1212,90 +1258,86 @@ procedure TDATALAR.yardimciIslemBeforeExecute(const MethodName: string;
   SOAPRequest: TStream);
 var
   Request: UTF8String;
-  Request1: UTF8String;
   StrList1: TStringList;
-  I : integer;
-  HeaderBegin , HeaderEnd : integer;
   Header  : Widestring;
-  BodyBegin , BodyEnd , ii ,s : integer;
-  Body , xmlKaydet: TStringList;
 begin
 
   StrList1 := TStringList.Create;
-  Body := TStringList.Create;
-
-  SetLength(Request, SOAPRequest.Size);
-  SOAPRequest.Position := 0;
-  SOAPRequest.Read(Request[1], Length(Request));
-  StrList1.add(Request);
-
-
-  Header := '<SOAP-ENV:Envelope'+
-  ' xmlns:SOAP-ENV="http://schemas.xmlsoap.org/soap/envelope/"'+
-  ' xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"'+
-  ' xmlns:wsa="http://schemas.xmlsoap.org/ws/2004/08/addressing"'+
-  ' xmlns:wsse="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd"'+
-  ' xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd"'+
-  ' xmlns:ser="http://servisler.ws.gss.sgk.gov.tr">'+
-  ' <SOAP-ENV:Header>'+
-  '  <wsse:Security>'+
-  '    <wsse:UsernameToken wsu:Id="SecurityToken-04ce24bd-9c7c-4ca9-9764-92c53b0662c5">'+
-  '      <wsse:Username>'+_username+'</wsse:Username>'+
-  '      <wsse:Password Type="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-username-token-profile-1.0#PasswordText">'+_sifre+'</wsse:Password>'+
-  '    </wsse:UsernameToken>'+
-  '  </wsse:Security>'+
-  ' </SOAP-ENV:Header>';
+  try
+    SetLength(Request, SOAPRequest.Size);
+    SOAPRequest.Position := 0;
+    SOAPRequest.Read(Request[1], Length(Request));
+    StrList1.add(Request);
 
 
-
-  StrList1.text := StringReplace(StrList1.text,'<SOAP-ENV:Envelope xmlns:SOAP-ENV="http://schemas.xmlsoap.org/soap/envelope/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">',Header,[RfReplaceAll]);
-
-  StrList1.text := StringReplace(StrList1.text,'<takipAra xmlns="http://servisler.ws.gss.sgk.gov.tr">','<ser:takipAra>',[RfReplaceAll]);
-  StrList1.text := StringReplace(StrList1.text,'</takipAra>','</ser:takipAra>',[RfReplaceAll]);
-
-  StrList1.text := StringReplace(StrList1.text,'<yurtDisiYardimHakkiGetir xmlns="http://servisler.ws.gss.sgk.gov.tr">','<ser:yurtDisiYardimHakkiGetir>',[RfReplaceAll]);
-  StrList1.text := StringReplace(StrList1.text,'</yurtDisiYardimHakkiGetir>','</ser:yurtDisiYardimHakkiGetir>',[RfReplaceAll]);
-
-  StrList1.text := StringReplace(StrList1.text,'<damarIziDogrulamaSorgu xmlns="http://servisler.ws.gss.sgk.gov.tr">','<ser:damarIziDogrulamaSorgu>',[RfReplaceAll]);
-  StrList1.text := StringReplace(StrList1.text,'</damarIziDogrulamaSorgu>','</ser:damarIziDogrulamaSorgu>',[RfReplaceAll]);
-
-
-  StrList1.text := StringReplace(StrList1.text,'<etkinMaddeSutKuraliGetir xmlns="http://servisler.ws.gss.sgk.gov.tr">','<ser:etkinMaddeSutKuraliGetir>',[RfReplaceAll]);
-  StrList1.text := StringReplace(StrList1.text,'</etkinMaddeSutKuraliGetir>','</ser:etkinMaddeSutKuraliGetir>',[RfReplaceAll]);
-
-  StrList1.text := StringReplace(StrList1.text,'<getOrneklenmisTakipler xmlns="http://servisler.ws.gss.sgk.gov.tr">','<ser:getOrneklenmisTakipler>',[RfReplaceAll]);
-  StrList1.text := StringReplace(StrList1.text,'</getOrneklenmisTakipler>','</ser:getOrneklenmisTakipler>',[RfReplaceAll]);
-
-  StrList1.text := StringReplace(StrList1.text,'<katilimPayiUcreti xmlns="http://servisler.ws.gss.sgk.gov.tr">','<ser:katilimPayiUcreti>',[RfReplaceAll]);
-  StrList1.text := StringReplace(StrList1.text,'</katilimPayiUcreti>','</ser:katilimPayiUcreti>',[RfReplaceAll]);
-
-  StrList1.text := StringReplace(StrList1.text,'<kisiTakipDetayBilgisiGetir xmlns="http://servisler.ws.gss.sgk.gov.tr">','<ser:kisiTakipDetayBilgisiGetir>',[RfReplaceAll]);
-  StrList1.text := StringReplace(StrList1.text,'</kisiTakipDetayBilgisiGetir>','</ser:kisiTakipDetayBilgisiGetir>',[RfReplaceAll]);
-
-  StrList1.text := StringReplace(StrList1.text,'<kesintiYapilmisIslemler xmlns="http://servisler.ws.gss.sgk.gov.tr">','<ser:kesintiYapilmisIslemler>',[RfReplaceAll]);
-  StrList1.text := StringReplace(StrList1.text,'</kesintiYapilmisIslemler>','</ser:kesintiYapilmisIslemler>',[RfReplaceAll]);
+    Header := '<SOAP-ENV:Envelope'+
+    ' xmlns:SOAP-ENV="http://schemas.xmlsoap.org/soap/envelope/"'+
+    ' xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"'+
+    ' xmlns:wsa="http://schemas.xmlsoap.org/ws/2004/08/addressing"'+
+    ' xmlns:wsse="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd"'+
+    ' xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd"'+
+    ' xmlns:ser="http://servisler.ws.gss.sgk.gov.tr">'+
+    ' <SOAP-ENV:Header>'+
+    '  <wsse:Security>'+
+    '    <wsse:UsernameToken wsu:Id="SecurityToken-04ce24bd-9c7c-4ca9-9764-92c53b0662c5">'+
+    '      <wsse:Username>'+_username+'</wsse:Username>'+
+    '      <wsse:Password Type="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-username-token-profile-1.0#PasswordText">'+_sifre+'</wsse:Password>'+
+    '    </wsse:UsernameToken>'+
+    '  </wsse:Security>'+
+    ' </SOAP-ENV:Header>';
 
 
 
-  StrList1.text := StringReplace(StrList1.text,' xmlns=""','',[RfReplaceAll]);
-  StrList1.text := UTF8Encode(StrList1.text);
+    StrList1.Text := StringReplace(StrList1.Text,'<SOAP-ENV:Envelope xmlns:SOAP-ENV="http://schemas.xmlsoap.org/soap/envelope/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">',Header,[RfReplaceAll]);
+
+    StrList1.Text := StringReplace(StrList1.Text,'<takipAra xmlns="http://servisler.ws.gss.sgk.gov.tr">','<ser:takipAra>',[RfReplaceAll]);
+    StrList1.Text := StringReplace(StrList1.Text,'</takipAra>','</ser:takipAra>',[RfReplaceAll]);
+
+    StrList1.Text := StringReplace(StrList1.Text,'<yurtDisiYardimHakkiGetir xmlns="http://servisler.ws.gss.sgk.gov.tr">','<ser:yurtDisiYardimHakkiGetir>',[RfReplaceAll]);
+    StrList1.Text := StringReplace(StrList1.Text,'</yurtDisiYardimHakkiGetir>','</ser:yurtDisiYardimHakkiGetir>',[RfReplaceAll]);
+
+    StrList1.Text := StringReplace(StrList1.Text,'<damarIziDogrulamaSorgu xmlns="http://servisler.ws.gss.sgk.gov.tr">','<ser:damarIziDogrulamaSorgu>',[RfReplaceAll]);
+    StrList1.Text := StringReplace(StrList1.Text,'</damarIziDogrulamaSorgu>','</ser:damarIziDogrulamaSorgu>',[RfReplaceAll]);
+
+
+    StrList1.Text := StringReplace(StrList1.Text,'<etkinMaddeSutKuraliGetir xmlns="http://servisler.ws.gss.sgk.gov.tr">','<ser:etkinMaddeSutKuraliGetir>',[RfReplaceAll]);
+    StrList1.Text := StringReplace(StrList1.Text,'</etkinMaddeSutKuraliGetir>','</ser:etkinMaddeSutKuraliGetir>',[RfReplaceAll]);
+
+    StrList1.Text := StringReplace(StrList1.Text,'<getOrneklenmisTakipler xmlns="http://servisler.ws.gss.sgk.gov.tr">','<ser:getOrneklenmisTakipler>',[RfReplaceAll]);
+    StrList1.Text := StringReplace(StrList1.Text,'</getOrneklenmisTakipler>','</ser:getOrneklenmisTakipler>',[RfReplaceAll]);
+
+    StrList1.Text := StringReplace(StrList1.Text,'<katilimPayiUcreti xmlns="http://servisler.ws.gss.sgk.gov.tr">','<ser:katilimPayiUcreti>',[RfReplaceAll]);
+    StrList1.Text := StringReplace(StrList1.Text,'</katilimPayiUcreti>','</ser:katilimPayiUcreti>',[RfReplaceAll]);
+
+    StrList1.Text := StringReplace(StrList1.Text,'<kisiTakipDetayBilgisiGetir xmlns="http://servisler.ws.gss.sgk.gov.tr">','<ser:kisiTakipDetayBilgisiGetir>',[RfReplaceAll]);
+    StrList1.Text := StringReplace(StrList1.Text,'</kisiTakipDetayBilgisiGetir>','</ser:kisiTakipDetayBilgisiGetir>',[RfReplaceAll]);
+
+    StrList1.Text := StringReplace(StrList1.Text,'<kesintiYapilmisIslemler xmlns="http://servisler.ws.gss.sgk.gov.tr">','<ser:kesintiYapilmisIslemler>',[RfReplaceAll]);
+    StrList1.Text := StringReplace(StrList1.Text,'</kesintiYapilmisIslemler>','</ser:kesintiYapilmisIslemler>',[RfReplaceAll]);
 
 
 
-  SOAPRequest.Position := 0;
-  StrList1.SaveToStream(SOAPRequest);
-
-  SetLength(Request, SOAPRequest.Size);
-  SOAPRequest.Position := 0;
-  SOAPRequest.Read(Request[1], Length(Request));
-
- // StrList1.add(FormatXMLData(Request));
-  StrList1.SaveToFile('wsYardimciIslem.xml');
+    StrList1.Text := StringReplace(StrList1.Text,' xmlns=""','',[RfReplaceAll]);
+    StrList1.Text := UTF8Encode(StrList1.Text);
 
 
-  StrList1.Free;
- // xmlKaydet.Free;
-  Body.Free;
+
+    SOAPRequest.Position := 0;
+    StrList1.SaveToStream(SOAPRequest);
+
+    SetLength(Request, SOAPRequest.Size);
+    SOAPRequest.Position := 0;
+    SOAPRequest.Read(Request[1], Length(Request));
+
+   // StrList1.add(FormatXMLData(Request));
+    StrList1.SaveToFile('wsYardimciIslem.xml');
+
+
+   // xmlKaydet.Free;
+
+  finally
+    StrList1.Free;
+  end;
 
 
 
@@ -1304,30 +1346,30 @@ end;
 procedure TDATALAR.yardimciIslemlerAfterExecute(const MethodName: string;
   SOAPResponse: TStream);
 var
-  memo : Tmemo;
   m : TStringList;
   R: UTF8String;
 begin
-   SetLength(R, SOAPResponse.Size);
-   SOAPResponse.Position := 0;
-   SOAPResponse.Read(R[1], Length(R));
+  SetLength(R, SOAPResponse.Size);
+  SOAPResponse.Position := 0;
+  SOAPResponse.Read(R[1], Length(R));
 
-   m := TStringList.Create;
- //  memo := Tmemo.Create(nil);
- //  memo.Parent := AnaForm;
-   m.Add(FormatXMLData(R));
-   //memo.Lines.Add(FormatXMLData(R));
-   //memo.Lines.SaveToFile('yardimciIslemCevap.XML');
-   //memo.Free;
-   m.SaveToFile('WSyardimciIslemCevap.XML');
-   m.Free;
-
+  m := TStringList.Create;
+  try
+  //  memo := Tmemo.Create(nil);
+  //  memo.Parent := AnaForm;
+    m.Add(FormatXMLData(R));
+    //memo.Lines.Add(FormatXMLData(R));
+    //memo.Lines.SaveToFile('yardimciIslemCevap.XML');
+    //memo.Free;
+    m.SaveToFile('WSyardimciIslemCevap.XML');
+  finally
+    m.Free;
+  end;
 end;
 
 procedure TDATALAR.yardimciIslemlerBeforeExecute(const MethodName: string;
   SOAPRequest: TStream);
 var
-  memo : Tmemo;
   m : TStringList;
   R: UTF8String;
 begin
@@ -1335,9 +1377,12 @@ begin
    SOAPRequest.Position := 0;
    SOAPRequest.Read(R[1], Length(R));
    m := TStringList.Create;
-   m.Add(FormatXMLData(R));
-   m.SaveToFile('yardimciIslem.XML');
-   m.Free;
+   try
+     m.Add(FormatXMLData(R));
+     m.SaveToFile('yardimciIslem.XML');
+   finally
+     m.Free;
+   end;
   (*
    memo := Tmemo.Create(nil);
    memo.Parent := AnaForm;
@@ -1351,127 +1396,123 @@ procedure TDATALAR.TakipAfterExecute(const MethodName: string;
   SOAPResponse: TStream);
 var
   memo : Tmemo;
-  m : TStringList;
   R: UTF8String;
 begin
    SetLength(R, SOAPResponse.Size);
    SOAPResponse.Position := 0;
    SOAPResponse.Read(R[1], Length(R));
    memo := Tmemo.Create(nil);
-   memo.Parent := AnaForm;
-   memo.Lines.Add(FormatXMLData(R));
-   memo.Lines.SaveToFile('TakipCvp.XML');
-   memo.Free;
-
+   try
+     memo.Parent := AnaForm;
+     memo.Lines.Add(FormatXMLData(R));
+     memo.Lines.SaveToFile('TakipCvp.XML');
+   finally
+     memo.Free;
+   end;
 end;
 
 procedure TDATALAR.TakipBeforeExecute(const MethodName: string;
   SOAPRequest: TStream);
 var
   memo : Tmemo;
-  m : TStringList;
   R: UTF8String;
 begin
    SetLength(R, SOAPRequest.Size);
    SOAPRequest.Position := 0;
    SOAPRequest.Read(R[1], Length(R));
    memo := Tmemo.Create(nil);
-   memo.Parent := AnaForm;
-   memo.Lines.Add(FormatXMLData(R));
-   memo.Lines.SaveToFile('Takip.XML');
-   memo.Free;
+   try
+     memo.Parent := AnaForm;
+     memo.Lines.Add(FormatXMLData(R));
+     memo.Lines.SaveToFile('Takip.XML');
+   finally
+     memo.Free;
+   end;
 end;
 
 procedure TDATALAR.TakipformuAfterExecute(const MethodName: string;
   SOAPResponse: TStream);
 var
   memo : Tmemo;
-  m : TStringList;
   R: UTF8String;
 begin
    SetLength(R, SOAPResponse.Size);
    SOAPResponse.Position := 0;
    SOAPResponse.Read(R[1], Length(R));
    memo := Tmemo.Create(nil);
-   memo.Parent := AnaForm;
-   memo.Lines.Add(FormatXMLData(R));
-   memo.Lines.SaveToFile('DiabetTakipCvp.XML');
-   memo.Free;
+   try
+     memo.Parent := AnaForm;
+     memo.Lines.Add(FormatXMLData(R));
+     memo.Lines.SaveToFile('DiabetTakipCvp.XML');
+   finally
+     memo.Free;
+   end;
 end;
 
 procedure TDATALAR.TakipformuBeforeExecute(const MethodName: string;
   SOAPRequest: TStream);
 var
   Request: UTF8String;
-  Request1: UTF8String;
   StrList1: TStringList;
-  I : integer;
-  HeaderBegin , HeaderEnd : integer;
   Header  : Widestring;
-  BodyBegin , BodyEnd , ii ,s : integer;
-  Body , xmlKaydet: TStringList;
 begin
 
   StrList1 := TStringList.Create;
-  Body := TStringList.Create;
-
-  SetLength(Request, SOAPRequest.Size);
-  SOAPRequest.Position := 0;
-  SOAPRequest.Read(Request[1], Length(Request));
-  StrList1.add(Request);
-
-
-  Header := '<SOAP-ENV:Envelope'+
-  ' xmlns:SOAP-ENV="http://schemas.xmlsoap.org/soap/envelope/"'+
-  ' xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"'+
-  ' xmlns:wsa="http://schemas.xmlsoap.org/ws/2004/08/addressing"'+
-  ' xmlns:wsse="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd"'+
-  ' xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd"'+
-  ' xmlns:ser="http://servisler.ws.gss.sgk.gov.tr">'+
-  ' <SOAP-ENV:Header>'+
-  '  <wsse:Security>'+
-  '    <wsse:UsernameToken wsu:Id="SecurityToken-04ce24bd-9c7c-4ca9-9764-92c53b0662c5">'+
-  '      <wsse:Username>'+_username+'</wsse:Username>'+
-  '      <wsse:Password Type="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-username-token-profile-1.0#PasswordText">'+_sifre+'</wsse:Password>'+
-  '    </wsse:UsernameToken>'+
-  '  </wsse:Security>'+
-  ' </SOAP-ENV:Header>';
-
-  StrList1.text := StringReplace(StrList1.text,'<SOAP-ENV:Envelope xmlns:SOAP-ENV="http://schemas.xmlsoap.org/soap/envelope/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">',Header,[RfReplaceAll]);
-
-  StrList1.text := StringReplace(StrList1.text,'<takipFormuOku xmlns="http://servisler.ws.gss.sgk.gov.tr">','<ser:takipFormuOku>',[RfReplaceAll]);
-  StrList1.text := StringReplace(StrList1.text,'</takipFormuOku>','</ser:takipFormuOku>',[RfReplaceAll]);
-
-  StrList1.text := StringReplace(StrList1.text,'<takipFormuSil xmlns="http://servisler.ws.gss.sgk.gov.tr">','<ser:takipFormuSil>',[RfReplaceAll]);
-  StrList1.text := StringReplace(StrList1.text,'</takipFormuSil>','</ser:takipFormuSil>',[RfReplaceAll]);
-
-  StrList1.text := StringReplace(StrList1.text,'<takipFormuKaydet xmlns="http://servisler.ws.gss.sgk.gov.tr">','<ser:takipFormuKaydet>',[RfReplaceAll]);
-  StrList1.text := StringReplace(StrList1.text,'</takipFormuKaydet>','</ser:takipFormuKaydet>',[RfReplaceAll]);
+  try
+    SetLength(Request, SOAPRequest.Size);
+    SOAPRequest.Position := 0;
+    SOAPRequest.Read(Request[1], Length(Request));
+    StrList1.add(Request);
 
 
-  StrList1.text := StringReplace(StrList1.text,' xmlns=""','',[RfReplaceAll]);
-  StrList1.text := UTF8Encode(StrList1.text);
+    Header := '<SOAP-ENV:Envelope'+
+    ' xmlns:SOAP-ENV="http://schemas.xmlsoap.org/soap/envelope/"'+
+    ' xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"'+
+    ' xmlns:wsa="http://schemas.xmlsoap.org/ws/2004/08/addressing"'+
+    ' xmlns:wsse="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd"'+
+    ' xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd"'+
+    ' xmlns:ser="http://servisler.ws.gss.sgk.gov.tr">'+
+    ' <SOAP-ENV:Header>'+
+    '  <wsse:Security>'+
+    '    <wsse:UsernameToken wsu:Id="SecurityToken-04ce24bd-9c7c-4ca9-9764-92c53b0662c5">'+
+    '      <wsse:Username>'+_username+'</wsse:Username>'+
+    '      <wsse:Password Type="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-username-token-profile-1.0#PasswordText">'+_sifre+'</wsse:Password>'+
+    '    </wsse:UsernameToken>'+
+    '  </wsse:Security>'+
+    ' </SOAP-ENV:Header>';
+
+    StrList1.Text := StringReplace(StrList1.Text,'<SOAP-ENV:Envelope xmlns:SOAP-ENV="http://schemas.xmlsoap.org/soap/envelope/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">',Header,[RfReplaceAll]);
+
+    StrList1.Text := StringReplace(StrList1.Text,'<takipFormuOku xmlns="http://servisler.ws.gss.sgk.gov.tr">','<ser:takipFormuOku>',[RfReplaceAll]);
+    StrList1.Text := StringReplace(StrList1.Text,'</takipFormuOku>','</ser:takipFormuOku>',[RfReplaceAll]);
+
+    StrList1.Text := StringReplace(StrList1.Text,'<takipFormuSil xmlns="http://servisler.ws.gss.sgk.gov.tr">','<ser:takipFormuSil>',[RfReplaceAll]);
+    StrList1.Text := StringReplace(StrList1.Text,'</takipFormuSil>','</ser:takipFormuSil>',[RfReplaceAll]);
+
+    StrList1.Text := StringReplace(StrList1.Text,'<takipFormuKaydet xmlns="http://servisler.ws.gss.sgk.gov.tr">','<ser:takipFormuKaydet>',[RfReplaceAll]);
+    StrList1.Text := StringReplace(StrList1.Text,'</takipFormuKaydet>','</ser:takipFormuKaydet>',[RfReplaceAll]);
 
 
-
-  SOAPRequest.Position := 0;
-  StrList1.SaveToStream(SOAPRequest);
-
-  SetLength(Request, SOAPRequest.Size);
-  SOAPRequest.Position := 0;
-  SOAPRequest.Read(Request[1], Length(Request));
-
- // StrList1.add(FormatXMLData(Request));
-  StrList1.SaveToFile('wsDiabetTakipForm.xml');
-
-
-  StrList1.Free;
- // xmlKaydet.Free;
-  Body.Free;
+    StrList1.Text := StringReplace(StrList1.Text,' xmlns=""','',[RfReplaceAll]);
+    StrList1.Text := UTF8Encode(StrList1.Text);
 
 
 
+    SOAPRequest.Position := 0;
+    StrList1.SaveToStream(SOAPRequest);
 
+    SetLength(Request, SOAPRequest.Size);
+    SOAPRequest.Position := 0;
+    SOAPRequest.Read(Request[1], Length(Request));
+
+   // StrList1.add(FormatXMLData(Request));
+    StrList1.SaveToFile('wsDiabetTakipForm.xml');
+
+
+   // xmlKaydet.Free;
+  finally
+    StrList1.Free;
+  end;
 
 (*
    SetLength(R, SOAPRequest.Size);
@@ -1507,65 +1548,57 @@ procedure TDATALAR.DYOBAfterExecute(const MethodName: string;
   SOAPResponse: TStream);
 var
   memo : TStringList;
-  m : TStringList;
   R: UTF8String;
 begin
-   SetLength(R, SOAPResponse.Size);
-   SOAPResponse.Position := 0;
-   SOAPResponse.Read(R[1], Length(R));
-   memo := TStringList.Create;
-   memo.Add(FormatXMLData(R));
-   memo.SaveToFile('DYOBCVP.XML');
-   DyobRequest := memo.Text;
-   memo.Free;
+  SetLength(R, SOAPResponse.Size);
+  SOAPResponse.Position := 0;
+  SOAPResponse.Read(R[1], Length(R));
+  memo := TStringList.Create;
+  try
+    memo.Add(FormatXMLData(R));
+    memo.SaveToFile('DYOBCVP.XML');
+    DyobRequest := memo.Text;
+  finally
+    memo.Free;
+  end;
 end;
+
 procedure TDATALAR.DYOBBeforeExecute(const MethodName: string;
   SOAPRequest: TStream);
 var
   Request: UTF8String;
-  Request1: UTF8String;
-  StrList1: TStringList;
-  I : integer;
-  HeaderBegin , HeaderEnd : integer;
-  Header  : Widestring;
-  BodyBegin , BodyEnd , ii ,s : integer;
-  Body , xmlKaydet: TStringList;
   memo : TStringList;
 begin
-   memo := TStringList.Create;
-   SetLength(Request, SOAPRequest.Size);
-   SOAPRequest.Position := 0;
-   SOAPRequest.Read(Request[1], Length(Request));
-   memo.Add(FormatXMLData(Request));
-   memo.SaveToFile('DYOB.xml');
-   memo.Free;
+  memo := TStringList.Create;
+  try
+    SetLength(Request, SOAPRequest.Size);
+    SOAPRequest.Position := 0;
+    SOAPRequest.Read(Request[1], Length(Request));
+    memo.Add(FormatXMLData(Request));
+    memo.SaveToFile('DYOB.xml');
+  finally
+    memo.Free;
+  end;
 end;
 
 procedure TDATALAR.ErguvanHttpAfterExecute(const MethodName: string;
   SOAPResponse: TStream);
 var
-  XMLDoc: IXMLDocument;
-  memo : Tmemo;
-  m,StrList1 : TStringList;
+  StrList1 : TStringList;
   R: UTF8String;
-  x , i: integer;
-  s : string;
-  sil : boolean;
 //  Bilgi : IXMLTestSonuclariType;
 begin
-   StrList1 := TStringList.Create;
-   SetLength(R, SOAPResponse.Size);
-   SOAPResponse.Position := 0;
-   SOAPResponse.Read(R[1], Length(R));
+  StrList1 := TStringList.Create;
+  try
+    SetLength(R, SOAPResponse.Size);
+    SOAPResponse.Position := 0;
+    SOAPResponse.Read(R[1], Length(R));
 
-   StrList1.add(R);
-   StrList1.SaveToFile('ErguvanCvp.XML');
-   StrList1.Free;
-
-
-
-
-
+    StrList1.add(R);
+    StrList1.SaveToFile('ErguvanCvp.XML');
+  finally
+    StrList1.Free;
+  end;
 
 (*
   ClientDataset1.Active := FALSE;
@@ -1585,22 +1618,20 @@ end;
 procedure TDATALAR.ESYAfterExecute(const MethodName: string;
   SOAPResponse: TStream);
 var
-  XMLDoc: IXMLDocument;
-  memo : Tmemo;
-  m,StrList1 : TStringList;
+  StrList1 : TStringList;
   R: UTF8String;
-  x , i: integer;
-  s : string;
-  sil : boolean;
 begin
    StrList1 := TStringList.Create;
-   SetLength(R, SOAPResponse.Size);
-   SOAPResponse.Position := 0;
-   SOAPResponse.Read(R[1], Length(R));
+   try
+     SetLength(R, SOAPResponse.Size);
+     SOAPResponse.Position := 0;
+     SOAPResponse.Read(R[1], Length(R));
 
-   StrList1.add(R);
-   StrList1.SaveToFile('ESYCvp.XML');
-   StrList1.Free;
+     StrList1.add(R);
+     StrList1.SaveToFile('ESYCvp.XML');
+   finally
+     StrList1.Free;
+   end;
 end;
 
 procedure TDATALAR.ESYBeforeExecute(const MethodName: string;
@@ -1609,107 +1640,101 @@ var
  T : TstringList;
 begin
    T := TstringList.Create;
-   SOAPRequest.Position := 0;
-   t.LoadFromStream(SOAPRequest);
-   t.SaveToFile('ESY.xml');
-   t.Free;
+   try
+     SOAPRequest.Position := 0;
+     t.LoadFromStream(SOAPRequest);
+     t.SaveToFile('ESY.xml');
+   finally
+     t.Free;
+   end;
 end;
 
 procedure TDATALAR.FaturaKaydetAfterExecute(const MethodName: string;
   SOAPResponse: TStream);
 var
-  memo : Tmemo;
-  m : TStringList;
   R: UTF8String;
-  Response: UTF8String;
   StrList1: TStringList;
 begin
    StrList1 := TStringList.Create;
+   try
+     SetLength(R, SOAPResponse.Size);
+     SOAPResponse.Position := 0;
+     SOAPResponse.Read(R[1], Length(R));
+     StrList1.add(R);
 
-   SetLength(R, SOAPResponse.Size);
-   SOAPResponse.Position := 0;
-   SOAPResponse.Read(R[1], Length(R));
-   StrList1.add(R);
-
-  StrList1.SaveToFile('wsFaturaCvp.XML');
-  StrList1.Free;
+     StrList1.SaveToFile('wsFaturaCvp.XML');
+   finally
+     StrList1.Free;
+   end;
 end;
 
 procedure TDATALAR.FaturaKaydetBeforeExecute(const MethodName: string;
   SOAPRequest: TStream);
 var
   Request: UTF8String;
-  Request1: UTF8String;
-  R: UTF8String;
   StrList1: TStringList;
-  I : integer;
-  HeaderBegin , HeaderEnd : integer;
   Header  : Widestring;
-  BodyBegin , BodyEnd , ii ,s : integer;
-  Body , xmlKaydet: TStringList;
 begin
 
   StrList1 := TStringList.Create;
-  Body := TStringList.Create;
-
-  SetLength(Request, SOAPRequest.Size);
-  SOAPRequest.Position := 0;
-  SOAPRequest.Read(Request[1], Length(Request));
-  StrList1.add(Request);
-
-
- Header := '<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:ser="http://servisler.ws.gss.sgk.gov.tr">'+
-  ' <soapenv:Header>'+
-  '  <wsse:Security xmlns:wsse="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd" soapenv:mustUnderstand="0">' +
-  '   <wsse:UsernameToken xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd" wsu:Id="UsernameToken-13669775">'+
-  '    <wsse:Username>'+_username + '</wsse:Username>' +
-  '    <wsse:Password Type="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-username-token-profile-1.0#PasswordText">' + _sifre + '</wsse:Password>'+
-  '   </wsse:UsernameToken>' +
-  '  </wsse:Security>'+
-  ' </soapenv:Header>';
-
-  StrList1.text := StringReplace(StrList1.text,'<SOAP-ENV:Body>','<soapenv:Body>',[RfReplaceAll]);
-  StrList1.text := StringReplace(StrList1.text,'</SOAP-ENV:Body>','</soapenv:Body>',[RfReplaceAll]);
-  StrList1.text := StringReplace(StrList1.text,'</SOAP-ENV:Envelope>','</soapenv:Envelope>',[RfReplaceAll]);
+  try
+    SetLength(Request, SOAPRequest.Size);
+    SOAPRequest.Position := 0;
+    SOAPRequest.Read(Request[1], Length(Request));
+    StrList1.add(Request);
 
 
+   Header := '<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:ser="http://servisler.ws.gss.sgk.gov.tr">'+
+    ' <soapenv:Header>'+
+    '  <wsse:Security xmlns:wsse="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd" soapenv:mustUnderstand="0">' +
+    '   <wsse:UsernameToken xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd" wsu:Id="UsernameToken-13669775">'+
+    '    <wsse:Username>'+_username + '</wsse:Username>' +
+    '    <wsse:Password Type="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-username-token-profile-1.0#PasswordText">' + _sifre + '</wsse:Password>'+
+    '   </wsse:UsernameToken>' +
+    '  </wsse:Security>'+
+    ' </soapenv:Header>';
 
-  StrList1.text := StringReplace(StrList1.text,'<SOAP-ENV:Envelope xmlns:SOAP-ENV="http://schemas.xmlsoap.org/soap/envelope/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">',Header,[RfReplaceAll]);
-
-
-  StrList1.text := StringReplace(StrList1.text,'<faturaTutarOku xmlns="http://servisler.ws.gss.sgk.gov.tr">','<ser:faturaTutarOku>',[RfReplaceAll]);
-  StrList1.text := StringReplace(StrList1.text,'</faturaTutarOku>','</ser:faturaTutarOku>',[RfReplaceAll]);
-
-  StrList1.text := StringReplace(StrList1.text,'<faturaOku xmlns="http://servisler.ws.gss.sgk.gov.tr">','<ser:faturaOku>',[RfReplaceAll]);
-  StrList1.text := StringReplace(StrList1.text,'</faturaOku>','</ser:faturaOku>',[RfReplaceAll]);
-
-  StrList1.text := StringReplace(StrList1.text,'<faturaKayit xmlns="http://servisler.ws.gss.sgk.gov.tr">','<ser:faturaKayit>',[RfReplaceAll]);
-  StrList1.text := StringReplace(StrList1.text,'</faturaKayit>','</ser:faturaKayit>',[RfReplaceAll]);
-
-  StrList1.text := StringReplace(StrList1.text,'<faturaIptal xmlns="http://servisler.ws.gss.sgk.gov.tr">','<ser:faturaIptal>',[RfReplaceAll]);
-  StrList1.text := StringReplace(StrList1.text,'</faturaIptal>','</ser:faturaIptal>',[RfReplaceAll]);
+    StrList1.Text := StringReplace(StrList1.Text,'<SOAP-ENV:Body>','<soapenv:Body>',[RfReplaceAll]);
+    StrList1.Text := StringReplace(StrList1.Text,'</SOAP-ENV:Body>','</soapenv:Body>',[RfReplaceAll]);
+    StrList1.Text := StringReplace(StrList1.Text,'</SOAP-ENV:Envelope>','</soapenv:Envelope>',[RfReplaceAll]);
 
 
 
-  StrList1.text := StringReplace(StrList1.text,' xmlns=""','',[RfReplaceAll]);
-  StrList1.text := UTF8Encode(StrList1.text);
+    StrList1.Text := StringReplace(StrList1.Text,'<SOAP-ENV:Envelope xmlns:SOAP-ENV="http://schemas.xmlsoap.org/soap/envelope/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">',Header,[RfReplaceAll]);
+
+
+    StrList1.Text := StringReplace(StrList1.Text,'<faturaTutarOku xmlns="http://servisler.ws.gss.sgk.gov.tr">','<ser:faturaTutarOku>',[RfReplaceAll]);
+    StrList1.Text := StringReplace(StrList1.Text,'</faturaTutarOku>','</ser:faturaTutarOku>',[RfReplaceAll]);
+
+    StrList1.Text := StringReplace(StrList1.Text,'<faturaOku xmlns="http://servisler.ws.gss.sgk.gov.tr">','<ser:faturaOku>',[RfReplaceAll]);
+    StrList1.Text := StringReplace(StrList1.Text,'</faturaOku>','</ser:faturaOku>',[RfReplaceAll]);
+
+    StrList1.Text := StringReplace(StrList1.Text,'<faturaKayit xmlns="http://servisler.ws.gss.sgk.gov.tr">','<ser:faturaKayit>',[RfReplaceAll]);
+    StrList1.Text := StringReplace(StrList1.Text,'</faturaKayit>','</ser:faturaKayit>',[RfReplaceAll]);
+
+    StrList1.Text := StringReplace(StrList1.Text,'<faturaIptal xmlns="http://servisler.ws.gss.sgk.gov.tr">','<ser:faturaIptal>',[RfReplaceAll]);
+    StrList1.Text := StringReplace(StrList1.Text,'</faturaIptal>','</ser:faturaIptal>',[RfReplaceAll]);
 
 
 
-  SOAPRequest.Position := 0;
-  StrList1.SaveToStream(SOAPRequest);
-
-  SetLength(Request, SOAPRequest.Size);
-  SOAPRequest.Position := 0;
-  SOAPRequest.Read(Request[1], Length(Request));
-
- // StrList1.add(FormatXMLData(Request));
-  StrList1.SaveToFile('wsFatura.xml');
+    StrList1.Text := StringReplace(StrList1.Text,' xmlns=""','',[RfReplaceAll]);
+    StrList1.Text := UTF8Encode(StrList1.Text);
 
 
-  StrList1.Free;
+
+    SOAPRequest.Position := 0;
+    StrList1.SaveToStream(SOAPRequest);
+
+    SetLength(Request, SOAPRequest.Size);
+    SOAPRequest.Position := 0;
+    SOAPRequest.Read(Request[1], Length(Request));
+
+   // StrList1.add(FormatXMLData(Request));
+    StrList1.SaveToFile('wsFatura.xml');
+  finally
+    StrList1.Free;
+  end;
  // xmlKaydet.Free;
-  Body.Free;
 end;
 
 procedure TDATALAR.FaturaKaydetHTTPWebNode1BeforePost(
@@ -1756,19 +1781,21 @@ procedure TDATALAR.HTTPRIO1BeforeExecute(const MethodName: string;
   SOAPRequest: TStream);
 var
   memo : Tmemo;
-  m : TStringList;
   R: UTF8String;
   met : string;
 begin
-   met := MethodName;
-   SetLength(R, SOAPRequest.Size);
-   SOAPRequest.Position := 0;
-   SOAPRequest.Read(R[1], Length(R));
-   memo := Tmemo.Create(nil);
-   memo.Parent := AnaForm;
-   memo.Lines.Add(FormatXMLData(R));
-   memo.Lines.SaveToFile('MNT.XML');
-   memo.Free;
+  met := MethodName;
+  SetLength(R, SOAPRequest.Size);
+  SOAPRequest.Position := 0;
+  SOAPRequest.Read(R[1], Length(R));
+  memo := Tmemo.Create(nil);
+  try
+    memo.Parent := AnaForm;
+    memo.Lines.Add(FormatXMLData(R));
+    memo.Lines.SaveToFile('MNT.XML');
+  finally
+    memo.Free;
+  end;
 end;
 
 
@@ -1776,105 +1803,109 @@ procedure TDATALAR.IlacRapor_AfterExecute(const MethodName: string;
   SOAPResponse: TStream);
 var
   memo : Tmemo;
-  m : TStringList;
   R: UTF8String;
 begin
-   SetLength(R, SOAPResponse.Size);
-   SOAPResponse.Position := 0;
-   SOAPResponse.Read(R[1], Length(R));
-   memo := Tmemo.Create(nil);
-   memo.Parent := AnaForm;
-   memo.Lines.Add(FormatXMLData(R));
-   memo.Lines.SaveToFile('RaporKayitCvp.XML');
-   memo.Free;
+  SetLength(R, SOAPResponse.Size);
+  SOAPResponse.Position := 0;
+  SOAPResponse.Read(R[1], Length(R));
+  memo := Tmemo.Create(nil);
+  try
+    memo.Parent := AnaForm;
+    memo.Lines.Add(FormatXMLData(R));
+    memo.Lines.SaveToFile('RaporKayitCvp.XML');
+  finally
+    memo.Free;
+  end;
 end;
 
 procedure TDATALAR.IlacRapor_BeforeExecute(const MethodName: string;
   SOAPRequest: TStream);
 var
   Request: UTF8String;
-  Request1: UTF8String;
-  R: UTF8String;
   StrList1: TStringList;
-  I : integer;
-  HeaderBegin , HeaderEnd : integer;
   Header  : Widestring;
-  BodyBegin , BodyEnd , ii ,s : integer;
-  Body , xmlKaydet: TStringList;
 begin
 
   StrList1 := TStringList.Create;
-  Body := TStringList.Create;
-
-  SetLength(Request, SOAPRequest.Size);
-  SOAPRequest.Position := 0;
-  SOAPRequest.Read(Request[1], Length(Request));
-  StrList1.add(Request);
-
-
- Header := '<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:ser="http://servisler.ws.gss.sgk.gov.tr">'+
-  ' <soapenv:Header>'+
-  '  <wsse:Security xmlns:wsse="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd" soapenv:mustUnderstand="0">' +
-  '   <wsse:UsernameToken xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd" wsu:Id="UsernameToken-13669775">'+
-  '    <wsse:Username>'+_username + '</wsse:Username>' +
-  '    <wsse:Password Type="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-username-token-profile-1.0#PasswordText">' + _sifre + '</wsse:Password>'+
-  '   </wsse:UsernameToken>' +
-  '  </wsse:Security>'+
-  ' </soapenv:Header>';
-
-  StrList1.text := StringReplace(StrList1.text,'<SOAP-ENV:Body>','<soapenv:Body>',[RfReplaceAll]);
-  StrList1.text := StringReplace(StrList1.text,'</SOAP-ENV:Body>','</soapenv:Body>',[RfReplaceAll]);
-  StrList1.text := StringReplace(StrList1.text,'</SOAP-ENV:Envelope>','</soapenv:Envelope>',[RfReplaceAll]);
+  try
+    SetLength(Request, SOAPRequest.Size);
+    SOAPRequest.Position := 0;
+    SOAPRequest.Read(Request[1], Length(Request));
+    StrList1.add(Request);
 
 
-  StrList1.text := StringReplace(StrList1.text,'<SOAP-ENV:Envelope xmlns:SOAP-ENV="http://schemas.xmlsoap.org/soap/envelope/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">',Header,[RfReplaceAll]);
+   Header := '<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:ser="http://servisler.ws.gss.sgk.gov.tr">'+
+    ' <soapenv:Header>'+
+    '  <wsse:Security xmlns:wsse="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd" soapenv:mustUnderstand="0">' +
+    '   <wsse:UsernameToken xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd" wsu:Id="UsernameToken-13669775">'+
+    '    <wsse:Username>'+_username + '</wsse:Username>' +
+    '    <wsse:Password Type="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-username-token-profile-1.0#PasswordText">' + _sifre + '</wsse:Password>'+
+    '   </wsse:UsernameToken>' +
+    '  </wsse:Security>'+
+    ' </soapenv:Header>';
+
+    StrList1.Text := StringReplace(StrList1.Text,'<SOAP-ENV:Body>','<soapenv:Body>',[RfReplaceAll]);
+    StrList1.Text := StringReplace(StrList1.Text,'</SOAP-ENV:Body>','</soapenv:Body>',[RfReplaceAll]);
+    StrList1.Text := StringReplace(StrList1.Text,'</SOAP-ENV:Envelope>','</soapenv:Envelope>',[RfReplaceAll]);
 
 
-  StrList1.text := StringReplace(StrList1.text,'<raporBilgisiBul xmlns="http://servisler.ws.gss.sgk.gov.tr">','<ser:raporBilgisiBul>',[RfReplaceAll]);
-  StrList1.text := StringReplace(StrList1.text,'</ser:raporBilgisiBul>','</ser:raporBilgisiBul>',[RfReplaceAll]);
+    StrList1.Text := StringReplace(StrList1.Text,'<SOAP-ENV:Envelope xmlns:SOAP-ENV="http://schemas.xmlsoap.org/soap/envelope/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">',Header,[RfReplaceAll]);
 
 
-
-
+    StrList1.Text := StringReplace(StrList1.Text,'<raporBilgisiBul xmlns="http://servisler.ws.gss.sgk.gov.tr">','<ser:raporBilgisiBul>',[RfReplaceAll]);
+    StrList1.Text := StringReplace(StrList1.Text,'</ser:raporBilgisiBul>','</ser:raporBilgisiBul>',[RfReplaceAll]);
+  finally
+    StrList1.Free;
+  end;
 end;
+
 procedure TDATALAR.IntermediaAfterExecute(const MethodName: string;
   SOAPResponse: TStream);
 var
- T : TstringList;
+  T : TstringList;
 begin
-   T := TstringList.Create;
-   SOAPResponse.Position := 0;
-   t.LoadFromStream(SOAPResponse);
-   t.SaveToFile('IntermediaCvp.xml');
-   t.Free;
+  T := TstringList.Create;
+  try
+    SOAPResponse.Position := 0;
+    t.LoadFromStream(SOAPResponse);
+    t.SaveToFile('IntermediaCvp.xml');
+  finally
+    t.Free;
+  end;
 end;
+
 procedure TDATALAR.IntermediaBeforeExecute(const MethodName: string;
   SOAPRequest: TStream);
 var
  T : TstringList;
 begin
-   T := TstringList.Create;
-   SOAPRequest.Position := 0;
-   t.LoadFromStream(SOAPRequest);
-   t.SaveToFile('Intermedia.xml');
-   t.Free;
+  T := TstringList.Create;
+  try
+    SOAPRequest.Position := 0;
+    t.LoadFromStream(SOAPRequest);
+    t.SaveToFile('Intermedia.xml');
+  finally
+    t.Free;
+  end;
 end;
 
 procedure TDATALAR.ITSBeforeExecute(const MethodName: string;
   SOAPRequest: TStream);
 var
   memo : Tmemo;
-  m : TStringList;
   R: UTF8String;
 begin
-   SetLength(R, SOAPRequest.Size);
-   SOAPRequest.Position := 0;
-   SOAPRequest.Read(R[1], Length(R));
-   memo := Tmemo.Create(nil);
-   memo.Parent := AnaForm;
-   memo.Lines.Add(FormatXMLData(R));
-   memo.Lines.SaveToFile('ITS.XML');
-   memo.Free;
+  SetLength(R, SOAPRequest.Size);
+  SOAPRequest.Position := 0;
+  SOAPRequest.Read(R[1], Length(R));
+  memo := Tmemo.Create(nil);
+  try
+    memo.Parent := AnaForm;
+    memo.Lines.Add(FormatXMLData(R));
+    memo.Lines.SaveToFile('ITS.XML');
+  finally
+    memo.Free;
+  end;
 end;
 
 procedure TDATALAR.LabVBeforeExecute(const MethodName: String;
@@ -1882,19 +1913,20 @@ procedure TDATALAR.LabVBeforeExecute(const MethodName: String;
  var
   memo : Tmemo;
 begin
-   memo := TMemo.Create(nil);
-   memo.Parent := AnaForm;
-   memo.Lines.Text := SOAPRequest;
-   memo.Lines.SaveToFile('sorgu.XML');
-   memo.Free;
+  memo := TMemo.Create(nil);
+  try
+    memo.Parent := AnaForm;
+    memo.Lines.Text := SOAPRequest;
+    memo.Lines.SaveToFile('sorgu.XML');
+  finally
+    memo.Free;
+  end;
 end;
 
 procedure TDATALAR.LabVAfterExecute(const MethodName: String;
   SOAPResponse: TStream);
- var
-  memo : Tmemo;
 begin
-
+//
 end;
 
 procedure TDATALAR.LabAfterExecute(const MethodName: string;
@@ -1902,50 +1934,52 @@ procedure TDATALAR.LabAfterExecute(const MethodName: string;
 var
  T : TstringList;
 begin
-   T := TstringList.Create;
-   SOAPResponse.Position := 0;
-   t.LoadFromStream(SOAPResponse);
-   t.SaveToFile('medilisCvp.xml');
-   t.Free;
+  T := TstringList.Create;
+  try
+    SOAPResponse.Position := 0;
+    t.LoadFromStream(SOAPResponse);
+    t.SaveToFile('medilisCvp.xml');
+  finally
+    t.Free;
+  end;
 end;
 procedure TDATALAR.LabBeforeExecute(const MethodName: string;
   SOAPRequest: TStream);
 var
  T : TstringList;
 begin
-   T := TstringList.Create;
-   SOAPRequest.Position := 0;
-   t.LoadFromStream(SOAPRequest);
-   t.SaveToFile('medilis.xml');
-   t.Free;
+  T := TstringList.Create;
+  try
+    SOAPRequest.Position := 0;
+    t.LoadFromStream(SOAPRequest);
+    t.SaveToFile('medilis.xml');
+  finally
+    t.Free;
+  end;
 end;
 
 procedure TDATALAR.LabHTTPWebNode1ReceivingData(Read, Total: Integer);
-var
-  x : integer;
 begin
-
+  //
 end;
 
 procedure TDATALAR.LiosAfterExecute(const MethodName: string;
   SOAPResponse: TStream);
 var
-  XMLDoc: IXMLDocument;
-  memo : Tmemo;
-  m,StrList1 : TStringList;
+  StrList1 : TStringList;
   R: UTF8String;
-  x , i: integer;
-  s : string;
-  sil : boolean;
 begin
-   StrList1 := TStringList.Create;
-   SetLength(R, SOAPResponse.Size);
-   SOAPResponse.Position := 0;
-   SOAPResponse.Read(R[1], Length(R));
+  StrList1 := TStringList.Create;
+  try
+    SetLength(R, SOAPResponse.Size);
+    SOAPResponse.Position := 0;
+    SOAPResponse.Read(R[1], Length(R));
 
-   StrList1.add(R);
-   StrList1.SaveToFile('LiosCvp.XML');
-   StrList1.Free;
+    StrList1.add(R);
+    StrList1.SaveToFile('LiosCvp.XML');
+  finally
+    StrList1.Free;
+  end;
 end;
 
 procedure TDATALAR.LiosBeforeExecute(const MethodName: string;
@@ -1953,17 +1987,18 @@ procedure TDATALAR.LiosBeforeExecute(const MethodName: string;
 var
  T : TstringList;
 begin
-   T := TstringList.Create;
-   SOAPRequest.Position := 0;
-   t.LoadFromStream(SOAPRequest);
-   t.SaveToFile('Lios.xml');
-   t.Free;
+  T := TstringList.Create;
+  try
+    SOAPRequest.Position := 0;
+    t.LoadFromStream(SOAPRequest);
+    t.SaveToFile('Lios.xml');
+  finally
+    t.Free;
+  end;
 end;
 
 procedure TDATALAR.LisansAlBeforeExecute(const MethodName: String;
   var SOAPRequest: WideString);
- var
-  memo : Tmemo;
 begin
    (*
    memo := TMemo.Create(nil);
@@ -1995,157 +2030,148 @@ end;
 procedure TDATALAR.HastaKabulAfterExecute(const MethodName: string;
   SOAPResponse: TStream);
 var
-  memo : Tmemo;
-  m : TStringList;
   R: UTF8String;
-  Response: UTF8String;
   StrList1: TStringList;
 begin
    StrList1 := TStringList.Create;
+   try
 
-   SetLength(R, SOAPResponse.Size);
-   SOAPResponse.Position := 0;
-   SOAPResponse.Read(R[1], Length(R));
-   StrList1.add(R);
+     SetLength(R, SOAPResponse.Size);
+     SOAPResponse.Position := 0;
+     SOAPResponse.Read(R[1], Length(R));
+     StrList1.add(R);
 
-(*   StrList1.text := StringReplace(StrList1.text,
-   '<p305:hastaKabulIptalResponse xmlns:p305="http://servisler.ws.gss.sgk.gov.tr">',
-   '<hastaKabulIptalResponse xmlns="http://servisler.ws.gss.sgk.gov.tr">',[RfReplaceAll]);
+  (*   StrList1.text := StringReplace(StrList1.text,
+     '<p305:hastaKabulIptalResponse xmlns:p305="http://servisler.ws.gss.sgk.gov.tr">',
+     '<hastaKabulIptalResponse xmlns="http://servisler.ws.gss.sgk.gov.tr">',[RfReplaceAll]);
 
-  SOAPResponse.Position := 0;
-  StrList1.SaveToStream(SOAPResponse);
+    SOAPResponse.Position := 0;
+    StrList1.SaveToStream(SOAPResponse);
 
-  SetLength(R, SOAPResponse.Size);
-  SOAPResponse.Position := 0;
-  SOAPResponse.Read(R[1], Length(R));
-  StrList1.Clear;
-  StrList1.add(R);
-  *)
+    SetLength(R, SOAPResponse.Size);
+    SOAPResponse.Position := 0;
+    SOAPResponse.Read(R[1], Length(R));
+    StrList1.Clear;
+    StrList1.add(R);
+    *)
 
 
-  StrList1.SaveToFile('wsHastaKabulCvpCvp.XML');
-  StrList1.Free;
+    StrList1.SaveToFile('wsHastaKabulCvpCvp.XML');
+   finally
+     StrList1.Free;
+   end;
 end;
 
 procedure TDATALAR.HastaKabulBeforeExecute(const MethodName: string;
   SOAPRequest: TStream);
 var
   Request: UTF8String;
-  Request1: UTF8String;
   StrList1: TStringList;
-  I : integer;
-  HeaderBegin , HeaderEnd : integer;
   Header  : Widestring;
-  BodyBegin , BodyEnd , ii ,s : integer;
-  Body , xmlKaydet: TStringList;
 begin
 
   StrList1 := TStringList.Create;
-  Body := TStringList.Create;
-
-  SetLength(Request, SOAPRequest.Size);
-  SOAPRequest.Position := 0;
-  SOAPRequest.Read(Request[1], Length(Request));
-  StrList1.add(Request);
-
-
-  (*
-  Header := '<SOAP-ENV:Envelope'+
-  ' xmlns:SOAP-ENV="http://schemas.xmlsoap.org/soap/envelope/"'+
-  ' xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"'+
-  ' xmlns:wsa="http://schemas.xmlsoap.org/ws/2004/08/addressing"'+
-  ' xmlns:wsse="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd"'+
-  ' xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd"'+
-  ' xmlns:tns5="http://servisler.ws.gss.sgk.gov.tr">'+
-  ' <SOAP-ENV:Header>'+
-  '  <wsse:Security>'+
-  '    <wsse:UsernameToken wsu:Id="SecurityToken-04ce24bd-9c7c-4ca9-9764-92c53b0662c5">'+
-  '      <wsse:Username>'+_username+'</wsse:Username>'+
-  '      <wsse:Password Type="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-username-token-profile-1.0#PasswordText">'+_sifre+'</wsse:Password>'+
-  '    </wsse:UsernameToken>'+
-  '  </wsse:Security>'+
-  ' </SOAP-ENV:Header>';
-    *)
-
-  Header := '<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tns5="http://servisler.ws.gss.sgk.gov.tr">'+
-  ' <soapenv:Header>'+
-  '  <wsse:Security xmlns:wsse="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd" soapenv:mustUnderstand="0">' +
-  '   <wsse:UsernameToken xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd" wsu:Id="UsernameToken-13669775">'+
-  '    <wsse:Username>'+_username + '</wsse:Username>' +
-  '    <wsse:Password Type="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-username-token-profile-1.0#PasswordText">' + _sifre + '</wsse:Password>'+
-  '   </wsse:UsernameToken>' +
-  '  </wsse:Security>'+
-  ' </soapenv:Header>';
-
-  StrList1.text := StringReplace(StrList1.text,'<SOAP-ENV:Body>','<soapenv:Body>',[RfReplaceAll]);
-  StrList1.text := StringReplace(StrList1.text,'</SOAP-ENV:Body>','</soapenv:Body>',[RfReplaceAll]);
-  StrList1.text := StringReplace(StrList1.text,'</SOAP-ENV:Envelope>','</soapenv:Envelope>',[RfReplaceAll]);
+  try
+    SetLength(Request, SOAPRequest.Size);
+    SOAPRequest.Position := 0;
+    SOAPRequest.Read(Request[1], Length(Request));
+    StrList1.add(Request);
 
 
+    (*
+    Header := '<SOAP-ENV:Envelope'+
+    ' xmlns:SOAP-ENV="http://schemas.xmlsoap.org/soap/envelope/"'+
+    ' xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"'+
+    ' xmlns:wsa="http://schemas.xmlsoap.org/ws/2004/08/addressing"'+
+    ' xmlns:wsse="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd"'+
+    ' xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd"'+
+    ' xmlns:tns5="http://servisler.ws.gss.sgk.gov.tr">'+
+    ' <SOAP-ENV:Header>'+
+    '  <wsse:Security>'+
+    '    <wsse:UsernameToken wsu:Id="SecurityToken-04ce24bd-9c7c-4ca9-9764-92c53b0662c5">'+
+    '      <wsse:Username>'+_username+'</wsse:Username>'+
+    '      <wsse:Password Type="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-username-token-profile-1.0#PasswordText">'+_sifre+'</wsse:Password>'+
+    '    </wsse:UsernameToken>'+
+    '  </wsse:Security>'+
+    ' </SOAP-ENV:Header>';
+      *)
 
-  StrList1.text := StringReplace(StrList1.text,'<SOAP-ENV:Envelope xmlns:SOAP-ENV="http://schemas.xmlsoap.org/soap/envelope/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">',Header,[RfReplaceAll]);
-  StrList1.text := StringReplace(StrList1.text,'<hastaKabul xmlns="http://servisler.ws.gss.sgk.gov.tr">','<tns5:hastaKabul>',[RfReplaceAll]);
-  StrList1.text := StringReplace(StrList1.text,'</hastaKabul>','</tns5:hastaKabul>',[RfReplaceAll]);
+    Header := '<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tns5="http://servisler.ws.gss.sgk.gov.tr">'+
+    ' <soapenv:Header>'+
+    '  <wsse:Security xmlns:wsse="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd" soapenv:mustUnderstand="0">' +
+    '   <wsse:UsernameToken xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd" wsu:Id="UsernameToken-13669775">'+
+    '    <wsse:Username>'+_username + '</wsse:Username>' +
+    '    <wsse:Password Type="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-username-token-profile-1.0#PasswordText">' + _sifre + '</wsse:Password>'+
+    '   </wsse:UsernameToken>' +
+    '  </wsse:Security>'+
+    ' </soapenv:Header>';
 
-
-  StrList1.text := StringReplace(StrList1.text,'<hastaKabulIptal xmlns="http://servisler.ws.gss.sgk.gov.tr">','<tns5:hastaKabulIptal>',[RfReplaceAll]);
-  StrList1.text := StringReplace(StrList1.text,'</hastaKabulIptal>','</tns5:hastaKabulIptal>',[RfReplaceAll]);
-
-  StrList1.text := StringReplace(StrList1.text,'<hastaKabulOku xmlns="http://servisler.ws.gss.sgk.gov.tr">','<tns5:hastaKabulOku>',[RfReplaceAll]);
-  StrList1.text := StringReplace(StrList1.text,'</hastaKabulOku>','</tns5:hastaKabulOku>',[RfReplaceAll]);
+    StrList1.Text := StringReplace(StrList1.Text,'<SOAP-ENV:Body>','<soapenv:Body>',[RfReplaceAll]);
+    StrList1.Text := StringReplace(StrList1.Text,'</SOAP-ENV:Body>','</soapenv:Body>',[RfReplaceAll]);
+    StrList1.Text := StringReplace(StrList1.Text,'</SOAP-ENV:Envelope>','</soapenv:Envelope>',[RfReplaceAll]);
 
 
 
-  StrList1.text := StringReplace(StrList1.text,'<basvuruTakipOku xmlns="http://servisler.ws.gss.sgk.gov.tr">','<ser:basvuruTakipOku>',[RfReplaceAll]);
-  StrList1.text := StringReplace(StrList1.text,'</basvuruTakipOku>','</ser:basvuruTakipOku>',[RfReplaceAll]);
+    StrList1.Text := StringReplace(StrList1.Text,'<SOAP-ENV:Envelope xmlns:SOAP-ENV="http://schemas.xmlsoap.org/soap/envelope/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">',Header,[RfReplaceAll]);
+    StrList1.Text := StringReplace(StrList1.Text,'<hastaKabul xmlns="http://servisler.ws.gss.sgk.gov.tr">','<tns5:hastaKabul>',[RfReplaceAll]);
+    StrList1.Text := StringReplace(StrList1.Text,'</hastaKabul>','</tns5:hastaKabul>',[RfReplaceAll]);
 
-  StrList1.text := StringReplace(StrList1.text,'<hastaKabulKimlikDogrulama xmlns="http://servisler.ws.gss.sgk.gov.tr">','<tns5:hastaKabulKimlikDogrulama>',[RfReplaceAll]);
-  StrList1.text := StringReplace(StrList1.text,'</hastaKabulKimlikDogrulama>','</tns5:hastaKabulKimlikDogrulama>',[RfReplaceAll]);
 
+    StrList1.Text := StringReplace(StrList1.Text,'<hastaKabulIptal xmlns="http://servisler.ws.gss.sgk.gov.tr">','<tns5:hastaKabulIptal>',[RfReplaceAll]);
+    StrList1.Text := StringReplace(StrList1.Text,'</hastaKabulIptal>','</tns5:hastaKabulIptal>',[RfReplaceAll]);
+
+    StrList1.Text := StringReplace(StrList1.Text,'<hastaKabulOku xmlns="http://servisler.ws.gss.sgk.gov.tr">','<tns5:hastaKabulOku>',[RfReplaceAll]);
+    StrList1.Text := StringReplace(StrList1.Text,'</hastaKabulOku>','</tns5:hastaKabulOku>',[RfReplaceAll]);
+
+
+
+    StrList1.Text := StringReplace(StrList1.Text,'<basvuruTakipOku xmlns="http://servisler.ws.gss.sgk.gov.tr">','<ser:basvuruTakipOku>',[RfReplaceAll]);
+    StrList1.Text := StringReplace(StrList1.Text,'</basvuruTakipOku>','</ser:basvuruTakipOku>',[RfReplaceAll]);
+
+    StrList1.Text := StringReplace(StrList1.Text,'<hastaKabulKimlikDogrulama xmlns="http://servisler.ws.gss.sgk.gov.tr">','<tns5:hastaKabulKimlikDogrulama>',[RfReplaceAll]);
+    StrList1.Text := StringReplace(StrList1.Text,'</hastaKabulKimlikDogrulama>','</tns5:hastaKabulKimlikDogrulama>',[RfReplaceAll]);
 
 
 
 
-  StrList1.text := StringReplace(StrList1.text,' xmlns=""','',[RfReplaceAll]);
-  StrList1.text := UTF8Encode(StrList1.text);
+
+    StrList1.Text := StringReplace(StrList1.Text,' xmlns=""','',[RfReplaceAll]);
+    StrList1.Text := UTF8Encode(StrList1.Text);
 
 
 
-  SOAPRequest.Position := 0;
-  StrList1.SaveToStream(SOAPRequest);
+    SOAPRequest.Position := 0;
+    StrList1.SaveToStream(SOAPRequest);
 
-  SetLength(Request, SOAPRequest.Size);
-  SOAPRequest.Position := 0;
-  SOAPRequest.Read(Request[1], Length(Request));
+    SetLength(Request, SOAPRequest.Size);
+    SOAPRequest.Position := 0;
+    SOAPRequest.Read(Request[1], Length(Request));
 
- // StrList1.add(FormatXMLData(Request));
-  StrList1.SaveToFile('wsHastaKabul.xml');
-
-
-  StrList1.Free;
- // xmlKaydet.Free;
-  Body.Free;
-
+   // StrList1.add(FormatXMLData(Request));
+    StrList1.SaveToFile('wsHastaKabul.xml');
+  finally
+    StrList1.Free;
+  end;
+   // xmlKaydet.Free;
 end;
 
 procedure TDATALAR.HizmetKayitAfterExecute(const MethodName: string;
   SOAPResponse: TStream);
 var
   memo : Tmemo;
-  m : TStringList;
   R: UTF8String;
 begin
-   SetLength(R, SOAPResponse.Size);
-   SOAPResponse.Position := 0;
-   SOAPResponse.Read(R[1], Length(R));
-   memo := Tmemo.Create(nil);
-   memo.Parent := AnaForm;
-   memo.Lines.Add(FormatXMLData(R));
-   memo.Lines.SaveToFile('C:\Noktav3\HttpCvp\wsHizmetKayitCvp_' + inttostr(HizmetKayit.tag) + '_' + FormatDateTime('DDMMYYYY_HHMMSS',now)  + '_.XML');
-   memo.Free;
-
-
-
+  SetLength(R, SOAPResponse.Size);
+  SOAPResponse.Position := 0;
+  SOAPResponse.Read(R[1], Length(R));
+  memo := Tmemo.Create(nil);
+  try
+    memo.Parent := AnaForm;
+    memo.Lines.Add(FormatXMLData(R));
+    memo.Lines.SaveToFile('C:\Noktav3\HttpCvp\wsHizmetKayitCvp_' + inttostr(HizmetKayit.tag) + '_' + FormatDateTime('DDMMYYYY_HHMMSS',now)  + '_.XML');
+  finally
+    memo.Free;
+  end;
 end;
 
 
@@ -2154,91 +2180,83 @@ procedure TDATALAR.HizmetKayitBeforeExecute(const MethodName: string;
   SOAPRequest: TStream);
 var
   Request: UTF8String;
-  Request1: UTF8String;
   StrList1: TStringList;
-  I : integer;
-  HeaderBegin , HeaderEnd : integer;
   Header  : Widestring;
-  BodyBegin , BodyEnd , ii ,s : integer;
-  Body , xmlKaydet: TStringList;
 begin
 
   StrList1 := TStringList.Create;
-  Body := TStringList.Create;
+  try
+    SetLength(Request, SOAPRequest.Size);
+    SOAPRequest.Position := 0;
+    SOAPRequest.Read(Request[1], Length(Request));
+    StrList1.add(Request);
 
-  SetLength(Request, SOAPRequest.Size);
-  SOAPRequest.Position := 0;
-  SOAPRequest.Read(Request[1], Length(Request));
-  StrList1.add(Request);
 
+    Header := '<SOAP-ENV:Envelope'+
+    ' xmlns:SOAP-ENV="http://schemas.xmlsoap.org/soap/envelope/"'+
+    ' xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"'+
+    ' xmlns:wsa="http://schemas.xmlsoap.org/ws/2004/08/addressing"'+
+    ' xmlns:wsse="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd"'+
+    ' xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd"'+
+    ' xmlns:ser="http://servisler.ws.gss.sgk.gov.tr">'+
+    ' <SOAP-ENV:Header>'+
+    '  <wsse:Security>'+
+    '    <wsse:UsernameToken wsu:Id="SecurityToken-04ce24bd-9c7c-4ca9-9764-92c53b0662c5">'+
+    '      <wsse:Username>'+_username+'</wsse:Username>'+
+    '      <wsse:Password Type="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-username-token-profile-1.0#PasswordText">'+_sifre+'</wsse:Password>'+
+    '    </wsse:UsernameToken>'+
+    '  </wsse:Security>'+
+    ' </SOAP-ENV:Header>';
 
-  Header := '<SOAP-ENV:Envelope'+
-  ' xmlns:SOAP-ENV="http://schemas.xmlsoap.org/soap/envelope/"'+
-  ' xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"'+
-  ' xmlns:wsa="http://schemas.xmlsoap.org/ws/2004/08/addressing"'+
-  ' xmlns:wsse="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd"'+
-  ' xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd"'+
-  ' xmlns:ser="http://servisler.ws.gss.sgk.gov.tr">'+
-  ' <SOAP-ENV:Header>'+
-  '  <wsse:Security>'+
-  '    <wsse:UsernameToken wsu:Id="SecurityToken-04ce24bd-9c7c-4ca9-9764-92c53b0662c5">'+
-  '      <wsse:Username>'+_username+'</wsse:Username>'+
-  '      <wsse:Password Type="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-username-token-profile-1.0#PasswordText">'+_sifre+'</wsse:Password>'+
-  '    </wsse:UsernameToken>'+
-  '  </wsse:Security>'+
-  ' </SOAP-ENV:Header>';
+    StrList1.Text := StringReplace(StrList1.Text,'<SOAP-ENV:Envelope xmlns:SOAP-ENV="http://schemas.xmlsoap.org/soap/envelope/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">',Header,[RfReplaceAll]);
+    StrList1.Text := StringReplace(StrList1.Text,'<hizmetKayit xmlns="http://servisler.ws.gss.sgk.gov.tr">','<ser:hizmetKayit>',[RfReplaceAll]);
+    StrList1.Text := StringReplace(StrList1.Text,'</hizmetKayit>','</ser:hizmetKayit>',[RfReplaceAll]);
 
-  StrList1.text := StringReplace(StrList1.text,'<SOAP-ENV:Envelope xmlns:SOAP-ENV="http://schemas.xmlsoap.org/soap/envelope/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">',Header,[RfReplaceAll]);
-  StrList1.text := StringReplace(StrList1.text,'<hizmetKayit xmlns="http://servisler.ws.gss.sgk.gov.tr">','<ser:hizmetKayit>',[RfReplaceAll]);
-  StrList1.text := StringReplace(StrList1.text,'</hizmetKayit>','</ser:hizmetKayit>',[RfReplaceAll]);
+    StrList1.Text := StringReplace(StrList1.Text,'<hizmetOku xmlns="http://servisler.ws.gss.sgk.gov.tr">','<ser:hizmetOku>',[RfReplaceAll]);
+    StrList1.Text := StringReplace(StrList1.Text,'</hizmetOku>','</ser:hizmetOku>',[RfReplaceAll]);
 
-  StrList1.text := StringReplace(StrList1.text,'<hizmetOku xmlns="http://servisler.ws.gss.sgk.gov.tr">','<ser:hizmetOku>',[RfReplaceAll]);
-  StrList1.text := StringReplace(StrList1.text,'</hizmetOku>','</ser:hizmetOku>',[RfReplaceAll]);
+    StrList1.Text := StringReplace(StrList1.Text,'<hizmetIptal xmlns="http://servisler.ws.gss.sgk.gov.tr">','<ser:hizmetIptal>',[RfReplaceAll]);
+    StrList1.Text := StringReplace(StrList1.Text,'</hizmetIptal>','</ser:hizmetIptal>',[RfReplaceAll]);
 
-  StrList1.text := StringReplace(StrList1.text,'<hizmetIptal xmlns="http://servisler.ws.gss.sgk.gov.tr">','<ser:hizmetIptal>',[RfReplaceAll]);
-  StrList1.text := StringReplace(StrList1.text,'</hizmetIptal>','</ser:hizmetIptal>',[RfReplaceAll]);
+    StrList1.Text := StringReplace(StrList1.Text,' xmlns=""','',[RfReplaceAll]);
+    StrList1.Text := UTF8Encode(StrList1.Text);
 
-  StrList1.text := StringReplace(StrList1.text,' xmlns=""','',[RfReplaceAll]);
-  StrList1.text := UTF8Encode(StrList1.text);
+    SOAPRequest.Position := 0;
+    StrList1.SaveToStream(SOAPRequest);
 
-  SOAPRequest.Position := 0;
-  StrList1.SaveToStream(SOAPRequest);
+    SetLength(Request, SOAPRequest.Size);
+    SOAPRequest.Position := 0;
+    SOAPRequest.Read(Request[1], Length(Request));
 
-  SetLength(Request, SOAPRequest.Size);
-  SOAPRequest.Position := 0;
-  SOAPRequest.Read(Request[1], Length(Request));
-
- // StrList1.add(FormatXMLData(Request));
-  StrList1.SaveToFile('wsHizmetKayit.xml');
-
-  StrList1.Free;
- // xmlKaydet.Free;
-  Body.Free;
+   // StrList1.add(FormatXMLData(Request));
+    StrList1.SaveToFile('wsHizmetKayit.xml');
+  finally
+    StrList1.Free;
+  end;
+   // xmlKaydet.Free;
 end;
 
 procedure TDATALAR.Rapor_AfterExecute(const MethodName: string;
   SOAPResponse: TStream);
 var
   memo : Tmemo;
-  m : TStringList;
   R: UTF8String;
-  x , i: integer;
-  s : string;
-  sil : boolean;
 begin
-   SetLength(R, SOAPResponse.Size);
-   SOAPResponse.Position := 0;
-   SOAPResponse.Read(R[1], Length(R));
-   memo := Tmemo.Create(nil);
-   memo.Parent := AnaForm;
-   try
-     memo.Lines.Add(FormatXMLData(R));
-   except
-     memo.Lines.Add(R);
-   end;
-   memo.Lines.SaveToFile('wsRaporCvp.XML');
-
-   memo.free;
+  SetLength(R, SOAPResponse.Size);
+  SOAPResponse.Position := 0;
+  SOAPResponse.Read(R[1], Length(R));
+  memo := Tmemo.Create(nil);
+  try
+    memo.Parent := AnaForm;
+    try
+      memo.Lines.Add(FormatXMLData(R));
+    except
+      memo.Lines.Add(R);
+    end;
+    memo.Lines.SaveToFile('wsRaporCvp.XML');
+  finally
+    memo.free;
+  end;
 end;
 
 
@@ -2246,14 +2264,8 @@ procedure TDATALAR.Rapor_BeforeExecute(const MethodName: string;
   SOAPRequest: TStream);
 var
   Request: UTF8String;
-  Request1: UTF8String;
-  R: UTF8String;
   StrList1: TStringList;
-  I : integer;
-  HeaderBegin , HeaderEnd : integer;
   Header  : Widestring;
-  BodyBegin , BodyEnd , ii ,s : integer;
-  Body , xmlKaydet: TStringList;
   u,p , ns : string;
 begin
 
@@ -2267,88 +2279,82 @@ begin
   else ns := 'http://servisler.ws.gss.sgk.gov.tr';
 
   StrList1 := TStringList.Create;
-  Body := TStringList.Create;
-
-  SetLength(Request, SOAPRequest.Size);
-  SOAPRequest.Position := 0;
-  SOAPRequest.Read(Request[1], Length(Request));
-  StrList1.add(Request);
-
-
- Header := '<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:ser="'+ ns + '">'+//servisler.ws.gss.sgk.gov.tr">'+
-  ' <soapenv:Header>'+
-  '  <wsse:Security xmlns:wsse="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd" soapenv:mustUnderstand="0">' +
-  '   <wsse:UsernameToken xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd" wsu:Id="UsernameToken-13669775">'+
-  '    <wsse:Username>'+_username + '</wsse:Username>' +
-  '    <wsse:Password Type="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-username-token-profile-1.0#PasswordText">' + _sifre + '</wsse:Password>'+
-  '   </wsse:UsernameToken>' +
-  '  </wsse:Security>'+
-  ' </soapenv:Header>';
-
-  StrList1.text := StringReplace(StrList1.text,'<SOAP-ENV:Body>','<soapenv:Body>',[RfReplaceAll]);
-  StrList1.text := StringReplace(StrList1.text,'</SOAP-ENV:Body>','</soapenv:Body>',[RfReplaceAll]);
-  StrList1.text := StringReplace(StrList1.text,'</SOAP-ENV:Envelope>','</soapenv:Envelope>',[RfReplaceAll]);
+  try
+    SetLength(Request, SOAPRequest.Size);
+    SOAPRequest.Position := 0;
+    SOAPRequest.Read(Request[1], Length(Request));
+    StrList1.add(Request);
 
 
-  StrList1.text := StringReplace(StrList1.text,'<SOAP-ENV:Envelope xmlns:SOAP-ENV="http://schemas.xmlsoap.org/soap/envelope/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">',Header,[RfReplaceAll]);
+   Header := '<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:ser="'+ ns + '">'+//servisler.ws.gss.sgk.gov.tr">'+
+    ' <soapenv:Header>'+
+    '  <wsse:Security xmlns:wsse="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd" soapenv:mustUnderstand="0">' +
+    '   <wsse:UsernameToken xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd" wsu:Id="UsernameToken-13669775">'+
+    '    <wsse:Username>'+_username + '</wsse:Username>' +
+    '    <wsse:Password Type="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-username-token-profile-1.0#PasswordText">' + _sifre + '</wsse:Password>'+
+    '   </wsse:UsernameToken>' +
+    '  </wsse:Security>'+
+    ' </soapenv:Header>';
+
+    StrList1.Text := StringReplace(StrList1.Text,'<SOAP-ENV:Body>','<soapenv:Body>',[RfReplaceAll]);
+    StrList1.Text := StringReplace(StrList1.Text,'</SOAP-ENV:Body>','</soapenv:Body>',[RfReplaceAll]);
+    StrList1.Text := StringReplace(StrList1.Text,'</SOAP-ENV:Envelope>','</soapenv:Envelope>',[RfReplaceAll]);
 
 
-  StrList1.text := StringReplace(StrList1.text,'<raporBilgisiBul xmlns="http://servisler.ws.gss.sgk.gov.tr">','<ser:raporBilgisiBul>',[RfReplaceAll]);
-  StrList1.text := StringReplace(StrList1.text,'</raporBilgisiBul>','</ser:raporBilgisiBul>',[RfReplaceAll]);
-
-  StrList1.text := StringReplace(StrList1.text,'<eraporGiris xmlns="http://servisler.ws.eczane.gss.sgk.gov.tr">','<ser:eraporGiris>',[RfReplaceAll]);
-  StrList1.text := StringReplace(StrList1.text,'</eraporGiris>','</ser:eraporGiris>',[RfReplaceAll]);
-
-  StrList1.text := StringReplace(StrList1.text,'<eraporSorgula xmlns="http://servisler.ws.eczane.gss.sgk.gov.tr">','<ser:eraporSorgula>',[RfReplaceAll]);
-  StrList1.text := StringReplace(StrList1.text,'</eraporSorgula>','</ser:eraporSorgula>',[RfReplaceAll]);
-
-  StrList1.text := StringReplace(StrList1.text,'<eraporSil xmlns="http://servisler.ws.eczane.gss.sgk.gov.tr">','<ser:eraporSil>',[RfReplaceAll]);
-  StrList1.text := StringReplace(StrList1.text,'</eraporSil>','</ser:eraporSil>',[RfReplaceAll]);
-
-  StrList1.text := StringReplace(StrList1.text,'<eraporBashekimOnay xmlns="http://servisler.ws.eczane.gss.sgk.gov.tr">','<ser:eraporBashekimOnay>',[RfReplaceAll]);
-  StrList1.text := StringReplace(StrList1.text,'</eraporBashekimOnay>','</ser:eraporBashekimOnay>',[RfReplaceAll]);
-
-  StrList1.text := StringReplace(StrList1.text,'<eraporBashekimOnayRed xmlns="http://servisler.ws.eczane.gss.sgk.gov.tr">','<ser:eraporBashekimOnayRed>',[RfReplaceAll]);
-  StrList1.text := StringReplace(StrList1.text,'</eraporBashekimOnayRed>','</ser:eraporBashekimOnayRed>',[RfReplaceAll]);
+    StrList1.Text := StringReplace(StrList1.Text,'<SOAP-ENV:Envelope xmlns:SOAP-ENV="http://schemas.xmlsoap.org/soap/envelope/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">',Header,[RfReplaceAll]);
 
 
-  StrList1.text := StringReplace(StrList1.text,'<takipNoileRaporBilgisiKaydet xmlns="http://servisler.ws.gss.sgk.gov.tr">','<ser:takipNoileRaporBilgisiKaydet>',[RfReplaceAll]);
-  StrList1.text := StringReplace(StrList1.text,'</takipNoileRaporBilgisiKaydet>','</ser:takipNoileRaporBilgisiKaydet>',[RfReplaceAll]);
+    StrList1.Text := StringReplace(StrList1.Text,'<raporBilgisiBul xmlns="http://servisler.ws.gss.sgk.gov.tr">','<ser:raporBilgisiBul>',[RfReplaceAll]);
+    StrList1.Text := StringReplace(StrList1.Text,'</raporBilgisiBul>','</ser:raporBilgisiBul>',[RfReplaceAll]);
 
-  StrList1.text := StringReplace(StrList1.text,'<raporBilgisiSil xmlns="http://servisler.ws.gss.sgk.gov.tr">','<ser:raporBilgisiSil>',[RfReplaceAll]);
-  StrList1.text := StringReplace(StrList1.text,'</raporBilgisiSil>','</ser:raporBilgisiSil>',[RfReplaceAll]);
+    StrList1.Text := StringReplace(StrList1.Text,'<eraporGiris xmlns="http://servisler.ws.eczane.gss.sgk.gov.tr">','<ser:eraporGiris>',[RfReplaceAll]);
+    StrList1.Text := StringReplace(StrList1.Text,'</eraporGiris>','</ser:eraporGiris>',[RfReplaceAll]);
 
-  StrList1.text := StringReplace(StrList1.text,'<raporBilgisiBulTCKimlikNodan xmlns="http://servisler.ws.gss.sgk.gov.tr">','<ser:raporBilgisiBulTCKimlikNodan>',[RfReplaceAll]);
-  StrList1.text := StringReplace(StrList1.text,'</raporBilgisiBulTCKimlikNodan>','</ser:raporBilgisiBulTCKimlikNodan>',[RfReplaceAll]);
+    StrList1.Text := StringReplace(StrList1.Text,'<eraporSorgula xmlns="http://servisler.ws.eczane.gss.sgk.gov.tr">','<ser:eraporSorgula>',[RfReplaceAll]);
+    StrList1.Text := StringReplace(StrList1.Text,'</eraporSorgula>','</ser:eraporSorgula>',[RfReplaceAll]);
 
-  StrList1.text := StringReplace(StrList1.text,'<raporBilgisiBulRaporTakipNodan xmlns="http://servisler.ws.gss.sgk.gov.tr">','<ser:raporBilgisiBulRaporTakipNodan>',[RfReplaceAll]);
-  StrList1.text := StringReplace(StrList1.text,'</raporBilgisiBulRaporTakipNodan>','</ser:raporBilgisiBulRaporTakipNodan>',[RfReplaceAll]);
+    StrList1.Text := StringReplace(StrList1.Text,'<eraporSil xmlns="http://servisler.ws.eczane.gss.sgk.gov.tr">','<ser:eraporSil>',[RfReplaceAll]);
+    StrList1.Text := StringReplace(StrList1.Text,'</eraporSil>','</ser:eraporSil>',[RfReplaceAll]);
+
+    StrList1.Text := StringReplace(StrList1.Text,'<eraporBashekimOnay xmlns="http://servisler.ws.eczane.gss.sgk.gov.tr">','<ser:eraporBashekimOnay>',[RfReplaceAll]);
+    StrList1.Text := StringReplace(StrList1.Text,'</eraporBashekimOnay>','</ser:eraporBashekimOnay>',[RfReplaceAll]);
+
+    StrList1.Text := StringReplace(StrList1.Text,'<eraporBashekimOnayRed xmlns="http://servisler.ws.eczane.gss.sgk.gov.tr">','<ser:eraporBashekimOnayRed>',[RfReplaceAll]);
+    StrList1.Text := StringReplace(StrList1.Text,'</eraporBashekimOnayRed>','</ser:eraporBashekimOnayRed>',[RfReplaceAll]);
 
 
+    StrList1.Text := StringReplace(StrList1.Text,'<takipNoileRaporBilgisiKaydet xmlns="http://servisler.ws.gss.sgk.gov.tr">','<ser:takipNoileRaporBilgisiKaydet>',[RfReplaceAll]);
+    StrList1.Text := StringReplace(StrList1.Text,'</takipNoileRaporBilgisiKaydet>','</ser:takipNoileRaporBilgisiKaydet>',[RfReplaceAll]);
 
-  StrList1.text := StringReplace(StrList1.text,' xmlns=""','',[RfReplaceAll]);
-  StrList1.text := UTF8Encode(StrList1.text);
+    StrList1.Text := StringReplace(StrList1.Text,'<raporBilgisiSil xmlns="http://servisler.ws.gss.sgk.gov.tr">','<ser:raporBilgisiSil>',[RfReplaceAll]);
+    StrList1.Text := StringReplace(StrList1.Text,'</raporBilgisiSil>','</ser:raporBilgisiSil>',[RfReplaceAll]);
+
+    StrList1.Text := StringReplace(StrList1.Text,'<raporBilgisiBulTCKimlikNodan xmlns="http://servisler.ws.gss.sgk.gov.tr">','<ser:raporBilgisiBulTCKimlikNodan>',[RfReplaceAll]);
+    StrList1.Text := StringReplace(StrList1.Text,'</raporBilgisiBulTCKimlikNodan>','</ser:raporBilgisiBulTCKimlikNodan>',[RfReplaceAll]);
+
+    StrList1.Text := StringReplace(StrList1.Text,'<raporBilgisiBulRaporTakipNodan xmlns="http://servisler.ws.gss.sgk.gov.tr">','<ser:raporBilgisiBulRaporTakipNodan>',[RfReplaceAll]);
+    StrList1.Text := StringReplace(StrList1.Text,'</raporBilgisiBulRaporTakipNodan>','</ser:raporBilgisiBulRaporTakipNodan>',[RfReplaceAll]);
 
 
 
-  SOAPRequest.Position := 0;
-  StrList1.SaveToStream(SOAPRequest);
-
-  SetLength(Request, SOAPRequest.Size);
-  SOAPRequest.Position := 0;
-  SOAPRequest.Read(Request[1], Length(Request));
-
- // StrList1.add(FormatXMLData(Request));
-  StrList1.SaveToFile('wsRapor.xml');
+    StrList1.Text := StringReplace(StrList1.Text,' xmlns=""','',[RfReplaceAll]);
+    StrList1.Text := UTF8Encode(StrList1.Text);
 
 
-  StrList1.Free;
+
+    SOAPRequest.Position := 0;
+    StrList1.SaveToStream(SOAPRequest);
+
+    SetLength(Request, SOAPRequest.Size);
+    SOAPRequest.Position := 0;
+    SOAPRequest.Read(Request[1], Length(Request));
+
+   // StrList1.add(FormatXMLData(Request));
+    StrList1.SaveToFile('wsRapor.xml');
+  finally
+    StrList1.Free;
+  end;
  // xmlKaydet.Free;
-  Body.Free;
-
-
-
-
 end;
 
 
@@ -2356,96 +2362,88 @@ procedure TDATALAR.Rapor_MBeforeExecute(const MethodName: string;
   SOAPRequest: TStream);
 var
   Request: UTF8String;
-  Request1: UTF8String;
-  R: UTF8String;
   StrList1: TStringList;
-  I : integer;
-  HeaderBegin , HeaderEnd : integer;
   Header  : Widestring;
-  BodyBegin , BodyEnd , ii ,s : integer;
-  Body , xmlKaydet: TStringList;
-  u,p , ns : string;
+  ns : string;
 begin
 
   ns := 'http://servisler.ws.gss.sgk.gov.tr';
 
   StrList1 := TStringList.Create;
-  Body := TStringList.Create;
-
-  SetLength(Request, SOAPRequest.Size);
-  SOAPRequest.Position := 0;
-  SOAPRequest.Read(Request[1], Length(Request));
-  StrList1.add(Request);
-
-
- Header := '<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:ser="'+ ns + '">'+//servisler.ws.gss.sgk.gov.tr">'+
-  ' <soapenv:Header>'+
-  '  <wsse:Security xmlns:wsse="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd" soapenv:mustUnderstand="0">' +
-  '   <wsse:UsernameToken xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd" wsu:Id="UsernameToken-13669775">'+
-  '    <wsse:Username>'+_username + '</wsse:Username>' +
-  '    <wsse:Password Type="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-username-token-profile-1.0#PasswordText">' + _sifre + '</wsse:Password>'+
-  '   </wsse:UsernameToken>' +
-  '  </wsse:Security>'+
-  ' </soapenv:Header>';
-
-  StrList1.text := StringReplace(StrList1.text,'<SOAP-ENV:Body>','<soapenv:Body>',[RfReplaceAll]);
-  StrList1.text := StringReplace(StrList1.text,'</SOAP-ENV:Body>','</soapenv:Body>',[RfReplaceAll]);
-  StrList1.text := StringReplace(StrList1.text,'</SOAP-ENV:Envelope>','</soapenv:Envelope>',[RfReplaceAll]);
+  try
+    SetLength(Request, SOAPRequest.Size);
+    SOAPRequest.Position := 0;
+    SOAPRequest.Read(Request[1], Length(Request));
+    StrList1.add(Request);
 
 
-  StrList1.text := StringReplace(StrList1.text,'<SOAP-ENV:Envelope xmlns:SOAP-ENV="http://schemas.xmlsoap.org/soap/envelope/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">',Header,[RfReplaceAll]);
+   Header := '<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:ser="'+ ns + '">'+//servisler.ws.gss.sgk.gov.tr">'+
+    ' <soapenv:Header>'+
+    '  <wsse:Security xmlns:wsse="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd" soapenv:mustUnderstand="0">' +
+    '   <wsse:UsernameToken xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd" wsu:Id="UsernameToken-13669775">'+
+    '    <wsse:Username>'+_username + '</wsse:Username>' +
+    '    <wsse:Password Type="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-username-token-profile-1.0#PasswordText">' + _sifre + '</wsse:Password>'+
+    '   </wsse:UsernameToken>' +
+    '  </wsse:Security>'+
+    ' </soapenv:Header>';
+
+    StrList1.Text := StringReplace(StrList1.Text,'<SOAP-ENV:Body>','<soapenv:Body>',[RfReplaceAll]);
+    StrList1.Text := StringReplace(StrList1.Text,'</SOAP-ENV:Body>','</soapenv:Body>',[RfReplaceAll]);
+    StrList1.Text := StringReplace(StrList1.Text,'</SOAP-ENV:Envelope>','</soapenv:Envelope>',[RfReplaceAll]);
 
 
-  StrList1.text := StringReplace(StrList1.text,'<raporBilgisiBul xmlns="http://servisler.ws.gss.sgk.gov.tr">','<ser:raporBilgisiBul>',[RfReplaceAll]);
-  StrList1.text := StringReplace(StrList1.text,'</raporBilgisiBul>','</ser:raporBilgisiBul>',[RfReplaceAll]);
-
-  StrList1.text := StringReplace(StrList1.text,'<eraporGiris xmlns="http://servisler.ws.eczane.gss.sgk.gov.tr">','<ser:eraporGiris>',[RfReplaceAll]);
-  StrList1.text := StringReplace(StrList1.text,'</eraporGiris>','</ser:eraporGiris>',[RfReplaceAll]);
-
-  StrList1.text := StringReplace(StrList1.text,'<eraporSorgula xmlns="http://servisler.ws.eczane.gss.sgk.gov.tr">','<ser:eraporSorgula>',[RfReplaceAll]);
-  StrList1.text := StringReplace(StrList1.text,'</eraporSorgula>','</ser:eraporSorgula>',[RfReplaceAll]);
-
-  StrList1.text := StringReplace(StrList1.text,'<eraporSil xmlns="http://servisler.ws.eczane.gss.sgk.gov.tr">','<ser:eraporSil>',[RfReplaceAll]);
-  StrList1.text := StringReplace(StrList1.text,'</eraporSil>','</ser:eraporSil>',[RfReplaceAll]);
-
-  StrList1.text := StringReplace(StrList1.text,'<eraporBashekimOnay xmlns="http://servisler.ws.eczane.gss.sgk.gov.tr">','<ser:eraporBashekimOnay>',[RfReplaceAll]);
-  StrList1.text := StringReplace(StrList1.text,'</eraporBashekimOnay>','</ser:eraporBashekimOnay>',[RfReplaceAll]);
-
-  StrList1.text := StringReplace(StrList1.text,'<eraporBashekimOnayRed xmlns="http://servisler.ws.eczane.gss.sgk.gov.tr">','<ser:eraporBashekimOnayRed>',[RfReplaceAll]);
-  StrList1.text := StringReplace(StrList1.text,'</eraporBashekimOnayRed>','</ser:eraporBashekimOnayRed>',[RfReplaceAll]);
+    StrList1.Text := StringReplace(StrList1.Text,'<SOAP-ENV:Envelope xmlns:SOAP-ENV="http://schemas.xmlsoap.org/soap/envelope/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">',Header,[RfReplaceAll]);
 
 
-  StrList1.text := StringReplace(StrList1.text,'<takipNoileRaporBilgisiKaydet xmlns="http://servisler.ws.gss.sgk.gov.tr">','<ser:takipNoileRaporBilgisiKaydet>',[RfReplaceAll]);
-  StrList1.text := StringReplace(StrList1.text,'</takipNoileRaporBilgisiKaydet>','</ser:takipNoileRaporBilgisiKaydet>',[RfReplaceAll]);
+    StrList1.Text := StringReplace(StrList1.Text,'<raporBilgisiBul xmlns="http://servisler.ws.gss.sgk.gov.tr">','<ser:raporBilgisiBul>',[RfReplaceAll]);
+    StrList1.Text := StringReplace(StrList1.Text,'</raporBilgisiBul>','</ser:raporBilgisiBul>',[RfReplaceAll]);
 
-  StrList1.text := StringReplace(StrList1.text,'<raporBilgisiSil xmlns="http://servisler.ws.gss.sgk.gov.tr">','<ser:raporBilgisiSil>',[RfReplaceAll]);
-  StrList1.text := StringReplace(StrList1.text,'</raporBilgisiSil>','</ser:raporBilgisiSil>',[RfReplaceAll]);
+    StrList1.Text := StringReplace(StrList1.Text,'<eraporGiris xmlns="http://servisler.ws.eczane.gss.sgk.gov.tr">','<ser:eraporGiris>',[RfReplaceAll]);
+    StrList1.Text := StringReplace(StrList1.Text,'</eraporGiris>','</ser:eraporGiris>',[RfReplaceAll]);
 
-  StrList1.text := StringReplace(StrList1.text,'<raporBilgisiBulTCKimlikNodan xmlns="http://servisler.ws.gss.sgk.gov.tr">','<ser:raporBilgisiBulTCKimlikNodan>',[RfReplaceAll]);
-  StrList1.text := StringReplace(StrList1.text,'</raporBilgisiBulTCKimlikNodan>','</ser:raporBilgisiBulTCKimlikNodan>',[RfReplaceAll]);
+    StrList1.Text := StringReplace(StrList1.Text,'<eraporSorgula xmlns="http://servisler.ws.eczane.gss.sgk.gov.tr">','<ser:eraporSorgula>',[RfReplaceAll]);
+    StrList1.Text := StringReplace(StrList1.Text,'</eraporSorgula>','</ser:eraporSorgula>',[RfReplaceAll]);
 
+    StrList1.Text := StringReplace(StrList1.Text,'<eraporSil xmlns="http://servisler.ws.eczane.gss.sgk.gov.tr">','<ser:eraporSil>',[RfReplaceAll]);
+    StrList1.Text := StringReplace(StrList1.Text,'</eraporSil>','</ser:eraporSil>',[RfReplaceAll]);
+
+    StrList1.Text := StringReplace(StrList1.Text,'<eraporBashekimOnay xmlns="http://servisler.ws.eczane.gss.sgk.gov.tr">','<ser:eraporBashekimOnay>',[RfReplaceAll]);
+    StrList1.Text := StringReplace(StrList1.Text,'</eraporBashekimOnay>','</ser:eraporBashekimOnay>',[RfReplaceAll]);
+
+    StrList1.Text := StringReplace(StrList1.Text,'<eraporBashekimOnayRed xmlns="http://servisler.ws.eczane.gss.sgk.gov.tr">','<ser:eraporBashekimOnayRed>',[RfReplaceAll]);
+    StrList1.Text := StringReplace(StrList1.Text,'</eraporBashekimOnayRed>','</ser:eraporBashekimOnayRed>',[RfReplaceAll]);
+
+
+    StrList1.Text := StringReplace(StrList1.Text,'<takipNoileRaporBilgisiKaydet xmlns="http://servisler.ws.gss.sgk.gov.tr">','<ser:takipNoileRaporBilgisiKaydet>',[RfReplaceAll]);
+    StrList1.Text := StringReplace(StrList1.Text,'</takipNoileRaporBilgisiKaydet>','</ser:takipNoileRaporBilgisiKaydet>',[RfReplaceAll]);
+
+    StrList1.Text := StringReplace(StrList1.Text,'<raporBilgisiSil xmlns="http://servisler.ws.gss.sgk.gov.tr">','<ser:raporBilgisiSil>',[RfReplaceAll]);
+    StrList1.Text := StringReplace(StrList1.Text,'</raporBilgisiSil>','</ser:raporBilgisiSil>',[RfReplaceAll]);
+
+    StrList1.Text := StringReplace(StrList1.Text,'<raporBilgisiBulTCKimlikNodan xmlns="http://servisler.ws.gss.sgk.gov.tr">','<ser:raporBilgisiBulTCKimlikNodan>',[RfReplaceAll]);
+    StrList1.Text := StringReplace(StrList1.Text,'</raporBilgisiBulTCKimlikNodan>','</ser:raporBilgisiBulTCKimlikNodan>',[RfReplaceAll]);
 
 
 
-  StrList1.text := StringReplace(StrList1.text,' xmlns=""','',[RfReplaceAll]);
-  StrList1.text := UTF8Encode(StrList1.text);
+
+    StrList1.Text := StringReplace(StrList1.Text,' xmlns=""','',[RfReplaceAll]);
+    StrList1.Text := UTF8Encode(StrList1.Text);
 
 
 
-  SOAPRequest.Position := 0;
-  StrList1.SaveToStream(SOAPRequest);
+    SOAPRequest.Position := 0;
+    StrList1.SaveToStream(SOAPRequest);
 
-  SetLength(Request, SOAPRequest.Size);
-  SOAPRequest.Position := 0;
-  SOAPRequest.Read(Request[1], Length(Request));
+    SetLength(Request, SOAPRequest.Size);
+    SOAPRequest.Position := 0;
+    SOAPRequest.Read(Request[1], Length(Request));
 
- // StrList1.add(FormatXMLData(Request));
-  StrList1.SaveToFile('wsRapor.xml');
-
-
-  StrList1.Free;
+   // StrList1.add(FormatXMLData(Request));
+    StrList1.SaveToFile('wsRapor.xml');
+  finally
+    StrList1.Free;
+  end;
  // xmlKaydet.Free;
-  Body.Free;
 
 
 end;
@@ -2454,208 +2452,211 @@ procedure TDATALAR.ReferansAfterExecute(const MethodName: string;
   SOAPResponse: TStream);
 var
   memo : Tmemo;
-  m : TStringList;
   R: UTF8String;
-  x , i: integer;
-  s : string;
-  sil : boolean;
 begin
-   SetLength(R, SOAPResponse.Size);
-   SOAPResponse.Position := 0;
-   SOAPResponse.Read(R[1], Length(R));
-   memo := Tmemo.Create(nil);
-   memo.Parent := AnaForm;
-   memo.Lines.Add(FormatXMLData(R));
-   memo.Lines.SaveToFile('ReferansCvp.XML');
+  SetLength(R, SOAPResponse.Size);
+  SOAPResponse.Position := 0;
+  SOAPResponse.Read(R[1], Length(R));
+  memo := Tmemo.Create(nil);
+  try
+    memo.Parent := AnaForm;
+    memo.Lines.Add(FormatXMLData(R));
+    memo.Lines.SaveToFile('ReferansCvp.XML');
 
 
 
 
-   (*
-      s:= '<xs:schema id="NewDataSet" xmlns="" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">';
-      memo.Lines.Text := StringReplace(memo.Lines.Text,s,'',[rfReplaceAll]);
+    (*
+       s:= '<xs:schema id="NewDataSet" xmlns="" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">';
+       memo.Lines.Text := StringReplace(memo.Lines.Text,s,'',[rfReplaceAll]);
 
-      s := '<xs:element name="NewDataSet" msdata:IsDataSet="true" msdata:UseCurrentLocale="true">';
-      memo.Lines.Text := StringReplace(memo.Lines.Text,s,'',[rfReplaceAll]);
+       s := '<xs:element name="NewDataSet" msdata:IsDataSet="true" msdata:UseCurrentLocale="true">';
+       memo.Lines.Text := StringReplace(memo.Lines.Text,s,'',[rfReplaceAll]);
 
-      s := '<xs:complexType>';
-      memo.Lines.Text := StringReplace(memo.Lines.Text,s,'',[rfReplaceAll]);
+       s := '<xs:complexType>';
+       memo.Lines.Text := StringReplace(memo.Lines.Text,s,'',[rfReplaceAll]);
 
-      s := '<xs:choice minOccurs="0" maxOccurs="unbounded">';
-      memo.Lines.Text := StringReplace(memo.Lines.Text,s,'',[rfReplaceAll]);
+       s := '<xs:choice minOccurs="0" maxOccurs="unbounded">';
+       memo.Lines.Text := StringReplace(memo.Lines.Text,s,'',[rfReplaceAll]);
 
-      s := '<xs:element name="hstsonuclar">';
-      memo.Lines.Text := StringReplace(memo.Lines.Text,s,'',[rfReplaceAll]);
+       s := '<xs:element name="hstsonuclar">';
+       memo.Lines.Text := StringReplace(memo.Lines.Text,s,'',[rfReplaceAll]);
 
-      s := '<xs:complexType>';
-      memo.Lines.Text := StringReplace(memo.Lines.Text,s,'',[rfReplaceAll]);
+       s := '<xs:complexType>';
+       memo.Lines.Text := StringReplace(memo.Lines.Text,s,'',[rfReplaceAll]);
 
-      s := '<xs:sequence>';
-      memo.Lines.Text := StringReplace(memo.Lines.Text,s,'',[rfReplaceAll]);
+       s := '<xs:sequence>';
+       memo.Lines.Text := StringReplace(memo.Lines.Text,s,'',[rfReplaceAll]);
 
-      s := '<xs:element name="GELISREF" type="xs:int" minOccurs="0"/>';
-      memo.Lines.Text := StringReplace(memo.Lines.Text,s,'',[rfReplaceAll]);
+       s := '<xs:element name="GELISREF" type="xs:int" minOccurs="0"/>';
+       memo.Lines.Text := StringReplace(memo.Lines.Text,s,'',[rfReplaceAll]);
 
-      s := '<xs:element name="HASTAADI" type="xs:string" minOccurs="0"/>';
-      memo.Lines.Text := StringReplace(memo.Lines.Text,s,'',[rfReplaceAll]);
+       s := '<xs:element name="HASTAADI" type="xs:string" minOccurs="0"/>';
+       memo.Lines.Text := StringReplace(memo.Lines.Text,s,'',[rfReplaceAll]);
 
-      s := '<xs:element name="HASTAREF" type="xs:int" minOccurs="0"/>';
-      memo.Lines.Text := StringReplace(memo.Lines.Text,s,'',[rfReplaceAll]);
+       s := '<xs:element name="HASTAREF" type="xs:int" minOccurs="0"/>';
+       memo.Lines.Text := StringReplace(memo.Lines.Text,s,'',[rfReplaceAll]);
 
-      s := '<xs:element name="HASTATCKNO" type="xs:string" minOccurs="0"/>';
-      memo.Lines.Text := StringReplace(memo.Lines.Text,s,'',[rfReplaceAll]);
+       s := '<xs:element name="HASTATCKNO" type="xs:string" minOccurs="0"/>';
+       memo.Lines.Text := StringReplace(memo.Lines.Text,s,'',[rfReplaceAll]);
 
-      s := '<xs:element name="RAPORTARIHI" type="xs:dateTime" minOccurs="0"/>';
-      memo.Lines.Text := StringReplace(memo.Lines.Text,s,'',[rfReplaceAll]);
+       s := '<xs:element name="RAPORTARIHI" type="xs:dateTime" minOccurs="0"/>';
+       memo.Lines.Text := StringReplace(memo.Lines.Text,s,'',[rfReplaceAll]);
 
-      s := '<xs:element name="GELISTARIHI" type="xs:dateTime" minOccurs="0"/>';
-      memo.Lines.Text := StringReplace(memo.Lines.Text,s,'',[rfReplaceAll]);
+       s := '<xs:element name="GELISTARIHI" type="xs:dateTime" minOccurs="0"/>';
+       memo.Lines.Text := StringReplace(memo.Lines.Text,s,'',[rfReplaceAll]);
 
-      s := '<xs:element name="TESTADI" type="xs:string" minOccurs="0"/>';
-      memo.Lines.Text := StringReplace(memo.Lines.Text,s,'',[rfReplaceAll]);
+       s := '<xs:element name="TESTADI" type="xs:string" minOccurs="0"/>';
+       memo.Lines.Text := StringReplace(memo.Lines.Text,s,'',[rfReplaceAll]);
 
-      s := '<xs:element name="TESTREF" type="xs:short" minOccurs="0"/>';
-      memo.Lines.Text := StringReplace(memo.Lines.Text,s,'',[rfReplaceAll]);
+       s := '<xs:element name="TESTREF" type="xs:short" minOccurs="0"/>';
+       memo.Lines.Text := StringReplace(memo.Lines.Text,s,'',[rfReplaceAll]);
 
-      s := '<xs:element name="SONUC" type="xs:string" minOccurs="0"/>';
-      memo.Lines.Text := StringReplace(memo.Lines.Text,s,'',[rfReplaceAll]);
+       s := '<xs:element name="SONUC" type="xs:string" minOccurs="0"/>';
+       memo.Lines.Text := StringReplace(memo.Lines.Text,s,'',[rfReplaceAll]);
 
-      s := '<xs:element name="SONUCBIRIM" type="xs:string" minOccurs="0"/>';
-      memo.Lines.Text := StringReplace(memo.Lines.Text,s,'',[rfReplaceAll]);
+       s := '<xs:element name="SONUCBIRIM" type="xs:string" minOccurs="0"/>';
+       memo.Lines.Text := StringReplace(memo.Lines.Text,s,'',[rfReplaceAll]);
 
-      s := '<xs:element name="SONUCTEXT" type="xs:string" minOccurs="0"/>';
-      memo.Lines.Text := StringReplace(memo.Lines.Text,s,'',[rfReplaceAll]);
+       s := '<xs:element name="SONUCTEXT" type="xs:string" minOccurs="0"/>';
+       memo.Lines.Text := StringReplace(memo.Lines.Text,s,'',[rfReplaceAll]);
 
-      s := '<xs:element name="GONDERENBARKOD" type="xs:string" minOccurs="0"/>';
-      memo.Lines.Text := StringReplace(memo.Lines.Text,s,'',[rfReplaceAll]);
+       s := '<xs:element name="GONDERENBARKOD" type="xs:string" minOccurs="0"/>';
+       memo.Lines.Text := StringReplace(memo.Lines.Text,s,'',[rfReplaceAll]);
 
-      s := '</xs:sequence>';
-      memo.Lines.Text := StringReplace(memo.Lines.Text,s,'',[rfReplaceAll]);
+       s := '</xs:sequence>';
+       memo.Lines.Text := StringReplace(memo.Lines.Text,s,'',[rfReplaceAll]);
 
-      s := '</xs:complexType>';
-      memo.Lines.Text := StringReplace(memo.Lines.Text,s,'',[rfReplaceAll]);
+       s := '</xs:complexType>';
+       memo.Lines.Text := StringReplace(memo.Lines.Text,s,'',[rfReplaceAll]);
 
-      s := '</xs:element>';
-      memo.Lines.Text := StringReplace(memo.Lines.Text,s,'',[rfReplaceAll]);
+       s := '</xs:element>';
+       memo.Lines.Text := StringReplace(memo.Lines.Text,s,'',[rfReplaceAll]);
 
-      s := '</xs:choice>';
-      memo.Lines.Text := StringReplace(memo.Lines.Text,s,'',[rfReplaceAll]);
+       s := '</xs:choice>';
+       memo.Lines.Text := StringReplace(memo.Lines.Text,s,'',[rfReplaceAll]);
 
-      s := '</xs:complexType>';
-      memo.Lines.Text := StringReplace(memo.Lines.Text,s,'',[rfReplaceAll]);
+       s := '</xs:complexType>';
+       memo.Lines.Text := StringReplace(memo.Lines.Text,s,'',[rfReplaceAll]);
 
-      s :='</xs:element>';
-      memo.Lines.Text := StringReplace(memo.Lines.Text,s,'',[rfReplaceAll]);
+       s :='</xs:element>';
+       memo.Lines.Text := StringReplace(memo.Lines.Text,s,'',[rfReplaceAll]);
 
-      s := '</xs:schema>';
-      memo.Lines.Text := StringReplace(memo.Lines.Text,s,'',[rfReplaceAll]);
+       s := '</xs:schema>';
+       memo.Lines.Text := StringReplace(memo.Lines.Text,s,'',[rfReplaceAll]);
 
-   memo.Lines.Text := StringReplace(memo.Lines.Text,s,'',[rfReplaceAll]);
-
-   s := '<diffgr:diffgram xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" xmlns:diffgr="urn:schemas-microsoft-com:xml-diffgram-v1">';
-   memo.Lines.Text := StringReplace(memo.Lines.Text,s,'',[rfReplaceAll]);
-
-   s := '<NewDataSet xmlns="">';
-   memo.Lines.Text := StringReplace(memo.Lines.Text,s,'',[rfReplaceAll]);
-
-   s := '</NewDataSet>';
-   memo.Lines.Text := StringReplace(memo.Lines.Text,s,'',[rfReplaceAll]);
-
-   s := '</diffgr:diffgram>';
-   memo.Lines.Text := StringReplace(memo.Lines.Text,s,'',[rfReplaceAll]);
-
-   for x := 0 to 200 do
-   begin
-    s := ' diffgr:id="hstsonuclar'+ inttostr(x+1) +'" msdata:rowOrder="'+ inttostr(x) + '" diffgr:hasChanges="inserted"';
     memo.Lines.Text := StringReplace(memo.Lines.Text,s,'',[rfReplaceAll]);
-   end;
 
-   for x := 0 to memo.Lines.Count - 1 do
-   begin
-   sil := True;
-    for i := 1 to length(memo.Lines[x]) do
+    s := '<diffgr:diffgram xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" xmlns:diffgr="urn:schemas-microsoft-com:xml-diffgram-v1">';
+    memo.Lines.Text := StringReplace(memo.Lines.Text,s,'',[rfReplaceAll]);
+
+    s := '<NewDataSet xmlns="">';
+    memo.Lines.Text := StringReplace(memo.Lines.Text,s,'',[rfReplaceAll]);
+
+    s := '</NewDataSet>';
+    memo.Lines.Text := StringReplace(memo.Lines.Text,s,'',[rfReplaceAll]);
+
+    s := '</diffgr:diffgram>';
+    memo.Lines.Text := StringReplace(memo.Lines.Text,s,'',[rfReplaceAll]);
+
+    for x := 0 to 200 do
     begin
-       if copy(memo.Lines[x],i,1) <> ' '
-       Then sil := false;
+     s := ' diffgr:id="hstsonuclar'+ inttostr(x+1) +'" msdata:rowOrder="'+ inttostr(x) + '" diffgr:hasChanges="inserted"';
+     memo.Lines.Text := StringReplace(memo.Lines.Text,s,'',[rfReplaceAll]);
     end;
-    if sil = True Then memo.Lines.Delete(x);
 
-   end;
+    for x := 0 to memo.Lines.Count - 1 do
+    begin
+    sil := True;
+     for i := 1 to length(memo.Lines[x]) do
+     begin
+        if copy(memo.Lines[x],i,1) <> ' '
+        Then sil := false;
+     end;
+     if sil = True Then memo.Lines.Delete(x);
+
+    end;
 
 
 
-   memo.Lines.SaveToFile('ReferansCvp.XML');
+    memo.Lines.SaveToFile('ReferansCvp.XML');
 
-   *)
-
-
-
-   memo.Free;
+    *)
+  finally
+    memo.Free;
+  end;
 end;
+
 procedure TDATALAR.ReferansBeforeExecute(const MethodName: string;
   SOAPRequest: TStream);
 var
   memo : Tmemo;
-  m : TStringList;
   R: UTF8String;
 begin
-   SetLength(R, SOAPRequest.Size);
-   SOAPRequest.Position := 0;
-   SOAPRequest.Read(R[1], Length(R));
-   memo := Tmemo.Create(nil);
-   memo.Parent := AnaForm;
-   memo.Lines.Add(FormatXMLData(R));
-   memo.Lines.SaveToFile('Referans.XML');
-   memo.Free;
+  SetLength(R, SOAPRequest.Size);
+  SOAPRequest.Position := 0;
+  SOAPRequest.Read(R[1], Length(R));
+  memo := Tmemo.Create(nil);
+  try
+    memo.Parent := AnaForm;
+    memo.Lines.Add(FormatXMLData(R));
+    memo.Lines.SaveToFile('Referans.XML');
+  finally
+    memo.Free;
+  end;
 end;
 
 procedure TDATALAR.servis_AfterExecute(const MethodName: string;
   SOAPResponse: TStream);
 var
-  XMLDoc: IXMLDocument;
-  memo : Tmemo;
-  m,StrList1 : TStringList;
+  StrList1 : TStringList;
   R: UTF8String;
-  x , i: integer;
-  s : string;
-  sil : boolean;
 begin
-   StrList1 := TStringList.Create;
-   SetLength(R, SOAPResponse.Size);
-   SOAPResponse.Position := 0;
-   SOAPResponse.Read(R[1], Length(R));
+  StrList1 := TStringList.Create;
+  try
+    SetLength(R, SOAPResponse.Size);
+    SOAPResponse.Position := 0;
+    SOAPResponse.Read(R[1], Length(R));
 
-   StrList1.add(R);
-   StrList1.SaveToFile('onlineProtokolCvp.XML');
-   StrList1.Free;
+    StrList1.add(R);
+    StrList1.SaveToFile('onlineProtokolCvp.XML');
+  finally
+    StrList1.Free;
+  end;
 end;
+
 procedure TDATALAR.servis_BeforeExecute(const MethodName: string;
   SOAPRequest: TStream);
 var
  T : TstringList;
 begin
-   T := TstringList.Create;
-   SOAPRequest.Position := 0;
-   t.LoadFromStream(SOAPRequest);
-   t.SaveToFile('onlineProtokol.xml');
-   t.Free;
+  T := TstringList.Create;
+  try
+    SOAPRequest.Position := 0;
+    t.LoadFromStream(SOAPRequest);
+    t.SaveToFile('onlineProtokol.xml');
+  finally
+    t.Free;
+  end;
 end;
 
 procedure TDATALAR.SistemAfterExecute(const MethodName: string;
   SOAPResponse: TStream);
 var
   memo : Tmemo;
-  m : TStringList;
   R: UTF8String;
 begin
-   SetLength(R, SOAPResponse.Size);
-   SOAPResponse.Position := 0;
-   SOAPResponse.Read(R[1], Length(R));
-   memo := Tmemo.Create(nil);
-   memo.Parent := AnaForm;
-   memo.Lines.Add(FormatXMLData(R));
-   memo.Lines.SaveToFile('SistemCvp.XML');
-   memo.Free;
+  SetLength(R, SOAPResponse.Size);
+  SOAPResponse.Position := 0;
+  SOAPResponse.Read(R[1], Length(R));
+  memo := Tmemo.Create(nil);
+  try
+    memo.Parent := AnaForm;
+    memo.Lines.Add(FormatXMLData(R));
+    memo.Lines.SaveToFile('SistemCvp.XML');
+  finally
+    memo.Free;
+  end;
 end;
 
 
@@ -2663,17 +2664,19 @@ procedure TDATALAR.SistemBeforeExecute(const MethodName: string;
   SOAPRequest: TStream);
 var
   memo : Tmemo;
-  m : TStringList;
   R: UTF8String;
 begin
-   SetLength(R, SOAPRequest.Size);
-   SOAPRequest.Position := 0;
-   SOAPRequest.Read(R[1], Length(R));
-   memo := Tmemo.Create(nil);
-   memo.Parent := AnaForm;
-   memo.Lines.Add(FormatXMLData(R));
-   memo.Lines.SaveToFile('Sistem.XML');
-   memo.Free;
+  SetLength(R, SOAPRequest.Size);
+  SOAPRequest.Position := 0;
+  SOAPRequest.Read(R[1], Length(R));
+  memo := Tmemo.Create(nil);
+  try
+    memo.Parent := AnaForm;
+    memo.Lines.Add(FormatXMLData(R));
+    memo.Lines.SaveToFile('Sistem.XML');
+  finally
+    memo.Free;
+  end;
 end;
 
 procedure TDATALAR.SistemHTTPWebNode1BeforePost(const HTTPReqResp: THTTPReqResp;
@@ -2704,8 +2707,6 @@ procedure TDATALAR.ADOConnection2WillExecute(Connection: TADOConnection;
   var LockType: TADOLockType; var CommandType: TCommandType;
   var ExecuteOptions: TExecuteOptions; var EventStatus: TEventStatus;
   const Command: _Command; const Recordset: _Recordset);
-var
-  t : TstringList;
 begin
  //   SendQueryString('**************'+FormatDateTime('DD-MM-YYYY HH:MM:SS:ZZZ',now)+'**************');
     SendQueryString(CommandText);
@@ -2731,11 +2732,14 @@ procedure TDATALAR.AENAfterExecute(const MethodName: string;
 var
  T : TstringList;
 begin
-   T := TstringList.Create;
-   SOAPResponse.Position := 0;
-   t.LoadFromStream(SOAPResponse);
-   t.SaveToFile('AENCvp.xml');
-   t.Free;
+  T := TstringList.Create;
+  try
+    SOAPResponse.Position := 0;
+    t.LoadFromStream(SOAPResponse);
+    t.SaveToFile('AENCvp.xml');
+  finally
+    t.Free;
+  end;
 end;
 
 procedure TDATALAR.AENBeforeExecute(const MethodName: string;
@@ -2743,34 +2747,44 @@ procedure TDATALAR.AENBeforeExecute(const MethodName: string;
 var
  T : TstringList;
 begin
-   T := TstringList.Create;
-   SOAPRequest.Position := 0;
-   t.LoadFromStream(SOAPRequest);
-   t.SaveToFile('AEN.xml');
-   t.Free;
+  T := TstringList.Create;
+  try
+    SOAPRequest.Position := 0;
+    t.LoadFromStream(SOAPRequest);
+    t.SaveToFile('AEN.xml');
+  finally
+    t.Free;
+  end;
 end;
 
 procedure TDATALAR.AhenkAfterExecute(const MethodName: string;
   SOAPResponse: TStream);
 var
- T : TstringList;
+  T : TstringList;
 begin
    T := TstringList.Create;
-   SOAPResponse.Position := 0;
-   t.LoadFromStream(SOAPResponse);
-   t.SaveToFile('medilisCvp.xml');
-   t.Free;
+   try
+     SOAPResponse.Position := 0;
+     t.LoadFromStream(SOAPResponse);
+     t.SaveToFile('medilisCvp.xml');
+   finally
+     t.Free;
+   end;
 end;
+
 procedure TDATALAR.AhenkBeforeExecute(const MethodName: string;
   SOAPRequest: TStream);
 var
  T : TstringList;
 begin
-   T := TstringList.Create;
-   SOAPRequest.Position := 0;
-   t.LoadFromStream(SOAPRequest);
-   t.SaveToFile('medilis.xml');
-   t.Free;
+  T := TstringList.Create;
+  try
+    SOAPRequest.Position := 0;
+    t.LoadFromStream(SOAPRequest);
+    t.SaveToFile('medilis.xml');
+  finally
+    t.Free;
+  end;
 end;
 
 procedure TDATALAR.AlisAfterExecute(const MethodName: string;
@@ -2778,22 +2792,29 @@ procedure TDATALAR.AlisAfterExecute(const MethodName: string;
 var
  T : TstringList;
 begin
-   T := TstringList.Create;
-   SOAPResponse.Position := 0;
-   t.LoadFromStream(SOAPResponse);
-   t.SaveToFile('AlisCvp.xml');
-   t.Free;
+  T := TstringList.Create;
+  try
+    SOAPResponse.Position := 0;
+    t.LoadFromStream(SOAPResponse);
+    t.SaveToFile('AlisCvp.xml');
+  finally
+    t.Free;
+  end;
 end;
+
 procedure TDATALAR.AlisBeforeExecute(const MethodName: string;
   SOAPRequest: TStream);
 var
  T : TstringList;
 begin
-   T := TstringList.Create;
-   SOAPRequest.Position := 0;
-   t.LoadFromStream(SOAPRequest);
-   t.SaveToFile('Alis.xml');
-   t.Free;
+  T := TstringList.Create;
+  try
+    SOAPRequest.Position := 0;
+    t.LoadFromStream(SOAPRequest);
+    t.SaveToFile('Alis.xml');
+  finally
+    t.Free;
+  end;
 end;
 
 procedure TDATALAR.AlisHTTPWebNode1BeforePost(const HTTPReqResp: THTTPReqResp;
@@ -2809,84 +2830,86 @@ procedure TDATALAR.BioAfterExecute(const MethodName: string;
   SOAPResponse: TStream);
 var
   memo : Tmemo;
-  m : TStringList;
   R: UTF8String;
 begin
-   SetLength(R, SOAPResponse.Size);
-   SOAPResponse.Position := 0;
-   SOAPResponse.Read(R[1], Length(R));
-   memo := Tmemo.Create(nil);
-   memo.Parent := AnaForm;
-   memo.Lines.Add(FormatXMLData(R));
-   memo.Lines.SaveToFile('BioCvp.XML');
-   memo.Free;
+  SetLength(R, SOAPResponse.Size);
+  SOAPResponse.Position := 0;
+  SOAPResponse.Read(R[1], Length(R));
+  memo := Tmemo.Create(nil);
+  try
+    memo.Parent := AnaForm;
+    memo.Lines.Add(FormatXMLData(R));
+    memo.Lines.SaveToFile('BioCvp.XML');
+  finally
+    memo.Free;
+  end;
 end;
 
 procedure TDATALAR.BioBeforeExecute(const MethodName: string;
   SOAPRequest: TStream);
 var
   memo : Tmemo;
-  m : TStringList;
   R: UTF8String;
 begin
    SetLength(R, SOAPRequest.Size);
    SOAPRequest.Position := 0;
    SOAPRequest.Read(R[1], Length(R));
    memo := Tmemo.Create(nil);
-   memo.Parent := AnaForm;
-   memo.Lines.Add(FormatXMLData(R));
-   memo.Lines.SaveToFile('Bio.XML');
-   memo.Free;
+   try
+     memo.Parent := AnaForm;
+     memo.Lines.Add(FormatXMLData(R));
+     memo.Lines.SaveToFile('Bio.XML');
+   finally
+     memo.Free;
+   end;
 end;
+
 procedure TDATALAR.CentroAfterExecute(const MethodName: string;
   SOAPResponse: TStream);
 var
   memo : Tmemo;
-  m : TStringList;
   R: UTF8String;
 begin
-   SetLength(R, SOAPResponse.Size);
-   SOAPResponse.Position := 0;
-   SOAPResponse.Read(R[1], Length(R));
-   memo := Tmemo.Create(nil);
-   memo.Parent := AnaForm;
-   memo.Lines.Add(FormatXMLData(R));
-   memo.Lines.SaveToFile('CentroCevap.XML');
-   CentroResponse := memo.Lines.Text;
-   memo.Free;
+  SetLength(R, SOAPResponse.Size);
+  SOAPResponse.Position := 0;
+  SOAPResponse.Read(R[1], Length(R));
+  memo := Tmemo.Create(nil);
+  try
+    memo.Parent := AnaForm;
+    memo.Lines.Add(FormatXMLData(R));
+    memo.Lines.SaveToFile('CentroCevap.XML');
+    CentroResponse := memo.Lines.Text;
+  finally
+    memo.Free;
+  end;
 end;
 
 procedure TDATALAR.CentroBeforeExecute(const MethodName: string;
   SOAPRequest: TStream);
 var
   Request: UTF8String;
-  Request1: UTF8String;
   StrList1: TStringList;
-  I : integer;
-  HeaderBegin , HeaderEnd : integer;
-  Header  : Widestring;
-  BodyBegin , BodyEnd , ii ,s : integer;
-  Body , xmlKaydet: TStringList;
 begin
   StrList1 := TStringList.Create;
-  Body := TStringList.Create;
+  try
+    SetLength(Request, SOAPRequest.Size);
+    SOAPRequest.Position := 0;
+    SOAPRequest.Read(Request[1], Length(Request));
 
-  SetLength(Request, SOAPRequest.Size);
-  SOAPRequest.Position := 0;
-  SOAPRequest.Read(Request[1], Length(Request));
+    Request := StringReplace(Request,'<Job','<Job xmlns="http://lis.sesam.com.tr/BridgeJob"',[RfReplaceAll]);
 
-  Request := StringReplace(Request,'<Job','<Job xmlns="http://lis.sesam.com.tr/BridgeJob"',[RfReplaceAll]);
+    SOAPRequest.Position := 0;
+    SOAPRequest.Write(Request[1], Length(Request));
 
-  SOAPRequest.Position := 0;
-  SOAPRequest.Write(Request[1], Length(Request));
+    SetLength(Request, SOAPRequest.Size);
+    SOAPRequest.Position := 0;
+    SOAPRequest.Read(Request[1], Length(Request));
 
-  SetLength(Request, SOAPRequest.Size);
-  SOAPRequest.Position := 0;
-  SOAPRequest.Read(Request[1], Length(Request));
-
-  StrList1.add(Request);
-  StrList1.SaveToFile('Centro.XML');
-  StrList1.Free;
+    StrList1.add(Request);
+    StrList1.SaveToFile('Centro.XML');
+  finally
+    StrList1.Free;
+  end;
 
 end;
 procedure TDATALAR.DataModuleCreate(Sender: TObject);
@@ -2905,69 +2928,79 @@ procedure TDATALAR.DermanAfterExecute(const MethodName: string;
   SOAPResponse: TStream);
 var
   memo : Tmemo;
-  m : TStringList;
   R: UTF8String;
 begin
-   SetLength(R, SOAPResponse.Size);
-   SOAPResponse.Position := 0;
-   SOAPResponse.Read(R[1], Length(R));
-   memo := Tmemo.Create(nil);
-   memo.Parent := AnaForm;
-   memo.Lines.Add(FormatXMLData(R));
-   memo.Lines.SaveToFile('DermanCevap.XML');
-   TenayBIORequest := memo.Lines.Text;
-   memo.Free;
+  SetLength(R, SOAPResponse.Size);
+  SOAPResponse.Position := 0;
+  SOAPResponse.Read(R[1], Length(R));
+  memo := Tmemo.Create(nil);
+  try
+    memo.Parent := AnaForm;
+    memo.Lines.Add(FormatXMLData(R));
+    memo.Lines.SaveToFile('DermanCevap.XML');
+    TenayBIORequest := memo.Lines.Text;
+  finally
+    memo.Free;
+  end;
 end;
 procedure TDATALAR.DermanBeforeExecute(const MethodName: string;
   SOAPRequest: TStream);
 var
   memo : Tmemo;
-  m : TStringList;
   R: UTF8String;
 begin
-   SetLength(R, SOAPRequest.Size);
-   SOAPRequest.Position := 0;
-   SOAPRequest.Read(R[1], Length(R));
-   memo := Tmemo.Create(nil);
-   memo.Parent := AnaForm;
-   memo.Lines.Add(FormatXMLData(R));
-   memo.Lines.SaveToFile('Derman.XML');
-   memo.Free;
+  SetLength(R, SOAPRequest.Size);
+  SOAPRequest.Position := 0;
+  SOAPRequest.Read(R[1], Length(R));
+  memo := Tmemo.Create(nil);
+  try
+    memo.Parent := AnaForm;
+    memo.Lines.Add(FormatXMLData(R));
+    memo.Lines.SaveToFile('Derman.XML');
+  finally
+    memo.Free;
+  end;
 end;
+
 procedure TDATALAR.DuzenAfterExecute(const MethodName: string;
   SOAPResponse: TStream);
 var
   memo : Tmemo;
-  m : TStringList;
   R: UTF8String;
 begin
-   SetLength(R, SOAPResponse.Size);
-   SOAPResponse.Position := 0;
-   SOAPResponse.Read(R[1], Length(R));
-   memo := Tmemo.Create(nil);
-   memo.Parent := AnaForm;
-   memo.Lines.Add(FormatXMLData(R));
-   memo.Lines.SaveToFile('DuzenCevap.XML');
-   TenayMNTRequest := memo.Lines.Text;
-   memo.Free;
-
+  SetLength(R, SOAPResponse.Size);
+  SOAPResponse.Position := 0;
+  SOAPResponse.Read(R[1], Length(R));
+  memo := Tmemo.Create(nil);
+  try
+    memo.Parent := AnaForm;
+    memo.Lines.Add(FormatXMLData(R));
+    memo.Lines.SaveToFile('DuzenCevap.XML');
+    TenayMNTRequest := memo.Lines.Text;
+  finally
+    memo.Free;
+  end;
 end;
+
 procedure TDATALAR.DuzenBeforeExecute(const MethodName: string;
   SOAPRequest: TStream);
 var
   memo : Tmemo;
-  m : TStringList;
   R: UTF8String;
 begin
-   SetLength(R, SOAPRequest.Size);
-   SOAPRequest.Position := 0;
-   SOAPRequest.Read(R[1], Length(R));
-   memo := Tmemo.Create(nil);
-   memo.Parent := AnaForm;
-   memo.Lines.Add(FormatXMLData(R));
-   memo.Lines.SaveToFile('Duzen.XML');
-   memo.Free;
+  SetLength(R, SOAPRequest.Size);
+  SOAPRequest.Position := 0;
+  SOAPRequest.Read(R[1], Length(R));
+  memo := Tmemo.Create(nil);
+  try
+    memo.Parent := AnaForm;
+    memo.Lines.Add(FormatXMLData(R));
+    memo.Lines.SaveToFile('Duzen.XML');
+  finally
+    memo.Free;
+  end;
 end;
+
 procedure TDATALAR.DuzenHTTPWebNode1BeforePost(const HTTPReqResp: THTTPReqResp;
   Data: Pointer);
 var

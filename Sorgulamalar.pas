@@ -95,11 +95,6 @@ implementation
 {$R *.dfm}
 
 function TfrmSorgulamalar.Init(Sender : TObject) : Boolean;
-var
-  key : word;
-  sql : string;
-  t1,t2 : Tdate;
-  ado : TADOQuery;
 begin
   Result := False;
   if not inherited Init(Sender) then exit;
@@ -137,8 +132,8 @@ var
   sql : string;
   ado : TADOQuery;
 begin
-
-    ado := TADOQuery.Create(nil);
+  ado := TADOQuery.Create(nil);
+  try
     ado.Connection := datalar.ADOConnection2;
 
     sql := 'select * from raporlar1 where raporkodu = ' + QuotedStr(txtRaporKodu.Text);
@@ -148,42 +143,38 @@ begin
 
     if ado.Eof
     Then Begin
-        sql := 'insert into raporlar1 (raporKodu,raporAdi,sp,rapor,aciklama) ' +
-               ' values(' + QuotedStr(txtRaporKodu.Text) + ',' +
-                            QuotedStr(txtRaporAdi.Text)  + ',' +
-                            QuotedStr(txtSP_name.Text) + ',' +
-                            QuotedStr('<?xml version="1.0" encoding="utf-8"?>') + ',' +
-                            QuotedStr(cxDBMemo1.text) +
-                            ')';
-        ado.Close;
-        ado.SQL.Clear;
+      sql := 'insert into raporlar1 (raporKodu,raporAdi,sp,rapor,aciklama) ' +
+             ' values(' + QuotedStr(txtRaporKodu.Text) + ',' +
+                          QuotedStr(txtRaporAdi.Text)  + ',' +
+                          QuotedStr(txtSP_name.Text) + ',' +
+                          QuotedStr('<?xml version="1.0" encoding="utf-8"?>') + ',' +
+                          QuotedStr(cxDBMemo1.text) +
+                          ')';
+      ado.Close;
+      ado.SQL.Clear;
 
-        datalar.QueryExec(ado,sql);
+      datalar.QueryExec(ado,sql);
 
-        Raporlar;
+      Raporlar;
 
     //    panel2.Visible := false;
     End
     Else Begin
+      sql := 'update raporlar1 ' +
+             ' set raporadi = ' + QuotedStr(txtRaporAdi.Text) +
+             ',sp = ' + QuotedStr(txtSP_name.Text) +
+             ',aciklama = ' + QuotedStr(cxDBMemo1.text) +
+             ' where raporkodu = ' + QuotedStr(txtRaporKodu.Text);
 
-        sql := 'update raporlar1 ' +
-               ' set raporadi = ' + QuotedStr(txtRaporAdi.Text) +
-               ',sp = ' + QuotedStr(txtSP_name.Text) +
-               ',aciklama = ' + QuotedStr(cxDBMemo1.text) +
-               ' where raporkodu = ' + QuotedStr(txtRaporKodu.Text);
-
-        ado.Close;
-        ado.SQL.Clear;
-
-        datalar.QueryExec(ado,sql);
-
-        Raporlar;
-
-        //panel2.Visible := false;
-
+      ado.Close;
+      ado.SQL.Clear;
+      datalar.QueryExec(ado,sql);
+      Raporlar;
+      //panel2.Visible := false;
     End;
-
+  finally
     ado.Free;
+  end;
 
 end;
 
@@ -245,8 +236,6 @@ end;
 procedure TfrmSorgulamalar.btnSQLRunClick(Sender: TObject);
 var
   sql : string;
-  dset : TDataSet;
-  ds : TDataSource;
 begin
     ADO_SQL11.close;
     ADO_SQL11.SQL.Clear;
@@ -284,6 +273,7 @@ var
   _Kind : TcxSummaryKind;
 begin
   inherited;
+  _Kind := skNone;
   if TMenuItem(sender).Tag = 0
   Then
    _Kind := skSum
@@ -323,13 +313,10 @@ end;
 
 procedure TfrmSorgulamalar.Raporlar;
 var
-   sql : string;
-   s : integer;
+  sql : string;
 begin
-    sql := 'select * from raporlar1';
-    datalar.QuerySelect(ADO_SQL1,sql);
+  sql := 'select * from raporlar1';
+  datalar.QuerySelect(ADO_SQL1,sql);
 end;
-
-
 
 end.

@@ -56,10 +56,6 @@ uses data_modul;
 {$R *.dfm}
 
 procedure TfrmLisansBilgisi.LisansBilgisi;
-var
-     sql , _now , sistemnow , basla , bitis , kurum: string;
-     sayi1,sayi2,sayi3,sayi4,sayi5,sayi6 : string;
-     limit : integer;
 begin
   //  LisansBilgileri(sistemnow,basla,bitis,kurum,limit);
     txtBasla.Text := Datalar.LisansBasla;
@@ -73,7 +69,7 @@ end;
 
 procedure TfrmLisansBilgisi.btnUygulaClick(Sender: TObject);
 var
-  sql , _kurum : string;
+  sql : string;
   key : real;
   ado : TADOQuery;
 begin
@@ -83,14 +79,18 @@ begin
   key := key / strtoint(datalar.osgbKodu);
 
   ado := TADOQuery.Create(nil);
-  ado.Connection := datalar.ADOConnection2;
-  sql := ' begin try select cast('+ QuotedStr(floattostr(key)) + ' as datetime) lisans   end try   BEGIN CATCH   END CATCH ';
-  datalar.QuerySelect(ado,sql);
-  if ado.Eof
-  Then Begin
-    ShowMessageSkin('Key Hatalý','','','info');
-    exit;
-  End;
+  try
+    ado.Connection := datalar.ADOConnection2;
+    sql := ' begin try select cast('+ QuotedStr(floattostr(key)) + ' as datetime) lisans   end try   BEGIN CATCH   END CATCH ';
+    datalar.QuerySelect(ado,sql);
+    if ado.Eof
+    Then Begin
+      ShowMessageSkin('Key Hatalý','','','info');
+      exit;
+    End;
+  finally
+    ado.Free;
+  end;
 
   txtLisansCaption.Caption := FormattedTarih(floattostr(key));
 
@@ -123,10 +123,7 @@ var
   K : KurumBilgiGrs;
   FHC : FaturaHastaCount;
   kurum : WideString;
-  key : real;
-  sql : string;
   t : string;
-  ado : TADOQuery;
 
 begin
 
@@ -136,28 +133,35 @@ begin
 
   kurum := datalar.osgbKodu;
   Kb := KurumBilgi.Create;
-  K := KurumBilgiGrs.Create;
-  K.kurumkod := kurum;
-  FHC := FaturaHastaCount.Create;
-
-  t := copy(tarihal(Date-30),1,6);
   try
-      FHC.KurumKod := kurum;
-      Kb := (LisansAl as NoktaServiceSoap).LisansBitis(K);
-      txtBasla.Text := kb.Lisans;
-
-      if Kb.SonucKodu = '0000'
-      then begin
-        btnUygula.Click;
-        ShowMessageSkin(kb.SonucMesaj,'Lisansýnýz Uygulandý.','','info');
-
+    K := KurumBilgiGrs.Create;
+    try
+      K.kurumkod := kurum;
+      FHC := FaturaHastaCount.Create;
+      try
+        t := copy(tarihal(Date-30),1,6);
+        try
+            FHC.KurumKod := kurum;
+            Kb := (LisansAl as NoktaServiceSoap).LisansBitis(K);
+            txtBasla.Text := Kb.Lisans;
+            if Kb.SonucKodu = '0000'
+            then begin
+              btnUygula.Click;
+              ShowMessageSkin(kb.SonucMesaj,'Lisansýnýz Uygulandý.','','info');
+           end;
+        except on e : Exception do
+         begin
+          ShowMessageSkin(e.Message,'','','info');
+         end;
+        end;
+      finally
+        FHC.Free;
       end;
-      kb.Free;
-      k.Free;
-  except on e : Exception do
-   begin
-    ShowMessageSkin(e.Message,'','','info');
-   end;
+    finally
+      K.Free;
+    end;
+  finally
+    kb.Free;
   end;
 
 

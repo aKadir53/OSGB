@@ -978,7 +978,7 @@ var
 begin
   inherited;
   ListeAc2.Where := 'dosyaNo = ' + QuotedStr(_dosyaNo_);
-  List := ListeAc2.ListeGetir;
+  List := ListeAc2.xListeGetir;
   ADO_seans.Edit;
   ADO_seans.FieldByName('raporTakipNo').AsString := List[0].kolon1;
   ADO_seans.Post;

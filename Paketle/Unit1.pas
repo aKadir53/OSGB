@@ -175,22 +175,15 @@ end;
 
 procedure TfrmPaket.SpeedButton2Click(Sender: TObject);
 begin
-
-   OpenDialog1.Execute;
-   DBMemo1.Lines.LoadFromFile(OpenDialog1.FileName);
-
+  if not OpenDialog1.Execute then Exit;
+  DBMemo1.Lines.LoadFromFile(OpenDialog1.FileName);
 end;
 
 procedure TfrmPaket.SpeedButton1Click(Sender: TObject);
 var
   yol : string;
 begin
-
-
     frmDosyadanPaket.ShowModal;
-
-
-
 
  (*
 

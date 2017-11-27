@@ -1,29 +1,43 @@
 <?xml version="1.0" encoding="iso-8859-9"?>
 <ereceteBilgisi>
-  <protokolNo>111</protokolNo>
+  <protokolNo>2</protokolNo>
   <provizyonTipi>1</provizyonTipi>
   <receteAltTuru>1</receteAltTuru>
-  <receteTarihi>31.10.2017 00:00:00</receteTarihi>
+  <receteTarihi>15.11.2017 00:00:00</receteTarihi>
   <receteTuru>1</receteTuru>
   <takipNo />
-  <tcKimlikNo>38737606820</tcKimlikNo>
+  <tcKimlikNo>36157756392</tcKimlikNo>
   <tesisKodu>11349903</tesisKodu>
   <seriNo>1</seriNo>
   <doktorBransKodu>9999</doktorBransKodu>
-  <doktorSertifikaKodu>56</doktorSertifikaKodu>
-  <doktorTcKimlikNo>99999999990</doktorTcKimlikNo>
+  <doktorSertifikaKodu>8423</doktorSertifikaKodu>
+  <doktorTcKimlikNo>34477392986</doktorTcKimlikNo>
   <ereceteIlacBilgisi>
     <adet>1</adet>
-    <barkod>8699570090058</barkod>
-    <ilacAdi>AFERIN FORTE 30 FILM TB.</ilacAdi>
+    <barkod>8699522095711</barkod>
+    <ilacAdi>AUGMENTIN-BID 1000 MG.10 FILM TB.</ilacAdi>
     <kullanimDoz1>1</kullanimDoz1>
     <kullanimPeriyotBirimi>3</kullanimPeriyotBirimi>
     <kullanimSekli>1</kullanimSekli>
-    <kullanimDoz2>1</kullanimDoz2>
+    <kullanimDoz2>2</kullanimDoz2>
+    <kullanimPeriyot>1</kullanimPeriyot>
+  </ereceteIlacBilgisi>
+  <ereceteIlacBilgisi>
+    <adet>1</adet>
+    <barkod>8699832090055</barkod>
+    <ilacAdi>ARVELES 25 MG.20 FILM TABLET</ilacAdi>
+    <kullanimDoz1>1</kullanimDoz1>
+    <kullanimPeriyotBirimi>3</kullanimPeriyotBirimi>
+    <kullanimSekli>1</kullanimSekli>
+    <kullanimDoz2>2</kullanimDoz2>
     <kullanimPeriyot>1</kullanimPeriyot>
   </ereceteIlacBilgisi>
   <ereceteTaniBilgisi>
-    <taniAdi>BAŞ AĞRISI</taniAdi>
-    <taniKodu>R51</taniKodu>
+    <taniAdi>AKUT TONSİLLİT</taniAdi>
+    <taniKodu>J03</taniKodu>
+  </ereceteTaniBilgisi>
+  <ereceteTaniBilgisi>
+    <taniAdi>AKUT AĞRI</taniAdi>
+    <taniKodu>R52.0</taniKodu>
   </ereceteTaniBilgisi>
 </ereceteBilgisi>

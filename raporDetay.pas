@@ -1830,7 +1830,7 @@ begin
  //  L := TStringList.Create;
  //  ListeAc2.Where := 'doktor = ' + QuotedStr(datalar.doktorKodu);
 
-   L := ListeAc2.ListeGetir;
+   L := ListeAc2.xListeGetir;
 
    if L[0].kolon1 <> ''
    Then Begin

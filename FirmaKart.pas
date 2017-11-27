@@ -116,7 +116,6 @@ implementation
 
 procedure TfrmFirmaKart.ButtonClick(Sender: TObject);
 var
-  ID : integer;
   F : TGirisForm;
   GirisRecord : TGirisFormRecord;
 begin
@@ -194,6 +193,7 @@ var
   List : ArrayListeSecimler;
 begin
    List := ListeNaceKods.ListeGetir;
+   if High (List) < 0 then Exit;
    TcxTextEditKadir(FindComponent('naceKod')).EditValue := List[0].kolon1;
    TcxTextEditKadir(FindComponent('anaFaliyet')).EditValue := List[0].kolon2;
    TcxTextEditKadir(FindComponent('tehlikeSinifi')).EditValue := List[0].kolon4;
@@ -267,12 +267,14 @@ var
 begin
   dosyaNo := TcxButtonEditKadir(FindComponent('sirketKod')).Text;
   ado := TADOQuery.Create(nil);
-  sql := 'if not exists(select sirketKod from FirmaLogo where sirketKod = ' + QuotedStr(dosyaNo) + ')' +
-         ' insert into FirmaLogo (sirketKod,logo,tip) ' +
-         ' values (' + QuotedStr(sirketKod.Text) + ',NULL,''H'')';
-  datalar.QueryExec(ado,sql);
-  ado.Free;
-
+  try
+    sql := 'if not exists(select sirketKod from FirmaLogo where sirketKod = ' + QuotedStr(dosyaNo) + ')' +
+           ' insert into FirmaLogo (sirketKod,logo,tip) ' +
+           ' values (' + QuotedStr(sirketKod.Text) + ',NULL,''H'')';
+    datalar.QueryExec(ado,sql);
+  finally
+    ado.Free;
+  end;
 end;
 
 procedure TfrmFirmaKart.FotoEkle;
@@ -287,16 +289,22 @@ begin
   datalar.ADO_FOTO.Edit;
 
   Fo := TFileOpenDialog.Create(nil);
-  fo.Execute;
-  filename := fo.FileName;
-  fo.Free;
+  try
+    if not fo.Execute then Exit;
+    filename := fo.FileName;
+  finally
+    fo.Free;
+  end;
   Foto.Picture.LoadFromFile(filename);
 
   jp := TJpegimage.Create;
-  jp.Assign(FOTO.Picture);
-  datalar.ADO_FOTO.FieldByName('Logo').Assign(jp);
-  datalar.ADO_FOTO.Post;
-  jp.Free;
+  try
+    jp.Assign(FOTO.Picture);
+    datalar.ADO_FOTO.FieldByName('Logo').Assign(jp);
+    datalar.ADO_FOTO.Post;
+  finally
+    jp.Free;
+  end;
 end;
 
 
@@ -304,10 +312,6 @@ procedure TfrmFirmaKart.cxButtonEditPropertiesButtonClick(Sender: TObject;
   AButtonIndex: Integer);
 var
  g : TGraphic;
- imgList : TcxImageList;
- i : integer;
- pngbmp: TPngImage;
- bmp: TBitmap;
 begin
   inherited;
   if length(datalar.ButtonEditSecimlist) > 0 then
@@ -338,21 +342,20 @@ begin
 
              g := TJpegimage.Create;
              try
-              if datalar.ADO_FOTO.FieldByName('logo').AsVariant <> Null
-              Then begin
-                g.Assign(datalar.ADO_FOTO.FieldByName('logo'));
-                FOTO.Picture.Assign(g);
-              end
-              else
-              FOTO.Picture.Assign(nil);
-             except
+               try
+                 if datalar.ADO_FOTO.FieldByName('logo').AsVariant <> Null
+                 Then begin
+                   g.Assign(datalar.ADO_FOTO.FieldByName('logo'));
+                   FOTO.Picture.Assign(g);
+                 end
+                 else
+                 FOTO.Picture.Assign(nil);
+               except
+               end;
+             finally
                g.Free;
              end;
-
-
          end;
-
-
      end;
   end;
 end;
@@ -407,9 +410,6 @@ end;
 function TfrmFirmaKart.Init(Sender : TObject) : Boolean;
 var
   key : word;
-  sql : string;
-  t1,t2 : Tdate;
-  ado : TADOQuery;
 begin
 
   Result := False;
@@ -441,14 +441,8 @@ end;
 
 procedure TfrmFirmaKart.FormCreate(Sender: TObject);
 var
-  index,i : integer;
-  Ts,Ts1,Ts3 : TStringList;
-  List,List1,List3 : TListeAc;
-  cxBtnkod : TcxButtonKadir;
-  merkezdeBaslangic,BASLANGIC,ilkTaniTarihi : TcxDateEdit;
-  SEHIR ,ILCE ,BUCAK ,KOY,MAHALLE,DEV_KURUM,Kurum,EGITIM, doktor : TcxImageComboKadir;
-  D : TcxComboBox;
-  Tab : TcxTabSheet;
+  List : TListeAc;
+  SEHIR ,ILCE ,BUCAK ,KOY,MAHALLE,doktor : TcxImageComboKadir;
 begin
   // Burdaki User_ID ve sirketKod base formda dolduruluyor. Visible false (true set etmeyin)
   // Eðer kayýt eklediðiniz tabloda bu alanlar varsa ve bunlarý otomatik set etmek isterseniz
@@ -600,8 +594,6 @@ begin
 
 
 procedure TfrmFirmaKart.seansGunleriPropertiesEditValueChanged(Sender: TObject);
-var
- s : string;
 begin
   inherited;
 //  s := seansGunleri.EditingValue;
@@ -611,8 +603,6 @@ begin
 end;
 
 procedure TfrmFirmaKart.cxKaydetClick(Sender: TObject);
-var
-  g : TGraphic;
 begin
   datalar.KontrolUserSet := False;
   inherited;
@@ -649,7 +639,6 @@ var
  _name_ : string;
  F : TGirisForm;
  GirisFormRecord : TGirisFormRecord;
- Tab : TcxTabSheet;
 begin
   datalar.KontrolUserSet := False;
   inherited;
@@ -684,10 +673,13 @@ begin
             List.Grup := True;
 
             _L_ := List.ListeGetir;
-            _name_ := TcxButtonKadir(sender).ButtonName;
-            _name_ := StringReplace(_name_,'cxBtn','',[rfReplaceAll]);
-            TcxButtonEditKadir(FindComponent(_name_)).Text := _L_[0].kolon1;
-            TcxButtonEditKadir(FindComponent('tanimi')).Text := _L_[0].kolon2;
+            if High (_L_) >= 0 then
+            begin
+              _name_ := TcxButtonKadir(sender).ButtonName;
+              _name_ := StringReplace(_name_,'cxBtn','',[rfReplaceAll]);
+              TcxButtonEditKadir(FindComponent(_name_)).Text := _L_ [0].kolon1;
+              TcxButtonEditKadir(FindComponent('tanimi')).Text := _L_ [0].kolon2;
+            end;
         end;
     1 : begin
          // post;
@@ -802,6 +794,5 @@ begin
 
   end;
 end;
-
 
 end.

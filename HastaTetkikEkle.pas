@@ -179,23 +179,23 @@ var
   ado : TADOQuery;
 begin
   try
-   ado := TADOQuery.Create(nil);
-   sql := 'delete from hareketler where SIRANO = ' + ADO_Tetkikler.FieldByName('SIRANO').AsString;
-   datalar.QueryExec(ado,sql);
-   AdoQueryActiveYenile(ADO_Tetkikler);
-   ado.Free;
+    ado := TADOQuery.Create(nil);
+    try
+      sql := 'delete from hareketler where SIRANO = ' + ADO_Tetkikler.FieldByName('SIRANO').AsString;
+      datalar.QueryExec(ado,sql);
+      AdoQueryActiveYenile(ADO_Tetkikler);
+    finally
+      ado.Free;
+    end;
   except on e : Exception do
    begin
       ShowMessageSkin(e.Message,'','','info');
-      ado.Free;
    end;
   end;
 end;
 
 procedure TfrmHastaTetkikEkle.TetkikEkle;
 var
-  sql : string;
-  ado : TADOQuery;
   List : ArrayListeSecimler;
 begin
    if cxTabTetkik.TabIndex = 0
@@ -225,30 +225,30 @@ var
   sql : string;
   ado : TADOQuery;
 begin
-   ado := TADOQuery.Create(nil);
-   if mrYES = ShowMessageSkin('Var Olan Tablo Silinip Yeniden Oluþturulacak , Girilmiþ Sonuçlar Varsa , Bu Ýþlem Yapýlmaz','','','msg')
-   Then Begin
-     try
-       sql := 'exec sp_hastaLabIsle ' + QuotedStr(_dosyaNo_) + ',' +
-               _gelisNo_ + ',' + QuotedStr(tarihal(date())) + ',' + inttostr(-1*grup);
-       datalar.QueryExec(ado,sql);
-       AdoQueryActiveYenile(ADO_Tetkikler);
-     except on e : Exception do
-        begin
-            ShowMessageSkin('Hata :' + e.Message,'','','info');
-            exit;
-        end;
-     end;
-     ShowMessageSkin('Hizmetler Eklendi','','','info');
-     ado.Free;
-   End;
+  ado := TADOQuery.Create(nil);
+  try
+    if mrYES = ShowMessageSkin('Var Olan Tablo Silinip Yeniden Oluþturulacak , Girilmiþ Sonuçlar Varsa , Bu Ýþlem Yapýlmaz','','','msg')
+    Then Begin
+      try
+        sql := 'exec sp_hastaLabIsle ' + QuotedStr(_dosyaNo_) + ',' +
+                _gelisNo_ + ',' + QuotedStr(tarihal(date())) + ',' + inttostr(-1*grup);
+        datalar.QueryExec(ado,sql);
+        AdoQueryActiveYenile(ADO_Tetkikler);
+      except on e : Exception do
+         begin
+             ShowMessageSkin('Hata :' + e.Message,'','','info');
+             exit;
+         end;
+      end;
+      ShowMessageSkin('Hizmetler Eklendi','','','info');
+    End;
+  finally
+    ado.Free;
+  end;
 end;
 
 
 procedure TfrmHastaTetkikEkle.ItemClick(Sender: TObject);
-var
-  GirisRecord : TGirisFormRecord;
-  F : TGirisForm;
 begin
     case TMenuItem(sender).Tag of
    -1,-3,-6,-12 : begin
@@ -288,8 +288,7 @@ end;
 procedure TfrmHastaTetkikEkle.ktvClick(Sender: TObject);
 var
    CaxP , G_ure , C_ure, demir , demirbaglama : double;
-   ca , p , URR , Kt_VB , Kt_vj: double;
-   x : integer;
+   ca , p , URR , Kt_VB: double;
    Ts : string;
 begin
 
@@ -327,8 +326,7 @@ end;
 procedure TfrmHastaTetkikEkle.spKtvClick(Sender: TObject);
 var
    CaxP , G_ure , C_ure , iKilo , kilofark , g,c ,Dca  ,alb : double;
-   x : integer;
-   ca , p , URR , Kt_VB , Kt_vj: double;
+   ca , p , URR , Kt_VB: double;
 begin
 
     iKilo := idealKilo(_dosyaNo_);
@@ -400,10 +398,6 @@ begin
 end;
 
 procedure TfrmHastaTetkikEkle.FormCreate(Sender: TObject);
-var
-  index,i : integer;
-  Ts,Ts1 : TStringList;
-  List,List1 : TListeAc;
 begin
  //cxYeni.Visible := false;
   inherited;

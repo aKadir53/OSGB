@@ -66,6 +66,7 @@ function TfrmSon6AylikTetkikSonuc.Init(Sender: TObject) : Boolean;
 begin
  inherited;
  Listele;
+ Result := True;
 end;
 
 procedure TfrmSon6AylikTetkikSonuc.TetkikSonucGridKolonGizle;
@@ -88,33 +89,32 @@ end;
 procedure TfrmSon6AylikTetkikSonuc.Listele;
 var
   sql ,_Tarih: string;
-  TT, t , i : integer;
+  i : integer;
   ado : TADOQuery;
 begin
   _Tarih := NoktasizTarih(_provizyonTarihi_);
   try
-   sql := 'exec sp_HastaTetkikTakipPIVOT ' + QuotedStr(_dosyaNo_) + ',' + QuotedStr(_Tarih) + ',' + '1';
-   datalar.QuerySelect(ADO_Tetkikler,sql);
+    sql := 'exec sp_HastaTetkikTakipPIVOT ' + QuotedStr(_dosyaNo_) + ',' + QuotedStr(_Tarih) + ',' + '1';
+    datalar.QuerySelect(ADO_Tetkikler,sql);
 
-   TT := strtoint(COPY(_Tarih,5,2));
-   t := 0;
-   TetkikSonucGridKolonGizle;
+    TetkikSonucGridKolonGizle;
 
-   sql := 'exec sp_HastaTetkikTakipPIVOT ' + QuotedStr(_dosyaNo_) + ',' + QuotedStr(_Tarih) + ',' + '0';
-   ado := TADOQuery.Create(nil);
-   datalar.QuerySelect(ado,sql);
+    sql := 'exec sp_HastaTetkikTakipPIVOT ' + QuotedStr(_dosyaNo_) + ',' + QuotedStr(_Tarih) + ',' + '0';
+    ado := TADOQuery.Create(nil);
+    try
+      datalar.QuerySelect(ado,sql);
 
-   while not ado.Eof do
-   begin
-     i := gridTetkikList.GetColumnByFieldName(ado.fieldbyname('ad').AsString).Index;
-     gridTetkikList.Columns[i].Visible := True;
-     gridTetkikList.Columns[i].Width := 50;
-     gridTetkikList.Columns[i].Index := ado.RecNo + 2;
-     ado.Next;
-   end;
-
-   ado.Free;
-
+      while not ado.Eof do
+      begin
+        i := gridTetkikList.GetColumnByFieldName(ado.fieldbyname('ad').AsString).Index;
+        gridTetkikList.Columns[i].Visible := True;
+        gridTetkikList.Columns[i].Width := 50;
+        gridTetkikList.Columns[i].Index := ado.RecNo + 2;
+        ado.Next;
+      end;
+    finally
+      ado.Free;
+    end;
   except
   end;
 end;
@@ -141,10 +141,6 @@ begin
 end;
 
 procedure TfrmSon6AylikTetkikSonuc.FormCreate(Sender: TObject);
-var
-  index,i : integer;
-  Ts,Ts1 : TStringList;
-  List,List1 : TListeAc;
 begin
   Tag := TagfrmSon6AylikTetkikSonuc;
   ClientHeight := formYukseklik;
