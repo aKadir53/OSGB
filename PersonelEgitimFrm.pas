@@ -208,8 +208,8 @@ begin
   List.Where := 'SirketKod = ' + QuotedStr (DATALAR.AktifSirket);
   setDataStringB(self,'id','Eðitim No.',Kolon1,'',70,List,True,nil, 'tanimi', '', False, True, -100);
 
-  setDataStringB(self,'SirketKod'x,'Þirket Kodu',Kolon1,'',100,nil, True, SirketKodx);
-  SirketKodx.Properties.ReadOnly := True;
+  setDataStringB(self,'SirketKod','Þirket Kodu',Kolon1,'',100,nil, True, SirketKod);
+  SirketKod.Properties.ReadOnly := True;
 
   kombo := TcxImageComboKadir.Create(self);
   kombo.Conn := Datalar.ADOConnection2;
@@ -297,7 +297,7 @@ end;
 
 procedure TfrmPersonelEgitim.cxKaydetClick(Sender: TObject);
 begin
-  SirketKodx.Text := datalar.AktifSirket;
+  //SirketKodx.Text := datalar.AktifSirket; giriþ formuna eklendi.
   inherited;
 end;
 
