@@ -1160,13 +1160,16 @@ begin
           Kart := sql_delete;
         end;
     2 : begin
-            Kart := sql_new;
-            dosyaNo.Text := dosyaNoYeniNumaraAl('DN');
-            if dosyaNo.Text = '0'
-            then begin
-              ShowMessageskin('Dosya No Alýnamadý','','','info');
-            end;
-            foto.Picture.Assign(nil);
+          Kart := sql_new;
+          dosyaNo.Text := dosyaNoYeniNumaraAl('DN');
+          if dosyaNo.Text = '0'
+          then begin
+            ShowMessageskin('Dosya No Alýnamadý','','','info');
+          end;
+          foto.Picture.Assign(nil);
+          if IsNull (TcxLabel(FindComponent('LabelSirketKod')).Caption) then
+            TcxLabel(FindComponent('LabelSirketKod')).Caption := datalar.AktifSirket;
+          TcxImageComboBox (FindComponent ('Aktif')).ItemIndex := 2;//aktif pasif yeni  kombosu yeni kayýtta Yeni deðeri varsayýlan olacak.
         end;
 
   end;
