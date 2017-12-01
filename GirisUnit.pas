@@ -187,7 +187,8 @@ type
     F_sp_ : string;
     F_kod_ : string;
     F_sube_ : string;
-
+  protected
+    F_IDENTITY : Integer;
     { Private declarations }
   public
     indexFieldName,TableName,_SqlInsert_,_SqlUpdate_,_SqlDelete_ : string;
@@ -279,7 +280,7 @@ type
     property _sube_ : string read F_sube_ write F_sube_;
   end;
 
-  const
+const
   _SqlSelect_ = 'Select %s from %s where %s';
   selectSQLAll  = 'select * from %s ';
   selectSQL  = 'select * from %s where %s';
@@ -1887,7 +1888,10 @@ begin
     try
       ado.Connection := datalar.ADOConnection2;
       datalar.QueryExec(ado,sql);
-      PostSQL := True;
+      Result := True;
+      ado.SQL.Text := 'select SCOPE_IDENTITY() as id';
+      ado.Open;
+      F_IDENTITY := ado.Fields [0].AsInteger;
     except on e : Exception do
       ShowMessageSkin(e.Message,'','','info');
     end;
@@ -2011,10 +2015,14 @@ begin
       end;
     end;
     sqlRun.Post;
-    post := True;
+    F_IDENTITY := -1;
+    for i := 0 to sqlRun.FieldCount - 1 do
+      if sqlRun.Fields [i] is TAutoIncField then
+        F_IDENTITY := sqlRun.Fields [i].AsInteger;
+    Result := True;
   except on e : Exception do
     begin
-     post := false;
+     Result := false;
      ShowMessageSkin(e.Message,'','','info');
     end;
   end;

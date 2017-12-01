@@ -296,9 +296,19 @@ begin
 end;
 
 procedure TfrmPersonelEgitim.cxKaydetClick(Sender: TObject);
+var
+  xObj : TcxButtonEditKadir;
 begin
   //SirketKodx.Text := datalar.AktifSirket; giriþ formuna eklendi.
   inherited;
+  //post ettikten sonra veritabanýndan Identity deðeri alýp edit kutusuna yazmasý için....
+  case TControl(sender).Tag  of
+    0 : begin
+      xObj := TcxButtonEditKadir (FindComponent('id'));
+      if IsNull (xObj.EditingValue) then
+        xObj.Text := IntToStr (F_IDENTITY);
+    end;
+  end;
 end;
 
 end.
