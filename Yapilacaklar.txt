@@ -21,7 +21,6 @@ giriþ formu ve kadir.pas içinde OSGB'de yapýlanlar diyaliz'e aktarýlacak
 
 drersoy ile girince menü kayboldu. yeni kullanýcý açýlýnca grubuna göre yetki atamasý... (grup yetkilerinden gizli olduðu için gözükmemiþ olabilir)
 kaydet sil düðmeleri alt menüden zor oluyormuþ
-yeni personel açarken verdiði null hatalý hatasý. Kadir'in notu:- label ve combo tagý -1 ya da -100 olmalý veritabanýna oku yaz yapmamalý.
 firma tanýmlama tehlike sýnýfý seçilebilir mi ?
 reçete ilaç seçiminde arama kutusu ve boþsa ilaç gelmemesi. sýk kullanýlanlar geliyorsa orayý elleme ama tiki kaldýrýrsa arama kurusunda deðer olana kadar dataseti açmama vs...
 
