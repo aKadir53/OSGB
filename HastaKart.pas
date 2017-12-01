@@ -856,7 +856,7 @@ begin
                         5,True);
   //List.Where := ' SirketKod = ' + QuotedStr(datalar.AktifSirket);
 
-  setDataStringB(self,'dosyaNo','&DosyaNo',Kolon1,'dn',80,List,True,dosyaNo,'','SirketKod'x,True,True,1);
+  setDataStringB(self,'dosyaNo','&DosyaNo',Kolon1,'dn',80,List,True,dosyaNo,'','SirketKod',True,True,1);
   setDataString(self,'HUVIYETNO','',Kolon1,'dn',45);
   setDataString(self,'TCKIMLIKNO','TC Kimlik No  ',Kolon1,'',130,True);
   setDataString(self,'HASTAADI','Personel Adý  ',Kolon1,'',130,True);
@@ -998,12 +998,12 @@ begin
   setDataStringKontrol(self,muayenePeryot,'MuayenePeryot','',kolon4,'',110);
   OrtakEventAta(muayenePeryot);
 
-  setDataStringBLabel(Self, 'SirketKod'x, Kolon4, '', 0, '', '', 'SirketKod'x);
+  setDataStringBLabel(Self, 'SirketKod', Kolon4, '', 0, '', '', 'SirketKod');
 
   sirketlerx := TcxImageComboKadir.Create(self);
   sirketlerx.Conn := Datalar.ADOConnection2;
   sirketlerx.TableName := 'SIRKETLER_TNM';
-  sirketlerx.ValueField := 'SirketKod'x;
+  sirketlerx.ValueField := 'SirketKod';
   sirketlerx.DisplayField := 'Tanimi';
   sirketlerx.BosOlamaz := False;
   sirketlerx.Filter := '';
@@ -1160,13 +1160,16 @@ begin
           Kart := sql_delete;
         end;
     2 : begin
-            Kart := sql_new;
-            dosyaNo.Text := dosyaNoYeniNumaraAl('DN');
-            if dosyaNo.Text = '0'
-            then begin
-              ShowMessageskin('Dosya No Alýnamadý','','','info');
-            end;
-            foto.Picture.Assign(nil);
+          Kart := sql_new;
+          dosyaNo.Text := dosyaNoYeniNumaraAl('DN');
+          if dosyaNo.Text = '0'
+          then begin
+            ShowMessageskin('Dosya No Alýnamadý','','','info');
+          end;
+          foto.Picture.Assign(nil);
+          if IsNull (TcxLabel(FindComponent('LabelSirketKod')).Caption) then
+            TcxLabel(FindComponent('LabelSirketKod')).Caption := datalar.AktifSirket;
+          TcxImageComboBox (FindComponent ('Aktif')).ItemIndex := 2;//aktif pasif yeni  kombosu yeni kayýtta Yeni deðeri varsayýlan olacak.
         end;
 
   end;

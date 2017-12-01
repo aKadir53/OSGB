@@ -92,7 +92,7 @@ begin
   case Tag of
   TagfrmSube :
         begin
-           cxGrid3.Dataset.FieldByName('SirketKod'x).AsString := _firmaKod_;
+           cxGrid3.Dataset.FieldByName('SirketKod').AsString := _firmaKod_;
         end;
   end;
 end;

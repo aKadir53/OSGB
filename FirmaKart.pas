@@ -119,7 +119,7 @@ var
   F : TGirisForm;
   GirisRecord : TGirisFormRecord;
 begin
-  GirisRecord.F_firmaKod_ := TcxButtonEditKadir(FindComponent('SirketKod'x)).EditValue;
+  GirisRecord.F_firmaKod_ := TcxButtonEditKadir(FindComponent('SirketKod')).EditValue;
   GirisRecord.F_HastaAdSoyad_ := TcxTextEditKadir(FindComponent('tanimi')).EditValue;
   F := FormINIT(TagfrmSube,GirisRecord,ikHayir,'');
   if F <> nil then F.ShowModal;
@@ -147,7 +147,7 @@ procedure TfrmFirmaKart.txtAktifPropertiesChange(Sender: TObject);
 var
    sql , _aktif , _pasifTarih : string;
 begin
-   if sirketKod.Text = '' then exit;
+   if SirketKod.Text = '' then exit;
 
    if aktifKart = 0
    then begin
@@ -169,7 +169,7 @@ begin
          _aktif := '2';
        end;
        sql := 'update FirmaKart set aktif = ' + #39 + _aktif + #39 +
-              ' where kod = ' + #39 + sirketKod.Text + #39;
+              ' where kod = ' + #39 + SirketKod.Text + #39;
        datalar.QueryExec(datalar.ADO_SQL1,sql);
 
 
@@ -265,12 +265,12 @@ var
  sql,dosyaNo : string;
  ado : TADOQuery;
 begin
-  dosyaNo := TcxButtonEditKadir(FindComponent('SirketKod'x)).Text;
+  dosyaNo := TcxButtonEditKadir(FindComponent('SirketKod')).Text;
   ado := TADOQuery.Create(nil);
   try
     sql := 'if not exists(select sirketKod from FirmaLogo where sirketKod = ' + QuotedStr(dosyaNo) + ')' +
            ' insert into FirmaLogo (sirketKod,logo,tip) ' +
-           ' values (' + QuotedStr(sirketKod.Text) + ',NULL,''H'')';
+           ' values (' + QuotedStr(dosyaNo) + ',NULL,''H'')';
     datalar.QueryExec(ado,sql);
   finally
     ado.Free;
@@ -283,7 +283,7 @@ var
  filename,dosyaNo : string;
  jp : TJPEGImage;
 begin
-  dosyaNo := TcxButtonEditKadir(FindComponent('SirketKod'x)).Text;
+  dosyaNo := TcxButtonEditKadir(FindComponent('SirketKod')).Text;
   datalar.ADO_Foto.SQL.Text := Format(FotoTable,[#39+dosyaNo+#39]);
   datalar.ADO_FOTO.Open;
   datalar.ADO_FOTO.Edit;
@@ -429,11 +429,11 @@ begin
     *)
 
   key := 13;
-  sirketKod.EditValue := _dosyaNo_;//datalar.Bilgi.dosyaNo;
+  SirketKod.EditValue := _dosyaNo_;//datalar.Bilgi.dosyaNo;
 
-  if sirketKod.EditValue <> ''
+  if SirketKod.EditValue <> ''
   then
-   sirketKod.OnKeyDown(frmFirmaKart.sirketKod,key,[]);
+   SirketKod.OnKeyDown(frmFirmaKart.SirketKod,key,[]);
 
   Result := True;
 end;
@@ -448,9 +448,9 @@ begin
   // Eðer kayýt eklediðiniz tabloda bu alanlar varsa ve bunlarý otomatik set etmek isterseniz
   //tag deðerini burda 0 set edin default -100 dür -100 obje kayýt iþlemize girmez.
   USER_ID.Tag := 0;
-  sirketKod.Tag := 1;
-  sirketKod.Visible := True;
-  sirketKod.Properties.OnButtonClick := cxButtonEditPropertiesButtonClick;
+  SirketKod.Tag := 1;
+  SirketKod.Visible := True;
+  SirketKod.Properties.OnButtonClick := cxButtonEditPropertiesButtonClick;
   //
 
   Menu := PopupMenu1;
@@ -461,7 +461,7 @@ begin
 
 
 
-  indexFieldName := 'SirketKod'x;
+  indexFieldName := 'SirketKod';
   TableName := _TableName_;
   Olustur(self,_TableName_,'Firma Taným Kartý',22,sqlInsert);
 
@@ -472,10 +472,10 @@ begin
 
   List := ListeAcCreate('SIRKETLER_TNM','sirketKod,tanimi,Aktif',
                        'SirketKod,Sirket,Durum',
-                       '50,250,50','SirketKod'x,'Firma Listesi','',5,True);
+                       '50,250,50','SirketKod','Firma Listesi','',5,True);
 
 
-  setDataStringB(self,'SirketKod'x,'Þirket Kodu',Kolon1,'',80,List,True,sirketKod,'','',True,True,1);
+  setDataStringB(self,'SirketKod','Þirket Kodu',Kolon1,'',80,List,True,SirketKod,'','',True,True,1);
   setDataString(self,'tanimi','Firma Adý  ',Kolon1,'',350,True);
   setDataStringKontrol(self,NaceKod, 'NaceKod','Nace Kodu  ',Kolon1,'',130);
   setDataString(self,'anaFaliyet','Firma Ana Faaliye',Kolon1,'',450,True);
@@ -619,8 +619,8 @@ begin
         end;
     2 : begin
             Kart := sql_new;
-            sirketKod.Text := dosyaNoYeniNumaraAl('FN');
-            if sirketKod.Text = '0'
+            SirketKod.Text := dosyaNoYeniNumaraAl('FN');
+            if SirketKod.Text = '0'
             then begin
               ShowMessageskin('Dosya No Alýnamadý','','','info');
             end;
@@ -644,7 +644,7 @@ begin
   inherited;
   if datalar.KontrolUserSet = True then exit;
 
-  if sirketKod.Text = ''
+  if SirketKod.Text = ''
   then begin
    ShowMessageSkin('Firma Dosyasý Açýlmadan Bu Ýþlem Kullanýlamaz...','','','info');
    exit;

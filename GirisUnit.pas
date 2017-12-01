@@ -102,7 +102,7 @@ type
     DataSource: TDataSource;
     chkList: TcxCheckGroup;
     USER_ID: TcxTextEdit;
-    sirketKodx: TcxButtonEditKadir;
+    sirketKod: TcxButtonEditKadir;
     Kolon4: TdxLayoutGroup;
     dxLayoutControl1: TdxLayoutControl;
     dxLayoutGroup1: TdxLayoutGroup;
@@ -447,7 +447,7 @@ end;
 function TGirisForm.Init(Sender: TObject) : Boolean;
 begin
   USER_ID.Text := datalar.username;
-  sirketKod.Text := datalar.AktifSirket;
+  //sirketKod.Text := datalar.AktifSirket; sadece yeni kayýt ise yap dedik, diðerlerinde veritabanýndan geldikçe eziliyor zaten.
   FormInputZorunluKontrolPaint(self,$00FCDDD1);
   cxTab.PopupMenu := menu;
 
@@ -2216,6 +2216,7 @@ begin
            sqlRun.Append;
            cxPanelButtonEnabled(false,true,false);
            newButonVisible(true);
+           sirketKod.Text := datalar.AktifSirket;
           end;
       3 : begin
            sqlRun.Next;
