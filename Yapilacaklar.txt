@@ -31,7 +31,6 @@ tesis kodu (ornek: 11349903 (istanbul) il koduna göre 34 yerine o ilin kodu yazý
 reçeteyi kaydederken doktor tesis kodu, reçete silerken kurum þifre bilgilerindeki tesis kodu alýnmýþ, doktorun tesis kodu alýnacak
 
 hasta kartýnda yazdýrma düðmesi ??
-eðitimlerde eðitim numarasý veritabanýndan güncellenmiyor.
 eðitim formunda Yeni (!) düðmesine basmadan kayýt girince sapýtýyor
 kullanýcý yetki ayarlarýnda kaydet'e basýnca gridde alt üst satýra geçilmemiþse o satýrý kaydetmeden kapatýyor (datasetleri tarayýp post metodunu çaðýrmak lazým)
 ------------------------------------------------------------------------------------------------------------------------

@@ -63,3 +63,4 @@ Projeye about frm (Hakkýnda formu) eklendi. Firma logosu, Firma ismi, bilgisayar
 reçete ilaç, Taný açýklama ve ilaç açýklama gridlerinde kayýt yokken çift týklanmasý durumunda pencere açýlmada hata çýkmasýna karþýlýk datasetin kayýt sayýsý bilgisi kontrol edildi.
 yeni personel açarken verdiði null hatalý hatasý için variant çevrimi yerine asString düzeltmesi
 yeni personel açarken Þirket kodu atamasý, Aktif / Pasif / yeni seçeneðinde Yeni deðerinin ilk deðer atamasý eklendi. Kadir'in notu:- label ve combo tagý -1 ya da -100 olmalý veritabanýna oku yaz yapmamalý þeklindeydi fakat þirket kodu alanýnýn veritabanýna yazýlmasý gerekiyordu.
+eðitimlerde kaydedince eðitim ID'si veritabanýndan güncellenmiyor idi. Giriþ form altyapýsýnda Identity deðeri yakalama özelliði eklendi ve personel eðitimlerinde kutu içerisine atanmasý saðlandý.
