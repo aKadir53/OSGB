@@ -137,7 +137,7 @@ begin
     enabled;
   end;
   if TcxButtonEditKadir(FindComponent('id')).Text = '' then exit;
-  
+  þ
   EgitimPersonel.Dataset.Connection := DATALAR.ADOConnection2;
   EgitimPersonel.Dataset.SQL.Text :=
     'Select pe.*, pk.HASTAADI + '' '' + pk.HASTASOYADI as PersonelAdiSoyadi '+
