@@ -2222,6 +2222,7 @@ begin
            end;*)
 
            sqlRun.Append;
+           F_IDENTITY := -1;
            cxPanelButtonEnabled(false,true,false);
            newButonVisible(true);
            sirketKod.Text := datalar.AktifSirket;
