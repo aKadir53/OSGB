@@ -42,8 +42,11 @@ type
        var AllowChange: Boolean);
     procedure SayfalarChange(Sender: TObject);
     procedure cxButtonCClick(Sender: TObject);
- private
+  private
     { Private declarations }
+  protected
+    function GetEgitimPersonelSQL : String;
+    procedure ResetDetayDataset;
   public
     { Public declarations }
     function Init(Sender: TObject) : Boolean; override;
@@ -59,6 +62,8 @@ var
 
 implementation
 
+uses StrUtils;
+
 {$R *.dfm}
 procedure TfrmPersonelEgitim.ButtonClick(Sender: TObject);
 var
@@ -68,12 +73,17 @@ var
 begin
   if TcxButtonKadir (Sender).ButtonName = 'btnPersonelEkle' then
   begin
+    if IsNull (TcxButtonEditKadir (FindComponent('id')).Text) then
+    begin
+      ShowMessageSkin('Bu iþlem için eðitim kaydý seçmeniz ya da ekrandaki bilgileri kaydetmeniz gerekir.', '', '', 'info');
+      Exit;
+    end;
     PersonelList.Where :=
       'Aktif = 1 '+
       'and SirketKod = ' + QuotedStr (datalar.AktifSirket)+
       'and not exists (select 1 '+
       'from Personel_Egitim pe '+
-      'where pe.EgitimId = ' +  TcxButtonEditKadir (FindComponent('id')).Text + ' '+
+      'where pe.EgitimId '+ IfThen (IsNull (TcxButtonEditKadir (FindComponent('id')).Text), 'is NULL', '= ' +  TcxButtonEditKadir (FindComponent('id')).Text) + ' '+
       'and pe.PersonelDosyaNo = PersonelKartview.DosyaNo)';
     datalar.ButtonEditSecimlist := PersonelList.ListeGetir;
     if length (datalar.ButtonEditSecimlist) > 0 then
@@ -109,6 +119,11 @@ var
   TopluDataset : TDataSetKadir;
 begin
   inherited;
+  if IsNull (TcxButtonEditKadir (FindComponent('id')).Text) then
+  begin
+    ShowMessageSkin('Bu iþlemden önce Eðitim kaydýný kaydetmeniz gerekir.', '', '', 'info');
+    Exit;
+  end;
   ado := TADOQuery.Create(nil);
   try
     ado.Connection := datalar.ADOConnection2;
@@ -136,16 +151,8 @@ begin
   begin
     enabled;
   end;
-  if TcxButtonEditKadir(FindComponent('id')).Text = '' then exit;
-  þ
-  EgitimPersonel.Dataset.Connection := DATALAR.ADOConnection2;
-  EgitimPersonel.Dataset.SQL.Text :=
-    'Select pe.*, pk.HASTAADI + '' '' + pk.HASTASOYADI as PersonelAdiSoyadi '+
-    'from Personel_Egitim pe '+
-    'inner join PersonelKart pk on pk.DosyaNo = pe.PersonelDosyaNo '+
-    'where EgitimId = ' + TcxButtonEditKadir (FindComponent('id')).Text+
-    'order by PersonelAdiSoyadi, pe.id';
-  EgitimPersonel.Dataset.Open;
+  //if TcxButtonEditKadir(FindComponent('id')).Text = '' then exit;
+  ResetDetayDataset;
 end;
 
 procedure TfrmPersonelEgitim.cxEditEnter(Sender: TObject);
@@ -274,13 +281,31 @@ begin
   //_HastaBilgileriniCaptionGoster_ := True;
 end;
 
-
-
-
+function TfrmPersonelEgitim.GetEgitimPersonelSQL: String;
+var
+  sIDText : String;
+begin
+  if IsNull (TcxButtonEditKadir (FindComponent('id')).Text) then
+    sIDText := 'is NULL'
+   else
+    sIDText := '= ' + TcxButtonEditKadir (FindComponent('id')).Text;
+  Result := 'Select pe.*, pk.HASTAADI + '' '' + pk.HASTASOYADI as PersonelAdiSoyadi '+
+    'from Personel_Egitim pe '+
+    'inner join PersonelKart pk on pk.DosyaNo = pe.PersonelDosyaNo '+
+    'where EgitimId ' + sIDText+ ' ' +
+    'order by PersonelAdiSoyadi, pe.id';
+end;
 
 function TfrmPersonelEgitim.Init(Sender: TObject): Boolean;
 begin
   result := inherited;
+end;
+
+procedure TfrmPersonelEgitim.ResetDetayDataset;
+begin
+  EgitimPersonel.Dataset.Connection := DATALAR.ADOConnection2;
+  EgitimPersonel.Dataset.SQL.Text := GetEgitimPersonelSQL;
+  EgitimPersonel.Dataset.Open;
 end;
 
 procedure TfrmPersonelEgitim.SayfalarChange(Sender: TObject);
@@ -306,7 +331,15 @@ begin
     0 : begin
       xObj := TcxButtonEditKadir (FindComponent('id'));
       if IsNull (xObj.EditingValue) then
+      begin
         xObj.Text := IntToStr (F_IDENTITY);
+        ResetDetayDataset;
+      end;
+    end;
+    2 : begin
+      xObj := TcxButtonEditKadir (FindComponent('id'));
+      xObj.Text := '';
+      ResetDetayDataset;
     end;
   end;
 end;

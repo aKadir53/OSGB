@@ -56,3 +56,57 @@ bitlisin önünde daðlar
 bir ay doðar
 karadýr kaþlarýn
 dam üstünde çul serer
+
+
+IMES OSGB Zafer Bey
+Doktorun gidip gitmediðini bakanlýðýn sormasýna karþý,
+1-)Saha gözetim raporu
+iþyeri hekimi saha gözetimi. ayda 1 ya da 2 kez saha gözetimi. en az (en seyrek) aylýk yapýlmalý. Ýsmi saha saðlýk gözetim formu ya da raporu
+onlineisg.imesosgb.com adresinden dosyalarý indirebiliriz
+maruziyet iþ saðlýðýna uygun mu, uygun deðilse tespitler ve eksiklik ve alýnacak önlemler belirtilmeli.
+iþyeri eksik tespit ve öneri defteri bu saha gözetimlerini ihtiva ediyor. bakanlýðýn desteklediði 3 nüshalý tutanakmýþ. Elle yazýlmasý mecburi imiþ. el yazýlý olarak baþka yerde yazmýþsa oradan kesip deftere yapýþtýrabiliyormuþ.
+tarama veya fotoðrafýný çekmek sureti ile sisteme yükleyebilir.
+tablo olarak varchar max, image, tarih ve numara olmalý.
+aylýk deðerlendirme gibi bir zamanlanmýþ rapor gibi þeyle ayda bir yapýlmamýþ saha gözetim raporlarýnýn uyarýsý yapýlmalý.
+bunun için firma ya da þube tablosuna saha gözetim peryodlarýný ve doktor gitme peryodlarý / süreleri tanýmlanmalý. (Vizit tarihi saati süresi sýklýðý, saha gözetim tarihi, sýklýðý vs.)
+gözetim raporu baþlama / bitirme ve bitirilmemiþ gözetim raporlarý sorgularý
+defter doldurulduðu zaman kaðýtta saha gözetim raporu olmasýnýn gereði yok sistemde olmasý (soru ve cevaplarýn) yeterli
+saha gözetim raporunun baþlama - bitiþ zamanlarý mühim deðil 
+
+2-)Ýþe giriþ muayene formu
+göz muayenesi 
+laboratuvar bulgularý sað tarafta AP seçeneði ve altýndakiler hekim isterse yapýlýr seçimlik.
+tedkik istemeden saðlýk raporu verilmez dedi. bu sebeple iþyerinde deðil osgb'de print edilmesi mantýklý
+
+3-)
+doktor iþyerine gitti (vizit, firma ziyareti). ik'ya gidecek
+iþe giriþ var mý
+saðlýk raporlarý var mý
+doktor gördü ve onayladý mý ? 
+raporun eksiklikleri var mý ?
+
+4) peryodik muayene
+az tehlikeli 5 senede 1
+orta tehlikeli 3 senede 1
+çok tehlikeli senede 1
+
+5) göz muayenesi formu. ekranlý araçlarda çaýþanlar ve sürücüler için senede 1 peryodik
+
+6) aþý formu
+tetanoz aþýsý mesela ilk aþý, 1 ay sonra ikinci, 6 ay sora üçüncü, 10 sene sonra yenilenebilir
+hepatit de tetanoz gibi gibi
+grip keyfe keder
+
+liste þeklinde yapacaðýz. personeli tiklerse aþý detayý atacaðýz. aþý detayýndakileri de ekranda göstereceðiz.
+
+personel aþý oldum dediyse doktor aþý kartýný getir diyecek sisteme iþleyecek.
+
+bizim tik yapýldý manasýna gelmeyebilir, yapýlacak, yapýlma isteði manasýna da getirilebilir
+
+7) mutfak denetim formu
+saha gözetiminde dahil edebilir.
+8) soyunma odalarý 
+saha gözetimine dahil edilebilir
+
+
+0532 502 77 97 doktor Nigar Haným, Çekmeköy Belediyesi'nde, e-imza, iþyeri hekimliði hususunda bilgilendirilecek.
