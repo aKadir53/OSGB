@@ -32,6 +32,7 @@ reçeteyi kaydederken doktor tesis kodu, reçete silerken kurum þifre bilgilerinde
 
 hasta kartýnda yazdýrma düðmesi ??
 eðitim formunda Yeni (!) düðmesine basmadan kayýt girince sapýtýyor
+eðitim formunda yeni düðmesine basýnca yapýlan kayýttan sonra id alsa bile grid dataseti açýlmýyor ve satýr seçilmiyor. null veya deðil fonksiyonla sql üreten bir yapý yapýp refreshlenebilir.
 kullanýcý yetki ayarlarýnda kaydet'e basýnca gridde alt üst satýra geçilmemiþse o satýrý kaydetmeden kapatýyor (datasetleri tarayýp post metodunu çaðýrmak lazým)
 ------------------------------------------------------------------------------------------------------------------------
 iptal olanlar
