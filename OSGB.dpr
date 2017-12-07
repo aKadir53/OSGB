@@ -49,7 +49,8 @@ uses
   PopupDBVerticalGridForm in 'PopupDBVerticalGridForm.PAS' {frmPopupDBVerticalGridForm},
   IsKazasi in 'IsKazasi.pas' {frmIsKazasi},
   LisansUzat in 'LisansUzat.pas' {frmLisansBilgisi},
-  About_Frm in 'About_Frm.pas' {frmAbout};
+  About_Frm in 'About_Frm.pas' {frmAbout},
+  SahaSaglikGozetim in 'SahaSaglikGozetim.pas' {frmSahaSaglikGozetim};
 
 // KadirMedula3 in '..\..\medula3wsdl\KadirMedula3.pas';
 
@@ -69,6 +70,7 @@ begin
   Application.CreateForm(TDATALAR, DATALAR);
   Application.CreateForm(TAnaForm, AnaForm);
   Application.CreateForm(TfrmUpdate, frmUpdate);
+
   // form2.show;
   datalar.versiyon := inttostr(AppalicationVer);
   if ForceDirectories ('C:\OSGB') then
