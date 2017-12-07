@@ -4,6 +4,19 @@ ALTER -- create
   procedure sp_vw_sys_upd @xtype sysname, @xownername sysname, @xobjectname sysname 
 as
 begin
+  if not exists (select 1 from sysobjects so where xtype = 'U' and name = 'vw_sys_x')
+  begin
+    select top 0 identity (int, 1, 1) RecID, *, cast (null as Date) InsertDate, cast (null as varchar (40)) InsertHostName, cast (null as Date) as UpdateDate, cast (null as varchar (40)) UpdateHostName
+    into vw_sys_x
+    from vw_sys
+
+    alter table vw_sys_x add constraint PK_vw_sys_x primary key clustered (RecID)
+
+    create unique nonclustered Index UX_vw_sys_x on vw_sys_x (xtype, ownername, name)
+
+    create unique nonclustered Index UX_vw_sys_x2 on vw_sys_x (xtype, ownerID, name)
+  end
+
   if not exists (select 1 from vw_sys_x t where t.xtype = @xtype and t.Ownername = @xownername and t.name = @xobjectname)
     insert into vw_sys_x (xtype, Returns, OwnerName, name, ParentObjName, OwnerID, CreateDateTime, AllText, InsertDate, InsertHostName, UpdateDate, UpdateHostName)
     select xtype, Returns, OwnerName, name, ParentObjName, OwnerID, CreateDateTime, AllText, getdate () InsertDate, host_name () InsertHostName, null UpdateDate, null UpdateHostName
