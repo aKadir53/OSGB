@@ -101,6 +101,12 @@ type
       var AllowChange: Boolean);
     function GuncellemeKontrol : boolean;
     procedure GuncellemeBaslat(tip : string);
+    procedure MainMenuKadir1DragDrop(Sender, Source: TObject; X, Y: Integer);
+    procedure MainMenuKadir1DragOver(Sender, Source: TObject; X, Y: Integer;
+      State: TDragState; var Accept: Boolean);
+    procedure MainMenuKadir1EndDrag(Sender, Target: TObject; X, Y: Integer);
+    procedure MainMenuKadir1LinkPress(Sender: TObject;
+      ALink: TdxNavBarItemLink);
   private
     { Private declarations }
   public
@@ -114,6 +120,8 @@ type
 var
   AnaForm: TAnaForm;
   f : double;
+  _pressItem_ : TdxNavBarItem;
+  _targetGroup_ : TdxNavBarGroup;
 
 implementation
       uses Tnm_Ilaclar,Tnm_LabTest,
@@ -354,6 +362,56 @@ begin
 
 end;
 
+procedure TAnaForm.MainMenuKadir1DragDrop(Sender, Source: TObject; X,
+  Y: Integer);
+begin
+    if dxNavBarDragObject.TargetGroup.Tag = 500 then
+    begin
+       _targetGroup_ := dxNavBarDragObject.TargetGroup;
+    end
+    else
+    begin
+      _targetGroup_ := nil;
+
+    end;
+end;
+
+procedure TAnaForm.MainMenuKadir1DragOver(Sender, Source: TObject; X,
+  Y: Integer; State: TDragState; var Accept: Boolean);
+begin
+    if Assigned(_targetGroup_) = True
+    then
+     if _targetGroup_.Tag <> 500 then
+      Accept := False;
+end;
+
+procedure TAnaForm.MainMenuKadir1EndDrag(Sender, Target: TObject; X,
+  Y: Integer);
+var
+  i : TdxNavBarItem;
+  sql : string;
+begin
+    if Assigned(_targetGroup_) = True
+    then begin
+      // ShowMessage(_pressItem_.Caption,'','','info');
+       sql := ' if not exists (select * from MenuIslem_SK where KAYITID = ' + inttostr(_pressItem_.Tag)+ ') ' +
+              'insert into MenuIslem_SK ' +
+              '(Menu, KAYITID, MainMenu, Kapsam, imageIndex, ShowTip, FormTag,Kullanici) ' +
+              ' values (' +
+               QuotedStr(_pressItem_.Caption) + ',' +
+               inttostr(_pressItem_.Tag) + ',' +
+               QuotedStr(_pressItem_.Caption) + ',' +
+               inttostr(_targetGroup_.Tag) + ',' +
+               inttostr(_pressItem_.SmallImageIndex) + ',' +
+               inttostr(_pressItem_.ShowTip) + ',' +
+               inttostr(_pressItem_.FormID) + ',' +
+               QuotedStr(datalar.username) + ')';
+       datalar.QueryExec(nil,sql);
+    end;
+    MainMenuKadir1.MenuGetir;
+   _targetGroup_ := nil;
+end;
+
 procedure TAnaForm.MainMenuKadir1GroupClick(Sender: TObject;
   AGroup: TdxNavBarGroup);
 var
@@ -399,6 +457,12 @@ begin
   FID :=  Alink.Item.FormID;
   showTip := ALink.Item.ShowTip;
   menuclik(ALink.Item.Tag,FID,showTip);
+end;
+
+procedure TAnaForm.MainMenuKadir1LinkPress(Sender: TObject;
+  ALink: TdxNavBarItemLink);
+begin
+  _pressItem_ := Alink.Item;
 end;
 
 procedure TAnaForm.menuclik(_tag_ : integer ; FormID : integer = 0 ; ShowTip : integer = 0);

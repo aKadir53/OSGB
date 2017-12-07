@@ -527,7 +527,7 @@ type
    function QuerySelect (Q: TADOQuery; sql:string) : Boolean;overload;
   // function QuerySelect (sql:string;Q: TADOQuery = nil) : Boolean;overload;
    function QuerySelect (sql:string) : TADOQuery; overload;
-   procedure QueryExec (var Q: TADOQuery; sql : string);
+   procedure QueryExec (Q: TADOQuery = nil ; sql : string = '');
    function FindData (Q: TADOQuery; sql: string): integer;
    procedure Login;
    function WebErisimBilgi(slk,slb : string) : string;
@@ -915,7 +915,7 @@ begin
    end;
 end;
 
-procedure Tdatalar.QueryExec (var Q: TADOQuery; sql : string);
+procedure TDATALAR.QueryExec (Q: TADOQuery = nil ; sql : string = '');
 var
   //sql2 :string;
   bLocalCreated: Boolean;
