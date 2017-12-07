@@ -1,6 +1,6 @@
 BEGIN TRAN
 GO
-ALTER 
+ALTER -- create
   VIEW [dbo].[VW_Sys]
 AS
 select so.xtype, 

@@ -1,6 +1,6 @@
 BEGIN TRAN
 GO
-ALTER -- drop
+ALTER -- drop -- create
   VIEW [dbo].[VW_Sys2]
 AS
 select so.name TableName, sc.name FieldName, sc.colid, sc.length, sc.prec, sc.scale, sc.isnullable, sc.Collationid, sc.Collation, sc.status, cast (case when sc.status & 128 = 0 then 0 else 1 end as bit) IsIdentity, st.name FieldType, sc.Iscomputed,
