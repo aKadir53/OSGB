@@ -75,7 +75,6 @@ type
   private
     { Private declarations }
   protected
-    procedure GozlemSil (const GozlemID : integer);
     procedure GozlemYazdir (const GozlemID : integer);
   public
     { Public declarations }
@@ -102,9 +101,8 @@ end;
 procedure TfrmSahaSaglikGozetim.cxButtonCClick(Sender: TObject);
 var
   GirisRecord : TGirisFormRecord;
-  F : TGirisForm;
 begin
-inherited;
+  inherited;
 
   GirisRecord.F_firmaKod_ := ADO_SahaGozetim.fieldbyname('FirmaKodu').AsString;
 
@@ -114,15 +112,17 @@ inherited;
        end;
   -18 : begin
           if ADO_SahaGozetim.RecordCount > 0 then
-            GozlemSil (ADO_SahaGozetim.FieldByName('ID').AsInteger);
+          begin
+            if not SahaSaglikGozlemSil (ADO_SahaGozetim.FieldByName('ID').AsInteger) then Exit;
+            ADO_SahaGozetim.Active := False;
+            ADO_SahaGozetim.Active := True;
+          end;
         end;
   -27 : begin
           if ADO_SahaGozetim.RecordCount > 0 then
             GozlemYazdir (ADO_SahaGozetim.FieldByName('ID').AsInteger);
         end;
   end;
-
-
 end;
 
 procedure TfrmSahaSaglikGozetim.FormCreate(Sender: TObject);
@@ -137,9 +137,6 @@ end;
 
 procedure TfrmSahaSaglikGozetim.Gozlem(islem: Integer);
 var
-    sql : string;
-    ado , adoD : TADOQuery;
-    j : integer;
     F : TForm;
 begin
     Self._firmaKod_ := datalar.AktifSirket;
@@ -161,35 +158,11 @@ begin
 
 end;
 
-procedure TfrmSahaSaglikGozetim.GozlemSil(const GozlemID: integer);
-var
-  ado : TADOQuery;
-  bBasarili : Boolean;
-begin
-  ado := TADOQuery.Create(Self);
-  try
-    bBasarili := False;
-    DATALAR.ADOConnection2.BeginTrans;
-    try
-      þ datalar.QueryExec (ado, 'delete from SahaGozlemRaporu where RaporlarID = ' + IntToStr (GozlemID));
-      datalar.QueryExec (ado, 'delete from SahaGozlemRaporlari where ID = ' + IntToStr (GozlemID));
-      bBasarili := True;
-    finally
-      if bBasarili then
-        DATALAR.ADOConnection2.CommitTrans
-       else
-        DATALAR.ADOConnection2.RollbackTrans;
-    end;
-  finally
-    ado.Free;
-    ADO_SahaGozetim.Active := False;
-    ADO_SahaGozetim.Active := True;
-  end;
-end;
-
 procedure TfrmSahaSaglikGozetim.GozlemYazdir(const GozlemID: integer);
 begin
- c
+ c grid sütunlarýný ayarla.
+ üstteki prosedürden sonra append yap
+ datalar.queryexec'i overload yap
 end;
 
 procedure TfrmSahaSaglikGozetim.gridRaporlarFocusedRecordChanged(
