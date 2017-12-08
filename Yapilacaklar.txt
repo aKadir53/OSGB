@@ -111,3 +111,13 @@ saha gözetimine dahil edilebilir
 
 
 0532 502 77 97 doktor Nigar Haným, Çekmeköy Belediyesi'nde, e-imza, iþyeri hekimliði hususunda bilgilendirilecek.
+
+-------------
+saha gözetim gridinde firma olmayacak
+popup'ta firma ve ünvan olmayacak defter no olacak
+iptal olacak
+çift týklama popup formu deðiþtirmek için açabilir ya da deðiþtir menüsü ekleyerek yapýlacak
+üstte gezindikçe alttaki data yenilenecek.
+sorular hiç yoksa sorularý dolduracak.
+denetimi yapan kullanýcý ile deðiþtiren farklý olabilir mi ?
+yanlýþ þirkete girip saha gözetimi yaptýysa ???
