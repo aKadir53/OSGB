@@ -43,7 +43,7 @@ uses message,Data_Modul,AnaUnit,message_y,popupForm,rapor,TedaviKart,Son6AylikTe
              Tnm_UserSettings,HastaAsiKarti,HastaTaniKart,
              KurumLogin,Update_G,
              MedulaKurumSifreDegis,
-             Tnm_Doktor,LabTestAyarlari,
+             Tnm_Doktor,LabTestAyarlari,SahaSaglikGozetim,
              PopupDBGridForm,PopupDBVerticalGridForm,
              Tnm_Ilaclar, PersonelEgitimFrm, About_Frm;
 
@@ -196,6 +196,8 @@ begin
    TagfrmIlaclar,TagfrmIlacAnaGrup,TagfrmIlacEtkenMadde : Result := TfrmIlaclar;
    TagfrmSon6AylikTetkikSonuc : Result := TfrmSon6AylikTetkikSonuc;
    TagfrmReceteler : Result := TfrmReceteler;
+
+   TagfrmSahaSaglikGozetim : Result := TfrmSahaSaglikGozetim;
   end;
 end;
 
@@ -232,6 +234,7 @@ begin
    TagfrmIlaclar,TagfrmIlacAnaGrup,TagfrmIlacEtkenMadde  : Result := frmIlaclar;
    TagfrmSon6AylikTetkikSonuc : Result := frmSon6AylikTetkikSonuc;
    TagfrmReceteler : Result := frmReceteler;
+   TagfrmSahaSaglikGozetim : Result := frmSahaSaglikGozetim;
 
   end;
 end;
@@ -266,6 +269,7 @@ begin
       TagfrmSorguCalistir : frmRaporCalistir := TfrmRaporCalistir.Create(Tab);
       TagfrmSon6AylikTetkikSonuc : frmSon6AylikTetkikSonuc := TfrmSon6AylikTetkikSonuc.Create(Tab);
       TagfrmReceteler : frmReceteler := TfrmReceteler.Create(Tab);
+      TagfrmSahaSaglikGozetim : frmSahaSaglikGozetim := TfrmSahaSaglikGozetim.Create(Tab);
      else
       result := nil;
    end;
@@ -341,6 +345,7 @@ begin
 
       TagfrmSon6AylikTetkikSonuc : frmSon6AylikTetkikSonuc := TfrmSon6AylikTetkikSonuc.Create(Tab);
       TagfrmReceteler : frmReceteler := TfrmReceteler.Create(Tab);
+      TagfrmSahaSaglikGozetim : frmSahaSaglikGozetim := TfrmSahaSaglikGozetim.Create(Tab);
      else
       result := nil;
    end;
@@ -414,6 +419,7 @@ begin
     TagfrmTestAyarlari : Application.CreateForm(TfrmTestAyarlari, frmTestAyarlari);
     TagfrmIlaclar,TagfrmIlacAnaGrup,TagfrmIlacEtkenMadde : Application.CreateForm(TfrmIlaclar , frmIlaclar);
     TagfrmSon6AylikTetkikSonuc : Application.CreateForm(TfrmSon6AylikTetkikSonuc , frmSon6AylikTetkikSonuc);
+    TagfrmSahaSaglikGozetim : Application.CreateForm(TfrmSahaSaglikGozetim, frmSahaSaglikGozetim);
 
     else
       result := nil;

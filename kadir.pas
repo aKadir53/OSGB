@@ -65,7 +65,8 @@ function FormattedTarihYYMMGG(t, s: string): string;
 function numTOtxt_M(d: extended; p: integer): string;
 function ShowMessage(msg1, msg2, msg3: string; t: string): word;
 function ShowMessageSkin(msg1, msg2, msg3: string; t: string): word;
-function ShowPopupForm(Caption : string ; Tag : integer): word;
+function ShowPopupForm(Caption : string ; Tag : integer): word; overload;
+function ShowPopupForm(Caption : string ; Tag : integer ; Form : TForm): word;overload;
 function tarihyap(t: string): Tdate;
 function tarihal(t: Tdate): string;
 function SayisalVeri(alan: Tlabelededit; var Key: Char): Boolean;
@@ -7458,7 +7459,20 @@ begin
   Result := frmMessage.ModalResult;
 end;
 
-
+function ShowPopupForm(Caption : string ; Tag : integer ; Form : TForm): word;
+begin
+  Application.CreateForm(TfrmPopup, frmPopup);
+  try
+    frmPopup._islem_ := Tag;
+    frmPopup._caption_ := Caption;
+    frmPopup.F := Application.FindComponent(Form.name) as TGirisForm;
+    TGirisForm(frmPopup)._SahaDenetimVeri_ := TGirisForm(Form)._SahaDenetimVeri_;
+    frmPopup.ShowModal;
+    Result := frmPopup.ModalResult;
+  finally
+    FreeAndNil (frmPopup);
+  end;
+end;
 
 function ShowPopupForm(Caption : string; Tag : integer): word;
 begin
@@ -7467,7 +7481,7 @@ begin
     frmPopup._islem_ := Tag;
     frmPopup._caption_ := Caption;
     frmPopup.ShowModal;
-    ShowPopupForm := frmPopup.ModalResult;
+    Result := frmPopup.ModalResult;
   finally
     FreeAndNil (frmPopup);
   end;

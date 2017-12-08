@@ -65,6 +65,7 @@ type
   public
     _islem_ :integer;
     _caption_ : string;
+    F : TGirisForm;
     { Public declarations }
   end;
 
@@ -83,7 +84,7 @@ uses message, data_modul;
 var
    frmTop_ :word = 0;
    frmLeft_ :word = 0;
-   mevcutTarih_,txtT_,ReceteTarih : TcxDateEditKadir;
+   mevcutTarih_,txtT_,ReceteTarih , _Tarih_ : TcxDateEditKadir;
    chkEv,chkPlan : TcxCheckBox;
    txtGun : TcxCurrencyEdit;
    ImageCombo : TcxImageComboBox;
@@ -91,6 +92,7 @@ var
    MemoKalanLen : integer;
    ImageComboKadir : TcxImageComboKadir;
    textEdit : TcxTextEdit;
+   _sahaDenetim_ : TSahaDenetimler;
 
 procedure TfrmPopup.txtDozClick(Sender: TObject);
 begin
@@ -199,6 +201,12 @@ begin
              end;
              datalar.SifreDegistir.Sifre := TcxTextEdit(FindComponent('YeniSifre')).EditValue;
            end;
+       yeniGozlem :
+           begin
+             (Application.FindComponent(F.name) as TGirisForm)._SahaDenetimVeri_.DenetimTarihi :=
+             TcxTextEdit(FindComponent('DenetimTarihi')).EditValue;
+           end;
+
   end;
 end;
 
@@ -490,6 +498,33 @@ inherited;
 
           ClientHeight := 250;
           ClientWidth := 400;
+       end;
+
+   yeniGozlem :
+       begin
+         textEdit := TcxTextEdit.Create(self);
+         textEdit.Name := 'FirmaKodu';
+         textEdit.Properties.ReadOnly := True;
+         setDataStringKontrol(self,textEdit, 'FirmaKodu','Firma No',Kolon1,'',60);
+         TcxTextEdit(FindComponent('FirmaKodu')).EditValue := datalar.AktifSirket;
+
+         textEdit := TcxTextEdit.Create(self);
+         textEdit.Name := 'FirmaAdi';
+         textEdit.Properties.ReadOnly := True;
+         setDataStringKontrol(self,textEdit, 'FirmaAdi','Firma No',Kolon1,'',60);
+         TcxTextEdit(FindComponent('FirmaAdi')).EditValue := datalar.AktifSirketAdi;
+
+          _Tarih_ := TcxDateEditKadir.Create(self);
+          _Tarih_.Name := 'DenetimTarihi';
+          setDataStringKontrol(self,_Tarih_, 'DenetimTarihi','Tarih',Kolon1,'',100);
+          TcxTextEdit(FindComponent('DenetimTarihi')).EditValue := date;
+
+
+
+   //       TGirisForm(F)._Veri_.DenetimTarihi := TcxTextEdit(FindComponent('DenetimTarihi')).EditingText;
+
+
+
        end;
 
   end;

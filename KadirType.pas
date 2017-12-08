@@ -449,6 +449,7 @@ type
     F_SeansSira_ : string;
     F_IlacEtkenMadde_ : string;
     F_firmaKod_ : string;
+    F_firmaAdi_ : string;
     F_mobilTel_ : string;
     F_sp_ : string;
     F_kod_ : string;
@@ -459,6 +460,13 @@ type
     KullaniciAdi : String;
     Sifre : String;
   end;
+
+  TSahaDenetimler = record
+    KullaniciAdi : String;
+    FirmaKod : String;
+    DenetimTarihi : String;
+  end;
+
 
 Const
   TagfrmHastaKart = 90;
@@ -526,6 +534,7 @@ Const
   TagfrmSorguCalistir = 600;
   TagfrmIsKazasi = 610;
   TagfrmAbout = 620;
+  TagfrmSahaSaglikGozetim = 630;
 
   ExceleGonder = 9997;
   SeansTarihiUpdate = 0;
@@ -557,6 +566,8 @@ Const
   ClckListele = 21;
   gdgelisDuzenle = 22;
   gdgelisAc = 23;
+  yeniGozlem = 24;
+  gozlemSil = 25;
 
 
   sp_HastaGelis = 'exec sp_HastaGelisleri ';
