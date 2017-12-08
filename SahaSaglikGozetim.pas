@@ -36,7 +36,6 @@ type
     cxStyle6: TcxStyle;
     cxStyleRepository2: TcxStyleRepository;
     cxStyle2: TcxStyle;
-    SaveDialog1: TSaveDialog;
     cxStyle7: TcxStyle;
     PopupMenu1: TPopupMenu;
     T1: TMenuItem;
@@ -60,18 +59,24 @@ type
     gridRaporlarImage: TcxGridDBColumn;
     DataSource2: TDataSource;
     ADOQuery1: TADOQuery;
-    gridRaporRaporlarID: TcxGridDBBandedColumn;
+    gridRaporID: TcxGridDBBandedColumn;
     gridRaporKonu_Sira: TcxGridDBBandedColumn;
+    gridRaporKonu: TcxGridDBBandedColumn;
     gridRaporUygunmu: TcxGridDBBandedColumn;
     gridRaporTespitler: TcxGridDBBandedColumn;
     gridRaporOneriler: TcxGridDBBandedColumn;
     procedure cxButtonCClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
-    procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure Gozlem(islem: Integer);
+    procedure gridRaporlarFocusedRecordChanged(Sender: TcxCustomGridTableView;
+      APrevFocusedRecord, AFocusedRecord: TcxCustomGridRecord;
+      ANewItemRecordFocusingChanged: Boolean);
 
   private
     { Private declarations }
+  protected
+    procedure GozlemSil (const GozlemID : integer);
+    procedure GozlemYazdir (const GozlemID : integer);
   public
     { Public declarations }
     function Init(Sender: TObject) : Boolean; override;
@@ -108,17 +113,16 @@ inherited;
          Gozlem(yeniGozlem);
        end;
   -18 : begin
-
+          if ADO_SahaGozetim.RecordCount > 0 then
+            GozlemSil (ADO_SahaGozetim.FieldByName('ID').AsInteger);
         end;
-
+  -27 : begin
+          if ADO_SahaGozetim.RecordCount > 0 then
+            GozlemYazdir (ADO_SahaGozetim.FieldByName('ID').AsInteger);
+        end;
   end;
 
 
-end;
-
-procedure TfrmSahaSaglikGozetim.FormClose(Sender: TObject; var Action: TCloseAction);
-begin
-  //frmTahlilsonucGir.Free;
 end;
 
 procedure TfrmSahaSaglikGozetim.FormCreate(Sender: TObject);
@@ -157,6 +161,45 @@ begin
 
 end;
 
+procedure TfrmSahaSaglikGozetim.GozlemSil(const GozlemID: integer);
+var
+  ado : TADOQuery;
+  bBasarili : Boolean;
+begin
+  ado := TADOQuery.Create(Self);
+  try
+    bBasarili := False;
+    DATALAR.ADOConnection2.BeginTrans;
+    try
+      þ datalar.QueryExec (ado, 'delete from SahaGozlemRaporu where RaporlarID = ' + IntToStr (GozlemID));
+      datalar.QueryExec (ado, 'delete from SahaGozlemRaporlari where ID = ' + IntToStr (GozlemID));
+      bBasarili := True;
+    finally
+      if bBasarili then
+        DATALAR.ADOConnection2.CommitTrans
+       else
+        DATALAR.ADOConnection2.RollbackTrans;
+    end;
+  finally
+    ado.Free;
+    ADO_SahaGozetim.Active := False;
+    ADO_SahaGozetim.Active := True;
+  end;
+end;
 
+procedure TfrmSahaSaglikGozetim.GozlemYazdir(const GozlemID: integer);
+begin
+ c
+end;
+
+procedure TfrmSahaSaglikGozetim.gridRaporlarFocusedRecordChanged(
+  Sender: TcxCustomGridTableView; APrevFocusedRecord,
+  AFocusedRecord: TcxCustomGridRecord; ANewItemRecordFocusingChanged: Boolean);
+begin
+  inherited;
+  ADOQuery1.Close;
+  ADOQuery1.SQL.Text := 'exec dbo.sp_SahaGozlemRaporDetayGetir ' + IntToStr (ADO_SahaGozetim.FieldByName('ID').AsInteger);
+  ADOQuery1.Open;
+end;
 
 end.
