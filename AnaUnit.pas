@@ -141,6 +141,7 @@ var
 begin
   ado := TADOQuery.Create(nil);
   try
+    Result := False;
     ado.Connection := datalar.ADOConnection2;
     try
       sql := 'select SLK,SLT,SLX from parametreler where SLK = ''GT'' and SLB = ''0000''';
@@ -179,10 +180,10 @@ begin
 
       if not datalar.Ado_Guncellemeler.Eof
       then begin
-        GuncellemeKontrol := True
+        Result := True
       end
       else
-        GuncellemeKontrol := False;
+        Result := False;
     except
 
     end;
@@ -269,8 +270,8 @@ begin
 end;
 
 procedure TAnaForm.FormCreate(Sender: TObject);
-var
-  i,j : integer;
+//var
+//  i,j : integer;
 begin
  // Res Dosya okuma
  //memo1.Lines := GetResourceAsString('Deneme');
@@ -388,7 +389,6 @@ end;
 procedure TAnaForm.MainMenuKadir1EndDrag(Sender, Target: TObject; X,
   Y: Integer);
 var
-  i : TdxNavBarItem;
   sql : string;
 begin
     if Assigned(_targetGroup_) = True
@@ -406,7 +406,7 @@ begin
                inttostr(_pressItem_.ShowTip) + ',' +
                inttostr(_pressItem_.FormID) + ',' +
                QuotedStr(datalar.username) + ')';
-       datalar.QueryExec(nil,sql);
+       datalar.QueryExec(sql);
     end;
     MainMenuKadir1.MenuGetir;
    _targetGroup_ := nil;
@@ -644,8 +644,6 @@ end;
 procedure TAnaForm.sayfalarCanCloseEx(Sender: TObject; ATabIndex: Integer;
   var ACanClose: Boolean);
 var
-  Form : TGirisForm;
-  I : integer;
   Comp : TComponent;
 begin
  if ATabIndex in [0,1]

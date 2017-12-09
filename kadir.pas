@@ -370,6 +370,7 @@ procedure ExceldenPersonelYukle;
 procedure OnlineDestekOpen;
 function IsNull (const s: String): Boolean;
 procedure LisansUzat;
+function SahaSaglikGozlemSil(const GozlemID: integer): Boolean;
 
 const
   _YTL_ = 'YTL';
@@ -8320,6 +8321,29 @@ begin
   End
   else
       ShowMessageSkin('Ýþlem iptal edildi','','','info');
+end;
+
+function SahaSaglikGozlemSil(const GozlemID: integer): Boolean;
+var
+  ado : TADOQuery;
+begin
+  ado := TADOQuery.Create(nil);
+  try
+    Result := False;
+    DATALAR.ADOConnection2.BeginTrans;
+    try
+      datalar.QueryExec (ado, 'delete from SahaGozlemRaporu where RaporlarID = ' + IntToStr (GozlemID));
+      datalar.QueryExec (ado, 'delete from SahaGozlemRaporlari where ID = ' + IntToStr (GozlemID));
+      Result := True;
+    finally
+      if Result then
+        DATALAR.ADOConnection2.CommitTrans
+       else
+        DATALAR.ADOConnection2.RollbackTrans;
+    end;
+  finally
+    ado.Free;
+  end;
 end;
 
 function IsNull (const s: String): Boolean;

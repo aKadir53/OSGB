@@ -27,14 +27,12 @@ object frmSahaSaglikGozetim: TfrmSahaSaglikGozetim
     Properties.TabPosition = tpBottom
     LookAndFeel.NativeStyle = False
     LookAndFeel.SkinName = 'McSkin'
-    ExplicitWidth = 1284
     ClientRectBottom = 650
     ClientRectLeft = 4
     ClientRectRight = 668
     ClientRectTop = 5
     object cxTabSheet1: TcxTabSheet
       ImageIndex = 0
-      ExplicitWidth = 1276
       object cxGridKadir1: TcxGridKadir
         Left = 0
         Top = 121
@@ -44,10 +42,6 @@ object frmSahaSaglikGozetim: TfrmSahaSaglikGozetim
         TabOrder = 0
         ExcelFileName = 'TahlilSonuclar'#305
         ExceleGonder = True
-        ExplicitLeft = 27
-        ExplicitTop = 139
-        ExplicitWidth = 1276
-        ExplicitHeight = 645
         object gridRapor: TcxGridDBBandedTableView
           DataController.DataSource = DataSource2
           DataController.Summary.DefaultGroupSummaryItems = <>
@@ -66,18 +60,25 @@ object frmSahaSaglikGozetim: TfrmSahaSaglikGozetim
               Styles.Header = cxStyle3
               Width = 737
             end>
-          object gridRaporRaporlarID: TcxGridDBBandedColumn
-            DataBinding.FieldName = 'RaporlarID'
-            Width = 69
+          object gridRaporID: TcxGridDBBandedColumn
+            DataBinding.FieldName = 'ID'
+            Width = 20
             Position.BandIndex = 0
             Position.ColIndex = 0
             Position.RowIndex = 0
           end
           object gridRaporKonu_Sira: TcxGridDBBandedColumn
             DataBinding.FieldName = 'Konu_Sira'
-            Width = 80
+            Width = 24
             Position.BandIndex = 0
             Position.ColIndex = 1
+            Position.RowIndex = 0
+          end
+          object gridRaporKonu: TcxGridDBBandedColumn
+            DataBinding.FieldName = 'Konu'
+            Width = 232
+            Position.BandIndex = 0
+            Position.ColIndex = 2
             Position.RowIndex = 0
           end
           object gridRaporUygunmu: TcxGridDBBandedColumn
@@ -85,23 +86,23 @@ object frmSahaSaglikGozetim: TfrmSahaSaglikGozetim
             PropertiesClassName = 'TcxCheckBoxProperties'
             Properties.ValueChecked = 1
             Properties.ValueUnchecked = 0
-            Width = 50
-            Position.BandIndex = 0
-            Position.ColIndex = 2
-            Position.RowIndex = 0
-          end
-          object gridRaporTespitler: TcxGridDBBandedColumn
-            DataBinding.FieldName = 'Tespitler'
-            Width = 270
+            Width = 43
             Position.BandIndex = 0
             Position.ColIndex = 3
             Position.RowIndex = 0
           end
-          object gridRaporOneriler: TcxGridDBBandedColumn
-            DataBinding.FieldName = 'Oneriler'
-            Width = 268
+          object gridRaporTespitler: TcxGridDBBandedColumn
+            DataBinding.FieldName = 'Tespitler'
+            Width = 156
             Position.BandIndex = 0
             Position.ColIndex = 4
+            Position.RowIndex = 0
+          end
+          object gridRaporOneriler: TcxGridDBBandedColumn
+            DataBinding.FieldName = 'Oneriler'
+            Width = 262
+            Position.BandIndex = 0
+            Position.ColIndex = 5
             Position.RowIndex = 0
           end
         end
@@ -119,6 +120,7 @@ object frmSahaSaglikGozetim: TfrmSahaSaglikGozetim
         ExcelFileName = 'TahlilSonuclar'#305
         ExceleGonder = True
         object gridRaporlar: TcxGridDBTableView
+          OnFocusedRecordChanged = gridRaporlarFocusedRecordChanged
           DataController.DataSource = DataSource1
           DataController.Summary.DefaultGroupSummaryItems = <>
           DataController.Summary.FooterSummaryItems = <>
@@ -236,10 +238,6 @@ object frmSahaSaglikGozetim: TfrmSahaSaglikGozetim
       Font.Style = [fsBold]
     end
   end
-  object SaveDialog1: TSaveDialog
-    Left = 336
-    Top = 256
-  end
   object PopupMenu1: TPopupMenu
     Images = DATALAR.imag24png
     Left = 408
@@ -251,12 +249,16 @@ object frmSahaSaglikGozetim: TfrmSahaSaglikGozetim
       OnClick = cxButtonCClick
     end
     object G1: TMenuItem
+      Tag = -18
       Caption = 'G'#246'zetim Sil'
       ImageIndex = 43
+      OnClick = cxButtonCClick
     end
     object Y1: TMenuItem
+      Tag = -27
       Caption = 'Yazd'#305'r'
       ImageIndex = 28
+      OnClick = cxButtonCClick
     end
   end
   object DataSource2: TDataSource
@@ -272,7 +274,7 @@ object frmSahaSaglikGozetim: TfrmSahaSaglikGozetim
     CommandTimeout = 0
     Parameters = <>
     SQL.Strings = (
-      'select * from SahaGozlemRaporu')
+      'exec dbo.sp_SahaGozlemRaporDetayGetir 0')
     Left = 104
     Top = 336
   end
