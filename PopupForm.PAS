@@ -114,6 +114,7 @@ end;
 procedure TfrmPopup.FormClose(Sender: TObject; var Action: TCloseAction);
 var
  HizmetKod : TcxImageComboKadir;
+  xSahaDenetimVeri : TSahaDenetimler;
 begin
   if frmPopup.ModalResult = mrYes
   then
@@ -203,8 +204,11 @@ begin
            end;
        yeniGozlem :
            begin
-           //  (Application.FindComponent(F.name) as TGirisForm)._SahaDenetimVeri_.DenetimTarihi :=
-          //   TcxTextEdit(FindComponent('DenetimTarihi')).EditValue;
+             xSahaDenetimVeri.DenetimTarihi := TcxTextEdit(FindComponent('DenetimTarihi')).EditValue;
+             xSahaDenetimVeri.FirmaKod := TcxTextEdit(FindComponent('FirmaKodu')).EditValue;
+             xSahaDenetimVeri.KullaniciAdi := DATALAR.username;
+             xSahaDenetimVeri.DenetimDefterNo := TcxTextEdit(FindComponent('DenetimDefterNo')).EditValue;
+             (Application.FindComponent(F.name) as TGirisForm)._SahaDenetimVeri_ := xSahaDenetimVeri;
            end;
 
   end;
@@ -502,6 +506,8 @@ inherited;
 
    yeniGozlem :
        begin
+         ClientHeight := 250;
+         ClientWidth := 372;
          textEdit := TcxTextEdit.Create(self);
          textEdit.Name := 'FirmaKodu';
          textEdit.Properties.ReadOnly := True;
@@ -511,7 +517,7 @@ inherited;
          textEdit := TcxTextEdit.Create(self);
          textEdit.Name := 'FirmaAdi';
          textEdit.Properties.ReadOnly := True;
-         setDataStringKontrol(self,textEdit, 'FirmaAdi','Firma No',Kolon1,'',60);
+         setDataStringKontrol(self,textEdit, 'FirmaAdi','Firma Ünvaný',Kolon1,'',200);
          TcxTextEdit(FindComponent('FirmaAdi')).EditValue := datalar.AktifSirketAdi;
 
           _Tarih_ := TcxDateEditKadir.Create(self);
@@ -519,12 +525,11 @@ inherited;
           setDataStringKontrol(self,_Tarih_, 'DenetimTarihi','Tarih',Kolon1,'',100);
           TcxTextEdit(FindComponent('DenetimTarihi')).EditValue := date;
 
-
-
-   //       TGirisForm(F)._Veri_.DenetimTarihi := TcxTextEdit(FindComponent('DenetimTarihi')).EditingText;
-
-
-
+         textEdit := TcxTextEdit.Create(self);
+         textEdit.Name := 'DenetimDefterNo';
+         textEdit.Properties.ReadOnly := False;
+         setDataStringKontrol(self,textEdit, 'DenetimDefterNo','Denetim Defter No.',Kolon1,'',60);
+         TcxTextEdit(FindComponent('DenetimDefterNo')).EditValue := '';
        end;
 
   end;
@@ -552,3 +557,4 @@ begin
 end;
 
 end.
+

@@ -465,6 +465,7 @@ type
     KullaniciAdi : String;
     FirmaKod : String;
     DenetimTarihi : String;
+    DenetimDefterNo : String;
   end;
 
 

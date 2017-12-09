@@ -36,7 +36,6 @@ type
     cxStyle6: TcxStyle;
     cxStyleRepository2: TcxStyleRepository;
     cxStyle2: TcxStyle;
-    SaveDialog1: TSaveDialog;
     cxStyle7: TcxStyle;
     PopupMenu1: TPopupMenu;
     T1: TMenuItem;
@@ -52,26 +51,29 @@ type
     cxGridLevel1: TcxGridLevel;
     gridRaporlar: TcxGridDBTableView;
     gridRaporlarID: TcxGridDBColumn;
-    gridRaporlarFirmaKodu: TcxGridDBColumn;
     gridRaporlarDenetimiYapanKullanici: TcxGridDBColumn;
     gridRaporlarDenetimTarihi: TcxGridDBColumn;
     gridRaporlarDate_Create: TcxGridDBColumn;
     gridRaporlarGozetimDefterNo: TcxGridDBColumn;
-    gridRaporlarImage: TcxGridDBColumn;
     DataSource2: TDataSource;
     ADOQuery1: TADOQuery;
-    gridRaporRaporlarID: TcxGridDBBandedColumn;
+    gridRaporID: TcxGridDBBandedColumn;
     gridRaporKonu_Sira: TcxGridDBBandedColumn;
+    gridRaporKonu: TcxGridDBBandedColumn;
     gridRaporUygunmu: TcxGridDBBandedColumn;
     gridRaporTespitler: TcxGridDBBandedColumn;
     gridRaporOneriler: TcxGridDBBandedColumn;
     procedure cxButtonCClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
-    procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure Gozlem(islem: Integer);
+    procedure gridRaporlarFocusedRecordChanged(Sender: TcxCustomGridTableView;
+      APrevFocusedRecord, AFocusedRecord: TcxCustomGridRecord;
+      ANewItemRecordFocusingChanged: Boolean);
 
   private
     { Private declarations }
+  protected
+    procedure GozlemYazdir (const GozlemID : integer);
   public
     { Public declarations }
     function Init(Sender: TObject) : Boolean; override;
@@ -90,6 +92,11 @@ implementation
 
 function TfrmSahaSaglikGozetim.Init(Sender : TObject) : Boolean;
 begin
+  ADO_SahaGozetim.SQL.Text :=
+    'select ID, DenetimiYapanKullanici, DenetimTarihi, Date_Create, GozetimDefterNo, FirmaKodu'#13#10+
+    'from SahaGozlemRaporlari SR'#13#10+
+    'where FirmaKodu = ' + QuotedStr (DATALAR.AktifSirket) + ''#13#10+
+    'order by SR.ID';
   ADO_SahaGozetim .Active := true;
   Result := True;
 end;
@@ -97,9 +104,8 @@ end;
 procedure TfrmSahaSaglikGozetim.cxButtonCClick(Sender: TObject);
 var
   GirisRecord : TGirisFormRecord;
-  F : TGirisForm;
 begin
-inherited;
+  inherited;
 
   GirisRecord.F_firmaKod_ := ADO_SahaGozetim.fieldbyname('FirmaKodu').AsString;
 
@@ -108,17 +114,18 @@ inherited;
          Gozlem(yeniGozlem);
        end;
   -18 : begin
-
+          if ADO_SahaGozetim.RecordCount > 0 then
+          begin
+            if not SahaSaglikGozlemSil (ADO_SahaGozetim.FieldByName('ID').AsInteger) then Exit;
+            ADO_SahaGozetim.Active := False;
+            ADO_SahaGozetim.Active := True;
+          end;
         end;
-
+  -27 : begin
+          if ADO_SahaGozetim.RecordCount > 0 then
+            GozlemYazdir (ADO_SahaGozetim.FieldByName('ID').AsInteger);
+        end;
   end;
-
-
-end;
-
-procedure TfrmSahaSaglikGozetim.FormClose(Sender: TObject; var Action: TCloseAction);
-begin
-  //frmTahlilsonucGir.Free;
 end;
 
 procedure TfrmSahaSaglikGozetim.FormCreate(Sender: TObject);
@@ -133,30 +140,60 @@ end;
 
 procedure TfrmSahaSaglikGozetim.Gozlem(islem: Integer);
 var
-    sql : string;
-    ado , adoD : TADOQuery;
-    j : integer;
-    F : TForm;
+  F : TForm;
+  aBM : TBookmark;
+  bBasarili: Boolean;
 begin
     Self._firmaKod_ := datalar.AktifSirket;
     F := Self;
-
     if islem = yeniGozlem
-    then
-    if mrYes = ShowPopupForm('Yeni Gözlem',islem,F)
     then begin
-
-
-          ShowMessageSkin(_firmaKod_,_SahaDenetimVeri_.DenetimTarihi,'','info');
-
-
+      if mrYes = ShowPopupForm('Yeni Gözlem',islem,F)
+      then begin
+        bBasarili := False;
+        ADO_SahaGozetim.DisableControls;
+        try
+          ADO_SahaGozetim.Append;
+          try
+            ADO_SahaGozetim.FieldByName('DenetimiYapanKullanici').AsString := _SahaDenetimVeri_.KullaniciAdi;
+            ADO_SahaGozetim.FieldByName('FirmaKodu').AsString := _SahaDenetimVeri_.FirmaKod;
+            ADO_SahaGozetim.FieldByName('DenetimTarihi').AsString := _SahaDenetimVeri_.DenetimTarihi;
+            ADO_SahaGozetim.FieldByName('GozetimDefterNo').AsString := _SahaDenetimVeri_.DenetimDefterNo;
+            ADO_SahaGozetim.Post;
+            bBasarili := True;
+          finally
+            if not bBasarili then ADO_SahaGozetim.Cancel;
+          end;
+          aBM := ADO_SahaGozetim.GetBookmark;
+          try
+            ADO_SahaGozetim.Refresh;
+            ADO_SahaGozetim.GotoBookmark(aBM);
+          finally
+            ADO_SahaGozetim.FreeBookmark(aBM);
+          end;
+        finally
+          ADO_SahaGozetim.EnableControls;
+        end;
+      end;
     end;
-
-
-
-
 end;
 
+procedure TfrmSahaSaglikGozetim.GozlemYazdir(const GozlemID: integer);
+begin
+ //c
+end;
 
-
+procedure TfrmSahaSaglikGozetim.gridRaporlarFocusedRecordChanged(
+  Sender: TcxCustomGridTableView; APrevFocusedRecord,
+  AFocusedRecord: TcxCustomGridRecord; ANewItemRecordFocusingChanged: Boolean);
+begin
+  inherited;
+  ADOQuery1.Close;
+  ADOQuery1.SQL.Text := 'exec dbo.sp_SahaGozlemRaporDetayGetir ' + IntToStr (ADO_SahaGozetim.FieldByName('ID').AsInteger);
+  ADOQuery1.Open;
+end;end.
+ popup'ta firma ve ünvan olmayacak defter no olacak
+ çift týklama popup formu deðiþtirmek için açabilir ya da deðiþtir menüsü ekleyerek yapýlacak
+ denetimi yapan kullanýcý ile deðiþtiren farklý olabilir mi ?
+ yanlýþ þirkete girip saha gözetimi yaptýysa ???
 end.

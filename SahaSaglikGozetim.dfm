@@ -27,14 +27,12 @@ object frmSahaSaglikGozetim: TfrmSahaSaglikGozetim
     Properties.TabPosition = tpBottom
     LookAndFeel.NativeStyle = False
     LookAndFeel.SkinName = 'McSkin'
-    ExplicitWidth = 1284
     ClientRectBottom = 650
     ClientRectLeft = 4
     ClientRectRight = 668
     ClientRectTop = 5
     object cxTabSheet1: TcxTabSheet
       ImageIndex = 0
-      ExplicitWidth = 1276
       object cxGridKadir1: TcxGridKadir
         Left = 0
         Top = 121
@@ -44,17 +42,12 @@ object frmSahaSaglikGozetim: TfrmSahaSaglikGozetim
         TabOrder = 0
         ExcelFileName = 'TahlilSonuclar'#305
         ExceleGonder = True
-        ExplicitLeft = 27
-        ExplicitTop = 139
-        ExplicitWidth = 1276
-        ExplicitHeight = 645
         object gridRapor: TcxGridDBBandedTableView
           DataController.DataSource = DataSource2
           DataController.Summary.DefaultGroupSummaryItems = <>
           DataController.Summary.FooterSummaryItems = <>
           DataController.Summary.SummaryGroups = <>
           OptionsData.Deleting = False
-          OptionsData.Editing = False
           OptionsData.Inserting = False
           OptionsView.GroupByBox = False
           OptionsView.HeaderHeight = 33
@@ -66,18 +59,31 @@ object frmSahaSaglikGozetim: TfrmSahaSaglikGozetim
               Styles.Header = cxStyle3
               Width = 737
             end>
-          object gridRaporRaporlarID: TcxGridDBBandedColumn
-            DataBinding.FieldName = 'RaporlarID'
-            Width = 69
+          object gridRaporID: TcxGridDBBandedColumn
+            DataBinding.FieldName = 'ID'
+            Options.Editing = False
+            Options.Focusing = False
+            Width = 20
             Position.BandIndex = 0
             Position.ColIndex = 0
             Position.RowIndex = 0
           end
           object gridRaporKonu_Sira: TcxGridDBBandedColumn
             DataBinding.FieldName = 'Konu_Sira'
-            Width = 80
+            Options.Editing = False
+            Options.Focusing = False
+            Width = 24
             Position.BandIndex = 0
             Position.ColIndex = 1
+            Position.RowIndex = 0
+          end
+          object gridRaporKonu: TcxGridDBBandedColumn
+            DataBinding.FieldName = 'Konu'
+            Options.Editing = False
+            Options.Focusing = False
+            Width = 232
+            Position.BandIndex = 0
+            Position.ColIndex = 2
             Position.RowIndex = 0
           end
           object gridRaporUygunmu: TcxGridDBBandedColumn
@@ -85,23 +91,23 @@ object frmSahaSaglikGozetim: TfrmSahaSaglikGozetim
             PropertiesClassName = 'TcxCheckBoxProperties'
             Properties.ValueChecked = 1
             Properties.ValueUnchecked = 0
-            Width = 50
-            Position.BandIndex = 0
-            Position.ColIndex = 2
-            Position.RowIndex = 0
-          end
-          object gridRaporTespitler: TcxGridDBBandedColumn
-            DataBinding.FieldName = 'Tespitler'
-            Width = 270
+            Width = 43
             Position.BandIndex = 0
             Position.ColIndex = 3
             Position.RowIndex = 0
           end
-          object gridRaporOneriler: TcxGridDBBandedColumn
-            DataBinding.FieldName = 'Oneriler'
-            Width = 268
+          object gridRaporTespitler: TcxGridDBBandedColumn
+            DataBinding.FieldName = 'Tespitler'
+            Width = 156
             Position.BandIndex = 0
             Position.ColIndex = 4
+            Position.RowIndex = 0
+          end
+          object gridRaporOneriler: TcxGridDBBandedColumn
+            DataBinding.FieldName = 'Oneriler'
+            Width = 262
+            Position.BandIndex = 0
+            Position.ColIndex = 5
             Position.RowIndex = 0
           end
         end
@@ -119,6 +125,7 @@ object frmSahaSaglikGozetim: TfrmSahaSaglikGozetim
         ExcelFileName = 'TahlilSonuclar'#305
         ExceleGonder = True
         object gridRaporlar: TcxGridDBTableView
+          OnFocusedRecordChanged = gridRaporlarFocusedRecordChanged
           DataController.DataSource = DataSource1
           DataController.Summary.DefaultGroupSummaryItems = <>
           DataController.Summary.FooterSummaryItems = <>
@@ -126,24 +133,27 @@ object frmSahaSaglikGozetim: TfrmSahaSaglikGozetim
           OptionsView.GroupByBox = False
           object gridRaporlarID: TcxGridDBColumn
             DataBinding.FieldName = 'ID'
-          end
-          object gridRaporlarFirmaKodu: TcxGridDBColumn
-            DataBinding.FieldName = 'FirmaKodu'
+            Width = 41
           end
           object gridRaporlarDenetimiYapanKullanici: TcxGridDBColumn
+            Caption = 'Denetimi Yapan'
             DataBinding.FieldName = 'DenetimiYapanKullanici'
+            Width = 124
           end
           object gridRaporlarDenetimTarihi: TcxGridDBColumn
+            Caption = 'Denetim Tarihi'
             DataBinding.FieldName = 'DenetimTarihi'
+            Width = 86
           end
           object gridRaporlarDate_Create: TcxGridDBColumn
+            Caption = 'Denetim Kay'#305't Zaman'#305
             DataBinding.FieldName = 'Date_Create'
+            Width = 105
           end
           object gridRaporlarGozetimDefterNo: TcxGridDBColumn
+            Caption = 'Defter No.'
             DataBinding.FieldName = 'GozetimDefterNo'
-          end
-          object gridRaporlarImage: TcxGridDBColumn
-            DataBinding.FieldName = 'Image'
+            Width = 86
           end
         end
         object cxGridLevel1: TcxGridLevel
@@ -160,11 +170,15 @@ object frmSahaSaglikGozetim: TfrmSahaSaglikGozetim
   object ADO_SahaGozetim: TADOQuery
     Connection = DATALAR.ADOConnection2
     CursorType = ctStatic
-    LockType = ltBatchOptimistic
     CommandTimeout = 0
     Parameters = <>
     SQL.Strings = (
-      'select * from SahaGozlemRaporlari')
+      
+        'select ID, DenetimiYapanKullanici, DenetimTarihi, Date_Create, G' +
+        'ozetimDefterNo, FirmaKodu'
+      'from SahaGozlemRaporlari SR'
+      'where FirmaKodu = '#39'0001'#39
+      'order by SR.ID')
     Left = 64
     Top = 240
   end
@@ -236,10 +250,6 @@ object frmSahaSaglikGozetim: TfrmSahaSaglikGozetim
       Font.Style = [fsBold]
     end
   end
-  object SaveDialog1: TSaveDialog
-    Left = 336
-    Top = 256
-  end
   object PopupMenu1: TPopupMenu
     Images = DATALAR.imag24png
     Left = 408
@@ -251,12 +261,16 @@ object frmSahaSaglikGozetim: TfrmSahaSaglikGozetim
       OnClick = cxButtonCClick
     end
     object G1: TMenuItem
+      Tag = -18
       Caption = 'G'#246'zetim Sil'
       ImageIndex = 43
+      OnClick = cxButtonCClick
     end
     object Y1: TMenuItem
+      Tag = -27
       Caption = 'Yazd'#305'r'
       ImageIndex = 28
+      OnClick = cxButtonCClick
     end
   end
   object DataSource2: TDataSource
@@ -265,14 +279,12 @@ object frmSahaSaglikGozetim: TfrmSahaSaglikGozetim
     Top = 338
   end
   object ADOQuery1: TADOQuery
-    Active = True
     Connection = DATALAR.ADOConnection2
     CursorType = ctStatic
-    LockType = ltBatchOptimistic
     CommandTimeout = 0
     Parameters = <>
     SQL.Strings = (
-      'select * from SahaGozlemRaporu')
+      'exec dbo.sp_SahaGozlemRaporDetayGetir 0')
     Left = 104
     Top = 336
   end
