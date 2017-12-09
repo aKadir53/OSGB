@@ -506,6 +506,8 @@ inherited;
 
    yeniGozlem :
        begin
+         ClientHeight := 250;
+         ClientWidth := 372;
          textEdit := TcxTextEdit.Create(self);
          textEdit.Name := 'FirmaKodu';
          textEdit.Properties.ReadOnly := True;
@@ -515,18 +517,19 @@ inherited;
          textEdit := TcxTextEdit.Create(self);
          textEdit.Name := 'FirmaAdi';
          textEdit.Properties.ReadOnly := True;
-         setDataStringKontrol(self,textEdit, 'FirmaAdi','Firma No',Kolon1,'',60);
+         setDataStringKontrol(self,textEdit, 'FirmaAdi','Firma Ünvaný',Kolon1,'',200);
          TcxTextEdit(FindComponent('FirmaAdi')).EditValue := datalar.AktifSirketAdi;
 
-          _Tarih_ := TcxDateEditKadir.Create(self);
-          _Tarih_.Name := 'DenetimTarihi';
-          setDataStringKontrol(self,_Tarih_, 'DenetimTarihi','Tarih',Kolon1,'',100);
-          TcxTextEdit(FindComponent('DenetimTarihi')).EditValue := date;
+         _Tarih_ := TcxDateEditKadir.Create(self);
+         _Tarih_.Name := 'DenetimTarihi';
+         setDataStringKontrol(self,_Tarih_, 'DenetimTarihi','Tarih',Kolon1,'',100);
+         TcxTextEdit(FindComponent('DenetimTarihi')).EditValue := date;
 
          textEdit := TcxTextEdit.Create(self);
          textEdit.Name := 'DenetimDefterNo';
          textEdit.Properties.ReadOnly := False;
          setDataStringKontrol(self,textEdit, 'DenetimDefterNo','Denetim Defter No.',Kolon1,'',60);
+         TcxTextEdit(FindComponent('DenetimDefterNo')).EditValue := '';
        end;
 
   end;

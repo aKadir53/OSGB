@@ -93,7 +93,7 @@ implementation
 function TfrmSahaSaglikGozetim.Init(Sender : TObject) : Boolean;
 begin
   ADO_SahaGozetim.SQL.Text :=
-    'select ID, DenetimiYapanKullanici, DenetimTarihi, Date_Create, GozetimDefterNo'#13#10+
+    'select ID, DenetimiYapanKullanici, DenetimTarihi, Date_Create, GozetimDefterNo, FirmaKodu'#13#10+
     'from SahaGozlemRaporlari SR'#13#10+
     'where FirmaKodu = ' + QuotedStr (DATALAR.AktifSirket) + ''#13#10+
     'order by SR.ID';
@@ -142,6 +142,7 @@ procedure TfrmSahaSaglikGozetim.Gozlem(islem: Integer);
 var
   F : TForm;
   aBM : TBookmark;
+  bBasarili: Boolean;
 begin
     Self._firmaKod_ := datalar.AktifSirket;
     F := Self;
@@ -149,14 +150,20 @@ begin
     then begin
       if mrYes = ShowPopupForm('Yeni Gözlem',islem,F)
       then begin
+        bBasarili := False;
         ADO_SahaGozetim.DisableControls;
         try
           ADO_SahaGozetim.Append;
-          ADO_SahaGozetim.FieldByName('DenetimiYapanKullanici').AsString := _SahaDenetimVeri_.KullaniciAdi;
-          ADO_SahaGozetim.FieldByName('FirmaKodu').AsString := _SahaDenetimVeri_.FirmaKod;
-          ADO_SahaGozetim.FieldByName('DenetimTarihi').AsString := _SahaDenetimVeri_.DenetimTarihi;
-          ADO_SahaGozetim.FieldByName('GozetimDefterNo').AsString := _SahaDenetimVeri_.DenetimDefterNo;
-          ADO_SahaGozetim.Post;
+          try
+            ADO_SahaGozetim.FieldByName('DenetimiYapanKullanici').AsString := _SahaDenetimVeri_.KullaniciAdi;
+            ADO_SahaGozetim.FieldByName('FirmaKodu').AsString := _SahaDenetimVeri_.FirmaKod;
+            ADO_SahaGozetim.FieldByName('DenetimTarihi').AsString := _SahaDenetimVeri_.DenetimTarihi;
+            ADO_SahaGozetim.FieldByName('GozetimDefterNo').AsString := _SahaDenetimVeri_.DenetimDefterNo;
+            ADO_SahaGozetim.Post;
+            bBasarili := True;
+          finally
+            if not bBasarili then ADO_SahaGozetim.Cancel;
+          end;
           aBM := ADO_SahaGozetim.GetBookmark;
           try
             ADO_SahaGozetim.Refresh;

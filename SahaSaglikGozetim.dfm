@@ -170,7 +170,7 @@ object frmSahaSaglikGozetim: TfrmSahaSaglikGozetim
     SQL.Strings = (
       
         'select ID, DenetimiYapanKullanici, DenetimTarihi, Date_Create, G' +
-        'ozetimDefterNo'
+        'ozetimDefterNo, FirmaKodu'
       'from SahaGozlemRaporlari SR'
       'where FirmaKodu = '#39'0001'#39
       'order by SR.ID')
