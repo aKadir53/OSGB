@@ -51,12 +51,10 @@ type
     cxGridLevel1: TcxGridLevel;
     gridRaporlar: TcxGridDBTableView;
     gridRaporlarID: TcxGridDBColumn;
-    gridRaporlarFirmaKodu: TcxGridDBColumn;
     gridRaporlarDenetimiYapanKullanici: TcxGridDBColumn;
     gridRaporlarDenetimTarihi: TcxGridDBColumn;
     gridRaporlarDate_Create: TcxGridDBColumn;
     gridRaporlarGozetimDefterNo: TcxGridDBColumn;
-    gridRaporlarImage: TcxGridDBColumn;
     DataSource2: TDataSource;
     ADOQuery1: TADOQuery;
     gridRaporID: TcxGridDBBandedColumn;
@@ -94,6 +92,11 @@ implementation
 
 function TfrmSahaSaglikGozetim.Init(Sender : TObject) : Boolean;
 begin
+  ADO_SahaGozetim.SQL.Text :=
+    'select ID, DenetimiYapanKullanici, DenetimTarihi, Date_Create, GozetimDefterNo, FirmaKodu'#13#10+
+    'from SahaGozlemRaporlari SR'#13#10+
+    'where FirmaKodu = ' + QuotedStr (DATALAR.AktifSirket) + ''#13#10+
+    'order by SR.ID';
   ADO_SahaGozetim .Active := true;
   Result := True;
 end;
@@ -137,37 +140,47 @@ end;
 
 procedure TfrmSahaSaglikGozetim.Gozlem(islem: Integer);
 var
-    F : TForm;
+  F : TForm;
+  aBM : TBookmark;
+  bBasarili: Boolean;
 begin
     Self._firmaKod_ := datalar.AktifSirket;
     F := Self;
-
     if islem = yeniGozlem
-    then
-    if mrYes = ShowPopupForm('Yeni Gözlem',islem,F)
     then begin
-
-
-          {ShowMessageSkin(_firmaKod_,_SahaDenetimVeri_.DenetimTarihi,'','info');
+      if mrYes = ShowPopupForm('Yeni Gözlem',islem,F)
+      then begin
+        bBasarili := False;
+        ADO_SahaGozetim.DisableControls;
+        try
           ADO_SahaGozetim.Append;
-          ADO_SahaGozetim.FieldByName('').as;
-          ADO_SahaGozetim.FieldByName('').as;
-          ADO_SahaGozetim.FieldByName('').as;
-          ADO_SahaGozetim.FieldByName('').as;
-          ADO_SahaGozetim.Post;{}
+          try
+            ADO_SahaGozetim.FieldByName('DenetimiYapanKullanici').AsString := _SahaDenetimVeri_.KullaniciAdi;
+            ADO_SahaGozetim.FieldByName('FirmaKodu').AsString := _SahaDenetimVeri_.FirmaKod;
+            ADO_SahaGozetim.FieldByName('DenetimTarihi').AsString := _SahaDenetimVeri_.DenetimTarihi;
+            ADO_SahaGozetim.FieldByName('GozetimDefterNo').AsString := _SahaDenetimVeri_.DenetimDefterNo;
+            ADO_SahaGozetim.Post;
+            bBasarili := True;
+          finally
+            if not bBasarili then ADO_SahaGozetim.Cancel;
+          end;
+          aBM := ADO_SahaGozetim.GetBookmark;
+          try
+            ADO_SahaGozetim.Refresh;
+            ADO_SahaGozetim.GotoBookmark(aBM);
+          finally
+            ADO_SahaGozetim.FreeBookmark(aBM);
+          end;
+        finally
+          ADO_SahaGozetim.EnableControls;
+        end;
+      end;
     end;
-
-
-
-
 end;
 
 procedure TfrmSahaSaglikGozetim.GozlemYazdir(const GozlemID: integer);
 begin
- {c grid sütunlarýný ayarla.
- üstteki prosedürden sonra append yap
- datalar.queryexec'i overload yap' +
- sirket kontrollü olarak yükle}
+ //c
 end;
 
 procedure TfrmSahaSaglikGozetim.gridRaporlarFocusedRecordChanged(
@@ -178,6 +191,9 @@ begin
   ADOQuery1.Close;
   ADOQuery1.SQL.Text := 'exec dbo.sp_SahaGozlemRaporDetayGetir ' + IntToStr (ADO_SahaGozetim.FieldByName('ID').AsInteger);
   ADOQuery1.Open;
-end;
-
+end;end.
+ popup'ta firma ve ünvan olmayacak defter no olacak
+ çift týklama popup formu deðiþtirmek için açabilir ya da deðiþtir menüsü ekleyerek yapýlacak
+ denetimi yapan kullanýcý ile deðiþtiren farklý olabilir mi ?
+ yanlýþ þirkete girip saha gözetimi yaptýysa ???
 end.

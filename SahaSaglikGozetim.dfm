@@ -48,7 +48,6 @@ object frmSahaSaglikGozetim: TfrmSahaSaglikGozetim
           DataController.Summary.FooterSummaryItems = <>
           DataController.Summary.SummaryGroups = <>
           OptionsData.Deleting = False
-          OptionsData.Editing = False
           OptionsData.Inserting = False
           OptionsView.GroupByBox = False
           OptionsView.HeaderHeight = 33
@@ -62,6 +61,8 @@ object frmSahaSaglikGozetim: TfrmSahaSaglikGozetim
             end>
           object gridRaporID: TcxGridDBBandedColumn
             DataBinding.FieldName = 'ID'
+            Options.Editing = False
+            Options.Focusing = False
             Width = 20
             Position.BandIndex = 0
             Position.ColIndex = 0
@@ -69,6 +70,8 @@ object frmSahaSaglikGozetim: TfrmSahaSaglikGozetim
           end
           object gridRaporKonu_Sira: TcxGridDBBandedColumn
             DataBinding.FieldName = 'Konu_Sira'
+            Options.Editing = False
+            Options.Focusing = False
             Width = 24
             Position.BandIndex = 0
             Position.ColIndex = 1
@@ -76,6 +79,8 @@ object frmSahaSaglikGozetim: TfrmSahaSaglikGozetim
           end
           object gridRaporKonu: TcxGridDBBandedColumn
             DataBinding.FieldName = 'Konu'
+            Options.Editing = False
+            Options.Focusing = False
             Width = 232
             Position.BandIndex = 0
             Position.ColIndex = 2
@@ -128,24 +133,27 @@ object frmSahaSaglikGozetim: TfrmSahaSaglikGozetim
           OptionsView.GroupByBox = False
           object gridRaporlarID: TcxGridDBColumn
             DataBinding.FieldName = 'ID'
-          end
-          object gridRaporlarFirmaKodu: TcxGridDBColumn
-            DataBinding.FieldName = 'FirmaKodu'
+            Width = 41
           end
           object gridRaporlarDenetimiYapanKullanici: TcxGridDBColumn
+            Caption = 'Denetimi Yapan'
             DataBinding.FieldName = 'DenetimiYapanKullanici'
+            Width = 124
           end
           object gridRaporlarDenetimTarihi: TcxGridDBColumn
+            Caption = 'Denetim Tarihi'
             DataBinding.FieldName = 'DenetimTarihi'
+            Width = 86
           end
           object gridRaporlarDate_Create: TcxGridDBColumn
+            Caption = 'Denetim Kay'#305't Zaman'#305
             DataBinding.FieldName = 'Date_Create'
+            Width = 105
           end
           object gridRaporlarGozetimDefterNo: TcxGridDBColumn
+            Caption = 'Defter No.'
             DataBinding.FieldName = 'GozetimDefterNo'
-          end
-          object gridRaporlarImage: TcxGridDBColumn
-            DataBinding.FieldName = 'Image'
+            Width = 86
           end
         end
         object cxGridLevel1: TcxGridLevel
@@ -162,11 +170,15 @@ object frmSahaSaglikGozetim: TfrmSahaSaglikGozetim
   object ADO_SahaGozetim: TADOQuery
     Connection = DATALAR.ADOConnection2
     CursorType = ctStatic
-    LockType = ltBatchOptimistic
     CommandTimeout = 0
     Parameters = <>
     SQL.Strings = (
-      'select * from SahaGozlemRaporlari')
+      
+        'select ID, DenetimiYapanKullanici, DenetimTarihi, Date_Create, G' +
+        'ozetimDefterNo, FirmaKodu'
+      'from SahaGozlemRaporlari SR'
+      'where FirmaKodu = '#39'0001'#39
+      'order by SR.ID')
     Left = 64
     Top = 240
   end
@@ -267,10 +279,8 @@ object frmSahaSaglikGozetim: TfrmSahaSaglikGozetim
     Top = 338
   end
   object ADOQuery1: TADOQuery
-    Active = True
     Connection = DATALAR.ADOConnection2
     CursorType = ctStatic
-    LockType = ltBatchOptimistic
     CommandTimeout = 0
     Parameters = <>
     SQL.Strings = (
