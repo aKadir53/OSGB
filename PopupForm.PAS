@@ -113,7 +113,7 @@ end;
 
 procedure TfrmPopup.FormClose(Sender: TObject; var Action: TCloseAction);
 var
-  HizmetKod : TcxImageComboKadir;
+ HizmetKod : TcxImageComboKadir;
   xSahaDenetimVeri : TSahaDenetimler;
 begin
   if frmPopup.ModalResult = mrYes
@@ -520,10 +520,10 @@ inherited;
          setDataStringKontrol(self,textEdit, 'FirmaAdi','Firma Ünvaný',Kolon1,'',200);
          TcxTextEdit(FindComponent('FirmaAdi')).EditValue := datalar.AktifSirketAdi;
 
-         _Tarih_ := TcxDateEditKadir.Create(self);
-         _Tarih_.Name := 'DenetimTarihi';
-         setDataStringKontrol(self,_Tarih_, 'DenetimTarihi','Tarih',Kolon1,'',100);
-         TcxTextEdit(FindComponent('DenetimTarihi')).EditValue := date;
+          _Tarih_ := TcxDateEditKadir.Create(self);
+          _Tarih_.Name := 'DenetimTarihi';
+          setDataStringKontrol(self,_Tarih_, 'DenetimTarihi','Tarih',Kolon1,'',100);
+          TcxTextEdit(FindComponent('DenetimTarihi')).EditValue := date;
 
          textEdit := TcxTextEdit.Create(self);
          textEdit.Name := 'DenetimDefterNo';
