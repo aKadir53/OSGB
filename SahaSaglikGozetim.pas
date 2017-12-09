@@ -192,12 +192,8 @@ begin
   ADOQuery1.SQL.Text := 'exec dbo.sp_SahaGozlemRaporDetayGetir ' + IntToStr (ADO_SahaGozetim.FieldByName('ID').AsInteger);
   ADOQuery1.Open;
 end;end.
- grid sütunlarýný ayarla.
- grid read only kalmýþ
- saha gözetim gridinde firma olmayacak
  popup'ta firma ve ünvan olmayacak defter no olacak
  çift týklama popup formu deðiþtirmek için açabilir ya da deðiþtir menüsü ekleyerek yapýlacak
  denetimi yapan kullanýcý ile deðiþtiren farklý olabilir mi ?
  yanlýþ þirkete girip saha gözetimi yaptýysa ???
-
 end.

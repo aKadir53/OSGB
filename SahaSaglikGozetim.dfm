@@ -48,7 +48,6 @@ object frmSahaSaglikGozetim: TfrmSahaSaglikGozetim
           DataController.Summary.FooterSummaryItems = <>
           DataController.Summary.SummaryGroups = <>
           OptionsData.Deleting = False
-          OptionsData.Editing = False
           OptionsData.Inserting = False
           OptionsView.GroupByBox = False
           OptionsView.HeaderHeight = 33
@@ -62,6 +61,8 @@ object frmSahaSaglikGozetim: TfrmSahaSaglikGozetim
             end>
           object gridRaporID: TcxGridDBBandedColumn
             DataBinding.FieldName = 'ID'
+            Options.Editing = False
+            Options.Focusing = False
             Width = 20
             Position.BandIndex = 0
             Position.ColIndex = 0
@@ -69,6 +70,8 @@ object frmSahaSaglikGozetim: TfrmSahaSaglikGozetim
           end
           object gridRaporKonu_Sira: TcxGridDBBandedColumn
             DataBinding.FieldName = 'Konu_Sira'
+            Options.Editing = False
+            Options.Focusing = False
             Width = 24
             Position.BandIndex = 0
             Position.ColIndex = 1
@@ -76,6 +79,8 @@ object frmSahaSaglikGozetim: TfrmSahaSaglikGozetim
           end
           object gridRaporKonu: TcxGridDBBandedColumn
             DataBinding.FieldName = 'Konu'
+            Options.Editing = False
+            Options.Focusing = False
             Width = 232
             Position.BandIndex = 0
             Position.ColIndex = 2
