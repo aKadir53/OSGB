@@ -203,8 +203,8 @@ begin
            end;
        yeniGozlem :
            begin
-             (Application.FindComponent(F.name) as TGirisForm)._SahaDenetimVeri_.DenetimTarihi :=
-             TcxTextEdit(FindComponent('DenetimTarihi')).EditValue;
+             {(Application.FindComponent(F.name) as TGirisForm)._SahaDenetimVeri_.DenetimTarihi :=
+             TcxTextEdit(FindComponent('DenetimTarihi')).EditValue;}
            end;
 
   end;

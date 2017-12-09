@@ -69,14 +69,14 @@ object frmSahaSaglikGozetim: TfrmSahaSaglikGozetim
           end
           object gridRaporKonu_Sira: TcxGridDBBandedColumn
             DataBinding.FieldName = 'Konu_Sira'
-            Width = 54
+            Width = 24
             Position.BandIndex = 0
             Position.ColIndex = 1
             Position.RowIndex = 0
           end
           object gridRaporKonu: TcxGridDBBandedColumn
             DataBinding.FieldName = 'Konu'
-            Width = 30
+            Width = 232
             Position.BandIndex = 0
             Position.ColIndex = 2
             Position.RowIndex = 0
@@ -86,21 +86,21 @@ object frmSahaSaglikGozetim: TfrmSahaSaglikGozetim
             PropertiesClassName = 'TcxCheckBoxProperties'
             Properties.ValueChecked = 1
             Properties.ValueUnchecked = 0
-            Width = 50
+            Width = 43
             Position.BandIndex = 0
             Position.ColIndex = 3
             Position.RowIndex = 0
           end
           object gridRaporTespitler: TcxGridDBBandedColumn
             DataBinding.FieldName = 'Tespitler'
-            Width = 218
+            Width = 156
             Position.BandIndex = 0
             Position.ColIndex = 4
             Position.RowIndex = 0
           end
           object gridRaporOneriler: TcxGridDBBandedColumn
             DataBinding.FieldName = 'Oneriler'
-            Width = 365
+            Width = 262
             Position.BandIndex = 0
             Position.ColIndex = 5
             Position.RowIndex = 0

@@ -527,7 +527,8 @@ type
    function QuerySelect (Q: TADOQuery; sql:string) : Boolean;overload;
   // function QuerySelect (sql:string;Q: TADOQuery = nil) : Boolean;overload;
    function QuerySelect (sql:string) : TADOQuery; overload;
-   procedure QueryExec (Q: TADOQuery = nil ; sql : string = '');
+   procedure QueryExec (sql : string = '');overload;
+   function QueryExec (var Q: TADOQuery; const sql : string): Boolean;overload;
    function FindData (Q: TADOQuery; sql: string): integer;
    procedure Login;
    function WebErisimBilgi(slk,slb : string) : string;
@@ -580,7 +581,7 @@ function TDatalar.Baglan(db : string = '' ; Server : string = ''; username : Str
 var
   _db_ : string;
 begin
-  Result := False;
+  //Result := False;
   try
    _db_ := RegOku('OSGB_db_name');
    _db_ := Decode64(_db_);
@@ -915,12 +916,22 @@ begin
    end;
 end;
 
-procedure TDATALAR.QueryExec (Q: TADOQuery = nil ; sql : string = '');
+procedure TDATALAR.QueryExec (sql : string = '');
+var
+  b: Boolean;
+  q: TADOQuery;
+begin
+  b:= queryExec (Q, sql);
+  if not b then ;;;
+end;
+
+function TDATALAR.QueryExec (var Q: TADOQuery; const sql : string): Boolean;
 var
   //sql2 :string;
   bLocalCreated: Boolean;
 begin
   bLocalCreated := False;
+  //Result := False;
   if Q = nil then
   begin
     Q := TADOQuery.Create(nil);
@@ -935,6 +946,7 @@ begin
     Q.SQL.Add (sql);
     //    Q.Prepare;
     Q.ExecSQL;
+    Result := True;
   finally
     if bLocalCreated then
     begin

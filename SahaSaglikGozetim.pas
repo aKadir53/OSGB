@@ -148,9 +148,13 @@ begin
     then begin
 
 
-          ShowMessageSkin(_firmaKod_,_SahaDenetimVeri_.DenetimTarihi,'','info');
-
-
+          {ShowMessageSkin(_firmaKod_,_SahaDenetimVeri_.DenetimTarihi,'','info');
+          ADO_SahaGozetim.Append;
+          ADO_SahaGozetim.FieldByName('').as;
+          ADO_SahaGozetim.FieldByName('').as;
+          ADO_SahaGozetim.FieldByName('').as;
+          ADO_SahaGozetim.FieldByName('').as;
+          ADO_SahaGozetim.Post;{}
     end;
 
 
@@ -160,9 +164,10 @@ end;
 
 procedure TfrmSahaSaglikGozetim.GozlemYazdir(const GozlemID: integer);
 begin
- c grid sütunlarýný ayarla.
+ {c grid sütunlarýný ayarla.
  üstteki prosedürden sonra append yap
- datalar.queryexec'i overload yap
+ datalar.queryexec'i overload yap' +
+ sirket kontrollü olarak yükle}
 end;
 
 procedure TfrmSahaSaglikGozetim.gridRaporlarFocusedRecordChanged(
