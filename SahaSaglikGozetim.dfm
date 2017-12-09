@@ -128,24 +128,27 @@ object frmSahaSaglikGozetim: TfrmSahaSaglikGozetim
           OptionsView.GroupByBox = False
           object gridRaporlarID: TcxGridDBColumn
             DataBinding.FieldName = 'ID'
-          end
-          object gridRaporlarFirmaKodu: TcxGridDBColumn
-            DataBinding.FieldName = 'FirmaKodu'
+            Width = 41
           end
           object gridRaporlarDenetimiYapanKullanici: TcxGridDBColumn
+            Caption = 'Denetimi Yapan'
             DataBinding.FieldName = 'DenetimiYapanKullanici'
+            Width = 124
           end
           object gridRaporlarDenetimTarihi: TcxGridDBColumn
+            Caption = 'Denetim Tarihi'
             DataBinding.FieldName = 'DenetimTarihi'
+            Width = 86
           end
           object gridRaporlarDate_Create: TcxGridDBColumn
+            Caption = 'Denetim Kay'#305't Zaman'#305
             DataBinding.FieldName = 'Date_Create'
+            Width = 105
           end
           object gridRaporlarGozetimDefterNo: TcxGridDBColumn
+            Caption = 'Defter No.'
             DataBinding.FieldName = 'GozetimDefterNo'
-          end
-          object gridRaporlarImage: TcxGridDBColumn
-            DataBinding.FieldName = 'Image'
+            Width = 86
           end
         end
         object cxGridLevel1: TcxGridLevel
@@ -165,7 +168,12 @@ object frmSahaSaglikGozetim: TfrmSahaSaglikGozetim
     CommandTimeout = 0
     Parameters = <>
     SQL.Strings = (
-      'select * from SahaGozlemRaporlari')
+      
+        'select ID, DenetimiYapanKullanici, DenetimTarihi, Date_Create, G' +
+        'ozetimDefterNo'
+      'from SahaGozlemRaporlari SR'
+      'where FirmaKodu = '#39'0001'#39
+      'order by SR.ID')
     Left = 64
     Top = 240
   end

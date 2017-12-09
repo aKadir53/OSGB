@@ -51,12 +51,10 @@ type
     cxGridLevel1: TcxGridLevel;
     gridRaporlar: TcxGridDBTableView;
     gridRaporlarID: TcxGridDBColumn;
-    gridRaporlarFirmaKodu: TcxGridDBColumn;
     gridRaporlarDenetimiYapanKullanici: TcxGridDBColumn;
     gridRaporlarDenetimTarihi: TcxGridDBColumn;
     gridRaporlarDate_Create: TcxGridDBColumn;
     gridRaporlarGozetimDefterNo: TcxGridDBColumn;
-    gridRaporlarImage: TcxGridDBColumn;
     DataSource2: TDataSource;
     ADOQuery1: TADOQuery;
     gridRaporID: TcxGridDBBandedColumn;
@@ -94,6 +92,11 @@ implementation
 
 function TfrmSahaSaglikGozetim.Init(Sender : TObject) : Boolean;
 begin
+  ADO_SahaGozetim.SQL.Text :=
+    'select ID, DenetimiYapanKullanici, DenetimTarihi, Date_Create, GozetimDefterNo'#13#10+
+    'from SahaGozlemRaporlari SR'#13#10+
+    'where FirmaKodu = ' + QuotedStr (DATALAR.AktifSirket) + ''#13#10+
+    'order by SR.ID';
   ADO_SahaGozetim .Active := true;
   Result := True;
 end;
@@ -170,10 +173,7 @@ end;
 
 procedure TfrmSahaSaglikGozetim.GozlemYazdir(const GozlemID: integer);
 begin
- {c grid sütunlarýný ayarla.
- üstteki prosedürden sonra append yap
- datalar.queryexec'i overload yap' +
- sirket kontrollü olarak yükle{}
+ //c
 end;
 
 procedure TfrmSahaSaglikGozetim.gridRaporlarFocusedRecordChanged(
@@ -184,6 +184,13 @@ begin
   ADOQuery1.Close;
   ADOQuery1.SQL.Text := 'exec dbo.sp_SahaGozlemRaporDetayGetir ' + IntToStr (ADO_SahaGozetim.FieldByName('ID').AsInteger);
   ADOQuery1.Open;
-end;
+end;end.
+ grid sütunlarýný ayarla.
+ grid read only kalmýþ
+ saha gözetim gridinde firma olmayacak
+ popup'ta firma ve ünvan olmayacak defter no olacak
+ çift týklama popup formu deðiþtirmek için açabilir ya da deðiþtir menüsü ekleyerek yapýlacak
+ denetimi yapan kullanýcý ile deðiþtiren farklý olabilir mi ?
+ yanlýþ þirkete girip saha gözetimi yaptýysa ???
 
 end.
