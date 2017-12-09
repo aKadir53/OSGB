@@ -137,29 +137,35 @@ end;
 
 procedure TfrmSahaSaglikGozetim.Gozlem(islem: Integer);
 var
-    F : TForm;
+  F : TForm;
+  aBM : TBookmark;
 begin
     Self._firmaKod_ := datalar.AktifSirket;
     F := Self;
-
     if islem = yeniGozlem
-    then
-    if mrYes = ShowPopupForm('Yeni Gözlem',islem,F)
     then begin
-
-
-          {ShowMessageSkin(_firmaKod_,_SahaDenetimVeri_.DenetimTarihi,'','info');
+      if mrYes = ShowPopupForm('Yeni Gözlem',islem,F)
+      then begin
+        ADO_SahaGozetim.DisableControls;
+        try
           ADO_SahaGozetim.Append;
-          ADO_SahaGozetim.FieldByName('').as;
-          ADO_SahaGozetim.FieldByName('').as;
-          ADO_SahaGozetim.FieldByName('').as;
-          ADO_SahaGozetim.FieldByName('').as;
-          ADO_SahaGozetim.Post;{}
+          ADO_SahaGozetim.FieldByName('DenetimiYapanKullanici').AsString := _SahaDenetimVeri_.KullaniciAdi;
+          ADO_SahaGozetim.FieldByName('FirmaKodu').AsString := _SahaDenetimVeri_.FirmaKod;
+          ADO_SahaGozetim.FieldByName('DenetimTarihi').AsString := _SahaDenetimVeri_.DenetimTarihi;
+          ADO_SahaGozetim.FieldByName('GozetimDefterNo').AsString := _SahaDenetimVeri_.DenetimDefterNo;
+          ADO_SahaGozetim.Post;
+          aBM := ADO_SahaGozetim.GetBookmark;
+          try
+            ADO_SahaGozetim.Refresh;
+            ADO_SahaGozetim.GotoBookmark(aBM);
+          finally
+            ADO_SahaGozetim.FreeBookmark(aBM);
+          end;
+        finally
+          ADO_SahaGozetim.EnableControls;
+        end;
+      end;
     end;
-
-
-
-
 end;
 
 procedure TfrmSahaSaglikGozetim.GozlemYazdir(const GozlemID: integer);
@@ -167,7 +173,7 @@ begin
  {c grid sütunlarýný ayarla.
  üstteki prosedürden sonra append yap
  datalar.queryexec'i overload yap' +
- sirket kontrollü olarak yükle}
+ sirket kontrollü olarak yükle{}
 end;
 
 procedure TfrmSahaSaglikGozetim.gridRaporlarFocusedRecordChanged(

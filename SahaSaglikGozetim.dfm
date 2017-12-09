@@ -162,7 +162,6 @@ object frmSahaSaglikGozetim: TfrmSahaSaglikGozetim
   object ADO_SahaGozetim: TADOQuery
     Connection = DATALAR.ADOConnection2
     CursorType = ctStatic
-    LockType = ltBatchOptimistic
     CommandTimeout = 0
     Parameters = <>
     SQL.Strings = (
@@ -267,10 +266,8 @@ object frmSahaSaglikGozetim: TfrmSahaSaglikGozetim
     Top = 338
   end
   object ADOQuery1: TADOQuery
-    Active = True
     Connection = DATALAR.ADOConnection2
     CursorType = ctStatic
-    LockType = ltBatchOptimistic
     CommandTimeout = 0
     Parameters = <>
     SQL.Strings = (
