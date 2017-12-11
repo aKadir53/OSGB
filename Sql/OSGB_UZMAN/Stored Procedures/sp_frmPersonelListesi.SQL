@@ -1,7 +1,9 @@
 BEGIN TRAN
 GO
+-- [CMPTR] - [08.12.2017 15:26:55]
 ALTER PROCEDURE [dbo].[sp_frmPersonelListesi] @firma varchar(10) = '',@ap int = 1,@dosyaNo varchar(6) = ''
 AS
+begin
 select h.*,(case when isnull(diger,'') = '' then '0' else '1' end) ozeldurum , 
 (case when (CHARINDEX('5',h.GELHAST) > 0 OR CHARINDEX('7',h.GELHAST) > 0) THEN '1' ELSE '' END) Diabet,
 (case when isnull(AntiHbs,'') = '' THEN '0' ELSE AntiHbs END) 'AntiHbs',
@@ -24,11 +26,12 @@ left join SIRKET_SUBE_TNM sb on sb.sirketKod = h.SirketKod and sb.subeKod = h.Su
  left join DoktorlarT d on d.kod = sb.subeDoktor
  left join Birimler b on b.kod = h.Birim
  left join Bolumler blm on blm.kod = h.Bolum
-where h.aktif = @ap and
+where h.aktif = cast (@ap as varchar (1)) and
 h.sirketKod like  '%' + @firma + '%' and
 TCKIMLIKNO  like '%' + @dosyaNo + '%' 
 --isnull(h.MuayenePeryot,0) - isnull((select DATEDIFF(D,cast(BHDAT as datetime),getdate()) from gelisler where dosyaNo = h.dosyaNo and TEDAVITURU = '2'),0) <= @gun 
 order by h.SirketKod,sb.subeKod,h.HASTAADI,h.HASTASOYADI
+end
 GO
 exec sp_vw_sys_upd 'P ', 'dbo', 'sp_frmPersonelListesi'
 GO
