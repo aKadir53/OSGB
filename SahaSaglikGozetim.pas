@@ -188,8 +188,24 @@ begin
 end;
 
 procedure TfrmSahaSaglikGozetim.GozlemYazdir(const GozlemID: integer);
+var
+  ado : TADOQuery;
+  sql : String;
+  TopluDataset : TDataSetKadir;
 begin
- //c
+  ado := TADOQuery.Create(nil);
+  try
+    ado.Connection := datalar.ADOConnection2;
+    sql := 'sp_SahaGozlemRaporBaski ' + IntToStr (GozlemID);
+
+    datalar.QuerySelect(ado, sql);
+    TopluDataset.Dataset0 := ado;
+    TopluDataset.Dataset0.Name := 'PersonelEgitimleri';
+
+    PrintYap('007','Saha Saðlýk Gözetim Raporu','',TopluDataset,pTNone)
+  finally
+    ado.free;
+  end;
 end;
 
 procedure TfrmSahaSaglikGozetim.gridRaporlarFocusedRecordChanged(
@@ -206,5 +222,7 @@ end;end.
  çift týklama popup formu deðiþtirmek için açabilir ya da deðiþtir menüsü ekleyerek yapýlacak
  denetimi yapan kullanýcý ile deðiþtiren farklý olabilir mi ?
  yanlýþ þirkete girip saha gözetimi yaptýysa ???
+ soru cevaplarý default 1 olacak. boþ býrakýrsa uygun deðilse deðerlendirme ve öneri girmek zorunda olacak.
+ silme vs soru sorulmasý.
 end.
 
