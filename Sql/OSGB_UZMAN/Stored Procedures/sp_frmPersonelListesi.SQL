@@ -1,7 +1,7 @@
 BEGIN TRAN
 GO
--- [CMPTR2] - [10.12.2017 23:19:29]
-ALTER PROCEDURE [dbo].[sp_frmPersonelListesi] @firma varchar(10) = '',@ap int = 1,@dosyaNo varchar(6) = ''
+-- [CMPTR] - [11.12.2017 12:01:06]
+ALTER PROCEDURE [dbo].[sp_frmPersonelListesi] @firma varchar(10) = '',@ap int = 1,@dosyaNo varchar(11) = ''
 AS
 begin
 select h.*,(case when isnull(diger,'') = '' then '0' else '1' end) ozeldurum , 
