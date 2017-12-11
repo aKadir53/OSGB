@@ -8,7 +8,7 @@ begin
   if not exists (select 1 from dbo.SahaGozlemRaporu sgrx where sgrx.RaporlarID = @RaporlarID)
   begin
     insert into dbo.SahaGozlemRaporu (RaporlarID, Konu_Sira, Uygunmu, Tespitler, Oneriler)
-    select sgr.ID RaporlarID, ss.ID Konu_Sira, null Uygunmu, null Tespitler, null Oneriler
+    select sgr.ID RaporlarID, ss.ID Konu_Sira, 1 Uygunmu, null Tespitler, null Oneriler
     from dbo.SahaGozlemRaporlari sgr
     inner join dbo.SahaGozlemSorular ss on 1 = 1
     where sgr.ID = @RaporlarID
