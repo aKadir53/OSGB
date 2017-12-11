@@ -1,6 +1,6 @@
 BEGIN TRAN
 GO
--- [CMPTR] - [08.12.2017 15:26:55]
+-- [CMPTR2] - [10.12.2017 23:19:29]
 ALTER PROCEDURE [dbo].[sp_frmPersonelListesi] @firma varchar(10) = '',@ap int = 1,@dosyaNo varchar(6) = ''
 AS
 begin
@@ -28,7 +28,7 @@ left join SIRKET_SUBE_TNM sb on sb.sirketKod = h.SirketKod and sb.subeKod = h.Su
  left join Bolumler blm on blm.kod = h.Bolum
 where h.aktif = cast (@ap as varchar (1)) and
 h.sirketKod like  '%' + @firma + '%' and
-TCKIMLIKNO  like '%' + @dosyaNo + '%' 
+TCKIMLIKNO  = @dosyaNo  
 --isnull(h.MuayenePeryot,0) - isnull((select DATEDIFF(D,cast(BHDAT as datetime),getdate()) from gelisler where dosyaNo = h.dosyaNo and TEDAVITURU = '2'),0) <= @gun 
 order by h.SirketKod,sb.subeKod,h.HASTAADI,h.HASTASOYADI
 end
