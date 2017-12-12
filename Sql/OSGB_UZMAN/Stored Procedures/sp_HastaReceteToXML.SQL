@@ -1,6 +1,6 @@
 BEGIN TRAN
 GO
--- [CMPTR2] - [11.12.2017 23:40:20]
+-- [CMPTR2] - [11.12.2017 23:40:53]
 ALTER PROCEDURE [dbo].[sp_HastaReceteToXML](@receteId int)
 as
 BEGIN
@@ -40,7 +40,8 @@ BEGIN
 			@user = d.eReceteKullanici,
 			@sifre = d.eReceteSifre,
 			@pin = d.pin, 
-			@tesisKodu = d.Tesiskodu
+			@tesisKodu = d.Tesiskodu,
+			@cardType = d.cardType
 	from recete r  
 	join Personelkart h on h.dosyaNo = r.dosyaNO
 	left join gelisler g on g.dosyaNo = r.dosyaNO and g.gelisNo = r.gelisNo  
