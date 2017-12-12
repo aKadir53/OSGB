@@ -1,6 +1,6 @@
 BEGIN TRAN
 GO
--- [CMPTR2] - [11.12.2017 23:40:53]
+-- [CMPTR2] - [11.12.2017 23:41:37]
 ALTER PROCEDURE [dbo].[sp_HastaReceteToXML](@receteId int)
 as
 BEGIN
@@ -99,7 +99,7 @@ BEGIN
 	    @receteBaslik + @receteIlacBilgisi + @receteTaniBilgisi + isnull(@receteAck,'') +
 		'</ereceteBilgisi>'
 
-		 Recete,@tesisKodu tesisKodu,@user doktorKullanici,@sifre doktorSifre,@pin pin,@doktorTc doktorTc,isnull(@receteAck,'')
+		 Recete,@tesisKodu tesisKodu,@user doktorKullanici,@sifre doktorSifre,@pin pin,@doktorTc doktorTc,isnull(@receteAck,''),@cardType cardType
 
 END
 GO
