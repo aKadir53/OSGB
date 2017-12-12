@@ -1,5 +1,6 @@
 BEGIN TRAN
 GO
+-- [CMPTR2] - [11.12.2017 23:42:43]
 ALTER PROCEDURE [dbo].[sp_HastaReceteSilToXML](@receteId int)
 as
 BEGIN
@@ -10,7 +11,8 @@ BEGIN
 	@doktorTc varchar(20),
 	@pin varchar(4),
 	@user varchar(20),
-	@sifre varchar(20)
+	@sifre varchar(20),
+	@cardType varchar(100)
 
 	select @tesisKodu = value from WebServisErisimBilgileri where SLK = '99' and SLB = '00'
 
@@ -25,7 +27,8 @@ BEGIN
 			@doktorTc = d.tcKimlikNo,
 			@user = d.eReceteKullanici,
 			@sifre = d.eReceteSifre,
-			@pin = d.pin	
+			@pin = d.pin,
+			@cardType = d.cardType	
 	from recete r  
 	join Personelkart h on h.dosyaNo = r.dosyaNO
 	left join gelisler g on g.dosyaNo = r.dosyaNO and g.gelisNo = r.gelisNo  
@@ -36,7 +39,7 @@ BEGIN
 	select 
 		'<?xml version="1.0" encoding="iso-8859-9"?>'+
 	    @receteBaslik
-		ReceteSil,@tesisKodu tesisKodu,@user doktorKullanici,@sifre doktorSifre,@pin pin,@doktorTc doktorTc
+		ReceteSil,@tesisKodu tesisKodu,@user doktorKullanici,@sifre doktorSifre,@pin pin,@doktorTc doktorTc,@cardType cardType
 
 END
 GO
