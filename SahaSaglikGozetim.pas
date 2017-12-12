@@ -72,6 +72,7 @@ type
       APrevFocusedRecord, AFocusedRecord: TcxCustomGridRecord;
       ANewItemRecordFocusingChanged: Boolean);
     procedure tmr1Timer(Sender: TObject);
+    procedure ADOQuery1BeforePost(DataSet: TDataSet);
 
   private
     { Private declarations }
@@ -112,9 +113,16 @@ begin
   ADOQuery1.Open;
 end;
 
+procedure TfrmSahaSaglikGozetim.ADOQuery1BeforePost(DataSet: TDataSet);
+begin
+  inherited;
+  //þþ
+end;
+
 procedure TfrmSahaSaglikGozetim.cxButtonCClick(Sender: TObject);
 var
   GirisRecord : TGirisFormRecord;
+  aModalResult : TModalResult;
 begin
   inherited;
 
@@ -130,6 +138,8 @@ begin
   -18 : begin
           if ADO_SahaGozetim.RecordCount > 0 then
           begin
+            aModalResult := ShowMessageSkin('Saha Gözetim Kaydýný silmek istediðinizden emin misiniz ?', '', '', 'conf');
+            if aModalResult <> mrYes then Exit;
             if not SahaSaglikGozlemSil (ADO_SahaGozetim.FieldByName('ID').AsInteger) then Exit;
             ADO_SahaGozetim.Active := False;
             ADO_SahaGozetim.Active := True;
@@ -244,6 +254,5 @@ end;end.
  denetimi yapan kullanýcý ile deðiþtiren farklý olabilir mi ?
  yanlýþ þirkete girip saha gözetimi yaptýysa ???
  soru cevaplarý default 1 olacak. boþ býrakýrsa uygun deðilse deðerlendirme ve öneri girmek zorunda olacak.
- silme vs soru sorulmasý.
 end.
 

@@ -287,6 +287,7 @@ object frmSahaSaglikGozetim: TfrmSahaSaglikGozetim
   object ADOQuery1: TADOQuery
     Connection = DATALAR.ADOConnection2
     CursorType = ctStatic
+    BeforePost = ADOQuery1BeforePost
     CommandTimeout = 0
     Parameters = <>
     SQL.Strings = (
