@@ -121,3 +121,6 @@ iptal olacak
 sorular hiç yoksa sorularý dolduracak.
 denetimi yapan kullanýcý ile deðiþtiren farklý olabilir mi ?
 yanlýþ þirkete girip saha gözetimi yaptýysa ???
+
+iþyeri hekimi çalýþmalarý grup tablosu
+sorular grup baþlýklý
