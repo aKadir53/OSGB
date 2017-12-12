@@ -1,43 +1,43 @@
 <?xml version="1.0" encoding="iso-8859-9"?>
 <ereceteBilgisi>
-  <protokolNo>2</protokolNo>
+  <protokolNo>15</protokolNo>
   <provizyonTipi>1</provizyonTipi>
   <receteAltTuru>1</receteAltTuru>
-  <receteTarihi>15.11.2017 00:00:00</receteTarihi>
+  <receteTarihi>09.12.2017 00:00:00</receteTarihi>
   <receteTuru>1</receteTuru>
   <takipNo />
-  <tcKimlikNo>36157756392</tcKimlikNo>
+  <tcKimlikNo>00010115098</tcKimlikNo>
   <tesisKodu>11349903</tesisKodu>
   <seriNo>1</seriNo>
-  <doktorBransKodu>9999</doktorBransKodu>
-  <doktorSertifikaKodu>8423</doktorSertifikaKodu>
-  <doktorTcKimlikNo>34477392986</doktorTcKimlikNo>
+  <doktorBransKodu>4667</doktorBransKodu>
+  <doktorSertifikaKodu>56</doktorSertifikaKodu>
+  <doktorTcKimlikNo>99999999990</doktorTcKimlikNo>
   <ereceteIlacBilgisi>
     <adet>1</adet>
-    <barkod>8699522095711</barkod>
-    <ilacAdi>AUGMENTIN-BID 1000 MG.10 FILM TB.</ilacAdi>
+    <barkod>8699262950233</barkod>
+    <ilacAdi>EPOBEL 2000 IU/0,6 ML IV STERIL 6 KULL HAZ. ENJ.</ilacAdi>
     <kullanimDoz1>1</kullanimDoz1>
     <kullanimPeriyotBirimi>3</kullanimPeriyotBirimi>
-    <kullanimSekli>1</kullanimSekli>
-    <kullanimDoz2>2</kullanimDoz2>
+    <kullanimSekli>14</kullanimSekli>
+    <kullanimDoz2>1</kullanimDoz2>
     <kullanimPeriyot>1</kullanimPeriyot>
   </ereceteIlacBilgisi>
   <ereceteIlacBilgisi>
     <adet>1</adet>
-    <barkod>8699832090055</barkod>
-    <ilacAdi>ARVELES 25 MG.20 FILM TABLET</ilacAdi>
+    <barkod>4015630981045</barkod>
+    <ilacAdi>ACCU CHEK PERFORMA 50 STRIP</ilacAdi>
     <kullanimDoz1>1</kullanimDoz1>
     <kullanimPeriyotBirimi>3</kullanimPeriyotBirimi>
     <kullanimSekli>1</kullanimSekli>
-    <kullanimDoz2>2</kullanimDoz2>
+    <kullanimDoz2>1</kullanimDoz2>
     <kullanimPeriyot>1</kullanimPeriyot>
   </ereceteIlacBilgisi>
   <ereceteTaniBilgisi>
-    <taniAdi>AKUT TONSİLLİT</taniAdi>
-    <taniKodu>J03</taniKodu>
+    <taniAdi>46, XX GERÇEK HERMAFRODİT</taniAdi>
+    <taniKodu>Q99.1</taniKodu>
   </ereceteTaniBilgisi>
   <ereceteTaniBilgisi>
-    <taniAdi>AKUT AĞRI</taniAdi>
-    <taniKodu>R52.0</taniKodu>
+    <taniAdi>KRONİK HASTALIK ANEMİSİ DİĞER, BAŞKA YERDE SINIFLA</taniAdi>
+    <taniKodu>D63.8</taniKodu>
   </ereceteTaniBilgisi>
 </ereceteBilgisi>

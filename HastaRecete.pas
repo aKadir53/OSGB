@@ -177,7 +177,8 @@ type
                       doktorTc : string;
                       TesisKodu : integer;
                        var sonuc : PWideChar;
-                      url : string); stdcall;
+                      url : string;
+                      cardType : string); stdcall;
 
   TReceteImzalaDelete = procedure(Id : PWideChar;
                       recete : PWideChar;
@@ -187,7 +188,8 @@ type
                       doktorTc : PWideChar;
                       TesisKodu : PWideChar;
                        var sonuc : PWideChar;
-                       url : PWideChar); stdcall;
+                       url : PWideChar;
+                       cardType : PWideChar); stdcall;
 
 const _TableName_ = 'Recete';
       formGenislik = 1100;
@@ -219,7 +221,7 @@ var
   imzala : TReceteImzala;
   dllHandle: Cardinal;
   receteId,TesisKodu: integer;
-  recete,doktorKullanici,doktorsifre,pin,url: string;
+  recete,doktorKullanici,doktorsifre,pin,url,cardType: string;
   doktorTc : string;
   ss : PWideChar;
   sql : string;
@@ -237,7 +239,7 @@ begin
   pin :=  (SelectAdo.FieldByName('pin').AsString);
   doktorTc :=  (SelectAdo.FieldByName('doktorTc').AsString);
   TesisKodu :=  (SelectAdo.FieldByName('TesisKodu').AsInteger);
-
+  cardType :=  SelectAdo.FieldByName('cardType').AsString;
 
   dllHandle := LoadLibrary(LIB_DLL);
   if dllHandle = 0 then
@@ -245,7 +247,7 @@ begin
 
   @imzala := findMethod(dllHandle, 'ReceteImzalaGonder');
   if addr(imzala) <> nil then
-  imzala(receteId,recete,doktorKullanici,doktorsifre,pin,doktorTc,TesisKodu,ss,url);
+  imzala(receteId,recete,doktorKullanici,doktorsifre,pin,doktorTc,TesisKodu,ss,url,cardType);
 
   ReceteImzalaGonder := ss;
 
@@ -260,7 +262,7 @@ function TfrmHastaRecete.ReceteImzalaSil : string;
 var
   imzala : TReceteImzalaDelete;
   dllHandle: Cardinal;
-  recete,doktorKullanici,doktorsifre,pin,doktorTc,TesisKodu,receteId,url: WideString;
+  recete,doktorKullanici,doktorsifre,pin,doktorTc,TesisKodu,receteId,url,cardType: WideString;
   ss : PWideChar;
   sql : string;
 begin
@@ -276,6 +278,7 @@ begin
   pin :=  SelectAdo.FieldByName('pin').AsString;
   doktorTc :=  SelectAdo.FieldByName('doktorTc').AsString;
   TesisKodu :=  SelectAdo.FieldByName('TesisKodu').AsString;
+  cardType :=  SelectAdo.FieldByName('cardType').AsString;
 
   dllHandle := LoadLibrary(LIB_DLL);
   if dllHandle = 0 then
@@ -287,7 +290,8 @@ begin
   imzala(PWideChar(receteId),PWideChar(recete),
                                 PWideChar(doktorKullanici),PWideChar(doktorsifre),
                                 PWideChar(pin),PWideChar(doktorTc),PWideChar(TesisKodu),ss,
-                                PWideChar(datalar.receteURL));
+                                PWideChar(datalar.receteURL),
+                                PWideChar(cardType));
 
   ReceteImzalaSil := ss;
 
@@ -575,11 +579,12 @@ begin
                                   ADO_Recete.edit;
                                   ADO_Recete.FieldByName('eReceteNo').AsString := Copy(Sonuc,6,10);
                                   ADO_Recete.post;
-                                end;
+                                  ShowMessageSkin(Sonuc,'Reçete Medulaya Gönderildi','','info');
+                                  end;
 
                               finally
                                 DurumGoster(False,False,'');
-                                ShowMessageSkin(Sonuc,'Reçete Medulaya Gönderildi','','info');
+                                ShowMessageSkin(Sonuc,'','','info');
                               end;
                            end
                            Else
