@@ -291,4 +291,9 @@ object frmSahaSaglikGozetim: TfrmSahaSaglikGozetim
     Left = 104
     Top = 336
   end
+  object tmr1: TTimer
+    Enabled = False
+    Interval = 100
+    OnTimer = tmr1Timer
+  end
 end

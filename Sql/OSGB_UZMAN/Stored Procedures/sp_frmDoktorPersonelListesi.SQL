@@ -1,5 +1,6 @@
 BEGIN TRAN
 GO
+-- [CMPTR] - [08.12.2017 16:02:00]
 ALTER PROCEDURE [dbo].[sp_frmDoktorPersonelListesi] @firma varchar(10) = '',@ap int = 1,@doktor varchar(4)
 AS
 select h.Sube,  h.*,(case when isnull(diger,'') = '' then '0' else '1' end) ozeldurum , 
@@ -19,7 +20,7 @@ left join SIRKET_SUBE_TNM sb on sb.sirketKod = h.SirketKod and sb.subeKod = h.su
  left join SKRS_IL_KODLARI IK on Ik.KODU = h.EV_SEHIR
  left join SKRS_ILCE_KODLARI ILCK on ILCK.KODU = H.EV_ILCE
  left join SKRS_MAHALLE_KODLARI MK on MK.KODU = H.EV_MAHALLE
-where h.aktif = @ap 
+where h.aktif = cast (@ap as varchar (1)) 
   and h.sirketKod like  '%' + @firma + '%' and sb.subeDoktor = @doktor
 order by h.SirketKod,sb.subeKod,h.HASTAADI,h.HASTASOYADI
 GO

@@ -63,12 +63,14 @@ type
     gridRaporUygunmu: TcxGridDBBandedColumn;
     gridRaporTespitler: TcxGridDBBandedColumn;
     gridRaporOneriler: TcxGridDBBandedColumn;
+    tmr1: TTimer;
     procedure cxButtonCClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure Gozlem(islem: Integer);
     procedure gridRaporlarFocusedRecordChanged(Sender: TcxCustomGridTableView;
       APrevFocusedRecord, AFocusedRecord: TcxCustomGridRecord;
       ANewItemRecordFocusingChanged: Boolean);
+    procedure tmr1Timer(Sender: TObject);
 
   private
     { Private declarations }
@@ -99,6 +101,13 @@ begin
     'order by SR.ID';
   ADO_SahaGozetim .Active := true;
   Result := True;
+end;
+
+procedure TfrmSahaSaglikGozetim.tmr1Timer(Sender: TObject);
+begin
+  inherited;
+  TTimer (Sender).Enabled := False;
+  ADOQuery1.Open;
 end;
 
 procedure TfrmSahaSaglikGozetim.cxButtonCClick(Sender: TObject);
@@ -179,8 +188,24 @@ begin
 end;
 
 procedure TfrmSahaSaglikGozetim.GozlemYazdir(const GozlemID: integer);
+var
+  ado : TADOQuery;
+  sql : String;
+  TopluDataset : TDataSetKadir;
 begin
- //c
+  ado := TADOQuery.Create(nil);
+  try
+    ado.Connection := datalar.ADOConnection2;
+    sql := 'sp_SahaGozlemRaporBaski ' + IntToStr (GozlemID);
+
+    datalar.QuerySelect(ado, sql);
+    TopluDataset.Dataset0 := ado;
+    TopluDataset.Dataset0.Name := 'PersonelEgitimleri';
+
+    PrintYap('007','Saha Saðlýk Gözetim Raporu','',TopluDataset,pTNone)
+  finally
+    ado.free;
+  end;
 end;
 
 procedure TfrmSahaSaglikGozetim.gridRaporlarFocusedRecordChanged(
@@ -190,10 +215,14 @@ begin
   inherited;
   ADOQuery1.Close;
   ADOQuery1.SQL.Text := 'exec dbo.sp_SahaGozlemRaporDetayGetir ' + IntToStr (ADO_SahaGozetim.FieldByName('ID').AsInteger);
-  ADOQuery1.Open;
+  tmr1.Enabled := False;
+  tmr1.Enabled := True;
 end;end.
  popup'ta firma ve ünvan olmayacak defter no olacak
  çift týklama popup formu deðiþtirmek için açabilir ya da deðiþtir menüsü ekleyerek yapýlacak
  denetimi yapan kullanýcý ile deðiþtiren farklý olabilir mi ?
  yanlýþ þirkete girip saha gözetimi yaptýysa ???
+ soru cevaplarý default 1 olacak. boþ býrakýrsa uygun deðilse deðerlendirme ve öneri girmek zorunda olacak.
+ silme vs soru sorulmasý.
 end.
+
