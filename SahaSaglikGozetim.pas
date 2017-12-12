@@ -240,7 +240,7 @@ begin
   ADOQuery1.SQL.Text := 'exec dbo.sp_SahaGozlemRaporDetayGetir ' + IntToStr (ADO_SahaGozetim.FieldByName('ID').AsInteger);
   tmr1.Enabled := False;
   tmr1.Enabled := True;
-end;
+end;end.
  denetimi yapan kullanýcý ile deðiþtiren farklý olabilir mi ?
  yanlýþ þirkete girip saha gözetimi yaptýysa ???
  soru cevaplarý default 1 olacak. boþ býrakýrsa uygun deðilse deðerlendirme ve öneri girmek zorunda olacak.
