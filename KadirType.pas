@@ -569,6 +569,7 @@ Const
   gdgelisAc = 23;
   yeniGozlem = 24;
   gozlemSil = 25;
+  GozlemDuzenle = 26;
 
 
   sp_HastaGelis = 'exec sp_HastaGelisleri ';

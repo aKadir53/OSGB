@@ -7466,7 +7466,7 @@ begin
   try
     frmPopup._islem_ := Tag;
     frmPopup._caption_ := Caption;
-    frmPopup.F := Application.FindComponent(Form.name) as TGirisForm;
+    frmPopup.FGirisForm := Application.FindComponent(Form.name) as TGirisForm;
     TGirisForm(frmPopup)._SahaDenetimVeri_ := TGirisForm(Form)._SahaDenetimVeri_;
     frmPopup.ShowModal;
     Result := frmPopup.ModalResult;

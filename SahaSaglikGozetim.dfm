@@ -257,19 +257,25 @@ object frmSahaSaglikGozetim: TfrmSahaSaglikGozetim
     Images = DATALAR.imag24png
     Left = 408
     Top = 256
-    object T1: TMenuItem
+    object miYeniGozetim: TMenuItem
       Tag = -9
       Caption = 'Yeni G'#246'zetim'
       ImageIndex = 30
       OnClick = cxButtonCClick
     end
-    object G1: TMenuItem
+    object miGozetimDuzenle: TMenuItem
+      Tag = -11
+      Caption = 'G'#246'zetimi D'#252'zenle'
+      ImageIndex = 30
+      OnClick = cxButtonCClick
+    end
+    object miGozetimSil: TMenuItem
       Tag = -18
       Caption = 'G'#246'zetim Sil'
       ImageIndex = 43
       OnClick = cxButtonCClick
     end
-    object Y1: TMenuItem
+    object miGozetimYazdir: TMenuItem
       Tag = -27
       Caption = 'Yazd'#305'r'
       ImageIndex = 28
@@ -284,6 +290,7 @@ object frmSahaSaglikGozetim: TfrmSahaSaglikGozetim
   object ADOQuery1: TADOQuery
     Connection = DATALAR.ADOConnection2
     CursorType = ctStatic
+    BeforePost = ADOQuery1BeforePost
     CommandTimeout = 0
     Parameters = <>
     SQL.Strings = (
