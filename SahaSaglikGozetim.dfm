@@ -130,6 +130,9 @@ object frmSahaSaglikGozetim: TfrmSahaSaglikGozetim
           DataController.Summary.DefaultGroupSummaryItems = <>
           DataController.Summary.FooterSummaryItems = <>
           DataController.Summary.SummaryGroups = <>
+          OptionsData.Deleting = False
+          OptionsData.Editing = False
+          OptionsData.Inserting = False
           OptionsView.GroupByBox = False
           object gridRaporlarID: TcxGridDBColumn
             DataBinding.FieldName = 'ID'

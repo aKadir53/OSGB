@@ -85,7 +85,7 @@ var
   index,i : integer;
   Ts,Ts1 : TStringList;
   List,List1,List3 : TListeAc;
-  bransKodu,calismaTipi : TcxImageComboKadir;
+  bransKodu,calismaTipi,cardType : TcxImageComboKadir;
 begin
   Tag := TagfrmDoktorlar;
   ClientHeight := formYukseklik;
@@ -134,6 +134,17 @@ begin
   setDataString(self,'eReceteKullanici','Reçete Kullanýcý Adý',Kolon1,'cc',100,True);
   setDataString(self,'eReceteSifre','Reçete Þifresi',Kolon1,'',100,True);
   setDataString(self,'pin','Ýmza Token Pin',Kolon1,'',50);
+
+  cardType := TcxImageComboKadir.Create(self);
+  cardType.Conn := Datalar.ADOConnection2;
+  cardType.TableName := 'cardTypes';
+  cardType.ValueField := 'cardType';
+  cardType.DisplayField := 'tanimi';
+  cardType.BosOlamaz := True;
+  cardType.Filter := '';
+  OrtakEventAta(cardType);
+  setDataStringKontrol(self,cardType,'cardType','Card Type',kolon1,'',150);
+
   setDataString(self,'TesisKodu','Tesis Kodu',Kolon1,'',100);
   setDataString(self,'GSM','GSM',Kolon1,'',100);
   setDataString(self,'EPosta','E-Posta',Kolon1,'',200);
