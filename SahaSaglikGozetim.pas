@@ -45,7 +45,7 @@ type
     miGozetimSil: TMenuItem;
     miGozetimYazdir: TMenuItem;
     cxGridKadir1: TcxGridKadir;
-    gridRapor: TcxGridDBBandedTableView;
+    gridRapor: TcxGridDBTableView;
     cxGridKadir1Level1: TcxGridLevel;
     cxGridKadir2: TcxGridKadir;
     cxGridLevel1: TcxGridLevel;
@@ -57,12 +57,12 @@ type
     gridRaporlarGozetimDefterNo: TcxGridDBColumn;
     DataSource2: TDataSource;
     ADOQuery1: TADOQuery;
-    gridRaporID: TcxGridDBBandedColumn;
-    gridRaporKonu_Sira: TcxGridDBBandedColumn;
-    gridRaporKonu: TcxGridDBBandedColumn;
-    gridRaporUygunmu: TcxGridDBBandedColumn;
-    gridRaporTespitler: TcxGridDBBandedColumn;
-    gridRaporOneriler: TcxGridDBBandedColumn;
+    gridRaporID: TcxGridDBColumn;
+    gridRaporKonu_Sira: TcxGridDBColumn;
+    gridRaporKonu: TcxGridDBColumn;
+    gridRaporUygunmu: TcxGridDBColumn;
+    gridRaporTespitler: TcxGridDBColumn;
+    gridRaporOneriler: TcxGridDBColumn;
     tmr1: TTimer;
     miGozetimDuzenle: TMenuItem;
     procedure cxButtonCClick(Sender: TObject);
@@ -116,7 +116,14 @@ end;
 procedure TfrmSahaSaglikGozetim.ADOQuery1BeforePost(DataSet: TDataSet);
 begin
   inherited;
-  //þþ
+  //soru cevaplarý default 1 olacak. boþ býrakýrsa uygun deðilse deðerlendirme ve öneri girmek zorunda olacak.
+  if (DataSet.FieldByName ('UygunMu').AsInteger <> 1)
+    and (IsNull (DataSet.FieldByName ('Tespitler').AsString)
+      or IsNull (DataSet.FieldByName ('Oneriler').AsString)) then
+  begin
+    ShowMessageSkin('Uygun Olmayan Durum Ýçin Tespit ve Öneri giriþi yapýlmalýdýr', '', '', 'info');
+    Abort;
+  end;
 end;
 
 procedure TfrmSahaSaglikGozetim.cxButtonCClick(Sender: TObject);
@@ -233,7 +240,7 @@ begin
 
     datalar.QuerySelect(ado, sql);
     TopluDataset.Dataset0 := ado;
-    TopluDataset.Dataset0.Name := 'PersonelEgitimleri';
+    TopluDataset.Dataset0.Name := 'SahaSaglikGozetimRaporu';
 
     PrintYap('007','Saha Saðlýk Gözetim Raporu','',TopluDataset,pTNone)
   finally
@@ -250,9 +257,7 @@ begin
   ADOQuery1.SQL.Text := 'exec dbo.sp_SahaGozlemRaporDetayGetir ' + IntToStr (ADO_SahaGozetim.FieldByName('ID').AsInteger);
   tmr1.Enabled := False;
   tmr1.Enabled := True;
-end;end.
- denetimi yapan kullanýcý ile deðiþtiren farklý olabilir mi ?
- yanlýþ þirkete girip saha gözetimi yaptýysa ???
- soru cevaplarý default 1 olacak. boþ býrakýrsa uygun deðilse deðerlendirme ve öneri girmek zorunda olacak.
+end;
+
 end.
 
