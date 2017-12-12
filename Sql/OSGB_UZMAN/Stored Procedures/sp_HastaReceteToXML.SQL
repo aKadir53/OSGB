@@ -1,5 +1,6 @@
 BEGIN TRAN
 GO
+-- [CMPTR2] - [11.12.2017 23:40:20]
 ALTER PROCEDURE [dbo].[sp_HastaReceteToXML](@receteId int)
 as
 BEGIN
@@ -10,7 +11,8 @@ BEGIN
 	@doktorTc varchar(20),
 	@pin varchar(4),
 	@user varchar(20),
-	@sifre varchar(20)
+	@sifre varchar(20),
+	@cardType varchar(100)
 
 --	select @tesisKodu = value from WebServisErisimBilgileri where SLK = '99' and SLB = '00'
 
