@@ -38,12 +38,12 @@ type
     cxStyle2: TcxStyle;
     cxStyle7: TcxStyle;
     PopupMenu1: TPopupMenu;
-    T1: TMenuItem;
+    miYeniGozetim: TMenuItem;
     cxPageControl1: TcxPageControl;
     cxTabSheet1: TcxTabSheet;
     cxStyle8: TcxStyle;
-    G1: TMenuItem;
-    Y1: TMenuItem;
+    miGozetimSil: TMenuItem;
+    miGozetimYazdir: TMenuItem;
     cxGridKadir1: TcxGridKadir;
     gridRapor: TcxGridDBBandedTableView;
     cxGridKadir1Level1: TcxGridLevel;
@@ -64,6 +64,7 @@ type
     gridRaporTespitler: TcxGridDBBandedColumn;
     gridRaporOneriler: TcxGridDBBandedColumn;
     tmr1: TTimer;
+    miGozetimDuzenle: TMenuItem;
     procedure cxButtonCClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure Gozlem(islem: Integer);
@@ -85,7 +86,8 @@ var
   frmSahaSaglikGozetim: TfrmSahaSaglikGozetim;
 
 implementation
-    uses data_modul;
+
+uses data_modul, StrUtils;
 
 {$R *.dfm}
 
@@ -122,6 +124,9 @@ begin
   -9 : begin
          Gozlem(yeniGozlem);
        end;
+  -11 : begin
+         Gozlem(GozlemDuzenle);
+       end;
   -18 : begin
           if ADO_SahaGozetim.RecordCount > 0 then
           begin
@@ -152,17 +157,35 @@ var
   F : TForm;
   aBM : TBookmark;
   bBasarili: Boolean;
+  aSahaDenetimVeri : TSahaDenetimler;
 begin
     Self._firmaKod_ := datalar.AktifSirket;
     F := Self;
-    if islem = yeniGozlem
+    if (islem in [yeniGozlem, GozlemDuzenle])
     then begin
-      if mrYes = ShowPopupForm('Yeni Gözlem',islem,F)
+      if islem = yeniGozlem then
+      begin
+        aSahaDenetimVeri.KullaniciAdi := DATALAR.username;
+        aSahaDenetimVeri.FirmaKod := datalar.AktifSirket;
+        aSahaDenetimVeri.DenetimTarihi := DateToStr (date);
+        aSahaDenetimVeri.DenetimDefterNo := '';
+      end
+      else begin
+        aSahaDenetimVeri.KullaniciAdi := ADO_SahaGozetim.FieldByName('DenetimiYapanKullanici').AsString;
+        aSahaDenetimVeri.FirmaKod := ADO_SahaGozetim.FieldByName('FirmaKodu').AsString;
+        aSahaDenetimVeri.DenetimTarihi := ADO_SahaGozetim.FieldByName('DenetimTarihi').AsString;
+        aSahaDenetimVeri.DenetimDefterNo := ADO_SahaGozetim.FieldByName('GozetimDefterNo').AsString;
+      end;
+      _SahaDenetimVeri_ := aSahaDenetimVeri;
+      if mrYes = ShowPopupForm(IfThen (islem = yeniGozlem, 'Yeni Gözlem', 'Gözlem Düzenle'),islem,F)
       then begin
         bBasarili := False;
         ADO_SahaGozetim.DisableControls;
         try
-          ADO_SahaGozetim.Append;
+          if islem = yeniGozlem then
+            ADO_SahaGozetim.Append
+           else
+            ADO_SahaGozetim.Edit;
           try
             ADO_SahaGozetim.FieldByName('DenetimiYapanKullanici').AsString := _SahaDenetimVeri_.KullaniciAdi;
             ADO_SahaGozetim.FieldByName('FirmaKodu').AsString := _SahaDenetimVeri_.FirmaKod;
@@ -217,9 +240,7 @@ begin
   ADOQuery1.SQL.Text := 'exec dbo.sp_SahaGozlemRaporDetayGetir ' + IntToStr (ADO_SahaGozetim.FieldByName('ID').AsInteger);
   tmr1.Enabled := False;
   tmr1.Enabled := True;
-end;end.
- popup'ta firma ve ünvan olmayacak defter no olacak
- çift týklama popup formu deðiþtirmek için açabilir ya da deðiþtir menüsü ekleyerek yapýlacak
+end;
  denetimi yapan kullanýcý ile deðiþtiren farklý olabilir mi ?
  yanlýþ þirkete girip saha gözetimi yaptýysa ???
  soru cevaplarý default 1 olacak. boþ býrakýrsa uygun deðilse deðerlendirme ve öneri girmek zorunda olacak.
