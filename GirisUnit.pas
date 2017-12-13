@@ -2276,6 +2276,13 @@ begin
   end;
 
 
+  if (key = vk_f12) and (Shift = [ssCtrl,ssShift])
+  then begin
+    ShowMessageSkin('Form Tag :' + inttostr(TGirisForm(self).tag), 'Form Name : ' + TGirisForm(self).name + ' - ' + ' Unit Name : ' + TGirisForm(self).UnitName,
+                       'Class Name : ' + TGirisForm(self).ClassName,'info');
+  end;
+
+
 
 end;
 
