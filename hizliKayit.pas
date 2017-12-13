@@ -155,9 +155,12 @@ var
   sql : string;
 begin
   MemTable_Personel.First;
+  try
+    datalar.ADOConnection2.BeginTrans;
+
     while not MemTable_Personel.eof do
     begin
-      sql := sql + ' ' + Format(_insertPersonel_,
+      sql := Format(_insertPersonel_,
                     [QuotedStr(datalar.AktifSirket),
                      QuotedStr(MemTable_Personel.fieldByname('TCKIMLIKNO').asstring),
                      QuotedStr(MemTable_Personel.fieldByname('HASTAADI').asstring) ,
@@ -176,12 +179,9 @@ begin
                      QuotedStr(MemTable_Personel.fieldByname('KANGRUBU').asstring),
                      QuotedStr(datalar.username),
                      QuotedStr(MemTable_Personel.fieldByname('Durum').asstring)]);
+      datalar.queryExec(SelectAdo,sql);
       MemTable_Personel.next;
     end;
-
-  datalar.ADOConnection2.BeginTrans;
-  try
-    datalar.queryExec(SelectAdo,sql);
     datalar.ADOConnection2.CommitTrans;
   except on e : exception do
    begin
