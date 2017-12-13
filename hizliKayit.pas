@@ -70,24 +70,24 @@ type
 
   Const
   _insertPersonel_ = 'exec sp_YeniPersonelHastaKarti ' +
-                     '@SirketKod = %s,' +
-                     '@TCKIMLIKNO = %s,'+
-                     '@HASTAADI = %s,'+
-                     '@HASTASOYADI = %s,'+
-                     '@CINSIYETI = %s,'+
-                     '@MEDENI = %s,'+
-                     '@BABAADI = %s,'+
-                     '@ANAADI = %s,'+
-                     '@EV_SEHIR = %s,'+
-                     '@EV_TEL1 = %s,'+
-                     '@EV_TEL2 = %s,'+
-                 //    '@EMAIL = %s,'+
-                     '@DOGUMYERI = %s,'+
-                     '@DOGUMTARIHI = %s,'+
-                     '@UYRUGU = %s,'+
-                     '@baslangic = %s,'+
-                     '@kanGrubu = %s,'+
-                     '@USER_ID = %s';
+                     '@SirketKod = %0:s,' +
+                     '@TCKIMLIKNO = %1:s,'+
+                     '@HASTAADI = %2:s,'+
+                     '@HASTASOYADI = %3:s,'+
+                     '@CINSIYETI = %4:s,'+
+                     '@MEDENI = %5:s,'+
+                     '@BABAADI = %6:s,'+
+                     '@ANAADI = %7:s,'+
+                     '@EV_SEHIR = %8:s,'+
+                     '@EV_TEL1 = %9:s,'+
+                     '@EV_TEL2 = %10:s,'+
+                     '@DOGUMYERI = %11:s,'+
+                     '@DOGUMTARIHI = %12:s,'+
+                     '@UYRUGU = %13:s,'+
+                     '@baslangic = %14:s,'+
+                     '@kanGrubu = %15:s,'+
+                     '@USER_ID = %16:s,'+
+                     '@Aktif = %17:s';
 
 var
   frmHizliKayit: TfrmHizliKayit;
@@ -140,10 +140,10 @@ begin
     MemTable_Personel.fieldByname('EV_TEL1').asstring := sayfa.cells[x,9];
     MemTable_Personel.fieldByname('EV_TEL2').asstring := sayfa.cells[x,10];
     MemTable_Personel.fieldByname('DOGUMYERI').asstring := sayfa.cells[x,11];
-    MemTable_Personel.fieldByname('DOGUMTARIHI').asstring := sayfa.cells[x,12];
+    MemTable_Personel.fieldByname('DOGUMTARIHI').asstring := IfThen (Pos ('.',  sayfa.cells[x,12]) > 0, NoktasizTarih (sayfa.cells[x,12]), sayfa.cells[x,12]);;
     MemTable_Personel.fieldByname('UYRUGU').asstring := sayfa.cells[x,13];
     MemTable_Personel.fieldByname('Durum').asstring := sayfa.cells[x,14];
-    MemTable_Personel.fieldByname('BASLANGIC').asstring := sayfa.cells[x,15];
+    MemTable_Personel.fieldByname('BASLANGIC').asstring := IfThen (Pos ('.',  sayfa.cells[x,15]) > 0, NoktasizTarih (sayfa.cells[x,15]), sayfa.cells[x,15]);
     MemTable_Personel.fieldByname('KANGRUBU').asstring := sayfa.cells[x,16];
     MemTable_Personel.post;
     end;
@@ -155,10 +155,10 @@ var
   sql : string;
 begin
   MemTable_Personel.First;
-  while not MemTable_Personel.eof do
-  begin
+    while not MemTable_Personel.eof do
+    begin
       sql := sql + ' ' + Format(_insertPersonel_,
-                                       [QuotedStr(datalar.AktifSirket),
+                    [QuotedStr(datalar.AktifSirket),
                      QuotedStr(MemTable_Personel.fieldByname('TCKIMLIKNO').asstring),
                      QuotedStr(MemTable_Personel.fieldByname('HASTAADI').asstring) ,
                      QuotedStr(MemTable_Personel.fieldByname('HASTASOYADI').asstring),
@@ -172,12 +172,12 @@ begin
                      QuotedStr(MemTable_Personel.fieldByname('DOGUMYERI').asstring),
                      QuotedStr(MemTable_Personel.fieldByname('DOGUMTARIHI').asstring),
                      QuotedStr(MemTable_Personel.fieldByname('UYRUGU').asstring),
-                     QuotedStr(MemTable_Personel.fieldByname('Durum').asstring),
                      QuotedStr(MemTable_Personel.fieldByname('BASLANGIC').asstring),
                      QuotedStr(MemTable_Personel.fieldByname('KANGRUBU').asstring),
-                                       QuotedStr(datalar.username)]);
+                     QuotedStr(datalar.username),
+                     QuotedStr(MemTable_Personel.fieldByname('Durum').asstring)]);
       MemTable_Personel.next;
-  end;
+    end;
 
   datalar.ADOConnection2.BeginTrans;
   try
@@ -185,8 +185,8 @@ begin
     datalar.ADOConnection2.CommitTrans;
   except on e : exception do
    begin
-     showmessageSkin(e.message,'','','info');
      datalar.ADOConnection2.rollbackTrans;
+     showmessageSkin(e.message,'','','info');
    end;
   end;
 
