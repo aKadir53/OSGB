@@ -389,25 +389,26 @@ const
   SettingsSection = 'Shell Folders';
   Key_Personal = 'Personal';
   _SqlSelect_ = 'Select %s from %s where %s';
-  _insertPersonel_ = 'sp_YeniPersonelHastaKarti ' +
-                     '@SirketKod = %s,' +
-                     '@TCKIMLIKNO = %s,'+
-                     '@HASTAADI = %s,'+
-                     '@HASTASOYADI = %s,'+
-                     '@CINSIYETI = %s,'+
-                     '@MEDENI = %s,'+
-                     '@BABAADI = %s,'+
-                     '@ANAADI = %s,'+
-                     '@EV_SEHIR = %s,'+
-                     '@EV_TEL1 = %s,'+
-                     '@EV_TEL2 = %s,'+
+  {_insertPersonel_ = 'sp_YeniPersonelHastaKarti ' +
+                     '@SirketKod = %0:s,' +
+                     '@TCKIMLIKNO = %1:s,'+
+                     '@HASTAADI = %2:s,'+
+                     '@HASTASOYADI = %3:s,'+
+                     '@CINSIYETI = %4:s,'+
+                     '@MEDENI = %5:s,'+
+                     '@BABAADI = %6:s,'+
+                     '@ANAADI = %7:s,'+
+                     '@EV_SEHIR = %8:s,'+
+                     '@EV_TEL1 = %9:s,'+
+                     '@EV_TEL2 = %10:s,'+
                  //    '@EMAIL = %s,'+
-                     '@DOGUMYERI = %s,'+
-                     '@DOGUMTARIHI = %s,'+
-                     '@UYRUGU = %s,'+
-                     '@baslangic = %s,'+
-                     '@kanGrubu = %s,'+
-                     '@USER_ID = %s';
+                     '@DOGUMYERI = %11:s,'+
+                     '@DOGUMTARIHI = %12:s,'+
+                     '@UYRUGU = %13:s,'+
+                     '@baslangic = %14:s,'+
+                     '@kanGrubu = %15:s,'+
+                     '@USER_ID = %16:s,'+
+                     '@Aktif = %17:s';{}
 
 
 var
@@ -489,7 +490,7 @@ begin
 
   sonsatir := v.Range[Char(96 + 1) + IntToStr(65536)].end[3].Rows.Row;
 
-  for x := 2 to sonsatir do
+  {for x := 2 to sonsatir do
   begin
 
       sql := sql + ' ' + #13 + Format(_insertPersonel_,
@@ -507,12 +508,13 @@ begin
                                        sayfa.cells[x,11],
                                        sayfa.cells[x,12],
                                        sayfa.cells[x,13],
-                                       sayfa.cells[x,14],
                                        sayfa.cells[x,15],
-                                       datalar.username]);
+                                       sayfa.cells[x,16],
+                                       datalar.username,
+                                       sayfa.cells[x,14]]);
 
 
-  end;
+  end;{}
 end;
 
 function RegOku(dizi : string ; openKey : string = '') : Variant;
