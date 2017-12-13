@@ -1062,10 +1062,10 @@ begin
      if length(TcxButtonEditKadir(sender).ListeAc.Where) > 0
      //pos('%s',TcxButtonEditKadir(sender).ListeAc.Where) > 0
      Then begin
-       if (TcxButtonEditKadir(sender).whereColum <> '') and
+       if (TcxButtonEditKadir(sender).whereColum <> Null) and
           Assigned(TcxButtonEditKadir(FindComponent(TcxButtonEditKadir(sender).whereColum)))
        Then
-         prm := QuotedStr(TcxButtonEditKadir(FindComponent(TcxButtonEditKadir(sender).whereColum)).EditingValue);
+         prm := QuotedStr(TcxButtonEditKadir(FindComponent(TcxButtonEditKadir(sender).whereColum)).EditingText);
 
        TcxButtonEditKadir(sender).ListeAc.Where :=
        format(TcxButtonEditKadir(sender).ListeAc.Where,[prm]);
