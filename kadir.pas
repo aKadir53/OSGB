@@ -371,6 +371,7 @@ procedure OnlineDestekOpen;
 function IsNull (const s: String): Boolean;
 procedure LisansUzat;
 function SahaSaglikGozlemSil(const GozlemID: integer): Boolean;
+function VeritabaniAlaninaFotografYukle(const sTableName, sKeyField, sImageField, sKeyValue: String): Boolean;
 
 const
   _YTL_ = 'YTL';
@@ -437,7 +438,7 @@ var
 implementation
 
 uses message,AnaUnit,message_y,popupForm,rapor,TedaviKart,Son6AylikTetkikSonuc,
-             HastaRecete,sifreDegis,HastaTetkikEkle,GirisUnit,SMS,LisansUzat;
+             HastaRecete,sifreDegis,HastaTetkikEkle,GirisUnit,SMS,LisansUzat, cxImage;
 
 
 procedure LisansUzat;
@@ -8345,6 +8346,67 @@ begin
     end;
   finally
     ado.Free;
+  end;
+end;
+
+function VeritabaniAlaninaFotografYukle(const sTableName, sKeyField, sImageField, sKeyValue: String): Boolean;
+var
+ Fo : TFileOpenDialog;
+ jp : TJPEGImage;
+ adox : TADOQuery;
+ tmpPicture : TcxImage;
+ sFileName : String;
+begin
+  Result := False;
+  Fo := TFileOpenDialog.Create(nil);
+  try
+    if not fo.Execute then Exit;
+    sFileName := fo.FileName;
+  finally
+    fo.Free;
+  end;
+  if not FileExists (sFileName)  then
+  begin
+    ShowMessageSkin('Belirtilen dosya bulunamadý', '', '', 'info');
+    Exit;
+  end;
+  tmpPicture := TcxImage.Create (nil);
+  try
+    tmpPicture.Picture.LoadFromFile(sfilename);
+    jp := TJpegimage.Create;
+    try
+      jp.Assign(tmpPicture.Picture);
+      adox := TADOQuery.Create (nil);
+      try
+        adox.Connection := DATALAR.ADOConnection2;
+        adox.SQL.Text := 'SELECT ' + sKeyField + ', ' + sImageField + ' From ' + sTableName + ' where '+sKeyField + ' = ' + sKeyValue;
+        adox.Open;
+        try
+          if adox.RecordCount = 0 then
+          begin
+            ShowMessageSkin('Saha Gözetim Formu Kaydý açýlamadý','', '', 'info');
+            Exit;
+          end;
+          Adox.Edit;
+          try
+            adox.FieldByName(sImageField).Assign(jp);
+            adox.Post;
+            Result := True;
+          except
+            adox.Cancel;
+            raise;
+          end;
+        finally
+          adox.close;
+        end;
+      finally
+        adox.Free;
+      end;
+    finally
+      jp.Free;
+    end;
+  finally
+    tmpPicture.free;
   end;
 end;
 

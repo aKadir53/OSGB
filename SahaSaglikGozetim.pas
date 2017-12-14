@@ -124,7 +124,9 @@ begin
   begin
     aBM := ADO_SahaGozetim.GetBookmark;
     try
-      ADO_SahaGozetim.Refresh;
+      //ADO_SahaGozetim.Refresh;
+      ADO_SahaGozetim.Active := False;
+      ADO_SahaGozetim.Active := True;
       ADO_SahaGozetim.GotoBookmark(aBM);
     finally
       ADO_SahaGozetim.FreeBookmark(aBM);
@@ -140,7 +142,7 @@ end;
 procedure TfrmSahaSaglikGozetim.SahaSaglikGozetimFormFotografGoruntule(
   const iSahaGozetimID: Integer);
 begin
-  ff
+  //ff
 end;
 
 function TfrmSahaSaglikGozetim.SahaSaglikGozetimFormFotografSil(
@@ -155,64 +157,8 @@ end;
 
 function TfrmSahaSaglikGozetim.SahaSaglikGozetimFormFotografYukle(
   const iSahaGozetimID: Integer): Boolean;
-var
- Fo : TFileOpenDialog;
- jp : TJPEGImage;
- adox : TADOQuery;
- tmpPicture : TcxImage;
- sFileName : String;
 begin
-  Result := False;
-  Fo := TFileOpenDialog.Create(nil);
-  try
-    if not fo.Execute then Exit;
-    sFileName := fo.FileName;
-  finally
-    fo.Free;
-  end;
-  if not FileExists (sFileName)  then
-  begin
-    ShowMessageSkin('Belirtilen dosya bulunamadý', '', '', 'info');
-    Exit;
-  end;
-  tmpPicture := TcxImage.Create (Self);
-  try
-    tmpPicture.Picture.LoadFromFile(sfilename);
-    jp := TJpegimage.Create;
-    try
-      jp.Assign(tmpPicture.Picture);
-      adox := TADOQuery.Create (Self);
-      try
-        adox.Connection := DATALAR.ADOConnection2;
-        adox.SQL.Text := 'SELECT ID, Image From SahaGozlemRaporlari where ID = ' + IntToStr (iSahaGozetimID);
-        adox.Open;
-        try
-          if adox.RecordCount = 0 then
-          begin
-            ShowMessageSkin('Saha Gözetim Formu Kaydý açýlamadý','', '', 'info');
-            Exit;
-          end;
-          Adox.Edit;
-          try
-            adox.FieldByName('Image').Assign(jp);
-            adox.Post;
-            Result := True;
-          except
-            adox.Cancel;
-            raise;
-          end;
-        finally
-          adox.close;
-        end;
-      finally
-        adox.Free;
-      end;
-    finally
-      jp.Free;
-    end;
-  finally
-    tmpPicture.free;
-  end;
+  Result := VeritabaniAlaninaFotografYukle ('SahaGozlemRaporlari', 'ID', 'Image', IntToStr (iSahaGozetimID));
 end;
 
 procedure TfrmSahaSaglikGozetim.tmr1Timer(Sender: TObject);
@@ -380,7 +326,7 @@ begin
   AdjustMasterControls;
   tmr1.Enabled := False;
   tmr1.Enabled := True;
-end;
+end;end.
 fotoðraf yükle
 fotoðraf gör / göster.
 master gridde fotoðraf var / yok sütunu
@@ -389,4 +335,3 @@ foto yükle düðmesinde sadece ID ve foto olan dataset açýp edit / post
 düzenle düðmesi image index
 sil düðmesi image index
 end.
-
