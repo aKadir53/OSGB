@@ -73,4 +73,5 @@ saha gözetim gridinde çift týklama yerine deðiþtir menüsü ekleyerek yapýldý
 saha gözetim master kayýtlarda gezindikçe alttaki data yenilenecek þekilde güncelleme yapýldý.
 üzerine gelinen master kayýtta sorular hiç yoksa sorularý dolduracak þekilde düzenlendi.
 silmeden önce soru sormasý eklendi.
-
+saha gözetim sorularýnda ilk deðer olarak tüm satýrlara UygunMu = 1 atandý ve uygun deðilse tespit veya öneri boþ olarak satýrý kaydedememesi saðlandý
+saha gözetim formu baskýsý eklendi. bunun için view ve sp yapýldý
