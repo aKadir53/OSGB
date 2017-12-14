@@ -32,7 +32,6 @@ reçeteyi kaydederken doktor tesis kodu, reçete silerken kurum þifre bilgilerinde
 
 hasta kartýnda yazdýrma düðmesi ??
 eðitim formunda Yeni (!) düðmesine basmadan kayýt girince sapýtýyor
-eðitim formunda yeni düðmesine basýnca yapýlan kayýttan sonra id alsa bile grid dataseti açýlmýyor ve satýr seçilmiyor. null veya deðil fonksiyonla sql üreten bir yapý yapýp refreshlenebilir.
 kullanýcý yetki ayarlarýnda kaydet'e basýnca gridde alt üst satýra geçilmemiþse o satýrý kaydetmeden kapatýyor (datasetleri tarayýp post metodunu çaðýrmak lazým)
 ------------------------------------------------------------------------------------------------------------------------
 iptal olanlar
@@ -113,12 +112,6 @@ saha gözetimine dahil edilebilir
 0532 502 77 97 doktor Nigar Haným, Çekmeköy Belediyesi'nde, e-imza, iþyeri hekimliði hususunda bilgilendirilecek.
 
 -------------
-saha gözetim gridinde firma olmayacak
-popup'ta firma ve ünvan olmayacak defter no olacak
-iptal olacak
-çift týklama popup formu deðiþtirmek için açabilir ya da deðiþtir menüsü ekleyerek yapýlacak
-üstte gezindikçe alttaki data yenilenecek.
-sorular hiç yoksa sorularý dolduracak.
 denetimi yapan kullanýcý ile deðiþtiren farklý olabilir mi ?
 yanlýþ þirkete girip saha gözetimi yaptýysa ???
 
