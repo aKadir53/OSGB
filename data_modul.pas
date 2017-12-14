@@ -921,6 +921,7 @@ var
   b: Boolean;
   q: TADOQuery;
 begin
+  q := nil;
   b:= queryExec (Q, sql);
   if not b then ;;;
 end;
