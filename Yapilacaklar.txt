@@ -124,3 +124,5 @@ yanlýþ þirkete girip saha gözetimi yaptýysa ???
 
 iþyeri hekimi çalýþmalarý grup tablosu
 sorular grup baþlýklý
+
+ISG Katip programýndan iþyerleri ve hekimler dökümü için Excel aktarýmý yapýlacak.
