@@ -65,6 +65,9 @@ type
     gridRaporOneriler: TcxGridDBColumn;
     tmr1: TTimer;
     miGozetimDuzenle: TMenuItem;
+    miFotografYukle: TMenuItem;
+    miFotografGoruntule: TMenuItem;
+    miFotografiSil: TMenuItem;
     procedure cxButtonCClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure Gozlem(islem: Integer);
@@ -258,6 +261,12 @@ begin
   tmr1.Enabled := False;
   tmr1.Enabled := True;
 end;
+end.fotoðraf yükle
+fotoðraf gör / göster.
+master gridde fotoðraf var / yok sütunu
+foto yükle düðmesinde sadece ID ve foto olan dataset açýp edit / post
 
+düzenle düðmesi image index
+sil düðmesi image index
 end.
 
