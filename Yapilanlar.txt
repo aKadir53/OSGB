@@ -64,3 +64,14 @@ reçete ilaç, Taný açýklama ve ilaç açýklama gridlerinde kayýt yokken çift týklan
 yeni personel açarken verdiði null hatalý hatasý için variant çevrimi yerine asString düzeltmesi
 yeni personel açarken Þirket kodu atamasý, Aktif / Pasif / yeni seçeneðinde Yeni deðerinin ilk deðer atamasý eklendi. Kadir'in notu:- label ve combo tagý -1 ya da -100 olmalý veritabanýna oku yaz yapmamalý þeklindeydi fakat þirket kodu alanýnýn veritabanýna yazýlmasý gerekiyordu.
 eðitimlerde kaydedince eðitim ID'si veritabanýndan güncellenmiyor idi. Giriþ form altyapýsýnda Identity deðeri yakalama özelliði eklendi ve personel eðitimlerinde kutu içerisine atanmasý saðlandý.
+eðitim formunda yeni düðmesine basýnca yapýlan kayýttan sonra id alsa bile grid dataseti açýlmýyor ve satýr seçilmiyor idi. null veya deðil fonksiyonla sql üreten bir yapý yapýlýp refreshlenmesi saðlandý.
+saha gözetim formlarýnda;
+saha gözetim master gridinde firma kaldýrýldý
+popup'ta firma ve ünvan gibi defter no eklendi.
+saha gözetim iptal seçeneði eklendi 
+saha gözetim gridinde çift týklama yerine deðiþtir menüsü ekleyerek yapýldý
+saha gözetim master kayýtlarda gezindikçe alttaki data yenilenecek þekilde güncelleme yapýldý.
+üzerine gelinen master kayýtta sorular hiç yoksa sorularý dolduracak þekilde düzenlendi.
+silmeden önce soru sormasý eklendi.
+saha gözetim sorularýnda ilk deðer olarak tüm satýrlara UygunMu = 1 atandý ve uygun deðilse tespit veya öneri boþ olarak satýrý kaydedememesi saðlandý
+saha gözetim formu baskýsý eklendi. bunun için view ve sp yapýldý
