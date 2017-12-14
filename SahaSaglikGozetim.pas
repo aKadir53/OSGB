@@ -82,8 +82,11 @@ type
     { Private declarations }
   protected
     procedure GozlemYazdir (const GozlemID : integer);
-    procedure GozlemeFotografAta;
     procedure AdjustMasterControls;
+    procedure RefreshSahaGozetimler (const bUseBookmark: Boolean);
+    function SahaSaglikGozetimFormFotografYukle (const iSahaGozetimID : Integer): Boolean;
+    function SahaSaglikGozetimFormFotografSil (const iSahaGozetimID : Integer): Boolean;
+    procedure SahaSaglikGozetimFormFotografGoruntule (const iSahaGozetimID : Integer);
   public
     { Public declarations }
     function Init(Sender: TObject) : Boolean; override;
@@ -94,7 +97,7 @@ var
 
 implementation
 
-uses data_modul, StrUtils;
+uses data_modul, StrUtils, Jpeg, cxImage;
 
 {$R *.dfm}
 
@@ -110,6 +113,106 @@ begin
     'order by SR.ID';
   ADO_SahaGozetim .Active := true;
   Result := True;
+end;
+
+procedure TfrmSahaSaglikGozetim.RefreshSahaGozetimler(
+  const bUseBookmark: Boolean);
+var
+  aBM: TBookmark;
+begin
+  if bUseBookmark then
+  begin
+    aBM := ADO_SahaGozetim.GetBookmark;
+    try
+      ADO_SahaGozetim.Refresh;
+      ADO_SahaGozetim.GotoBookmark(aBM);
+    finally
+      ADO_SahaGozetim.FreeBookmark(aBM);
+    end;
+  end
+  else begin
+    ADO_SahaGozetim.Active := False;
+    ADO_SahaGozetim.Active := True;
+  end;
+  AdjustMasterControls;
+end;
+
+procedure TfrmSahaSaglikGozetim.SahaSaglikGozetimFormFotografGoruntule(
+  const iSahaGozetimID: Integer);
+begin
+  //ff
+end;
+
+function TfrmSahaSaglikGozetim.SahaSaglikGozetimFormFotografSil(
+  const iSahaGozetimID: Integer): Boolean;
+var
+  sql : String;
+begin
+  SQL := 'update SahaGozlemRaporlari set Image = NULL where ID = ' + IntToStr (iSahaGozetimID);
+  DATALAR.QueryExec(SQL);
+  Result := True;
+end;
+
+function TfrmSahaSaglikGozetim.SahaSaglikGozetimFormFotografYukle(
+  const iSahaGozetimID: Integer): Boolean;
+var
+ Fo : TFileOpenDialog;
+ jp : TJPEGImage;
+ adox : TADOQuery;
+ tmpPicture : TcxImage;
+ sFileName : String;
+begin
+  Result := False;
+  Fo := TFileOpenDialog.Create(nil);
+  try
+    if not fo.Execute then Exit;
+    sFileName := fo.FileName;
+  finally
+    fo.Free;
+  end;
+  if not FileExists (sFileName)  then
+  begin
+    ShowMessageSkin('Belirtilen dosya bulunamadý', '', '', 'info');
+    Exit;
+  end;
+  tmpPicture := TcxImage.Create (Self);
+  try
+    tmpPicture.Picture.LoadFromFile(sfilename);
+    jp := TJpegimage.Create;
+    try
+      jp.Assign(tmpPicture.Picture);
+      adox := TADOQuery.Create (Self);
+      try
+        adox.Connection := DATALAR.ADOConnection2;
+        adox.SQL.Text := 'SELECT ID, Image From SahaGozlemRaporlari where ID = ' + IntToStr (iSahaGozetimID);
+        adox.Open;
+        try
+          if adox.RecordCount = 0 then
+          begin
+            ShowMessageSkin('Saha Gözetim Formu Kaydý açýlamadý','', '', 'info');
+            Exit;
+          end;
+          Adox.Edit;
+          try
+            adox.FieldByName('Image').Assign(jp);
+            adox.Post;
+            Result := True;
+          except
+            adox.Cancel;
+            raise;
+          end;
+        finally
+          adox.close;
+        end;
+      finally
+        adox.Free;
+      end;
+    finally
+      jp.Free;
+    end;
+  finally
+    tmpPicture.free;
+  end;
 end;
 
 procedure TfrmSahaSaglikGozetim.tmr1Timer(Sender: TObject);
@@ -164,18 +267,19 @@ begin
             aModalResult := ShowMessageSkin('Saha Gözetim Kaydýný silmek istediðinizden emin misiniz ?', '', '', 'conf');
             if aModalResult <> mrYes then Exit;
             if not SahaSaglikGozlemSil (ADO_SahaGozetim.FieldByName('ID').AsInteger) then Exit;
-            ADO_SahaGozetim.Active := False;
-            ADO_SahaGozetim.Active := True;
+            RefreshSahaGozetimler (False);
           end;
         end;
   -21:begin
-    //yükle sdfsdf
+    if SahaSaglikGozetimFormFotografYukle (ADO_SahaGozetim.FieldByName('ID').AsInteger) then
+      RefreshSahaGozetimler (True);
   end;
   -22:begin
-   //görüntüle sdfsf
+    SahaSaglikGozetimFormFotografGoruntule (ADO_SahaGozetim.FieldByName('ID').AsInteger);
   end;
   -23:begin
-    //sil sdfsf
+    if SahaSaglikGozetimFormFotografSil (ADO_SahaGozetim.FieldByName('ID').AsInteger) then
+      RefreshSahaGozetimler (True);
   end;
   -27 : begin
           if ADO_SahaGozetim.RecordCount > 0 then
@@ -197,7 +301,6 @@ end;
 procedure TfrmSahaSaglikGozetim.Gozlem(islem: Integer);
 var
   F : TForm;
-  aBM : TBookmark;
   bBasarili: Boolean;
   aSahaDenetimVeri : TSahaDenetimler;
 begin
@@ -238,48 +341,12 @@ begin
           finally
             if not bBasarili then ADO_SahaGozetim.Cancel;
           end;
-          aBM := ADO_SahaGozetim.GetBookmark;
-          try
-            ADO_SahaGozetim.Refresh;
-            ADO_SahaGozetim.GotoBookmark(aBM);
-          finally
-            ADO_SahaGozetim.FreeBookmark(aBM);
-          end;
+          RefreshSahaGozetimler (True);
         finally
           ADO_SahaGozetim.EnableControls;
         end;
       end;
     end;
-end;
-
-procedure TfrmSahaSaglikGozetim.GozlemeFotografAta;
-{var
- Fo : TFileOpenDialog;
- filename,dosyaNo : string;
- jp : TJPEGImage;{}
-begin
-  {dosyaNo := TcxButtonEditKadir(FindComponent('dosyaNo')).Text;
-  datalar.ADO_Foto.SQL.Text := Format(FotoTable,[#39+dosyaNo+#39]);
-  datalar.ADO_FOTO.Open;
-  datalar.ADO_FOTO.Edit;
-
-  Fo := TFileOpenDialog.Create(nil);
-  try
-    if not fo.Execute then Exit;
-    filename := fo.FileName;
-  finally
-    fo.Free;
-  end;
-  Foto.Picture.LoadFromFile(filename);
-
-  jp := TJpegimage.Create;
-  try
-    jp.Assign(FOTO.Picture);
-    datalar.ADO_FOTO.FieldByName('Foto').Assign(jp);
-    datalar.ADO_FOTO.Post;
-  finally
-    jp.Free;
-  end;{}
 end;
 
 procedure TfrmSahaSaglikGozetim.GozlemYazdir(const GozlemID: integer);
