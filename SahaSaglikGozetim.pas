@@ -140,7 +140,7 @@ end;
 procedure TfrmSahaSaglikGozetim.SahaSaglikGozetimFormFotografGoruntule(
   const iSahaGozetimID: Integer);
 begin
-  //ff
+  ff
 end;
 
 function TfrmSahaSaglikGozetim.SahaSaglikGozetimFormFotografSil(
@@ -380,7 +380,7 @@ begin
   AdjustMasterControls;
   tmr1.Enabled := False;
   tmr1.Enabled := True;
-end;end.
+end;
 fotoðraf yükle
 fotoðraf gör / göster.
 master gridde fotoðraf var / yok sütunu
