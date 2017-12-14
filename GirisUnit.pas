@@ -450,7 +450,7 @@ end;
 function TGirisForm.Init(Sender: TObject) : Boolean;
 begin
   USER_ID.Text := datalar.username;
-  //sirketKod.Text := datalar.AktifSirket; sadece yeni kayýt ise yap dedik, diðerlerinde veritabanýndan geldikçe eziliyor zaten.
+  sirketKod.Text := datalar.AktifSirket; //sadece yeni kayýt ise yap dedik, diðerlerinde veritabanýndan geldikçe eziliyor zaten.
   FormInputZorunluKontrolPaint(self,$00FCDDD1);
   cxTab.PopupMenu := menu;
 
