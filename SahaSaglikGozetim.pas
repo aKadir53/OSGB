@@ -68,6 +68,7 @@ type
     miFotografYukle: TMenuItem;
     miFotografGoruntule: TMenuItem;
     miFotografiSil: TMenuItem;
+    gridRaporlarImageVar: TcxGridDBColumn;
     procedure cxButtonCClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure Gozlem(islem: Integer);
@@ -81,6 +82,8 @@ type
     { Private declarations }
   protected
     procedure GozlemYazdir (const GozlemID : integer);
+    procedure GozlemeFotografAta;
+    procedure AdjustMasterControls;
   public
     { Public declarations }
     function Init(Sender: TObject) : Boolean; override;
@@ -101,7 +104,7 @@ uses data_modul, StrUtils;
 function TfrmSahaSaglikGozetim.Init(Sender : TObject) : Boolean;
 begin
   ADO_SahaGozetim.SQL.Text :=
-    'select ID, DenetimiYapanKullanici, DenetimTarihi, Date_Create, GozetimDefterNo, FirmaKodu'#13#10+
+    'select ID, DenetimiYapanKullanici, DenetimTarihi, Date_Create, GozetimDefterNo, FirmaKodu, cast (case when Image Is NULL then 0 else 1 end as bit) ImageVar '#13#10+
     'from SahaGozlemRaporlari SR'#13#10+
     'where FirmaKodu = ' + QuotedStr (DATALAR.AktifSirket) + ''#13#10+
     'order by SR.ID';
@@ -114,6 +117,16 @@ begin
   inherited;
   TTimer (Sender).Enabled := False;
   ADOQuery1.Open;
+end;
+
+procedure TfrmSahaSaglikGozetim.AdjustMasterControls;
+begin
+  miFotografYukle.Enabled := ADO_SahaGozetim.Active;
+  miFotografGoruntule.Enabled := ADO_SahaGozetim.Active and ADO_SahaGozetim.FieldByName('ImageVar').AsBoolean;
+  miFotografiSil.Enabled := ADO_SahaGozetim.Active and ADO_SahaGozetim.FieldByName('ImageVar').AsBoolean;
+  miGozetimSil.Enabled := ADO_SahaGozetim.Active and (ADO_SahaGozetim.RecordCount > 0);
+  miGozetimYazdir.Enabled := ADO_SahaGozetim.Active and (ADO_SahaGozetim.RecordCount > 0);
+  miGozetimDuzenle.Enabled := ADO_SahaGozetim.Active and (ADO_SahaGozetim.RecordCount > 0);
 end;
 
 procedure TfrmSahaSaglikGozetim.ADOQuery1BeforePost(DataSet: TDataSet);
@@ -155,6 +168,15 @@ begin
             ADO_SahaGozetim.Active := True;
           end;
         end;
+  -21:begin
+    //yükle sdfsdf
+  end;
+  -22:begin
+   //görüntüle sdfsf
+  end;
+  -23:begin
+    //sil sdfsf
+  end;
   -27 : begin
           if ADO_SahaGozetim.RecordCount > 0 then
             GozlemYazdir (ADO_SahaGozetim.FieldByName('ID').AsInteger);
@@ -230,6 +252,36 @@ begin
     end;
 end;
 
+procedure TfrmSahaSaglikGozetim.GozlemeFotografAta;
+{var
+ Fo : TFileOpenDialog;
+ filename,dosyaNo : string;
+ jp : TJPEGImage;{}
+begin
+  {dosyaNo := TcxButtonEditKadir(FindComponent('dosyaNo')).Text;
+  datalar.ADO_Foto.SQL.Text := Format(FotoTable,[#39+dosyaNo+#39]);
+  datalar.ADO_FOTO.Open;
+  datalar.ADO_FOTO.Edit;
+
+  Fo := TFileOpenDialog.Create(nil);
+  try
+    if not fo.Execute then Exit;
+    filename := fo.FileName;
+  finally
+    fo.Free;
+  end;
+  Foto.Picture.LoadFromFile(filename);
+
+  jp := TJpegimage.Create;
+  try
+    jp.Assign(FOTO.Picture);
+    datalar.ADO_FOTO.FieldByName('Foto').Assign(jp);
+    datalar.ADO_FOTO.Post;
+  finally
+    jp.Free;
+  end;{}
+end;
+
 procedure TfrmSahaSaglikGozetim.GozlemYazdir(const GozlemID: integer);
 var
   ado : TADOQuery;
@@ -258,10 +310,11 @@ begin
   inherited;
   ADOQuery1.Close;
   ADOQuery1.SQL.Text := 'exec dbo.sp_SahaGozlemRaporDetayGetir ' + IntToStr (ADO_SahaGozetim.FieldByName('ID').AsInteger);
+  AdjustMasterControls;
   tmr1.Enabled := False;
   tmr1.Enabled := True;
-end;
-end.fotoðraf yükle
+end;end.
+fotoðraf yükle
 fotoðraf gör / göster.
 master gridde fotoðraf var / yok sütunu
 foto yükle düðmesinde sadece ID ve foto olan dataset açýp edit / post

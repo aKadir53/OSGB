@@ -139,6 +139,11 @@ object frmSahaSaglikGozetim: TfrmSahaSaglikGozetim
         DataBinding.FieldName = 'GozetimDefterNo'
         Width = 86
       end
+      object gridRaporlarImageVar: TcxGridDBColumn
+        Caption = 'Resim Var'
+        DataBinding.FieldName = 'ImageVar'
+        Width = 54
+      end
     end
     object cxGridLevel1: TcxGridLevel
       GridView = gridRaporlar
@@ -157,7 +162,8 @@ object frmSahaSaglikGozetim: TfrmSahaSaglikGozetim
     SQL.Strings = (
       
         'select ID, DenetimiYapanKullanici, DenetimTarihi, Date_Create, G' +
-        'ozetimDefterNo, FirmaKodu'
+        'ozetimDefterNo, FirmaKodu, cast (case when Image Is NULL then 0 ' +
+        'else 1 end as bit) ImageVar'
       'from SahaGozlemRaporlari SR'
       'where FirmaKodu = '#39'0001'#39
       'order by SR.ID')
