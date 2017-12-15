@@ -146,7 +146,13 @@ procedure TfrmLogin.txtSubePropertiesChange(Sender: TObject);
 begin
     if DONEMBUL.FieldByName('doktor').AsString <> ''
     Then begin
-      datalar.AktifSube := txtSube.EditingValue;
+      if not isNull(txtSube.EditText)
+      then begin
+        datalar.AktifSube := txtSube.EditValue;
+        datalar.AktifSubeAdi := txtSube.EditingText;
+      end
+      else
+      datalar.AktifSube := txtSube.getItemString;
     end;
 end;
 
@@ -290,7 +296,6 @@ begin
         end;
 
         datalar.ProgTarih := FormattedTarih(tarihal(date()));
-
         datalar.AktifSirket := txtDonemler.Text;
 
         (*

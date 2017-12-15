@@ -396,9 +396,11 @@ object frmLogin: TfrmLogin
           Tag = 1
           Left = 93
           Top = 104
+          Properties.ClearKey = 46
           Properties.Items = <>
           Properties.OnChange = txtSubePropertiesChange
           Style.HotTrack = False
+          Style.TextStyle = [fsBold]
           TabOrder = 3
           BosOlamaz = False
           Width = 121

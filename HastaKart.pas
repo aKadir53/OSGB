@@ -852,7 +852,9 @@ begin
 
   List := ListeAcCreate('PersonelKart','dosyaNo,HASTAADI,HASTASOYADI,TCKIMLIKNO,Aktif',
                        'DosyaNo,PersonelAdý,Soyadý,TCKimlikNo,Durum',
-                       '50,100,100,80,50','dosyaNo','Personel Listesi',' SirketKod = ' + QuotedStr(datalar.AktifSirket),
+                       '50,100,100,80,50','dosyaNo','Personel Listesi',
+                       ' SirketKod = ' + QuotedStr(datalar.AktifSirket) +
+                       ' and Sube in (select datavalue from dbo.strtotable(' + QuotedStr(datalar.AktifSube) + ','',''))',
                         5,True);
   //List.Where := ' SirketKod = ' + QuotedStr(datalar.AktifSirket);
 
@@ -992,7 +994,7 @@ begin
 
   muayenePeryot := TcxImageComboKadir.Create(self);
   muayenePeryot.Conn := nil;
-  muayenePeryot.ItemList := '30;Ayda Bir,90;3 Ayda Bir,180;6 Ayda Bir,365;Yýlda Bir,730;Ýki Yýlda Bir';
+  muayenePeryot.ItemList := '30;Ayda Bir,90;3 Ayda Bir,180;6 Ayda Bir,365;Yýlda Bir,730;Ýki Yýlda Bir,1095;Üç Yýlda Bir,1825;Beþ Yýlda Bir';
   muayenePeryot.Filter := '';
   muayenePeryot.BosOlamaz := True;
   setDataStringKontrol(self,muayenePeryot,'MuayenePeryot','',kolon4,'',110);
