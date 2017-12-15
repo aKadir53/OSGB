@@ -1071,8 +1071,6 @@ begin
   subeler.BosOlamaz := True;
 
   setDataStringKontrol(self,subeler,'sube','Þube',kolon3,'',120);
-
-
   OrtakEventAta(subeler);
 
   setDataStringBLabel(self,'bosSatir2',Kolon3,'',350);
