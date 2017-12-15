@@ -320,14 +320,17 @@ begin
        TagfrmHastaListe :
            begin
               sql := 'exec sp_frmPersonelListesi ' + QuotedStr(datalar.AktifSirket) + ',' +
-                                                     AktifPasifTopPanel.EditValue;
+                                                     AktifPasifTopPanel.EditValue + ',' +
+                                                     QuotedStr('') + ',' +
+                                                     QuotedStr(datalar.AktifSube);
 
            end;
        TagfrmDoktorHastaListe :
            begin
               sql := 'exec sp_frmDoktorPersonelListesi ' + QuotedStr(ifThen(KurumTipTopPanel.EditingValue=1,datalar.AktifSirket,'')) + ',' +
                                                           AktifPasifTopPanel.EditValue + ',' +
-                                                          QuotedStr(datalar.doktorKodu);
+                                                          QuotedStr(datalar.doktorKodu) + ',' +
+                                                          QuotedStr(datalar.AktifSube);
 
            end;
 

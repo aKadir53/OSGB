@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="iso-8859-9"?>
 <ereceteBilgisi>
-  <protokolNo>15</protokolNo>
+  <protokolNo>21</protokolNo>
   <provizyonTipi>1</provizyonTipi>
   <receteAltTuru>1</receteAltTuru>
-  <receteTarihi>09.12.2017 00:00:00</receteTarihi>
+  <receteTarihi>14.12.2017 00:00:00</receteTarihi>
   <receteTuru>1</receteTuru>
   <takipNo />
   <tcKimlikNo>00010115098</tcKimlikNo>
@@ -14,30 +14,16 @@
   <doktorTcKimlikNo>99999999990</doktorTcKimlikNo>
   <ereceteIlacBilgisi>
     <adet>1</adet>
-    <barkod>8699262950233</barkod>
-    <ilacAdi>EPOBEL 2000 IU/0,6 ML IV STERIL 6 KULL HAZ. ENJ.</ilacAdi>
-    <kullanimDoz1>1</kullanimDoz1>
-    <kullanimPeriyotBirimi>3</kullanimPeriyotBirimi>
-    <kullanimSekli>14</kullanimSekli>
-    <kullanimDoz2>1</kullanimDoz2>
-    <kullanimPeriyot>1</kullanimPeriyot>
-  </ereceteIlacBilgisi>
-  <ereceteIlacBilgisi>
-    <adet>1</adet>
-    <barkod>4015630981045</barkod>
-    <ilacAdi>ACCU CHEK PERFORMA 50 STRIP</ilacAdi>
+    <barkod>8699543590028</barkod>
+    <ilacAdi>NORODOL DAMLA 20 ML.</ilacAdi>
     <kullanimDoz1>1</kullanimDoz1>
     <kullanimPeriyotBirimi>3</kullanimPeriyotBirimi>
     <kullanimSekli>1</kullanimSekli>
-    <kullanimDoz2>1</kullanimDoz2>
+    <kullanimDoz2>2</kullanimDoz2>
     <kullanimPeriyot>1</kullanimPeriyot>
   </ereceteIlacBilgisi>
   <ereceteTaniBilgisi>
-    <taniAdi>46, XX GERÇEK HERMAFRODİT</taniAdi>
-    <taniKodu>Q99.1</taniKodu>
-  </ereceteTaniBilgisi>
-  <ereceteTaniBilgisi>
-    <taniAdi>KRONİK HASTALIK ANEMİSİ DİĞER, BAŞKA YERDE SINIFLA</taniAdi>
-    <taniKodu>D63.8</taniKodu>
+    <taniAdi>BROMHİDROZ</taniAdi>
+    <taniKodu>L75.0</taniKodu>
   </ereceteTaniBilgisi>
 </ereceteBilgisi>
