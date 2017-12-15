@@ -302,9 +302,9 @@ object frmLogin: TfrmLogin
     TabOrder = 0
     Properties.ActivePage = SayfaLogin
     OnPageChanging = LoginSayfalarPageChanging
-    ClientRectBottom = 208
-    ClientRectLeft = 4
-    ClientRectRight = 308
+    ClientRectBottom = 205
+    ClientRectLeft = 3
+    ClientRectRight = 305
     ClientRectTop = 26
     object SayfaLogin: TcxTabSheet
       Caption = 'Kullan'#305'c'#305' Giri'#351'i   '
@@ -312,14 +312,14 @@ object frmLogin: TfrmLogin
       object dxLayoutControl1: TdxLayoutControl
         Left = 0
         Top = 0
-        Width = 304
-        Height = 182
+        Width = 302
+        Height = 179
         Align = alClient
         TabOrder = 0
         LayoutLookAndFeel = dxLayoutSkinLookAndFeel1
         object Edit1: TcxTextEdit
-          Left = 94
-          Top = 24
+          Left = 93
+          Top = 23
           ParentFont = False
           Style.Font.Charset = DEFAULT_CHARSET
           Style.Font.Color = clWindowText
@@ -333,8 +333,8 @@ object frmLogin: TfrmLogin
           Width = 121
         end
         object Edit2: TcxTextEdit
-          Left = 94
-          Top = 51
+          Left = 93
+          Top = 50
           ParentFont = False
           ParentShowHint = False
           Properties.EchoMode = eemPassword
@@ -352,8 +352,8 @@ object frmLogin: TfrmLogin
           Width = 121
         end
         object txtSirket: TcxButtonEditKadir
-          Left = 94
-          Top = 78
+          Left = 93
+          Top = 77
           ParentFont = False
           Properties.Buttons = <
             item
@@ -374,16 +374,9 @@ object frmLogin: TfrmLogin
           ListeAcTus = 0
           Width = 121
         end
-        object txtServer: TcxTextEdit
-          Left = 94
-          Top = 105
-          Style.HotTrack = False
-          TabOrder = 3
-          Width = 121
-        end
         object btnGiris: TcxButton
-          Left = 128
-          Top = 146
+          Left = 126
+          Top = 144
           Width = 75
           Height = 25
           Caption = 'Giri'#351' Yap'
@@ -391,13 +384,24 @@ object frmLogin: TfrmLogin
           OnClick = Image1Click
         end
         object btnVazgec: TcxButton
-          Left = 214
-          Top = 146
+          Left = 212
+          Top = 144
           Width = 285
           Height = 25
           Caption = 'Vazge'#231
           TabOrder = 5
           OnClick = btnVazgecClick
+        end
+        object txtSube: TcxImageComboKadir
+          Tag = 1
+          Left = 93
+          Top = 104
+          Properties.Items = <>
+          Properties.OnChange = txtSubePropertiesChange
+          Style.HotTrack = False
+          TabOrder = 3
+          BosOlamaz = False
+          Width = 121
         end
         object dxLayoutControl1Group_Root: TdxLayoutGroup
           AlignHorz = ahParentManaged
@@ -434,14 +438,6 @@ object frmLogin: TfrmLogin
           ControlOptions.ShowBorder = False
           Index = 2
         end
-        object dxLayoutControl1Item4: TdxLayoutItem
-          CaptionOptions.Text = 'Server'
-          Parent = dxLayoutControl1Group1
-          Visible = False
-          Control = txtServer
-          ControlOptions.ShowBorder = False
-          Index = 3
-        end
         object dxLayoutControl1Group2: TdxLayoutGroup
           AlignHorz = ahRight
           Parent = dxLayoutControl1Group_Root
@@ -473,6 +469,13 @@ object frmLogin: TfrmLogin
           ControlOptions.ShowBorder = False
           Index = 0
         end
+        object dxLayoutControl1Item4: TdxLayoutItem
+          CaptionOptions.Text = #350'ube'
+          Parent = dxLayoutControl1Group1
+          Control = txtSube
+          ControlOptions.ShowBorder = False
+          Index = 3
+        end
       end
       object txtDonemler: TcxTextEdit
         Left = 10
@@ -493,19 +496,19 @@ object frmLogin: TfrmLogin
         Align = alClient
         Caption = 'Server Bilgisi'
         TabOrder = 0
-        Height = 182
-        Width = 304
+        Height = 179
+        Width = 302
         object dxLayoutControl2: TdxLayoutControl
           Left = 3
           Top = 15
-          Width = 298
-          Height = 156
+          Width = 296
+          Height = 154
           Align = alClient
           TabOrder = 0
           ExplicitLeft = 2
-          ExplicitTop = -3
-          ExplicitWidth = 300
-          ExplicitHeight = 183
+          ExplicitTop = -2
+          ExplicitWidth = 298
+          ExplicitHeight = 179
           object txtServerName: TcxTextEditKadir
             Left = 104
             Top = 10
@@ -1296,8 +1299,8 @@ object frmLogin: TfrmLogin
     Font.Style = []
   end
   object DataSource1: TDataSource
-    Left = 232
-    Top = 160
+    Left = 56
+    Top = 32
   end
   object login: TADOTable
     Connection = DATALAR.ADOConnection2
@@ -1320,8 +1323,8 @@ object frmLogin: TfrmLogin
     SQL.Strings = (
       'SELECT * FROM MUH_DONEMLER'
       'WHERE DONEM=:D')
-    Left = 64
-    Top = 168
+    Left = 136
+    Top = 8
   end
   object ADOConnection2: TADOConnection
     CommandTimeout = 0
@@ -1354,12 +1357,12 @@ object frmLogin: TfrmLogin
     SkinName = 'coffee'
     Grup = False
     GrupCol = 0
-    Left = 24
-    Top = 168
+    Left = 232
+    Top = 8
   end
   object dxLayoutLookAndFeelList1: TdxLayoutLookAndFeelList
-    Left = 192
-    Top = 160
+    Left = 24
+    Top = 24
     object dxLayoutSkinLookAndFeel1: TdxLayoutSkinLookAndFeel
       ItemOptions.CaptionOptions.Font.Charset = DEFAULT_CHARSET
       ItemOptions.CaptionOptions.Font.Color = clWindowText
@@ -1368,5 +1371,45 @@ object frmLogin: TfrmLogin
       ItemOptions.CaptionOptions.Font.Style = [fsBold]
       ItemOptions.CaptionOptions.UseDefaultFont = False
     end
+  end
+  object ListeAc2: TListeAc
+    ListeBaslik = #350'ubeler'
+    TColcount = 2
+    TColsW = '50,200'
+    Table = 'SIRKET_SUBE_TNM'
+    Conn = DATALAR.ADOConnection2
+    Filtercol = 0
+    BaslikRenk = clBlack
+    DipRenk = clBlack
+    Kolonlar.Strings = (
+      'subeKod'
+      'subeTanim')
+    KolonBasliklari.Strings = (
+      'Kod'
+      #350'ube')
+    Calistir = fgEvet
+    BiriktirmeliSecim = False
+    SkinName = 'coffee'
+    Grup = False
+    GrupCol = 0
+    Left = 200
+    Top = 8
+  end
+  object SUBEBUL: TADOQuery
+    Connection = DATALAR.ADOConnection2
+    CursorType = ctStatic
+    Parameters = <
+      item
+        Name = 'D'
+        DataType = ftString
+        Precision = 10
+        Size = 10
+        Value = Null
+      end>
+    SQL.Strings = (
+      'SELECT * FROM MUH_DONEMLER'
+      'WHERE DONEM=:D')
+    Left = 168
+    Top = 8
   end
 end
