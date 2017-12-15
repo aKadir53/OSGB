@@ -202,6 +202,7 @@ begin
       aImage.Free;
     end;
   end;
+  FotografGoruntule (FImages [iIndex].Picture);
   //þ
 end;
 
