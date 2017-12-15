@@ -453,7 +453,7 @@ end;
 function TGirisForm.Init(Sender: TObject) : Boolean;
 begin
   USER_ID.Text := datalar.username;
-  //sirketKod.Text := datalar.AktifSirket; sadece yeni kayýt ise yap dedik, diðerlerinde veritabanýndan geldikçe eziliyor zaten.
+  sirketKod.Text := datalar.AktifSirket; //sadece yeni kayýt ise yap dedik, diðerlerinde veritabanýndan geldikçe eziliyor zaten.
   FormInputZorunluKontrolPaint(self,$00FCDDD1);
   cxTab.PopupMenu := menu;
 
@@ -936,7 +936,8 @@ begin
        (self.Components[i].ClassName = 'TcxCheckGroup') or
        ((self.Components[i].ClassName = 'TcxLabel') and (TcxLabel(self.Components[i]).Tag = -200))
     then begin
-        if TcxCustomEdit(self.Components[i]).Visible = false then Continue;
+        //ÜÖ 20171215 görünmeyen bileþenin doldurulmasýnda sakýnca yok, þirket kodu bazý yerlerde görünmediði halde yazýlýp okunmasý gerekiyor. istenmeyen bileþen için Tag atanabilir.
+        //if TcxCustomEdit(self.Components[i]).Visible = false then Continue;
         if TcxCustomEdit(self.Components[i]).Name = 'txtSifreTekrar' then Continue;
         if TcxCustomEdit(self.Components[i]).Tag = -100 then Continue;
         if TcxImage(self.Components[i]).Tag = -1 then Continue;
@@ -1012,8 +1013,10 @@ begin
        Then
         TcxButtonEditKadir(self.Components[i]).Properties.ReadOnly := True
        else
-       if (self.Components[i].ClassName = 'TcxButtonEditKadir') and
-          (TcxButtonEditKadir(self.Components[i]).indexField = False) //and
+       //ÜÖ 20171215 yukarýdaki continue'yi açtýk. görünmeyen bileþen için liste aç iþlemleri yapmaya baþladý, gerek yok.
+       if (self.Components[i].ClassName = 'TcxButtonEditKadir')
+         and (TcxButtonEditKadir(self.Components[i]).Visible)
+         and (TcxButtonEditKadir(self.Components[i]).indexField = False) //and
        //   (sqlRun.State = dsEdit)
        then begin
           SQL := TADOQuery.Create(nil);
