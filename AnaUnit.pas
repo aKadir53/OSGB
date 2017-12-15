@@ -356,7 +356,7 @@ begin
  //   scaleBy(screen.width, ScreenWidth);
   end;
 
-  dxStatusBar1.Panels[1].Text := DATALAR.AktifSirketAdi;
+  dxStatusBar1.Panels[1].Text := DATALAR.AktifSirketAdi + '-' + datalar.AktifSubeAdi;
   dxStatusBar1.Panels[1].Width := length(Datalar.AktifSirketAdi) * 8;
   dxStatusBar1.Panels[3].Text := DATALAR._merkezAdi;
   dxStatusBar1.Panels[4].Text := 'Versiyon : ' + datalar.versiyon;
