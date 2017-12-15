@@ -1,8 +1,12 @@
 BEGIN TRAN
 GO
--- [CMPTR2] - [15.12.2017 12:38:16]
+-- [CMPTR2] - [15.12.2017 12:50:23]
 ALTER PROCEDURE [dbo].[sp_frmDoktorPersonelListesi] @firma varchar(10) = '',@ap int = 1,@doktor varchar(4),@sube varchar(500) = ''
 AS
+if @sube = ''
+begin
+  select @sube = @sube + ',' + subeKod from SIRKET_SUBE_TNM where sirketKod = @firma
+end
 select h.Sube,  h.*,(case when isnull(diger,'') = '' then '0' else '1' end) ozeldurum , 
 (case when (CHARINDEX('5',h.GELHAST) > 0 OR CHARINDEX('7',h.GELHAST) > 0) THEN '1' ELSE '' END) Diabet,
 (case when isnull(AntiHbs,'') = '' THEN '0' ELSE AntiHbs END) 'AntiHbs',
