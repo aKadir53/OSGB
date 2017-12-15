@@ -1,13 +1,15 @@
 BEGIN TRAN
 GO
+-- [CMPTR2] - [15.12.2017 16:19:04]
 ALTER PROCEDURE [dbo].[sp_HastaGelisleri]
 @dosyaNo varchar(6)
 AS
 select GelisNo,cast(BHDAT as datetime)  as Tarih,
-       SERVIS,TEDAVITURU,Doktor,kullanici,      
+       SERVIS,Mt.Tanim TEDAVITURU,Doktor,kullanici,      
        PROTOKOLNO
 
 from Gelisler g
+left join VW_MuayeneTipleri Mt on Mt.Kod = g.TEDAVITURU
 --inner join doktorlar d on d.kod = g.doktor
 where DOSYANO = @dosyano
 order by GelisNo desc
