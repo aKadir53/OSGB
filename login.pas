@@ -19,7 +19,8 @@ uses
   dxSkinOffice2007Pink, dxSkinOffice2007Silver, dxSkinOffice2010Black,
   dxSkinOffice2010Blue, dxSkinOffice2010Silver, dxSkinPumpkin, dxSkinSeven,
   dxSkinSharp, dxSkinSilver, dxSkinSpringTime, dxSkinStardust, dxSkinSummer2008,
-  dxSkinValentine, dxSkinXmas2008Blue, cxGroupBox, acPNG, cxImage;
+  dxSkinValentine, dxSkinXmas2008Blue, cxGroupBox, acPNG, cxImage,
+  cxDropDownEdit, cxImageComboBox;
 
 type
   TfrmLogin = class(TForm)
@@ -48,8 +49,6 @@ type
     dxLayoutControl1Item1: TdxLayoutItem;
     dxLayoutControl1Item2: TdxLayoutItem;
     dxLayoutControl1Item3: TdxLayoutItem;
-    dxLayoutControl1Item4: TdxLayoutItem;
-    txtServer: TcxTextEdit;
     btnVazgec: TcxButton;
     dxLayoutControl1Group2: TdxLayoutGroup;
     dxLayoutControl1Item5: TdxLayoutItem;
@@ -71,6 +70,10 @@ type
     cxTabSheet1: TcxTabSheet;
     cxImage1: TcxImage;
     Label1: TLabel;
+    ListeAc2: TListeAc;
+    SUBEBUL: TADOQuery;
+    txtSube: TcxImageComboKadir;
+    dxLayoutControl1Item4: TdxLayoutItem;
 
     PROCEDURE YUVARLAK(WDN:HWND;ALAN:TRECT);
     procedure FormCreate(Sender: TObject);
@@ -97,6 +100,7 @@ type
     procedure btnBaglanClick(Sender: TObject);
     procedure LoginSayfalarPageChanging(Sender: TObject; NewPage: TcxTabSheet;
       var AllowChange: Boolean);
+    procedure txtSubePropertiesChange(Sender: TObject);
 
     //procedure Thread1;
     //procedure Thread2;
@@ -136,6 +140,14 @@ begin
  //   ado.Free;
 
 
+end;
+
+procedure TfrmLogin.txtSubePropertiesChange(Sender: TObject);
+begin
+    if DONEMBUL.FieldByName('doktor').AsString <> ''
+    Then begin
+      datalar.AktifSube := txtSube.EditingValue;
+    end;
 end;
 
 procedure TfrmLogin.regyazLastLogin;
@@ -280,6 +292,7 @@ begin
         datalar.ProgTarih := FormattedTarih(tarihal(date()));
 
         datalar.AktifSirket := txtDonemler.Text;
+
         (*
          if InternetVarmi
          Then Begin
@@ -453,7 +466,6 @@ end;
 procedure TfrmLogin.btnDetayClick(Sender: TObject);
 begin
   txtDonemler.Visible := true;
-  txtServer.Visible := True;
 end;
 
 procedure TfrmLogin.btnVazgecClick(Sender: TObject);
@@ -467,28 +479,50 @@ procedure TfrmLogin.cxButtonEditKadir1PropertiesButtonClick(Sender: TObject;
   AButtonIndex: Integer);
 var
   List : ArrayListeSecimler;
-  sql : string;
+  sql,sube : string;
 begin
   if Datalar.Baglan ('', '', Edit1.Text)
   Then Begin
-    sql := 'select doktor,sirketKodu from Users where kullanici = ' + QuotedStr(edit1.text);
-    datalar.QuerySelect(DONEMBUL,sql);
+     sql := 'select doktor,sirketKodu from Users where kullanici = ' + QuotedStr(edit1.text);
+     datalar.QuerySelect(DONEMBUL,sql);
 
-    if DONEMBUL.FieldByName('doktor').AsString <> ''
-    then ListeAc1.Where := 'doktor = ' + QuotedStr(DONEMBUL.FieldByName('doktor').AsString)
-    else
-    if DONEMBUL.FieldByName('sirketKodu').AsString <> ''
-     then ListeAc1.Where := 'SirketKod = ' + QuotedStr(DONEMBUL.FieldByName('sirketKodu').AsString)
-    else
-      ListeAc1.Where := '';
 
-    List := ListeAc1.ListeGetir;
-    if High (List) < 0 then Exit;
+    case TcxButtonEditKadir(Sender).Tag of
+      0 : begin
+              if DONEMBUL.FieldByName('doktor').AsString <> ''
+              then begin
+                ListeAc1.Where := 'doktor = ' + QuotedStr(DONEMBUL.FieldByName('doktor').AsString);
+                sube := ' and subeDoktor = ' + QuotedStr(DONEMBUL.FieldByName('doktor').AsString);
+              end
+              else
+              if DONEMBUL.FieldByName('sirketKodu').AsString <> ''
+               then begin
+                ListeAc1.Where := 'SirketKod = ' + QuotedStr(DONEMBUL.FieldByName('sirketKodu').AsString);
+                sube:= '';
+               end
+              else
+                ListeAc1.Where := '';
 
-    txtSirket.Text := list[0].kolon2;
-    txtDonemler.Text := list[0].kolon1;
-    datalar.AktifSirketAdi := txtSirket.Text;
-    datalar.AktifSirket := txtDonemler.Text;
+                List := ListeAc1.ListeGetir;
+                if High (List) < 0 then Exit;
+                txtSirket.Text := list[0].kolon2;
+                txtDonemler.Text := list[0].kolon1;
+                datalar.AktifSirketAdi := txtSirket.Text;
+                datalar.AktifSirket := txtDonemler.Text;
+
+                txtSube.Conn := Datalar.ADOConnection2;
+                txtSube.TableName := 'SIRKET_SUBE_TNM';
+                txtSube.ValueField := 'subeKod';
+                txtSube.DisplayField := 'subeTanim';
+                txtSube.Filter := ' SirketKod = ' + QuotedStr(txtDonemler.Text) + sube;
+
+                datalar.AktifSube := txtSube.getItemString;
+          end;
+      1 : begin
+
+          end;
+
+    end;
   End
   Else
    ShowMessageSkin('Server Baðlantýsý Saðlanamadý ','','','info');

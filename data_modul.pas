@@ -476,7 +476,7 @@ type
    _merkezAdi , _DyobKurumKodu_,_DyobSifre_,_DyobServiceKodu_ , doktorTip , bashekimKodu,hekimKodu,ImajFTPServer : string;
    _medulaOrtam_ , WanIp,WanIpURL ,_firmaKod_ , osgbKodu : string;
    TakipDevam : boolean;
-   AktifSirketAdi,AktifSirket ,_donemSonlandir_ ,TenayMNTRequest , TenayBIORequest , DyobRequest , _database , _Tip : string;
+   AktifSirketAdi,AktifSirket ,AktifSube ,_donemSonlandir_ ,TenayMNTRequest , TenayBIORequest , DyobRequest , _database , _Tip : string;
    CentroResponse ,SMSHesapFrom,SMSHesapUser,SMSHesapSifre , AlpemixRun,AlpemixGrupAdi,AlpemixGrupParola : string;
    _kurumKod  , _donemgoster : integer;
    LisansBitis,LisansBasla,LisansTarih : string;
