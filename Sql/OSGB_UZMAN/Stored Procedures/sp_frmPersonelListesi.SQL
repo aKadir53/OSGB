@@ -1,12 +1,12 @@
 BEGIN TRAN
 GO
--- [CMPTR2] - [15.12.2017 12:49:44]
+-- [CMPTR2] - [15.12.2017 12:49:58]
 ALTER PROCEDURE [dbo].[sp_frmPersonelListesi] @firma varchar(10) = '',@ap int = 1,@TCKimlikNo varchar(11) = '',@sube varchar(500) = ''
 AS
 begin
 if @sube = ''
 begin
-  select @sube = @sube + subeKod from SIRKET_SUBE_TNM where sirketKod = @firma
+  select @sube = @sube + ',' + subeKod from SIRKET_SUBE_TNM where sirketKod = @firma
 end
 select @sube
 select h.*,(case when isnull(diger,'') = '' then '0' else '1' end) ozeldurum , 
