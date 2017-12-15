@@ -380,24 +380,12 @@ object frmHastaKart: TfrmHastaKart
         object cxGridGelislerTEDAVITURU: TcxGridDBBandedColumn
           Caption = 'Muayene'
           DataBinding.FieldName = 'TEDAVITURU'
-          PropertiesClassName = 'TcxImageComboBoxProperties'
-          Properties.Items = <
-            item
-              Description = #304#351'e Giri'#351
-              ImageIndex = 0
-              Value = '1'
-            end
-            item
-              Description = 'Periyodik'
-              Value = '2'
-            end
-            item
-              Description = 'Normal'
-              Value = '3'
-            end>
+          PropertiesClassName = 'TcxTextEditProperties'
+          Properties.Alignment.Horz = taCenter
+          Properties.Alignment.Vert = taVCenter
           HeaderAlignmentHorz = taCenter
           HeaderAlignmentVert = vaCenter
-          Width = 61
+          Width = 115
           Position.BandIndex = 1
           Position.ColIndex = 3
           Position.RowIndex = 0
