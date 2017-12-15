@@ -22,7 +22,7 @@ uses
   dxSkinOffice2007Silver, dxSkinOffice2010Black, dxSkinOffice2010Blue,
   dxSkinOffice2010Silver, dxSkinPumpkin, dxSkinSeven, dxSkinSharp, dxSkinSilver,
   dxSkinSpringTime, dxSkinStardust, dxSkinSummer2008, dxSkinValentine,
-  dxSkinXmas2008Blue, cxCalendar;
+  dxSkinXmas2008Blue, cxCalendar, cxCurrencyEdit;
 
 type
   TfrmHastaListe = class(TGirisForm)
@@ -72,28 +72,30 @@ type
     ListeColumn9: TcxGridDBColumn;
     ListeColumn10: TcxGridDBColumn;
     ListeColumn11: TcxGridDBColumn;
-    ListeColumn12: TcxGridDBColumn;
+    MuayeneKalanGun: TcxGridDBColumn;
     ListeColumn13: TcxGridDBColumn;
     ListeColumn14: TcxGridDBColumn;
     ListeColumn15: TcxGridDBColumn;
     cxStyle2: TcxStyle;
     ListeColumn16: TcxGridDBColumn;
     K1: TMenuItem;
+    ikazRed: TcxStyle;
+    ikazYellow: TcxStyle;
 
     procedure TopPanelPropertiesChange(Sender: TObject);
     procedure btnVazgecClick(Sender: TObject);
     procedure ListeDblClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure popupYilPopup(Sender: TObject);
-    procedure ListeCellClick(Sender: TcxCustomGridTableView;
-      ACellViewInfo: TcxGridTableDataCellViewInfo; AButton: TMouseButton;
-      AShift: TShiftState; var AHandled: Boolean);
     procedure H1Click(Sender: TObject);
     procedure cxButtonCClick(Sender: TObject);
     procedure ListeFocusedRecordChanged(Sender: TcxCustomGridTableView;
       APrevFocusedRecord, AFocusedRecord: TcxCustomGridRecord;
       ANewItemRecordFocusingChanged: Boolean);
     procedure N1Click(Sender: TObject);
+    procedure ListeStylesGetContentStyle(Sender: TcxCustomGridTableView;
+      ARecord: TcxCustomGridRecord; AItem: TcxCustomGridTableItem;
+      out AStyle: TcxStyle);
 
   private
     { Private declarations }
@@ -229,32 +231,6 @@ begin
 
 end;
 
-procedure TfrmHastaListe.ListeCellClick(Sender: TcxCustomGridTableView;
-  ACellViewInfo: TcxGridTableDataCellViewInfo; AButton: TMouseButton;
-  AShift: TShiftState; var AHandled: Boolean);
-begin
-  inherited;
-  (*
-  if ACellViewInfo.Item.Index = 6
-  Then Begin
-    cxGrid2.Hint := ado_BransKodlari.FieldByName('diger').AsString;
-    cxGrid2.ShowHint := True;
-  End
-  else
-  if (ACellViewInfo.Item.Index = 11) and (ado_BransKodlari.FieldByName('TakipProvizyonTarihiKontrol').AsString = 'H')
-  Then Begin
-    cxGrid2.Hint := 'Takibin Provizyon Tarihi ile ilk seans tarihi uyuþmuyor';
-    cxGrid2.ShowHint := True;
-  End
-  else
-  begin
-    cxGrid2.Hint := '';
-    cxGrid2.ShowHint := false;
-  end;
-      *)
-
-end;
-
 procedure TfrmHastaListe.ListeDblClick(Sender: TObject);
 var
  Form : TGirisForm;
@@ -321,6 +297,28 @@ begin
   HTc := _Dataset.FieldByName('TCKIMLIKNO').AsString;//Liste.DataController.GetValue(index,TC.Index);
   HastaBilgiRecordSet(Hadi,HSadi,HTc,'');
 
+end;
+
+procedure TfrmHastaListe.ListeStylesGetContentStyle(
+  Sender: TcxCustomGridTableView; ARecord: TcxCustomGridRecord;
+  AItem: TcxCustomGridTableItem; out AStyle: TcxStyle);
+var
+ id : integer;
+begin
+ try
+  id := ARecord.ViewData.GridView.FindItemByName('MuayeneKalanGun').Index;
+  if AItem.Index = id
+  then
+    if ARecord.Values[id] <> null
+    then begin
+     if (ARecord.Values[id] <= 0)
+       Then AStyle := ikazRed
+      else
+     if (ARecord.Values[id] < 30)
+       Then AStyle := ikazYellow;
+    end;
+ except
+ end;
 end;
 
 procedure TfrmHastaListe.N1Click(Sender: TObject);

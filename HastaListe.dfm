@@ -98,6 +98,7 @@ object frmHastaListe: TfrmHastaListe
         OptionsView.GroupByBox = False
         OptionsView.HeaderHeight = 35
         OptionsView.RowSeparatorColor = clBlack
+        Styles.OnGetContentStyle = ListeStylesGetContentStyle
         Styles.Group = cxStyle2
         Styles.Indicator = cxStyle1
         object TC: TcxGridDBColumn
@@ -300,12 +301,11 @@ object frmHastaListe: TfrmHastaListe
           HeaderAlignmentVert = vaCenter
           Width = 80
         end
-        object ListeColumn12: TcxGridDBColumn
+        object MuayeneKalanGun: TcxGridDBColumn
           Caption = 'Muayeneye Kalan Gun'
           DataBinding.FieldName = 'MuayeneKalanGun'
-          PropertiesClassName = 'TcxTextEditProperties'
-          Properties.Alignment.Horz = taCenter
-          Properties.Alignment.Vert = taVCenter
+          PropertiesClassName = 'TcxCurrencyEditProperties'
+          Properties.AssignedValues.DisplayFormat = True
           HeaderAlignmentHorz = taCenter
           HeaderAlignmentVert = vaCenter
           Width = 80
@@ -511,6 +511,25 @@ object frmHastaListe: TfrmHastaListe
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clWindowText
       Font.Height = -13
+      Font.Name = 'Tahoma'
+      Font.Style = [fsBold]
+    end
+    object ikazRed: TcxStyle
+      AssignedValues = [svColor, svFont, svTextColor]
+      Color = clRed
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -11
+      Font.Name = 'Tahoma'
+      Font.Style = [fsBold]
+      TextColor = clWhite
+    end
+    object ikazYellow: TcxStyle
+      AssignedValues = [svColor, svFont]
+      Color = clYellow
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -11
       Font.Name = 'Tahoma'
       Font.Style = [fsBold]
     end
