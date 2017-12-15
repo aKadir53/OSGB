@@ -13,7 +13,7 @@ uses Windows, Messages, SysUtils, Variants, Classes, Graphics, Vcl.Controls, Con
   IdCoderMIME, cxDataStorage, cxEdit, cxControls, cxGridCustomView, cxGridDBTableView,
   cxCheckListBox,cxGridCustomTableView, cxGridTableView, cxGridBandedTableView, cxClasses,
   cxGroupBox, cxRadioGroup,cxGridLevel, cxGrid, cxCheckBox, cxImageComboBox, cxTextEdit, cxButtonEdit,
-  cxCalendar,dxLayoutContainer, dxLayoutControl,cxPC;
+  cxCalendar,dxLayoutContainer, dxLayoutControl,cxPC, cxImage;
 
 
 procedure SMSSend(tel : string; Msj : string = '';Kisi : string ='');
@@ -372,6 +372,7 @@ function IsNull (const s: String): Boolean;
 procedure LisansUzat;
 function SahaSaglikGozlemSil(const GozlemID: integer): Boolean;
 function VeritabaniAlaninaFotografYukle(const sTableName, sKeyField, sImageField, sKeyValue: String): Boolean;
+function VeritabaniAlanindanFotografYukle(const sTableName, sKeyField, sImageField, sKeyValue: String; var aImage: TcxImage): Boolean;
 
 const
   _YTL_ = 'YTL';
@@ -438,7 +439,7 @@ var
 implementation
 
 uses message,AnaUnit,message_y,popupForm,rapor,TedaviKart,Son6AylikTetkikSonuc,
-             HastaRecete,sifreDegis,HastaTetkikEkle,GirisUnit,SMS,LisansUzat, cxImage;
+             HastaRecete,sifreDegis,HastaTetkikEkle,GirisUnit,SMS,LisansUzat;
 
 
 procedure LisansUzat;
@@ -8384,7 +8385,7 @@ begin
         try
           if adox.RecordCount = 0 then
           begin
-            ShowMessageSkin('Saha Gözetim Formu Kaydý açýlamadý','', '', 'info');
+            ShowMessageSkin('Kayýt açýlamadý','', '', 'info');
             Exit;
           end;
           Adox.Edit;
@@ -8407,6 +8408,39 @@ begin
     end;
   finally
     tmpPicture.free;
+  end;
+end;
+
+function VeritabaniAlanindanFotografYukle(const sTableName, sKeyField, sImageField, sKeyValue: String; var aImage: TcxImage): Boolean;
+var
+ jp : TJPEGImage;
+ adox : TADOQuery;
+begin
+  Result := False;
+  jp := TJpegimage.Create;
+  try
+    adox := TADOQuery.Create (nil);
+    try
+      adox.Connection := DATALAR.ADOConnection2;
+      adox.SQL.Text := 'SELECT ' + sKeyField + ', ' + sImageField + ' From ' + sTableName + ' where '+sKeyField + ' = ' + sKeyValue;
+      adox.Open;
+      try
+        if adox.RecordCount = 0 then
+        begin
+          ShowMessageSkin('Kayýt açýlamadý','', '', 'info');
+          Exit;
+        end;
+        jp.Assign (adox.FieldByName(sImageField));
+        aImage.Picture.Assign(jp);
+        Result := True;
+      finally
+        adox.close;
+      end;
+    finally
+      adox.Free;
+    end;
+  finally
+    jp.Free;
   end;
 end;
 
