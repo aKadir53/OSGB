@@ -203,7 +203,6 @@ begin
     end;
   end;
   FotografGoruntule (FImages [iIndex].Picture);
-  //þ
 end;
 
 function TfrmSahaSaglikGozetim.SahaSaglikGozetimFormFotografSil(
@@ -392,7 +391,6 @@ begin
   tmr1.Enabled := True;
   AdjustMasterControls;
 end;
-//fotoðraf gör / göster.
 
 end.
 
