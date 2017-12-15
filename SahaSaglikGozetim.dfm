@@ -139,6 +139,11 @@ object frmSahaSaglikGozetim: TfrmSahaSaglikGozetim
         DataBinding.FieldName = 'GozetimDefterNo'
         Width = 86
       end
+      object gridRaporlarImageVar: TcxGridDBColumn
+        Caption = 'Resim Var'
+        DataBinding.FieldName = 'ImageVar'
+        Width = 54
+      end
     end
     object cxGridLevel1: TcxGridLevel
       GridView = gridRaporlar
@@ -157,7 +162,8 @@ object frmSahaSaglikGozetim: TfrmSahaSaglikGozetim
     SQL.Strings = (
       
         'select ID, DenetimiYapanKullanici, DenetimTarihi, Date_Create, G' +
-        'ozetimDefterNo, FirmaKodu'
+        'ozetimDefterNo, FirmaKodu, cast (case when Image Is NULL then 0 ' +
+        'else 1 end as bit) ImageVar'
       'from SahaGozlemRaporlari SR'
       'where FirmaKodu = '#39'0001'#39
       'order by SR.ID')
@@ -245,7 +251,7 @@ object frmSahaSaglikGozetim: TfrmSahaSaglikGozetim
     object miGozetimDuzenle: TMenuItem
       Tag = -11
       Caption = 'G'#246'zetimi D'#252'zenle'
-      ImageIndex = 30
+      ImageIndex = 31
       OnClick = cxButtonCClick
     end
     object miGozetimSil: TMenuItem
@@ -258,6 +264,24 @@ object frmSahaSaglikGozetim: TfrmSahaSaglikGozetim
       Tag = -27
       Caption = 'Yazd'#305'r'
       ImageIndex = 28
+      OnClick = cxButtonCClick
+    end
+    object miFotografYukle: TMenuItem
+      Tag = -21
+      Caption = 'Foto'#287'raf Y'#252'kle'
+      ImageIndex = 95
+      OnClick = cxButtonCClick
+    end
+    object miFotografGoruntule: TMenuItem
+      Tag = -22
+      Caption = 'Foto'#287'raf'#305' G'#246'r'#252'nt'#252'le'
+      ImageIndex = 8
+      OnClick = cxButtonCClick
+    end
+    object miFotografiSil: TMenuItem
+      Tag = -23
+      Caption = 'Foto'#287'raf'#305' Sil'
+      ImageIndex = 33
       OnClick = cxButtonCClick
     end
   end

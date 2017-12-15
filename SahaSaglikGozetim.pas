@@ -22,7 +22,7 @@ uses
   dxSkinXmas2008Blue, Menus, cxGroupBox, cxRadioGroup, sGauge,
   cxPCdxBarPopupMenu, cxMemo, cxPC, cxCheckBox, rxAnimate, rxGIFCtrl,
   JvExControls, JvAnimatedImage, JvGIFCtrl, cxButtons, cxCurrencyEdit,
-  cxGridBandedTableView, cxGridDBBandedTableView, KadirLabel;
+  cxGridBandedTableView, cxGridDBBandedTableView, KadirLabel, cxImage;
 
 type
   TfrmSahaSaglikGozetim = class(TGirisForm)
@@ -65,6 +65,10 @@ type
     gridRaporOneriler: TcxGridDBColumn;
     tmr1: TTimer;
     miGozetimDuzenle: TMenuItem;
+    miFotografYukle: TMenuItem;
+    miFotografGoruntule: TMenuItem;
+    miFotografiSil: TMenuItem;
+    gridRaporlarImageVar: TcxGridDBColumn;
     procedure cxButtonCClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure Gozlem(islem: Integer);
@@ -76,8 +80,18 @@ type
 
   private
     { Private declarations }
+    FImages : array of TcxImage;
+    FImageIds : array of Integer;
+    function ImageIndexOfID (const iID : Integer): Integer;
+    function ImageAdd (const iID : Integer; const aImage : TCxImage): Integer;
+    procedure ImageDelete (const iIndex: Integer);
   protected
     procedure GozlemYazdir (const GozlemID : integer);
+    procedure AdjustMasterControls;
+    procedure RefreshSahaGozetimler (const bUseBookmark: Boolean);
+    function SahaSaglikGozetimFormFotografYukle (const iSahaGozetimID : Integer): Boolean;
+    function SahaSaglikGozetimFormFotografSil (const iSahaGozetimID : Integer): Boolean;
+    procedure SahaSaglikGozetimFormFotografGoruntule (const iSahaGozetimID : Integer);
   public
     { Public declarations }
     function Init(Sender: TObject) : Boolean; override;
@@ -88,17 +102,57 @@ var
 
 implementation
 
-uses data_modul, StrUtils;
+uses data_modul, StrUtils, Jpeg;
 
 {$R *.dfm}
 
 
 
 
+function TfrmSahaSaglikGozetim.ImageAdd(const iID: Integer;
+  const aImage: TCxImage): Integer;
+begin
+  Result := -1;
+  if Result < 0 then ;;
+  SetLength (FImages, High (FImages) + 2);
+  SetLength (FImageIds, High (FImageIds) + 2);
+  Result := High (FImages);
+  FImages [Result]:= TcxImage.Create (Self);
+  FImages [Result].Picture.Assign (aImage.Picture);
+  FImageIds[Result] := iID;
+end;
+
+procedure TfrmSahaSaglikGozetim.ImageDelete(const iIndex: Integer);
+var
+  i : Integer;
+begin
+  FreeAndNil(FImages [iIndex]);
+  for i := iIndex to High (FImages) -1 do
+  begin
+    FImages [i] := FImages [i + 1];
+    FImageIds [i] := FImageIds [i + 1];
+  end;
+  SetLength (FImages, High (FImages));
+  SetLength (FImageIds, High (FImageIds));
+end;
+
+function TfrmSahaSaglikGozetim.ImageIndexOfID(const iID: Integer): Integer;
+var
+  i:Integer;
+begin
+  Result := -1;
+  i := 0;
+  while (Result = -1) and (i <= High (FImageIds)) do
+  begin
+    if FImageIds [i] = iID then Result := i;
+    i := i + 1;
+  end;
+end;
+
 function TfrmSahaSaglikGozetim.Init(Sender : TObject) : Boolean;
 begin
   ADO_SahaGozetim.SQL.Text :=
-    'select ID, DenetimiYapanKullanici, DenetimTarihi, Date_Create, GozetimDefterNo, FirmaKodu'#13#10+
+    'select ID, DenetimiYapanKullanici, DenetimTarihi, Date_Create, GozetimDefterNo, FirmaKodu, cast (case when Image Is NULL then 0 else 1 end as bit) ImageVar '#13#10+
     'from SahaGozlemRaporlari SR'#13#10+
     'where FirmaKodu = ' + QuotedStr (DATALAR.AktifSirket) + ''#13#10+
     'order by SR.ID';
@@ -106,11 +160,83 @@ begin
   Result := True;
 end;
 
+procedure TfrmSahaSaglikGozetim.RefreshSahaGozetimler(
+  const bUseBookmark: Boolean);
+var
+  aBM: TBookmark;
+begin
+  if bUseBookmark then
+  begin
+    aBM := ADO_SahaGozetim.GetBookmark;
+    try
+      //ADO_SahaGozetim.Refresh;
+      ADO_SahaGozetim.Active := False;
+      ADO_SahaGozetim.Active := True;
+      ADO_SahaGozetim.GotoBookmark(aBM);
+    finally
+      ADO_SahaGozetim.FreeBookmark(aBM);
+    end;
+  end
+  else begin
+    ADO_SahaGozetim.Active := False;
+    ADO_SahaGozetim.Active := True;
+  end;
+  AdjustMasterControls;
+end;
+
+procedure TfrmSahaSaglikGozetim.SahaSaglikGozetimFormFotografGoruntule(
+  const iSahaGozetimID: Integer);
+var
+  iIndex : Integer;
+  sFileName : String;
+  aImage : TcxImage;
+begin
+  iIndex := ImageIndexOfID(iSahaGozetimID);
+  if iIndex < 0 then
+  begin
+    aImage := TcxImage.Create (Self);
+    try
+      if not VeritabaniAlanindanFotografYukle ('SahaGozlemRaporlari', 'ID', 'Image', IntToStr (iSahaGozetimID), aImage) then Exit;
+      iIndex := ImageAdd(iSahaGozetimID, aImage);
+    finally
+      aImage.Free;
+    end;
+  end;
+  FotografGoruntule (FImages [iIndex].Picture);
+end;
+
+function TfrmSahaSaglikGozetim.SahaSaglikGozetimFormFotografSil(
+  const iSahaGozetimID: Integer): Boolean;
+var
+  sql : String;
+begin
+  SQL := 'update SahaGozlemRaporlari set Image = NULL where ID = ' + IntToStr (iSahaGozetimID);
+  DATALAR.QueryExec(SQL);
+  Result := True;
+end;
+
+function TfrmSahaSaglikGozetim.SahaSaglikGozetimFormFotografYukle(
+  const iSahaGozetimID: Integer): Boolean;
+begin
+  Result := VeritabaniAlaninaFotografYukle ('SahaGozlemRaporlari', 'ID', 'Image', IntToStr (iSahaGozetimID));
+end;
+
 procedure TfrmSahaSaglikGozetim.tmr1Timer(Sender: TObject);
 begin
   inherited;
   TTimer (Sender).Enabled := False;
   ADOQuery1.Open;
+end;
+
+procedure TfrmSahaSaglikGozetim.AdjustMasterControls;
+begin
+  miFotografYukle.Enabled := ADO_SahaGozetim.Active;
+  miFotografGoruntule.Enabled := ADO_SahaGozetim.Active and ADO_SahaGozetim.FieldByName('ImageVar').AsBoolean;
+  miFotografiSil.Enabled := ADO_SahaGozetim.Active and ADO_SahaGozetim.FieldByName('ImageVar').AsBoolean;
+  miGozetimSil.Enabled := ADO_SahaGozetim.Active and (ADO_SahaGozetim.RecordCount > 0);
+  miGozetimYazdir.Enabled := ADO_SahaGozetim.Active and (ADO_SahaGozetim.RecordCount > 0);
+  miGozetimDuzenle.Enabled := ADO_SahaGozetim.Active and (ADO_SahaGozetim.RecordCount > 0);
+  PopupMenuToToolBar(self,ToolBar1,Menu);
 end;
 
 procedure TfrmSahaSaglikGozetim.ADOQuery1BeforePost(DataSet: TDataSet);
@@ -148,10 +274,21 @@ begin
             aModalResult := ShowMessageSkin('Saha Gözetim Kaydýný silmek istediðinizden emin misiniz ?', '', '', 'conf');
             if aModalResult <> mrYes then Exit;
             if not SahaSaglikGozlemSil (ADO_SahaGozetim.FieldByName('ID').AsInteger) then Exit;
-            ADO_SahaGozetim.Active := False;
-            ADO_SahaGozetim.Active := True;
+            RefreshSahaGozetimler (False);
           end;
         end;
+  -21:begin
+    if SahaSaglikGozetimFormFotografYukle (ADO_SahaGozetim.FieldByName('ID').AsInteger) then
+      RefreshSahaGozetimler (True);
+  end;
+  -22:begin
+    SahaSaglikGozetimFormFotografGoruntule (ADO_SahaGozetim.FieldByName('ID').AsInteger);
+  end;
+  -23:begin
+    if showmessageskin ('Ýlgili Saha Gözetim Formu''nun EkliFotoðrafýný Veritabanýndan Silmek Ýstiyor Musunuz ?', '', '', 'conf') = mrYes then
+      if SahaSaglikGozetimFormFotografSil (ADO_SahaGozetim.FieldByName('ID').AsInteger) then
+        RefreshSahaGozetimler (True);
+  end;
   -27 : begin
           if ADO_SahaGozetim.RecordCount > 0 then
             GozlemYazdir (ADO_SahaGozetim.FieldByName('ID').AsInteger);
@@ -162,6 +299,8 @@ end;
 procedure TfrmSahaSaglikGozetim.FormCreate(Sender: TObject);
 begin
   Menu := PopupMenu1;
+  SetLength (FImages, 0);
+  SetLength (FImageIds, 0);
  // Olustur(self,_TableName_,'Kimlik Doðrula',71,sqlInsert);
   cxPanel.Visible := false;
   Sayfa3_Kolon3.Width := 0;
@@ -172,7 +311,6 @@ end;
 procedure TfrmSahaSaglikGozetim.Gozlem(islem: Integer);
 var
   F : TForm;
-  aBM : TBookmark;
   bBasarili: Boolean;
   aSahaDenetimVeri : TSahaDenetimler;
 begin
@@ -213,13 +351,7 @@ begin
           finally
             if not bBasarili then ADO_SahaGozetim.Cancel;
           end;
-          aBM := ADO_SahaGozetim.GetBookmark;
-          try
-            ADO_SahaGozetim.Refresh;
-            ADO_SahaGozetim.GotoBookmark(aBM);
-          finally
-            ADO_SahaGozetim.FreeBookmark(aBM);
-          end;
+          RefreshSahaGozetimler (True);
         finally
           ADO_SahaGozetim.EnableControls;
         end;
@@ -257,6 +389,7 @@ begin
   ADOQuery1.SQL.Text := 'exec dbo.sp_SahaGozlemRaporDetayGetir ' + IntToStr (ADO_SahaGozetim.FieldByName('ID').AsInteger);
   tmr1.Enabled := False;
   tmr1.Enabled := True;
+  AdjustMasterControls;
 end;
 
 end.
