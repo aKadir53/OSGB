@@ -1,7 +1,7 @@
 BEGIN TRAN
 GO
--- [CMPTR] - [11.12.2017 12:17:52]
-ALTER PROCEDURE [dbo].[sp_frmPersonelListesi] @firma varchar(10) = '',@ap int = 1,@TCKimlikNo varchar(11) = ''
+-- [CMPTR2] - [15.12.2017 11:29:23]
+ALTER PROCEDURE [dbo].[sp_frmPersonelListesi] @firma varchar(10) = '',@ap int = 1,@TCKimlikNo varchar(11) = '',@sube varchar(500) = ''
 AS
 begin
 select h.*,(case when isnull(diger,'') = '' then '0' else '1' end) ozeldurum , 
@@ -28,6 +28,7 @@ left join SIRKET_SUBE_TNM sb on sb.sirketKod = h.SirketKod and sb.subeKod = h.Su
  left join Bolumler blm on blm.kod = h.Bolum
 where h.aktif = cast (@ap as varchar (1)) and
 h.sirketKod like  '%' + @firma + '%' and
+sb.subeKod in (select datavalue from dbo.strtotable(',',@sube)) and 
 (TCKIMLIKNO  = @TCKimlikNo or IsNull (@TCKimlikNo, '') = '')
 --isnull(h.MuayenePeryot,0) - isnull((select DATEDIFF(D,cast(BHDAT as datetime),getdate()) from gelisler where dosyaNo = h.dosyaNo and TEDAVITURU = '2'),0) <= @gun 
 order by h.SirketKod,sb.subeKod,h.HASTAADI,h.HASTASOYADI

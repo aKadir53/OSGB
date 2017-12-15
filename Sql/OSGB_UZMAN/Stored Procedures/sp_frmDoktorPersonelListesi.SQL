@@ -1,7 +1,7 @@
 BEGIN TRAN
 GO
--- [CMPTR] - [08.12.2017 16:02:00]
-ALTER PROCEDURE [dbo].[sp_frmDoktorPersonelListesi] @firma varchar(10) = '',@ap int = 1,@doktor varchar(4)
+-- [CMPTR2] - [15.12.2017 12:29:46]
+ALTER PROCEDURE [dbo].[sp_frmDoktorPersonelListesi] @firma varchar(10) = '',@ap int = 1,@doktor varchar(4),@sube varchar(500) = ''
 AS
 select h.Sube,  h.*,(case when isnull(diger,'') = '' then '0' else '1' end) ozeldurum , 
 (case when (CHARINDEX('5',h.GELHAST) > 0 OR CHARINDEX('7',h.GELHAST) > 0) THEN '1' ELSE '' END) Diabet,
@@ -21,7 +21,9 @@ left join SIRKET_SUBE_TNM sb on sb.sirketKod = h.SirketKod and sb.subeKod = h.su
  left join SKRS_ILCE_KODLARI ILCK on ILCK.KODU = H.EV_ILCE
  left join SKRS_MAHALLE_KODLARI MK on MK.KODU = H.EV_MAHALLE
 where h.aktif = cast (@ap as varchar (1)) 
-  and h.sirketKod like  '%' + @firma + '%' and sb.subeDoktor = @doktor
+  and h.sirketKod like  '%' + @firma + '%' 
+  and sb.subeKod in (select datavalue from dbo.strtotable(',',@sube)) 
+  and sb.subeDoktor = @doktor
 order by h.SirketKod,sb.subeKod,h.HASTAADI,h.HASTASOYADI
 GO
 exec sp_vw_sys_upd 'P ', 'dbo', 'sp_frmDoktorPersonelListesi'
