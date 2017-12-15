@@ -119,3 +119,18 @@ iþyeri hekimi çalýþmalarý grup tablosu
 sorular grup baþlýklý
 
 ISG Katip programýndan iþyerleri ve hekimler dökümü için Excel aktarýmý yapýlacak.
+
+muayene tipleri için tablo açýlýp tablodan getirtilebilir. zannediyorum view yapmýþtýk ama muayene türlerini gösteren yerlerde sadece eskilerinin tanýmlarý gözüküyor.
+
+eðitim, iþ kazasý, saha gözlem gibi ekranlarda tablolara þube kodu alaný eklenecek.
+
+Tablette hiç internet eriþimi olmadan kayýt girme ve sisteme gönderebilme özelliði
+Programa girerken þube seçmiyoruz. Sýkýntý olur mu
+Ýþten çýkanlar exceli
+Hocam kendisi Excel sütunlarýný programýn formatýnda ayarlayacaklarmýþ
+Personel listesi ekranda kalan gün belirgin olsa...
+Firma ya da þube tablosuna tesis kodu ekleyebilir miyiz Kocaeli ve Ýstanbul firmalarýna ayný anda hizmet veren iþyeri hekimleri için doktor kartýndaki tesis kodu yetersiz kaldý.
+Ýþ kazasý bilgisini þirket elemaný girerse... doktor sisteme girdiðinde yeni personel ve iþ kazasý geçiren personel gibi görebilir mi soruldu.
+Personel kartýnda yeni aktif ve pasif gibi bir de aday statüsü ekleyebilir miyiz iþe yarar mý ?
+Çünkü muayeneye gelip iþe baþlatýlmayanlar oluyor. Bunlar aday statüsünde kalýp sonra aktif ya da pasife çevrilebilir.
+Oooo. Eleman güzel yerden yakaladý. Program kabiliyetlerini kullanarak kendi reklamýmý yapabilirim OSGB olarak dedi.
