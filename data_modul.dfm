@@ -6,7 +6,6 @@ object DATALAR: TDATALAR
   Width = 1114
   object ADOConnection2: TADOConnection
     CommandTimeout = 0
-    Connected = True
     ConnectionString = 
       'Provider=SQLOLEDB.1;Password=5353;Persist Security Info=True;Use' +
       'r ID=Nokta;Initial Catalog=OSGB_UZMAN;Data Source=213.159.30.6;U' +
