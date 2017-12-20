@@ -13,7 +13,7 @@ uses Windows, Messages, SysUtils, Variants, Classes, Graphics, Vcl.Controls, Con
   IdCoderMIME, cxDataStorage, cxEdit, cxControls, cxGridCustomView, cxGridDBTableView,
   cxCheckListBox,cxGridCustomTableView, cxGridTableView, cxGridBandedTableView, cxClasses,
   cxGroupBox, cxRadioGroup,cxGridLevel, cxGrid, cxCheckBox, cxImageComboBox, cxTextEdit, cxButtonEdit,
-  cxCalendar,dxLayoutContainer, dxLayoutControl,cxPC;
+  cxCalendar,dxLayoutContainer, dxLayoutControl,cxPC, cxImage;
 
 
 procedure SMSSend(tel : string; Msj : string = '';Kisi : string ='');
@@ -371,6 +371,9 @@ procedure OnlineDestekOpen;
 function IsNull (const s: String): Boolean;
 procedure LisansUzat;
 function SahaSaglikGozlemSil(const GozlemID: integer): Boolean;
+function VeritabaniAlaninaFotografYukle(const sTableName, sKeyField, sImageField, sKeyValue: String): Boolean;
+function VeritabaniAlanindanFotografYukle(const sTableName, sKeyField, sImageField, sKeyValue: String; var aImage: TcxImage): Boolean;
+function FotografGoruntule (const aPicture: TPicture) : TModalResult;
 
 const
   _YTL_ = 'YTL';
@@ -8345,6 +8348,129 @@ begin
     end;
   finally
     ado.Free;
+  end;
+end;
+
+function VeritabaniAlaninaFotografYukle(const sTableName, sKeyField, sImageField, sKeyValue: String): Boolean;
+var
+ Fo : TFileOpenDialog;
+ jp : TJPEGImage;
+ adox : TADOQuery;
+ tmpPicture : TcxImage;
+ sFileName : String;
+begin
+  Result := False;
+  Fo := TFileOpenDialog.Create(nil);
+  try
+    if not fo.Execute then Exit;
+    sFileName := fo.FileName;
+  finally
+    fo.Free;
+  end;
+  if not FileExists (sFileName)  then
+  begin
+    ShowMessageSkin('Belirtilen dosya bulunamadý', '', '', 'info');
+    Exit;
+  end;
+  tmpPicture := TcxImage.Create (nil);
+  try
+    tmpPicture.Picture.LoadFromFile(sfilename);
+    jp := TJpegimage.Create;
+    try
+      jp.Assign(tmpPicture.Picture);
+      adox := TADOQuery.Create (nil);
+      try
+        adox.Connection := DATALAR.ADOConnection2;
+        adox.SQL.Text := 'SELECT ' + sKeyField + ', ' + sImageField + ' From ' + sTableName + ' where '+sKeyField + ' = ' + sKeyValue;
+        adox.Open;
+        try
+          if adox.RecordCount = 0 then
+          begin
+            ShowMessageSkin('Kayýt açýlamadý','', '', 'info');
+            Exit;
+          end;
+          Adox.Edit;
+          try
+            adox.FieldByName(sImageField).Assign(jp);
+            adox.Post;
+            Result := True;
+          except
+            adox.Cancel;
+            raise;
+          end;
+        finally
+          adox.close;
+        end;
+      finally
+        adox.Free;
+      end;
+    finally
+      jp.Free;
+    end;
+  finally
+    tmpPicture.free;
+  end;
+end;
+
+function VeritabaniAlanindanFotografYukle(const sTableName, sKeyField, sImageField, sKeyValue: String; var aImage: TcxImage): Boolean;
+var
+ jp : TJPEGImage;
+ adox : TADOQuery;
+begin
+  Result := False;
+  jp := TJpegimage.Create;
+  try
+    adox := TADOQuery.Create (nil);
+    try
+      adox.Connection := DATALAR.ADOConnection2;
+      adox.SQL.Text := 'SELECT ' + sKeyField + ', ' + sImageField + ' From ' + sTableName + ' where '+sKeyField + ' = ' + sKeyValue;
+      adox.Open;
+      try
+        if adox.RecordCount = 0 then
+        begin
+          ShowMessageSkin('Kayýt açýlamadý','', '', 'info');
+          Exit;
+        end;
+        jp.Assign (adox.FieldByName(sImageField));
+        aImage.Picture.Assign(jp);
+        Result := True;
+      finally
+        adox.close;
+      end;
+    finally
+      adox.Free;
+    end;
+  finally
+    jp.Free;
+  end;
+end;
+
+function FotografGoruntule (const aPicture: TPicture) : TModalResult;
+var
+  aForm : TForm;
+  aImage: TcxImage;
+  aCheckBox: TCheckBox;
+begin
+  aForm := TForm.Create (Application);
+  try
+    aForm.BorderStyle := bsDialog;
+    aForm.FormStyle := fsNormal;
+    aImage := TcxImage.Create (aForm);
+    try
+      aImage.Parent := aForm;
+      aImage.Align := alClient;
+      aImage.Picture.Assign(aPicture);
+      aImage.AutoSize := True;
+      aForm.AutoSize := True;
+      aImage.AutoSize := False;
+      aForm.AutoSize := False;
+      aForm.Position := poDesktopCenter;
+      Result := aForm.ShowModal;
+    finally
+      aImage.Free;
+    end;
+  finally
+    aForm.Free;
   end;
 end;
 

@@ -153,39 +153,54 @@ end;
 procedure TfrmHizliKayit.GridToPersonelKartTable;
 var
   sql : string;
+  bBasarili : Boolean;
+  iCount : Integer;
 begin
   MemTable_Personel.First;
-    while not MemTable_Personel.eof do
-    begin
-      sql := sql + ' ' + Format(_insertPersonel_,
-                    [QuotedStr(datalar.AktifSirket),
-                     QuotedStr(MemTable_Personel.fieldByname('TCKIMLIKNO').asstring),
-                     QuotedStr(MemTable_Personel.fieldByname('HASTAADI').asstring) ,
-                     QuotedStr(MemTable_Personel.fieldByname('HASTASOYADI').asstring),
-                     QuotedStr(MemTable_Personel.fieldByname('CINSIYETI').asstring),
-                     QuotedStr(MemTable_Personel.fieldByname('MEDENI').asstring),
-                     QuotedStr(MemTable_Personel.fieldByname('BABAADI').asstring),
-                     QuotedStr(MemTable_Personel.fieldByname('ANAADI').asstring),
-                     QuotedStr(MemTable_Personel.fieldByname('EV_SEHIR').asstring),
-                     QuotedStr(MemTable_Personel.fieldByname('EV_TEL1').asstring),
-                     QuotedStr(MemTable_Personel.fieldByname('EV_TEL2').asstring),
-                     QuotedStr(MemTable_Personel.fieldByname('DOGUMYERI').asstring),
-                     QuotedStr(MemTable_Personel.fieldByname('DOGUMTARIHI').asstring),
-                     QuotedStr(MemTable_Personel.fieldByname('UYRUGU').asstring),
-                     QuotedStr(MemTable_Personel.fieldByname('BASLANGIC').asstring),
-                     QuotedStr(MemTable_Personel.fieldByname('KANGRUBU').asstring),
-                     QuotedStr(datalar.username),
-                     QuotedStr(MemTable_Personel.fieldByname('Durum').asstring)]);
-      MemTable_Personel.next;
-    end;
-
-  datalar.ADOConnection2.BeginTrans;
   try
-    datalar.queryExec(SelectAdo,sql);
-    datalar.ADOConnection2.CommitTrans;
+    datalar.ADOConnection2.BeginTrans;
+    bBasarili := False;
+    iCount := 0;
+    try
+      while not MemTable_Personel.eof do
+      begin
+        sql := Format(_insertPersonel_,
+                      [QuotedStr(datalar.AktifSirket),
+                       QuotedStr(MemTable_Personel.fieldByname('TCKIMLIKNO').asstring),
+                       QuotedStr(MemTable_Personel.fieldByname('HASTAADI').asstring) ,
+                       QuotedStr(MemTable_Personel.fieldByname('HASTASOYADI').asstring),
+                       QuotedStr(MemTable_Personel.fieldByname('CINSIYETI').asstring),
+                       QuotedStr(MemTable_Personel.fieldByname('MEDENI').asstring),
+                       QuotedStr(MemTable_Personel.fieldByname('BABAADI').asstring),
+                       QuotedStr(MemTable_Personel.fieldByname('ANAADI').asstring),
+                       QuotedStr(MemTable_Personel.fieldByname('EV_SEHIR').asstring),
+                       QuotedStr(MemTable_Personel.fieldByname('EV_TEL1').asstring),
+                       QuotedStr(MemTable_Personel.fieldByname('EV_TEL2').asstring),
+                       QuotedStr(MemTable_Personel.fieldByname('DOGUMYERI').asstring),
+                       QuotedStr(MemTable_Personel.fieldByname('DOGUMTARIHI').asstring),
+                       QuotedStr(MemTable_Personel.fieldByname('UYRUGU').asstring),
+                       QuotedStr(MemTable_Personel.fieldByname('BASLANGIC').asstring),
+                       QuotedStr(MemTable_Personel.fieldByname('KANGRUBU').asstring),
+                       QuotedStr(datalar.username),
+                       QuotedStr(MemTable_Personel.fieldByname('Durum').asstring)]);
+        datalar.queryExec(SelectAdo,sql);
+        iCount := iCount + 1;
+        MemTable_Personel.next;
+      end;
+      bBasarili := True;
+    finally
+      if bBasarili then
+      begin
+        datalar.ADOConnection2.CommitTrans;
+        showmessageSkin (IntToStr (iCount) + ' adet kayýt baþarý ile aktarýldý', '', '', 'info');
+      end
+      else begin
+        datalar.ADOConnection2.rollbackTrans;
+        showmessageSkin (IntToStr (iCount + 1) + '. satýrda hata oluþtu, aktarým iþlemi tamamlanamadý.', '', '', 'info');
+      end;
+    end;
   except on e : exception do
    begin
-     datalar.ADOConnection2.rollbackTrans;
      showmessageSkin(e.message,'','','info');
    end;
   end;
