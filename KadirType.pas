@@ -536,6 +536,8 @@ Const
   TagfrmIsKazasi = 610;
   TagfrmAbout = 620;
   TagfrmSahaSaglikGozetim = 630;
+  TagfrmIGU = 640;
+  TagFirmaCalismalari = 650;
 
   ExceleGonder = 9997;
   SeansTarihiUpdate = 0;

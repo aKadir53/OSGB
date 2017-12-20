@@ -188,7 +188,7 @@ begin
    TagfrmKurumBilgi : Result := TfrmKurumBilgi;
    TagKurumSifreDegisForm : Result := TKurumSifreDegisForm;
 
-   TagfrmDoktorlar : Result := TfrmDoktorlar;
+   TagfrmDoktorlar,TagfrmIGU : Result := TfrmDoktorlar;
    TagfrmAbout : Result := TfrmAbout;
    TagfrmPersonelEgitim : Result := TfrmPersonelEgitim;
    TagfrmTestAyarlari : Result := TfrmTestAyarlari;
@@ -206,7 +206,7 @@ begin
   case formId of
    TagfrmHastaKart : Result := frmHastaKart;
    TagfrmFirmaKart : Result := frmFirmaKart;
-   TagfrmPopupDBGridForm,TagfrmBolum,TagfrmBirim,TagfrmSube : Result := frmPopupDBGridForm;
+   TagfrmPopupDBGridForm,TagfrmBolum,TagfrmBirim,TagfrmSube,TagFirmaCalismalari : Result := frmPopupDBGridForm;
    TagfrmPopupDBVerticalGridForm : Result := frmPopupDBVerticalGridForm;
    TagfrmHizliKayit : Result := frmHizliKayit;
    TagfrmReceteSablon : Result := frmReceteSablon;
@@ -226,7 +226,7 @@ begin
    TagfrmKurumBilgi : Result := frmKurumBilgi;
    TagKurumSifreDegisForm : Result := KurumSifreDegisForm;
 
-   TagfrmDoktorlar : Result := frmDoktorlar;
+   TagfrmDoktorlar,TagfrmIGU : Result := frmDoktorlar;
    TagfrmAbout : Result := frmAbout;
    TagfrmPersonelEgitim : Result := frmPersonelEgitim;
    TagfrmTestAyarlari : Result := frmTestAyarlari;
@@ -391,8 +391,8 @@ begin
 
   case FormTag of
     TagfrmFirmaKart : Application.CreateForm(TfrmFirmaKart,frmFirmaKart);
-    TagfrmPopupDBGridForm,TagfrmBolum,TagfrmBirim,TagfrmSube: Application.CreateForm(TfrmPopupDBGridForm , frmPopupDBGridForm);
-    TagfrmDoktorlar :  Application.CreateForm(TfrmDoktorlar, frmDoktorlar);
+    TagfrmPopupDBGridForm,TagfrmBolum,TagfrmBirim,TagfrmSube,TagFirmaCalismalari: Application.CreateForm(TfrmPopupDBGridForm , frmPopupDBGridForm);
+    TagfrmDoktorlar,TagfrmIGU :  Application.CreateForm(TfrmDoktorlar, frmDoktorlar);
     TagfrmAbout :  Application.CreateForm(TfrmAbout, frmAbout);
     TagfrmPersonelEgitim :  Application.CreateForm(TfrmPersonelEgitim, frmPersonelEgitim);
     TagfrmKurumBilgi : Application.CreateForm(TfrmKurumBilgi, frmKurumBilgi);

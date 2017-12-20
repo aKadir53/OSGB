@@ -121,9 +121,14 @@ var
 begin
   GirisRecord.F_firmaKod_ := TcxButtonEditKadir(FindComponent('SirketKod')).EditValue;
   GirisRecord.F_HastaAdSoyad_ := TcxTextEditKadir(FindComponent('tanimi')).EditValue;
-  F := FormINIT(TagfrmSube,GirisRecord,ikHayir,'');
-  if F <> nil then F.ShowModal;
 
+  if TcxButtonKadir(sender).ButtonName = 'btnSubeler'
+  then
+    F := FormINIT(TagfrmSube,GirisRecord,ikHayir,'')
+  else
+    F := FormINIT(TagFirmaCalismalari,GirisRecord,ikHayir,'');
+
+  if F <> nil then F.ShowModal;
 end;
 
 procedure TfrmFirmaKart.OrtakEventAta(Sender : TObject);
@@ -581,6 +586,7 @@ begin
 
 
   addButton(self,nil,'btnSubeler','','Þube Tanýmla / Getir',Kolon3,'',120,ButtonClick);
+  addButton(self,nil,'btnCalismalar','','Firma Çalýþmalarý',Kolon3,'',120,ButtonClick);
 
   tableColumnDescCreate;
 
