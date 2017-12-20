@@ -551,7 +551,14 @@ begin
     TcxImageComboKadir(FindComponent('EV_MAHALLE')).Filter := 'KOYKODU = ' + QuotedStr(TcxImageComboKadir(FindComponent('EV_KOY')).EditingValue);
     if FindComponent('EV_MAHALLE') <> nil Then TcxImageComboKadir(FindComponent('EV_MAHALLE')).EditValue := '';
   end ;
-
+ (*
+  if TcxImageComboKadir(sender).Name = 'SirketKodNew'
+  then begin
+    datalar.AktifSirket := TcxImageComboKadir(sender).EditValue;
+    datalar.AktifSirketAdi := TcxImageComboKadir(sender).EditingText;
+    sirketKod.text := datalar.AktifSirket;
+  end;
+  *)
 end;
 
 procedure TfrmHastaKart.txtTipPropertiesChange(Sender: TObject);
@@ -633,10 +640,15 @@ procedure TfrmHastaKart.cxButtonEditPropertiesButtonClick(Sender: TObject;
 var
  g : TGraphic;
 begin
+  TListeAc(FindComponent('ListdosyaNo')).Where := ' SirketKod = ' + QuotedStr(datalar.AktifSirket) +
+                                                   ' and Sube in (select datavalue from dbo.strtotable(' + QuotedStr(datalar.AktifSube) + ','',''))';
   inherited;
 
   case TcxButtonEditKadir(sender).tag of
    1 : begin  //dosyaNo buttonedit
+
+
+
            TcxImageComboKadir(FindComponent('Sirketlerx')).EditValue := TcxLabel(FindComponent('LabelSirketKod')).Caption;
 
            TcxImageComboKadir(FindComponent('EV_ILCE')).Filter := 'ILKODU = ' + QuotedStr(TcxImageComboKadir(FindComponent('EV_SEHIR')).EditingValue);
@@ -831,7 +843,7 @@ var
   BASLANGIC : TcxDateEditKadir;
   EV_SEHIR ,EV_ILCE ,EV_BUCAK , EV_KOY,EV_MAHALLE : TcxImageComboKadir;
   DEV_KURUM,Kurum,EGITIM : TcxImageComboKadir;
-  askerlik,ozur,bolum,birim,risk,muayenePeryot,Subeler,sirketlerx: TcxImageComboKadir;
+  askerlik,ozur,bolum,birim,risk,muayenePeryot,Subeler,sirketlerx,SirketKodNew: TcxImageComboKadir;
 begin
   USER_ID.Tag := 0;
   sirketKod.Tag := 0;
@@ -852,13 +864,31 @@ begin
 
   List := ListeAcCreate('PersonelKart','dosyaNo,HASTAADI,HASTASOYADI,TCKIMLIKNO,Aktif',
                        'DosyaNo,PersonelAdý,Soyadý,TCKimlikNo,Durum',
-                       '50,100,100,80,50','dosyaNo','Personel Listesi',
+                       '50,100,100,80,50','ListdosyaNo','Personel Listesi',
                        ' SirketKod = ' + QuotedStr(datalar.AktifSirket) +
                        ' and Sube in (select datavalue from dbo.strtotable(' + QuotedStr(datalar.AktifSube) + ','',''))',
-                        5,True);
+                        5,True,Self);
+
+
   //List.Where := ' SirketKod = ' + QuotedStr(datalar.AktifSirket);
 
   setDataStringB(self,'dosyaNo','&DosyaNo',Kolon1,'dn',80,List,True,dosyaNo,'','SirketKod',True,True,1);
+ (*
+  if datalar.AktifSirket = '' then
+  begin
+    SirketKodNew := TcxImageComboKadir.Create(self);
+    SirketKodNew.Conn := Datalar.ADOConnection2;
+    SirketKodNew.TableName := 'SIRKETLER_TNM';
+    SirketKodNew.ValueField := 'SirketKod';
+    SirketKodNew.DisplayField := 'Tanimi';
+    SirketKodNew.BosOlamaz := False;
+    SirketKodNew.Filter := '';
+    SirketKodNew.tag := -100;
+    setDataStringKontrol(self,SirketKodNew,'SirketKodNew','Þirket Seç',kolon1,'',250);
+    OrtakEventAta(SirketKodNew);
+  end;
+   *)
+
   setDataString(self,'HUVIYETNO','',Kolon1,'dn',45);
   setDataString(self,'TCKIMLIKNO','TC Kimlik No  ',Kolon1,'',130,True);
   setDataString(self,'HASTAADI','Personel Adý  ',Kolon1,'',130,True);
@@ -1140,7 +1170,13 @@ begin
         end;
       end;
       2 : begin
-        if IsNull (TcxLabel(FindComponent('LabelSirketKod')).Caption) then
+           if datalar.AktifSirket = '' then
+           begin
+              ShowMessageSkin('Þirket Seçmelisiniz','','','info');
+              exit;
+           end;
+
+          if IsNull (TcxLabel(FindComponent('LabelSirketKod')).Caption) then
           TcxLabel(FindComponent('LabelSirketKod')).Caption := datalar.AktifSirket;
       end;
     end;

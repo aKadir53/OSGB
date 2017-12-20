@@ -50,10 +50,7 @@ type
     dxLayoutControl1Item2: TdxLayoutItem;
     dxLayoutControl1Item3: TdxLayoutItem;
     btnVazgec: TcxButton;
-    dxLayoutControl1Group2: TdxLayoutGroup;
-    dxLayoutControl1Item5: TdxLayoutItem;
     btnGiris: TcxButton;
-    dxLayoutControl1Item6: TdxLayoutItem;
     dxStatusBar1: TdxStatusBar;
     SayfaConTest: TcxTabSheet;
     cxGroupBox1: TcxGroupBox;
@@ -74,6 +71,9 @@ type
     SUBEBUL: TADOQuery;
     txtSube: TcxImageComboKadir;
     dxLayoutControl1Item4: TdxLayoutItem;
+    pnlBottom: TcxGroupBox;
+    Image3: TImage;
+    dxLayoutControl1Item5: TdxLayoutItem;
 
     PROCEDURE YUVARLAK(WDN:HWND;ALAN:TRECT);
     procedure FormCreate(Sender: TObject);
@@ -283,6 +283,8 @@ begin
        try
       //  Datalar.ADOConnection2.Connected := false;
      //   Datalar.Baglan(db);
+
+       (*
         if txtDonemler.Text = ''
         then begin
           ShowMessageSkin('Þirket Seçmeden Devam Edemezsiniz','','','info');
@@ -294,7 +296,7 @@ begin
           ShowMessageSkin('Þirket Seçmeden Devam Edemezsiniz','','','info');
           exit;
         end;
-
+         *)
         datalar.ProgTarih := FormattedTarih(tarihal(date()));
         datalar.AktifSirket := txtDonemler.Text;
 
@@ -353,6 +355,9 @@ begin
                datalar.loginLog := True;
                //SUTKODU;
                datalar.doktorKodu := login.FieldByName('doktor').AsString;
+               datalar.sirketKodu := login.FieldByName('SirketKodu').AsString;
+               datalar.IGU := login.FieldByName('IGU').AsString;
+
                AnaForm.dxSkinController1.SkinName := login.FieldByName('userSkin').AsString;
                FormatSettings.DateSeparator := '.';
                LoginSayfalar.ActivePageIndex := 2;
@@ -360,6 +365,7 @@ begin
                datalar.login;
                datalar.ReceteKullanimYollari.active := True;
                datalar.Ado_Doktorlar.Active := True;
+               datalar.Ado_IGU.Active := True;
                datalar.KontrolZorunlu.Active := True;
 
                WanIp(datalar.WanIPURL);
@@ -536,6 +542,9 @@ end;
 
 procedure TfrmLogin.FormShow(Sender: TObject);
 begin
+
+ //  Height := dxLayoutControl1Group2. btnGiris.Top + btnGiris.Height + 10;
+
    txtServerName.EditValue := Decode64(regOku('OSGB_servername'));
    if Trim (txtServerName.EditValue) = '' then
    begin

@@ -320,7 +320,7 @@ function HastaOlmusmu(DosyaNo: string): Boolean;
 function TakipFaturadami(_Takip: string): Boolean;
 function TurkCharKontrol(Text : string) : Boolean;
 procedure GirisZamanYaz(KullaniciAdi : string);
-function ListeAcCreate(TableName,kolonlar,kolonBasliklar,kolonGenislik,name,baslik,where : string;colcount : integer ; grup : boolean = false) : TListeAc;
+function ListeAcCreate(TableName,kolonlar,kolonBasliklar,kolonGenislik,name,baslik,where : string;colcount : integer ; grup : boolean = false;Owner : TComponent = nil) : TListeAc;
 procedure PopupMenuToToolBar(AOwner : TComponent; TB : TToolBar ; Menu : TPopupMenu);
 procedure PopupMenuToToolBarEnabled(AOwner : TComponent ; TB : TToolbar ; Menu : TPopupMenu);
 function KontrolUsers(FormTag,KontrolTag : string; kullanici : string) : Boolean;
@@ -1300,14 +1300,14 @@ begin
 end;
 
 
-function ListeAcCreate(TableName,kolonlar,kolonBasliklar,kolonGenislik,name,baslik,where : string;colcount : integer;Grup : boolean = false) : TListeAc;
+function ListeAcCreate(TableName,kolonlar,kolonBasliklar,kolonGenislik,name,baslik,where : string;colcount : integer;Grup : boolean = false;Owner : TComponent = nil) : TListeAc;
 var
   I : integer;
   lst : TstringList;
 begin
   lst := TStringList.Create;
   try
-    Result := TListeAc.Create(nil);
+    Result := TListeAc.Create(Owner);
     Result.Table := TableName;
     Result.ListeBaslik := baslik;
     Result.Kolonlar.Create;

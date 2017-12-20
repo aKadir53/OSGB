@@ -14,7 +14,6 @@ uses
 
 type
   TfrmDoktorlar = class(TGirisForm)
-    procedure FormCreate(Sender: TObject);
     procedure cxKaydetClick(Sender: TObject);
     procedure cxTextEditKeyDown(Sender: TObject; var Key: Word;
       Shift: TShiftState);
@@ -27,6 +26,7 @@ type
     { Private declarations }
   public
     { Public declarations }
+    function Init(Sender: TObject) : Boolean; override;
   end;
 
 const _TableName_ = 'DoktorlarT';
@@ -40,6 +40,187 @@ var
 implementation
 
 {$R *.dfm}
+
+function TfrmDoktorlar.Init(Sender: TObject) : Boolean;
+ var
+  index,i : integer;
+  Ts,Ts1 : TStringList;
+  List,List1,List3 : TListeAc;
+  bransKodu,calismaTipi,cardType,sirket : TcxImageComboKadir;
+begin
+
+case self.Tag of
+ TagfrmDoktorlar
+  : begin
+        Tag := TagfrmDoktorlar;
+        ClientHeight := formYukseklik;
+        ClientWidth := formGenislik;
+
+        indexFieldName := 'kod';
+        TableName := _TableName_;
+        Olustur(self,_TableName_,'Doktor Taným',22);
+
+
+        List := TListeAc.Create(nil);
+        List.Table := 'DoktorlarT';
+        List.kolonlar.Add('kod');// := Ts;
+        List.kolonlar.Add('tanimi'); // := Ts;
+
+
+        List.KolonBasliklari.Add('Doktor Kodu');// := Ts1;
+        List.KolonBasliklari.Add('Doktor Adi');// := Ts1;
+        List.TColcount := 2;
+        List.TColsW := '50,200';
+        List.ListeBaslik := 'Doktorlar';
+        List.Name := 'kod';
+        List.Conn := Datalar.ADOConnection2;
+        List.SkinName := 'coffee';//AnaForm.dxSkinController1.SkinName;
+
+        setDataStringB(self,'kod','Doktor Kodu',Kolon1,'',70,List,True,nil);
+
+        setDataString(self,'tanimi','Adý Soyadý',Kolon1,'',200,True);
+        setDataString(self,'tcKimlikNo','TC Kimlik No',Kolon1,'',150,True);
+
+        bransKodu := TcxImageComboKadir.Create(self);
+        bransKodu.Conn := Datalar.ADOConnection2;
+        bransKodu.TableName := 'SERVIS_TNM';
+        bransKodu.ValueField := 'kod';
+        bransKodu.DisplayField := 'tanimi';
+        bransKodu.BosOlamaz := True;
+        bransKodu.Filter := '';
+        OrtakEventAta(bransKodu);
+        setDataStringKontrol(self,bransKodu,'bransKodu','Branþ Kodu',kolon1,'',120);
+
+
+
+        setDataString(self,'tescilNo','Tescil No',Kolon1,'',80,True);
+        setDataString(self,'eReceteKullanici','Reçete Kullanýcý Adý',Kolon1,'cc',100,True);
+        setDataString(self,'eReceteSifre','Reçete Þifresi',Kolon1,'',100,True);
+        setDataString(self,'pin','Ýmza Token Pin',Kolon1,'',50);
+
+        cardType := TcxImageComboKadir.Create(self);
+        cardType.Conn := Datalar.ADOConnection2;
+        cardType.TableName := 'cardTypes';
+        cardType.ValueField := 'cardType';
+        cardType.DisplayField := 'tanimi';
+        cardType.BosOlamaz := True;
+        cardType.Filter := '';
+        OrtakEventAta(cardType);
+        setDataStringKontrol(self,cardType,'cardType','Card Type',kolon1,'',150);
+
+        setDataString(self,'TesisKodu','Tesis Kodu',Kolon1,'',100);
+        setDataString(self,'GSM','GSM',Kolon1,'',100);
+        setDataString(self,'EPosta','E-Posta',Kolon1,'',200);
+       // setDataString(self,'TDisID','TDis ID',Kolon1,'TDIS',80);
+       // addButton(self,nil,'btnTDis','','TDIS ID Getir',Kolon1,'TDIS',120,ButtonClick);
+        setDataString(self,'sertifika','Sertifika',Kolon1,'',80);
+
+
+        calismaTipi := TcxImageComboKadir.Create(self);
+        calismaTipi.Conn := nil;
+        calismaTipi.BosOlamaz := True;
+        calismaTipi.ItemList := '0;Tam Zamanlý,1;Yarý Zamanlý';
+        calismaTipi.Filter := '';
+        OrtakEventAta(calismaTipi);
+        setDataStringKontrol(self,calismaTipi,'calismaTipi','Çalýþma Tipi',kolon1,'',120);
+
+        setDataStringC(self,'uzman','Uzman mý?',Kolon1,'',80,'Evet,Hayýr');
+        setDataStringC(self,'durum','Durum',Kolon1,'',80,'Aktif,Pasif');
+
+        setDataStringBLabel(self,'CalismaBilgisi',sayfa2_Kolon1,'',290,'Seans Çalýþma Bilgisi', '', '', True, clRed, taCenter);
+        setDataStringC(self,'pazartesi','Pazatesi',sayfa2_Kolon1,'',80,'0,1,1-2,1-3,2,2-3,3');
+        setDataStringC(self,'sali','Salý',sayfa2_Kolon1,'',80,'0,1,1-2,1-3,2,2-3,3');
+        setDataStringC(self,'carsamba','Çarþamba',sayfa2_Kolon1,'',80,'0,1,1-2,1-3,2,2-3,3');
+        setDataStringC(self,'persembe','Perþembe',sayfa2_Kolon1,'',80,'0,1,1-2,1-3,2,2-3,3');
+        setDataStringC(self,'cuma','Cuma',sayfa2_Kolon1,'',80,'0,1,1-2,1-3,2,2-3,3');
+        setDataStringC(self,'cumartesi','Cumartesi',sayfa2_Kolon1,'',80,'0,1,1-2,1-3,2,2-3,3');
+
+       // setDataImage(self,'foto','Foto',Kolon2,'',120,100);
+
+        SayfaCaption('Taným Bilgileri','Çalýþma Bilgileri','','','');
+
+
+        Disabled(self,True);
+  end;
+
+ TagfrmIGU
+  : begin
+        Tag := TagfrmIGU;
+        ClientHeight := formYukseklik;
+        ClientWidth := formGenislik;
+
+        indexFieldName := 'kod';
+        TableName := 'IGU';
+     //   Olustur(self,_TableName_,'Doktor Taným',22);
+
+
+        List := TListeAc.Create(nil);
+        List.Table := 'IGU';
+        List.kolonlar.Add('kod');// := Ts;
+        List.kolonlar.Add('tanimi'); // := Ts;
+
+
+        List.KolonBasliklari.Add('Uzman Kodu');// := Ts1;
+        List.KolonBasliklari.Add('Uzman Adi');// := Ts1;
+        List.TColcount := 2;
+        List.TColsW := '50,200';
+        List.ListeBaslik := 'Ýþ Güvenlik Uzmanlarý';
+        List.Name := 'kod';
+        List.Conn := Datalar.ADOConnection2;
+        List.SkinName := 'coffee';//AnaForm.dxSkinController1.SkinName;
+
+        setDataStringB(self,'kod','Uzman Kodu',Kolon1,'',70,List,True,nil);
+
+        setDataString(self,'tanimi','Adý Soyadý',Kolon1,'',200,True);
+        setDataString(self,'tcKimlikNo','TC Kimlik No',Kolon1,'',150,True);
+
+
+
+
+     //   setDataString(self,'tescilNo','Tescil No',Kolon1,'',80,True);
+    //    setDataString(self,'eReceteKullanici','Reçete Kullanýcý Adý',Kolon1,'cc',100,True);
+   //     setDataString(self,'eReceteSifre','Reçete Þifresi',Kolon1,'',100,True);
+        setDataString(self,'pin','Ýmza Token Pin',Kolon1,'',50);
+
+        cardType := TcxImageComboKadir.Create(self);
+        cardType.Conn := Datalar.ADOConnection2;
+        cardType.TableName := 'cardTypes';
+        cardType.ValueField := 'cardType';
+        cardType.DisplayField := 'tanimi';
+        cardType.BosOlamaz := True;
+        cardType.Filter := '';
+        OrtakEventAta(cardType);
+        setDataStringKontrol(self,cardType,'cardType','Card Type',kolon1,'',150);
+
+      //  setDataString(self,'TesisKodu','Tesis Kodu',Kolon1,'',100);
+        setDataString(self,'GSM','GSM',Kolon1,'',100);
+        setDataString(self,'EPosta','E-Posta',Kolon1,'',200);
+        setDataString(self,'sertifika','Sertifika',Kolon1,'',80);
+
+    (*
+        calismaTipi := TcxImageComboKadir.Create(self);
+        calismaTipi.Conn := nil;
+        calismaTipi.BosOlamaz := True;
+        calismaTipi.ItemList := '0;Tam Zamanlý,1;Yarý Zamanlý';
+        calismaTipi.Filter := '';
+        OrtakEventAta(calismaTipi);
+        setDataStringKontrol(self,calismaTipi,'calismaTipi','Çalýþma Tipi',kolon1,'',120);
+        *)
+     //   setDataStringC(self,'uzman','Uzman mý?',Kolon1,'',80,'Evet,Hayýr');
+        setDataStringC(self,'durum','Durum',Kolon1,'',80,'Aktif,Pasif');
+
+        SayfaCaption('Taným Bilgileri','','','','');
+
+
+        Disabled(self,True);
+    end;
+
+
+end;
+end;
+
+
+
 procedure TfrmDoktorlar.cxButtonEditPropertiesButtonClick(Sender: TObject;
       AButtonIndex: Integer);
 begin
@@ -79,112 +260,6 @@ begin
 
 
 end;
-
-procedure TfrmDoktorlar.FormCreate(Sender: TObject);
-var
-  index,i : integer;
-  Ts,Ts1 : TStringList;
-  List,List1,List3 : TListeAc;
-  bransKodu,calismaTipi,cardType : TcxImageComboKadir;
-begin
-  Tag := TagfrmDoktorlar;
-  ClientHeight := formYukseklik;
-  ClientWidth := formGenislik;
-
-  indexFieldName := 'kod';
-  TableName := _TableName_;
-  Olustur(self,_TableName_,'Doktor Taným',22);
-
-
-  List := TListeAc.Create(nil);
-
-  List.Table := 'DoktorlarT';
-
-  List.kolonlar.Add('kod');// := Ts;
-  List.kolonlar.Add('tanimi'); // := Ts;
-
-
-  List.KolonBasliklari.Add('Doktor Kodu');// := Ts1;
-  List.KolonBasliklari.Add('Doktor Adi');// := Ts1;
-  List.TColcount := 2;
-  List.TColsW := '50,200';
-  List.ListeBaslik := 'Doktorlar';
-  List.Name := 'kod';
-  List.Conn := Datalar.ADOConnection2;
-  List.SkinName := 'coffee';//AnaForm.dxSkinController1.SkinName;
-
-  setDataStringB(self,'kod','Doktor Kodu',Kolon1,'',70,List,True,nil);
-
-  setDataString(self,'tanimi','Adý Soyadý',Kolon1,'',200,True);
-  setDataString(self,'tcKimlikNo','TC Kimlik No',Kolon1,'',150,True);
-
-  bransKodu := TcxImageComboKadir.Create(self);
-  bransKodu.Conn := Datalar.ADOConnection2;
-  bransKodu.TableName := 'SERVIS_TNM';
-  bransKodu.ValueField := 'kod';
-  bransKodu.DisplayField := 'tanimi';
-  bransKodu.BosOlamaz := True;
-  bransKodu.Filter := '';
-  OrtakEventAta(bransKodu);
-  setDataStringKontrol(self,bransKodu,'bransKodu','Branþ Kodu',kolon1,'',120);
-
-
-
-  setDataString(self,'tescilNo','Tescil No',Kolon1,'',80,True);
-  setDataString(self,'eReceteKullanici','Reçete Kullanýcý Adý',Kolon1,'cc',100,True);
-  setDataString(self,'eReceteSifre','Reçete Þifresi',Kolon1,'',100,True);
-  setDataString(self,'pin','Ýmza Token Pin',Kolon1,'',50);
-
-  cardType := TcxImageComboKadir.Create(self);
-  cardType.Conn := Datalar.ADOConnection2;
-  cardType.TableName := 'cardTypes';
-  cardType.ValueField := 'cardType';
-  cardType.DisplayField := 'tanimi';
-  cardType.BosOlamaz := True;
-  cardType.Filter := '';
-  OrtakEventAta(cardType);
-  setDataStringKontrol(self,cardType,'cardType','Card Type',kolon1,'',150);
-
-  setDataString(self,'TesisKodu','Tesis Kodu',Kolon1,'',100);
-  setDataString(self,'GSM','GSM',Kolon1,'',100);
-  setDataString(self,'EPosta','E-Posta',Kolon1,'',200);
- // setDataString(self,'TDisID','TDis ID',Kolon1,'TDIS',80);
- // addButton(self,nil,'btnTDis','','TDIS ID Getir',Kolon1,'TDIS',120,ButtonClick);
-  setDataString(self,'sertifika','Sertifika',Kolon1,'',80);
-
-
-  calismaTipi := TcxImageComboKadir.Create(self);
-  calismaTipi.Conn := nil;
-  calismaTipi.BosOlamaz := True;
-  calismaTipi.ItemList := '0;Tam Zamanlý,1;Yarý Zamanlý';
-  calismaTipi.Filter := '';
-  OrtakEventAta(calismaTipi);
-  setDataStringKontrol(self,calismaTipi,'calismaTipi','Çalýþma Tipi',kolon1,'',120);
-
-  setDataStringC(self,'uzman','Uzman mý?',Kolon1,'',80,'Evet,Hayýr');
-  setDataStringC(self,'durum','Durum',Kolon1,'',80,'Aktif,Pasif');
-
-  setDataStringBLabel(self,'CalismaBilgisi',sayfa2_Kolon1,'',290,'Seans Çalýþma Bilgisi', '', '', True, clRed, taCenter);
-  setDataStringC(self,'pazartesi','Pazatesi',sayfa2_Kolon1,'',80,'0,1,1-2,1-3,2,2-3,3');
-  setDataStringC(self,'sali','Salý',sayfa2_Kolon1,'',80,'0,1,1-2,1-3,2,2-3,3');
-  setDataStringC(self,'carsamba','Çarþamba',sayfa2_Kolon1,'',80,'0,1,1-2,1-3,2,2-3,3');
-  setDataStringC(self,'persembe','Perþembe',sayfa2_Kolon1,'',80,'0,1,1-2,1-3,2,2-3,3');
-  setDataStringC(self,'cuma','Cuma',sayfa2_Kolon1,'',80,'0,1,1-2,1-3,2,2-3,3');
-  setDataStringC(self,'cumartesi','Cumartesi',sayfa2_Kolon1,'',80,'0,1,1-2,1-3,2,2-3,3');
-
- // setDataImage(self,'foto','Foto',Kolon2,'',120,100);
-
-  SayfaCaption('Taným Bilgileri','Çalýþma Bilgileri','','','');
-
-
-  Disabled(self,True);
-
-
- end;
-
-
-
-
 
 procedure TfrmDoktorlar.cxKaydetClick(Sender: TObject);
 begin

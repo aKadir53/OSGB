@@ -5,7 +5,7 @@ interface
 uses
   Windows, Messages, SysUtils, Classes, Graphics, Controls, Forms, Dialogs,
   StdCtrls, Buttons, ExtCtrls, ComCtrls, jpeg, kadir,kadirType,kadirLabel,
-  dxGDIPlusClasses, cxGraphics, cxControls,GirisUnit,
+  dxGDIPlusClasses, cxGraphics, cxControls,GirisUnit,StrUtils,
   cxLookAndFeels, cxLookAndFeelPainters, cxContainer, cxEdit, dxSkinsCore,
   Menus, cxButtons, cxGroupBox, dxSkinBlack, dxSkinBlue, dxSkinCaramel,
   dxSkinCoffee, dxSkinDarkRoom, dxSkinDarkSide, dxSkinFoggy, dxSkinGlassOceans,
@@ -123,20 +123,61 @@ begin
     TagfrmSube :
     begin
         ClientHeight := 300;
-        ClientWidth := 550;
+        ClientWidth := 600;
         TableName := 'SIRKET_SUBE_TNM';
-        _fields_ := 'sirketKod,subeKod,subeTanim,subeSiciNo,subeDoktor,BolgeMudurlukSicilNo';
-        _fieldBaslik_ := ',ÞubeKodu,ÞubeTanimi,ÝþYeriSicilNo,Doktor,BölgeMdSicilNo';
-        _fieldTips_ := 'string,string,string,string,ImageDoktorCombo,string';
+        _fields_ := 'sirketKod,subeKod,subeTanim,subeSiciNo,subeDoktor,IGU,BolgeMudurlukSicilNo,MuayeneProtokolNo';
+        _fieldBaslik_ := ',ÞubeKodu,ÞubeTanimi,ÝþYeriSicilNo,Doktor,ÝþGüvenlikUzmaný,BölgeMdSicilNo,MuayeneProtokolNo';
+        _fieldTips_ := 'string,string,string,string,ImageDoktorCombo,ImageDoktorCombo,string,string';
         indexFieldName := 'sirketKod = ' + QuotedStr(_firmaKod_);
         cxPanel.Visible := false;
         cxGroupDoktorlar.Caption := 'Þube Bilgileri';
         cxGrid3.Dataset.BeforePost := ADOBeforePost;
         cxGrid3.Dataset.Connection := datalar.ADOConnection2;
-        cxGrid3.Dataset.SQL.Text := 'Select * from SIRKET_SUBE_TNM where sirketKod = ' + QuotedStr(_firmaKod_);
+        cxGrid3.Dataset.SQL.Text := 'Select sirketKod,subeKod,subeTanim,subeSiciNo,subeDoktor,IGU,BolgeMudurlukSicilNo,MuayeneProtokolNo ' +
+                                    ' from SIRKET_SUBE_TNM where sirketKod = ' + QuotedStr(_firmaKod_);
         cxGrid3.Dataset.Open;
+        DBGrid.ClearItems;
         DBGrid.DataController.CreateAllItems(True);
         SetGrid;
+
+        SayfaCaption('','','','','');
+    end;
+
+    TagFirmaCalismalari :
+    begin
+        ClientHeight := 600;
+        ClientWidth := 600;
+    //    TableName := 'SIRKET_SUBE_TNM';
+        _fields_ := 'id,grup,konu,gorevli,grupTanimi,Sec';
+        _fieldsEdit_ := '0,0,0,0,0,1';
+        _fieldBaslik_ := ',GrupKodu,Konu,Görevli,Grup,Seç';
+        _fieldTips_ := 'string,string,string,string,string,Check';
+      //  indexFieldName := 'sirketKod = ' + QuotedStr(_firmaKod_);
+        cxPanel.Visible := false;
+        cxGroupDoktorlar.Caption := 'Çalýþma Bilgileri';
+        cxGrid3.Dataset.BeforePost := ADOBeforePost;
+        cxGrid3.Dataset.Connection := datalar.ADOConnection2;
+        cxGrid3.Dataset.SQL.Text := 'select id,grup,konu,gorevli,CKG.tanimi grupTanimi,Sec from CalismaKonulari CK ' +
+                                    ' join CalismaKonuGruplari CKG on CKG.kod = CK.grup ' +
+                                    ' order by CKG.kod ';
+        //DBGrid.OptionsView.gro
+
+        cxGrid3.Dataset.Open;
+        DBGrid.ClearItems;
+        DBGrid.DataController.CreateAllItems(True);
+        SetGrid;
+
+       // DBGrid.OptionsView.GroupByBox := True;
+        DbGrid.OptionsCustomize.ColumnGrouping := True;
+        DBGrid.Columns[1].Caption := '';
+     //   DBGrid.Columns[0].Visible := False;
+        DBGrid.Columns[1].Visible := False;
+        DBGrid.Columns[2].Options.Editing := False;
+        DBGrid.Columns[3].Options.Editing := False;
+        DBGrid.Columns[4].Properties.ReadOnly := True;
+        DBGrid.Columns[4].Caption := '';
+        DBGrid.Columns[4].Visible := False;
+        DBGrid.Columns[4].GroupIndex := 0;
 
         SayfaCaption('','','','','');
     end;
@@ -150,7 +191,7 @@ end;
 procedure TfrmPopupDBGridForm.SetGrid;
 var
  i : integer;
- Columns,Baslik,Tips : TstringList;
+ Columns,Baslik,Tips,Edits : TstringList;
  ColName : string;
  Col : TcxGridDBColumn;
  FItem : TcxImageComboBoxItem;
@@ -158,13 +199,17 @@ begin
   Columns := TStringList.Create;
   Baslik := TStringList.Create;
   Tips := TStringList.Create;
+  Edits := TStringList.Create;
+
   Split(',',_fields_,Columns);
   Split(',',_fieldBaslik_,Baslik);
   Split(',',_fieldTips_,Tips);
+  Split(',',_fieldsEdit_,Edits);
 
   for i := 0 to Columns.Count - 1 do
   begin
     DBGrid.Columns[i].Caption := Baslik[i];
+ //   DBgrid.Columns[i].Properties.ReadOnly := StrToBool(ifThen(Edits[i]='1','True','False'));
     DBgrid.Columns[i].HeaderAlignmentHorz := taCenter;
     if Tips[i] = 'int' then
      begin
@@ -177,6 +222,13 @@ begin
       DBgrid.Columns[i].PropertiesClassName := 'TcxTextEditProperties';
      end;
 
+    if Tips[i] = 'Check' then
+     begin
+      DBgrid.Columns[i].PropertiesClassName := 'TcxCheckBoxProperties';
+      TcxCheckBoxProperties(DBgrid.Columns[i].Properties).ValueChecked := 1;
+      TcxCheckBoxProperties(DBgrid.Columns[i].Properties).ValueUnchecked := 0;
+     end;
+
     if Tips[i] = 'saat' then
      begin
       DBgrid.Columns[i].PropertiesClassName := 'TcxDateEditProperties';
@@ -184,16 +236,34 @@ begin
 
     if Tips[i] = 'ImageDoktorCombo' then
      begin
-      DBgrid.Columns[i].PropertiesClassName := 'TcxImageComboBoxProperties';
-      TcxImageComboBoxProperties(DBgrid.Columns[i].Properties).Items.Clear;
-
-      datalar.Ado_Doktorlar.First;
-      while not datalar.Ado_Doktorlar.Eof do
+      if Columns[i] = 'subeDoktor' then
       begin
-        FItem := TcxImageComboBoxProperties(DBgrid.Columns[i].Properties).Items.add;
-        FItem.Value := datalar.Ado_Doktorlar.FieldByName('kod').AsString;
-        FItem.Description := datalar.Ado_Doktorlar.FieldByName('tanimi').AsString;
-        datalar.Ado_Doktorlar.Next;
+        DBgrid.Columns[i].PropertiesClassName := 'TcxImageComboBoxProperties';
+        TcxImageComboBoxProperties(DBgrid.Columns[i].Properties).Items.Clear;
+
+        datalar.Ado_Doktorlar.First;
+        while not datalar.Ado_Doktorlar.Eof do
+        begin
+          FItem := TcxImageComboBoxProperties(DBgrid.Columns[i].Properties).Items.add;
+          FItem.Value := datalar.Ado_Doktorlar.FieldByName('kod').AsString;
+          FItem.Description := datalar.Ado_Doktorlar.FieldByName('tanimi').AsString;
+          datalar.Ado_Doktorlar.Next;
+        end;
+      end;
+
+      if Columns[i] = 'IGU' then
+      begin
+        DBgrid.Columns[i].PropertiesClassName := 'TcxImageComboBoxProperties';
+        TcxImageComboBoxProperties(DBgrid.Columns[i].Properties).Items.Clear;
+
+        datalar.Ado_IGU.First;
+        while not datalar.Ado_IGU.Eof do
+        begin
+          FItem := TcxImageComboBoxProperties(DBgrid.Columns[i].Properties).Items.add;
+          FItem.Value := datalar.Ado_IGU.FieldByName('kod').AsString;
+          FItem.Description := datalar.Ado_IGU.FieldByName('tanimi').AsString;
+          datalar.Ado_IGU.Next;
+        end;
       end;
 
      end;
