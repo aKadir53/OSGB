@@ -6,6 +6,7 @@ object DATALAR: TDATALAR
   Width = 1114
   object ADOConnection2: TADOConnection
     CommandTimeout = 0
+    Connected = True
     ConnectionString = 
       'Provider=SQLOLEDB.1;Password=5353;Persist Security Info=True;Use' +
       'r ID=Nokta;Initial Catalog=OSGB_UZMAN;Data Source=213.159.30.6;U' +
@@ -355,7 +356,7 @@ object DATALAR: TDATALAR
     Left = 701
     Top = 96
     Bitmap = {
-      494C01019B009F00300518001800ECE9D800FF10FFFFFFFFFFFFFFFF424D3600
+      494C01019B009F00380518001800ECE9D800FF10FFFFFFFFFFFFFFFF424D3600
       000000000000360000002800000060000000A80300000100200000000000007C
       050000000000000000000000000000000000D8E9EC00D8E9EC00D8E9EC00D8E9
       EC00D8E9EC00D8E9EC00D8E9EC00D8E9EC00D8E9EC00D8E9EC00D8E9EC00D8E9
@@ -12174,7 +12175,7 @@ object DATALAR: TDATALAR
     Left = 581
     Top = 72
     Bitmap = {
-      494C01019B009F00800518001800ECE9D800FF10FFFFFFFFFFFFFFFF424D3600
+      494C01019B009F00880518001800ECE9D800FF10FFFFFFFFFFFFFFFF424D3600
       000000000000360000002800000060000000A80300000100200000000000007C
       050000000000000000000000000000000000D8E9EC00D8E9EC00D8E9EC00D8E9
       EC00D8E9EC00D8E9EC00D8E9EC00D8E9EC00D8E9EC00D8E9EC00D8E9EC00D8E9
@@ -52461,7 +52462,7 @@ object DATALAR: TDATALAR
     SQL.Strings = (
       'select * from doktorlarT'
       'where durum = '#39'Aktif'#39)
-    Left = 430
+    Left = 526
     Top = 215
   end
   object Doktorlar_DataSource: TDataSource
@@ -52573,5 +52574,20 @@ object DATALAR: TDATALAR
     Active = True
     Left = 312
     Top = 56
+  end
+  object Ado_IGU: TADOQuery
+    Connection = ADOConnection2
+    CursorType = ctStatic
+    Parameters = <>
+    SQL.Strings = (
+      'select * from IGU'
+      'where durum = '#39'Aktif'#39)
+    Left = 574
+    Top = 399
+  end
+  object IGU_DataSource: TDataSource
+    DataSet = Ado_IGU
+    Left = 531
+    Top = 402
   end
 end

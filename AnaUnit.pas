@@ -24,7 +24,8 @@ uses
   dxSkinOffice2007Pink, dxSkinOffice2007Silver, dxSkinOffice2010Black,
   dxSkinOffice2010Blue, dxSkinOffice2010Silver, dxSkinPumpkin, dxSkinSeven,
   dxSkinSharp, dxSkinSilver, dxSkinSpringTime, dxSkinStardust, dxSkinSummer2008,
-  dxSkinValentine, dxSkinXmas2008Blue,cxSchedulerStrs;
+  dxSkinValentine, dxSkinXmas2008Blue,cxSchedulerStrs, cxMaskEdit,
+  cxDropDownEdit, cxImageComboBox;
 
 type
   TAnaForm = class(TForm)
@@ -54,7 +55,7 @@ type
     ToolButton4: TToolButton;
     ToolButton5: TToolButton;
     dxStatusBar1: TdxStatusBar;
-    MainMenuKadir1Group1: TdxNavBarGroup;
+    MenuAktifSirket: TdxNavBarGroup;
     cxImageList3: TcxImageList;
     cxImageToolPanel: TcxImageList;
     EventsDataSource: TDataSource;
@@ -78,6 +79,9 @@ type
     Menu_Image24: TcxImageList;
     Menu_Image16: TcxImageList;
     Menu_Image24x24: TcxImageList;
+    MenuPanel: TcxGroupBox;
+    Sirketler: TcxImageComboKadir;
+    Subeler: TcxImageComboKadir;
     procedure FormCreate(Sender: TObject);
     procedure ToolButton1Click(Sender: TObject);
     procedure FormResize(Sender: TObject);
@@ -107,6 +111,8 @@ type
     procedure MainMenuKadir1EndDrag(Sender, Target: TObject; X, Y: Integer);
     procedure MainMenuKadir1LinkPress(Sender: TObject;
       ALink: TdxNavBarItemLink);
+    procedure SirketlerPropertiesChange(Sender: TObject);
+    procedure SubelerPropertiesChange(Sender: TObject);
   private
     { Private declarations }
   public
@@ -125,7 +131,7 @@ var
 
 implementation
       uses Tnm_Ilaclar,Tnm_LabTest,
-      Data_Modul,HastaKart,
+      Data_Modul,HastaKart,Login,
       Tnm_UserSettings, sifreDegis, Update_G;
 
 {$R *.dfm}
@@ -270,7 +276,8 @@ begin
 end;
 
 procedure TAnaForm.FormCreate(Sender: TObject);
-//var
+var
+ sube ,where : string;
 //  i,j : integer;
 begin
  // Res Dosya okuma
@@ -282,6 +289,8 @@ begin
   caption := 'Mavi Nokta Bilgi Teknolojileri Ltd.Þti.  Ýþyeri Hekimliði E-Reçete V.1';
   Sayfalar.Properties.CloseButtonMode := cbmNone;
   WebBrowser1.Navigate('https://www.noktayazilim.net/destek/GenelMesajlar2.aspx?Tip=O');
+
+
 
 
  try
@@ -311,7 +320,39 @@ end;
 procedure TAnaForm.FormShow(Sender: TObject);
 var
  i,j : integer;
+ sube , Where : string;
 begin
+
+  if datalar.DoktorKodu <> '' then
+  begin
+    where := '';
+    sube := ' Doktor = ' + QuotedStr(datalar.doktorKodu);
+  end
+  else
+  if datalar.IGU <> '' then
+  begin
+    where := '';
+    sube := ' IGU = ' + QuotedStr(datalar.doktorKodu);
+  end
+  else
+  if datalar.sirketKodu <> ''
+  Then begin
+    Where := 'SirketKod = ' + QuotedStr(datalar.sirketKodu);
+    sube:= '';
+  end
+  else begin
+    Where := '';
+    Sube := '';
+  end;
+
+  Sirketler.Conn := Datalar.ADOConnection2;
+  Sirketler.TableName := 'SIRKETLER_TNM_view';
+  Sirketler.ValueField := 'SirketKod';
+  Sirketler.DisplayField := 'Tanimi';
+  Sirketler.BosOlamaz := False;
+  Sirketler.Filter := where + sube;
+  Sirketler.tag := -100;
+  Sirketler.ItemIndex := 0;
 
 
 //  if GuncelKontrol = 0 then exit;
@@ -356,8 +397,8 @@ begin
  //   scaleBy(screen.width, ScreenWidth);
   end;
 
-  dxStatusBar1.Panels[1].Text := DATALAR.AktifSirketAdi + '-' + datalar.AktifSubeAdi;
-  dxStatusBar1.Panels[1].Width := length(Datalar.AktifSirketAdi) * 8;
+ // dxStatusBar1.Panels[1].Text := DATALAR.AktifSirketAdi + '-' + datalar.AktifSubeAdi;
+ // dxStatusBar1.Panels[1].Width := length(Datalar.AktifSirketAdi) * 8;
   dxStatusBar1.Panels[3].Text := DATALAR._merkezAdi;
   dxStatusBar1.Panels[4].Text := 'Versiyon : ' + datalar.versiyon;
 
@@ -669,6 +710,46 @@ begin
    // Deneme
 
 
+end;
+
+procedure TAnaForm.SirketlerPropertiesChange(Sender: TObject);
+var
+  sube : string;
+begin
+
+  datalar.AktifSirket := TcxImageComboKadir(sender).EditValue;
+  datalar.AktifSirketAdi := TcxImageComboKadir(sender).EditingText;
+  dxStatusBar1.Panels[1].Text := DATALAR.AktifSirketAdi + '-' + datalar.AktifSubeAdi;
+  dxStatusBar1.Panels[1].Width := length(Datalar.AktifSirketAdi) * 8;
+
+  if (datalar.doktorKodu <> '')
+  then
+     sube := ' and subeDoktor = ' + QuotedStr(datalar.doktorKodu)
+  else
+  if (datalar.IGU <> '') then
+     sube := ' and IGU = ' + QuotedStr(datalar.doktorKodu)
+  else
+    sube := '';
+
+  Subeler.Conn := Datalar.ADOConnection2;
+  Subeler.TableName := 'SIRKET_SUBE_TNM';
+  Subeler.ValueField := 'subeKod';
+  Subeler.DisplayField := 'subeTanim';
+  Subeler.Filter := ' SirketKod = ' + QuotedStr(datalar.AktifSirket) + sube;
+
+  datalar.AktifSube := Subeler.getItemString;
+
+end;
+
+procedure TAnaForm.SubelerPropertiesChange(Sender: TObject);
+begin
+  if not isNull(Subeler.EditText)
+  then begin
+    datalar.AktifSube := Subeler.EditValue;
+    datalar.AktifSubeAdi := Subeler.EditingText;
+  end
+  else
+  datalar.AktifSube := Subeler.getItemString;
 end;
 
 end.

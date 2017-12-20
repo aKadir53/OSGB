@@ -51,6 +51,10 @@ object frmReceteler: TfrmReceteler
     object cxTabSheet1: TcxTabSheet
       Caption = 'Re'#231'eteler'
       ImageIndex = 0
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       object cxGrid2: TcxGrid
         Left = 0
         Top = 201
@@ -692,6 +696,10 @@ object frmReceteler: TfrmReceteler
     object cxTabSheet2: TcxTabSheet
       Caption = 'Re'#231'ete '#304'la'#231' Say'#305'lar'#305
       ImageIndex = 1
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       object cxGrid3: TcxGrid
         Left = 0
         Top = 0

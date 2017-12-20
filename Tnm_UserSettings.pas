@@ -91,7 +91,7 @@ type
     procedure UserGroupAfterPost(DataSet: TDataSet);
     procedure btnGrupEkleClick(Sender: TObject);
     procedure UserGroupBeforeDelete(DataSet: TDataSet);
-
+    procedure PropertiesEditValueChanged(Sender: TObject);
 
   private
     { Private declarations }
@@ -103,7 +103,9 @@ type
 const _TableName_ = 'Users';
       formGenislik = 780;
       formYukseklik = 500;
-
+      dr = 1;
+      ig = 2;
+      sirket = 3;
 var
   frmUsers: TfrmUsers;
 
@@ -112,7 +114,35 @@ implementation
     uses AnaUnit;
 {$R *.dfm}
 
+procedure TfrmUsers.PropertiesEditValueChanged(Sender: TObject);
+begin
+   case TcxImageComboKadir(Sender).tag of
+     dr : begin
+            if TcxImageComboKadir(FindComponent('doktor')).EditingText <> ''
+            Then begin
+             TcxImageComboKadir(FindComponent('SirketKodu')).EditValue := null;
+             TcxImageComboKadir(FindComponent('IGU')).EditValue := null;
+            end;
+          end;
+     ig : begin
+            if TcxImageComboKadir(FindComponent('IGU')).EditingText <> ''
+            Then begin
+             TcxImageComboKadir(FindComponent('SirketKodu')).EditValue := null;
+             TcxImageComboKadir(FindComponent('doktor')).EditValue := null;
+            end;
+          end;
+     sirket : begin
+            if TcxImageComboKadir(FindComponent('SirketKodu')).EditingText <> ''
+            Then begin
+             TcxImageComboKadir(FindComponent('doktor')).EditValue := null;
+             TcxImageComboKadir(FindComponent('IGU')).EditValue := null;
+            end;
+          end;
 
+   end;
+
+
+end;
 
 function TfrmUsers.Init(Sender: TObject) : Boolean;
 begin
@@ -230,7 +260,7 @@ end;
 procedure TfrmUsers.FormCreate(Sender: TObject);
 var
   List : TListeAc;
-  Grup,ustUser,doktor,sirketler : TcxImageComboKadir;
+  Grup,ustUser,doktor,sirketler,IGU : TcxImageComboKadir;
 begin
 
 
@@ -262,6 +292,7 @@ begin
 
   sirketler := TcxImageComboKadir.Create(self);
   sirketler.Conn := Datalar.ADOConnection2;
+  sirketler.Tag := sirket;
   sirketler.TableName := 'SIRKETLER_TNM';
   sirketler.ValueField := 'SirketKod';
   sirketler.DisplayField := 'Tanimi';
@@ -269,6 +300,7 @@ begin
   sirketler.Filter := '';
   setDataStringKontrol(self,sirketler,'SirketKodu','Þirket',kolon1,'',120);
   OrtakEventAta(sirketler);
+  sirketler.Properties.OnChange := PropertiesEditValueChanged;
 
   ustUser := TcxImageComboKadir.Create(self);
   ustUser.Conn := Datalar.ADOConnection2;
@@ -282,6 +314,7 @@ begin
 
   doktor := TcxImageComboKadir.Create(self);
   doktor.Conn := Datalar.ADOConnection2;
+  doktor.tag := dr;
   doktor.TableName := 'DoktorlarT';
   doktor.ValueField := 'KOD';
   doktor.DisplayField := 'Tanimi';
@@ -289,6 +322,19 @@ begin
   doktor.Filter := '';
   setDataStringKontrol(self,doktor,'doktor','Doktor',kolon1,'',120);
   OrtakEventAta(doktor);
+  doktor.Properties.OnChange := PropertiesEditValueChanged;
+
+  IGU := TcxImageComboKadir.Create(self);
+  IGU.Conn := Datalar.ADOConnection2;
+  IGU.Tag := ig;
+  IGU.TableName := 'IGU';
+  IGU.ValueField := 'KOD';
+  IGU.DisplayField := 'Tanimi';
+  IGU.BosOlamaz := False;
+  IGU.Filter := '';
+  setDataStringKontrol(self,IGU,'IGU','Ýþ Güvenlik Uzman',kolon1,'',120);
+  OrtakEventAta(IGU);
+  IGU.Properties.OnChange := PropertiesEditValueChanged;
 
   setDataString(self,'email','e-mail',Kolon1,'',250);
 

@@ -193,7 +193,7 @@ type
     { Private declarations }
   public
     indexFieldName,TableName,_SqlInsert_,_SqlUpdate_,_SqlDelete_ : string;
-    _fields_ ,_fieldBaslik_,_fieldTips_,_fieldFormats_,_spSQL_ : string;
+    _fieldsEdit_,_fields_ ,_fieldBaslik_,_fieldTips_,_fieldFormats_,_spSQL_ : string;
     indexFieldValue : string;
     sqlTip : sqlType;
    // _dosyaNo_,_gelisNo_,TakipNo,BasvuruNo : string;
