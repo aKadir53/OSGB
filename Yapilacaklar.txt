@@ -139,3 +139,8 @@ Oooo. Eleman güzel yerden yakaladý. Program kabiliyetlerini kullanarak kendi rek
 
 
 iþ güvenliði uzmaný 1 þirkete
+
+gebe muayenesi 
+ve hastaneye sevk isteniyormuþ
+
+doktor kartýndan, iþ güvenliði uzman kartýndan "Kullanýcý aç" düðmesi eklenebilir mi ?
