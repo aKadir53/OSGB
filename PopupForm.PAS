@@ -520,6 +520,18 @@ inherited;
          setDataStringKontrol(self,textEdit, 'FirmaAdi','Firma Ünvaný',Kolon1,'',250);
          TcxTextEdit(FindComponent('FirmaAdi')).EditValue := DATALAR.AktifSirketAdi;
 
+         kombo := TcxImageComboKadir.Create(self);
+         kombo.Conn := Datalar.ADOConnection2;
+         kombo.TableName := 'Egitim_tnm'þ;
+         kombo.ValueField := 'kod'þ;
+         kombo.DisplayField := 'tanimi'þ;
+         kombo.BosOlamaz := True;
+         kombo.Filter := '';
+         OrtakEventAta(kombo);
+         setDataStringKontrol(self,kombo,'Egitimkod','Eðitim',kolon1,'',145);
+
+
+
          textEdit := TcxTextEdit.Create(self);
          textEdit.Name := 'Kullanici';
          textEdit.Properties.ReadOnly := True;
