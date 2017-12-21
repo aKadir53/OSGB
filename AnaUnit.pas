@@ -332,7 +332,7 @@ begin
   if datalar.IGU <> '' then
   begin
     where := '';
-    sube := ' IGU = ' + QuotedStr(datalar.doktorKodu);
+    sube := ' IGU = ' + QuotedStr(datalar.IGU);
   end
   else
   if datalar.sirketKodu <> ''
@@ -727,7 +727,7 @@ begin
      sube := ' and subeDoktor = ' + QuotedStr(datalar.doktorKodu)
   else
   if (datalar.IGU <> '') then
-     sube := ' and IGU = ' + QuotedStr(datalar.doktorKodu)
+     sube := ' and IGU = ' + QuotedStr(datalar.IGU)
   else
     sube := '';
 
