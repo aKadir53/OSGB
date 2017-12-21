@@ -281,8 +281,8 @@ procedure TfrmLogin.Image1Click(Sender: TObject);
 begin
     try
        try
-      //  Datalar.ADOConnection2.Connected := false;
-     //   Datalar.Baglan(db);
+        Datalar.ADOConnection2.Connected := false;
+        Datalar.Baglan();
 
        (*
         if txtDonemler.Text = ''
