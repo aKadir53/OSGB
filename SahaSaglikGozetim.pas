@@ -69,6 +69,7 @@ type
     miFotografGoruntule: TMenuItem;
     miFotografiSil: TMenuItem;
     gridRaporlarImageVar: TcxGridDBColumn;
+    gridRaporlarGozlemGrupTanim: TcxGridDBColumn;
     procedure cxButtonCClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure Gozlem(islem: Integer);
@@ -152,8 +153,11 @@ end;
 function TfrmSahaSaglikGozetim.Init(Sender : TObject) : Boolean;
 begin
   ADO_SahaGozetim.SQL.Text :=
-    'select ID, DenetimiYapanKullanici, DenetimTarihi, Date_Create, GozetimDefterNo, FirmaKodu, cast (case when Image Is NULL then 0 else 1 end as bit) ImageVar '#13#10+
+    'select SR.ID, DenetimiYapanKullanici, DenetimTarihi, Date_Create, GozetimDefterNo, FirmaKodu, '#13#10+
+    '  cast (case when Image Is NULL then 0 else 1 end as bit) ImageVar, '#13#10+
+    '  SR.GozlemGrup, SGR.Tanimi GozlemGrupTanim '#13#10+
     'from SahaGozlemRaporlari SR'#13#10+
+    'inner join SahaGozlemSoruGrup SGR on SGR.GozlemGrup = SR.GozlemGrup'#13#10+
     'where FirmaKodu = ' + QuotedStr (DATALAR.AktifSirket) + ''#13#10+
     'order by SR.ID';
   ADO_SahaGozetim .Active := true;
@@ -324,12 +328,14 @@ begin
         aSahaDenetimVeri.FirmaKod := datalar.AktifSirket;
         aSahaDenetimVeri.DenetimTarihi := DateToStr (date);
         aSahaDenetimVeri.DenetimDefterNo := '';
+        aSahaDenetimVeri.GozlemGrubu := '';
       end
       else begin
         aSahaDenetimVeri.KullaniciAdi := ADO_SahaGozetim.FieldByName('DenetimiYapanKullanici').AsString;
         aSahaDenetimVeri.FirmaKod := ADO_SahaGozetim.FieldByName('FirmaKodu').AsString;
         aSahaDenetimVeri.DenetimTarihi := ADO_SahaGozetim.FieldByName('DenetimTarihi').AsString;
         aSahaDenetimVeri.DenetimDefterNo := ADO_SahaGozetim.FieldByName('GozetimDefterNo').AsString;
+        aSahaDenetimVeri.GozlemGrubu := ADO_SahaGozetim.FieldByName('GozlemGrup').AsString;
       end;
       _SahaDenetimVeri_ := aSahaDenetimVeri;
       if mrYes = ShowPopupForm(IfThen (islem = yeniGozlem, 'Yeni Gözlem', 'Gözlem Düzenle'),islem,F)
@@ -346,6 +352,7 @@ begin
             ADO_SahaGozetim.FieldByName('FirmaKodu').AsString := _SahaDenetimVeri_.FirmaKod;
             ADO_SahaGozetim.FieldByName('DenetimTarihi').AsString := _SahaDenetimVeri_.DenetimTarihi;
             ADO_SahaGozetim.FieldByName('GozetimDefterNo').AsString := _SahaDenetimVeri_.DenetimDefterNo;
+            ADO_SahaGozetim.FieldByName('GozlemGrup').AsString := _SahaDenetimVeri_.GozlemGrubu;
             ADO_SahaGozetim.Post;
             bBasarili := True;
           finally

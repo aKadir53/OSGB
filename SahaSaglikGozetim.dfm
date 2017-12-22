@@ -144,6 +144,10 @@ object frmSahaSaglikGozetim: TfrmSahaSaglikGozetim
         DataBinding.FieldName = 'ImageVar'
         Width = 54
       end
+      object gridRaporlarGozlemGrupTanim: TcxGridDBColumn
+        Caption = 'G'#246'zlem T'#252'r'#252
+        DataBinding.FieldName = 'GozlemGrupTanim'
+      end
     end
     object cxGridLevel1: TcxGridLevel
       GridView = gridRaporlar
@@ -161,10 +165,14 @@ object frmSahaSaglikGozetim: TfrmSahaSaglikGozetim
     Parameters = <>
     SQL.Strings = (
       
-        'select ID, DenetimiYapanKullanici, DenetimTarihi, Date_Create, G' +
-        'ozetimDefterNo, FirmaKodu, cast (case when Image Is NULL then 0 ' +
-        'else 1 end as bit) ImageVar'
+        'select SR.ID, DenetimiYapanKullanici, DenetimTarihi, Date_Create' +
+        ', GozetimDefterNo, FirmaKodu, cast (case when Image Is NULL then' +
+        ' 0 else 1 end as bit) ImageVar, SR.GozlemGrup, SGR.Tanimi Gozlem' +
+        'GrupTanim'
       'from SahaGozlemRaporlari SR'
+      
+        'inner join SahaGozlemSoruGrup SGR on SGR.GozlemGrup = SR.GozlemG' +
+        'rup'
       'where FirmaKodu = '#39'0001'#39
       'order by SR.ID')
     Left = 64

@@ -466,7 +466,7 @@ type
     FirmaKod : String;
     GozlemGrubu : String;
     DenetimTarihi : String;
-    DenetimDefterNox : String;
+    DenetimDefterNo : String;
   end;
 
 
