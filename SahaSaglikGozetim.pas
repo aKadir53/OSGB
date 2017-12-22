@@ -70,6 +70,7 @@ type
     miFotografiSil: TMenuItem;
     gridRaporlarImageVar: TcxGridDBColumn;
     gridRaporlarGozlemGrupTanim: TcxGridDBColumn;
+    gridRaporGrupBaslik: TcxGridDBColumn;
     procedure cxButtonCClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure Gozlem(islem: Integer);

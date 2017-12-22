@@ -50,6 +50,10 @@ object frmSahaSaglikGozetim: TfrmSahaSaglikGozetim
           OptionsData.Inserting = False
           OptionsView.CellAutoHeight = True
           OptionsView.GroupByBox = False
+          object gridRaporGrupBaslik: TcxGridDBColumn
+            DataBinding.FieldName = 'GrupBaslik'
+            Width = 70
+          end
           object gridRaporID: TcxGridDBColumn
             DataBinding.FieldName = 'ID'
             Visible = False
@@ -305,7 +309,7 @@ object frmSahaSaglikGozetim: TfrmSahaSaglikGozetim
     CommandTimeout = 0
     Parameters = <>
     SQL.Strings = (
-      'exec dbo.sp_SahaGozlemRaporDetayGetir 0')
+      'exec dbo.sp_SahaGozlemRaporDetayGetir 18')
     Left = 104
     Top = 336
   end
