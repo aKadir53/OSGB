@@ -208,6 +208,7 @@ begin
              xSahaDenetimVeri.FirmaKod := TcxTextEdit(FindComponent('FirmaKodu')).EditValue;
              xSahaDenetimVeri.KullaniciAdi := TcxTextEdit(FindComponent('Kullanici')).EditValue;
              xSahaDenetimVeri.DenetimDefterNo := TcxTextEdit(FindComponent('DenetimDefterNo')).EditValue;
+             xSahaDenetimVeri.GozlemGrubu := TcxTextEdit(FindComponent('GozlemGrup')).EditValue;
              (Application.FindComponent(FGirisForm.name) as TGirisForm)._SahaDenetimVeri_ := xSahaDenetimVeri;
            end;
 
@@ -519,6 +520,20 @@ inherited;
          textEdit.Properties.ReadOnly := True;
          setDataStringKontrol(self,textEdit, 'FirmaAdi','Firma Ünvaný',Kolon1,'',250);
          TcxTextEdit(FindComponent('FirmaAdi')).EditValue := DATALAR.AktifSirketAdi;
+
+         doktorlar := TcxImageComboKadir.Create(self);
+         doktorlar.Conn := Datalar.ADOConnection2;
+         doktorlar.TableName := 'SahaGozlemSoruGrup';
+         doktorlar.ValueField := 'GozlemGrup';
+         doktorlar.DisplayField := 'Tanimi';
+         doktorlar.BosOlamaz := True;
+         doktorlar.Filter := '';
+         Doktorlar.Properties.ReadOnly := (frmPopup._islem_ <> yeniGozlem);
+         OrtakEventAta(doktorlar);
+         setDataStringKontrol(self,doktorlar,'GozlemGrup','Saha Gözlem Tipi',kolon1,'',145);
+         TcxTextEdit(FindComponent('GozlemGrup')).EditValue := FGirisForm._SahaDenetimVeri_.GozlemGrubu;
+
+
 
          textEdit := TcxTextEdit.Create(self);
          textEdit.Name := 'Kullanici';

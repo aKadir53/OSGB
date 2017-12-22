@@ -464,6 +464,7 @@ type
   TSahaDenetimler = record
     KullaniciAdi : String;
     FirmaKod : String;
+    GozlemGrubu : String;
     DenetimTarihi : String;
     DenetimDefterNo : String;
   end;

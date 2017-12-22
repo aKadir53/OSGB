@@ -50,6 +50,10 @@ object frmSahaSaglikGozetim: TfrmSahaSaglikGozetim
           OptionsData.Inserting = False
           OptionsView.CellAutoHeight = True
           OptionsView.GroupByBox = False
+          object gridRaporGrupBaslik: TcxGridDBColumn
+            DataBinding.FieldName = 'GrupBaslik'
+            Width = 70
+          end
           object gridRaporID: TcxGridDBColumn
             DataBinding.FieldName = 'ID'
             Visible = False
@@ -144,6 +148,10 @@ object frmSahaSaglikGozetim: TfrmSahaSaglikGozetim
         DataBinding.FieldName = 'ImageVar'
         Width = 54
       end
+      object gridRaporlarGozlemGrupTanim: TcxGridDBColumn
+        Caption = 'G'#246'zlem T'#252'r'#252
+        DataBinding.FieldName = 'GozlemGrupTanim'
+      end
     end
     object cxGridLevel1: TcxGridLevel
       GridView = gridRaporlar
@@ -161,10 +169,14 @@ object frmSahaSaglikGozetim: TfrmSahaSaglikGozetim
     Parameters = <>
     SQL.Strings = (
       
-        'select ID, DenetimiYapanKullanici, DenetimTarihi, Date_Create, G' +
-        'ozetimDefterNo, FirmaKodu, cast (case when Image Is NULL then 0 ' +
-        'else 1 end as bit) ImageVar'
+        'select SR.ID, DenetimiYapanKullanici, DenetimTarihi, Date_Create' +
+        ', GozetimDefterNo, FirmaKodu, cast (case when Image Is NULL then' +
+        ' 0 else 1 end as bit) ImageVar, SR.GozlemGrup, SGR.Tanimi Gozlem' +
+        'GrupTanim'
       'from SahaGozlemRaporlari SR'
+      
+        'inner join SahaGozlemSoruGrup SGR on SGR.GozlemGrup = SR.GozlemG' +
+        'rup'
       'where FirmaKodu = '#39'0001'#39
       'order by SR.ID')
     Left = 64
@@ -297,7 +309,7 @@ object frmSahaSaglikGozetim: TfrmSahaSaglikGozetim
     CommandTimeout = 0
     Parameters = <>
     SQL.Strings = (
-      'exec dbo.sp_SahaGozlemRaporDetayGetir 0')
+      'exec dbo.sp_SahaGozlemRaporDetayGetir 18')
     Left = 104
     Top = 336
   end
