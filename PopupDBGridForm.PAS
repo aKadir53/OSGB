@@ -123,17 +123,17 @@ begin
     TagfrmSube :
     begin
         ClientHeight := 300;
-        ClientWidth := 600;
+        ClientWidth := 700;
         TableName := 'SIRKET_SUBE_TNM';
-        _fields_ := 'sirketKod,subeKod,subeTanim,subeSiciNo,subeDoktor,IGU,BolgeMudurlukSicilNo,MuayeneProtokolNo';
-        _fieldBaslik_ := ',ÞubeKodu,ÞubeTanimi,ÝþYeriSicilNo,Doktor,ÝþGüvenlikUzmaný,BölgeMdSicilNo,MuayeneProtokolNo';
-        _fieldTips_ := 'string,string,string,string,ImageDoktorCombo,ImageDoktorCombo,string,string';
+        _fields_ := 'sirketKod,subeKod,subeTanim,subeSiciNo,subeDoktor,IGU,BolgeMudurlukSicilNo,MuayeneProtokolNo,DoktorCalismaDakika,IGUCalismaDakika';
+        _fieldBaslik_ := ',ÞubeKodu,ÞubeTanimi,ÝþYeriSicilNo,Doktor,ÝþGüvenlikUzmaný,BölgeMdSicilNo,MuayeneProtokolNo,DoktorCalismaDakika,IGUCalismaDakika';
+        _fieldTips_ := 'string,string,string,string,ImageDoktorCombo,ImageDoktorCombo,string,string,string,string';
         indexFieldName := 'sirketKod = ' + QuotedStr(_firmaKod_);
         cxPanel.Visible := false;
         cxGroupDoktorlar.Caption := 'Þube Bilgileri';
         cxGrid3.Dataset.BeforePost := ADOBeforePost;
         cxGrid3.Dataset.Connection := datalar.ADOConnection2;
-        cxGrid3.Dataset.SQL.Text := 'Select sirketKod,subeKod,subeTanim,subeSiciNo,subeDoktor,IGU,BolgeMudurlukSicilNo,MuayeneProtokolNo ' +
+        cxGrid3.Dataset.SQL.Text := 'Select sirketKod,subeKod,subeTanim,subeSiciNo,subeDoktor,IGU,BolgeMudurlukSicilNo,MuayeneProtokolNo,DoktorCalismaDakika,IGUCalismaDakika ' +
                                     ' from SIRKET_SUBE_TNM where sirketKod = ' + QuotedStr(_firmaKod_);
         cxGrid3.Dataset.Open;
         DBGrid.ClearItems;
