@@ -60,13 +60,6 @@ object frmSahaSaglikGozetim: TfrmSahaSaglikGozetim
             Options.Editing = False
             Options.Focusing = False
           end
-          object gridRaporKonu_Sira: TcxGridDBColumn
-            Caption = 'No.'
-            DataBinding.FieldName = 'Konu_Sira'
-            Options.Editing = False
-            Options.Focusing = False
-            Width = 24
-          end
           object gridRaporKonu: TcxGridDBColumn
             DataBinding.FieldName = 'Konu'
             Options.Editing = False

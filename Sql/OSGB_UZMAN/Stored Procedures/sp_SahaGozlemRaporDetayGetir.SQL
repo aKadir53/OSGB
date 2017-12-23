@@ -18,7 +18,7 @@ begin
     order by sagr.Sira, ss.Sira, ss.ID
   end
   set nocount off
-  select sr.ID, sr.Konu_Sira, ss.Konu, sr.Uygunmu, sr.Tespitler, sr.Oneriler, sagr.Tanimi GrupBaslik, sagr.Sira GrupSira, ss.Sira SoruSira
+  select sr.ID, sr.Konu_Sira, IsNull (cast (ss.Sira as varchar (10)) + '. ', '') + ss.Konu Konu, sr.Uygunmu, sr.Tespitler, sr.Oneriler, IsNull (cast (sagr.Sira as varchar (10)) + '. ', '') + sagr.Tanimi GrupBaslik, sagr.Sira GrupSira, ss.Sira SoruSira
   from dbo.SahaGozlemRaporu sr
   inner join dbo.SahaGozlemSorular ss on ss.ID = sr.Konu_Sira
   left join dbo.SahaGozlemSoruAltGrup sagr on sagr.GozlemGrup = ss.GozlemGrup
