@@ -58,7 +58,6 @@ type
     DataSource2: TDataSource;
     ADOQuery1: TADOQuery;
     gridRaporID: TcxGridDBColumn;
-    gridRaporKonu_Sira: TcxGridDBColumn;
     gridRaporKonu: TcxGridDBColumn;
     gridRaporUygunmu: TcxGridDBColumn;
     gridRaporTespitler: TcxGridDBColumn;
