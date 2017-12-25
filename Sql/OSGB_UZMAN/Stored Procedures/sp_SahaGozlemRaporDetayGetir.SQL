@@ -18,7 +18,13 @@ begin
     order by sagr.Sira, ss.Sira, ss.ID
   end
   set nocount off
-  select sr.ID, sr.Konu_Sira, IsNull (cast (ss.Sira as varchar (10)) + '. ', '') + ss.Konu Konu, sr.Uygunmu, sr.Tespitler, sr.Oneriler, IsNull (cast (sagr.Sira as varchar (10)) + '. ', '') + sagr.Tanimi GrupBaslik, sagr.Sira GrupSira, ss.Sira SoruSira
+  select sr.ID, sr.Konu_Sira, sagr.Sira GrupSira, 
+	sagr.Tanimi GrupBaslik, 
+	ss.Sira SoruSira, 
+	ss.Konu Konu,
+	sr.Uygunmu, sr.Tespitler, sr.Oneriler, 
+	IsNull (replicate ('0', len (max (sagr.Sira) over ()) - len (cast (sagr.Sira as varchar (10)))) + cast (sagr.Sira as varchar (10)) + '. ', '') + sagr.Tanimi GrupBaslikRakamli,
+    IsNull (replicate ('0', len (max (ss.Sira) over (partition by sagr.sira order by sagr.sira)) - len (cast (ss.Sira as varchar (10)))) + cast (ss.Sira as varchar (10)) + '. ', '') + ss.Konu KonuRakamli
   from dbo.SahaGozlemRaporu sr
   inner join dbo.SahaGozlemSorular ss on ss.ID = sr.Konu_Sira
   left join dbo.SahaGozlemSoruAltGrup sagr on sagr.GozlemGrup = ss.GozlemGrup
@@ -31,3 +37,5 @@ exec sp_vw_sys_upd 'P ', 'dbo', 'sp_SahaGozlemRaporDetayGetir'
 GO
 COMMIT
 GO
+exec dbo.sp_SahaGozlemRaporDetayGetir 18
+go
