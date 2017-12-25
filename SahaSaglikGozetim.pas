@@ -58,7 +58,7 @@ type
     DataSource2: TDataSource;
     ADOQuery1: TADOQuery;
     gridRaporID: TcxGridDBColumn;
-    gridRaporKonu: TcxGridDBColumn;
+    gridRaporKonuRakamli: TcxGridDBColumn;
     gridRaporUygunmu: TcxGridDBColumn;
     gridRaporTespitler: TcxGridDBColumn;
     gridRaporOneriler: TcxGridDBColumn;
@@ -69,7 +69,7 @@ type
     miFotografiSil: TMenuItem;
     gridRaporlarImageVar: TcxGridDBColumn;
     gridRaporlarGozlemGrupTanim: TcxGridDBColumn;
-    gridRaporGrupBaslik: TcxGridDBColumn;
+    gridRaporGrupBaslikRakamli: TcxGridDBColumn;
     procedure cxButtonCClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure Gozlem(islem: Integer);
@@ -396,7 +396,7 @@ procedure TfrmSahaSaglikGozetim.gridRaporCustomDrawGroupCell(
   AViewInfo: TcxGridTableCellViewInfo; var ADone: Boolean);
 begin
   inherited;
-  AViewInfo.Text := AViewInfo.Text + ' - ' + ADOQuery1.FieldByName('GrupBaslik').AsString;
+  //AViewInfo.Text := AViewInfo.Text + ' - ' + ADOQuery1.FieldByName('GrupBaslik').AsString;
 end;
 
 procedure TfrmSahaSaglikGozetim.gridRaporlarFocusedRecordChanged(

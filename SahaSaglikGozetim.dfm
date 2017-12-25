@@ -51,9 +51,14 @@ object frmSahaSaglikGozetim: TfrmSahaSaglikGozetim
           OptionsView.CellAutoHeight = True
           OptionsView.GroupByBox = False
           OnCustomDrawGroupCell = gridRaporCustomDrawGroupCell
-          object gridRaporGrupBaslik: TcxGridDBColumn
-            DataBinding.FieldName = 'GrupBaslik'
-            Width = 70
+          object gridRaporGrupBaslikRakamli: TcxGridDBColumn
+            DataBinding.FieldName = 'GrupBaslikRakamli'
+            Visible = False
+            GroupIndex = 0
+            SortIndex = 0
+            SortOrder = soAscending
+            Width = 80
+            IsCaptionAssigned = True
           end
           object gridRaporID: TcxGridDBColumn
             DataBinding.FieldName = 'ID'
@@ -61,8 +66,9 @@ object frmSahaSaglikGozetim: TfrmSahaSaglikGozetim
             Options.Editing = False
             Options.Focusing = False
           end
-          object gridRaporKonu: TcxGridDBColumn
-            DataBinding.FieldName = 'Konu'
+          object gridRaporKonuRakamli: TcxGridDBColumn
+            Caption = 'Konu'
+            DataBinding.FieldName = 'KonuRakamli'
             Options.Editing = False
             Options.Focusing = False
             Width = 232
