@@ -1948,10 +1948,12 @@ begin
 
 
         if ((self.Components[i].ClassName = 'TcxImageComboKadir') or
-           (self.Components[i].ClassName = 'TcxImageComboBox')) and
-           (TcxImageComboBox(_obje_).EditText = '')
+           (self.Components[i].ClassName = 'TcxImageComboBox'))
+           and (TcxImageComboBox(_obje_).Text = '')
         Then Begin
-          Continue;
+          TcxImageComboBox(_obje_).EditValue := Null;
+          sqlRun.FieldByName(_Obje_.Name).AsVariant := _Obje_.EditingValue;
+        //  Continue;
         End
         Else
         if (self.Components[i].ClassName = 'TcxImage')
