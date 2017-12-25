@@ -78,6 +78,9 @@ type
       ANewItemRecordFocusingChanged: Boolean);
     procedure tmr1Timer(Sender: TObject);
     procedure ADOQuery1BeforePost(DataSet: TDataSet);
+    procedure gridRaporCustomDrawGroupCell(Sender: TcxCustomGridTableView;
+      ACanvas: TcxCanvas; AViewInfo: TcxGridTableCellViewInfo;
+      var ADone: Boolean);
 
   private
     { Private declarations }
@@ -230,6 +233,7 @@ begin
   inherited;
   TTimer (Sender).Enabled := False;
   ADOQuery1.Open;
+  gridRapor.ViewData.Expand(true);
 end;
 
 procedure TfrmSahaSaglikGozetim.AdjustMasterControls;
@@ -385,6 +389,14 @@ begin
   finally
     ado.free;
   end;
+end;
+
+procedure TfrmSahaSaglikGozetim.gridRaporCustomDrawGroupCell(
+  Sender: TcxCustomGridTableView; ACanvas: TcxCanvas;
+  AViewInfo: TcxGridTableCellViewInfo; var ADone: Boolean);
+begin
+  inherited;
+  AViewInfo.Text := AViewInfo.Text + ' - ' + ADOQuery1.FieldByName('GrupBaslik').AsString;
 end;
 
 procedure TfrmSahaSaglikGozetim.gridRaporlarFocusedRecordChanged(
