@@ -174,8 +174,7 @@ case self.Tag of
         setDataString(self,'tanimi','Adý Soyadý',Kolon1,'',200,True);
         setDataString(self,'tcKimlikNo','TC Kimlik No',Kolon1,'',150,True);
 
-
-
+        setDataString(self,'Sinifi','Sýnýfý',Kolon1,'', 20, True);
 
      //   setDataString(self,'tescilNo','Tescil No',Kolon1,'',80,True);
     //    setDataString(self,'eReceteKullanici','Reçete Kullanýcý Adý',Kolon1,'cc',100,True);

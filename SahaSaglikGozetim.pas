@@ -58,8 +58,7 @@ type
     DataSource2: TDataSource;
     ADOQuery1: TADOQuery;
     gridRaporID: TcxGridDBColumn;
-    gridRaporKonu_Sira: TcxGridDBColumn;
-    gridRaporKonu: TcxGridDBColumn;
+    gridRaporKonuRakamli: TcxGridDBColumn;
     gridRaporUygunmu: TcxGridDBColumn;
     gridRaporTespitler: TcxGridDBColumn;
     gridRaporOneriler: TcxGridDBColumn;
@@ -69,6 +68,8 @@ type
     miFotografGoruntule: TMenuItem;
     miFotografiSil: TMenuItem;
     gridRaporlarImageVar: TcxGridDBColumn;
+    gridRaporlarGozlemGrupTanim: TcxGridDBColumn;
+    gridRaporGrupBaslikRakamli: TcxGridDBColumn;
     procedure cxButtonCClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure Gozlem(islem: Integer);
@@ -77,6 +78,9 @@ type
       ANewItemRecordFocusingChanged: Boolean);
     procedure tmr1Timer(Sender: TObject);
     procedure ADOQuery1BeforePost(DataSet: TDataSet);
+    procedure gridRaporCustomDrawGroupCell(Sender: TcxCustomGridTableView;
+      ACanvas: TcxCanvas; AViewInfo: TcxGridTableCellViewInfo;
+      var ADone: Boolean);
 
   private
     { Private declarations }
@@ -152,8 +156,11 @@ end;
 function TfrmSahaSaglikGozetim.Init(Sender : TObject) : Boolean;
 begin
   ADO_SahaGozetim.SQL.Text :=
-    'select ID, DenetimiYapanKullanici, DenetimTarihi, Date_Create, GozetimDefterNo, FirmaKodu, cast (case when Image Is NULL then 0 else 1 end as bit) ImageVar '#13#10+
+    'select SR.ID, DenetimiYapanKullanici, DenetimTarihi, Date_Create, GozetimDefterNo, FirmaKodu, '#13#10+
+    '  cast (case when Image Is NULL then 0 else 1 end as bit) ImageVar, '#13#10+
+    '  SR.GozlemGrup, SGR.Tanimi GozlemGrupTanim '#13#10+
     'from SahaGozlemRaporlari SR'#13#10+
+    'inner join SahaGozlemSoruGrup SGR on SGR.GozlemGrup = SR.GozlemGrup'#13#10+
     'where FirmaKodu = ' + QuotedStr (DATALAR.AktifSirket) + ''#13#10+
     'order by SR.ID';
   ADO_SahaGozetim .Active := true;
@@ -226,6 +233,7 @@ begin
   inherited;
   TTimer (Sender).Enabled := False;
   ADOQuery1.Open;
+  gridRapor.ViewData.Expand(true);
 end;
 
 procedure TfrmSahaSaglikGozetim.AdjustMasterControls;
@@ -324,12 +332,14 @@ begin
         aSahaDenetimVeri.FirmaKod := datalar.AktifSirket;
         aSahaDenetimVeri.DenetimTarihi := DateToStr (date);
         aSahaDenetimVeri.DenetimDefterNo := '';
+        aSahaDenetimVeri.GozlemGrubu := '';
       end
       else begin
         aSahaDenetimVeri.KullaniciAdi := ADO_SahaGozetim.FieldByName('DenetimiYapanKullanici').AsString;
         aSahaDenetimVeri.FirmaKod := ADO_SahaGozetim.FieldByName('FirmaKodu').AsString;
         aSahaDenetimVeri.DenetimTarihi := ADO_SahaGozetim.FieldByName('DenetimTarihi').AsString;
         aSahaDenetimVeri.DenetimDefterNo := ADO_SahaGozetim.FieldByName('GozetimDefterNo').AsString;
+        aSahaDenetimVeri.GozlemGrubu := ADO_SahaGozetim.FieldByName('GozlemGrup').AsString;
       end;
       _SahaDenetimVeri_ := aSahaDenetimVeri;
       if mrYes = ShowPopupForm(IfThen (islem = yeniGozlem, 'Yeni Gözlem', 'Gözlem Düzenle'),islem,F)
@@ -346,6 +356,7 @@ begin
             ADO_SahaGozetim.FieldByName('FirmaKodu').AsString := _SahaDenetimVeri_.FirmaKod;
             ADO_SahaGozetim.FieldByName('DenetimTarihi').AsString := _SahaDenetimVeri_.DenetimTarihi;
             ADO_SahaGozetim.FieldByName('GozetimDefterNo').AsString := _SahaDenetimVeri_.DenetimDefterNo;
+            ADO_SahaGozetim.FieldByName('GozlemGrup').AsString := _SahaDenetimVeri_.GozlemGrubu;
             ADO_SahaGozetim.Post;
             bBasarili := True;
           finally
@@ -378,6 +389,14 @@ begin
   finally
     ado.free;
   end;
+end;
+
+procedure TfrmSahaSaglikGozetim.gridRaporCustomDrawGroupCell(
+  Sender: TcxCustomGridTableView; ACanvas: TcxCanvas;
+  AViewInfo: TcxGridTableCellViewInfo; var ADone: Boolean);
+begin
+  inherited;
+  //AViewInfo.Text := AViewInfo.Text + ' - ' + ADOQuery1.FieldByName('GrupBaslik').AsString;
 end;
 
 procedure TfrmSahaSaglikGozetim.gridRaporlarFocusedRecordChanged(
