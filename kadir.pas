@@ -166,7 +166,7 @@ procedure tarihata(tarih1, tarih2: TDateTimePicker; ayadlari: TComboBox);
 procedure tarihata(tarih1, tarih2: TEdit; ayadlari: TComboBox);
   overload;
 
-function GuncelKontrol: integer;
+function GuncelKontrol: string;
 function sorguTuruAdi(_kod: string): string;
 function taburcuKoduAdi(_kod: string): string;
 // procedure TakipBilgiOku(_Takip : string;var Hasta : TTakipBilgisi);
@@ -374,6 +374,7 @@ function SahaSaglikGozlemSil(const GozlemID: integer): Boolean;
 function VeritabaniAlaninaFotografYukle(const sTableName, sKeyField, sImageField, sKeyValue: String): Boolean;
 function VeritabaniAlanindanFotografYukle(const sTableName, sKeyField, sImageField, sKeyValue: String; var aImage: TcxImage): Boolean;
 function FotografGoruntule (const aPicture: TPicture) : TModalResult;
+function WebErisimBilgi(slk,slb : string) : string;
 
 const
   _YTL_ = 'YTL';
@@ -442,6 +443,24 @@ implementation
 uses message,AnaUnit,message_y,popupForm,rapor,TedaviKart,Son6AylikTetkikSonuc,
              HastaRecete,sifreDegis,HastaTetkikEkle,GirisUnit,SMS,LisansUzat;
 
+
+function WebErisimBilgi(slk,slb : string) : string;
+var
+  sql : string;
+  ado : TADOQuery;
+begin
+   WebErisimBilgi := '';
+   ado := TADOQuery.Create(nil);
+   try
+     ado.Connection := datalar.ADOConnection2;
+     sql := 'select Value from WebServisErisimBilgileri '  +
+            'where slk = ' + QuotedStr(slk) + ' and slb = ' + QuotedStr(slb);
+     datalar.QuerySelect(ado,sql);
+     WebErisimBilgi := ado.Fields[0].AsString;
+   finally
+     ado.Free;
+   end;
+end;
 
 procedure LisansUzat;
 begin
@@ -5278,21 +5297,9 @@ begin
 
 end;
 
-function GuncelKontrol: integer;
-var
-  sql: string;
-  ado : TADOQuery;
+function GuncelKontrol: String;
 begin
-  ado := TADOQuery.Create(nil);
-  try
-    ado.Connection := datalar.ADOConnection2;
-    sql := 'select SLX from parametreler where SLK = ''GT'' and SLB = ''0001''';
-    datalar.QuerySelect(ado, sql);
-
-    Result := ado.Fields[0].AsInteger;
-  finally
-    ado.Free;
-  end;
+ Result := WebErisimBilgi('GT','00');
 end;
 
 (*

@@ -26,7 +26,6 @@ object frmKurumBilgi: TfrmKurumBilgi
     Align = alClient
     TabOrder = 0
     ExceleGonder = False
-    ExplicitWidth = 511
     object GridList: TcxGridDBBandedTableView
       DataController.DataSource = DataSource1
       DataController.Summary.DefaultGroupSummaryItems = <>

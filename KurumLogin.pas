@@ -136,27 +136,27 @@ begin
 
    if Tag = -1
    then begin
-     mevcutSifre := datalar.WebErisimBilgi('99','01');
+     mevcutSifre := WebErisimBilgi('99','01');
      ADO_WebServisErisim.Post;
 
    //  txtSifreLog.Lines.Add(datetimetostr(now) + ' : Yeni Hasta Kabul Þifre : ' + txtSifre.Text);
    //  txtSifreLog.Lines.SaveToFile('SifreLog.txt');
 
 
-     KurumSifreDegisForm.kullaniciAdi := datalar.WebErisimBilgi('99','00');
-     KurumSifreDegisForm.sifre := datalar.WebErisimBilgi('99','01');
+     KurumSifreDegisForm.kullaniciAdi := WebErisimBilgi('99','00');
+     KurumSifreDegisForm.sifre := WebErisimBilgi('99','01');
      KurumSifreDegisForm.mevcutSifre := mevcutSifre;
    end
    else
    begin
-     mevcutSifreD := datalar.WebErisimBilgi('991','01');
+     mevcutSifreD := WebErisimBilgi('991','01');
      ADO_WebServisErisim.Post;
 
   //   txtSifreLog.Lines.Add(datetimetostr(now) + ' : Yeni Dönem Son. Þifre : ' + txtDonemSonlandirmaSifre.Text);
   //   txtSifreLog.Lines.SaveToFile('SifreLog.txt');
 
-     KurumSifreDegisForm.kullaniciAdi := datalar.WebErisimBilgi('991','00');
-     KurumSifreDegisForm.sifre := datalar.WebErisimBilgi('991','01');
+     KurumSifreDegisForm.kullaniciAdi := WebErisimBilgi('991','00');
+     KurumSifreDegisForm.sifre := WebErisimBilgi('991','01');
      KurumSifreDegisForm.mevcutSifre := mevcutSifreD;
    end;
 
