@@ -306,10 +306,8 @@ object frmLogin: TfrmLogin
     Font.Style = []
     ParentFont = False
     TabOrder = 0
-    Properties.ActivePage = SayfaLogin
+    Properties.ActivePage = SayfaConTest
     OnPageChanging = LoginSayfalarPageChanging
-    ExplicitWidth = 341
-    ExplicitHeight = 209
     ClientRectBottom = 183
     ClientRectLeft = 3
     ClientRectRight = 302
@@ -317,9 +315,6 @@ object frmLogin: TfrmLogin
     object SayfaLogin: TcxTabSheet
       Caption = 'Kullan'#305'c'#305' Giri'#351'i   '
       ImageIndex = 17
-      ExplicitTop = 29
-      ExplicitWidth = 331
-      ExplicitHeight = 173
       object dxLayoutControl1: TdxLayoutControl
         Left = 0
         Top = 0
@@ -328,11 +323,9 @@ object frmLogin: TfrmLogin
         Align = alClient
         TabOrder = 0
         LayoutLookAndFeel = dxLayoutSkinLookAndFeel1
-        ExplicitWidth = 331
-        ExplicitHeight = 173
         object Image3: TImage
           Left = 20
-          Top = 1
+          Top = 23
           Width = 53
           Height = 42
           Align = alLeft
@@ -632,7 +625,7 @@ object frmLogin: TfrmLogin
         end
         object Edit1: TcxTextEdit
           Left = 105
-          Top = 49
+          Top = 71
           ParentFont = False
           Style.Font.Charset = DEFAULT_CHARSET
           Style.Font.Color = clWindowText
@@ -647,7 +640,7 @@ object frmLogin: TfrmLogin
         end
         object Edit2: TcxTextEdit
           Left = 105
-          Top = 79
+          Top = 101
           ParentFont = False
           ParentShowHint = False
           Properties.EchoMode = eemPassword
@@ -666,7 +659,7 @@ object frmLogin: TfrmLogin
         end
         object txtSirket: TcxButtonEditKadir
           Left = 105
-          Top = 109
+          Top = 131
           ParentFont = False
           Properties.Buttons = <
             item
@@ -690,7 +683,7 @@ object frmLogin: TfrmLogin
         object txtSube: TcxImageComboKadir
           Tag = 1
           Left = 105
-          Top = 136
+          Top = 158
           Properties.ClearKey = 46
           Properties.Items = <>
           Properties.OnChange = txtSubePropertiesChange
@@ -764,17 +757,12 @@ object frmLogin: TfrmLogin
     object SayfaConTest: TcxTabSheet
       Caption = 'Server Test'
       ImageIndex = 1
-      ExplicitTop = 29
-      ExplicitWidth = 331
-      ExplicitHeight = 173
       object cxGroupBox1: TcxGroupBox
         Left = 0
         Top = 0
         Align = alClient
         Caption = 'Server Bilgisi'
         TabOrder = 0
-        ExplicitWidth = 331
-        ExplicitHeight = 173
         Height = 157
         Width = 299
         object dxLayoutControl2: TdxLayoutControl
@@ -786,8 +774,8 @@ object frmLogin: TfrmLogin
           TabOrder = 0
           ExplicitLeft = 2
           ExplicitTop = -2
-          ExplicitWidth = 327
-          ExplicitHeight = 173
+          ExplicitWidth = 295
+          ExplicitHeight = 157
           object txtServerName: TcxTextEditKadir
             Left = 104
             Top = 10
@@ -870,9 +858,6 @@ object frmLogin: TfrmLogin
       Caption = 'cxTabSheet1'
       ImageIndex = 2
       TabVisible = False
-      ExplicitTop = 29
-      ExplicitWidth = 331
-      ExplicitHeight = 173
       object Label1: TLabel
         Left = 154
         Top = 46
@@ -1579,8 +1564,6 @@ object frmLogin: TfrmLogin
     Font.Height = -11
     Font.Name = 'Tahoma'
     Font.Style = []
-    ExplicitTop = 245
-    ExplicitWidth = 341
   end
   object pnlBottom: TcxGroupBox
     Left = 0
@@ -1590,8 +1573,6 @@ object frmLogin: TfrmLogin
     ParentShowHint = False
     ShowHint = False
     TabOrder = 2
-    ExplicitTop = 209
-    ExplicitWidth = 341
     Height = 36
     Width = 309
     object btnGiris: TcxButton
@@ -1603,7 +1584,6 @@ object frmLogin: TfrmLogin
       Caption = 'Giri'#351' Yap'
       TabOrder = 0
       OnClick = Image1Click
-      ExplicitLeft = 139
     end
     object btnVazgec: TcxButton
       Left = 207
@@ -1614,7 +1594,6 @@ object frmLogin: TfrmLogin
       Caption = 'Vazge'#231
       TabOrder = 1
       OnClick = btnVazgecClick
-      ExplicitLeft = 239
     end
   end
   object DataSource1: TDataSource
