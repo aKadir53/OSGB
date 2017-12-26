@@ -87,6 +87,7 @@ type
                      '@baslangic = %14:s,'+
                      '@kanGrubu = %15:s,'+
                      '@USER_ID = %16:s,'+
+                     '@sube = %18:s,'+
                      '@Aktif = %17:s';
 
 var
@@ -182,7 +183,8 @@ begin
                        QuotedStr(MemTable_Personel.fieldByname('BASLANGIC').asstring),
                        QuotedStr(MemTable_Personel.fieldByname('KANGRUBU').asstring),
                        QuotedStr(datalar.username),
-                       QuotedStr(MemTable_Personel.fieldByname('Durum').asstring)]);
+                       QuotedStr(MemTable_Personel.fieldByname('Durum').asstring),
+                       QuotedStr(datalar.AktifSube)]);
         datalar.queryExec(SelectAdo,sql);
         iCount := iCount + 1;
         MemTable_Personel.next;
