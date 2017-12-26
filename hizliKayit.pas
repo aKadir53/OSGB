@@ -24,7 +24,7 @@ uses
   cxGridDBCardView, cxGridCustomLayoutView, cxGridCustomTableView,
   cxGridTableView, cxGridDBTableView, cxClasses, cxGridCustomView, cxGrid,
   SQLMemMain, cxImageComboBox, KadirLabel,GirisUnit, cxButtons, Menus,
-  Vcl.Grids, AdvObj, BaseGrid, AdvGrid,ComObj;
+  Vcl.Grids, AdvObj, BaseGrid, AdvGrid,ComObj, tmsAdvGridExcel, AdvGridWorkbook;
 
 type
   TfrmHizliKayit = class(TGirisForm)
@@ -36,25 +36,7 @@ type
     B1: TMenuItem;
     H1: TMenuItem;
     N1: TMenuItem;
-    cxGrid2: TcxGridKadir;
-    Liste: TcxGridDBTableView;
-    cxGridLevel1: TcxGridLevel;
-    ListeTCKIMLIKNO: TcxGridDBColumn;
-    ListeHASTAADI: TcxGridDBColumn;
-    ListeHASTASOYADI: TcxGridDBColumn;
-    ListeCINSIYETI: TcxGridDBColumn;
-    ListeMEDENI: TcxGridDBColumn;
-    ListeBABAADI: TcxGridDBColumn;
-    ListeANAADI: TcxGridDBColumn;
-    ListeEV_SEHIR: TcxGridDBColumn;
-    ListeEV_TEL1: TcxGridDBColumn;
-    ListeEV_TEL2: TcxGridDBColumn;
-    ListeDOGUMYERI: TcxGridDBColumn;
-    ListeDOGUMTARIHI: TcxGridDBColumn;
-    ListeUYRUGU: TcxGridDBColumn;
-    ListeDurum: TcxGridDBColumn;
-    ListeBASLANGIC: TcxGridDBColumn;
-    ListeKANGRUBU: TcxGridDBColumn;
+    GridList: TAdvStringGrid;
     procedure cxButtonCClick(Sender: TObject);
     procedure ExcelToGrid;
     procedure GridToPersonelKartTable;
@@ -111,6 +93,12 @@ begin
   finally
     openD.Free;
   end;
+
+  GridList.LoadFromXLS(dosya);
+
+
+
+(*
   v := CreateOleObject('Excel.Application');
   try
     v.Workbooks.Open(dosya);
@@ -147,6 +135,7 @@ begin
     MemTable_Personel.fieldByname('KANGRUBU').asstring := sayfa.cells[x,16];
     MemTable_Personel.post;
     end;
+    *)
 end;
 
 
@@ -155,37 +144,47 @@ var
   sql : string;
   bBasarili : Boolean;
   iCount : Integer;
+  _row_ : integer;
+  Cins,Medeni,DTarih : String;
 begin
-  MemTable_Personel.First;
   try
     datalar.ADOConnection2.BeginTrans;
     bBasarili := False;
     iCount := 0;
     try
-      while not MemTable_Personel.eof do
+      for _row_ := 1 to GridList.RowCount do
       begin
+        Cins := ifThen(Copy(GridList.Cells[4,_row_],1,1) = 'B','1',
+                ifThen(Copy(GridList.Cells[4,_row_],1,1) = '1','1',
+                ifThen(Copy(GridList.Cells[4,_row_],1,1) = 'K','1','0')));
+
+        Medeni := ifThen(Copy(GridList.Cells[5,_row_],1,1) = 'B','1',
+                  ifThen(Copy(GridList.Cells[5,_row_],1,1) = '1','1','0'));
+
+        DTarih := ifThen(pos('.',GridList.Cells[12,_row_]) > 0,
+                         NoktasizTarih(GridList.Cells[12,_row_]),GridList.Cells[12,_row_]);
+
         sql := Format(_insertPersonel_,
                       [QuotedStr(datalar.AktifSirket),
-                       QuotedStr(MemTable_Personel.fieldByname('TCKIMLIKNO').asstring),
-                       QuotedStr(MemTable_Personel.fieldByname('HASTAADI').asstring) ,
-                       QuotedStr(MemTable_Personel.fieldByname('HASTASOYADI').asstring),
-                       QuotedStr(MemTable_Personel.fieldByname('CINSIYETI').asstring),
-                       QuotedStr(MemTable_Personel.fieldByname('MEDENI').asstring),
-                       QuotedStr(MemTable_Personel.fieldByname('BABAADI').asstring),
-                       QuotedStr(MemTable_Personel.fieldByname('ANAADI').asstring),
-                       QuotedStr(MemTable_Personel.fieldByname('EV_SEHIR').asstring),
-                       QuotedStr(MemTable_Personel.fieldByname('EV_TEL1').asstring),
-                       QuotedStr(MemTable_Personel.fieldByname('EV_TEL2').asstring),
-                       QuotedStr(MemTable_Personel.fieldByname('DOGUMYERI').asstring),
-                       QuotedStr(MemTable_Personel.fieldByname('DOGUMTARIHI').asstring),
-                       QuotedStr(MemTable_Personel.fieldByname('UYRUGU').asstring),
-                       QuotedStr(MemTable_Personel.fieldByname('BASLANGIC').asstring),
-                       QuotedStr(MemTable_Personel.fieldByname('KANGRUBU').asstring),
+                       QuotedStr(GridList.Cells[1,_row_]),
+                       QuotedStr(GridList.Cells[2,_row_]),
+                       QuotedStr(GridList.Cells[3,_row_]),
+                       QuotedStr(Cins),
+                       QuotedStr(Medeni),
+                       QuotedStr(GridList.Cells[6,_row_]),
+                       QuotedStr(GridList.Cells[7,_row_]),
+                       QuotedStr(GridList.Cells[8,_row_]),
+                       QuotedStr(GridList.Cells[9,_row_]),
+                       QuotedStr(GridList.Cells[10,_row_]),
+                       QuotedStr(GridList.Cells[11,_row_]),
+                       QuotedStr(DTarih),
+                       QuotedStr(GridList.Cells[13,_row_]),
+                       QuotedStr(GridList.Cells[14,_row_]),
+                       QuotedStr(GridList.Cells[15,_row_]),
                        QuotedStr(datalar.username),
-                       QuotedStr(MemTable_Personel.fieldByname('Durum').asstring)]);
+                       QuotedStr(GridList.Cells[16,_row_])]);
         datalar.queryExec(SelectAdo,sql);
         iCount := iCount + 1;
-        MemTable_Personel.next;
       end;
       bBasarili := True;
     finally
@@ -220,6 +219,7 @@ begin
 
   case TControl(sender).Tag  of
     0 : begin
+
           ExcelToGrid;
         end;
     1 : begin
