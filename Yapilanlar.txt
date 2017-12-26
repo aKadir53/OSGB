@@ -75,3 +75,9 @@ saha gözetim master kayýtlarda gezindikçe alttaki data yenilenecek þekilde günce
 silmeden önce soru sormasý eklendi.
 saha gözetim sorularýnda ilk deðer olarak tüm satýrlara UygunMu = 1 atandý ve uygun deðilse tespit veya öneri boþ olarak satýrý kaydedememesi saðlandý
 saha gözetim formu baskýsý eklendi. bunun için view ve sp yapýldý
+saha gözlem formu detay gridinin gruplanmasý iþlemi yapýldý. mutfak denetiminde lazým olmuþtu
+saha gözlem formu detay getir sp sýra numaralarýnýn sonuç setindeki açýklamalara "." karakteri ile eklenmesi, konu_sira alanýnýn gridden kaldýrýlmasý yapýldý. gruplamadaki problemi çözemeyince bu usûle geri döndük
+
+
+personel kart alanlarý null olabilir yapýldý
+þube tablosuna IGU dakika ve doktordakika alanlarý eklenip ISGKatip excel'inden güncellenmesi saðlandý
