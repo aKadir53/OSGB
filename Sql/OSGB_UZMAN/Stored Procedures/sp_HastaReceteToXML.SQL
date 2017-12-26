@@ -1,6 +1,5 @@
 BEGIN TRAN
 GO
--- [CMPTR2] - [11.12.2017 23:41:37]
 ALTER PROCEDURE [dbo].[sp_HastaReceteToXML](@receteId int)
 as
 BEGIN
@@ -9,7 +8,7 @@ BEGIN
 	@receteTaniBilgisi varchar(1000),
 	@receteAck varchar(1000),
 	@doktorTc varchar(20),
-	@pin varchar(4),
+	@pin varchar(6),
 	@user varchar(20),
 	@sifre varchar(20),
 	@cardType varchar(100)
