@@ -183,7 +183,7 @@ begin
                        QuotedStr(GridList.Cells[14,_row_]),
                        QuotedStr(GridList.Cells[15,_row_]),
                        QuotedStr(datalar.username),
-                       QuotedStr(GridList.Cells[16,_row_]),
+                       QuotedStr('1'),
                        QuotedStr(datalar.AktifSube)]);
         datalar.queryExec(SelectAdo,sql);
         iCount := iCount + 1;
