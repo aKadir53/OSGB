@@ -26,176 +26,129 @@ object frmHizliKayit: TfrmHizliKayit
     Height = 529
     Align = alClient
     TabOrder = 0
-    ClientRectBottom = 525
-    ClientRectLeft = 4
-    ClientRectRight = 775
-    ClientRectTop = 4
+    ClientRectBottom = 522
+    ClientRectLeft = 3
+    ClientRectRight = 772
+    ClientRectTop = 3
   end
-  object cxGrid2: TcxGridKadir
+  object GridList: TAdvStringGrid
     Left = 0
     Top = 0
     Width = 779
     Height = 529
+    Cursor = crDefault
     Align = alClient
-    Font.Charset = TURKISH_CHARSET
+    ColCount = 17
+    DrawingStyle = gdsClassic
+    RowCount = 2
+    Font.Charset = DEFAULT_CHARSET
     Font.Color = clWindowText
     Font.Height = -11
     Font.Name = 'Tahoma'
     Font.Style = []
+    Options = [goFixedVertLine, goFixedHorzLine, goVertLine, goHorzLine, goRangeSelect, goEditing]
     ParentFont = False
+    ScrollBars = ssBoth
     TabOrder = 1
-    LevelTabs.ImageBorder = 2
-    LevelTabs.Style = 1
-    ExceleGonder = False
-    object Liste: TcxGridDBTableView
-      PopupMenu = PopupMenu1
-      Navigator.Buttons.First.Visible = True
-      Navigator.Buttons.PriorPage.Visible = True
-      Navigator.Buttons.Prior.Visible = True
-      Navigator.Buttons.Next.Visible = True
-      Navigator.Buttons.NextPage.Visible = True
-      Navigator.Buttons.Last.Visible = True
-      Navigator.Buttons.Insert.Visible = True
-      Navigator.Buttons.Append.Visible = False
-      Navigator.Buttons.Delete.Visible = True
-      Navigator.Buttons.Edit.Visible = True
-      Navigator.Buttons.Post.Visible = True
-      Navigator.Buttons.Cancel.Visible = True
-      Navigator.Buttons.Refresh.Visible = True
-      Navigator.Buttons.SaveBookmark.Visible = True
-      Navigator.Buttons.GotoBookmark.Visible = True
-      Navigator.Buttons.Filter.Visible = True
-      FilterBox.CustomizeDialog = False
-      DataController.DataSource = DataSource3
-      DataController.Filter.Options = [fcoCaseInsensitive]
-      DataController.Filter.Active = True
-      DataController.Filter.TranslateBetween = True
-      DataController.Filter.TranslateLike = True
-      DataController.Options = [dcoAnsiSort, dcoAssignGroupingValues, dcoAssignMasterDetailKeys, dcoSaveExpanding, dcoSortByDisplayText]
-      DataController.Summary.DefaultGroupSummaryItems = <>
-      DataController.Summary.FooterSummaryItems = <
-        item
-          Format = 'Listelen Kay'#305't :#0'
-          Kind = skCount
-          Column = ListeTCKIMLIKNO
-        end>
-      DataController.Summary.SummaryGroups = <>
-      Filtering.MRUItemsList = False
-      Filtering.ColumnMRUItemsList = False
-      FilterRow.InfoText = 'Arama Sat'#305'r'#305
-      FilterRow.SeparatorWidth = 2
-      FilterRow.Visible = True
-      FilterRow.ApplyChanges = fracImmediately
-      NewItemRow.InfoText = 'Kay'#305't Ekle'
-      OptionsBehavior.CellHints = True
-      OptionsBehavior.FocusCellOnTab = True
-      OptionsCustomize.ColumnGrouping = False
-      OptionsCustomize.ColumnHidingOnGrouping = False
-      OptionsCustomize.ColumnsQuickCustomization = True
-      OptionsData.Deleting = False
-      OptionsData.Editing = False
-      OptionsData.Inserting = False
-      OptionsView.NavigatorOffset = 20
-      OptionsView.NoDataToDisplayInfoText = 'Kay'#305't Yok'
-      OptionsView.CellAutoHeight = True
-      OptionsView.Footer = True
-      OptionsView.GroupByBox = False
-      OptionsView.HeaderHeight = 35
-      OptionsView.RowSeparatorColor = clBlack
-      object ListeTCKIMLIKNO: TcxGridDBColumn
-        DataBinding.FieldName = 'TCKIMLIKNO'
-        HeaderAlignmentHorz = taCenter
-        HeaderAlignmentVert = vaCenter
-      end
-      object ListeHASTAADI: TcxGridDBColumn
-        DataBinding.FieldName = 'HASTAADI'
-        HeaderAlignmentHorz = taCenter
-        HeaderAlignmentVert = vaCenter
-      end
-      object ListeHASTASOYADI: TcxGridDBColumn
-        DataBinding.FieldName = 'HASTASOYADI'
-        HeaderAlignmentHorz = taCenter
-        HeaderAlignmentVert = vaCenter
-      end
-      object ListeCINSIYETI: TcxGridDBColumn
-        DataBinding.FieldName = 'CINSIYETI'
-        HeaderAlignmentHorz = taCenter
-        HeaderAlignmentVert = vaCenter
-        Width = 58
-      end
-      object ListeMEDENI: TcxGridDBColumn
-        DataBinding.FieldName = 'MEDENI'
-        HeaderAlignmentHorz = taCenter
-        HeaderAlignmentVert = vaCenter
-        Width = 44
-      end
-      object ListeBABAADI: TcxGridDBColumn
-        DataBinding.FieldName = 'BABAADI'
-        HeaderAlignmentHorz = taCenter
-        HeaderAlignmentVert = vaCenter
-      end
-      object ListeANAADI: TcxGridDBColumn
-        DataBinding.FieldName = 'ANAADI'
-        HeaderAlignmentHorz = taCenter
-        HeaderAlignmentVert = vaCenter
-      end
-      object ListeEV_SEHIR: TcxGridDBColumn
-        DataBinding.FieldName = 'EV_SEHIR'
-        HeaderAlignmentHorz = taCenter
-        HeaderAlignmentVert = vaCenter
-      end
-      object ListeEV_TEL1: TcxGridDBColumn
-        Caption = 'MOB'#304'L TEL'
-        DataBinding.FieldName = 'EV_TEL1'
-        HeaderAlignmentHorz = taCenter
-        HeaderAlignmentVert = vaCenter
-      end
-      object ListeEV_TEL2: TcxGridDBColumn
-        Caption = 'TEL2'
-        DataBinding.FieldName = 'EV_TEL2'
-        HeaderAlignmentHorz = taCenter
-        HeaderAlignmentVert = vaCenter
-      end
-      object ListeDOGUMYERI: TcxGridDBColumn
-        DataBinding.FieldName = 'DOGUMYERI'
-        HeaderAlignmentHorz = taCenter
-        HeaderAlignmentVert = vaCenter
-      end
-      object ListeDOGUMTARIHI: TcxGridDBColumn
-        DataBinding.FieldName = 'DOGUMTARIHI'
-        HeaderAlignmentHorz = taCenter
-        HeaderAlignmentVert = vaCenter
-      end
-      object ListeUYRUGU: TcxGridDBColumn
-        DataBinding.FieldName = 'UYRUGU'
-        HeaderAlignmentHorz = taCenter
-        HeaderAlignmentVert = vaCenter
-      end
-      object ListeDurum: TcxGridDBColumn
-        DataBinding.FieldName = 'Durum'
-        HeaderAlignmentHorz = taCenter
-        HeaderAlignmentVert = vaCenter
-        Width = 42
-      end
-      object ListeBASLANGIC: TcxGridDBColumn
-        Caption = 'ISE BASLAMA'
-        DataBinding.FieldName = 'BASLANGIC'
-        HeaderAlignmentHorz = taCenter
-        HeaderAlignmentVert = vaCenter
-      end
-      object ListeKANGRUBU: TcxGridDBColumn
-        DataBinding.FieldName = 'KANGRUBU'
-        HeaderAlignmentHorz = taCenter
-        HeaderAlignmentVert = vaCenter
-        Width = 62
-      end
-    end
-    object cxGridLevel1: TcxGridLevel
-      Caption = 'Hastalar'
-      GridView = Liste
-      Options.DetailFrameColor = clBlack
-      Options.DetailFrameWidth = 0
-    end
+    HoverRowCells = [hcNormal, hcSelected]
+    ActiveCellFont.Charset = DEFAULT_CHARSET
+    ActiveCellFont.Color = clWindowText
+    ActiveCellFont.Height = -11
+    ActiveCellFont.Name = 'Tahoma'
+    ActiveCellFont.Style = [fsBold]
+    ColumnHeaders.Strings = (
+      'SiraNo'
+      'TC K'#304'ML'#304'K NO'
+      'ADI SOYADI'
+      'SOYADI'
+      'C'#304'NS'#304'YET'
+      'MEDEN'#304' H.'
+      'BABA ADI'
+      'ANNE ADI'
+      #304'L/'#304'L'#199'E'
+      'TELEFON  NO'
+      'tel2'
+      'DO'#286'UM.YER'#304
+      'DO'#286'UM .TAR'#304'H'#304
+      'UYRUK'
+      'Durum'
+      #304#350'E BA'#350'LAMA TAR.'
+      'KAN GRUBU'#9)
+    ControlLook.FixedGradientHoverFrom = clGray
+    ControlLook.FixedGradientHoverTo = clWhite
+    ControlLook.FixedGradientDownFrom = clGray
+    ControlLook.FixedGradientDownTo = clSilver
+    ControlLook.DropDownHeader.Font.Charset = DEFAULT_CHARSET
+    ControlLook.DropDownHeader.Font.Color = clWindowText
+    ControlLook.DropDownHeader.Font.Height = -11
+    ControlLook.DropDownHeader.Font.Name = 'Tahoma'
+    ControlLook.DropDownHeader.Font.Style = []
+    ControlLook.DropDownHeader.Visible = True
+    ControlLook.DropDownHeader.Buttons = <>
+    ControlLook.DropDownFooter.Font.Charset = DEFAULT_CHARSET
+    ControlLook.DropDownFooter.Font.Color = clWindowText
+    ControlLook.DropDownFooter.Font.Height = -11
+    ControlLook.DropDownFooter.Font.Name = 'Tahoma'
+    ControlLook.DropDownFooter.Font.Style = []
+    ControlLook.DropDownFooter.Visible = True
+    ControlLook.DropDownFooter.Buttons = <>
+    Filter = <>
+    FilterDropDown.Font.Charset = DEFAULT_CHARSET
+    FilterDropDown.Font.Color = clWindowText
+    FilterDropDown.Font.Height = -11
+    FilterDropDown.Font.Name = 'Tahoma'
+    FilterDropDown.Font.Style = []
+    FilterDropDownClear = '(All)'
+    FixedRowHeight = 22
+    FixedFont.Charset = DEFAULT_CHARSET
+    FixedFont.Color = clWindowText
+    FixedFont.Height = -11
+    FixedFont.Name = 'Tahoma'
+    FixedFont.Style = [fsBold]
+    FloatFormat = '%.2f'
+    Navigation.AllowFmtClipboard = True
+    PrintSettings.DateFormat = 'dd/mm/yyyy'
+    PrintSettings.Font.Charset = DEFAULT_CHARSET
+    PrintSettings.Font.Color = clWindowText
+    PrintSettings.Font.Height = -11
+    PrintSettings.Font.Name = 'Tahoma'
+    PrintSettings.Font.Style = []
+    PrintSettings.FixedFont.Charset = DEFAULT_CHARSET
+    PrintSettings.FixedFont.Color = clWindowText
+    PrintSettings.FixedFont.Height = -11
+    PrintSettings.FixedFont.Name = 'Tahoma'
+    PrintSettings.FixedFont.Style = []
+    PrintSettings.HeaderFont.Charset = DEFAULT_CHARSET
+    PrintSettings.HeaderFont.Color = clWindowText
+    PrintSettings.HeaderFont.Height = -11
+    PrintSettings.HeaderFont.Name = 'Tahoma'
+    PrintSettings.HeaderFont.Style = []
+    PrintSettings.FooterFont.Charset = DEFAULT_CHARSET
+    PrintSettings.FooterFont.Color = clWindowText
+    PrintSettings.FooterFont.Height = -11
+    PrintSettings.FooterFont.Name = 'Tahoma'
+    PrintSettings.FooterFont.Style = []
+    PrintSettings.PageNumSep = '/'
+    SearchFooter.FindNextCaption = 'Find &next'
+    SearchFooter.FindPrevCaption = 'Find &previous'
+    SearchFooter.Font.Charset = DEFAULT_CHARSET
+    SearchFooter.Font.Color = clWindowText
+    SearchFooter.Font.Height = -11
+    SearchFooter.Font.Name = 'Tahoma'
+    SearchFooter.Font.Style = []
+    SearchFooter.HighLightCaption = 'Highlight'
+    SearchFooter.HintClose = 'Close'
+    SearchFooter.HintFindNext = 'Find next occurrence'
+    SearchFooter.HintFindPrev = 'Find previous occurrence'
+    SearchFooter.HintHighlight = 'Highlight occurrences'
+    SearchFooter.MatchCaseCaption = 'Match case'
+    SyncGrid.SelectionColumn = True
+    SyncGrid.SelectionRow = True
+    Version = '6.2.6.1'
+    ExplicitLeft = 24
+    ExplicitTop = 32
+    ExplicitWidth = 683
+    ExplicitHeight = 250
   end
   object DataSource3: TDataSource
     DataSet = MemTable_Personel

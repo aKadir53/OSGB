@@ -144,7 +144,4 @@ gebe muayenesi
 ve hastaneye sevk isteniyormuþ
 
 doktor kartýndan, iþ güvenliði uzman kartýndan "Kullanýcý aç" düðmesi eklenebilir mi ?
-saha gözlem formu detay getir sp sýra numaralarýnýn sonuç setindeki açýklamalara . karaktari ile eklenmesi, konu_sira alanýnýn gridden kaldýrýlmasý
 usersettings usermenusettings vs tablolarýn foreign key vs ile korumaya alýnmasý
-saha gözlem formu detay gridinin gruplanmasý
-þube tablosuna IGU dakika ve doktordakika alanlarý eklenip ISGKatip excel'inden güncellenebilir
