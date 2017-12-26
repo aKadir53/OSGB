@@ -218,6 +218,7 @@ begin
   setDataStringB(self,'SirketKod','Þirket Kodu',Kolon1,'',100,nil, True, SirketKod);
   SirketKod.Properties.ReadOnly := True;
 
+  þube kodu ekle
   kombo := TcxImageComboKadir.Create(self);
   kombo.Conn := Datalar.ADOConnection2;
   kombo.TableName := 'Egitim_tnm';

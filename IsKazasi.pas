@@ -219,7 +219,7 @@ begin
   setDataString(self,'Sahit3Adres','  Adres',Kolon1,'',200,True);
 
   setDataStringMemo(self,'KazaSebebOlusSekli','Kaza Sebeb',Kolon1,'',200,80);
-
+  þube kodu ekle
 
   SayfaCaption('Ýþ Kazasý','','','','');
 

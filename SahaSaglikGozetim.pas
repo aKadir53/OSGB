@@ -155,6 +155,7 @@ end;
 
 function TfrmSahaSaglikGozetim.Init(Sender : TObject) : Boolean;
 begin
+  þube kodu ekle
   ADO_SahaGozetim.SQL.Text :=
     'select SR.ID, DenetimiYapanKullanici, DenetimTarihi, Date_Create, GozetimDefterNo, FirmaKodu, '#13#10+
     '  cast (case when Image Is NULL then 0 else 1 end as bit) ImageVar, '#13#10+
