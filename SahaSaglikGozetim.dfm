@@ -50,6 +50,7 @@ object frmSahaSaglikGozetim: TfrmSahaSaglikGozetim
           OptionsData.Inserting = False
           OptionsView.CellAutoHeight = True
           OptionsView.GroupByBox = False
+          Styles.Group = cxStyle8
           OnCustomDrawGroupCell = gridRaporCustomDrawGroupCell
           object gridRaporGrupBaslikRakamli: TcxGridDBColumn
             DataBinding.FieldName = 'GrupBaslikRakamli'

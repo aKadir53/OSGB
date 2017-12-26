@@ -355,11 +355,12 @@ begin
   Sirketler.ItemIndex := 0;
 
 
-//  if GuncelKontrol = 0 then exit;
-  if rev = 'G'
-  then begin
-     GuncellemeBaslat('Auto');
-  end;
+  if GuncelKontrol = 'Evet'
+  then
+    if rev = 'G'
+    then begin
+       GuncellemeBaslat('Auto');
+    end;
 
 
   UserTable.Active := True;

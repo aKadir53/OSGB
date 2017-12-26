@@ -533,7 +533,7 @@ type
    function QueryExec (var Q: TADOQuery; const sql : string): Boolean;overload;
    function FindData (Q: TADOQuery; sql: string): integer;
    procedure Login;
-   function WebErisimBilgi(slk,slb : string) : string;
+ //  function WebErisimBilgi(slk,slb : string) : string;
    function KillTask(Dosyadi: string): integer;
 
     { Public declarations }
@@ -647,23 +647,7 @@ begin
   CloseHandle(fyakhandle);
 end;
 
-function TDatalar.WebErisimBilgi(slk,slb : string) : string;
-var
-  sql : string;
-  ado : TADOQuery;
-begin
-   WebErisimBilgi := '';
-   ado := TADOQuery.Create(nil);
-   try
-     ado.Connection := datalar.ADOConnection2;
-     sql := 'select Value from WebServisErisimBilgileri '  +
-            'where slk = ' + QuotedStr(slk) + ' and slb = ' + QuotedStr(slb);
-     datalar.QuerySelect(ado,sql);
-     WebErisimBilgi := ado.Fields[0].AsString;
-   finally
-     ado.Free;
-   end;
-end;
+
 
 procedure TDATALAR.Login;
 var

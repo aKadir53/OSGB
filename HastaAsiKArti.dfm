@@ -33,7 +33,6 @@ object frmAsiKarti: TfrmAsiKarti
     LevelTabs.ImageBorder = 2
     LevelTabs.Style = 1
     LookAndFeel.Kind = lfFlat
-    ExplicitWidth = 490
     object gridAsilar: TcxGridDBTableView
       Navigator.Buttons.First.Visible = True
       Navigator.Buttons.PriorPage.Visible = True
