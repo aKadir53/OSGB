@@ -995,7 +995,7 @@ begin
   setDataStringKontrol(self,DURUM, 'Durum','Sigortalý Tipi',Kolon2,'',70);
   *)
 
-
+  Sirketlerx := TcxImageComboKadir.Create(self);
   Sirketlerx.Conn := Datalar.ADOConnection2;
   Sirketlerx.TableName := 'SIRKETLER_TNM_view';
   Sirketlerx.ValueField := 'SirketKod';
@@ -1003,6 +1003,7 @@ begin
   Sirketlerx.BosOlamaz := False;
   Sirketlerx.Filter := SirketComboFilter;
   Sirketlerx.EditValue := datalar.AktifSirket;
+  Sirketlerx.ItemIndex := -1;
  // sirketlerx.tag := -100;
  // sirketlerx.Properties.ReadOnly := True;
  // sirketlerx.Properties.Buttons [0].Visible := False;
@@ -1024,7 +1025,6 @@ begin
   sirketlerx.Properties.OnEditValueChanged := SirketlerPropertiesChange;
 
   setDataString(self,'SicilNo','Sigorta No',Kolon2,'',70);
-
   setDataStringBLabel(self,'BosSatir1',Kolon2,'',10);
 
   setDataString(self,'EV_TEL1','Mobil Tel',Kolon2,'',120);
