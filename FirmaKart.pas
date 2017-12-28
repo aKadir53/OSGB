@@ -72,7 +72,7 @@ type
     procedure FotoEkle;
     procedure FotoNewRecord;
     procedure cxButtonEditPropertiesButtonClick(Sender: TObject;
-      AButtonIndex: Integer);
+      AButtonIndex: Integer);override;
     function TakipSil(TakipNo : string) : string;
     procedure cxGridGelislerDblClick(Sender: TObject);
     procedure txtTipPropertiesChange(Sender: TObject);
@@ -339,10 +339,10 @@ begin
     case TcxButtonEditKadir(sender).tag of
      1 : begin  //dosyaNo buttonedit
 
-             TcxImageComboKadir(FindComponent('ILCE')).Filter := 'ILKODU = ' + QuotedStr(TcxImageComboKadir(FindComponent('SEHIR')).EditingValue);
-             TcxImageComboKadir(FindComponent('BUCAK')).Filter := 'ILCEKODU = ' + QuotedStr(TcxImageComboKadir(FindComponent('ILCE')).EditingValue);
-             TcxImageComboKadir(FindComponent('KOY')).Filter := 'BUCAKKODU = ' + QuotedStr(TcxImageComboKadir(FindComponent('BUCAK')).EditingValue);
-             TcxImageComboKadir(FindComponent('MAHALLE')).Filter := 'KOYKODU = ' + QuotedStr(TcxImageComboKadir(FindComponent('KOY')).EditingValue);
+             TcxImageComboKadir(FindComponent('ILCE')).Filter := 'ILKODU = ' + QuotedStr(varTostr(TcxImageComboKadir(FindComponent('SEHIR')).EditingValue));
+             TcxImageComboKadir(FindComponent('BUCAK')).Filter := 'ILCEKODU = ' + QuotedStr(varTostr(TcxImageComboKadir(FindComponent('ILCE')).EditingValue));
+             TcxImageComboKadir(FindComponent('KOY')).Filter := 'BUCAKKODU = ' + QuotedStr(varTostr(TcxImageComboKadir(FindComponent('BUCAK')).EditingValue));
+             TcxImageComboKadir(FindComponent('MAHALLE')).Filter := 'KOYKODU = ' + QuotedStr(varTostr(TcxImageComboKadir(FindComponent('KOY')).EditingValue));
 
 
              _dosyaNo_ := TcxButtonEditKadir(sender).Text;
