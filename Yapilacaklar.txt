@@ -145,3 +145,22 @@ ve hastaneye sevk isteniyormuþ
 
 doktor kartýndan, iþ güvenliði uzman kartýndan "Kullanýcý aç" düðmesi eklenebilir mi ?
 usersettings usermenusettings vs tablolarýn foreign key vs ile korumaya alýnmasý
+Mobil uygulama Þirket seçim ekraný en alt satýr baþlat menüsü altýnda kalýyor.
+
+Doktor yetkileri kopyaladýk uzman'dan fakat yetkisiz çýktý.
+
+Personel aktarýrken þube seçili deðilse hata.
+
+Firma logo ekleyince þirket kodu null olamaz hatasý veriyor veritabaný
+
+E-imzasýz reçete gönderme özelliði açýlacak.
+
+Osgb doktoru kendine baðlý olmayan firma personelinin tamamýný görsün diyor Zafer Bey. Osgb polikliniði için lazým.
+
+doktorlar için personelim olmayan personel arama gibi birþey ekleyebiliriz
+
+Personel kartýnda bazý bilgiler boþ ise yeni muayene açarken hata veriyor.
+
+muayene kartýnda doktor seçimi gerekebilir.
+
+Burada karýþmasýn iki farklý hata var. Biri giren User Admin gibi doktor olmayan bir User ise geliþ tablosu doktor alanýna null atmaya çalýþýp hata veriyor. Diðer hata null olestr hatasý. Bu personel kartýnda bazý bilgiler boþ ise her durumda çýkýyor.

@@ -287,28 +287,40 @@ var
  Fo : TFileOpenDialog;
  filename,dosyaNo : string;
  jp : TJPEGImage;
+ bBasarili : Boolean;
 begin
   dosyaNo := TcxButtonEditKadir(FindComponent('SirketKod')).Text;
   datalar.ADO_Foto.SQL.Text := Format(FotoTable,[#39+dosyaNo+#39]);
   datalar.ADO_FOTO.Open;
-  datalar.ADO_FOTO.Edit;
-
-  Fo := TFileOpenDialog.Create(nil);
+  if datalar.ADO_FOTO.Eof then
+  begin
+    datalar.ADO_FOTO.Append;
+    DATALAR.ADO_FOTO.fieldByName ('SirketKod').AsString := dosyaNo;
+  end
+  else datalar.ADO_FOTO.Edit;
+  bBasarili := False;
   try
-    if not fo.Execute then Exit;
-    filename := fo.FileName;
-  finally
-    fo.Free;
-  end;
-  Foto.Picture.LoadFromFile(filename);
+    Fo := TFileOpenDialog.Create(nil);
+    try
+      if not fo.Execute then Exit;
+      filename := fo.FileName;
+    finally
+      fo.Free;
+    end;
+    Foto.Picture.LoadFromFile(filename);
 
-  jp := TJpegimage.Create;
-  try
-    jp.Assign(FOTO.Picture);
-    datalar.ADO_FOTO.FieldByName('Logo').Assign(jp);
-    datalar.ADO_FOTO.Post;
+    jp := TJpegimage.Create;
+    try
+      jp.Assign(FOTO.Picture);
+      datalar.ADO_FOTO.FieldByName('Logo').Assign(jp);
+      datalar.ADO_FOTO.Post;
+      bBasarili := True;
+    finally
+      jp.Free;
+    end;
   finally
-    jp.Free;
+    if not bBasarili then DATALAR.ADO_FOTO.Cancel;
+
   end;
 end;
 

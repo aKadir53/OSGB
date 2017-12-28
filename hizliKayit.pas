@@ -69,6 +69,7 @@ type
                      '@baslangic = %14:s,'+
                      '@kanGrubu = %15:s,'+
                      '@USER_ID = %16:s,'+
+                     '@sube = %18:s,'+
                      '@Aktif = %17:s';
 
 var
@@ -145,7 +146,7 @@ var
   bBasarili : Boolean;
   iCount : Integer;
   _row_ : integer;
-  Cins,Medeni,DTarih : String;
+  Cins,Medeni,DTarih,BTarih : String;
 begin
   try
     datalar.ADOConnection2.BeginTrans;
@@ -164,6 +165,9 @@ begin
         DTarih := ifThen(pos('.',GridList.Cells[12,_row_]) > 0,
                          NoktasizTarih(GridList.Cells[12,_row_]),GridList.Cells[12,_row_]);
 
+        BTarih := ifThen(pos('.',GridList.Cells[15,_row_]) > 0,
+                         NoktasizTarih(GridList.Cells[15,_row_]),GridList.Cells[15,_row_]);
+
         sql := Format(_insertPersonel_,
                       [QuotedStr(datalar.AktifSirket),
                        QuotedStr(GridList.Cells[1,_row_]),
@@ -179,10 +183,11 @@ begin
                        QuotedStr(GridList.Cells[11,_row_]),
                        QuotedStr(DTarih),
                        QuotedStr(GridList.Cells[13,_row_]),
-                       QuotedStr(GridList.Cells[14,_row_]),
-                       QuotedStr(GridList.Cells[15,_row_]),
+                       QuotedStr(BTarih),
+                       'NULL',
                        QuotedStr(datalar.username),
-                       QuotedStr(GridList.Cells[16,_row_])]);
+                       QuotedStr('1'),
+                       QuotedStr(datalar.AktifSube)]);
         datalar.queryExec(SelectAdo,sql);
         iCount := iCount + 1;
       end;
