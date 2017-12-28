@@ -145,10 +145,6 @@ object frmHizliKayit: TfrmHizliKayit
     SyncGrid.SelectionColumn = True
     SyncGrid.SelectionRow = True
     Version = '6.2.6.1'
-    ExplicitLeft = 24
-    ExplicitTop = 32
-    ExplicitWidth = 683
-    ExplicitHeight = 250
   end
   object DataSource3: TDataSource
     DataSet = MemTable_Personel

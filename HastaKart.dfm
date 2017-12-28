@@ -19,7 +19,7 @@ object frmHastaKart: TfrmHastaKart
   OnShow = FormShow
   PixelsPerInch = 96
   TextHeight = 13
-  object CINSIYETI: TcxImageComboBox
+  object CINSIYETI: TcxImageComboKadir
     Left = 144
     Top = 8
     Properties.Items = <
@@ -38,9 +38,10 @@ object frmHastaKart: TfrmHastaKart
     StyleFocused.LookAndFeel.NativeStyle = False
     StyleHot.LookAndFeel.NativeStyle = False
     TabOrder = 1
+    BosOlamaz = False
     Width = 121
   end
-  object MEDENI: TcxImageComboBox
+  object MEDENI: TcxImageComboKadir
     Left = 144
     Top = 35
     Properties.Items = <
@@ -55,9 +56,10 @@ object frmHastaKart: TfrmHastaKart
         Value = '1'
       end>
     TabOrder = 2
+    BosOlamaz = False
     Width = 121
   end
-  object DURUM: TcxImageComboBox
+  object DURUM: TcxImageComboKadir
     Left = 296
     Top = 8
     Properties.Items = <
@@ -79,9 +81,10 @@ object frmHastaKart: TfrmHastaKart
         Value = '4'
       end>
     TabOrder = 3
+    BosOlamaz = False
     Width = 121
   end
-  object VatandasTip: TcxImageComboBox
+  object VatandasTip: TcxImageComboKadir
     Left = 296
     Top = 35
     Properties.Items = <
@@ -107,6 +110,7 @@ object frmHastaKart: TfrmHastaKart
         Value = '6'
       end>
     TabOrder = 4
+    BosOlamaz = False
     Width = 121
   end
   object seansGunleri: TcxCheckGroup
