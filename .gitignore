@@ -66,3 +66,11 @@ __recovery/
 *.stat
 /compare.txt
 /OSGB.err
+/Win32/Debug/IReceteCvp.xml
+/Win32/Debug/ImzaliRecete.xml
+/Win32/Debug/IReceteGiris.xml
+/Win32/Debug/IRecete.xml
+/Win32/Debug/frmSahaSaglikGozetim.xls
+/Win32/Debug/frmPersonelEgitim.xls
+/Win32/Debug/TahlilSonucları.xls
+/Win32/Debug/AnaForm.xls
