@@ -31,10 +31,10 @@ uses
 
 type
   TfrmHastaKart = class(TGirisForm)
-    CINSIYETI: TcxImageComboBox;
-    MEDENI: TcxImageComboBox;
-    DURUM: TcxImageComboBox;
-    VatandasTip: TcxImageComboBox;
+    CINSIYETI: TcxImageComboKadir;
+    MEDENI: TcxImageComboKadir;
+    DURUM: TcxImageComboKadir;
+    VatandasTip: TcxImageComboKadir;
     seansGunleri: TcxCheckGroup;
     DOGUMTARIHI: TcxDateEditKadir;
     PopupMenu1: TPopupMenu;
@@ -374,6 +374,7 @@ begin
     Then Begin
         _Tarih_ := datalar.GelisDuzenleRecord.GirisTarihi;
         TedaviTuru := datalar.GelisDuzenleRecord.TedaviYontemi;
+
     End
     else
      exit;
@@ -521,6 +522,8 @@ end;
 
 procedure TfrmHastaKart.PropertiesEditValueChanged(
   Sender: TObject);
+var
+  filter : string;
 begin
   inherited;
 
@@ -528,28 +531,29 @@ begin
   then begin
     TcxImageComboKadir(FindComponent('EV_ILCE')).TableName := 'SKRS_ILCE_KODLARI';
     TcxImageComboKadir(FindComponent('EV_ILCE')).Filter := 'ILKODU = ' + QuotedStr(TcxImageComboKadir(FindComponent('EV_SEHIR')).EditingValue);
-    if FindComponent('EV_ILCE') <> nil Then TcxImageComboKadir(FindComponent('EV_ILCE')).EditValue := '';
+    if FindComponent('EV_ILCE') <> nil Then TcxImageComboKadir(FindComponent('EV_ILCE')).EditValue := Null;
   end
   else
   if TcxImageComboKadir(sender).Name = 'EV_ILCE'
   then begin
     TcxImageComboKadir(FindComponent('EV_BUCAK')).TableName := 'SKRS_BUCAK_KODLARI';
-    TcxImageComboKadir(FindComponent('EV_BUCAK')).Filter := 'ILCEKODU = ' + QuotedStr(TcxImageComboKadir(FindComponent('EV_ILCE')).EditingValue);
-    if FindComponent('EV_BUCAK') <> nil Then TcxImageComboKadir(FindComponent('EV_BUCAK')).EditValue := '';
+    TcxImageComboKadir(FindComponent('EV_BUCAK')).Filter := 'ILCEKODU = ' + QuotedStr(VarToStr(TcxImageComboKadir(FindComponent('EV_ILCE')).EditingValue));
+    if FindComponent('EV_BUCAK') <> nil Then TcxImageComboKadir(FindComponent('EV_BUCAK')).EditValue := Null;
   end
   else
   if TcxImageComboKadir(sender).Name = 'EV_BUCAK'
   then begin
     TcxImageComboKadir(FindComponent('EV_KOY')).TableName := 'SKRS_KOY_KODLARI';
-    TcxImageComboKadir(FindComponent('EV_KOY')).Filter := 'BUCAKKODU = ' + QuotedStr(TcxImageComboKadir(FindComponent('EV_BUCAK')).EditingValue);
-    if FindComponent('EV_KOY') <> nil Then TcxImageComboKadir(FindComponent('EV_KOY')).EditValue := '';
+    TcxImageComboKadir(FindComponent('EV_KOY')).Filter := 'BUCAKKODU = ' + QuotedStr(VarToStr(TcxImageComboKadir(FindComponent('EV_BUCAK')).EditingValue));
+    if FindComponent('EV_KOY') <> nil Then TcxImageComboKadir(FindComponent('EV_KOY')).EditValue := Null;
   end
   else
   if TcxImageComboKadir(sender).Name = 'EV_KOY'
   then begin
     TcxImageComboKadir(FindComponent('EV_MAHALLE')).TableName := 'SKRS_MAHALLE_KODLARI';
-    TcxImageComboKadir(FindComponent('EV_MAHALLE')).Filter := 'KOYKODU = ' + QuotedStr(TcxImageComboKadir(FindComponent('EV_KOY')).EditingValue);
-    if FindComponent('EV_MAHALLE') <> nil Then TcxImageComboKadir(FindComponent('EV_MAHALLE')).EditValue := '';
+    TcxImageComboKadir(FindComponent('EV_MAHALLE')).Filter := 'KOYKODU = ' +
+    QuotedStr(VarToStr(TcxImageComboKadir(FindComponent('EV_KOY')).EditingValue));
+    if FindComponent('EV_MAHALLE') <> nil Then TcxImageComboKadir(FindComponent('EV_MAHALLE')).EditValue := Null;
   end ;
  (*
   if TcxImageComboKadir(sender).Name = 'SirketKodNew'
@@ -644,18 +648,25 @@ begin
                                                    ' and Sube in (select datavalue from dbo.strtotable(' + QuotedStr(datalar.AktifSube) + ','',''))';
   inherited;
 
+
+  if TComponent(Sender).ClassName = 'TcxImageComboKadir' then
+  Begin
+    case TcxImageComboKadir(Sender).Tag of
+    1 : begin
+            TcxImageComboKadir(FindComponent('EV_ILCE')).Filter := 'ILKODU = ' + QuotedStr(varToStr(TcxImageComboKadir(FindComponent('EV_SEHIR')).EditingValue));
+            TcxImageComboKadir(FindComponent('EV_BUCAK')).Filter := 'ILCEKODU = ' + QuotedStr(varToStr(TcxImageComboKadir(FindComponent('EV_ILCE')).EditingValue));
+            TcxImageComboKadir(FindComponent('EV_KOY')).Filter := 'BUCAKKODU = ' + QuotedStr(varToStr(TcxImageComboKadir(FindComponent('EV_BUCAK')).EditingValue));
+            TcxImageComboKadir(FindComponent('EV_MAHALLE')).Filter := 'KOYKODU = ' + QuotedStr(varToStr(TcxImageComboKadir(FindComponent('EV_KOY')).EditingValue));
+        end;
+    end;
+
+  End;
+
+
   case TcxButtonEditKadir(sender).tag of
    1 : begin  //dosyaNo buttonedit
-
-
-
-           TcxImageComboKadir(FindComponent('Sirketlerx')).EditValue := TcxLabel(FindComponent('LabelSirketKod')).Caption;
-
-           TcxImageComboKadir(FindComponent('EV_ILCE')).Filter := 'ILKODU = ' + QuotedStr(TcxImageComboKadir(FindComponent('EV_SEHIR')).EditingValue);
-           TcxImageComboKadir(FindComponent('EV_BUCAK')).Filter := 'ILCEKODU = ' + QuotedStr(TcxImageComboKadir(FindComponent('EV_ILCE')).EditingValue);
-           TcxImageComboKadir(FindComponent('EV_KOY')).Filter := 'BUCAKKODU = ' + QuotedStr(TcxImageComboKadir(FindComponent('EV_BUCAK')).EditingValue);
-           TcxImageComboKadir(FindComponent('EV_MAHALLE')).Filter := 'KOYKODU = ' + QuotedStr(TcxImageComboKadir(FindComponent('EV_KOY')).EditingValue);
-
+        try
+            TcxImageComboKadir(FindComponent('Sirketlerx')).EditValue := TcxLabel(FindComponent('LabelSirketKod')).Caption;
 
            _dosyaNo_ := TcxButtonEditKadir(sender).Text;
            _Tc_ := TcxTextEditKadir(FindComponent('TcKimlikNo')).Text;
@@ -682,6 +693,10 @@ begin
            end;
            Gelisler(TcxButtonEditKadir(sender).Text);
       //     _gelisNO_ := ADO_Gelisler.FieldByName('gelisNO').AsString;
+        except
+
+        end;
+
        end;
 
 
@@ -801,6 +816,22 @@ begin
 
   Result := False;
   if not inherited Init(Sender) then exit;
+
+  if _TC_ <> '' then
+  begin
+    ado := TADOQuery.Create(nil);
+    try
+      //t2x := ayliktarih(date,t1);
+      sql := 'select top 1 dosyaNo from PersonelKart ' +
+             ' where TCKIMLIKNO = ' + QuotedStr(_TC_) +
+             ' and Aktif = 1 ' +
+             ' order by dosyaNo';
+      datalar.QuerySelect(ado,sql);
+      _dosyaNo_ := ado.Fields[0].AsString;
+    finally
+      ado.Free;
+    end;
+  end;
 
   if _dosyaNo_ = '' then
   begin

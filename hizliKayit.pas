@@ -60,7 +60,7 @@ type
                      '@MEDENI = %5:s,'+
                      '@BABAADI = %6:s,'+
                      '@ANAADI = %7:s,'+
-                     '@EV_SEHIR = %8:s,'+
+                     '@EV_ADRES = %8:s,'+
                      '@EV_TEL1 = %9:s,'+
                      '@EV_TEL2 = %10:s,'+
                      '@DOGUMYERI = %11:s,'+
@@ -86,7 +86,6 @@ var
   dosya : string;
   sonsatir ,sonColon, x : integer;
 begin
-
   openD := TOpenDialog.Create(nil);
   try
     if not openD.Execute then Exit;
@@ -96,8 +95,6 @@ begin
   end;
 
   GridList.LoadFromXLS(dosya);
-
-
 
 (*
   v := CreateOleObject('Excel.Application');
@@ -210,8 +207,6 @@ begin
   end;
 
 end;
-
-
 
 
 

@@ -81,3 +81,4 @@ saha gözlem formu detay getir sp sýra numaralarýnýn sonuç setindeki açýklamalara
 
 personel kart alanlarý null olabilir yapýldý
 þube tablosuna IGU dakika ve doktordakika alanlarý eklenip ISGKatip excel'inden güncellenmesi saðlandý
+reçeteden geliþler tblosuna foreign key kontrol edilip eklendi
