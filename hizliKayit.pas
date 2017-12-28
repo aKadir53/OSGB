@@ -251,5 +251,7 @@ begin
     cxPanel.Visible := false;
     SayfaCaption('','','' ,'','');
 end;
+Personel aktarýrken þube seçili deðilse hata.
 
-end.
+isg katip excel'ini programdan aktarma
+end.
