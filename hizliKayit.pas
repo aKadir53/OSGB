@@ -86,7 +86,6 @@ var
   dosya : string;
   sonsatir ,sonColon, x : integer;
 begin
-
   openD := TOpenDialog.Create(nil);
   try
     if not openD.Execute then Exit;
@@ -96,8 +95,6 @@ begin
   end;
 
   GridList.LoadFromXLS(dosya);
-
-
 
 (*
   v := CreateOleObject('Excel.Application');
@@ -210,8 +207,6 @@ begin
   end;
 
 end;
-
-
 
 
 

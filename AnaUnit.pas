@@ -511,6 +511,7 @@ procedure TAnaForm.menuclik(_tag_ : integer ; FormID : integer = 0 ; ShowTip : i
 var
   GirisRecord : TGirisFormRecord;
   F : TGirisForm;
+  tc : string;
 begin
 // MenuItem cliklendiðinde menu satiri form açýlma þekli ile form açar yada sadece method çalýþtýrýr.
 //FormID > 0 form açýlacak
@@ -524,6 +525,19 @@ begin
           end;
     124 : begin
             LisansUzat;
+          end;
+      6 : begin
+           tc := InputBox('Personel Ara','Tc Kimlik No','');
+           if FindTab(AnaForm.sayfalar,TagfrmHastaKart)
+           Then begin
+             F := TGirisForm(FormClassType(TagfrmHastaKart));
+             TGirisForm(FormClassType(TagfrmHastaKart))._TC_ := tc;
+             TGirisForm(FormClassType(TagfrmHastaKart)).Init(F);
+           end
+           Else begin
+            F := FormINIT(TagfrmHastaKart,self,'',NewTab(AnaForm.sayfalar,TagfrmHastaKart),ikEvet,'',tc);
+            if F <> nil then F.show;
+          end;
           end
      else
         if FormID > 0 then

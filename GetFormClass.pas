@@ -16,7 +16,8 @@ function FormINIT(FormTag : Integer;MidiForm : TForm;
 function FormINIT(FormTag : Integer;MidiForm : TForm;
                   Value : String = '';
                   Tab : TcxTabSheet = nil;ik : izinKontrol = ikHayir ;
-                  izinPrm : string = '') : TGirisForm;overload;
+                  izinPrm : string = '';
+                  tc : String = '') : TGirisForm;overload;
 
 function FormINIT(FormTag : Integer;Value : TGirisFormRecord;ik : izinKontrol = ikHayir ;
                   izinPrm : string = '') : TGirisForm;overload;
@@ -317,7 +318,7 @@ end;
 
 function FormINIT(FormTag : Integer;MidiForm : TForm;Value : String = '';
                    Tab : TcxTabSheet = nil;ik : izinKontrol = ikHayir;
-                   izinPrm : string = '') : TGirisForm;
+                   izinPrm : string = '';tc : string = '') : TGirisForm;
 var
   Form : TGirisForm;
 begin
@@ -367,6 +368,7 @@ begin
    end;
 
    TGirisForm(Form)._dosyaNO_ := Value;
+   TGirisForm(Form)._TC_ := tc;
    TGirisForm(Form).Tag := FormTag;
    TgirisForm(Form).Parent := Tab;
    TGirisForm(Form).BringToFront;
