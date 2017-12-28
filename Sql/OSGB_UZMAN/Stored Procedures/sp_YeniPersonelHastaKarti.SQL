@@ -20,7 +20,8 @@ ALTER PROCEDURE [dbo].[sp_YeniPersonelHastaKarti]
   @kanGrubu varchar(1),
   @USER_ID varchar(20),
   @sube varchar(2) = '00',
-  @aktif int = 2
+  @aktif int = 2,
+  @EV_ADRES varchar(255)
 
 AS
 begin
@@ -52,7 +53,8 @@ begin
     [KANGRUBU],
     [USER_ID],
     [Sube],
-    [Aktif]
+    [Aktif],
+	EV_ADRES
   )
   VALUES(
     @Dn,
@@ -75,7 +77,8 @@ begin
     @KanGrubu,
     @USER_ID,
     @sube,
-    @aktif
+    @aktif,
+	@EV_ADRES
 
 
 
