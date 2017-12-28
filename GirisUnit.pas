@@ -1951,8 +1951,12 @@ begin
            (self.Components[i].ClassName = 'TcxImageComboBox'))
            and (TcxImageComboBox(_obje_).Text = '')
         Then Begin
-          TcxImageComboBox(_obje_).EditValue := Null;
-          sqlRun.FieldByName(_Obje_.Name).AsVariant := _Obje_.EditingValue;
+        //  TcxImageComboKadir(_obje_).EditValue := Null;
+     //     sqlRun.FieldByName(_Obje_.Name).DataType = ftInteger
+     //     Then
+       //     sqlRun.FieldByName(_Obje_.Name).AsVariant
+          sqlRun.FieldByName(_Obje_.Name).AsVariant := Null;
+
         //  Continue;
         End
         Else

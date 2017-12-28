@@ -60,7 +60,7 @@ type
                      '@MEDENI = %5:s,'+
                      '@BABAADI = %6:s,'+
                      '@ANAADI = %7:s,'+
-                     '@EV_SEHIR = %8:s,'+
+                     '@EV_ADRES = %8:s,'+
                      '@EV_TEL1 = %9:s,'+
                      '@EV_TEL2 = %10:s,'+
                      '@DOGUMYERI = %11:s,'+

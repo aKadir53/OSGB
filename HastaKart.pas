@@ -31,10 +31,10 @@ uses
 
 type
   TfrmHastaKart = class(TGirisForm)
-    CINSIYETI: TcxImageComboBox;
-    MEDENI: TcxImageComboBox;
-    DURUM: TcxImageComboBox;
-    VatandasTip: TcxImageComboBox;
+    CINSIYETI: TcxImageComboKadir;
+    MEDENI: TcxImageComboKadir;
+    DURUM: TcxImageComboKadir;
+    VatandasTip: TcxImageComboKadir;
     seansGunleri: TcxCheckGroup;
     DOGUMTARIHI: TcxDateEditKadir;
     PopupMenu1: TPopupMenu;
@@ -374,6 +374,7 @@ begin
     Then Begin
         _Tarih_ := datalar.GelisDuzenleRecord.GirisTarihi;
         TedaviTuru := datalar.GelisDuzenleRecord.TedaviYontemi;
+
     End
     else
      exit;
@@ -528,28 +529,28 @@ begin
   then begin
     TcxImageComboKadir(FindComponent('EV_ILCE')).TableName := 'SKRS_ILCE_KODLARI';
     TcxImageComboKadir(FindComponent('EV_ILCE')).Filter := 'ILKODU = ' + QuotedStr(TcxImageComboKadir(FindComponent('EV_SEHIR')).EditingValue);
-    if FindComponent('EV_ILCE') <> nil Then TcxImageComboKadir(FindComponent('EV_ILCE')).EditValue := '';
+    if FindComponent('EV_ILCE') <> nil Then TcxImageComboKadir(FindComponent('EV_ILCE')).EditValue := Null;
   end
   else
   if TcxImageComboKadir(sender).Name = 'EV_ILCE'
   then begin
     TcxImageComboKadir(FindComponent('EV_BUCAK')).TableName := 'SKRS_BUCAK_KODLARI';
     TcxImageComboKadir(FindComponent('EV_BUCAK')).Filter := 'ILCEKODU = ' + QuotedStr(TcxImageComboKadir(FindComponent('EV_ILCE')).EditingValue);
-    if FindComponent('EV_BUCAK') <> nil Then TcxImageComboKadir(FindComponent('EV_BUCAK')).EditValue := '';
+    if FindComponent('EV_BUCAK') <> nil Then TcxImageComboKadir(FindComponent('EV_BUCAK')).EditValue := Null;
   end
   else
   if TcxImageComboKadir(sender).Name = 'EV_BUCAK'
   then begin
     TcxImageComboKadir(FindComponent('EV_KOY')).TableName := 'SKRS_KOY_KODLARI';
     TcxImageComboKadir(FindComponent('EV_KOY')).Filter := 'BUCAKKODU = ' + QuotedStr(TcxImageComboKadir(FindComponent('EV_BUCAK')).EditingValue);
-    if FindComponent('EV_KOY') <> nil Then TcxImageComboKadir(FindComponent('EV_KOY')).EditValue := '';
+    if FindComponent('EV_KOY') <> nil Then TcxImageComboKadir(FindComponent('EV_KOY')).EditValue := Null;
   end
   else
   if TcxImageComboKadir(sender).Name = 'EV_KOY'
   then begin
     TcxImageComboKadir(FindComponent('EV_MAHALLE')).TableName := 'SKRS_MAHALLE_KODLARI';
     TcxImageComboKadir(FindComponent('EV_MAHALLE')).Filter := 'KOYKODU = ' + QuotedStr(TcxImageComboKadir(FindComponent('EV_KOY')).EditingValue);
-    if FindComponent('EV_MAHALLE') <> nil Then TcxImageComboKadir(FindComponent('EV_MAHALLE')).EditValue := '';
+    if FindComponent('EV_MAHALLE') <> nil Then TcxImageComboKadir(FindComponent('EV_MAHALLE')).EditValue := Null;
   end ;
  (*
   if TcxImageComboKadir(sender).Name = 'SirketKodNew'
