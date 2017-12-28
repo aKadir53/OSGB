@@ -151,8 +151,9 @@ begin
     bBasarili := False;
     iCount := 0;
     try
-      for _row_ := 1 to GridList.RowCount do
+      for _row_ := 1 to GridList.RowCount - 1 do
       begin
+        if IsNull (GridList.Cells[1,_row_]) then Continue;
         Cins := ifThen(Copy(GridList.Cells[4,_row_],1,1) = 'B','1',
                 ifThen(Copy(GridList.Cells[4,_row_],1,1) = '1','1',
                 ifThen(Copy(GridList.Cells[4,_row_],1,1) = 'K','1','0')));

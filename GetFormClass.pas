@@ -319,8 +319,11 @@ begin
    TGirisForm(Form).Tag := FormTag;
    TgirisForm(Form).Parent := Tab;
    TGirisForm(Form).BringToFront;
-   TGirisForm(Form).Init(Form);
-   result := TGirisForm(Form);
+   if TGirisForm(Form).Init(Form) = True
+   Then
+    result := TGirisForm(Form)
+   Else
+    result := nil;
 end;
 
 
@@ -380,8 +383,11 @@ begin
    TGirisForm(Form).Tag := FormTag;
    TgirisForm(Form).Parent := Tab;
    TGirisForm(Form).BringToFront;
-   TGirisForm(Form).Init(Form);
-   result := TGirisForm(Form);
+   if TGirisForm(Form).Init(Form) = True
+   Then
+    result := TGirisForm(Form)
+   Else
+    result := nil;
 end;
 
 function FormINIT(FormTag : Integer; Value : TGirisFormRecord;ik : izinKontrol = ikHayir;izinPrm : string = '') : TGirisForm;
@@ -480,8 +486,11 @@ begin
   TGirisForm(Form).cxTab.Tabs[0].ImageIndex := FormTabImageIndex(FormTag);
 
   TGirisForm(Form).Tag := FormTag;
-  TGirisForm(Form).Init(Form);
-  result := TGirisForm(Form);
+   if TGirisForm(Form).Init(Form) = True
+   Then
+    result := TGirisForm(Form)
+   Else
+    result := nil;
 
 end;
 
