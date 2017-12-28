@@ -213,7 +213,8 @@ begin
              xSahaDenetimVeri.KullaniciAdi := TcxTextEdit(FindComponent('Kullanici')).EditValue;
              xSahaDenetimVeri.DenetimDefterNo := TcxTextEdit(FindComponent('DenetimDefterNo')).EditValue;
              xSahaDenetimVeri.GozlemGrubu := TcxTextEdit(FindComponent('GozlemGrup')).EditValue;
-             (Application.FindComponent(FGirisForm.name) as TGirisForm)._SahaDenetimVeri_ := xSahaDenetimVeri;
+             TGirisForm(FGirisForm)._SahaDenetimVeri_ := xSahaDenetimVeri;
+           //  (Application.FindComponent(FGirisForm.name) as TGirisForm)._SahaDenetimVeri_ := xSahaDenetimVeri;
            end;
 
   end;
@@ -527,7 +528,7 @@ inherited;
          textEdit.Name := 'FirmaKodu';
          textEdit.Properties.ReadOnly := True;
          setDataStringKontrol(self,textEdit, 'FirmaKodu','Firma No',Kolon1,'',60);
-         TcxTextEdit(FindComponent('FirmaKodu')).EditValue := FGirisForm._SahaDenetimVeri_.FirmaKod;
+         TcxTextEdit(FindComponent('FirmaKodu')).EditValue := _SahaDenetimVeri_.FirmaKod;
 
          textEdit := TcxTextEdit.Create(self);
          textEdit.Name := 'FirmaAdi';
@@ -545,7 +546,7 @@ inherited;
          Doktorlar.Properties.ReadOnly := (frmPopup._islem_ <> yeniGozlem);
          OrtakEventAta(doktorlar);
          setDataStringKontrol(self,doktorlar,'GozlemGrup','Saha Gözlem Tipi',kolon1,'',145);
-         TcxTextEdit(FindComponent('GozlemGrup')).EditValue := FGirisForm._SahaDenetimVeri_.GozlemGrubu;
+         TcxTextEdit(FindComponent('GozlemGrup')).EditValue := _SahaDenetimVeri_.GozlemGrubu;
 
 
 
@@ -553,18 +554,18 @@ inherited;
          textEdit.Name := 'Kullanici';
          textEdit.Properties.ReadOnly := True;
          setDataStringKontrol(self,textEdit, 'Kullanici','Denetimi Yapan Kullanici',Kolon1,'',80);
-         TcxTextEdit(FindComponent('Kullanici')).EditValue := FGirisForm._SahaDenetimVeri_.KullaniciAdi;
+         TcxTextEdit(FindComponent('Kullanici')).EditValue := _SahaDenetimVeri_.KullaniciAdi;
 
          _Tarih_ := TcxDateEditKadir.Create(self);
          _Tarih_.Name := 'DenetimTarihi';
          setDataStringKontrol(self,_Tarih_, 'DenetimTarihi','Tarih',Kolon1,'',100);
-         TcxTextEdit(FindComponent('DenetimTarihi')).EditValue := FGirisForm._SahaDenetimVeri_.DenetimTarihi;
+         TcxTextEdit(FindComponent('DenetimTarihi')).EditValue := _SahaDenetimVeri_.DenetimTarihi;
 
          textEdit := TcxTextEdit.Create(self);
          textEdit.Name := 'DenetimDefterNo';
          textEdit.Properties.ReadOnly := False;
          setDataStringKontrol(self,textEdit, 'DenetimDefterNo','Denetim Defter No.',Kolon1,'',60);
-         TcxTextEdit(FindComponent('DenetimDefterNo')).EditValue := FGirisForm._SahaDenetimVeri_.DenetimDefterNo;
+         TcxTextEdit(FindComponent('DenetimDefterNo')).EditValue := _SahaDenetimVeri_.DenetimDefterNo;
        end;
 
   end;
