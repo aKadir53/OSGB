@@ -8,7 +8,7 @@ BEGIN
 	@receteTaniBilgisi varchar(1000),
 	@receteAck varchar(1000),
 	@doktorTc varchar(20),
-	@pin varchar(6),
+	@pin varchar(10),
 	@user varchar(20),
 	@sifre varchar(20),
 	@cardType varchar(100)
