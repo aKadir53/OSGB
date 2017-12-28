@@ -81,6 +81,7 @@ object frmHastaKart: TfrmHastaKart
         Value = '4'
       end>
     TabOrder = 3
+    Visible = False
     BosOlamaz = False
     Width = 121
   end
