@@ -164,3 +164,6 @@ Personel kartýnda bazý bilgiler boþ ise yeni muayene açarken hata veriyor.
 muayene kartýnda doktor seçimi gerekebilir.
 
 Burada karýþmasýn iki farklý hata var. Biri giren User Admin gibi doktor olmayan bir User ise geliþ tablosu doktor alanýna null atmaya çalýþýp hata veriyor. Diðer hata null olestr hatasý. Bu personel kartýnda bazý bilgiler boþ ise her durumda çýkýyor.
+muayene giriþi zorunlu yapýlabilir, zorunlu olup olmamasý osgb'nin program ayarlarýndan seçebileceði bir hale getirilebilir mi.
+
+hastalarýn mevcut saðlýk, tahlil vb bilgileri, önceden yapýlmýþ iþe giriþ muayene formlarý (ek-2) sisteme aktarýlabilir mi ?
