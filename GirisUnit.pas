@@ -967,13 +967,15 @@ begin
          TcxComboBox(_obje_).ItemIndex := -1
        else
        if (self.Components[i].ClassName = 'TcxImageComboKadir') and
-          (sqlRun.FieldByName(_Obje_.Name).AsVariant = null)
-       then
-          _obje_.EditValue := ''
+          (sqlRun.FieldByName(_Obje_.Name).AsString = '')
+       then begin
+         try TcxImageComboKadir(_obje_).Clear except end;
+       end
        else
-         _obje_.EditValue := sqlRun.FieldByName(_Obje_.Name).AsVariant;
-
-
+       begin
+         try TcxImageComboKadir(_obje_).EditValue := sqlRun.FieldByName(_Obje_.Name).AsVariant;
+         except end;
+       end;
        if (self.Components[i].ClassName = 'TcxImage')
        Then Begin
          g := TJpegimage.Create;
@@ -1951,8 +1953,12 @@ begin
            (self.Components[i].ClassName = 'TcxImageComboBox'))
            and (TcxImageComboBox(_obje_).Text = '')
         Then Begin
-          TcxImageComboBox(_obje_).EditValue := Null;
-          sqlRun.FieldByName(_Obje_.Name).AsVariant := _Obje_.EditingValue;
+        //  TcxImageComboKadir(_obje_).EditValue := Null;
+     //     sqlRun.FieldByName(_Obje_.Name).DataType = ftInteger
+     //     Then
+       //     sqlRun.FieldByName(_Obje_.Name).AsVariant
+          sqlRun.FieldByName(_Obje_.Name).AsVariant := Null;
+
         //  Continue;
         End
         Else
@@ -2218,18 +2224,6 @@ begin
            indexKaydiBul(dosyaNo,'');
          //  KontrolEditValueClear;
            sqlRunLoad;
-           (*
-           if Tform(self).tag = 90
-           Then begin
-              dosyaNo := dosyaNoYeniNumaraAl;
-              if dosyaNo = '0'
-              then begin
-                ShowMessageskin('Dosya No Alýnamadý','','','info');
-                exit;
-              end
-              else
-               TcxButtonEditKadir(FindComponent('dosyaNo')).Text :=  dosyaNo;
-           end;*)
 
            sqlRun.Append;
            F_IDENTITY := -1;
