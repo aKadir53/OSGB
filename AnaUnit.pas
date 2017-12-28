@@ -350,7 +350,7 @@ begin
   Sirketler.ValueField := 'SirketKod';
   Sirketler.DisplayField := 'Tanimi';
   Sirketler.BosOlamaz := False;
-  Sirketler.Filter := where + sube;
+  Sirketler.Filter :=  where + sube;
   Sirketler.tag := -100;
   Sirketler.ItemIndex := 0;
 
