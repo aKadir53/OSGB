@@ -24,9 +24,9 @@ object frmIlaclar: TfrmIlaclar
     object cxGrid9: TcxGrid
       Tag = 1
       Left = 2
-      Top = 53
+      Top = 33
       Width = 373
-      Height = 160
+      Height = 180
       Align = alClient
       Font.Charset = TURKISH_CHARSET
       Font.Color = clWindowText
@@ -144,7 +144,7 @@ object frmIlaclar: TfrmIlaclar
     end
     object cxGroupBox1: TcxGroupBox
       Left = 2
-      Top = 18
+      Top = -2
       Align = alTop
       PanelStyle.Active = True
       TabOrder = 1

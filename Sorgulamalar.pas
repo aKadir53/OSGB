@@ -99,6 +99,7 @@ begin
   Result := False;
   if not inherited Init(Sender) then exit;
   Raporlar;
+  Result := True;
 end;
 
 procedure TfrmSorgulamalar.btnSorguCalistirClick(Sender: TObject);

@@ -48,7 +48,7 @@ function TfrmDoktorlar.Init(Sender: TObject) : Boolean;
   List,List1,List3 : TListeAc;
   bransKodu,calismaTipi,cardType,sirket : TcxImageComboKadir;
 begin
-
+Result := False;
 case self.Tag of
  TagfrmDoktorlar
   : begin
@@ -141,6 +141,7 @@ case self.Tag of
 
 
         Disabled(self,True);
+        Result := True;
   end;
 
  TagfrmIGU
@@ -212,6 +213,7 @@ case self.Tag of
 
 
         Disabled(self,True);
+        Result := True;
     end;
 
 

@@ -81,6 +81,7 @@ function TfrmKontrolUserSet.Init(Sender : TObject) : Boolean;
 begin
   InputKontrol.Open;
   YukleZorunlu;
+  Result := True;
 end;
 
 

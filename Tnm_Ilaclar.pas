@@ -254,6 +254,7 @@ case self.Tag of
         //  tableColumnDescCreate;
 
           SayfaCaption('Taným Bilgileri','Ýlaç Reçete Bilgileri','','','');
+          Result := True;
        end;
 
    TagfrmIlacAnaGrup
@@ -283,6 +284,7 @@ case self.Tag of
           setDataStringB(self,'kod','Ana Grup Kodu',Kolon1,'',100,List,True,nil);
           setDataString(self,'tanimi','Grup Tanýmý',Kolon1,'',250);
           SayfaCaption('Taným Bilgileri','','','','');
+          Result := True;
       end;
 TagfrmIlacEtkenMadde
  : begin
@@ -324,7 +326,8 @@ TagfrmIlacEtkenMadde
           setDataStringKontrol(self,cxPanelReceteAciklama,'cxPanelReceteAciklama','',sayfa2_Kolon1,'',570,250,alClient);
 
           SayfaCaption('Taným Bilgileri','Tetkik Sonuç','','','');
-                       end;
+          Result := True;
+ end;
 end;
        inherited;
 
