@@ -60,6 +60,7 @@ type
                      '@MEDENI = %5:s,'+
                      '@BABAADI = %6:s,'+
                      '@ANAADI = %7:s,'+
+                     '@EV_SEHIR = %19:s,'+
                      '@EV_ADRES = %8:s,'+
                      '@EV_TEL1 = %9:s,'+
                      '@EV_TEL2 = %10:s,'+
@@ -184,7 +185,8 @@ begin
                        'NULL',
                        QuotedStr(datalar.username),
                        QuotedStr('1'),
-                       QuotedStr(datalar.AktifSube)]);
+                       QuotedStr(datalar.AktifSube),
+                       QuotedStr(GridList.Cells[16,_row_])]);
         datalar.queryExec(SelectAdo,sql);
         iCount := iCount + 1;
       end;
