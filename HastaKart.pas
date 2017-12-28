@@ -135,13 +135,14 @@ type
       var DisplayValue: Variant; var ErrorText: TCaption; var Error: Boolean);
     procedure ADO_WebServisErisimAfterScroll(DataSet: TDataSet);
     procedure FormShow(Sender: TObject);
-
+    procedure SirketlerPropertiesChange(Sender: TObject);
   private
     { Private declarations }
   public
     { Public declarations }
     procedure OrtakEventAta(Sender : TObject);overload;
     procedure OrtakEventAta(Sender : TcxImageComboKadir);overload;
+
     function Init(Sender: TObject) : Boolean; override;
   end;
 
@@ -164,7 +165,25 @@ implementation
     uses AnaUnit, HastaAsiKArti,SMS;
 {$R *.dfm}
 
+procedure TfrmHastaKart.SirketlerPropertiesChange(Sender: TObject);
+var
+  sube : string;
+begin
 
+  if (datalar.doktorKodu <> '')
+  then
+     sube := ' and subeDoktor = ' + QuotedStr(datalar.doktorKodu)
+  else
+  if (datalar.IGU <> '') then
+     sube := ' and IGU = ' + QuotedStr(datalar.IGU)
+  else
+    sube := '';
+
+  TcxImageComboKadir(FindComponent('Sube')).TableName := 'SIRKET_SUBE_TNM';
+  TcxImageComboKadir(FindComponent('Sube')).Filter := ' SirketKod = ' +
+  QuotedStr(varToStr(TcxImageComboKadir(FindComponent('SirketKod')).EditValue)) + sube;
+
+end;
 
 procedure TfrmHastaKart.ADO_WebServisErisimAfterScroll(DataSet: TDataSet);
 var
@@ -397,7 +416,7 @@ begin
           '@SERVIS = ' + #39 + '' + #39 + ',' +
           '@TEDAVITURU = ' + #39 + TedaviTuru + #39 + ',' +
           '@Kullanici = ' + #39 + datalar.username + #39 + ',' +
-          '@sirketKod = ' + QuotedStr(sirketKod.Text);
+          '@sirketKod = ' + QuotedStr(datalar.AktifSirket);
 
 
      datalar.QuerySelect(datalar.ADO_SQL,sql);
@@ -666,7 +685,7 @@ begin
   case TcxButtonEditKadir(sender).tag of
    1 : begin  //dosyaNo buttonedit
         try
-            TcxImageComboKadir(FindComponent('Sirketlerx')).EditValue := TcxLabel(FindComponent('LabelSirketKod')).Caption;
+        //    TcxImageComboKadir(FindComponent('Sirketlerx')).EditValue := TcxLabel(FindComponent('LabelSirketKod')).Caption;
 
            _dosyaNo_ := TcxButtonEditKadir(sender).Text;
            _Tc_ := TcxTextEditKadir(FindComponent('TcKimlikNo')).Text;
@@ -856,7 +875,7 @@ begin
   then
    dosyaNo.OnKeyDown(frmHastaKart.dosyaNo,key,[]);
 
-  TcxImageComboKadir (FindComponent ('sube')).Filter := ' SirketKod = ' + QuotedStr (TcxLabel(FindComponent('LabelSirketKod')).Caption);
+ // TcxImageComboKadir(FindComponent ('sube')).Filter := ' SirketKod = ' + QuotedStr (TcxLabel(FindComponent('LabelSirketKod')).Caption);
 
 
   IseGirisMuayene.Dataset.AfterScroll := ADO_WebServisErisimAfterScroll;
@@ -875,9 +894,10 @@ var
   EV_SEHIR ,EV_ILCE ,EV_BUCAK , EV_KOY,EV_MAHALLE : TcxImageComboKadir;
   DEV_KURUM,Kurum,EGITIM : TcxImageComboKadir;
   askerlik,ozur,bolum,birim,risk,muayenePeryot,Subeler,sirketlerx,SirketKodNew: TcxImageComboKadir;
+  where,sube : string;
 begin
   USER_ID.Tag := 0;
-  sirketKod.Tag := 0;
+  //sirketKod.Tag := 0;
 
   Menu := PopupMenu1;
 
@@ -950,7 +970,7 @@ begin
   OrtakEventAta(EGITIM);
   setDataStringKontrol(self,EGITIM,'EGITIM_DURUMU','Eðitim Durumu',kolon1,'',130);
 
-
+  (*
   Kurum := TcxImageComboKadir.Create(self);
   Kurum.Conn := Datalar.ADOConnection2;
   Kurum.TableName := 'Kurumlar';
@@ -973,6 +993,36 @@ begin
 
 
   setDataStringKontrol(self,DURUM, 'Durum','Sigortalý Tipi',Kolon2,'',70);
+  *)
+
+
+  Sirketlerx.Conn := Datalar.ADOConnection2;
+  Sirketlerx.TableName := 'SIRKETLER_TNM_view';
+  Sirketlerx.ValueField := 'SirketKod';
+  Sirketlerx.DisplayField := 'Tanimi';
+  Sirketlerx.BosOlamaz := False;
+  Sirketlerx.Filter := SirketComboFilter;
+  Sirketlerx.EditValue := datalar.AktifSirket;
+ // sirketlerx.tag := -100;
+ // sirketlerx.Properties.ReadOnly := True;
+ // sirketlerx.Properties.Buttons [0].Visible := False;
+  setDataStringKontrol(self,sirketlerx,'SirketKod','Þirket',Kolon2,'',250,0,alNone,'');
+
+ // OrtakEventAta(sirketlerx);
+
+  subeler := TcxImageComboKadir.Create(self);
+  subeler.Conn := Datalar.ADOConnection2;
+  subeler.TableName := 'SIRKET_SUBE_TNM';
+  subeler.ValueField := 'subeKod';
+  subeler.DisplayField := 'subeTanim';
+  subeler.BosOlamaz := True;
+ // subeler.Filter :=
+ // ' SirketKod = ' + QuotedStr(varToStr(TcxImageComboKadir(FindComponent('SirketKod')).EditValue));
+ //   setDataStringBLabel(Self, 'SirketKod', Kolon4, '', 0, '', '', 'SirketKod');
+  setDataStringKontrol(self,subeler,'sube','Þube',Kolon2,'',120);
+ // OrtakEventAta(subeler);
+  sirketlerx.Properties.OnEditValueChanged := SirketlerPropertiesChange;
+
   setDataString(self,'SicilNo','Sigorta No',Kolon2,'',70);
 
   setDataStringBLabel(self,'BosSatir1',Kolon2,'',10);
@@ -1061,21 +1111,6 @@ begin
   setDataStringKontrol(self,muayenePeryot,'MuayenePeryot','',kolon4,'',110);
   OrtakEventAta(muayenePeryot);
 
-  setDataStringBLabel(Self, 'SirketKod', Kolon4, '', 0, '', '', 'SirketKod');
-
-  sirketlerx := TcxImageComboKadir.Create(self);
-  sirketlerx.Conn := Datalar.ADOConnection2;
-  sirketlerx.TableName := 'SIRKETLER_TNM';
-  sirketlerx.ValueField := 'SirketKod';
-  sirketlerx.DisplayField := 'Tanimi';
-  sirketlerx.BosOlamaz := False;
-  sirketlerx.Filter := '';
-  sirketlerx.tag := -100;
-  sirketlerx.Properties.ReadOnly := True;
-  sirketlerx.Properties.Buttons [0].Visible := False;
-  setDataStringKontrol(self,sirketlerx,'Sirketlerx','Þirket',kolon4,'',250);
-  OrtakEventAta(sirketlerx);
-
 
   BASLANGIC := TcxDateEditKadir.Create(self);
   BASLANGIC.ValueTip := tvString;
@@ -1126,15 +1161,7 @@ begin
   OrtakEventAta(birim);
 
 
-  subeler := TcxImageComboKadir.Create(self);
-  subeler.Conn := Datalar.ADOConnection2;
-  subeler.TableName := 'SIRKET_SUBE_TNM';
-  subeler.ValueField := 'subeKod';
-  subeler.DisplayField := 'subeTanim';
-  subeler.BosOlamaz := True;
 
-  setDataStringKontrol(self,subeler,'sube','Þube',kolon3,'',120);
-  OrtakEventAta(subeler);
 
   setDataStringBLabel(self,'bosSatir2',Kolon3,'',350);
 
@@ -1194,11 +1221,27 @@ begin
 
     case TControl(sender).Tag  of
       0,1 :begin
+          if TCKontrol(vartoStr(TcxTextEditKadir(FindComponent('TCKIMLIKNO')).EditingValue)) = False
+           Then begin
+             ShowMessageSkin('TC Kimlik No Hatalý','Lütfen Kontrol Ediniz','','info');
+             TcxCustomEdit(FindComponent('TCKIMLIKNO')).SetFocus;
+             exit;
+           end;
+
+           if vartoStr(TcxImageComboKadir(FindComponent('Sube')).EditingValue) = ''
+           Then Begin
+             ShowMessageSkin('Þube Seçmediniz','Lütfen Kontrol Ediniz','','info');
+             TcxImageComboKadir(FindComponent('Sube')).SetFocus;
+             exit;
+           End;
+        (*
+
         if datalar.AktifSirket <> TcxLabel(FindComponent('LabelSirketKod')).Caption
         then begin
           ShowMessageSkin('Personel Kartýnda Deðiþiklik için personelin kayýtlý olduðu þirketle programa giriþ yapýnýz!','','','info');
           exit;
         end;
+        *)
       end;
       2 : begin
            if datalar.AktifSirket = '' then
@@ -1234,6 +1277,8 @@ begin
             ShowMessageskin('Dosya No Alýnamadý','','','info');
           end;
           foto.Picture.Assign(nil);
+
+          TcxImageComboKadir(FindComponent('SirketKod')).EditValue := datalar.AktifSirket;
           if IsNull (TcxLabel(FindComponent('LabelSirketKod')).Caption) then
             TcxLabel(FindComponent('LabelSirketKod')).Caption := datalar.AktifSirket;
           TcxImageComboBox (FindComponent ('Aktif')).ItemIndex := 2;//aktif pasif yeni  kombosu yeni kayýtta Yeni deðeri varsayýlan olacak.

@@ -102,7 +102,7 @@ type
     DataSource: TDataSource;
     chkList: TcxCheckGroup;
     USER_ID: TcxTextEdit;
-    sirketKod: TcxButtonEditKadir;
+    sirketKodu: TcxButtonEditKadir;
     Kolon4: TdxLayoutGroup;
     dxLayoutControl1: TdxLayoutControl;
     dxLayoutGroup1: TdxLayoutGroup;
@@ -224,7 +224,7 @@ type
         obje:TcxButtonEditKadir;tanimi : string='tanimi';whereColumObjeName : string = '';
         Zorunlu : Boolean = False ; ReadOnly : Boolean = False;_Tag_ : integer = 0);
     procedure setDataStringKontrol(sender : Tform;obje : TControl; fieldName,caption : string;
-     parent : TdxLayoutGroup;grup : string ;uzunluk : integer ; Yukseklik : integer = 0 ; Aling : TAlign = alNone);
+     parent : TdxLayoutGroup;grup : string ;uzunluk : integer ; Yukseklik : integer = 0 ; Aling : TAlign = alNone; objeName : string = '');
     procedure setDataStringBLabel(sender : Tform ; Name : string;
      parent : TdxLayoutGroup;grup : string;uzunluk : integer;caption : string = '';parentCaption : string = '';fieldName : string = '';
      pBoldText: Boolean = True;
@@ -242,6 +242,7 @@ type
      parent : TdxLayoutGroup;grup : string ;uzunluk : integer;displayFormat : string = ',0.00';_Tag_ : integer = -100);
     procedure DiyalizTedaviControlleriniFormaEkle(Grp : TdxLayoutGroup);
     procedure DiyalizTedavi_UF_KontrolleriniFormaEkle(Grp : TdxLayoutGroup);
+    function SirketComboFilter : string;
     function  Init(Sender: TObject) : Boolean; virtual;
     procedure OrtakEventAta(Sender : TcxImageComboKadir);
     procedure QuerySelect(sql:string);
@@ -306,6 +307,34 @@ implementation
 uses AnaUnit,Data_Modul,FormKontrolUserSet;
 
 {$R *.dfm}
+function TGirisForm.SirketComboFilter : string;
+var
+ where,sube : string;
+begin
+  SirketComboFilter := '';
+  if datalar.DoktorKodu <> '' then
+  begin
+    where := '';
+    sube := ' Doktor = ' + QuotedStr(datalar.doktorKodu);
+  end
+  else
+  if datalar.IGU <> '' then
+  begin
+    where := '';
+    sube := ' IGU = ' + QuotedStr(datalar.IGU);
+  end
+  else
+  if datalar.sirketKodu <> ''
+  Then begin
+    Where := 'SirketKod = ' + QuotedStr(datalar.sirketKodu);
+    sube:= '';
+  end
+  else begin
+    Where := '';
+    Sube := '';
+  end;
+  SirketComboFilter := where + Sube;
+end;
 
 function TGirisForm.ResultDataset(FormTag : integer) : TADOQuery;
 var
@@ -453,7 +482,7 @@ end;
 function TGirisForm.Init(Sender: TObject) : Boolean;
 begin
   USER_ID.Text := datalar.username;
-  sirketKod.Text := datalar.AktifSirket; //sadece yeni kayýt ise yap dedik, diðerlerinde veritabanýndan geldikçe eziliyor zaten.
+  //sirketKod.Text := datalar.AktifSirket; //sadece yeni kayýt ise yap dedik, diðerlerinde veritabanýndan geldikçe eziliyor zaten.
   FormInputZorunluKontrolPaint(self,$00FCDDD1);
   cxTab.PopupMenu := menu;
 
@@ -1222,9 +1251,9 @@ begin
      (TGirisForm(Self).Name = 'frmHastaKart') and
      (sqlRun.State = dsInsert)
   then begin
-    if TCKontrol(TcxTextEditKadir(sender).EditingValue) = True
+    if TCKontrol(vartoStr(TcxTextEditKadir(sender).EditingValue)) = True
     Then begin
-       if TCtoDosyaNo(TcxTextEditKadir(sender).EditingValue) <> ''
+       if TCtoDosyaNo(vartoStr(TcxTextEditKadir(sender).EditingValue)) <> ''
        Then begin
           ShowMessageSkin('Tc Sistemde Mevcut','','','info');
           TcxTextEditKadir(sender).SetFocus;
@@ -1234,7 +1263,7 @@ begin
     else
     begin
           ShowMessageSkin('Tc Hatalý','','','info');
-          TcxTextEditKadir(sender).SetFocus;
+        //  TcxTextEditKadir(sender).SetFocus;
     end;
   end;
 
@@ -1767,13 +1796,20 @@ end;
 
 
 procedure TGirisForm.setDataStringKontrol(sender : Tform;obje : TControl; fieldName,caption : string;
-     parent : TdxLayoutGroup;grup : string ;uzunluk : integer ; yukseklik : integer = 0 ; Aling : TAlign = alNone);
+     parent : TdxLayoutGroup;grup : string ;uzunluk : integer ; yukseklik : integer = 0 ; Aling : TAlign = alNone; objeName : string = '');
 var
   dxLaC : TdxLayoutItem;
   dxLaGC : TdxLayoutGroup;
 begin
   if obje = nil then exit;
-  try obje.Name := fieldName; except on e: exception do ShowMessageSkin (e.Message, '', '', 'info'); end;
+  if objeName = ''
+  then
+  begin
+   try obje.Name := fieldName; except on e: exception do ShowMessageSkin (e.Message, '', '', 'info'); end;
+  end
+  else
+    obje.Name := objeName;
+
   obje.Align := Aling;
   dxLaC := TdxLayoutGroup(parent).CreateItemForControl(obje);
   dxLaC.Name := 'dxLa'+fieldName;
@@ -2229,7 +2265,7 @@ begin
            F_IDENTITY := -1;
            cxPanelButtonEnabled(false,true,false);
            newButonVisible(true);
-           sirketKod.Text := datalar.AktifSirket;
+           //sirketKod.Text := datalar.AktifSirket;
           end;
       3 : begin
            sqlRun.Next;

@@ -525,6 +525,7 @@ type
    DyopURL :string;
    DonemSonlandir :string;
    ButtonEditSecimlist : ArrayListeSecimler;
+   aSahaDenetimVeri : TSahaDenetimler;
 
    function QuerySelect (Q: TADOQuery; sql:string) : Boolean;overload;
   // function QuerySelect (sql:string;Q: TADOQuery = nil) : Boolean;overload;
