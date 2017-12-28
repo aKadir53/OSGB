@@ -240,11 +240,12 @@ begin
  if FindTab(AnaForm.sayfalar,TagfrmHastaKart)
  Then begin
    Form := TGirisForm(FormClassType(TagfrmHastaKart));
+   TGirisForm(FormClassType(TagfrmHastaKart))._TC_ := '';
    TGirisForm(FormClassType(TagfrmHastaKart))._dosyaNO_ := _Dataset.FieldByName('dosyaNo').AsString;
    TGirisForm(FormClassType(TagfrmHastaKart)).Init(Form);
  end
  Else begin
-  Form := FormINIT(TagfrmHastaKart,self,_Dataset.FieldByName('dosyaNo').AsString,NewTab(AnaForm.sayfalar,TagfrmHastaKart),ikEvet,'');
+  Form := FormINIT(TagfrmHastaKart,self,_Dataset.FieldByName('dosyaNo').AsString,NewTab(AnaForm.sayfalar,TagfrmHastaKart),ikEvet,'','');
   if Form <> nil then Form.show;
  end;
   (*

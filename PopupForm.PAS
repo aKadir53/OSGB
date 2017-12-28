@@ -186,6 +186,10 @@ begin
             begin
               datalar.GelisDuzenleRecord.GirisTarihi := TcxTextEdit(FindComponent('GirisTarihi')).EditValue;
               datalar.GelisDuzenleRecord.TedaviYontemi := TcxImageComboKadir(FindComponent('TEDAVITURU')).EditValue;
+
+              if Assigned(FindComponent('Doktor'))
+              Then
+               datalar.doktorKodu := TcxImageComboKadir(FindComponent('Doktor')).EditValue;
             end;
        PrgSifre :
            begin
@@ -492,6 +496,16 @@ inherited;
           ImageComboItemAdd('6','Ýþ Kazasý Muayenesi',ImageCombo);
           setDataStringKontrol(self,ImageCombo, 'TEDAVITURU','Tedavi Türü',Kolon1,'',120);
 
+          if datalar.doktorKodu = ''
+          then begin
+            Doktorlar := TcxImageComboKadir.Create(self);
+            Doktorlar.Conn := Datalar.ADOConnection2;
+            Doktorlar.TableName := 'DoktorlarT';
+            Doktorlar.ValueField := 'kod';
+            Doktorlar.DisplayField := 'tanimi';
+            Doktorlar.Filter := '';
+            setDataStringKontrol(self,Doktorlar,'Doktor','Doktor',kolon1,'',120);
+          end;
        end;
 
    PrgSifre :
