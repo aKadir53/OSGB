@@ -152,7 +152,7 @@ procedure TfrmFirmaKart.txtAktifPropertiesChange(Sender: TObject);
 var
    sql , _aktif , _pasifTarih : string;
 begin
-   if SirketKod.Text = '' then exit;
+   if datalar.AktifSirket = '' then exit;
 
    if aktifKart = 0
    then begin
@@ -174,7 +174,7 @@ begin
          _aktif := '2';
        end;
        sql := 'update FirmaKart set aktif = ' + #39 + _aktif + #39 +
-              ' where kod = ' + #39 + SirketKod.Text + #39;
+              ' where kod = ' + #39 + TcxButtonEditKadir(FindComponent('SirketKod')).EditingValue + #39;
        datalar.QueryExec(datalar.ADO_SQL1,sql);
 
 
@@ -446,11 +446,11 @@ begin
     *)
 
   key := 13;
-  SirketKod.EditValue := _dosyaNo_;//datalar.Bilgi.dosyaNo;
+ // SirketKod.EditValue := _dosyaNo_;//datalar.Bilgi.dosyaNo;
 
-  if SirketKod.EditValue <> ''
+  if TcxButtonEditKadir(FindComponent('SirketKod')).EditingValue  <> ''
   then
-   SirketKod.OnKeyDown(frmFirmaKart.SirketKod,key,[]);
+   TcxButtonEditKadir(FindComponent('SirketKod')).OnKeyDown(TcxButtonEditKadir(FindComponent('SirketKod')),key,[]);
 
   Result := True;
 end;
@@ -465,9 +465,9 @@ begin
   // Eðer kayýt eklediðiniz tabloda bu alanlar varsa ve bunlarý otomatik set etmek isterseniz
   //tag deðerini burda 0 set edin default -100 dür -100 obje kayýt iþlemize girmez.
   USER_ID.Tag := 0;
-  SirketKod.Tag := 1;
-  SirketKod.Visible := True;
-  SirketKod.Properties.OnButtonClick := cxButtonEditPropertiesButtonClick;
+  //SirketKod.Tag := 1;
+//  SirketKod.Visible := True;
+ // SirketKod.Properties.OnButtonClick := cxButtonEditPropertiesButtonClick;
   //
 
   Menu := PopupMenu1;
@@ -492,7 +492,7 @@ begin
                        '50,250,50','SirketKod','Firma Listesi','',5,True);
 
 
-  setDataStringB(self,'SirketKod','Þirket Kodu',Kolon1,'',80,List,True,SirketKod,'','',True,True,1);
+  setDataStringB(self,'SirketKod','Þirket Kodu',Kolon1,'',80,List,True,nil,'','',True,True,1);
   setDataString(self,'tanimi','Firma Adý  ',Kolon1,'',350,True);
   setDataStringKontrol(self,NaceKod, 'NaceKod','Nace Kodu  ',Kolon1,'',130);
   setDataString(self,'anaFaliyet','Firma Ana Faaliye',Kolon1,'',450,True);
@@ -637,8 +637,8 @@ begin
         end;
     2 : begin
             Kart := sql_new;
-            SirketKod.Text := dosyaNoYeniNumaraAl('FN');
-            if SirketKod.Text = '0'
+            TcxButtonEditKadir(FindComponent('SirketKod')).EditValue := dosyaNoYeniNumaraAl('FN');
+            if TcxButtonEditKadir(FindComponent('SirketKod')).EditingValue = '0'
             then begin
               ShowMessageskin('Dosya No Alýnamadý','','','info');
             end;
@@ -662,7 +662,7 @@ begin
   inherited;
   if datalar.KontrolUserSet = True then exit;
 
-  if SirketKod.Text = ''
+  if TcxButtonEditKadir(FindComponent('SirketKod')).EditingValue  = ''
   then begin
    ShowMessageSkin('Firma Dosyasý Açýlmadan Bu Ýþlem Kullanýlamaz...','','','info');
    exit;

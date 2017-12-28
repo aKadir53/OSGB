@@ -181,7 +181,7 @@ end;
 procedure TfrmPersonelEgitim.FormCreate(Sender: TObject);
 var
   List : TListeAc;
-  kombo : TcxImageComboKadir;
+  kombo ,sirketlerx : TcxImageComboKadir;
   dateEdit: TcxDateEditKadir;
 begin
   Tag := TagfrmPersonelEgitim;
@@ -215,8 +215,18 @@ begin
   List.Where := 'SirketKod = ' + QuotedStr (DATALAR.AktifSirket);
   setDataStringB(self,'id','Eðitim No.',Kolon1,'',70,List,True,nil, 'tanimi', '', False, True, -100);
 
-  setDataStringB(self,'SirketKod','Þirket Kodu',Kolon1,'',100,nil, True, SirketKod);
-  SirketKod.Properties.ReadOnly := True;
+ // setDataStringB(self,'SirketKod','Þirket Kodu',Kolon1,'',100,nil, True, SirketKod);
+ // SirketKod.Properties.ReadOnly := True;
+
+  sirketlerx := TcxImageComboKadir.Create(self);
+  sirketlerx.Conn := Datalar.ADOConnection2;
+  sirketlerx.TableName := 'SIRKETLER_TNM';
+  sirketlerx.ValueField := 'SirketKod';
+  sirketlerx.DisplayField := 'Tanimi';
+  sirketlerx.BosOlamaz := False;
+  sirketlerx.Filter := SirketComboFilter;
+
+  setDataStringKontrol(self,sirketlerx,'SirketKod','Þirket',Kolon1,'',250,0,alNone,'');
 
   þube kodu ekle
   kombo := TcxImageComboKadir.Create(self);
