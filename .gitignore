@@ -66,3 +66,7 @@ __recovery/
 *.stat
 /compare.txt
 /OSGB.err
+/Win32/Debug/IReceteCvp.xml
+/Win32/Debug/ImzaliRecete.xml
+/Win32/Debug/IReceteGiris.xml
+/Win32/Debug/IRecete.xml
