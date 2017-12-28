@@ -846,12 +846,20 @@ begin
              ' and Aktif = 1 ' +
              ' order by dosyaNo';
       datalar.QuerySelect(ado,sql);
-      _dosyaNo_ := ado.Fields[0].AsString;
+      if not ado.Eof
+      then
+      _dosyaNo_ := ado.Fields[0].AsString
+      else begin
+        ShowMessageSkin('TC Kimlik No Sistemde Bulunamadý','','','info');
+        close;
+        Anaform.Sayfalar.Pages[Anaform.Sayfalar.ActivePageIndex].Free;
+        Result := False;
+      end;
     finally
       ado.Free;
     end;
-  end;
-
+  end
+  else
   if _dosyaNo_ = '' then
   begin
     ado := TADOQuery.Create(nil);
@@ -868,21 +876,20 @@ begin
     end;
   end;
 
-  key := 13;
-  dosyaNo.EditValue := _dosyaNo_;//datalar.Bilgi.dosyaNo;
+  if _dosyaNo_ <> ''
+  then begin
+    key := 13;
+    dosyaNo.EditValue := _dosyaNo_;//datalar.Bilgi.dosyaNo;
+    if varTostr(dosyaNo.EditValue) <> ''
+    then
+     dosyaNo.OnKeyDown(frmHastaKart.dosyaNo,key,[]);
 
-  if dosyaNo.EditValue <> ''
-  then
-   dosyaNo.OnKeyDown(frmHastaKart.dosyaNo,key,[]);
-
- // TcxImageComboKadir(FindComponent ('sube')).Filter := ' SirketKod = ' + QuotedStr (TcxLabel(FindComponent('LabelSirketKod')).Caption);
-
-
-  IseGirisMuayene.Dataset.AfterScroll := ADO_WebServisErisimAfterScroll;
-  GridList.ViewData.Expand(true);
+    IseGirisMuayene.Dataset.AfterScroll := ADO_WebServisErisimAfterScroll;
+    GridList.ViewData.Expand(true);
+    Result := True;
+  end;
 
 
-  Result := True;
 end;
 
 
