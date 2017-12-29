@@ -95,6 +95,7 @@ begin
 //        SetGrid;
 
         SayfaCaption('','','','','');
+        Result := True;
     end;
 
   end;

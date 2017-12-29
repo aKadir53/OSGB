@@ -310,6 +310,7 @@ end;
 function TfrmPersonelEgitim.Init(Sender: TObject): Boolean;
 begin
   result := inherited;
+  result := True;
 end;
 
 procedure TfrmPersonelEgitim.ResetDetayDataset;

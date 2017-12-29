@@ -120,13 +120,14 @@ implementation
 
 function TfrmHastaListe.Init(Sender : TObject) : Boolean;
 begin
-  //
+  Result := False;
   if Tag = TagfrmHastaListe
   then
    TapPanelElemanVisible(True,false,false,false,false,false,False,false,False,True,False,False)
   else
    TapPanelElemanVisible(True,false,false,false,false,false,True,false,False,True,False,False);
 
+   Result := True;
 
 end;
 

@@ -64,10 +64,10 @@ object frmPopupDBGridForm: TfrmPopupDBGridForm
     Height = 285
     Width = 769
     object cxGrid3: TcxGridKadir
-      Left = 3
-      Top = 36
-      Width = 763
-      Height = 239
+      Left = 2
+      Top = 19
+      Width = 765
+      Height = 264
       Align = alClient
       Font.Charset = TURKISH_CHARSET
       Font.Color = clWindowText
@@ -79,10 +79,6 @@ object frmPopupDBGridForm: TfrmPopupDBGridForm
       LevelTabs.ImageBorder = 2
       LevelTabs.Style = 1
       ExceleGonder = False
-      ExplicitLeft = 2
-      ExplicitTop = 19
-      ExplicitWidth = 765
-      ExplicitHeight = 264
       object DBGrid: TcxGridDBTableView
         Navigator.Buttons.First.Visible = False
         Navigator.Buttons.PriorPage.Visible = False
@@ -324,18 +320,16 @@ object frmPopupDBGridForm: TfrmPopupDBGridForm
       end
     end
     object txtTable: TcxImageComboKadir
-      Left = 3
-      Top = 15
+      Left = 2
+      Top = -2
       Align = alTop
       Properties.Items = <>
       Properties.OnChange = txtTablePropertiesChange
       TabOrder = 1
       Visible = False
       BosOlamaz = False
-      ExplicitLeft = 2
-      ExplicitTop = -2
-      ExplicitWidth = 765
-      Width = 763
+      ExplicitWidth = 763
+      Width = 765
     end
   end
   object PopupMenu1: TPopupMenu
