@@ -118,6 +118,7 @@ begin
       indexFieldName := '1=1';
       cxPanel.Visible := false;
       SayfaCaption('','','','','');
+      Result := True;
   end;
 
     TagfrmSube :
@@ -141,6 +142,7 @@ begin
         SetGrid;
 
         SayfaCaption('','','','','');
+        Result := True;
     end;
 
     TagFirmaCalismalari :
@@ -180,6 +182,7 @@ begin
         DBGrid.Columns[4].GroupIndex := 0;
 
         SayfaCaption('','','','','');
+        Result := True;
     end;
 
   end;
