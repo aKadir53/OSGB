@@ -147,6 +147,14 @@ var
   Cins,Medeni,DTarih,BTarih : String;
 begin
   try
+    if IsNull (Datalar.AktifSube)
+      or (Length (datalar.AktifSube) > 2)
+      or (Pos (',', datalar.AktifSube) > 0) then
+    begin
+      ShowMessageSkin('Aktif þube seçmeden personel aktarýmý yapamazsýnýz.'#13#10'Personeller, seçili þubeye aktarýlacak.', '', '', 'info');
+      Exit;
+    end;
+
     datalar.ADOConnection2.BeginTrans;
     bBasarili := False;
     iCount := 0;
@@ -249,5 +257,5 @@ begin
     cxPanel.Visible := false;
     SayfaCaption('','','' ,'','');
 end;
-
+//isg katip excel'ini programdan aktarma
 end.
