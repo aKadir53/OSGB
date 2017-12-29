@@ -33,6 +33,10 @@ object frmSorgulamalar: TfrmSorgulamalar
     object cxTabSheet6: TcxTabSheet
       Caption = 'Sorgular'
       ImageIndex = 0
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       object Panel5: TPanel
         Left = 0
         Top = 0
@@ -2434,6 +2438,10 @@ object frmSorgulamalar: TfrmSorgulamalar
     object cxTabSheet7: TcxTabSheet
       Caption = 'Sonu'#231
       ImageIndex = 1
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       object cxGrid3: TcxGrid
         Left = 0
         Top = 0
@@ -2483,6 +2491,10 @@ object frmSorgulamalar: TfrmSorgulamalar
     object cxTabSheet8: TcxTabSheet
       Caption = 'SQL'
       ImageIndex = 2
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       object SQL_text: TMemo
         Left = 0
         Top = 30

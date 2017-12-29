@@ -74,8 +74,6 @@ object frmKontrolUserSet: TfrmKontrolUserSet
           RowSelect = True
           TabOrder = 0
           ViewStyle = vsReport
-          ExplicitLeft = 202
-          ExplicitTop = 47
         end
         object txtKullanici: TcxButtonEditKadir
           Left = 2
@@ -93,7 +91,6 @@ object frmKontrolUserSet: TfrmKontrolUserSet
           TabOrder = 1
           indexField = False
           ListeAcTus = 0
-          BosOlamaz = False
           Width = 474
         end
       end
@@ -285,7 +282,6 @@ object frmKontrolUserSet: TfrmKontrolUserSet
         PanelStyle.Active = True
         TabOrder = 2
         Visible = False
-        ExplicitWidth = 2
         Height = 402
         Width = 0
         object cxGrid1: TcxGrid
@@ -341,7 +337,6 @@ object frmKontrolUserSet: TfrmKontrolUserSet
           Align = alTop
           Caption = 'Kullan'#305'c'#305' K'#305's'#305'tlamalar'#305
           Transparent = True
-          ExplicitWidth = 121
         end
       end
     end
@@ -355,7 +350,6 @@ object frmKontrolUserSet: TfrmKontrolUserSet
         Caption = 'Kontrolller'
         PanelStyle.Active = True
         TabOrder = 0
-        ExplicitLeft = -2
         Height = 442
         Width = 478
         object InputKontroller: TcxListView
@@ -389,8 +383,6 @@ object frmKontrolUserSet: TfrmKontrolUserSet
           RowSelect = True
           TabOrder = 0
           ViewStyle = vsReport
-          ExplicitLeft = 330
-          ExplicitTop = 41
         end
         object cxGroupBox5: TcxGroupBox
           Left = 2
@@ -442,6 +434,7 @@ object frmKontrolUserSet: TfrmKontrolUserSet
     Calistir = fgEvet
     BiriktirmeliSecim = False
     Grup = False
+    GrupCol = 0
     Left = 312
     Top = 152
   end

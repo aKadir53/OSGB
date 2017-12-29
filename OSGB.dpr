@@ -55,7 +55,7 @@ uses
 // KadirMedula3 in '..\..\medula3wsdl\KadirMedula3.pas';
 
 const
-  AppalicationVer : integer = 1014;
+  AppalicationVer : integer = 1015;
   // Versiyon info kontrol etmeyi unutma
 
 {$R *.res}
