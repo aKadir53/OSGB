@@ -66,6 +66,8 @@ type
     EklenenColumn4: TcxGridDBColumn;
     btnVazgec: TcxButton;
     btnSend: TcxButton;
+    cxStyleRepository2: TcxStyleRepository;
+    cxStyle2: TcxStyle;
     procedure txtHizmetGruplariCheckListItemToText(sender: TObject;
       var aText: String);
     procedure Gruplar;
