@@ -102,7 +102,7 @@ type
     DataSource: TDataSource;
     chkList: TcxCheckGroup;
     USER_ID: TcxTextEdit;
-    sirketKodu: TcxButtonEditKadir;
+    sirketKodu_: TcxButtonEditKadir;
     Kolon4: TdxLayoutGroup;
     dxLayoutControl1: TdxLayoutControl;
     dxLayoutGroup1: TdxLayoutGroup;
