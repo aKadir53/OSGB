@@ -1319,7 +1319,7 @@ begin
   GirisFormRecord.F_provizyonTarihi_ := NoktasizTarih(ADO_Gelisler.FieldByName('Tarih').AsString);
   GirisFormRecord.F_TC_ := sqlRun.FieldByName('TCKimlikNo').AsString;
   GirisFormRecord.F_Doktor_ := ADO_Gelisler.FieldByName('doktor').AsString;
-  GirisFormRecord.F_SigortaliTur_ := TcxImageComboKadir(FindComponent('Durum')).EditValue;
+  //GirisFormRecord.F_SigortaliTur_ := TcxImageComboKadir(FindComponent('Durum')).EditValue;
   GirisFormRecord.F_HastaAdSoyad_ := _HastaAdSoyad_;
   GirisFormRecord.F_mobilTel_ := TcxTextEdit(FindComponent('EV_TEL1')).Text;
   GirisFormRecord.F_firmaKod_ := TcxLabel(FindComponent('LabelSirketKod')).Caption;
