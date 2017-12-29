@@ -92,6 +92,7 @@ object frmIlacSarf: TfrmIlacSarf
       Style.IsFontAssigned = True
       TabOrder = 0
       Transparent = True
+      Visible = False
       OnClick = chkDozClick
       Width = 110
     end
@@ -249,6 +250,7 @@ object frmIlacSarf: TfrmIlacSarf
         Navigator.Buttons.GotoBookmark.Visible = True
         Navigator.Buttons.Filter.Visible = True
         DataController.DataSource = DataSource1
+        DataController.Filter.Options = [fcoCaseInsensitive]
         DataController.Filter.Active = True
         DataController.Filter.TranslateBetween = True
         DataController.Filter.TranslateLike = True
@@ -257,9 +259,11 @@ object frmIlacSarf: TfrmIlacSarf
         DataController.Summary.FooterSummaryItems = <>
         DataController.Summary.SummaryGroups = <>
         Filtering.ColumnFilteredItemsList = True
-        FilterRow.InfoText = 'Filtreleme Sat'#305'r'#305
+        FilterRow.InfoText = 'Arama Sat'#305'r'#305
+        FilterRow.Visible = True
         FilterRow.ApplyChanges = fracImmediately
         OptionsBehavior.FocusCellOnTab = True
+        OptionsBehavior.IncSearch = True
         OptionsData.Deleting = False
         OptionsData.DeletingConfirmation = False
         OptionsData.Editing = False
@@ -270,7 +274,9 @@ object frmIlacSarf: TfrmIlacSarf
         OptionsView.GroupByBox = False
         OptionsView.Indicator = True
         Styles.Content = cxStyle1
+        Styles.FilterBox = cxStyle2
         Styles.OnGetContentStyle = gridIlacSarfStylesGetContentStyle
+        Styles.FilterRowInfoText = cxStyle2
         object gridIlacSarfColumn1: TcxGridDBColumn
           Caption = 'Barkod'
           DataBinding.FieldName = 'Code'
@@ -509,6 +515,18 @@ object frmIlacSarf: TfrmIlacSarf
     object T: TcxStyle
       AssignedValues = [svColor]
       Color = 6472953
+    end
+  end
+  object cxStyleRepository2: TcxStyleRepository
+    PixelsPerInch = 96
+    object cxStyle2: TcxStyle
+      AssignedValues = [svColor, svFont]
+      Color = clYellow
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -15
+      Font.Name = 'Tahoma'
+      Font.Style = [fsBold]
     end
   end
 end
