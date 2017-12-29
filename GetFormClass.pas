@@ -236,7 +236,7 @@ begin
    TagfrmSon6AylikTetkikSonuc : Result := frmSon6AylikTetkikSonuc;
    TagfrmReceteler : Result := frmReceteler;
    TagfrmSahaSaglikGozetim : Result := frmSahaSaglikGozetim;
-
+   TagfrmUpdate : Result := frmUpdate;
   end;
 end;
 
@@ -275,6 +275,14 @@ begin
       result := nil;
    end;
 
+   if not (Form is TGirisForm) then
+   begin
+     Form.BorderStyle := bsToolWindow;
+     Form.Align := alNone;
+     Form.Tag := FormTag;
+     Result := Form;
+     Exit;
+   end;
 
    Form := TGirisForm(FormClassType(FormTag));
    Tab.Caption := FormAltCaption(FormTag);
@@ -434,6 +442,15 @@ begin
    end;
 
   Form := TGirisForm(FormClassType(FormTag));
+
+  if not (Form is TGirisForm) then
+  begin
+    Form.BorderStyle := bsToolWindow;
+    Form.Align := alNone;
+    Form.Tag := FormTag;
+    Result := Form;
+    Exit;
+  end;
 
   TGirisForm(Form)._dosyaNO_ := Value.F_dosyaNO_;//datalar.Bilgi.dosyaNo;
   TGirisForm(Form)._gelisNO_ := Value.F_gelisNO_;//datalar.Bilgi.gelisNo;
