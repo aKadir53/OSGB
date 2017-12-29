@@ -833,7 +833,7 @@ var
   ado : TADOQuery;
 begin
 
-  Result := False;
+  Result := True;
   if not inherited Init(Sender) then exit;
 
   if _TC_ <> '' then
@@ -1234,13 +1234,22 @@ begin
              TcxCustomEdit(FindComponent('TCKIMLIKNO')).SetFocus;
              exit;
            end;
-
-           if vartoStr(TcxImageComboKadir(FindComponent('Sube')).EditingValue) = ''
+(*
+           if (vartoStr(TcxImageComboKadir(FindComponent('Sube')).EditingValue) = '') or
+              (vartoStr(TcxImageComboKadir(FindComponent('SirketKod')).EditingValue) = '')
            Then Begin
              ShowMessageSkin('Þube Seçmediniz','Lütfen Kontrol Ediniz','','info');
              TcxImageComboKadir(FindComponent('Sube')).SetFocus;
              exit;
            End;
+  *)
+           if MrYes <> ShowMessageSkin('Personel Kartý',TcxImageComboKadir(FindComponent('SirketKod')).Text,
+                                       TcxImageComboKadir(FindComponent('Sube')).Text + ' Þubesine Kayýt Edilecek',
+                                       'msg')
+           Then begin
+             exit;
+           end;
+
         (*
 
         if datalar.AktifSirket <> TcxLabel(FindComponent('LabelSirketKod')).Caption
@@ -1286,6 +1295,8 @@ begin
           foto.Picture.Assign(nil);
 
           TcxImageComboKadir(FindComponent('SirketKod')).EditValue := datalar.AktifSirket;
+          TcxImageComboKadir(FindComponent('Sube')).EditValue :=
+          ifThen(datalar.AktifSube = '','00',datalar.AktifSube);
           if IsNull (TcxLabel(FindComponent('LabelSirketKod')).Caption) then
             TcxLabel(FindComponent('LabelSirketKod')).Caption := datalar.AktifSirket;
           TcxImageComboBox (FindComponent ('Aktif')).ItemIndex := 2;//aktif pasif yeni  kombosu yeni kayýtta Yeni deðeri varsayýlan olacak.
@@ -1319,9 +1330,9 @@ begin
   GirisFormRecord.F_provizyonTarihi_ := NoktasizTarih(ADO_Gelisler.FieldByName('Tarih').AsString);
   GirisFormRecord.F_TC_ := sqlRun.FieldByName('TCKimlikNo').AsString;
   GirisFormRecord.F_Doktor_ := ADO_Gelisler.FieldByName('doktor').AsString;
-  //GirisFormRecord.F_SigortaliTur_ := TcxImageComboKadir(FindComponent('Durum')).EditValue;
+ // GirisFormRecord.F_SigortaliTur_ := TcxImageComboKadir(FindComponent('Durum')).EditValue;
   GirisFormRecord.F_HastaAdSoyad_ := _HastaAdSoyad_;
-  GirisFormRecord.F_mobilTel_ := TcxTextEdit(FindComponent('EV_TEL1')).Text;
+  GirisFormRecord.F_mobilTel_ := vartoStr(TcxTextEdit(FindComponent('EV_TEL1')).Text);
   GirisFormRecord.F_firmaKod_ := TcxLabel(FindComponent('LabelSirketKod')).Caption;
   GirisFormRecord.F_sube_ := TcxImageComboKadir(FindComponent('sube')).EditValue;
 

@@ -127,6 +127,7 @@ begin
   else
    TapPanelElemanVisible(True,false,false,false,false,false,True,false,False,True,False,False);
 
+   AktifPasifTopPanel.EditValue := '1';
    Result := True;
 
 end;
@@ -191,14 +192,11 @@ begin
 
   TopPanel.Visible := true;
 
-
   Liste.DataController.DataSource := DataSource;
 
-  AktifPasifTopPanel.EditValue := '1';
-
+ // AktifPasifTopPanel.EditValue := '0';
 
   SayfaCaption('','','','','');
-
 end;
 
 procedure TfrmHastaListe.H1Click(Sender: TObject);

@@ -729,7 +729,7 @@ object frmHastaKart: TfrmHastaKart
     object lemler1: TMenuItem
       Tag = -20
       Caption = #304#351'lemler'
-      ImageIndex = 81
+      ImageIndex = 79
       object MenucxYeni: TMenuItem
         Tag = 2
         Caption = 'Yeni Personel Kart'#305
