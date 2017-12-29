@@ -15,6 +15,7 @@ object frmHastaListe: TfrmHastaListe
   OldCreateOrder = False
   Position = poDesigned
   OnCreate = FormCreate
+  OnShow = FormShow
   PixelsPerInch = 96
   TextHeight = 13
   object cxListPanel: TcxGroupBox
@@ -368,10 +369,6 @@ object frmHastaListe: TfrmHastaListe
       object cxTabSheet1: TcxTabSheet
         Caption = 'Uyar'#305' Bilgisi'
         ImageIndex = 133
-        ExplicitLeft = 0
-        ExplicitTop = 0
-        ExplicitWidth = 0
-        ExplicitHeight = 0
         object txtUyariMesaj: TcxMemo
           Left = 0
           Top = 0

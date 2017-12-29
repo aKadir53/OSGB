@@ -39,7 +39,7 @@ object frmHastaRecete: TfrmHastaRecete
       Style.Font.Style = [fsBold]
       Style.IsFontAssigned = True
       TabOrder = 0
-      Height = 278
+      Height = 288
       Width = 1096
       object cxGrid10: TcxGrid
         Left = 3
@@ -47,6 +47,7 @@ object frmHastaRecete: TfrmHastaRecete
         Width = 1090
         Height = 154
         Align = alTop
+        BorderStyle = cxcbsNone
         Font.Charset = TURKISH_CHARSET
         Font.Color = clWindowText
         Font.Height = -11
@@ -242,11 +243,8 @@ object frmHastaRecete: TfrmHastaRecete
         Align = alClient
         PanelStyle.Active = True
         TabOrder = 1
-        ExplicitLeft = 2
-        ExplicitTop = 152
-        ExplicitWidth = 1092
-        ExplicitHeight = 124
-        Height = 99
+        ExplicitHeight = 99
+        Height = 109
         Width = 1090
         object cxPanelReceteTanilar: TcxGroupBox
           Left = 2
@@ -264,14 +262,14 @@ object frmHastaRecete: TfrmHastaRecete
           ExplicitHeight = 120
           DesignSize = (
             438
-            88)
-          Height = 95
+            98)
+          Height = 105
           Width = 438
           object cxGrid11: TcxGrid
             Left = 3
             Top = 15
             Width = 386
-            Height = 70
+            Height = 80
             Align = alLeft
             Font.Charset = TURKISH_CHARSET
             Font.Color = clWindowText
@@ -354,7 +352,7 @@ object frmHastaRecete: TfrmHastaRecete
             end
           end
           object cxButtonKadirTaniEkle: TcxButtonKadir
-            Left = 393
+            Left = 392
             Top = 15
             Width = 42
             Height = 38
@@ -366,7 +364,7 @@ object frmHastaRecete: TfrmHastaRecete
           end
           object cxButtonKadirTaniSil: TcxButtonKadir
             Tag = 1
-            Left = 393
+            Left = 392
             Top = 56
             Width = 42
             Height = 38
@@ -395,15 +393,15 @@ object frmHastaRecete: TfrmHastaRecete
           ExplicitHeight = 120
           DesignSize = (
             648
-            88)
-          Height = 95
+            98)
+          Height = 105
           Width = 648
           object cxGrid9: TcxGrid
             Tag = 1
             Left = 3
             Top = 15
             Width = 534
-            Height = 70
+            Height = 80
             Align = alLeft
             Font.Charset = TURKISH_CHARSET
             Font.Color = clWindowText
@@ -522,8 +520,8 @@ object frmHastaRecete: TfrmHastaRecete
     end
     object cxPanelReceteDetay: TcxGroupBox
       Left = 2
-      Top = 288
-      Align = alClient
+      Top = 298
+      Align = alTop
       Caption = 'Re'#231'ete Detaylar'#305
       ParentFont = False
       Style.Font.Charset = DEFAULT_CHARSET
@@ -533,17 +531,17 @@ object frmHastaRecete: TfrmHastaRecete
       Style.Font.Style = [fsBold]
       Style.IsFontAssigned = True
       TabOrder = 1
-      DesignSize = (
-        1096
-        303)
-      Height = 310
+      ExplicitLeft = 3
+      ExplicitTop = 300
+      Height = 239
       Width = 1096
       object cxGrid4: TcxGrid
         Left = 3
         Top = 15
-        Width = 1090
-        Height = 211
-        Align = alTop
+        Width = 1044
+        Height = 214
+        Align = alClient
+        BorderStyle = cxcbsNone
         Font.Charset = TURKISH_CHARSET
         Font.Color = clWindowText
         Font.Height = -11
@@ -554,9 +552,7 @@ object frmHastaRecete: TfrmHastaRecete
         LevelTabs.ImageBorder = 2
         LevelTabs.Style = 1
         LookAndFeel.Kind = lfOffice11
-        ExplicitLeft = 2
-        ExplicitTop = -2
-        ExplicitWidth = 1092
+        ExplicitWidth = 1014
         object gridIlaclar: TcxGridDBTableView
           PopupMenu = GridIlaclarPopup
           OnDblClick = gridIlaclarDblClick
@@ -720,7 +716,7 @@ object frmHastaRecete: TfrmHastaRecete
             HeaderAlignmentHorz = taCenter
             HeaderAlignmentVert = vaCenter
             Options.Editing = False
-            Width = 171
+            Width = 101
           end
         end
         object cxGridLevel4: TcxGridLevel
@@ -730,12 +726,72 @@ object frmHastaRecete: TfrmHastaRecete
           Options.DetailFrameWidth = 0
         end
       end
+      object pnlReceteDetaySag: TcxGroupBox
+        Left = 1047
+        Top = 15
+        Align = alRight
+        PanelStyle.Active = True
+        Style.BorderStyle = ebsNone
+        TabOrder = 1
+        Height = 214
+        Width = 46
+        object btnIlacSil: TcxButtonKadir
+          Tag = -23
+          Left = 2
+          Top = 41
+          Width = 42
+          Height = 39
+          Align = alTop
+          Caption = '&Sil'
+          TabOrder = 0
+          OnClick = btnIlacSilClick
+          NewButtonVisible = False
+          ExplicitWidth = 73
+        end
+        object btnIlacEkle: TcxButtonKadir
+          Tag = -21
+          Left = 2
+          Top = 2
+          Width = 42
+          Height = 39
+          Align = alTop
+          Caption = '&Ekle'
+          TabOrder = 1
+          OnClick = btnIlacEkleClick
+          NewButtonVisible = False
+        end
+      end
+    end
+    object cxSplitter1: TcxSplitter
+      Left = 2
+      Top = 290
+      Width = 1096
+      Height = 8
+      AlignSplitter = salTop
+      Control = cxPanelReceteBaslik
+      ExplicitTop = 280
+    end
+    object pnlIlacAck: TcxGroupBox
+      Left = 2
+      Top = 545
+      Align = alClient
+      Caption = 'Re'#231'ete '#304'la'#231' A'#231#305'klama'
+      TabOrder = 3
+      ExplicitLeft = 360
+      ExplicitTop = 83
+      ExplicitWidth = 449
+      ExplicitHeight = 105
+      DesignSize = (
+        1096
+        46)
+      Height = 53
+      Width = 1096
       object cxGrid8: TcxGrid
         Tag = 1
         Left = 3
-        Top = 234
-        Width = 790
-        Height = 66
+        Top = 15
+        Width = 400
+        Height = 28
         Align = alLeft
         Font.Charset = TURKISH_CHARSET
         Font.Color = clWindowText
@@ -744,12 +800,10 @@ object frmHastaRecete: TfrmHastaRecete
         Font.Style = []
         ParentFont = False
         PopupMenu = PopupMenu2
-        TabOrder = 1
+        TabOrder = 0
         LevelTabs.ImageBorder = 2
         LevelTabs.Style = 1
-        ExplicitLeft = 2
-        ExplicitTop = 217
-        ExplicitHeight = 91
+        ExplicitHeight = 80
         object cxGridReceteIlacAciklama: TcxGridDBTableView
           OnDblClick = cxGridReceteIlacAciklamaDblClick
           Navigator.Buttons.First.Visible = True
@@ -825,47 +879,38 @@ object frmHastaRecete: TfrmHastaRecete
           Options.DetailFrameWidth = 0
         end
       end
-      object cxSplitter2: TcxSplitter
-        Left = 3
-        Top = 226
-        Width = 1090
-        Height = 8
-        AlignSplitter = salTop
-        Control = cxGrid4
-        ExplicitLeft = 2
-        ExplicitTop = 209
-        ExplicitWidth = 1092
-      end
-      object cxButtonKadirIlacAckSil: TcxButtonKadir
-        Left = 1051
-        Top = 274
-        Width = 42
-        Height = 38
-        Anchors = [akTop, akRight]
-        Caption = 'Sil'
-        TabOrder = 3
-        OnClick = cxButtonKadirIlacAckSilClick
-        NewButtonVisible = False
-      end
       object cxButtonKadirIlacAckEkle: TcxButtonKadir
-        Left = 1051
-        Top = 234
+        Left = 1052
+        Top = 16
         Width = 42
         Height = 38
         Anchors = [akTop, akRight]
         Caption = 'Ekle'
-        TabOrder = 4
+        TabOrder = 1
         OnClick = cxButtonKadirIlacAckEkleClick
         NewButtonVisible = False
+        ExplicitLeft = 405
+      end
+      object cxButtonKadirIlacAckSil: TcxButtonKadir
+        Left = 1052
+        Top = 55
+        Width = 42
+        Height = 38
+        Anchors = [akTop, akRight]
+        Caption = 'Sil'
+        TabOrder = 2
+        OnClick = cxButtonKadirIlacAckSilClick
+        NewButtonVisible = False
+        ExplicitLeft = 405
       end
     end
-    object cxSplitter1: TcxSplitter
+    object cxSplitter2: TcxSplitter
       Left = 2
-      Top = 280
+      Top = 537
       Width = 1096
       Height = 8
       AlignSplitter = salTop
-      Control = cxPanelReceteBaslik
+      ExplicitWidth = 61
     end
   end
   object PopupMenu1: TPopupMenu
@@ -1091,8 +1136,8 @@ object frmHastaRecete: TfrmHastaRecete
     end
   end
   object GridIlaclarPopup: TPopupMenu
-    Left = 320
-    Top = 288
+    Left = 640
+    Top = 392
     object L1: TMenuItem
       Tag = -21
       Caption = #304'la'#231' Listesinden Ekle'
@@ -1102,6 +1147,7 @@ object frmHastaRecete: TfrmHastaRecete
     object N3: TMenuItem
       Tag = -22
       Caption = #304'la'#231' Tedavi Plan'#305'ndan Ekle'
+      Visible = False
       OnClick = E1Click
     end
     object N4: TMenuItem
@@ -1124,6 +1170,7 @@ object frmHastaRecete: TfrmHastaRecete
     object T1: TMenuItem
       Tag = -26
       Caption = 'Tedaviye G'#246'nder'
+      Visible = False
       OnClick = E1Click
     end
   end

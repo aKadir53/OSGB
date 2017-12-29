@@ -108,7 +108,6 @@ type
     cxButtonKadirAckEkle: TcxButtonKadir;
     cxPanelReceteDetay: TcxGroupBox;
     cxSplitter1: TcxSplitter;
-    cxSplitter2: TcxSplitter;
     cxButtonKadirIlacAckSil: TcxButtonKadir;
     cxButtonKadirIlacAckEkle: TcxButtonKadir;
     GridIlaclarPopup: TPopupMenu;
@@ -131,6 +130,11 @@ type
     TaniR4: TMenuItem;
     cxGridReceteColumn2: TcxGridDBColumn;
     cxGridReceteColumn3: TcxGridDBColumn;
+    pnlIlacAck: TcxGroupBox;
+    cxSplitter2: TcxSplitter;
+    pnlReceteDetaySag: TcxGroupBox;
+    btnIlacSil: TcxButtonKadir;
+    btnIlacEkle: TcxButtonKadir;
     procedure FormCreate(Sender: TObject);
     procedure ReceteGetir(_dosyaNo , gelisNo : string);
     procedure E1Click(Sender: TObject);
@@ -159,6 +163,8 @@ type
     procedure cxGridReceteDblClick(Sender: TObject);
     function ReceteImzalaGonder : string;
     function ReceteImzalaSil : string;
+    procedure btnIlacEkleClick(Sender: TObject);
+    procedure btnIlacSilClick(Sender: TObject);
   private
     { Private declarations }
     FReg : TRegistry;
@@ -1032,6 +1038,36 @@ begin
  end;
 end;
 
+
+procedure TfrmHastaRecete.btnIlacEkleClick(Sender: TObject);
+begin
+  inherited;
+  ilacEkle(ReceteIlacEkle);
+end;
+
+procedure TfrmHastaRecete.btnIlacSilClick(Sender: TObject);
+var
+  ado : TADOQuery;
+  sql : string;
+begin
+  inherited;
+   if (ADO_Recete.FieldByName('ereceteNo').AsString = '0000') or
+      (ADO_Recete.FieldByName('ereceteNo').AsString = '')
+   Then
+     if MrYes = ShowMessageSkin('Ýlaç Reçeteden Çýkartýlýyor Eminmisiniz ?','','','msg')
+     Then Begin
+        ado := TADOQuery.Create(nil);
+        try
+          sql := 'delete from ReceteDetay where id = ' + ADO_RECETE_DETAY.fieldbyname('id').AsString;
+          datalar.QueryExec(ado,sql);
+          ADO_RECETE_DETAY.Active := false;
+          ADO_RECETE_DETAY.Active := True;
+        finally
+          ado.Free;
+        end;
+     End Else Begin end
+   Else ShowMessageSkin('E-ReçeteNo su olan Reçeteden Ýlaç Çýkartýlamaz','','','info');
+ end;
 
 procedure TfrmHastaRecete.cxButtonCClick(Sender: TObject);
 var
