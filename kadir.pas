@@ -374,6 +374,7 @@ function SahaSaglikGozlemSil(const GozlemID: integer): Boolean;
 function VeritabaniAlaninaFotografYukle(const sTableName, sKeyField, sImageField, sKeyValue: String): Boolean;
 function VeritabaniAlanindanFotografYukle(const sTableName, sKeyField, sImageField, sKeyValue: String; var aImage: TcxImage): Boolean;
 function FotografGoruntule (const aPicture: TPicture) : TModalResult;
+function CombodanSectir : Boolean;
 function WebErisimBilgi(slk,slb : string) : string;
 
 const
@@ -8457,6 +8458,34 @@ var
   aForm : TForm;
   aImage: TcxImage;
   aCheckBox: TCheckBox;
+begin
+  aForm := TForm.Create (Application);
+  try
+    aForm.BorderStyle := bsDialog;
+    aForm.FormStyle := fsNormal;
+    aImage := TcxImage.Create (aForm);
+    try
+      aImage.Parent := aForm;
+      aImage.Align := alClient;
+      aImage.Picture.Assign(aPicture);
+      aImage.AutoSize := True;
+      aForm.AutoSize := True;
+      aImage.AutoSize := False;
+      aForm.AutoSize := False;
+      aForm.Position := poDesktopCenter;
+      Result := aForm.ShowModal;
+    finally
+      aImage.Free;
+    end;
+  finally
+    aForm.Free;
+  end;
+end;
+
+function CombodanSectir : Boolean;
+var
+  aForm : TForm;
+  aComboBox: TComboBox;
 begin
   aForm := TForm.Create (Application);
   try
