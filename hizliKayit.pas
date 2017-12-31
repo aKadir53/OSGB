@@ -87,6 +87,23 @@ var
 implementation
   uses AnaUnit, Math;
 {$R *.dfm}
+const
+  colTCKimlikNo = 1;
+  colAdi        = 2;
+  colSoyadi     = 3;
+  colCinsiyeti  = 4;
+  colMedeniHali = 5;
+  colBabaAdi    = 6;
+  colAnaAdi     = 7;
+  ColAdres      = 8;
+  ColTelefon1   = 9;
+  ColTelefon2   = 10;
+  ColDogumYeri  = 11;
+  colDogumTarihi= 12;
+  colUyruk      = 13;
+  colDurum      = 14;
+  colIseBaslama = 15;
+  colKanGrubu   = 16;
 
 destructor TfrmHizliKayit.Destroy;
 begin
@@ -265,51 +282,53 @@ begin
       for _row_ := 1 to GridList.RowCount - 1 do
       begin
         //hem adý hem TCKimlik numarasý boþ ise atlayarak sonraki satýrdan devam et.
-        if IsNull (GridAtanmisSutunDegerAyarlaGetir(GridList,1,_row_))
-          and IsNull (GridAtanmisSutunDegerAyarlaGetir(GridList,2,_row_)) then Continue;
+        if IsNull (GridAtanmisSutunDegerAyarlaGetir(GridList,colTCKimlikNo,_row_))
+          and IsNull (GridAtanmisSutunDegerAyarlaGetir(GridList,colAdi,_row_)) then Continue;
         //yukarýdan geçtiyse adý veya TCKimlik dolu demektir.
-        if IsNull (GridAtanmisSutunDegerAyarlaGetir(GridList,1,_row_))
-          or IsNull (GridAtanmisSutunDegerAyarlaGetir(GridList,2,_row_))
-          or IsNull (GridAtanmisSutunDegerAyarlaGetir(GridList,3,_row_)) then
+        if IsNull (GridAtanmisSutunDegerAyarlaGetir(GridList,colTCKimlikNo,_row_))
+          or IsNull (GridAtanmisSutunDegerAyarlaGetir(GridList,colAdi,_row_))
+          or IsNull (GridAtanmisSutunDegerAyarlaGetir(GridList,colSoyadi,_row_)) then
         begin
           ShowMessageSkin ('Adý veya Soyadý veya TC Kimlik Numarasý alaný dolu olmalýdýr.', '', '', 'info');
           Exit;
         end;
         ;
-        Cins := ifThen(Copy(GridAtanmisSutunDegerAyarlaGetir (GridList, 4,_row_),1,1) = 'B','1',
-                ifThen(Copy(GridAtanmisSutunDegerAyarlaGetir (GridList, 4,_row_),1,1) = '1','1',
-                ifThen(Copy(GridAtanmisSutunDegerAyarlaGetir (GridList, 4,_row_),1,1) = 'K','1','0')));
+        Cins := ifThen(Copy(GridAtanmisSutunDegerAyarlaGetir (GridList, colCinsiyeti,_row_),1,1) = 'B','1',
+                ifThen(Copy(GridAtanmisSutunDegerAyarlaGetir (GridList, colCinsiyeti,_row_),1,1) = '1','1',
+                ifThen(Copy(GridAtanmisSutunDegerAyarlaGetir (GridList, colCinsiyeti,_row_),1,1) = 'K','1','0')));
 
-        Medeni := ifThen(Copy(GridAtanmisSutunDegerAyarlaGetir (GridList, 5,_row_),1,1) = 'B','1',
-                  ifThen(Copy(GridAtanmisSutunDegerAyarlaGetir (GridList, 5,_row_),1,1) = '1','1','0'));
+        Medeni := ifThen(Copy(GridAtanmisSutunDegerAyarlaGetir (GridList, colMedeniHali,_row_),1,1) = 'B','1',
+                  ifThen(Copy(GridAtanmisSutunDegerAyarlaGetir (GridList, colMedeniHali,_row_),1,1) = '1','1','0'));
 
-        DTarih := ifThen(pos('.',GridAtanmisSutunDegerAyarlaGetir (GridList, 12,_row_)) > 0,
-                         NoktasizTarih(GridAtanmisSutunDegerAyarlaGetir (GridList, 12,_row_)),GridAtanmisSutunDegerAyarlaGetir (GridList, 12,_row_));
+        DTarih := ifThen(pos('.',GridAtanmisSutunDegerAyarlaGetir (GridList, colDogumTarihi,_row_)) > 0,
+                         NoktasizTarih(GridAtanmisSutunDegerAyarlaGetir (GridList, colDogumTarihi,_row_)),
+                         GridAtanmisSutunDegerAyarlaGetir (GridList, colDogumTarihi,_row_));
 
-        BTarih := ifThen(pos('.',GridAtanmisSutunDegerAyarlaGetir (GridList, 15,_row_)) > 0,
-                         NoktasizTarih(GridAtanmisSutunDegerAyarlaGetir (GridList, 15,_row_)),GridAtanmisSutunDegerAyarlaGetir (GridList, 15,_row_));
+        BTarih := ifThen(pos('.',GridAtanmisSutunDegerAyarlaGetir (GridList, colIseBaslama,_row_)) > 0,
+                         NoktasizTarih(GridAtanmisSutunDegerAyarlaGetir (GridList, colIseBaslama,_row_)),
+                         GridAtanmisSutunDegerAyarlaGetir (GridList, colIseBaslama,_row_));
 
         sql := Format(_insertPersonel_,
                       [QuotedStr(datalar.AktifSirket),
-                       QuotedStr(GridAtanmisSutunDegerAyarlaGetir (GridList, 1,_row_)),
-                       QuotedStr(GridAtanmisSutunDegerAyarlaGetir (GridList, 2,_row_)),
-                       QuotedStr(GridAtanmisSutunDegerAyarlaGetir (GridList, 3,_row_)),
+                       QuotedStr(GridAtanmisSutunDegerAyarlaGetir (GridList, colTCKimlikNo,_row_)),
+                       QuotedStr(GridAtanmisSutunDegerAyarlaGetir (GridList, colAdi,_row_)),
+                       QuotedStr(GridAtanmisSutunDegerAyarlaGetir (GridList, colSoyadi,_row_)),
                        QuotedStr(Cins),
                        QuotedStr(Medeni),
-                       QuotedStr(GridAtanmisSutunDegerAyarlaGetir (GridList, 6,_row_)),
-                       QuotedStr(GridAtanmisSutunDegerAyarlaGetir (GridList, 7,_row_)),
-                       QuotedStr(GridAtanmisSutunDegerAyarlaGetir (GridList, 8,_row_)),
-                       QuotedStr(GridAtanmisSutunDegerAyarlaGetir (GridList, 9,_row_)),
-                       QuotedStr(GridAtanmisSutunDegerAyarlaGetir (GridList, 10,_row_)),
-                       QuotedStr(GridAtanmisSutunDegerAyarlaGetir (GridList, 11,_row_)),
+                       QuotedStr(GridAtanmisSutunDegerAyarlaGetir (GridList, colBabaAdi,_row_)),
+                       QuotedStr(GridAtanmisSutunDegerAyarlaGetir (GridList, colAnaAdi,_row_)),
+                       QuotedStr(GridAtanmisSutunDegerAyarlaGetir (GridList, ColAdres,_row_)),
+                       QuotedStr(GridAtanmisSutunDegerAyarlaGetir (GridList, ColTelefon1,_row_)),
+                       QuotedStr(GridAtanmisSutunDegerAyarlaGetir (GridList, ColTelefon2,_row_)),
+                       QuotedStr(GridAtanmisSutunDegerAyarlaGetir (GridList, ColDogumYeri,_row_)),
                        QuotedStr(DTarih),
-                       QuotedStr(GridAtanmisSutunDegerAyarlaGetir (GridList, 13,_row_)),
+                       QuotedStr(GridAtanmisSutunDegerAyarlaGetir (GridList, colUyruk,_row_)),
                        QuotedStr(BTarih),
                        'NULL',
                        QuotedStr(datalar.username),
                        QuotedStr('1'),
                        QuotedStr(datalar.AktifSube),
-                       QuotedStr(GridAtanmisSutunDegerAyarlaGetir (GridList, 16,_row_))]);
+                       'NULL']);
         datalar.queryExec(SelectAdo,sql);
         iCount := iCount + 1;
       end;
