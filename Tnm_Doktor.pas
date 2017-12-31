@@ -31,7 +31,7 @@ type
 
 const _TableName_ = 'DoktorlarT';
       formGenislik = 500;
-      formYukseklik = 500;
+      formYukseklik = 530;
 
 var
   frmDoktorlar: TfrmDoktorlar;
@@ -46,9 +46,10 @@ function TfrmDoktorlar.Init(Sender: TObject) : Boolean;
   index,i : integer;
   Ts,Ts1 : TStringList;
   List,List1,List3 : TListeAc;
-  bransKodu,calismaTipi,cardType,sirket : TcxImageComboKadir;
+  bransKodu,calismaTipi,cardType,sirket,medulaGonderimTipi : TcxImageComboKadir;
 begin
-Result := False;
+  Result := False;
+
 case self.Tag of
  TagfrmDoktorlar
   : begin
@@ -79,7 +80,7 @@ case self.Tag of
         setDataStringB(self,'kod','Doktor Kodu',Kolon1,'',70,List,True,nil);
 
         setDataString(self,'tanimi','Adý Soyadý',Kolon1,'',200,True);
-        setDataString(self,'tcKimlikNo','TC Kimlik No',Kolon1,'',150,True);
+        setDataString(self,'tcKimlikNo','TC Kimlik No',Kolon1,'',100,True);
 
         bransKodu := TcxImageComboKadir.Create(self);
         bransKodu.Conn := Datalar.ADOConnection2;
@@ -89,13 +90,14 @@ case self.Tag of
         bransKodu.BosOlamaz := True;
         bransKodu.Filter := '';
         OrtakEventAta(bransKodu);
-        setDataStringKontrol(self,bransKodu,'bransKodu','Branþ Kodu',kolon1,'',120);
+        setDataStringKontrol(self,bransKodu,'bransKodu','Branþ Kodu',kolon1,'',200);
 
 
 
         setDataString(self,'tescilNo','Tescil No',Kolon1,'',80,True);
         setDataString(self,'eReceteKullanici','Reçete Kullanýcý Adý',Kolon1,'cc',100,True);
         setDataString(self,'eReceteSifre','Reçete Þifresi',Kolon1,'',100,True);
+
         setDataString(self,'pin','Ýmza Token Pin',Kolon1,'',50);
 
         cardType := TcxImageComboKadir.Create(self);
@@ -107,6 +109,14 @@ case self.Tag of
         cardType.Filter := '';
         OrtakEventAta(cardType);
         setDataStringKontrol(self,cardType,'cardType','Card Type',kolon1,'',150);
+
+        medulaGonderimTipi := TcxImageComboKadir.Create(self);
+        medulaGonderimTipi.Conn := nil;
+        medulaGonderimTipi.BosOlamaz := True;
+        medulaGonderimTipi.ItemList := '0;Ýmzalý,1;Ýmzasýz';
+        medulaGonderimTipi.Filter := '';
+        OrtakEventAta(medulaGonderimTipi);
+        setDataStringKontrol(self,medulaGonderimTipi,'medulaGonderimTipi','Medula Gönderim',kolon1,'',100);
 
         setDataString(self,'TesisKodu','Tesis Kodu',Kolon1,'',100);
         setDataString(self,'GSM','GSM',Kolon1,'',100);
@@ -229,6 +239,7 @@ begin
   if length(datalar.ButtonEditSecimlist) > 0 then
   begin
     enabled;
+      FormInputZorunluKontrolPaint(self,$00FCDDD1);
   end;
 end;
 

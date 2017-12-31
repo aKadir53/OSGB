@@ -573,6 +573,8 @@ Const
   yeniGozlem = 24;
   gozlemSil = 25;
   GozlemDuzenle = 26;
+  Imzali = 0;
+  Imzasiz = 1;
 
 
   sp_HastaGelis = 'exec sp_HastaGelisleri ';
