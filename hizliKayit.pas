@@ -37,6 +37,7 @@ type
     miVeritabaninaYaz: TMenuItem;
     miAlanEslestir: TMenuItem;
     GridList: TAdvStringGrid;
+    miSoyadAyarla: TMenuItem;
     procedure cxButtonCClick(Sender: TObject);
     procedure ExcelToGrid;
     procedure GridToPersonelKartTable;
@@ -51,6 +52,7 @@ type
     procedure GridAlanEslestirme;
     function GridAtanmisSutunDegerAyarlaGetir (const aGrid: TStringGrid; const ACol, ARow : Integer):String;
     function GridBaslikAyarla (const S: String; const iNumber : Integer) : String;
+    procedure GridSoyadiAyarla;
   public
     { Public declarations }
     constructor Create (Aowver: TComponent); override;
@@ -259,6 +261,50 @@ begin
               Trim (StringReplace (s, #9, '', [rfReplaceAll])));
 end;
 
+procedure TfrmHizliKayit.GridSoyadiAyarla;
+var
+  iRow, iAd, iSoyad : Integer;
+  sSonKelime, sBasTaraf : String;
+begin
+  if ShowMessageSkin (
+      'Bu iþlem, Soyadý sütunu boþ olan satýrlara Adý '+
+      'sütununun son kelimesini veya Adý sütunu boþ '+
+      'olan satýrlara Soyadý sütununun ilk kelimelerini atayacaktýr.'#13#10#13#10+
+      'Emin misiniz ?',
+      '', '', 'conf') <> mrYes then Exit;
+  if (FAssignedColumnIndexes [colAdi] < 0)
+    or (FAssignedColumnIndexes [colSoyadi] < 0) then
+  begin
+    ShowMessageSkin('Adý veya Soyadý sütunlarý ile alan iliþkilendirilmesi yapýlmamýþ', '', '', 'info');
+    Exit;
+  end;
+  iAd := 0;
+  iSoyad := 0;
+  for iRow := GridList.FixedRows to GridList.RowCount - 1 do
+  begin
+    if IsNull (GridAtanmisSutunDegerAyarlaGetir (GridList, colAdi, iRow))
+      and IsNull (GridAtanmisSutunDegerAyarlaGetir (GridList, colSoyadi, iRow)) then Continue;
+    if not IsNull (GridAtanmisSutunDegerAyarlaGetir (GridList, colAdi, iRow))
+      and not IsNull (GridAtanmisSutunDegerAyarlaGetir (GridList, colSoyadi, iRow)) then Continue;
+
+    if IsNull (GridAtanmisSutunDegerAyarlaGetir (GridList, colSoyadi, iRow)) then
+    begin
+      iSoyad := iSoyad + 1;
+      adsoyadayir (GridAtanmisSutunDegerAyarlaGetir (GridList, colAdi, iRow), sBasTaraf, sSonKelime);
+    end
+    else begin
+      iAd := iAd + 1;
+      adsoyadayir (GridAtanmisSutunDegerAyarlaGetir (GridList, colSoyadi, iRow), sBasTaraf, sSonKelime);
+    end;
+    GridList.Cells [FAssignedColumnIndexes [colAdi], iRow] := sBasTaraf;
+    GridList.Cells [FAssignedColumnIndexes [colSoyadi], iRow] := sSonKelime;
+  end;
+  if iAd + iSoyad > 0 then
+    showmessageskin (IntToStr (iAd) + ' adet Adý, ' + IntToStr (iSoyad) + ' adet Soyadý bilgisi ayarlandý', '', '', 'info')
+   else
+    showmessageskin ('Deðiþikliðe uygun satýr bulunamadý', '', '', 'info');
+end;
+
 procedure TfrmHizliKayit.GridToPersonelKartTable;
 var
   sql : string;
@@ -283,14 +329,15 @@ begin
       begin
         //hem adý hem TCKimlik numarasý boþ ise atlayarak sonraki satýrdan devam et.
         if IsNull (GridAtanmisSutunDegerAyarlaGetir(GridList,colTCKimlikNo,_row_))
-          and IsNull (GridAtanmisSutunDegerAyarlaGetir(GridList,colAdi,_row_)) then Continue;
+          and IsNull (GridAtanmisSutunDegerAyarlaGetir(GridList,colAdi,_row_))
+          and IsNull (GridAtanmisSutunDegerAyarlaGetir(GridList,colSoyadi,_row_)) then Continue;
         //yukarýdan geçtiyse adý veya TCKimlik dolu demektir.
         if IsNull (GridAtanmisSutunDegerAyarlaGetir(GridList,colTCKimlikNo,_row_))
           or IsNull (GridAtanmisSutunDegerAyarlaGetir(GridList,colAdi,_row_))
           or IsNull (GridAtanmisSutunDegerAyarlaGetir(GridList,colSoyadi,_row_)) then
         begin
-          ShowMessageSkin ('Adý veya Soyadý veya TC Kimlik Numarasý alaný dolu olmalýdýr.', '', '', 'info');
-          Exit;
+          //transaction mesajý beklemesin önce rollback olsun sonra mesaj gelsin diye exit ile deðil raise ile yaptýk.
+          raise Exception.Create ('Adý veya Soyadý veya TC Kimlik Numarasý alaný dolu olmalýdýr.');
         end;
         ;
         Cins := ifThen(Copy(GridAtanmisSutunDegerAyarlaGetir (GridList, colCinsiyeti,_row_),1,1) = 'B','1',
@@ -378,8 +425,9 @@ begin
         end;
     4: begin
       GridAlanEslestirme;
-    end;
-    end;
+       end;
+    5: GridSoyadiAyarla;
+  end;
 end;
 
 

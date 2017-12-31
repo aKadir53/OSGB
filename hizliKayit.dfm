@@ -254,6 +254,12 @@ object frmHizliKayit: TfrmHizliKayit
     Images = DATALAR.imag24png
     Left = 696
     Top = 224
+    object miSoyadAyarla: TMenuItem
+      Tag = 5
+      Caption = 'Soyad'#305' Ayarlamas'#305
+      ImageIndex = 32
+      OnClick = cxButtonCClick
+    end
     object miAlanEslestir: TMenuItem
       Tag = 4
       Caption = 'Alan E'#351'le'#351'tir'
