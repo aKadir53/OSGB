@@ -906,10 +906,16 @@ end;
 procedure TDATALAR.QueryExec (sql : string = '');
 var
   b: Boolean;
-  q: TADOQuery;
+  Q: TADOQuery;
 begin
-  b:= queryExec (Q, sql);
-  if not b then ;;;
+  try
+   Q := TADOQuery.Create(nil);
+   Q.Connection := datalar.ADOConnection2;
+   b:= queryExec (Q, sql);
+   if not b then ;;;
+  finally
+   Q.Free;
+  end;
 end;
 
 function TDATALAR.QueryExec (var Q: TADOQuery; const sql : string): Boolean;
