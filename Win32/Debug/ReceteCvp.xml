@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ereceteGirisCevapDVO xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <ereceteDVO>
+    <protokolNo>1</protokolNo>
+    <provizyonTipi>1</provizyonTipi>
+    <receteAltTuru>1</receteAltTuru>
+    <receteTarihi>30.12.2017</receteTarihi>
+    <receteTuru>1</receteTuru>
+    <takipNo>0</takipNo>
+    <tcKimlikNo>54823360124</tcKimlikNo>
+    <tesisKodu>11349903</tesisKodu>
+    <seriNo>1</seriNo>
+    <doktorBransKodu>9999</doktorBransKodu>
+    <doktorSertifikaKodu>0</doktorSertifikaKodu>
+    <kisiDVO>
+      <adi>UMUT CAN</adi>
+      <cinsiyeti>Erkek</cinsiyeti>
+      <dogumTarihi>13.06.1995</dogumTarihi>
+      <soyadi>SEL</soyadi>
+      <tcKimlikNo>54823360124</tcKimlikNo>
+    </kisiDVO>
+    <ereceteNo>VKGF0Y</ereceteNo>
+    <ereceteIlacListesi>
+      <adet>1</adet>
+      <barkod>8699809097674</barkod>
+      <ilacAdi>NORTAN 50 MG 28 FTB</ilacAdi>
+      <kullanimDoz1>1</kullanimDoz1>
+      <kullanimPeriyotBirimi>3</kullanimPeriyotBirimi>
+      <kullanimSekli>1</kullanimSekli>
+      <kullanimDoz2>2</kullanimDoz2>
+      <kullanimPeriyot>1</kullanimPeriyot>
+      <geriOdemeKapsaminda>E</geriOdemeKapsaminda>
+    </ereceteIlacListesi>
+    <ereceteIlacListesi>
+      <adet>3</adet>
+      <barkod>8699570150011</barkod>
+      <ilacAdi>AFERIN 30 KAPSUL</ilacAdi>
+      <kullanimDoz1>1</kullanimDoz1>
+      <kullanimPeriyotBirimi>3</kullanimPeriyotBirimi>
+      <kullanimSekli>1</kullanimSekli>
+      <kullanimDoz2>1</kullanimDoz2>
+      <kullanimPeriyot>1</kullanimPeriyot>
+      <geriOdemeKapsaminda>E</geriOdemeKapsaminda>
+    </ereceteIlacListesi>
+    <ereceteTaniListesi>
+      <taniAdi>AFYON</taniAdi>
+      <taniKodu>T40.0</taniKodu>
+    </ereceteTaniListesi>
+    <ereceteTaniListesi>
+      <taniAdi>ÜST SOLUNUM YOLU DİĞER HASTALIKLARI</taniAdi>
+      <taniKodu>J39</taniKodu>
+    </ereceteTaniListesi>
+    <doktorAdi>MURAT</doktorAdi>
+    <doktorSoyadi>ASLAN</doktorSoyadi>
+    <doktorTcKimlikNo>20132508304</doktorTcKimlikNo>
+  </ereceteDVO>
+  <sonucKodu>0000</sonucKodu>
+  <sonucMesaji />
+  <uyariMesaji />
+</ereceteGirisCevapDVO>

@@ -46,7 +46,7 @@ object frmHizliKayit: TfrmHizliKayit
     Font.Height = -11
     Font.Name = 'Tahoma'
     Font.Style = []
-    Options = [goFixedVertLine, goFixedHorzLine, goVertLine, goHorzLine, goRangeSelect, goEditing]
+    Options = [goFixedVertLine, goFixedHorzLine, goVertLine, goHorzLine, goRangeSelect, goColSizing, goEditing]
     ParentFont = False
     ScrollBars = ssBoth
     TabOrder = 1
@@ -59,21 +59,21 @@ object frmHizliKayit: TfrmHizliKayit
     ColumnHeaders.Strings = (
       'SiraNo'
       'TC K'#304'ML'#304'K NO'
-      'ADI SOYADI'
+      'ADI'
       'SOYADI'
       'C'#304'NS'#304'YET'
-      'MEDEN'#304' H.'
+      'MEDEN'#304' HAL'
       'BABA ADI'
       'ANNE ADI'
-      #304'L/'#304'L'#199'E'
-      'TELEFON  NO'
+      'ADRES'
+      'TELEFON NO'
       'tel2'
-      'DO'#286'UM.YER'#304
-      'DO'#286'UM .TAR'#304'H'#304
+      'DO'#286'UM YER'#304
+      'DO'#286'UM TAR'#304'H'#304
       'UYRUK'
       'Durum'
-      #304#350'E BA'#350'LAMA TAR.'
-      'KAN GRUBU'#9)
+      #304#350'E BA'#350'LAMA TAR'#304'H'#304
+      'KAN GRUBU')
     ControlLook.FixedGradientHoverFrom = clGray
     ControlLook.FixedGradientHoverTo = clWhite
     ControlLook.FixedGradientDownFrom = clGray
@@ -254,21 +254,28 @@ object frmHizliKayit: TfrmHizliKayit
     Images = DATALAR.imag24png
     Left = 696
     Top = 224
-    object B1: TMenuItem
-      Caption = 'Personel Kartlar'#305' Excel Dosyas'#305'n'#305' A'#231
-      ImageIndex = 75
+    object miSoyadAyarla: TMenuItem
+      Tag = 5
+      Caption = 'Soyad'#305' Ayarlamas'#305
+      ImageIndex = 32
       OnClick = cxButtonCClick
     end
-    object H1: TMenuItem
+    object miAlanEslestir: TMenuItem
+      Tag = 4
+      Caption = 'Alan E'#351'le'#351'tir'
+      ImageIndex = 80
+      OnClick = cxButtonCClick
+    end
+    object miVeritabaninaYaz: TMenuItem
       Tag = 1
       Caption = 'Kartlar'#305' Sisteme Yaz Kabul Et'
       ImageIndex = 9
       OnClick = cxButtonCClick
     end
-    object N1: TMenuItem
-      Caption = #304'ptal'
+    object miExcelYukle: TMenuItem
+      Caption = 'Personel Kartlar'#305' Excel Dosyas'#305'n'#305' A'#231
       ImageIndex = 75
-      Visible = False
+      OnClick = cxButtonCClick
     end
   end
 end
