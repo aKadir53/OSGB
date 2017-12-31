@@ -375,6 +375,7 @@ function VeritabaniAlaninaFotografYukle(const sTableName, sKeyField, sImageField
 function VeritabaniAlanindanFotografYukle(const sTableName, sKeyField, sImageField, sKeyValue: String; var aImage: TcxImage): Boolean;
 function FotografGoruntule (const aPicture: TPicture) : TModalResult;
 function WebErisimBilgi(slk,slb : string) : string;
+function DoktorReceteMedulaGonderimTip(doktor : string) : integer;
 
 const
   _YTL_ = 'YTL';
@@ -443,6 +444,23 @@ implementation
 uses message,AnaUnit,message_y,popupForm,rapor,TedaviKart,Son6AylikTetkikSonuc,
              HastaRecete,sifreDegis,HastaTetkikEkle,GirisUnit,SMS,LisansUzat;
 
+function DoktorReceteMedulaGonderimTip(doktor : string) : integer;
+var
+  sql : string;
+  ado : TADOQuery;
+begin
+   DoktorReceteMedulaGonderimTip := 0;
+   ado := TADOQuery.Create(nil);
+   try
+     ado.Connection := datalar.ADOConnection2;
+     sql := 'select medulaGonderimTipi from doktorlarT '  +
+            'where kod = ' + QuotedStr(doktor);
+     datalar.QuerySelect(ado,sql);
+     DoktorReceteMedulaGonderimTip := ado.Fields[0].AsInteger;
+   finally
+     ado.Free;
+   end;
+end;
 
 function WebErisimBilgi(slk,slb : string) : string;
 var

@@ -162,7 +162,9 @@ type
     procedure PopupMenu2Popup(Sender: TObject);
     procedure cxGridReceteDblClick(Sender: TObject);
     function ReceteImzalaGonder : string;
+    function ReceteGonder : string;
     function ReceteImzalaSil : string;
+    function ReceteSil : string;
     procedure btnIlacEkleClick(Sender: TObject);
     procedure btnIlacSilClick(Sender: TObject);
   private
@@ -186,6 +188,15 @@ type
                       url : string;
                       cardType : string); stdcall;
 
+  TReceteGonder = procedure(Id : integer;
+                      recete : string;
+                      doktorkullanici : string;
+                      doktrsifre : string;
+                      doktorTc : string;
+                      TesisKodu : integer;
+                       var sonuc : PWideChar;
+                      url : string); stdcall;
+
   TReceteImzalaDelete = procedure(Id : PWideChar;
                       recete : PWideChar;
                       doktorkullanici : PWideChar;
@@ -196,6 +207,15 @@ type
                        var sonuc : PWideChar;
                        url : PWideChar;
                        cardType : PWideChar); stdcall;
+
+  TReceteDelete = procedure(Id : PWideChar;
+                      recete : PWideChar;
+                      doktorkullanici : PWideChar;
+                      doktrsifre : PWideChar;
+                      doktorTc : PWideChar;
+                      TesisKodu : integer;
+                       var sonuc : PWideChar;
+                       url : PWideChar); stdcall;
 
 const _TableName_ = 'Recete';
       formGenislik = 1100;
@@ -263,6 +283,45 @@ begin
   FreeLibrary(dllHandle);
 end;
 
+function TfrmHastaRecete.ReceteGonder : string;
+var
+  imzala : TReceteGonder;
+  dllHandle: Cardinal;
+  receteId,TesisKodu: integer;
+  recete,doktorKullanici,doktorsifre,pin,url,cardType: string;
+  doktorTc : string;
+  ss : PWideChar;
+  sql : string;
+begin
+  url := (datalar.receteURL);
+  sql := 'sp_HastaReceteToXML_Imzasiz ' + ADO_Recete.FieldByName('id').AsString;
+  QuerySelect(sql);
+
+
+  ss := 'Yok';
+  receteId := (ADO_Recete.FieldByName('id').AsInteger);
+  recete := (SelectAdo.FieldByName('recete').AsString);
+  doktorKullanici := (SelectAdo.FieldByName('doktorKullanici').AsString);
+  doktorsifre :=  (SelectAdo.FieldByName('doktorsifre').AsString);
+  doktorTc :=  (SelectAdo.FieldByName('doktorTc').AsString);
+  TesisKodu :=  (SelectAdo.FieldByName('TesisKodu').AsInteger);
+
+  dllHandle := LoadLibrary(LIB_DLL);
+  if dllHandle = 0 then
+    exit;
+
+  @imzala := findMethod(dllHandle, 'ReceteGonder');
+  if addr(imzala) <> nil then
+  imzala(receteId,recete,doktorKullanici,doktorsifre,doktorTc,TesisKodu,ss,url);
+
+  ReceteGonder := ss;
+
+  if not Assigned(imzala) then
+    raise Exception.Create(LIB_DLL + ' içersinde ReceteGonder bulunamadý!');
+
+  FreeLibrary(dllHandle);
+end;
+
 
 function TfrmHastaRecete.ReceteImzalaSil : string;
 var
@@ -303,6 +362,47 @@ begin
 
   if not Assigned(imzala) then
     raise Exception.Create(LIB_DLL + ' içersinde ReceteImzalaSil bulunamadý!');
+
+  FreeLibrary(dllHandle);
+end;
+
+function TfrmHastaRecete.ReceteSil : string;
+var
+  imzala : TReceteDelete;
+  dllHandle: Cardinal;
+  recete,doktorKullanici,doktorsifre,pin,doktorTc,receteId,url,cardType: WideString;
+  TesisKodu : integer;
+  ss : PWideChar;
+  sql : string;
+begin
+  url := datalar.receteURL;
+  sql := 'sp_HastaReceteSil_Imzasiz ' + ADO_Recete.FieldByName('id').AsString;
+  QuerySelect(sql);
+
+  ss := '';
+  receteId := ADO_Recete.FieldByName('id').AsString;
+  recete := SelectAdo.FieldByName('ReceteSil').AsString;
+  doktorKullanici :=  SelectAdo.FieldByName('doktorKullanici').AsString;
+  doktorsifre :=  SelectAdo.FieldByName('doktorsifre').AsString;
+  doktorTc :=  SelectAdo.FieldByName('doktorTc').AsString;
+  TesisKodu :=  SelectAdo.FieldByName('TesisKodu').AsInteger;
+
+  dllHandle := LoadLibrary(LIB_DLL);
+  if dllHandle = 0 then
+    exit;
+
+
+  @imzala := findMethod(dllHandle, 'ReceteSil');
+  if addr(imzala) <> nil then
+  imzala(PWideChar(receteId),PWideChar(recete),
+                                PWideChar(doktorKullanici),PWideChar(doktorsifre),
+                                PWideChar(doktorTc),TesisKodu,ss,
+                                PWideChar(datalar.receteURL));
+
+  ReceteSil := ss;
+
+  if not Assigned(imzala) then
+    raise Exception.Create(LIB_DLL + ' içersinde ReceteSil bulunamadý!');
 
   FreeLibrary(dllHandle);
 end;
@@ -577,9 +677,19 @@ begin
    ReceteMedulaKaydet :  begin
                            if LisansKontrol(fark) = True
                            Then Begin
-                              DurumGoster(True,False,'Reçeteniz Kayýt Ýçin Ýmzalanýyor...Lütfen Bekleyiniz...',1);
+//                              DurumGoster(True,False,'Reçeteniz Kayýt Ýçin Ýmzalanýyor...Lütfen Bekleyiniz...',1);
                               try
-                                Sonuc := ReceteImzalaGonder;
+                                case DoktorReceteMedulaGonderimTip(_d_) of
+                                 imzali : begin
+                                           DurumGoster(True,False,'Reçeteniz Kayýt Ýçin Ýmzalanýyor...Lütfen Bekleyiniz...',1);
+                                           Sonuc := ReceteImzalaGonder;
+                                          end;
+                                 imzasiz : begin
+                                             DurumGoster(True,False,'Reçeteniz Medula Gönderiliyor...Lütfen Bekleyiniz...',1);
+                                             Sonuc := ReceteGonder;
+                                           end;
+                                end;
+
                                 if Copy(Sonuc,1,4) = '0000'
                                 then begin
                                   ADO_Recete.edit;
@@ -599,18 +709,24 @@ begin
 
      // _exe :=  PAnsiChar(AnsiString('C:\NoktaV3\E-imza\imza.exe ' + 'I' + ' '+ _dn_ + ' ' + _gn_ + ' ' + _id_ + ' ' + _d_  + ' ' + datalar.AktifSirket));
    ReceteMedulaSil : begin
-                            DurumGoster(True,False,'Reçete Silinmek Üzere Ýmzalanýyor...Lütfen Bekleyiniz...',1);
+                            DurumGoster(True,False,'Reçete Siliniyor...Lütfen Bekleyiniz...',1);
                             try
-                              Sonuc := ReceteImzalaSil;
+                                case DoktorReceteMedulaGonderimTip(_d_) of
+                                 imzali : Sonuc := ReceteImzalaSil;
+                                 imzasiz : Sonuc := ReceteSil;
+                                end;
                                 if Sonuc = '0000'
                                 then begin
                                   ADO_Recete.edit;
                                   ADO_Recete.FieldByName('eReceteNo').AsString := '0000';
                                   ADO_Recete.post;
-                                end;
+                                  ShowMessageSkin(Sonuc,'Reçete Ýptal Edildi','','info');
+                                end
+                                else
+                                  ShowMessageSkin(Sonuc,'Reçete Ýptal Edilemedi','','info');
+
                             finally
                               DurumGoster(False,False,'');
-                              ShowMessageSkin(Sonuc,'Reçete Ýptal Edildi','','info');
                             end;
                       end;
 
