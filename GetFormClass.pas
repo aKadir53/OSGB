@@ -236,7 +236,7 @@ begin
    TagfrmSon6AylikTetkikSonuc : Result := frmSon6AylikTetkikSonuc;
    TagfrmReceteler : Result := frmReceteler;
    TagfrmSahaSaglikGozetim : Result := frmSahaSaglikGozetim;
-   TagfrmUpdate : Result := frmUpdate;
+   TagfrmUpdate : Result := frmUpdate;þ
   end;
 end;
 
@@ -275,7 +275,7 @@ begin
       result := nil;
    end;
 
-   if not (Form is TGirisForm) then
+   if not (Form is TGirisForm) then þ
    begin
      Form.BorderStyle := bsToolWindow;
      Form.Align := alNone;
@@ -443,7 +443,7 @@ begin
 
   Form := TGirisForm(FormClassType(FormTag));
 
-  if not (Form is TGirisForm) then
+  if not (Form is TGirisForm) then þ
   begin
     Form.BorderStyle := bsToolWindow;
     Form.Align := alNone;
