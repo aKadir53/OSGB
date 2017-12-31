@@ -258,7 +258,6 @@ object frmHizliKayit: TfrmHizliKayit
       Tag = 4
       Caption = 'Alan E'#351'le'#351'tir'
       ImageIndex = 80
-      Visible = False
       OnClick = cxButtonCClick
     end
     object miVeritabaninaYaz: TMenuItem

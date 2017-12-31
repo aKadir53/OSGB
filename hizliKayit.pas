@@ -300,9 +300,12 @@ begin
   FInitialColumnHeaders.Clear;
   for i := GridList.FixedCols to GridList.ColCount - 1 do
     FInitialColumnHeaders.Add(GridList.Cells [i, 0]);
-  FAssignedColumnIndexes.Clear;
+  SetLength (FAssignedColumnIndexes, 0);
   for i:= 0 to FInitialColumnHeaders.Count - 1 do
-    FAssignedColumnIndexes.Add(IntToStr (i));
+  begin
+    SetLength (FAssignedColumnIndexes, High (FAssignedColumnIndexes) + 2);
+    FAssignedColumnIndexes [High (FAssignedColumnIndexes)] := i;
+  end;
 end;
 //isg katip excel'ini programdan aktarma
 //personel aktarýmýnda alan eþleþtirme
