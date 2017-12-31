@@ -170,9 +170,6 @@ begin
       ShowMessageSkin('Aktif þube seçmeden personel aktarýmý yapamazsýnýz.'#13#10'Personeller, seçili þubeye aktarýlacak.', '', '', 'info');
       Exit;
     end;
-    if not CombodanSectir ('Alan Eþleþtirme', 'Alan', '1'#13#10'2', iCount) then Exit;
-    dialogs.ShowMessage ('X');
-    exit;
     bBasarili := False;
     iCount := 0;
     datalar.ADOConnection2.BeginTrans;
