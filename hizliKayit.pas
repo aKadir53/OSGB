@@ -49,6 +49,7 @@ type
     FInitialColumnHeaders : TStringList;
     FAssignedColumnIndexes : array of Integer;
     procedure GridAlanEslestirme;
+    function GridAtanmisSutunDegerAyarlaGetir (const aGrid: TStringGrid; const ACol, ARow : Integer):String;
   public
     { Public declarations }
     constructor Create (Aowver: TComponent); override;
@@ -150,8 +151,82 @@ end;
 
 
 procedure TfrmHizliKayit.GridAlanEslestirme;
+var
+  aStringList : TStringList;
+  i, j: Integer;
+  sItems : String;
+  aItems: array of Integer;
 begin
-þ
+  if ShowMessageSkin ('Bu iþlem, bu ekraný ilk açtýðýnýzda gördüðünüz standart þablon dýþýndaki personel listelerini aktarabilmeniz için imkân saðlar'#13#10#13#10+
+                      'Baþlýklarý eþleþen sütunlar otomatik olarak eþleþtirilecek ve geri kalaný için size eþleþtirme sorusu sorulacaktýr'#13#10#13#10+
+                      'Devam etmek istiyor musunuz ?',
+                      '', '', 'conf') <> mrYes then Exit;
+  aStringList := TStringList.create;
+  try
+    for i := 0 to GridList.ColCount - 1 do
+      GridList.Cells [i, 0] := IfThen (IsNull (Trim (GridList.Cells [i, 0])), 'Baþlýksýz Sütun' + IntToStr (i), Trim (GridList.Cells [i, 0]));
+    //ÜÖ 20171231 eþleþen sütun baþlýklarýný gridde arayýp indexlerini ata
+    for i := 0 to FInitialColumnHeaders.Count - 1 do
+      aStringList.Add(IntToStr(GridList.Rows [0].IndexOf(FInitialColumnHeaders [i])));
+    //bulunamayanlar için kullanýcýya baþvur
+    for i := 0 to aStringList.Count - 1 do
+    begin
+      //o sütun karþýlýðý bir sütun eþleþmemiþ.
+      if StrToInt (aStringList [i]) < 0 then
+      begin
+        //grid baþlýklarýndan, daha önce eþleþmemiþ olanlarýndan bir ItemList oluþtur.
+        sItems:= 'Yok / Alma / Atla';
+        SetLength (aItems, 1);
+        aItems [0] := -1;
+        for j := 0 to GridList.ColCount - 1 do
+          if aStringList.IndexOf (IntToStr(j)) < 0 then
+          begin
+            sItems := sItems + #13#10 +
+              IfThen (IsNull (Trim (StringReplace (GridList.Cells [j, 0], #13#10, '_', [rfReplaceAll]))),
+                'Baþlýksýz Sütun' + IntToStr (j),
+                Trim (StringReplace (GridList.Cells [j, 0], #13#10, '_', [rfReplaceAll])));
+            SetLength (aItems, High (aItems) + 2);
+            aItems [High (aItems)] := j;
+          end;
+        //seçtirecek alan kalmadýysa döngüyü kýr
+        if High (aItems) <= 0 then Break;
+
+        j := -1;
+        if (not CombodanSectir ('Alan seçiniz', FInitialColumnHeaders [i], sItems, j))
+          or (j < 0) then
+        begin
+          ShowMessageSkin('Ýþlem iptal edildi', '', '', 'info');
+          Exit;
+        end;
+        aStringList [i] := IntToStr (aItems [j]);
+      end;
+    end;
+    //buraya kadar sað salim geldikse olay tamam, geçici yerel diziyi form dizisine aktarýp ortamý terk edelim...
+    for i := Low (FAssignedColumnIndexes) to High (FAssignedColumnIndexes) do
+      FAssignedColumnIndexes [i] := StrToInt (aStringList [i]);
+    ShowMessageSkin('Alan Eþleþtirmesi Baþarý ile Tamamlandý', '', '', 'info');
+  finally
+    aStringList.Free;
+  end;
+end;
+
+function TfrmHizliKayit.GridAtanmisSutunDegerAyarlaGetir(
+  const aGrid: TStringGrid; const ACol, ARow: Integer): String;
+begin
+  Result := Trim (
+              StringReplace (
+                IfThen (
+                  FAssignedColumnIndexes [ACol] >= 0,
+                  aGrid.Cells[
+                    IfThen (
+                      FAssignedColumnIndexes [ACol] <0,
+                      0,
+                      FAssignedColumnIndexes [ACol]),
+                    ARow],
+                  ''),
+                #9,
+                '',
+                [rfReplaceAll]));
 end;
 
 procedure TfrmHizliKayit.GridToPersonelKartTable;
@@ -181,9 +256,10 @@ begin
           and IsNull (IfThen (FAssignedColumnIndexes [2] >= 0, GridList.Cells[IfThen (FAssignedColumnIndexes [2] <0, 0, FAssignedColumnIndexes [2]),_row_], '')) then Continue;
         //yukarýdan geçtiyse adý veya TCKimlik dolu demektir.
         if IsNull (IfThen (FAssignedColumnIndexes [1] >= 0, GridList.Cells[IfThen (FAssignedColumnIndexes [1] <0, 0, FAssignedColumnIndexes [1]),_row_], ''))
-          or IsNull (IfThen (FAssignedColumnIndexes [2] >= 0, GridList.Cells[IfThen (FAssignedColumnIndexes [2] <0, 0, FAssignedColumnIndexes [2]),_row_], '')) then
+          or IsNull (IfThen (FAssignedColumnIndexes [2] >= 0, GridList.Cells[IfThen (FAssignedColumnIndexes [2] <0, 0, FAssignedColumnIndexes [2]),_row_], ''))
+          or IsNull (IfThen (FAssignedColumnIndexes [3] >= 0, GridList.Cells[IfThen (FAssignedColumnIndexes [3] <0, 0, FAssignedColumnIndexes [3]),_row_], '')) then
         begin
-          ShowMessageSkin ('Adý veya TC Kimlik Numarasý alaný dolu olmalýdýr.', '', '', 'info');
+          ShowMessageSkin ('Adý veya Soyadý veya TC Kimlik Numarasý alaný dolu olmalýdýr.', '', '', 'info');
           Exit;
         end;
         ;
@@ -295,8 +371,8 @@ begin
   SayfaCaption('','','' ,'','');
   //Form ilk açýldýðýnda tasarým halindeki sütun baþlýklarýný dizide toplayýp baðlý indexlerini ikinci diziye atýyoruz
   FInitialColumnHeaders.Clear;
-  for i := GridList.FixedCols to GridList.ColCount - 1 do
-    FInitialColumnHeaders.Add(GridList.Cells [i, 0]);
+  for i := 0 to GridList.ColCount - 1 do
+    FInitialColumnHeaders.Add(IfThen (IsNull (Trim (GridList.Cells [i, 0])), 'Baþlýksýz Sütun' + IntToStr (i), Trim (GridList.Cells [i, 0])));
   SetLength (FAssignedColumnIndexes, 0);
   for i:= 0 to FInitialColumnHeaders.Count - 1 do
   begin
