@@ -375,6 +375,7 @@ function VeritabaniAlaninaFotografYukle(const sTableName, sKeyField, sImageField
 function VeritabaniAlanindanFotografYukle(const sTableName, sKeyField, sImageField, sKeyValue: String; var aImage: TcxImage): Boolean;
 function FotografGoruntule (const aPicture: TPicture) : TModalResult;
 function CombodanSectir (const sFormCaption, sComboCaption, sItemsList: String; var iItemIndex : Integer): Boolean;
+procedure AdSoyadAyir (const pAdSoyad: String; var pAd, pSoyad : String);
 function WebErisimBilgi(slk,slb : string) : string;
 
 const
@@ -8557,6 +8558,28 @@ begin
   finally
     aForm.Free;
   end;
+end;
+
+procedure AdSoyadAyir (const pAdSoyad: String; var pAd, pSoyad : String);
+var
+  i :Integer;
+  bBosluk : Boolean;
+begin
+  pSoyad := '';
+  pAd := '';
+  bBosluk := False;
+  for i := Length (pAdSoyad) downto 1 do
+  begin
+    if (not bBosluk) and (pAdSoyad [i] = ' ') then
+      bBosluk := True
+     else
+      if bBosluk then
+        pAd := pAdSoyad [i] + pAd
+       else
+        pSoyad := pAdSoyad [i] + pSoyad;
+  end;
+  pAd := Trim (pAd);
+  pSoyad := Trim (pSoyad);
 end;
 
 function IsNull (const s: String): Boolean;
