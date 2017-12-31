@@ -221,7 +221,10 @@ begin
     end;
     //buraya kadar sað salim geldikse olay tamam, geçici yerel diziyi form dizisine aktarýp ortamý terk edelim...
     for i := Low (FAssignedColumnIndexes) to High (FAssignedColumnIndexes) do
+    begin
       FAssignedColumnIndexes [i] := StrToInt (aStringList [i]);
+      if FAssignedColumnIndexes [i] >= 0 then GridList.Cells [FAssignedColumnIndexes [i], 0] := FInitialColumnHeaders [i];
+    end;
     ShowMessageSkin('Alan Eþleþtirmesi Baþarý ile Tamamlandý', '', '', 'info');
   finally
     aStringList.Free;
