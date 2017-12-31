@@ -374,6 +374,8 @@ function SahaSaglikGozlemSil(const GozlemID: integer): Boolean;
 function VeritabaniAlaninaFotografYukle(const sTableName, sKeyField, sImageField, sKeyValue: String): Boolean;
 function VeritabaniAlanindanFotografYukle(const sTableName, sKeyField, sImageField, sKeyValue: String; var aImage: TcxImage): Boolean;
 function FotografGoruntule (const aPicture: TPicture) : TModalResult;
+function CombodanSectir (const sFormCaption, sComboCaption, sItemsList: String; var iItemIndex : Integer): Boolean;
+procedure AdSoyadAyir (const pAdSoyad: String; var pAd, pSoyad : String);
 function WebErisimBilgi(slk,slb : string) : string;
 function DoktorReceteMedulaGonderimTip(doktor : string) : integer;
 
@@ -8497,6 +8499,105 @@ begin
   finally
     aForm.Free;
   end;
+end;
+
+function CombodanSectir (const sFormCaption, sComboCaption, sItemsList: String; var iItemIndex : Integer): Boolean;
+var
+  aForm : TForm;
+  aComboBox: TComboBox;
+  aPanel : TPanel;
+  aButton : TButton;
+  aLabel : TLabel;
+begin
+  aForm := TForm.Create (Application);
+  try
+    aForm.BorderStyle := bsDialog;
+    aForm.FormStyle := fsNormal;
+    aPanel := TPanel.Create (aForm);
+    try
+      aPanel.Parent := aForm;
+      aPanel.Height := 35;
+      aPanel.Caption := ' ';
+      aPanel.Top := 50;
+
+      aButton := TButton.Create (aForm);
+      aButton.Parent := aPanel;
+      aButton.name := 'btnTamam';
+      aButton.Caption := 'Tamam';
+      aButton.Left := 10;
+      aButton.Top := 5;
+      aButton.Width := 75;
+      aButton.Default := True;
+      aButton.ModalResult := mrYes;
+
+      aButton := TButton.Create (aForm);
+      aButton.Parent := aPanel;
+      aButton.name := 'btnVazgec';
+      aButton.Caption := 'Vazgeç';
+      aButton.Left := 88;
+      aButton.Top := 5;
+      aButton.Width := 75;
+      aButton.Cancel := True;
+      aButton.ModalResult := mrCancel;
+
+
+      aLabel := TLabel.Create (aForm);
+      aLabel.Parent := aForm;
+      aLabel.name := 'label1';
+      aLabel.Caption := sComboCaption;
+      aLabel.Left := 0;
+      aLabel.Top := 10;
+      aLabel.AutoSize := True;
+      aLabel.AutoSize := False;
+
+      aComboBox := TComboBox.Create (aForm);
+      aComboBox.Parent := aForm;
+      aComboBox.name := 'cb1';
+      aComboBox.Left := aLabel.Left + aLabel.Width + 2;
+      aComboBox.Top := 10;
+      aComboBox.Width := 150;
+      aComboBox.Items.Text := sItemsList;
+      aComboBox.Style := csDropDownList;
+      aComboBox.ItemIndex := iItemIndex;
+      aLabel.FocusControl := aComboBox;
+      aForm.AutoSize := True;
+      aPanel.Align := alBottom;
+
+      aForm.AutoSize := False;
+      aForm.Position := poDesktopCenter;
+      aForm.Caption := sFormCaption;
+      repeat
+        Result := aForm.ShowModal = mrYes;
+        iItemIndex := aComboBox.ItemIndex;
+      until (not Result) or (iItemIndex <> -1);
+    finally
+      aPanel.Free;
+    end;
+  finally
+    aForm.Free;
+  end;
+end;
+
+procedure AdSoyadAyir (const pAdSoyad: String; var pAd, pSoyad : String);
+var
+  i :Integer;
+  bBosluk : Boolean;
+begin
+  pSoyad := '';
+  pAd := '';
+  bBosluk := False;
+  for i := Length (pAdSoyad) downto 1 do
+  begin
+    if (not bBosluk) and (pAdSoyad [i] = ' ') then
+      bBosluk := True
+     else
+      if bBosluk then
+        pAd := pAdSoyad [i] + pAd
+       else
+        pSoyad := pAdSoyad [i] + pSoyad;
+  end;
+  pAd := Trim (pAd);
+  pSoyad := Trim (pSoyad);
 end;
 
 function IsNull (const s: String): Boolean;
