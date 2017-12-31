@@ -46,7 +46,7 @@ object frmHizliKayit: TfrmHizliKayit
     Font.Height = -11
     Font.Name = 'Tahoma'
     Font.Style = []
-    Options = [goFixedVertLine, goFixedHorzLine, goVertLine, goHorzLine, goRangeSelect, goEditing]
+    Options = [goFixedVertLine, goFixedHorzLine, goVertLine, goHorzLine, goRangeSelect, goColSizing, goEditing]
     ParentFont = False
     ScrollBars = ssBoth
     TabOrder = 1
@@ -254,21 +254,23 @@ object frmHizliKayit: TfrmHizliKayit
     Images = DATALAR.imag24png
     Left = 696
     Top = 224
-    object B1: TMenuItem
-      Caption = 'Personel Kartlar'#305' Excel Dosyas'#305'n'#305' A'#231
-      ImageIndex = 75
+    object miAlanEslestir: TMenuItem
+      Tag = 4
+      Caption = 'Alan E'#351'le'#351'tir'
+      ImageIndex = 80
+      Visible = False
       OnClick = cxButtonCClick
     end
-    object H1: TMenuItem
+    object miVeritabaninaYaz: TMenuItem
       Tag = 1
       Caption = 'Kartlar'#305' Sisteme Yaz Kabul Et'
       ImageIndex = 9
       OnClick = cxButtonCClick
     end
-    object N1: TMenuItem
-      Caption = #304'ptal'
+    object miExcelYukle: TMenuItem
+      Caption = 'Personel Kartlar'#305' Excel Dosyas'#305'n'#305' A'#231
       ImageIndex = 75
-      Visible = False
+      OnClick = cxButtonCClick
     end
   end
 end

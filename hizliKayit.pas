@@ -33,9 +33,9 @@ type
     MemTable_Personel: TSQLMemTable;
     DataSource2: TDataSource;
     PopupMenu1: TPopupMenu;
-    B1: TMenuItem;
-    H1: TMenuItem;
-    N1: TMenuItem;
+    miExcelYukle: TMenuItem;
+    miVeritabaninaYaz: TMenuItem;
+    miAlanEslestir: TMenuItem;
     GridList: TAdvStringGrid;
     procedure cxButtonCClick(Sender: TObject);
     procedure ExcelToGrid;
@@ -45,9 +45,14 @@ type
 
   private
     { Private declarations }
+  protected
+    FInitialColumnHeaders : TStringList;
+    FAssignedColumnIndexes : array of Integer;
+    procedure GridAlanEslestirme;
   public
     { Public declarations }
-
+    constructor Create (Aowver: TComponent); override;
+    destructor Destroy; override;
   end;
 
   Const
@@ -78,8 +83,14 @@ var
    v,sayfa : Variant;
 
 implementation
-  uses AnaUnit;
+  uses AnaUnit, Math;
 {$R *.dfm}
+
+destructor TfrmHizliKayit.Destroy;
+begin
+  FInitialColumnHeaders.Free;
+  inherited;
+end;
 
 procedure TfrmHizliKayit.ExcelToGrid;
 var
@@ -138,6 +149,11 @@ begin
 end;
 
 
+procedure TfrmHizliKayit.GridAlanEslestirme;
+begin
+þ
+end;
+
 procedure TfrmHizliKayit.GridToPersonelKartTable;
 var
   sql : string;
@@ -154,48 +170,60 @@ begin
       ShowMessageSkin('Aktif þube seçmeden personel aktarýmý yapamazsýnýz.'#13#10'Personeller, seçili þubeye aktarýlacak.', '', '', 'info');
       Exit;
     end;
-
-    datalar.ADOConnection2.BeginTrans;
+    if not CombodanSectir ('Alan Eþleþtirme', 'Alan', '1'#13#10'2', iCount) then Exit;
+    dialogs.ShowMessage ('X');
+    exit;
     bBasarili := False;
     iCount := 0;
+    datalar.ADOConnection2.BeginTrans;
     try
       for _row_ := 1 to GridList.RowCount - 1 do
       begin
-        if IsNull (GridList.Cells[1,_row_]) then Continue;
-        Cins := ifThen(Copy(GridList.Cells[4,_row_],1,1) = 'B','1',
-                ifThen(Copy(GridList.Cells[4,_row_],1,1) = '1','1',
-                ifThen(Copy(GridList.Cells[4,_row_],1,1) = 'K','1','0')));
+        //hem adý hem TCKimlik numarasý boþ ise atlayarak sonraki satýrdan devam et.
+        if IsNull (IfThen (FAssignedColumnIndexes [1] >= 0, GridList.Cells[IfThen (FAssignedColumnIndexes [1] <0, 0, FAssignedColumnIndexes [1]),_row_], ''))
+          and IsNull (IfThen (FAssignedColumnIndexes [2] >= 0, GridList.Cells[IfThen (FAssignedColumnIndexes [2] <0, 0, FAssignedColumnIndexes [2]),_row_], '')) then Continue;
+        //yukarýdan geçtiyse adý veya TCKimlik dolu demektir.
+        if IsNull (IfThen (FAssignedColumnIndexes [1] >= 0, GridList.Cells[IfThen (FAssignedColumnIndexes [1] <0, 0, FAssignedColumnIndexes [1]),_row_], ''))
+          or IsNull (IfThen (FAssignedColumnIndexes [2] >= 0, GridList.Cells[IfThen (FAssignedColumnIndexes [2] <0, 0, FAssignedColumnIndexes [2]),_row_], '')) then
+        begin
+          ShowMessageSkin ('Adý veya TC Kimlik Numarasý alaný dolu olmalýdýr.', '', '', 'info');
+          Exit;
+        end;
+        ;
+        Cins := ifThen(Copy(IfThen (FAssignedColumnIndexes [4] >= 0, GridList.Cells[IfThen (FAssignedColumnIndexes [4] <0, 0, FAssignedColumnIndexes [4]),_row_], ''),1,1) = 'B','1',
+                ifThen(Copy(IfThen (FAssignedColumnIndexes [4] >= 0, GridList.Cells[IfThen (FAssignedColumnIndexes [4] <0, 0, FAssignedColumnIndexes [4]),_row_], ''),1,1) = '1','1',
+                ifThen(Copy(IfThen (FAssignedColumnIndexes [4] >= 0, GridList.Cells[IfThen (FAssignedColumnIndexes [4] <0, 0, FAssignedColumnIndexes [4]),_row_], ''),1,1) = 'K','1','0')));
 
-        Medeni := ifThen(Copy(GridList.Cells[5,_row_],1,1) = 'B','1',
-                  ifThen(Copy(GridList.Cells[5,_row_],1,1) = '1','1','0'));
+        Medeni := ifThen(Copy(IfThen (FAssignedColumnIndexes [5] >= 0, GridList.Cells[IfThen (FAssignedColumnIndexes [5] <0, 0, FAssignedColumnIndexes [5]),_row_], ''),1,1) = 'B','1',
+                  ifThen(Copy(IfThen (FAssignedColumnIndexes [5] >= 0, GridList.Cells[IfThen (FAssignedColumnIndexes [5] <0, 0, FAssignedColumnIndexes [5]),_row_], ''),1,1) = '1','1','0'));
 
-        DTarih := ifThen(pos('.',GridList.Cells[12,_row_]) > 0,
-                         NoktasizTarih(GridList.Cells[12,_row_]),GridList.Cells[12,_row_]);
+        DTarih := ifThen(pos('.',IfThen (FAssignedColumnIndexes [12] >= 0, GridList.Cells[IfThen (FAssignedColumnIndexes [12] <0, 0, FAssignedColumnIndexes [12]),_row_], '')) > 0,
+                         NoktasizTarih(IfThen (FAssignedColumnIndexes [12] >= 0, GridList.Cells[IfThen (FAssignedColumnIndexes [12] <0, 0, FAssignedColumnIndexes [12]),_row_], '')),IfThen (FAssignedColumnIndexes [12] >= 0, GridList.Cells[IfThen (FAssignedColumnIndexes [12] <0, 0, FAssignedColumnIndexes [12]),_row_], ''));
 
-        BTarih := ifThen(pos('.',GridList.Cells[15,_row_]) > 0,
-                         NoktasizTarih(GridList.Cells[15,_row_]),GridList.Cells[15,_row_]);
+        BTarih := ifThen(pos('.',IfThen (FAssignedColumnIndexes [15] >= 0, GridList.Cells[IfThen (FAssignedColumnIndexes [15] <0, 0, FAssignedColumnIndexes [15]),_row_], '')) > 0,
+                         NoktasizTarih(IfThen (FAssignedColumnIndexes [15] >= 0, GridList.Cells[IfThen (FAssignedColumnIndexes [15] <0, 0, FAssignedColumnIndexes [15]),_row_], '')),IfThen (FAssignedColumnIndexes [15] >= 0, GridList.Cells[IfThen (FAssignedColumnIndexes [15] <0, 0, FAssignedColumnIndexes [15]),_row_], ''));
 
         sql := Format(_insertPersonel_,
                       [QuotedStr(datalar.AktifSirket),
-                       QuotedStr(GridList.Cells[1,_row_]),
-                       QuotedStr(GridList.Cells[2,_row_]),
-                       QuotedStr(GridList.Cells[3,_row_]),
+                       QuotedStr(IfThen (FAssignedColumnIndexes [1] >= 0, GridList.Cells[IfThen (FAssignedColumnIndexes [1] <0, 0, FAssignedColumnIndexes [1]),_row_], '')),
+                       QuotedStr(IfThen (FAssignedColumnIndexes [2] >= 0, GridList.Cells[IfThen (FAssignedColumnIndexes [2] <0, 0, FAssignedColumnIndexes [2]),_row_], '')),
+                       QuotedStr(IfThen (FAssignedColumnIndexes [3] >= 0, GridList.Cells[IfThen (FAssignedColumnIndexes [3] <0, 0, FAssignedColumnIndexes [3]),_row_], '')),
                        QuotedStr(Cins),
                        QuotedStr(Medeni),
-                       QuotedStr(GridList.Cells[6,_row_]),
-                       QuotedStr(GridList.Cells[7,_row_]),
-                       QuotedStr(GridList.Cells[8,_row_]),
-                       QuotedStr(GridList.Cells[9,_row_]),
-                       QuotedStr(GridList.Cells[10,_row_]),
-                       QuotedStr(GridList.Cells[11,_row_]),
+                       QuotedStr(IfThen (FAssignedColumnIndexes [6] >= 0, GridList.Cells[IfThen (FAssignedColumnIndexes [6] <0, 0, FAssignedColumnIndexes [6]),_row_], '')),
+                       QuotedStr(IfThen (FAssignedColumnIndexes [7] >= 0, GridList.Cells[IfThen (FAssignedColumnIndexes [7] <0, 0, FAssignedColumnIndexes [7]),_row_], '')),
+                       QuotedStr(IfThen (FAssignedColumnIndexes [8] >= 0, GridList.Cells[IfThen (FAssignedColumnIndexes [8] <0, 0, FAssignedColumnIndexes [8]),_row_], '')),
+                       QuotedStr(IfThen (FAssignedColumnIndexes [9] >= 0, GridList.Cells[IfThen (FAssignedColumnIndexes [9] <0, 0, FAssignedColumnIndexes [9]),_row_], '')),
+                       QuotedStr(IfThen (FAssignedColumnIndexes [10] >= 0, GridList.Cells[IfThen (FAssignedColumnIndexes [10] <0, 0, FAssignedColumnIndexes [10]),_row_], '')),
+                       QuotedStr(IfThen (FAssignedColumnIndexes [11] >= 0, GridList.Cells[IfThen (FAssignedColumnIndexes [11] <0, 0, FAssignedColumnIndexes [11]),_row_], '')),
                        QuotedStr(DTarih),
-                       QuotedStr(GridList.Cells[13,_row_]),
+                       QuotedStr(IfThen (FAssignedColumnIndexes [13] >= 0, GridList.Cells[IfThen (FAssignedColumnIndexes [13] <0, 0, FAssignedColumnIndexes [13]),_row_], '')),
                        QuotedStr(BTarih),
                        'NULL',
                        QuotedStr(datalar.username),
                        QuotedStr('1'),
                        QuotedStr(datalar.AktifSube),
-                       QuotedStr(GridList.Cells[16,_row_])]);
+                       QuotedStr(IfThen (FAssignedColumnIndexes [16] >= 0, GridList.Cells[IfThen (FAssignedColumnIndexes [16] <0, 0, FAssignedColumnIndexes [16]),_row_], ''))]);
         datalar.queryExec(SelectAdo,sql);
         iCount := iCount + 1;
       end;
@@ -221,6 +249,13 @@ end;
 
 
 
+constructor TfrmHizliKayit.Create(Aowver: TComponent);
+begin
+  inherited;
+  FInitialColumnHeaders := TStringList.Create;
+  SetLength (FAssignedColumnIndexes, 0);
+end;
+
 procedure TfrmHizliKayit.cxButtonCClick(Sender: TObject);
 begin
   datalar.KontrolUserSet := False;
@@ -236,6 +271,9 @@ begin
     1 : begin
           GridToPersonelKartTable;
         end;
+    4: begin
+      GridAlanEslestirme;
+    end;
     end;
 end;
 
@@ -250,13 +288,22 @@ begin
 end;
 
 procedure TfrmHizliKayit.FormCreate(Sender: TObject);
+var
+  i : Integer;
 begin
   inherited;
-    MemTable_Personel.active := True;
-    Menu := PopupMenu1;
-    cxPanel.Visible := false;
-    SayfaCaption('','','' ,'','');
+  MemTable_Personel.active := True;
+  Menu := PopupMenu1;
+  cxPanel.Visible := false;
+  SayfaCaption('','','' ,'','');
+  //Form ilk açýldýðýnda tasarým halindeki sütun baþlýklarýný dizide toplayýp baðlý indexlerini ikinci diziye atýyoruz
+  FInitialColumnHeaders.Clear;
+  for i := GridList.FixedCols to GridList.ColCount - 1 do
+    FInitialColumnHeaders.Add(GridList.Cells [i, 0]);
+  FAssignedColumnIndexes.Clear;
+  for i:= 0 to FInitialColumnHeaders.Count - 1 do
+    FAssignedColumnIndexes.Add(IntToStr (i));
 end;
-isg katip excel'ini programdan aktarma
-personel aktarýmýnda alan eþleþtirme
+//isg katip excel'ini programdan aktarma
+//personel aktarýmýnda alan eþleþtirme
 end.
