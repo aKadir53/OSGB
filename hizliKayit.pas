@@ -257,5 +257,6 @@ begin
     cxPanel.Visible := false;
     SayfaCaption('','','' ,'','');
 end;
-//isg katip excel'ini programdan aktarma
+isg katip excel'ini programdan aktarma
+personel aktarýmýnda alan eþleþtirme
 end.
