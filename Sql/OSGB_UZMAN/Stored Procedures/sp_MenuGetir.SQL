@@ -71,7 +71,7 @@ where tt.Izin = 1)
 
 
 
-select * from @t
+select * from @t where Kullanici = @kullanici
 order by Izin
 end
 GO
