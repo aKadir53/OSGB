@@ -24,7 +24,7 @@ where M.Kullanici = @kullanici and U.Izin = 1 and t.ID is null
 
 
 insert into @t
-select U.Kullanici,U.Menu,U.ID,U.Izin,M.KAYITID,M.MainMenu,M.Kapsam,M.imageIndex,M.ShortCut,M.ShowTip,M.FormTag,M.Sira 
+select K.Kullanici,U.Menu,U.ID,U.Izin,M.KAYITID,M.MainMenu,M.Kapsam,M.imageIndex,M.ShortCut,M.ShowTip,M.FormTag,M.Sira 
 from UserGroupMenuSettings U 
 join MenuIslem M on M.KAYITID = U.ID 
 join Users K on K.grup = U.kullanici 
@@ -32,7 +32,7 @@ left join @t t on t.ID = U.ID
 where K.Kullanici = @kullanici and U.Izin = 1 and M.Kapsam not in(0,500) and t.ID is null
 
 insert into @t
-select U.Kullanici,U.Menu,U.ID,U.Izin,M.KAYITID,M.MainMenu,M.Kapsam,M.imageIndex,M.ShortCut,M.ShowTip,M.FormTag,M.Sira 
+select K.Kullanici,U.Menu,U.ID,U.Izin,M.KAYITID,M.MainMenu,M.Kapsam,M.imageIndex,M.ShortCut,M.ShowTip,M.FormTag,M.Sira 
 from UserGroupMenuSettings U 
 join MenuIslem_SK M on M.KAYITID = U.ID 
 join Users K on K.grup = U.kullanici 
