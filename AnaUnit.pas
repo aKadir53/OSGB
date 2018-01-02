@@ -526,6 +526,9 @@ begin
     124 : begin
             LisansUzat;
           end;
+    125 : begin
+           DBUpdate;
+          end;
       6 : begin
            tc := InputBox('Personel Ara','Tc Kimlik No','');
            if FindTab(AnaForm.sayfalar,TagfrmHastaKart)

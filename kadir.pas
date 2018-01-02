@@ -378,6 +378,7 @@ function CombodanSectir (const sFormCaption, sComboCaption, sItemsList: String; 
 procedure AdSoyadAyir (const pAdSoyad: String; var pAd, pSoyad : String);
 function WebErisimBilgi(slk,slb : string) : string;
 function DoktorReceteMedulaGonderimTip(doktor : string) : integer;
+procedure DBUpdate;
 
 const
   _YTL_ = 'YTL';
@@ -444,7 +445,14 @@ var
 implementation
 
 uses message,AnaUnit,message_y,popupForm,rapor,TedaviKart,Son6AylikTetkikSonuc,
-             HastaRecete,sifreDegis,HastaTetkikEkle,GirisUnit,SMS,LisansUzat;
+             HastaRecete,sifreDegis,HastaTetkikEkle,GirisUnit,SMS,LisansUzat,Update_G;
+
+procedure DBUpdate;
+begin
+   Application.CreateForm(TfrmUpdate, frmUpdate);
+   frmUpdate.ShowModal;
+   frmUpdate := Nil;
+end;
 
 function DoktorReceteMedulaGonderimTip(doktor : string) : integer;
 var
@@ -7642,7 +7650,8 @@ function tarihal(t: Tdate): string;
 var
   s: string;
 begin
-  s := datetostr(t);
+ // s := datetostr(t);
+  s := FormatDateTime('dd.mm.yyyy',t);
   Result := copy(s, 7, 4) + copy(s, 4, 2) + copy(s, 1, 2);
 end;
 
