@@ -69,9 +69,13 @@ begin
   Application.MainFormOnTaskbar := True;
   Application.CreateForm(TDATALAR, DATALAR);
   Application.CreateForm(TAnaForm, AnaForm);
-  Application.CreateForm(TfrmUpdate, frmUpdate);
+//  Application.CreateForm(TfrmUpdate, frmUpdate);
 
   // form2.show;
+
+//  FormatSettings.ShortDateFormat := 'dd.mm.yyyy';
+//  FormatSettings.LongDateFormat := 'dd mmmm yyyy dddd';
+
   datalar.versiyon := inttostr(AppalicationVer);
   if ForceDirectories ('C:\OSGB') then
   begin
