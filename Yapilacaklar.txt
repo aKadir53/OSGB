@@ -167,3 +167,4 @@ Burada karýþmasýn iki farklý hata var. Biri giren User Admin gibi doktor olmayan
 muayene giriþi zorunlu yapýlabilir, zorunlu olup olmamasý osgb'nin program ayarlarýndan seçebileceði bir hale getirilebilir mi.
 
 hastalarýn mevcut saðlýk, tahlil vb bilgileri, önceden yapýlmýþ iþe giriþ muayene formlarý (ek-2) sisteme aktarýlabilir mi ?
+admin þifreleri deðiþtir
