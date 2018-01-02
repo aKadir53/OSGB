@@ -150,7 +150,7 @@ case self.Tag of
         SayfaCaption('Taným Bilgileri','Çalýþma Bilgileri','','','');
 
 
-        Disabled(self,True);
+
         Result := True;
   end;
 
@@ -222,12 +222,13 @@ case self.Tag of
         SayfaCaption('Taným Bilgileri','','','','');
 
 
-        Disabled(self,True);
+
         Result := True;
     end;
 
 
 end;
+        Disabled(self,True);
 end;
 
 
