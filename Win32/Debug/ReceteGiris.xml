@@ -4,31 +4,31 @@
     <protokolNo>1</protokolNo>
     <provizyonTipi>1</provizyonTipi>
     <receteAltTuru>1</receteAltTuru>
-    <receteTarihi>30.12.2017 00:00:00</receteTarihi>
+    <receteTarihi>02.01.2018 00:00:00</receteTarihi>
     <receteTuru>1</receteTuru>
     <takipNo />
-    <tcKimlikNo>54823360124</tcKimlikNo>
+    <tcKimlikNo>71203158478</tcKimlikNo>
     <tesisKodu>11349903</tesisKodu>
     <seriNo>1</seriNo>
     <doktorBransKodu>9999</doktorBransKodu>
-    <doktorSertifikaKodu>0</doktorSertifikaKodu>
+    <doktorSertifikaKodu>15036</doktorSertifikaKodu>
     <kisiDVO xsi:nil="true" />
     <ereceteNo xsi:nil="true" />
     <ereceteIlacListesi>
       <adet>1</adet>
-      <barkod>8699809097674</barkod>
-      <ilacAdi>NORTAN 50 MG 28 FTB</ilacAdi>
+      <barkod>8699522571185</barkod>
+      <ilacAdi>ACTIDEM SURUP 150 ML.</ilacAdi>
       <kullanimDoz1>1</kullanimDoz1>
       <kullanimPeriyotBirimi>3</kullanimPeriyotBirimi>
-      <kullanimSekli>1</kullanimSekli>
-      <kullanimDoz2>2</kullanimDoz2>
+      <kullanimSekli>4</kullanimSekli>
+      <kullanimDoz2>1</kullanimDoz2>
       <kullanimPeriyot>1</kullanimPeriyot>
       <geriOdemeKapsaminda xsi:nil="true" />
     </ereceteIlacListesi>
     <ereceteIlacListesi>
-      <adet>3</adet>
-      <barkod>8699570150011</barkod>
-      <ilacAdi>AFERIN 30 KAPSUL</ilacAdi>
+      <adet>1</adet>
+      <barkod>8699636090015</barkod>
+      <ilacAdi>AERIUS 20 FILM TABLET</ilacAdi>
       <kullanimDoz1>1</kullanimDoz1>
       <kullanimPeriyotBirimi>3</kullanimPeriyotBirimi>
       <kullanimSekli>1</kullanimSekli>
@@ -37,17 +37,17 @@
       <geriOdemeKapsaminda xsi:nil="true" />
     </ereceteIlacListesi>
     <ereceteTaniListesi>
-      <taniAdi>AFYON</taniAdi>
-      <taniKodu>T40.0</taniKodu>
+      <taniAdi>4-AMİNOFENOL TÜREVLERİ</taniAdi>
+      <taniKodu>Y45.5</taniKodu>
     </ereceteTaniListesi>
     <ereceteTaniListesi>
-      <taniAdi>ÜST SOLUNUM YOLU DİĞER HASTALIKLARI</taniAdi>
-      <taniKodu>J39</taniKodu>
+      <taniAdi>ALLERJİ, TANIMLANMAMIŞ</taniAdi>
+      <taniKodu>T78.4</taniKodu>
     </ereceteTaniListesi>
     <doktorAdi xsi:nil="true" />
     <doktorSoyadi xsi:nil="true" />
-    <doktorTcKimlikNo>20132508304</doktorTcKimlikNo>
+    <doktorTcKimlikNo>12778574416</doktorTcKimlikNo>
   </ereceteDVO>
   <tesisKodu>11349903</tesisKodu>
-  <doktorTcKimlikNo>20132508304</doktorTcKimlikNo>
+  <doktorTcKimlikNo>12778574416</doktorTcKimlikNo>
 </ereceteGirisIstekDVO>
