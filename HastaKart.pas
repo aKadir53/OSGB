@@ -136,6 +136,7 @@ type
     procedure ADO_WebServisErisimAfterScroll(DataSet: TDataSet);
     procedure FormShow(Sender: TObject);
     procedure SirketlerPropertiesChange(Sender: TObject);
+    procedure FormClose(Sender: TObject; var Action: TCloseAction);
   private
     { Private declarations }
   public
@@ -389,6 +390,7 @@ begin
    end;
 
 
+
     if mrYes = ShowPopupForm('Geliþ Aç',gdgelisAc)
     Then Begin
         _Tarih_ := datalar.GelisDuzenleRecord.GirisTarihi;
@@ -407,6 +409,8 @@ begin
      exit;
    end;
    *)
+
+
 
    sql := 'exec sp_GelisKaydet ' +
           '@dosyaNo = ' + #39 + dosyaNo.Text + #39 + ',' +
@@ -667,6 +671,11 @@ begin
                                                    ' and Sube in (select datavalue from dbo.strtotable(' + QuotedStr(datalar.AktifSube) + ','',''))';
   inherited;
 
+  if length(datalar.ButtonEditSecimlist) > 0 then
+  begin
+    enabled;
+      FormInputZorunluKontrolPaint(self,$00FCDDD1);
+  end;
 
   if TComponent(Sender).ClassName = 'TcxImageComboKadir' then
   Begin
@@ -783,9 +792,7 @@ procedure TfrmHastaKart.cxTextEditKeyDown(Sender: TObject; var Key: Word;
 begin
    inherited;
   // if key  then
-
-
-           Gelisler(TcxButtonEditKadir(sender).Text);
+  Gelisler(TcxButtonEditKadir(sender).Text);
 end;
 
 
@@ -865,12 +872,14 @@ begin
     ado := TADOQuery.Create(nil);
     try
       //t2x := ayliktarih(date,t1);
+     (*
       sql := 'select top 1 dosyaNo from PersonelKart ' +
              ' where sirketKod = ' + QuotedStr(datalar.AktifSirket) +
              ' and Aktif = 1 ' +
              ' order by dosyaNo';
       datalar.QuerySelect(ado,sql);
       _dosyaNo_ := ado.Fields[0].AsString;
+      *)
     finally
       ado.Free;
     end;
@@ -884,6 +893,9 @@ begin
     then
      dosyaNo.OnKeyDown(frmHastaKart.dosyaNo,key,[]);
 
+    enabled;
+    FormInputZorunluKontrolPaint(self,$00FCDDD1);
+
     IseGirisMuayene.Dataset.AfterScroll := ADO_WebServisErisimAfterScroll;
     GridList.ViewData.Expand(true);
     Result := True;
@@ -892,6 +904,12 @@ begin
 
 end;
 
+
+procedure TfrmHastaKart.FormClose(Sender: TObject; var Action: TCloseAction);
+begin
+  inherited;
+  Action := Cafree;
+end;
 
 procedure TfrmHastaKart.FormCreate(Sender: TObject);
 var
@@ -1203,7 +1221,7 @@ begin
 
   SayfaCaption('Kimlik Bilgileri','DÝðer Bilgileri','Öz Geçmiþ','Ýþe Giriþ Muayene','');
 
-
+  Disabled(self,True);
 
  end;
 

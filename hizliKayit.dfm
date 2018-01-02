@@ -59,19 +59,19 @@ object frmHizliKayit: TfrmHizliKayit
     ColumnHeaders.Strings = (
       'SiraNo'
       'TC K'#304'ML'#304'K NO'
-      'ADI'
-      'SOYADI'
+      #304'S'#304'M'
+      'SOY'#304'S'#304'M'
       'C'#304'NS'#304'YET'
-      'MEDEN'#304' HAL'
+      'MEDEN'#304' DURUM'
       'BABA ADI'
       'ANNE ADI'
-      'ADRES'
-      'TELEFON NO'
-      'tel2'
+      #350'EH'#304'R  ADRES'
+      'MOB'#304'L TEL'
+      'TEL 2'
       'DO'#286'UM YER'#304
       'DO'#286'UM TAR'#304'H'#304
-      'UYRUK'
-      'Durum'
+      'UYRU'#286'U'
+      'DURUM'
       #304#350'E BA'#350'LAMA TAR'#304'H'#304
       'KAN GRUBU')
     ControlLook.FixedGradientHoverFrom = clGray
