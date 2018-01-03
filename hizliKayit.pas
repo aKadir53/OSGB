@@ -46,8 +46,10 @@ type
 
   private
     { Private declarations }
+    FFileName : String;
   protected
     FInitialColumnHeaders : TStringList;
+    FAcceptedColumnHeaders : TStringList;
     FAssignedColumnIndexes : array of Integer;
     procedure GridAlanEslestirme;
     function GridAtanmisSutunDegerAyarlaGetir (const aGrid: TStringGrid; const ACol, ARow : Integer):String;
@@ -109,6 +111,7 @@ const
 
 destructor TfrmHizliKayit.Destroy;
 begin
+  FAcceptedColumnHeaders.Free;
   FInitialColumnHeaders.Free;
   inherited;
 end;
@@ -117,7 +120,7 @@ procedure TfrmHizliKayit.ExcelToGrid;
 var
   openD : TOpenDialog;
   dosya : string;
-  sonsatir ,sonColon, x : integer;
+  //sonsatir ,sonColon, x : integer;
 begin
   openD := TOpenDialog.Create(nil);
   try
@@ -128,6 +131,7 @@ begin
   end;
 
   GridList.LoadFromXLS(dosya);
+  FFileName := dosya;
 
 (*
   v := CreateOleObject('Excel.Application');
@@ -188,6 +192,12 @@ begin
     //ÜÖ 20171231 eþleþen sütun baþlýklarýný gridde arayýp indexlerini ata
     for i := 0 to FInitialColumnHeaders.Count - 1 do
       aStringList.Add(IntToStr(GridList.Rows [0].IndexOf(FInitialColumnHeaders [i])));
+    //ÜÖ 20180103 son aktarýlan ve eþleþtirilmiþ excel baþlýklarý ile uyuþanlarý da eþleþtir
+    for i := 0 to FAcceptedColumnHeaders.Count - 1 do
+      if (StrToInt (aStringList [i]) < 0)
+        and (GridList.Rows [0].IndexOf(FAcceptedColumnHeaders [i]) >= 0)
+        and (aStringList.IndexOf (IntToStr(GridList.Rows [0].IndexOf(FAcceptedColumnHeaders [i]))) < 0) then
+          aStringList [i] := IntToStr(GridList.Rows [0].IndexOf(FAcceptedColumnHeaders [i]));
     //bulunamayanlar için kullanýcýya baþvur
     for i := 0 to aStringList.Count - 1 do
     begin
@@ -223,6 +233,10 @@ begin
     for i := Low (FAssignedColumnIndexes) to High (FAssignedColumnIndexes) do
     begin
       FAssignedColumnIndexes [i] := StrToInt (aStringList [i]);
+      //eþleþen yeni grid sütun baþlýðý boþ deðilse onu son excel kabul edilen sütunlar listesine ekle.
+      if (FAssignedColumnIndexes [i] >= 0) and (not IsNull (GridList.Cells [FAssignedColumnIndexes [i], 0])) then
+        FAcceptedColumnHeaders [i] := GridList.Cells [FAssignedColumnIndexes [i], 0];
+      //Eþleþen baþlýklarý grid üzerinde yerine koyarak göster
       if FAssignedColumnIndexes [i] >= 0 then GridList.Cells [FAssignedColumnIndexes [i], 0] := FInitialColumnHeaders [i];
     end;
     ShowMessageSkin('Alan Eþleþtirmesi Baþarý ile Tamamlandý', '', '', 'info');
@@ -313,10 +327,14 @@ var
   sql : string;
   bBasarili : Boolean;
   iCount : Integer;
-  _row_ : integer;
+  _row_, iRowC : integer;
   Cins,Medeni,DTarih,BTarih : String;
 begin
   try
+    if showmessageskin (
+        'Ekrana yüklenen "' + FFileName + '" dosyasý içeriði "' + DATALAR.AktifSirketAdi + '" þirketine aktarýlacak'#13#10#13#10+
+        'Onaylýyor musunuz ?', '', '', 'conf') <> mrYes then Exit;
+
     if IsNull (Datalar.AktifSube)
       or (Length (datalar.AktifSube) > 2)
       or (Pos (',', datalar.AktifSube) > 0) then
@@ -326,6 +344,7 @@ begin
     end;
     bBasarili := False;
     iCount := 0;
+    iRowC := 0;
     datalar.ADOConnection2.BeginTrans;
     try
       for _row_ := 1 to GridList.RowCount - 1 do
@@ -380,6 +399,7 @@ begin
                        QuotedStr(datalar.AktifSube),
                        'NULL']);
         datalar.queryExec(SelectAdo,sql);
+        iRowC := _row_;
         iCount := iCount + 1;
       end;
       bBasarili := True;
@@ -391,7 +411,8 @@ begin
       end
       else begin
         datalar.ADOConnection2.rollbackTrans;
-        showmessageSkin (IntToStr (iCount + 1) + '. satýrda hata oluþtu, aktarým iþlemi tamamlanamadý.', '', '', 'info');
+        showmessageSkin (IntToStr (iRowC + 1) + '. satýrda hata oluþtu, aktarým iþlemi tamamlanamadý.', '', '', 'info');
+        GridList.Row := iRowC;
       end;
     end;
   except on e : exception do
@@ -408,6 +429,7 @@ constructor TfrmHizliKayit.Create(Aowver: TComponent);
 begin
   inherited;
   FInitialColumnHeaders := TStringList.Create;
+  FAcceptedColumnHeaders := TStringList.Create;
   SetLength (FAssignedColumnIndexes, 0);
 end;
 
@@ -454,14 +476,19 @@ begin
   SayfaCaption('','','' ,'','');
   //Form ilk açýldýðýnda tasarým halindeki sütun baþlýklarýný dizide toplayýp baðlý indexlerini ikinci diziye atýyoruz
   FInitialColumnHeaders.Clear;
+  FAcceptedColumnHeaders.Clear;
   for i := 0 to GridList.ColCount - 1 do
+  begin
     FInitialColumnHeaders.Add(GridBaslikAyarla (GridList.Cells [i, 0], i));
+    FAcceptedColumnHeaders.Add(GridBaslikAyarla (GridList.Cells [i, 0], i));
+  end;
   SetLength (FAssignedColumnIndexes, 0);
   for i:= 0 to FInitialColumnHeaders.Count - 1 do
   begin
     SetLength (FAssignedColumnIndexes, High (FAssignedColumnIndexes) + 2);
     FAssignedColumnIndexes [High (FAssignedColumnIndexes)] := i;
   end;
+  FFileName := '';
 end;
 isg katip excel'ini programdan aktarma
 taným ekranlarýnda þifre kutularýný *'lamak acil
