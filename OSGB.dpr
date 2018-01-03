@@ -50,12 +50,13 @@ uses
   IsKazasi in 'IsKazasi.pas' {frmIsKazasi},
   LisansUzat in 'LisansUzat.pas' {frmLisansBilgisi},
   About_Frm in 'About_Frm.pas' {frmAbout},
-  SahaSaglikGozetim in 'SahaSaglikGozetim.pas' {frmSahaSaglikGozetim};
+  SahaSaglikGozetim in 'SahaSaglikGozetim.pas' {frmSahaSaglikGozetim},
+  labParametreleri in 'labParametreleri.pas' {frmLabParams};
 
 // KadirMedula3 in '..\..\medula3wsdl\KadirMedula3.pas';
 
 const
-  AppalicationVer : integer = 1021;
+  AppalicationVer : integer = 1023;
   // Versiyon info kontrol etmeyi unutma
 
 {$R *.res}
@@ -69,7 +70,8 @@ begin
   Application.MainFormOnTaskbar := True;
   Application.CreateForm(TDATALAR, DATALAR);
   Application.CreateForm(TAnaForm, AnaForm);
-//  Application.CreateForm(TfrmUpdate, frmUpdate);
+
+  //  Application.CreateForm(TfrmUpdate, frmUpdate);
 
   // form2.show;
 

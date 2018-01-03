@@ -43,7 +43,7 @@ uses message,Data_Modul,AnaUnit,message_y,popupForm,rapor,TedaviKart,Son6AylikTe
              HastaListe,IsKazasi,
              Tnm_UserSettings,HastaAsiKarti,HastaTaniKart,
              KurumLogin,Update_G,
-             MedulaKurumSifreDegis,
+             MedulaKurumSifreDegis,labParametreleri,
              Tnm_Doktor,LabTestAyarlari,SahaSaglikGozetim,
              PopupDBGridForm,PopupDBVerticalGridForm,
              Tnm_Ilaclar, PersonelEgitimFrm, About_Frm;
@@ -193,6 +193,7 @@ begin
    TagfrmAbout : Result := TfrmAbout;
    TagfrmPersonelEgitim : Result := TfrmPersonelEgitim;
    TagfrmTestAyarlari : Result := TfrmTestAyarlari;
+   TagfrmLabParametreleri : Result := TfrmLabParams;
 
    TagfrmIlaclar,TagfrmIlacAnaGrup,TagfrmIlacEtkenMadde : Result := TfrmIlaclar;
    TagfrmSon6AylikTetkikSonuc : Result := TfrmSon6AylikTetkikSonuc;
@@ -237,6 +238,7 @@ begin
    TagfrmReceteler : Result := frmReceteler;
    TagfrmSahaSaglikGozetim : Result := frmSahaSaglikGozetim;
    TagfrmUpdate : Result := frmUpdate;þ
+   TagfrmLabParametreleri : Result := frmLabParams;
   end;
 end;
 
@@ -271,6 +273,7 @@ begin
       TagfrmSon6AylikTetkikSonuc : frmSon6AylikTetkikSonuc := TfrmSon6AylikTetkikSonuc.Create(Tab);
       TagfrmReceteler : frmReceteler := TfrmReceteler.Create(Tab);
       TagfrmSahaSaglikGozetim : frmSahaSaglikGozetim := TfrmSahaSaglikGozetim.Create(Tab);
+      TagfrmLabParametreleri : frmLabParams:= TfrmLabParams.Create(Tab);
      else
       result := nil;
    end;
@@ -358,6 +361,8 @@ begin
       TagfrmSon6AylikTetkikSonuc : frmSon6AylikTetkikSonuc := TfrmSon6AylikTetkikSonuc.Create(Tab);
       TagfrmReceteler : frmReceteler := TfrmReceteler.Create(Tab);
       TagfrmSahaSaglikGozetim : frmSahaSaglikGozetim := TfrmSahaSaglikGozetim.Create(Tab);
+      TagfrmLabParametreleri : frmLabParams := TfrmLabParams.Create(Tab);
+
      else
       result := nil;
    end;
@@ -423,7 +428,7 @@ begin
     TagfrmIsKazasi : Application.CreateForm(TfrmIsKazasi,frmIsKazasi);
 
 
-
+    TagfrmLabParametreleri : Application.CreateForm(TfrmLabParams, frmLabParams);
 
     TagfrmUsers : Application.CreateForm(TfrmUsers, frmUsers);
     TagfrmHastaTetkikEkle : Application.CreateForm(TfrmHastaTetkikEkle, frmHastaTetkikEkle);

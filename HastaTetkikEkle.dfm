@@ -47,10 +47,6 @@ object frmHastaTetkikEkle: TfrmHastaTetkikEkle
         object cxTabTetkikler: TcxTabSheet
           Caption = 'Hasta Tetkikleri'
           ImageIndex = 0
-          ExplicitLeft = 0
-          ExplicitTop = 0
-          ExplicitWidth = 0
-          ExplicitHeight = 0
           object cxGrid15: TcxGrid
             Left = 0
             Top = 0
@@ -206,14 +202,15 @@ object frmHastaTetkikEkle: TfrmHastaTetkikEkle
                 Width = 44
               end
               object SonucGiris: TcxGridDBColumn
-                Caption = 'Sonu'#231' Giri'#351
+                Caption = 'Sonu'#231
                 DataBinding.FieldName = 'Gd'
                 HeaderAlignmentHorz = taCenter
-                Width = 40
+                Width = 58
               end
               object SonucCikis: TcxGridDBColumn
                 Caption = 'Sonu'#231' '#199#305'k'#305#351' '
                 DataBinding.FieldName = 'Cd'
+                Visible = False
                 HeaderAlignmentHorz = taCenter
                 Width = 40
               end
@@ -340,14 +337,13 @@ object frmHastaTetkikEkle: TfrmHastaTetkikEkle
             Height = 35
             Align = alBottom
             TabOrder = 1
-            Properties.Images = DATALAR.imag24png
             Properties.TabIndex = 0
             Properties.TabPosition = tpBottom
             Properties.Tabs.Strings = (
               'Laboratuvar'
               'Tele - EKG')
             OnChange = cxTabTetkikChange
-            ClientRectBottom = 3
+            ClientRectBottom = 5
             ClientRectLeft = 3
             ClientRectRight = 618
             ClientRectTop = 3
@@ -362,10 +358,10 @@ object frmHastaTetkikEkle: TfrmHastaTetkikEkle
             Height = 45
             Width = 625
             object Label2: TLabel
-              Left = 96
-              Top = -2
+              Left = 97
+              Top = 15
               Width = 29
-              Height = 45
+              Height = 20
               Align = alLeft
               Alignment = taCenter
               Caption = ' Kt/V  '
@@ -376,15 +372,15 @@ object frmHastaTetkikEkle: TfrmHastaTetkikEkle
               Font.Style = []
               ParentFont = False
               Layout = tlCenter
-              ExplicitLeft = 97
-              ExplicitTop = 15
+              ExplicitLeft = 96
+              ExplicitTop = -2
               ExplicitHeight = 13
             end
             object Label1: TLabel
-              Left = 181
-              Top = -2
+              Left = 182
+              Top = 15
               Width = 31
-              Height = 45
+              Height = 20
               Align = alLeft
               Alignment = taCenter
               Caption = ' CaXP '
@@ -395,15 +391,15 @@ object frmHastaTetkikEkle: TfrmHastaTetkikEkle
               Font.Style = []
               ParentFont = False
               Layout = tlCenter
-              ExplicitLeft = 182
-              ExplicitTop = 15
+              ExplicitLeft = 181
+              ExplicitTop = -2
               ExplicitHeight = 13
             end
             object Label3: TLabel
-              Left = 268
-              Top = -2
+              Left = 269
+              Top = 15
               Width = 41
-              Height = 45
+              Height = 20
               Align = alLeft
               Alignment = taCenter
               Caption = ' D'#252'z.Ca '
@@ -414,15 +410,15 @@ object frmHastaTetkikEkle: TfrmHastaTetkikEkle
               Font.Style = []
               ParentFont = False
               Layout = tlCenter
-              ExplicitLeft = 269
-              ExplicitTop = 15
+              ExplicitLeft = 268
+              ExplicitTop = -2
               ExplicitHeight = 13
             end
             object Label4: TLabel
-              Left = 2
-              Top = -2
+              Left = 3
+              Top = 15
               Width = 38
-              Height = 45
+              Height = 20
               Align = alLeft
               Alignment = taCenter
               Caption = 'URR % '
@@ -433,13 +429,13 @@ object frmHastaTetkikEkle: TfrmHastaTetkikEkle
               Font.Style = []
               ParentFont = False
               Layout = tlCenter
-              ExplicitLeft = 3
-              ExplicitTop = 15
+              ExplicitLeft = 2
+              ExplicitTop = -2
               ExplicitHeight = 13
             end
             object txtUrr: TcxDBTextEdit
-              Left = 40
-              Top = -2
+              Left = 41
+              Top = 15
               Align = alLeft
               DataBinding.DataField = 'URR'
               DataBinding.DataSource = DataSource1
@@ -452,11 +448,14 @@ object frmHastaTetkikEkle: TfrmHastaTetkikEkle
               Style.Font.Style = [fsBold]
               Style.IsFontAssigned = True
               TabOrder = 0
+              ExplicitLeft = 40
+              ExplicitTop = -2
+              ExplicitHeight = 45
               Width = 56
             end
             object txtKtv: TcxDBTextEdit
-              Left = 125
-              Top = -2
+              Left = 126
+              Top = 15
               Align = alLeft
               DataBinding.DataField = 'KT_v'
               DataBinding.DataSource = DataSource1
@@ -469,11 +468,14 @@ object frmHastaTetkikEkle: TfrmHastaTetkikEkle
               Style.Font.Style = [fsBold]
               Style.IsFontAssigned = True
               TabOrder = 1
+              ExplicitLeft = 125
+              ExplicitTop = -2
+              ExplicitHeight = 45
               Width = 56
             end
             object txtCaXP: TcxDBTextEdit
-              Left = 212
-              Top = -2
+              Left = 213
+              Top = 15
               Align = alLeft
               DataBinding.DataField = 'CaxP'
               DataBinding.DataSource = DataSource1
@@ -486,11 +488,14 @@ object frmHastaTetkikEkle: TfrmHastaTetkikEkle
               Style.Font.Style = [fsBold]
               Style.IsFontAssigned = True
               TabOrder = 2
+              ExplicitLeft = 212
+              ExplicitTop = -2
+              ExplicitHeight = 45
               Width = 56
             end
             object txtDuzCa: TcxDBTextEdit
-              Left = 309
-              Top = -2
+              Left = 310
+              Top = 15
               Align = alLeft
               DataBinding.DataField = 'DuzCa'
               DataBinding.DataSource = DataSource1
@@ -503,40 +508,52 @@ object frmHastaTetkikEkle: TfrmHastaTetkikEkle
               Style.Font.Style = [fsBold]
               Style.IsFontAssigned = True
               TabOrder = 3
+              ExplicitLeft = 309
+              ExplicitTop = -2
+              ExplicitHeight = 45
               Width = 56
             end
             object ktv: TcxButtonKadir
-              Left = 473
-              Top = -2
+              Left = 472
+              Top = 15
               Width = 75
-              Height = 45
+              Height = 20
               Align = alRight
               Caption = 'Kt/V'
               TabOrder = 4
               OnClick = ktvClick
               NewButtonVisible = False
+              ExplicitLeft = 473
+              ExplicitTop = -2
+              ExplicitHeight = 45
             end
             object spKtv: TcxButtonKadir
-              Left = 398
-              Top = -2
+              Left = 397
+              Top = 15
               Width = 75
-              Height = 45
+              Height = 20
               Align = alRight
               Caption = 'spKtv'
               TabOrder = 5
               OnClick = spKtvClick
               NewButtonVisible = False
+              ExplicitLeft = 398
+              ExplicitTop = -2
+              ExplicitHeight = 45
             end
             object cxBtnHesapKaydet: TcxButtonKadir
-              Left = 548
-              Top = -2
+              Left = 547
+              Top = 15
               Width = 75
-              Height = 45
+              Height = 20
               Align = alRight
               Caption = 'Kaydet'
               TabOrder = 6
               OnClick = cxBtnHesapKaydetClick
               NewButtonVisible = False
+              ExplicitLeft = 548
+              ExplicitTop = -2
+              ExplicitHeight = 45
             end
           end
         end
@@ -621,7 +638,7 @@ object frmHastaTetkikEkle: TfrmHastaTetkikEkle
     Prepared = True
     SQL.Strings = (
       'select * from hareketler h '
-      'join labtestler t on t.butKodu = h.code '
+      'join HIZMET t on t.code = h.code '
       'join lab_gruplari g on g.SLB = t.grupKodu'
       '           where dosyaNo = '#39'015099'#39
       '           and gelisNo = '#39'1'#39' and abs(t.tip) = '#39'2'#39
@@ -694,18 +711,18 @@ object frmHastaTetkikEkle: TfrmHastaTetkikEkle
     ListeBaslik = 'Tetkik Listesi'
     TColcount = 3
     TColsW = '50,350,0'
-    Table = 'labtestler'
+    Table = 'HIZMET'
     Conn = DATALAR.ADOConnection2
     Filtercol = 2
     BaslikRenk = clBackground
     DipRenk = clBackground
     ButtonImajIndex = 132
     Kolonlar.Strings = (
-      'butKodu'
-      'tanimi'
-      'Tip')
+      'Code'
+      'NAME1'
+      'TANIM')
     KolonBasliklari.Strings = (
-      'But Kodu'
+      'Sut Kodu'
       'Tanimi'
       'Tip')
     Calistir = fgEvet
