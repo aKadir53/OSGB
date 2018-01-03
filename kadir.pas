@@ -7314,26 +7314,33 @@ end;
 
 function NoktasizTarih(t: string): string;
 var
-  d, M, y: string;
+  d: string;
   ds: Char;
+  i : Integer;
 begin
   ds := FormatSettings.DateSeparator;
   if ((trim(StringReplace(t, ds, '', [rfReplaceAll])) = '') OR
       (t = '  /  /    ') OR (t = '  .  .    ')) Then
   begin
-    NoktasizTarih := '';
+    Result := '';
     Exit;
   end;
 
-  d := t;
-  delete(d, 3, 8);
-  M := t;
-  delete(M, 1, 3);
-  delete(M, 3, 5);
-  y := t;
-  delete(y, 1, 6);
-
-  NoktasizTarih := y + M + d;
+  i := 0;
+  Result := '';
+  if copy (t, length (t), 1) <> ds then t := t + ds;
+  while (Pos (ds, t) > 0) and (t <> '') do
+  begin
+    d:= Copy (t, 1, Pos (ds, t) - 1);
+    while length (d) < 2 do
+      d := '0' + d;
+    if i = 2 then
+      while length (d) < 4 do
+        d := '0' + d;
+    Result := d + Result;
+    Delete (t, 1, Pos (ds, t));
+    i := i + 1;
+  end;
 end;
 
 function FormattedTarih(t: string): string;
