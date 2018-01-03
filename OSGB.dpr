@@ -69,7 +69,7 @@ begin
   Application.MainFormOnTaskbar := True;
   Application.CreateForm(TDATALAR, DATALAR);
   Application.CreateForm(TAnaForm, AnaForm);
-//  Application.CreateForm(TfrmUpdate, frmUpdate);
+  Application.CreateForm(TfrmUpdate, frmUpdate);
 
   // form2.show;
 
