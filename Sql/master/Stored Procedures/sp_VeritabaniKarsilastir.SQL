@@ -40,7 +40,7 @@ begin
     'having sum (x) <> 0' + char (13) + char (10) +
     'order by xtype, ownername, name, x' + char (13) + char (10) +
     'set nocount off' + char (13) + char (10) +
-    'if exists (select 1 from #u) Select * from #t order by id' + char (13) + char (10) +
+    'if exists (select 1 from #u) Select * from #u order by id' + char (13) + char (10) +
     'drop table #u'
   --PRINT @SQL
   EXEC (@sql)
