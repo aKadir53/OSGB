@@ -539,6 +539,10 @@ Const
   TagfrmSahaSaglikGozetim = 630;
   TagfrmIGU = 640;
   TagFirmaCalismalari = 650;
+  TagfrmPersonelTetkikIstem = 660;
+  TagfrmFirmaBolumTetkikIstemSablon = 670;
+  TagfrmFirmaBolumTanim = 680;
+  TagfrmLabParametreleri = 690;
 
   ExceleGonder = 9997;
   SeansTarihiUpdate = 0;
