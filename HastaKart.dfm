@@ -661,7 +661,7 @@ object frmHastaKart: TfrmHastaKart
     end
   end
   object PopupMenu1: TPopupMenu
-    Images = DATALAR.imag24png
+    Images = DATALAR.imag32png
     Left = 72
     Top = 64
     object Kapat1: TMenuItem
