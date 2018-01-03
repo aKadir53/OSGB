@@ -493,4 +493,5 @@ end;
 isg katip excel'ini programdan aktarma
 taným ekranlarýnda þifre kutularýný *'lamak acil
 excel aktarýmýnda ekrandaki ve veritabanýndaki çift tckimlik numarasý kontrolleri. farklý firmada ve þubde varsa uyarý ver kabul ederse devam et, ayný þirket þubede varsa uyarý ver devam etme, pasifse aktif hale getirilebilir.
+uyruðu vs alanlarda excel aktarým düzeltmeleri yapýlacak
 end.
