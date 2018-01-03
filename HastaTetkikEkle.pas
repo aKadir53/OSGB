@@ -160,10 +160,10 @@ end;
 
 procedure TfrmHastaTetkikEkle.Sonuclar;
 begin
-   sql := 'select h.*,t.tanimi from hareketler h join labtestler t on t.butKodu = h.code ' +
+   sql := 'select h.*,t.NAME1 from hareketler h join HIZMET t on t.code = h.code ' +
           ' where dosyaNo = ' + #39 + _dosyaNo_ + #39 +
-          ' and gelisNo = ' + _gelisNo_ + ' and abs(t.tip) = ' + inttostr(ABS(cxTabTetkik.TabIndex+2)) + // sql1 +
-          ' order by kabulno,h.TARIH,sira ';
+          ' and gelisNo = ' + _gelisNo_ + ' and abs(t.TANIM) = ' + '0'+inttostr(ABS(cxTabTetkik.TabIndex+2)) + // sql1 +
+          ' order by h.TARIH,h.SIRANO ';
    datalar.QuerySelect(ADO_Tetkikler,sql);
 
 (*
@@ -200,9 +200,9 @@ var
 begin
    if cxTabTetkik.TabIndex = 0
     then
-       Tetkikler.Filter := '%2%'
+       Tetkikler.Filter := '%02%'
     else
-       Tetkikler.Filter := '%3%';
+       Tetkikler.Filter := '%03%';
    Tetkikler.SkinName := AnaForm.dxSkinController1.SkinName;
    List := Tetkikler.ListeGetir;
    if length(List) > 0 then

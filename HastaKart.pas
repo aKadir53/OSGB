@@ -923,7 +923,7 @@ var
 begin
   USER_ID.Tag := 0;
   //sirketKod.Tag := 0;
-
+  PopupMenu1.Images := datalar.imag24png;
   Menu := PopupMenu1;
 
   ClientHeight := formYukseklik;
