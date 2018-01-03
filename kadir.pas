@@ -451,7 +451,7 @@ procedure DBUpdate;
 begin
    Application.CreateForm(TfrmUpdate, frmUpdate);
    frmUpdate.ShowModal;
-   frmUpdate := Nil;
+   frmUpdate := Nil;xþ
 end;
 
 function DoktorReceteMedulaGonderimTip(doktor : string) : integer;
