@@ -28,6 +28,7 @@ gerçek ortam mý test ortamý mý seçeneði kontrol edilecek
 gerçek url / test url adres kontrolü yapýlacak
 doktor bilgileri (tckimlik, parola, þifre, pin, tesis kodu)
 tesis kodu (ornek: 11349903 (istanbul) il koduna göre 34 yerine o ilin kodu yazýlacak)
+bilgisayarýn saati gerçek saatten 2-3 dakikadan fazla geri / ileri olursa reçete gönder al iþlemi hata veriyor.
 reçeteyi kaydederken doktor tesis kodu, reçete silerken kurum þifre bilgilerindeki tesis kodu alýnmýþ, doktorun tesis kodu alýnacak
 
 hasta kartýnda yazdýrma düðmesi ??
@@ -168,3 +169,8 @@ muayene giriþi zorunlu yapýlabilir, zorunlu olup olmamasý osgb'nin program ayarl
 
 hastalarýn mevcut saðlýk, tahlil vb bilgileri, önceden yapýlmýþ iþe giriþ muayene formlarý (ek-2) sisteme aktarýlabilir mi ?
 admin þifreleri deðiþtir
+PERSONEL LÝSTESÝ ÝKÝ buton reçete ve muayene formu disable yapýlacak
+formlarýn enabled disabled durumlarý kontrol edilecek
+taným ekranlarýnda þifre kutularýný *'lamak acil
+excel aktarýmýnda ekrandaki ve veritabanýndaki çift tckimlik numarasý kontrolleri. farklý firmada ve þubde varsa uyarý ver kabul ederse devam et, ayný þirket þubede varsa uyarý ver devam etme, pasifse aktif hale getirilebilir.
+user kartlarýnda pasife çekme ve pasif kullanýcýnýn girememesi lazým
