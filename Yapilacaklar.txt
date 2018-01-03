@@ -174,3 +174,4 @@ formlarýn enabled disabled durumlarý kontrol edilecek
 taným ekranlarýnda þifre kutularýný *'lamak acil
 excel aktarýmýnda ekrandaki ve veritabanýndaki çift tckimlik numarasý kontrolleri. farklý firmada ve þubde varsa uyarý ver kabul ederse devam et, ayný þirket þubede varsa uyarý ver devam etme, pasifse aktif hale getirilebilir.
 user kartlarýnda pasife çekme ve pasif kullanýcýnýn girememesi lazým
+uyruðu vs alanlarda excel aktarým düzeltmeleri yapýlacak
