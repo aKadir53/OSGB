@@ -38,6 +38,7 @@ type
     miAlanEslestir: TMenuItem;
     GridList: TAdvStringGrid;
     miSoyadAyarla: TMenuItem;
+    miOtomatikAktarim: TMenuItem;
     procedure cxButtonCClick(Sender: TObject);
     procedure ExcelToGrid;
     procedure GridToPersonelKartTable;
@@ -56,6 +57,7 @@ type
     function GridBaslikAyarla (const S: String; const iNumber : Integer) : String;
     procedure GridSoyadiAyarla;
     procedure GridCiftBaslikAyarla;
+    procedure TanimliOtomatikAktarim;
   public
     { Public declarations }
     constructor Create (Aowver: TComponent); override;
@@ -466,6 +468,11 @@ end;
 
 
 
+procedure TfrmHizliKayit.TanimliOtomatikAktarim;
+begin
+  dialogs.showmessage ('');
+end;
+
 constructor TfrmHizliKayit.Create(Aowver: TComponent);
 begin
   inherited;
@@ -493,6 +500,7 @@ begin
       GridAlanEslestirme;
        end;
     5: GridSoyadiAyarla;
+    6: TanimliOtomatikAktarim;
   end;
 end;
 
