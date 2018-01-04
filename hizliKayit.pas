@@ -469,8 +469,85 @@ end;
 
 
 procedure TfrmHizliKayit.TanimliOtomatikAktarim;
+var
+  aQuery : TADOQuery;
+  aIDs : array of Integer;
+  sItems, sTableName : String;
+  aSL1, aSL2, aSL3 : TStringList;
+  iAktarimTanimID : Integer;
 begin
+  aQuery := TADOQuery.Create (Self);
+  try
+    aQuery.Connection := DATALAR.ADOConnection2;
+    aQuery.SQL.Text := 'Select * From DisAktarimTanim Where Otomatik = 1 order by ID';
+    aQuery.Open;
+    SetLength(aIDS, 0);
+    aSL1 := TStringList.Create;
+    try
+      sItems := '';
+      while not aQuery.Eof do
+      begin
+        SetLength (aIDs, High (aIDs) + 2);
+        aIDs [High (aIDs)] := aQuery.FieldByName ('ID').AsInteger;
+        sItems := sItems + aQuery.FieldByName ('Tanimi').AsString+#13#10;
+        aSL1.Add (aQuery.FieldByName ('HedefTabloAdi').AsString);
+        aQuery.Next;
+      end;
+      if IsNull (sItems) then
+      begin
+        ShowMessageSkin('Seçilebilecek Otomatik Aktarým Tanýmý Bulunamadý', '', '', 'info');
+        Exit;
+      end;
+      Delete (sItems, Length (sItems) - 1, 2);
+      if not CombodanSectir ('Otomatik Aktarým Seçiniz', 'Aktarým Çeþitleri', sItems, iAktarimTanimID) then Exit;
+      if iAktarimTanimID < 0 then
+      begin
+        ShowMessageSkin('Aktarým Tipi düzgün seçilmemiþ', '', '', 'info');
+        Exit;
+      end;
+      sTableName := aSL1 [iAktarimTanimID];
+      iAktarimTanimID := aIDs [iAktarimTanimID];
+      aQuery.SQL.Text :=
+        'select HedefAlanAdi, KaynakBaslik'#13#10 +
+        'from DisAktarimBaglanti'#13#10 +
+        'where AktarimTanimID = ' + IntToStr (iAktarimTanimID) + ''#13#10 +
+        'order by ID';
+      aSL2 := TStringList.Create;
+      try
+        aSL3 := TStringList.Create;
+        try
+          aSL1.Clear;
+          aQuery.Open;
+          while not aQuery.Eof do
+          begin
+            if aSL1.IndexOf (aQuery.FieldByName('HedefAlanAdi').AsString) < 0 then
+              aSL1.Add(aQuery.FieldByName('HedefAlanAdi').AsString);
+            aSL2.Add(aQuery.FieldByName('HedefAlanAdi').AsString);
+            aSL3.Add(aQuery.FieldByName('KaynakBaslik').AsString);
+            aQuery.Next;
+          end;
+          if aSL1.Count <= 0 then
+          begin
+            ShowMessageSkin('Aktarým Tipi için Alan - Baþlýk eþleþtirmesi hiç yapýlmamýþ', '', '', 'info');
+            Exit;
+          end;
+          //þimdi artýk elimizde alanlar ve karþýlýðýnda arayacaðýmýz baþlýklar var.
+          //ortalýðýn...
+
   dialogs.showmessage ('');
+          //þ
+        finally
+
+        end;
+      finally
+
+      end;
+    finally
+      aSL1.Free;
+    end;
+  finally
+    aQuery.Free;
+  end;
 end;
 
 constructor TfrmHizliKayit.Create(Aowver: TComponent);
