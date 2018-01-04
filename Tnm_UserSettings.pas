@@ -183,6 +183,9 @@ begin
   if length(datalar.ButtonEditSecimlist) > 0 then
   begin
     enabled;
+    //ÜÖ 20180104 Artýk þifre gözükmediði için tekrarýný data yüklenince biz atamayla dolduruyoruz.
+    TcxTextEdit (FindComponent ('txtSifreTekrar')).Text := TcxTextEditKadir (FindComponent ('password')).Text;
+
 
     IslemveMenuGorunumSetEkle(ugUser);
 
@@ -274,7 +277,11 @@ begin
   setDataStringB(self,'kullanici','Kullanici Adý',Kolon1,'',150,List,True,cxKullaniciAdi,'');
   setDataString(self,'ADISOYADI','Kullanýcý Tanýmý',Kolon1,'',250);
   setDataString(self,'password','Þifre',Kolon1,'',150);
+  TcxTextEditKadir (FindComponent ('password')).Properties.EchoMode := eemPassword;
+  TcxTextEditKadir (FindComponent ('password')).Properties.PasswordChar := '*';
   setDataStringKontrol(self,txtSifreTekrar, 'txtSifreTekrar','Þifre Tekrarý',Kolon1,'',150);
+  TcxTextEdit (FindComponent ('txtSifreTekrar')).Properties.EchoMode := eemPassword;
+  TcxTextEdit (FindComponent ('txtSifreTekrar')).Properties.PasswordChar := '*';
   setDataStringBLabel(self,'bosSatir1',kolon1,'',50);
 
 

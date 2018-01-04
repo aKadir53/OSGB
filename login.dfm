@@ -798,6 +798,8 @@ object frmLogin: TfrmLogin
           object txtDataBase: TcxTextEdit
             Left = 104
             Top = 64
+            Properties.EchoMode = eemPassword
+            Properties.PasswordChar = '*'
             Properties.ReadOnly = True
             Style.BorderColor = clWindowFrame
             Style.BorderStyle = ebs3D
@@ -808,6 +810,8 @@ object frmLogin: TfrmLogin
           object txtOsgbKodu: TcxTextEdit
             Left = 104
             Top = 37
+            Properties.EchoMode = eemPassword
+            Properties.PasswordChar = '*'
             Style.BorderColor = clWindowFrame
             Style.BorderStyle = ebs3D
             Style.HotTrack = False
