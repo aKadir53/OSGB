@@ -420,7 +420,7 @@ begin
           '@SERVIS = ' + #39 + '' + #39 + ',' +
           '@TEDAVITURU = ' + #39 + TedaviTuru + #39 + ',' +
           '@Kullanici = ' + #39 + datalar.username + #39 + ',' +
-          '@sirketKod = ' + QuotedStr(datalar.AktifSirket);
+          '@sirketKod = ' + QuotedStr(TcxImageComboKadir(FindComponent('SirketKod')).EditValue);
 
 
      datalar.QuerySelect(datalar.ADO_SQL,sql);
