@@ -420,7 +420,7 @@ begin
           '@SERVIS = ' + #39 + '' + #39 + ',' +
           '@TEDAVITURU = ' + #39 + TedaviTuru + #39 + ',' +
           '@Kullanici = ' + #39 + datalar.username + #39 + ',' +
-          '@sirketKod = ' + QuotedStr(datalar.AktifSirket);
+          '@sirketKod = ' + QuotedStr(TcxImageComboKadir(FindComponent('SirketKod')).EditValue);
 
 
      datalar.QuerySelect(datalar.ADO_SQL,sql);
@@ -1351,7 +1351,7 @@ begin
  // GirisFormRecord.F_SigortaliTur_ := TcxImageComboKadir(FindComponent('Durum')).EditValue;
   GirisFormRecord.F_HastaAdSoyad_ := _HastaAdSoyad_;
   GirisFormRecord.F_mobilTel_ := vartoStr(TcxTextEdit(FindComponent('EV_TEL1')).Text);
-  GirisFormRecord.F_firmaKod_ := TcxLabel(FindComponent('LabelSirketKod')).Caption;
+  GirisFormRecord.F_firmaKod_ := TcxImageComboKadir(FindComponent('SirketKod')).EditValue;
   GirisFormRecord.F_sube_ := TcxImageComboKadir(FindComponent('sube')).EditValue;
 
 
