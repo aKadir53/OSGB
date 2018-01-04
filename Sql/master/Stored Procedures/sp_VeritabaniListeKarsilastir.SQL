@@ -1,7 +1,7 @@
 BEGIN TRAN
 GO
 ALTER -- create
-  procedure [dbo].[sp_VeritabaniListeKarsilastir] @DBMask varchar (20) = null, @ObjMask varchar (20) = null, @Tip bit = 1
+  procedure [dbo].[sp_VeritabaniListeKarsilastir] @DBMask varchar (20) = null, @ObjMask varchar (20) = null, @Tip bit = 1, @ignoreColid bit = 0
 as
 begin
   set nocount on
@@ -116,7 +116,7 @@ begin
   while @@fetch_status = 0
   begin
     select @DBNameOld, @DBName
-    exec sp_VeritabaniKarsilastir @DBNameOld, @DBName
+    exec sp_VeritabaniKarsilastir @DBNameOld, @DBName, @ignoreColid
     fetch abc into @DBNameOld, @dbName
   end
 
