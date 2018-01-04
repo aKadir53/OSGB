@@ -39,59 +39,35 @@ object frmLabParams: TfrmLabParams
     Font.Style = [fsBold]
     ParentFont = False
     TabOrder = 0
-    ExplicitTop = 26
-    object btnYat: TsBitBtn
-      Tag = -10
-      Left = 696
-      Top = 5
-      Width = 62
-      Height = 27
-      Hint = 'Birim Tan'#305'mlar'#305
-      Caption = 'Birimler'
-      NumGlyphs = 2
-      ParentShowHint = False
-      ShowHint = True
-      TabOrder = 0
-      OnClick = btnYatClick
-      SkinData.SkinSection = 'BUTTON'
-    end
-    object btnYazdir: TsBitBtn
-      Tag = -1
-      Left = 377
-      Top = 5
-      Width = 88
-      Height = 27
-      Hint = 'Listeyi Yazd'#305'r'
-      Caption = 'Test Ekle'
-      ParentShowHint = False
-      ShowHint = True
-      TabOrder = 1
-      OnClick = btnYazdirClick
-      SkinData.SkinSection = 'BUTTON'
-      ImageIndex = 100
-      Images = DATALAR.global_img_list4
-    end
     object txtBirimler: TComboBox
       Left = 616
       Top = 8
       Width = 73
       Height = 21
-      TabOrder = 2
+      TabOrder = 0
       Visible = False
     end
-    object sBitBtn1: TsBitBtn
-      Tag = -11
-      Left = 762
-      Top = 5
-      Width = 62
-      Height = 27
-      Caption = 'Gruplar'
-      NumGlyphs = 2
-      ParentShowHint = False
-      ShowHint = True
-      TabOrder = 3
+    object btnYat: TcxButtonKadir
+      Tag = -10
+      Left = 695
+      Top = 7
+      Width = 75
+      Height = 25
+      Caption = 'Birimler'
+      TabOrder = 1
       OnClick = btnYatClick
-      SkinData.SkinSection = 'BUTTON'
+      NewButtonVisible = False
+    end
+    object btnGrupAyar: TcxButtonKadir
+      Tag = -11
+      Left = 776
+      Top = 7
+      Width = 75
+      Height = 25
+      Caption = 'Gruplar'
+      TabOrder = 2
+      OnClick = btnYatClick
+      NewButtonVisible = False
     end
   end
   object Panel1: TPanel
@@ -113,66 +89,23 @@ object frmLabParams: TfrmLabParams
       Color = 15132390
       TabOrder = 0
       Visible = False
-      ExplicitHeight = 395
-      object Bevel1: TBevel
-        Left = 5
-        Top = 6
-        Width = 247
-        Height = 52
-        Visible = False
-      end
-      object TPanel
-        Left = 3
-        Top = 365
-        Width = 188
-        Height = 26
-        BevelInner = bvLowered
-        Color = 15132390
-        TabOrder = 0
-        object Button1: TButton
-          Left = 12
-          Top = 2
-          Width = 70
-          Height = 25
-          Caption = 'De'#287'i'#351'tir'
-          TabOrder = 0
-          Visible = False
-          OnClick = Button1Click
-        end
-        object Button2: TButton
-          Left = 139
-          Top = 2
-          Width = 46
-          Height = 22
-          Caption = 'Kapat'
-          TabOrder = 1
-          OnClick = Button2Click
-        end
-      end
-      object txtGrup: TComboBox
-        Left = 12
-        Top = 24
-        Width = 237
-        Height = 21
-        TabOrder = 1
-        Items.Strings = (
-          '0')
-      end
+      ExplicitLeft = 467
       object grup: TcxRadioGroup
-        Left = 3
-        Top = -4
-        Caption = 'Gruplar'
+        Left = 4
+        Top = 4
+        Align = alClient
         Properties.Items = <
           item
           end>
-        Style.LookAndFeel.NativeStyle = True
-        StyleDisabled.LookAndFeel.NativeStyle = True
-        StyleFocused.LookAndFeel.NativeStyle = True
-        StyleHot.LookAndFeel.NativeStyle = True
-        TabOrder = 2
+        Style.LookAndFeel.NativeStyle = False
+        StyleDisabled.LookAndFeel.NativeStyle = False
+        StyleFocused.LookAndFeel.NativeStyle = False
+        StyleHot.LookAndFeel.NativeStyle = False
+        TabOrder = 0
         OnClick = grupClick
-        Height = 369
-        Width = 192
+        ExplicitLeft = 6
+        Height = 337
+        Width = 188
       end
     end
     object cxPageControl1: TcxPageControl
@@ -184,7 +117,6 @@ object frmLabParams: TfrmLabParams
       TabOrder = 1
       Properties.ActivePage = cxTabSheet1
       LookAndFeel.NativeStyle = True
-      ExplicitHeight = 395
       ClientRectBottom = 341
       ClientRectLeft = 4
       ClientRectRight = 462
@@ -192,7 +124,6 @@ object frmLabParams: TfrmLabParams
       object cxTabSheet1: TcxTabSheet
         Caption = 'Testler'
         ImageIndex = 0
-        ExplicitHeight = 367
         object gridTestler: TcxGrid
           Left = 0
           Top = 0
@@ -209,8 +140,8 @@ object frmLabParams: TfrmLabParams
           LevelTabs.ImageBorder = 2
           LevelTabs.Style = 1
           LookAndFeel.Kind = lfOffice11
-          LookAndFeel.NativeStyle = True
-          ExplicitHeight = 367
+          LookAndFeel.NativeStyle = False
+          ExplicitLeft = -6
           object gridTestlerDBTableView1: TcxGridDBTableView
             PopupMenu = PopupMenu1
             OnKeyDown = gridTestlerDBTableView1KeyDown
@@ -283,6 +214,7 @@ object frmLabParams: TfrmLabParams
               DataBinding.FieldName = 'GrupAdi'
               Options.Editing = False
               Styles.Content = cxStyle1
+              Width = 70
             end
           end
           object gridTestlerLevel1: TcxGridLevel
@@ -303,7 +235,6 @@ object frmLabParams: TfrmLabParams
       TabOrder = 2
       Properties.ActivePage = cxTabSheet2
       LookAndFeel.NativeStyle = True
-      ExplicitHeight = 395
       ClientRectBottom = 341
       ClientRectLeft = 4
       ClientRectRight = 351
@@ -311,7 +242,6 @@ object frmLabParams: TfrmLabParams
       object cxTabSheet2: TcxTabSheet
         Caption = 'Test Parametreleri'
         ImageIndex = 0
-        ExplicitHeight = 367
         object DBGridEh2: TDBGridEh
           Left = 0
           Top = 0
@@ -450,8 +380,6 @@ object frmLabParams: TfrmLabParams
     Align = alClient
     BevelInner = bvLowered
     TabOrder = 2
-    ExplicitTop = 485
-    ExplicitHeight = 185
     object DBGridEh3: TDBGridEh
       Left = 2
       Top = 2
@@ -603,7 +531,6 @@ object frmLabParams: TfrmLabParams
       Height = 32
       Align = alBottom
       TabOrder = 2
-      ExplicitTop = 151
       object DBNavigator2: TDBNavigator
         Left = 2
         Top = 1
@@ -634,16 +561,16 @@ object frmLabParams: TfrmLabParams
       'select * from h'#305'zmet h'
       '  inner join hizmet_gruplari hg on hg.kod = h.Tan'#305'm'
       
-        ' -- left join (select SLB,SLT as GrupAdi from parametreler where' +
-        ' SLK = '#39'53'#39') tmp on tmp.SLB = h.OZELKOD'
+        '  left join (select SLB,SLT as GrupAdi from parametreler where S' +
+        'LK = '#39'53'#39') tmp on tmp.SLB = h.OZELKOD'
       'where hg.kod = '#39'02'#39
       'order by h.CODE')
-    Left = 88
-    Top = 142
+    Left = 32
+    Top = 102
   end
   object DataSource1: TDataSource
     DataSet = ADO_TESTLER
-    Left = 144
+    Left = 32
     Top = 150
   end
   object ADO_PARAMETRELER: TADOTable
@@ -658,13 +585,13 @@ object frmLabParams: TfrmLabParams
     MasterFields = 'CODE'
     MasterSource = DataSource1
     TableName = 'laboratuvar_parametre'
-    Left = 520
-    Top = 38
+    Left = 144
+    Top = 102
   end
   object DataSource2: TDataSource
     DataSet = ADO_PARAMETRELER
-    Left = 552
-    Top = 38
+    Left = 144
+    Top = 150
   end
   object ADO_NORMALLER: TADOTable
     Connection = DATALAR.ADOConnection2
@@ -673,13 +600,13 @@ object frmLabParams: TfrmLabParams
     MasterFields = 'sira;kodu'
     MasterSource = DataSource2
     TableName = 'lab_normaldeger'
-    Left = 168
-    Top = 321
+    Left = 48
+    Top = 233
   end
   object DataSource3: TDataSource
     DataSet = ADO_NORMALLER
-    Left = 208
-    Top = 321
+    Left = 48
+    Top = 289
   end
   object ADO_LABOTODEGER: TADOTable
     Connection = DATALAR.ADOConnection2
@@ -688,17 +615,17 @@ object frmLabParams: TfrmLabParams
     MasterFields = 'sira;kodu'
     MasterSource = DataSource2
     TableName = 'labOtoDeger'
-    Left = 496
-    Top = 318
+    Left = 296
+    Top = 126
   end
   object DataSource4: TDataSource
     DataSet = ADO_LABOTODEGER
-    Left = 528
-    Top = 318
+    Left = 296
+    Top = 182
   end
   object PopupMenu1: TPopupMenu
-    Left = 240
-    Top = 142
+    Left = 144
+    Top = 206
     object GrupDeitir1: TMenuItem
       Caption = 'Grup De'#287'i'#351'tir'
       OnClick = GrupDeitir1Click

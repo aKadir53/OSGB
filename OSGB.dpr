@@ -51,12 +51,14 @@ uses
   LisansUzat in 'LisansUzat.pas' {frmLisansBilgisi},
   About_Frm in 'About_Frm.pas' {frmAbout},
   SahaSaglikGozetim in 'SahaSaglikGozetim.pas' {frmSahaSaglikGozetim},
-  labParametreleri in 'labParametreleri.pas' {frmLabParams};
+  labParametreleri in 'labParametreleri.pas' {frmLabParams},
+  labaratuvarKabul in 'labaratuvarKabul.pas' {frmLabaratuvarKabul},
+  LabSonucGir in 'LabSonucGir.pas' {frmLabSonucGir};
 
 // KadirMedula3 in '..\..\medula3wsdl\KadirMedula3.pas';
 
 const
-  AppalicationVer : integer = 1022;
+  AppalicationVer : integer = 1024;
   // Versiyon info kontrol etmeyi unutma
 
 {$R *.res}
