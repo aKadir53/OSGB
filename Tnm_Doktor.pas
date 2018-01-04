@@ -96,9 +96,15 @@ case self.Tag of
 
         setDataString(self,'tescilNo','Tescil No',Kolon1,'',80,True);
         setDataString(self,'eReceteKullanici','Reçete Kullanýcý Adý',Kolon1,'cc',100,True);
+        TcxTextEditKadir (FindComponent ('eReceteKullanici')).Properties.EchoMode := eemPassword;
+        TcxTextEditKadir (FindComponent ('eReceteKullanici')).Properties.PasswordChar := '*';
         setDataString(self,'eReceteSifre','Reçete Þifresi',Kolon1,'',100,True);
+        TcxTextEditKadir (FindComponent ('eReceteSifre')).Properties.EchoMode := eemPassword;
+        TcxTextEditKadir (FindComponent ('eReceteSifre')).Properties.PasswordChar := '*';
 
         setDataString(self,'pin','Ýmza Token Pin',Kolon1,'',50);
+        TcxTextEditKadir (FindComponent ('pin')).Properties.EchoMode := eemPassword;
+        TcxTextEditKadir (FindComponent ('pin')).Properties.PasswordChar := '*';
 
         cardType := TcxImageComboKadir.Create(self);
         cardType.Conn := Datalar.ADOConnection2;
