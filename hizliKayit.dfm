@@ -254,6 +254,13 @@ object frmHizliKayit: TfrmHizliKayit
     Images = DATALAR.imag24png
     Left = 696
     Top = 224
+    object miOtomatikAktarim: TMenuItem
+      Tag = 6
+      Caption = 'Y'#252'klenen Excel'#39'i Tan'#305'ml'#305' Otomatik Aktar'#305'mlardan Biri '#304#231'in Kullan'
+      Hint = 'Y'#252'klenen Excel'#39'i Tan'#305'ml'#305' Otomatik Aktar'#305'mlardan Biri '#304#231'in Kullan'
+      ImageIndex = 73
+      OnClick = cxButtonCClick
+    end
     object miSoyadAyarla: TMenuItem
       Tag = 5
       Caption = 'Soyad'#305' Ayarlamas'#305

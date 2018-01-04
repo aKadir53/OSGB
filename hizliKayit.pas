@@ -38,6 +38,7 @@ type
     miAlanEslestir: TMenuItem;
     GridList: TAdvStringGrid;
     miSoyadAyarla: TMenuItem;
+    miOtomatikAktarim: TMenuItem;
     procedure cxButtonCClick(Sender: TObject);
     procedure ExcelToGrid;
     procedure GridToPersonelKartTable;
@@ -55,6 +56,8 @@ type
     function GridAtanmisSutunDegerAyarlaGetir (const aGrid: TStringGrid; const ACol, ARow : Integer):String;
     function GridBaslikAyarla (const S: String; const iNumber : Integer) : String;
     procedure GridSoyadiAyarla;
+    procedure GridCiftBaslikAyarla;
+    procedure TanimliOtomatikAktarim;
   public
     { Public declarations }
     constructor Create (Aowver: TComponent); override;
@@ -189,6 +192,8 @@ begin
   try
     for i := 0 to GridList.ColCount - 1 do
       GridList.Cells [i, 0] := GridBaslikAyarla (GridList.Cells [i, 0], i);
+    //ÜÖ 20180105 Gride yüklenen excrl dosyasýnda ayný baþlýklý sütunlar varsa farklýlaþtýr, ileride eþleþmelerde problem çýkarmasýn.
+    GridCiftBaslikAyarla;
     //ÜÖ 20171231 eþleþen sütun baþlýklarýný gridde arayýp indexlerini ata
     for i := 0 to FInitialColumnHeaders.Count - 1 do
       aStringList.Add(IntToStr(GridList.Rows [0].IndexOf(FInitialColumnHeaders [i])));
@@ -276,6 +281,32 @@ begin
                     [rfReplaceAll]))),
               'Baþlýksýz Sütun - ' + IntToStr (iNumber),
               Trim (StringReplace (s, #9, '', [rfReplaceAll])));
+end;
+
+procedure TfrmHizliKayit.GridCiftBaslikAyarla;
+var
+  iCol, iRepeat : Integer;
+  aSL : TStringList;
+  sTmp1, sTmp2 : String;
+begin
+  aSL := TStringList.Create;
+  try
+    for iCol := 0 to GridList.ColCount - 1 do
+    begin
+      iRepeat := 1;
+      sTmp1 := GridList.Cells [iCol, 0];
+      sTmp2 := sTmp1;
+      while aSL.IndexOf (sTmp2) >= 0 do
+      begin
+        sTmp2 := sTmp1 + IntToStr (iRepeat);
+        iRepeat := iRepeat + 1;
+      end;
+      aSL.Add(sTmp2);
+      GridList.Cells [iCol, 0] := sTmp2;
+    end;
+  finally
+    aSL.Free;
+  end;
 end;
 
 procedure TfrmHizliKayit.GridSoyadiAyarla;
@@ -437,6 +468,88 @@ end;
 
 
 
+procedure TfrmHizliKayit.TanimliOtomatikAktarim;
+var
+  aQuery : TADOQuery;
+  aIDs : array of Integer;
+  sItems, sTableName : String;
+  aSL1, aSL2, aSL3 : TStringList;
+  iAktarimTanimID : Integer;
+begin
+  aQuery := TADOQuery.Create (Self);
+  try
+    aQuery.Connection := DATALAR.ADOConnection2;
+    aQuery.SQL.Text := 'Select * From DisAktarimTanim Where Otomatik = 1 order by ID';
+    aQuery.Open;
+    SetLength(aIDS, 0);
+    aSL1 := TStringList.Create;
+    try
+      sItems := '';
+      while not aQuery.Eof do
+      begin
+        SetLength (aIDs, High (aIDs) + 2);
+        aIDs [High (aIDs)] := aQuery.FieldByName ('ID').AsInteger;
+        sItems := sItems + aQuery.FieldByName ('Tanimi').AsString+#13#10;
+        aSL1.Add (aQuery.FieldByName ('HedefTabloAdi').AsString);
+        aQuery.Next;
+      end;
+      if IsNull (sItems) then
+      begin
+        ShowMessageSkin('Seçilebilecek Otomatik Aktarým Tanýmý Bulunamadý', '', '', 'info');
+        Exit;
+      end;
+      Delete (sItems, Length (sItems) - 1, 2);
+      if not CombodanSectir ('Otomatik Aktarým Seçiniz', 'Aktarým Çeþitleri', sItems, iAktarimTanimID) then Exit;
+      if iAktarimTanimID < 0 then
+      begin
+        ShowMessageSkin('Aktarým Tipi düzgün seçilmemiþ', '', '', 'info');
+        Exit;
+      end;
+      sTableName := aSL1 [iAktarimTanimID];
+      iAktarimTanimID := aIDs [iAktarimTanimID];
+      aQuery.SQL.Text :=
+        'select HedefAlanAdi, KaynakBaslik'#13#10 +
+        'from DisAktarimBaglanti'#13#10 +
+        'where AktarimTanimID = ' + IntToStr (iAktarimTanimID) + ''#13#10 +
+        'order by ID';
+      aSL2 := TStringList.Create;
+      try
+        aSL3 := TStringList.Create;
+        try
+          aSL1.Clear;
+          aQuery.Open;
+          while not aQuery.Eof do
+          begin
+            if aSL1.IndexOf (aQuery.FieldByName('HedefAlanAdi').AsString) < 0 then
+              aSL1.Add(aQuery.FieldByName('HedefAlanAdi').AsString);
+            aSL2.Add(aQuery.FieldByName('HedefAlanAdi').AsString);
+            aSL3.Add(aQuery.FieldByName('KaynakBaslik').AsString);
+            aQuery.Next;
+          end;
+          if aSL1.Count <= 0 then
+          begin
+            ShowMessageSkin('Aktarým Tipi için Alan - Baþlýk eþleþtirmesi hiç yapýlmamýþ', '', '', 'info');
+            Exit;
+          end;
+          //þimdi artýk elimizde alanlar ve karþýlýðýnda arayacaðýmýz baþlýklar var.
+          //ortalýðýn...
+
+  dialogs.showmessage ('');
+          //þ
+        finally
+
+        end;
+      finally
+
+      end;
+    finally
+      aSL1.Free;
+    end;
+  finally
+    aQuery.Free;
+  end;
+end;
+
 constructor TfrmHizliKayit.Create(Aowver: TComponent);
 begin
   inherited;
@@ -464,6 +577,7 @@ begin
       GridAlanEslestirme;
        end;
     5: GridSoyadiAyarla;
+    6: TanimliOtomatikAktarim;
   end;
 end;
 
