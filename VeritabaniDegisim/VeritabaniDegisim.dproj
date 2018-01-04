@@ -82,7 +82,7 @@
 				<FormType>dfm</FormType>
 			</DCCReference>
 			<DCCReference Include="Units\UGenel.pas"/>
-			<DCCReference Include="Units\NThermo.pas">
+			<DCCReference Include="..\NThermo.pas">
 				<Form>NThermoDlgFrm</Form>
 			</DCCReference>
 			<BuildConfiguration Include="Release">
