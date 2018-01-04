@@ -55,6 +55,7 @@ type
     function GridAtanmisSutunDegerAyarlaGetir (const aGrid: TStringGrid; const ACol, ARow : Integer):String;
     function GridBaslikAyarla (const S: String; const iNumber : Integer) : String;
     procedure GridSoyadiAyarla;
+    procedure GridCiftBaslikAyarla;
   public
     { Public declarations }
     constructor Create (Aowver: TComponent); override;
@@ -189,6 +190,8 @@ begin
   try
     for i := 0 to GridList.ColCount - 1 do
       GridList.Cells [i, 0] := GridBaslikAyarla (GridList.Cells [i, 0], i);
+    //ÜÖ 20180105 Gride yüklenen excrl dosyasýnda ayný baþlýklý sütunlar varsa farklýlaþtýr, ileride eþleþmelerde problem çýkarmasýn.
+    GridCiftBaslikAyarla;
     //ÜÖ 20171231 eþleþen sütun baþlýklarýný gridde arayýp indexlerini ata
     for i := 0 to FInitialColumnHeaders.Count - 1 do
       aStringList.Add(IntToStr(GridList.Rows [0].IndexOf(FInitialColumnHeaders [i])));
@@ -276,6 +279,32 @@ begin
                     [rfReplaceAll]))),
               'Baþlýksýz Sütun - ' + IntToStr (iNumber),
               Trim (StringReplace (s, #9, '', [rfReplaceAll])));
+end;
+
+procedure TfrmHizliKayit.GridCiftBaslikAyarla;
+var
+  iCol, iRepeat : Integer;
+  aSL : TStringList;
+  sTmp1, sTmp2 : String;
+begin
+  aSL := TStringList.Create;
+  try
+    for iCol := 0 to GridList.ColCount - 1 do
+    begin
+      iRepeat := 1;
+      sTmp1 := GridList.Cells [iCol, 0];
+      sTmp2 := sTmp1;
+      while aSL.IndexOf (sTmp2) >= 0 do
+      begin
+        sTmp2 := sTmp1 + IntToStr (iRepeat);
+        iRepeat := iRepeat + 1;
+      end;
+      aSL.Add(sTmp2);
+      GridList.Cells [iCol, 0] := sTmp2;
+    end;
+  finally
+    aSL.Free;
+  end;
 end;
 
 procedure TfrmHizliKayit.GridSoyadiAyarla;
