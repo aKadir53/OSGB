@@ -178,3 +178,7 @@ uyruðu vs alanlarda excel aktarým düzeltmeleri yapýlacak
 reçete header yoksa ekle sil düðmeleri disable
 tek osgb arzu haným, protokol numaralarý ilerlemiyor dedi.
 yeni muayene aç dendiðinde ekrandaki personelin þirketi, soldaki aktif þirketten farklý ise geliþler tablosuna aktif þirketle kayýt açmaya çalýþtýðý için foreign key hatasý çakýyor
+
+
+Tek_osgb._-_drarzu (286675759) > MONTAJ ELEMANI- ÜRETÝM ELEMANI-PRESHANE ELEMAN-CNC OPERATÖRÜ-MAKÞNE OPERATÖRÜ-AÞÇI-MUTFAK ELEMANI
+Tek_osgb._-_drarzu (286675759) > GÝBÝ BÝR SÜRÜ ÇALIÞAN GRUPLARI EKLENMELÝ
