@@ -194,6 +194,15 @@ object frmPaket: TfrmPaket
       Enabled = False
       OnClick = SpeedButton3Click
     end
+    object btPanodanYapistir: TSpeedButton
+      Left = 459
+      Top = 4
+      Width = 158
+      Height = 26
+      Caption = 'Panodan SQL Yap'#305#351't'#305'r'
+      Enabled = False
+      OnClick = btPanodanYapistirClick
+    end
     object ComboBox1: TComboBox
       Left = 380
       Top = 4
