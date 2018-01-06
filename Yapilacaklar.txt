@@ -187,3 +187,4 @@ Tek_osgb._-_drarzu (673641668) > diðerine B20
 Tek_osgb._-_drarzu (673641668) > ekleyebilirmisiniz
 Tek_osgb._-_drarzu (673641668) > b9 tehlikeli
 Tek_osgb._-_drarzu (673641668) > b20 çok tehlikeli olan firma
+Reçete ilaç eklemede üstte ilaç listesinden ilacý alt gride eklerken kutu adedi varsayýlan deðer 1 olacak.
