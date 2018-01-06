@@ -171,14 +171,19 @@ hastalarýn mevcut saðlýk, tahlil vb bilgileri, önceden yapýlmýþ iþe giriþ muayen
 admin þifreleri deðiþtir
 PERSONEL LÝSTESÝ ÝKÝ buton reçete ve muayene formu disable yapýlacak
 formlarýn enabled disabled durumlarý kontrol edilecek
-taným ekranlarýnda þifre kutularýný *'lamak acil
 excel aktarýmýnda ekrandaki ve veritabanýndaki çift tckimlik numarasý kontrolleri. farklý firmada ve þubde varsa uyarý ver kabul ederse devam et, ayný þirket þubede varsa uyarý ver devam etme, pasifse aktif hale getirilebilir.
 user kartlarýnda pasife çekme ve pasif kullanýcýnýn girememesi lazým
 uyruðu vs alanlarda excel aktarým düzeltmeleri yapýlacak
 reçete header yoksa ekle sil düðmeleri disable
-tek osgb arzu haným, protokol numaralarý ilerlemiyor dedi.
-yeni muayene aç dendiðinde ekrandaki personelin þirketi, soldaki aktif þirketten farklý ise geliþler tablosuna aktif þirketle kayýt açmaya çalýþtýðý için foreign key hatasý çakýyor
 yeni personelde muayene gridinin tazelenmemesi.
 
 Tek_osgb._-_drarzu (286675759) > MONTAJ ELEMANI- ÜRETÝM ELEMANI-PRESHANE ELEMAN-CNC OPERATÖRÜ-MAKÞNE OPERATÖRÜ-AÞÇI-MUTFAK ELEMANI
 Tek_osgb._-_drarzu (286675759) > GÝBÝ BÝR SÜRÜ ÇALIÞAN GRUPLARI EKLENMELÝ
+Tek_osgb._-_drarzu (673641668) > merhaba
+Tek_osgb._-_drarzu (673641668) > ümit bey bir ricam olucak
+Tek_osgb._-_drarzu (673641668) > benim firmalarýmda iki adet kolza biodizel var
+Tek_osgb._-_drarzu (673641668) > bunun birine B9
+Tek_osgb._-_drarzu (673641668) > diðerine B20
+Tek_osgb._-_drarzu (673641668) > ekleyebilirmisiniz
+Tek_osgb._-_drarzu (673641668) > b9 tehlikeli
+Tek_osgb._-_drarzu (673641668) > b20 çok tehlikeli olan firma
