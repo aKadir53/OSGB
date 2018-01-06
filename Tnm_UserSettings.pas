@@ -111,7 +111,7 @@ var
 
 
 implementation
-    uses AnaUnit;
+    uses StrUtils, AnaUnit;
 {$R *.dfm}
 
 procedure TfrmUsers.PropertiesEditValueChanged(Sender: TObject);
@@ -423,17 +423,26 @@ begin
         sqlUserGroup := 'UserGroupSettings';
         sqlUserGroupMenu := 'UserGroupMenuSettings';
       end;
-
-      sql := 'INSERT INTO '+ sqlUserGroupMenu +'(Kullanici,	Menu,ID,Izin) ' +
-              'select ' + QuotedStr(kullanici) + ',M.MainMenu,M.KAYITID,0 from  MenuIslem M ' +
+      //user ise defaultu group'tan insert et
+      sql := 'INSERT INTO '+ sqlUserGroupMenu +'(Kullanici,Menu,ID,Izin) ' +
+              'select ' + QuotedStr(kullanici) + ',M.MainMenu,M.KAYITID,'+ifthen (Tip <> ugUser, '0', 'case when not ugs.ID is null then ugs.Izin else 0 end')+' '+
+              'from  MenuIslem M ' +
+              IfThen (Tip = ugUser, 'inner join Users UU on UU.kullanici = ' + QuotedStr(kullanici) + ' '+
+                      'left outer join UserGroupMenuSettings ugs on ugs.Kullanici = uu.grup '+
+                      'and ugs.ID = M.KAYITID ')+
               '  left join '+sqlUserGroupMenu +' U on U.ID = M.KAYITID AND U.Kullanici = ' + QuotedStr(kullanici) +
               ' WHERE U.ID IS null ';
       datalar.QueryExec(ado,sql);
 
       sql := 'INSERT INTO '+ sqlUserGroup +'(Kullanici,Modul,Islem,Izin) ' +
-              'select ' + QuotedStr(kullanici) + ',M.Modul,M.Islem,0 from  ModulIslem M ' +
-              '  left join '+sqlUserGroup +' U on U.Modul = M.Modul AND U.Islem = M.Islem AND U.Kullanici = ' + QuotedStr(kullanici) +
-              ' WHERE U.Modul IS null ';
+              'select ' + QuotedStr(kullanici) + ',M.Modul,M.Islem,'+ifthen (Tip <> ugUser, '0', 'case when not ugs.Modul is null then ugs.Izin else 0 end')+' '+
+              'from  ModulIslem M ' +
+              IfThen (Tip = ugUser, 'inner join Users UU on UU.kullanici = ' + QuotedStr(kullanici) + ' '+
+                      'left outer join UserGroupSettings ugs on ugs.Kullanici = uu.grup'+
+                      '  and ugs.Modul = M.Modul'+
+                      '  and ugs.Islem = M.Islem ')+
+              'left join '+sqlUserGroup +' U on U.Modul = M.Modul AND U.Islem = M.Islem AND U.Kullanici = ' + QuotedStr(kullanici) +
+              'WHERE U.Modul IS null ';
 
       datalar.QueryExec(ado,sql);
 

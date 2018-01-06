@@ -144,6 +144,7 @@ function sirket(donem: string): string;
 function HesapTanimGetir(_kod: string): string;
 function PosHesapGetir(_kod: string): string;
 function AktifYil(donem: string): string;
+function CheckModulIslem (const pMenu, pIslem: String):Boolean;
 function UserRight(M, Islem: string): Boolean;
 procedure UserRightInsert(M, Islem , User: string);
 function Sifrele(s: string): string;
@@ -721,17 +722,17 @@ var
   sql : string;
 begin
   try
-   sql := 'update Gelisler set TakýpNo = ' + #39 + GelisBilgisi.TakipNo + #39 + ',' +
-          'BHDAT = ' + #39 + tarihal(GelisBilgisi.GirisTarihi) + #39 + ',' +
-          'CIKTAR = ' + #39 + tarihal(gelisBilgisi.CikisTarih) + #39 + ',' +
-          'Doktor = ' + #39 + gelisBilgisi.doktor + #39 + ',' +
+   sql := 'update Gelisler set TakýpNo = ' + QuotedStr (GelisBilgisi.TakipNo) + ',' +
+          'BHDAT = ' + QuotedStr (tarihal(GelisBilgisi.GirisTarihi)) + ',' +
+          'CIKTAR = ' + QuotedStr (tarihal(gelisBilgisi.CikisTarih)) + ',' +
+          'Doktor = ' + QuotedStr (gelisBilgisi.doktor) + ',' +
           'SERVIS = ' + QuotedStr(gelisBilgisi.BransKodu) + ',' +
           'taburcu = ' + QuotedStr(gelisBilgisi.TaburcuKodu) + ',' +
           'basvuruNo = ' + QuotedStr(GelisBilgisi.basvuruNo) + ',' +
           'PROTOKOLNO = ' + QuotedStr(gelisBilgisi.ProtokolNo) + ',' +
           'diyalizTedaviYontemi = ' + QuotedStr(gelisBilgisi.TedaviYontemi) + ',' +
           'yupass = ' + QuotedStr(gelisBilgisi.Yupass) +
-          ' where dosyaNo = ' + #39 + gelisBilgisi.dosyaNo + #39 +
+          ' where dosyaNo = ' + QuotedStr (gelisBilgisi.dosyaNo) +
           ' and gelisNo = ' + gelisBilgisi.gelisNo;
    datalar.QueryExec(ado,sql);
    Result := True;
@@ -1193,7 +1194,7 @@ function HastaKontrol(_dosyaNo : string) : boolean;
 var
   sql : string;
 begin
-   sql := 'select aktif from HastaKart where dosyaNo =  ' + #39 + _dosyaNo + #39;
+   sql := 'select aktif from HastaKart where dosyaNo =  ' + QuotedStr (_dosyaNo);
    datalar.QuerySelect(datalar.ADO_SQL1,sql);
    if datalar.ADO_SQL1.FieldByName('Aktif').AsInteger > 0
    then result := True else result := false;
@@ -1932,7 +1933,7 @@ begin
   try
     ado.Connection := datalar.ADOConnection2;
     sql := 'SELECT * FROM hastakart WHERE dosyaNo = ' + QuotedStr(DosyaNo) +
-      ' and substring(pasifSebeb,1,1) = ''5''';
+      ' and substring(pasifSebeb,1,1) = ' + QuotedStr ('5');
     datalar.QuerySelect(ado, sql);
 
     if not ado.eof then
@@ -2299,7 +2300,7 @@ begin
   try
     ado.Connection := datalar.ADOConnection2;
     sql := 'select slx , datediff(d,cast(SLVV as datetime),getdate()), ' +
-      ' SLVV from parametreler where slk = ''30'' and slb = ''02''';
+      ' SLVV from parametreler where slk = ' + QuotedStr ('30') + ' and slb = ' + QuotedStr ('02');
 
     datalar.QuerySelect(ado, sql);
 
@@ -2367,7 +2368,7 @@ begin
   try
     ado.Connection := datalar.ADOConnection2;
 
-    sql := 'select SLB,SLT from parametreler where SLk = ''97''';
+    sql := 'select SLB,SLT from parametreler where SLk = ' + QuotedStr ('97');
     datalar.QuerySelect(ado, sql);
 
     if ado.eof then
@@ -2548,7 +2549,7 @@ begin
   try
     ado.Connection := datalar.ADOConnection2;
     sql :=
-      'declare @SLX int select @SLX = isnull(SLX,0) from parametreler where SLK = ''00'' and SLB = ''21''' + ' update parametreler set SLX  = @SLX+1 from parametreler where SLK = ''00'' and SLB = ''21''' + ' select @SLX+1 ';
+      'declare @SLX int select @SLX = isnull(SLX,0) from parametreler where SLK = ' + QuotedStr ('00') + ' and SLB = ' + QuotedStr ('21') + ' update parametreler set SLX  = @SLX+1 from parametreler where SLK = ' + QuotedStr ('00') + ' and SLB = ' + QuotedStr ('21') + ' select @SLX+1 ';
     datalar.QuerySelect(ado, sql);
     EnsonRaporProtokolNo := ado.Fields[0].AsInteger;
   finally
@@ -2967,8 +2968,7 @@ begin
   try
     ado.Connection := datalar.ADOConnection2;
     sql :=
-      'select name1,ALIMBIRIM,TANIM,kdv from ILACSARF Where Code = ' + #39 +
-      _kodu + #39;
+      'select name1,ALIMBIRIM,TANIM,kdv from ILACSARF Where Code = ' + QuotedStr (_kodu);
     datalar.QuerySelect(ado, sql);
 
     if not ado.eof Then
@@ -3113,7 +3113,7 @@ begin
   try
     ado.Connection := datalar.ADOConnection2;
 
-    sql := 'select convert(varchar,BitisTarihi,112) from Raporlar where Aktif = ''1'' and dosyaNo = ' + #39 + _dosyaNo + #39;
+    sql := 'select convert(varchar,BitisTarihi,112) from Raporlar where Aktif = ' + QuotedStr ('1') + ' and dosyaNo = ' + QuotedStr (_dosyaNo);
     datalar.QuerySelect(ado, sql);
 
     if ado.Fields[0].AsString = '' then
@@ -3123,7 +3123,7 @@ begin
     end;
     _Tarih := FormattedTarih(ado.Fields[0].AsString);
 
-    sql := 'select SLX from Parametreler  where SLK = ''30'' and SLB = ''01''';
+    sql := 'select SLX from Parametreler  where SLK = ' + QuotedStr ('30') + ' and SLB = ' + QuotedStr ('01');
     datalar.QuerySelect(ado, sql);
     gun := ado.Fields[0].AsInteger;
 
@@ -3156,7 +3156,7 @@ begin
   ado := TADOQuery.Create(nil);
   try
     ado.Connection := datalar.ADOConnection2;
-    sql := 'select SLY from Parametreler  where SLK = ''30'' and SLB = ''01''';
+    sql := 'select SLY from Parametreler  where SLK = ' + QuotedStr ('30') + ' and SLB = ' + QuotedStr ('01');
     datalar.QuerySelect(ado, sql);
     if ado.Fields[0].AsFloat = 1 then
       Result := True
@@ -3254,7 +3254,7 @@ var
   sql : string;
   TopluDataset : TDataSetKadir;
 begin
-  sql := 'exec sp_hastaListesi ''1'','''', ' + QuotedStr(tarihal(date));
+  sql := 'exec sp_hastaListesi ' + QuotedStr ('1') + ','''', ' + QuotedStr(tarihal(date));
   TopluDataset.Dataset1 := datalar.QuerySelect(sql);
   TopluDataset.Dataset2 := kadir.KurumBilgi;
   PrintYap('039','\ImzaFoyu','',TopluDataset,pTNone);
@@ -3653,8 +3653,8 @@ begin
   try
     ado.Connection := datalar.ADOConnection2;
     sql :=
-      'insert into parametreler (SLK,SLB,SLT) values (' + #39 + '40' + #39 +
-      ',' + #39 + Tip + #39 + ',' + #39 + ifade + #39 + ')';
+      'insert into parametreler (SLK,SLB,SLT) values (' + QuotedStr ('40') +
+      ',' + QuotedStr (Tip) + ',' + QuotedStr (ifade) + ')';
     datalar.QueryExec(ado, sql);
   finally
     ado.Free;
@@ -3671,8 +3671,8 @@ begin
   ado := TADOQuery.Create(nil);
   try
     ado.Connection := datalar.ADOConnection2;
-    sql := 'delete from parametreler where SLK = ' + #39 + '40' + #39 +
-      ' and SLB = ' + #39 + Tip + #39 + ' and SLT = ' + #39 + ifade + #39;
+    sql := 'delete from parametreler where SLK = ' + QuotedStr ('40') +
+      ' and SLB = ' + QuotedStr (Tip) + ' and SLT = ' + QuotedStr (ifade);
     datalar.QueryExec(ado, sql);
   finally
     ado.Free;
@@ -3696,7 +3696,7 @@ begin
       if (_form.Components[x].ClassType = TComboBox) then
       begin
         sql :=
-          'select SLT from Parametreler where SLK = ''40'' and SLB = ' +
+          'select SLT from Parametreler where SLK = ' + QuotedStr ('40') + ' and SLB = ' +
           QuotedStr(TComboBox(_form.Components[x]).Name);
         ado.close;
         ado.sql.Clear;
@@ -3715,7 +3715,7 @@ begin
       if (_form.Components[x].ClassType = TcxComboBox) then
       begin
         sql :=
-          'select SLT from Parametreler where SLK = ''40'' and SLB = ' +
+          'select SLT from Parametreler where SLK = ' + QuotedStr ('40') + ' and SLB = ' +
           QuotedStr(TcxComboBox(_form.Components[x]).Name);
         ado.close;
         ado.sql.Clear;
@@ -4116,7 +4116,7 @@ begin
       sql := 'select tanimi from LabTestler where butkodu = ' + QuotedStr
         (siraNo)
     Else
-      sql := 'select LT.tanimi+'' - ''+T.tanimi from LabTestler T ' +
+      sql := 'select LT.tanimi+' + QuotedStr (' - ') + '+T.tanimi from LabTestler T ' +
         ' join LabTestler LT on substring(T.butkodu,1,6) = LT.butkodu ' +
         ' where T.sgkTip = ' + QuotedStr(Tip);
 
@@ -4194,7 +4194,7 @@ begin
   ado := TADOQuery.Create(nil);
   try
     ado.Connection := datalar.ADOConnection2;
-    sql := 'select SLXX as brans from parametreler where slk = ''33'' and slb = ''BRANS''';
+    sql := 'select SLXX as brans from parametreler where slk = ' + QuotedStr ('33') + ' and slb = ' + QuotedStr ('BRANS');
     datalar.QuerySelect(ado, sql);
 
     Result := ado.FieldByName('brans').AsString;
@@ -4216,11 +4216,11 @@ begin
 
     if gonderenForm = 'frmHastaKarti' Then
     Begin
-      sql1 := ' and tip = ''H''';
+      sql1 := ' and tip = ' + QuotedStr ('H');
     End;
     if gonderenForm = 'frmPersonelKarti' Then
     Begin
-      sql1 := ' and tip = ''P''';
+      sql1 := ' and tip = ' + QuotedStr ('P');
     End;
 
     datalar.QuerySelect(ado, sql);
@@ -4291,7 +4291,7 @@ begin
   try
     ado.Connection := datalar.ADOConnection2;
 
-    sql := 'select * from parametreler where slk = ''99''';
+    sql := 'select * from parametreler where slk = ' + QuotedStr ('99');
     ado.close;
     ado.sql.Clear;
     datalar.QuerySelect(ado, sql);
@@ -4315,7 +4315,7 @@ begin
     ado.Connection := datalar.ADOConnection2;
 
     sql :=
-      'select SLVV,SLXX,SLYY,SLZ,SLZZ from parametreler where SLK = ''GT'' and  SLB = ''0004''';
+      'select SLVV,SLXX,SLYY,SLZ,SLZZ from parametreler where SLK = ' + QuotedStr ('GT') + ' and  SLB = ' + QuotedStr ('0004');
 
     datalar.QuerySelect(ado, sql);
     Result := True;
@@ -4424,8 +4424,8 @@ begin
   try
     ado.Connection := datalar.ADOConnection2;
     sql :=
-      'select seansgunleri from HastaKart where dosyaNo =  ' + #39 +
-      _dosyaNo + #39;
+      'select seansgunleri from HastaKart where dosyaNo =  ' + QuotedStr (
+      _dosyaNo);
     datalar.QuerySelect(ado, sql);
 
     seans := ado.FieldByName('seansgunleri').AsString;
@@ -4928,7 +4928,7 @@ begin
   try
     ado.Connection := datalar.ADOConnection2;
 
-    sql := 'select kod from doktorlar where TescilNo = ' + #39 + doktor + #39;
+    sql := 'select kod from doktorlar where TescilNo = ' + QuotedStr (doktor);
     datalar.QuerySelect(ado, sql);
 
     Result := ado.Fields[0].AsString;
@@ -5104,7 +5104,7 @@ begin
   try
     ado.Connection := datalar.ADOConnection2;
     sql :=
-      'select SLY FROM Parametreler WHERE SLK = ''02'' and SLB = ' + QuotedStr
+      'select SLY FROM Parametreler WHERE SLK = ' + QuotedStr ('02') + ' and SLB = ' + QuotedStr
       (kod);
     datalar.QuerySelect(ado, sql);
 
@@ -5123,7 +5123,7 @@ begin
   try
     ado.Connection := datalar.ADOConnection2;
     sql :=
-      'select SLT1 FROM Parametreler WHERE SLK = ''02'' and SLB = ' + QuotedStr
+      'select SLT1 FROM Parametreler WHERE SLK = ' + QuotedStr ('02') + ' and SLB = ' + QuotedStr
       (kod);
     datalar.QuerySelect(ado, sql);
 
@@ -5147,7 +5147,7 @@ begin
     datalar.QuerySelect(ado, sql);
     _Tarih := ado.FieldByName('kontrolTarih').AsString;
 
-    sql1 := 'select SLT,SLVV from parametreler where SLK = ''90''';
+    sql1 := 'select SLT,SLVV from parametreler where SLK = ' + QuotedStr ('90');
     datalar.QuerySelect(ado, sql1);
     _okunanTarih := ado.FieldByName('SLT').AsString;
     _bitistarih := ado.FieldByName('SLVV').AsString;
@@ -5157,8 +5157,8 @@ begin
 
       if _bitistarih > _Tarih then
       begin
-        sql := 'update parametreler set SLT = ' + #39 + _Tarih + #39 +
-          ' where SLK = ''90''';
+        sql := 'update parametreler set SLT = ' + QuotedStr (_Tarih) +
+          ' where SLK = ' + QuotedStr ('90');
         datalar.QueryExec(ado, sql);
         Result := True;
         Exit;
@@ -5183,7 +5183,7 @@ begin
     ado.Connection := datalar.ADOConnection2;
 
 
-    sql := 'select SLB,SLT,SLVV from parametreler where SLK = ''90''';
+    sql := 'select SLB,SLT,SLVV from parametreler where SLK = ' + QuotedStr ('90');
     datalar.QuerySelect(ado, sql);
 
     Tarih := ado.FieldByName('SLB').AsString;
@@ -5238,7 +5238,7 @@ begin
   ado := TADOQuery.Create(nil);
   try
     ado.Connection := datalar.ADOConnection2;
-    sql := 'select TakýpNo from Gelisler where dosyaNo = ' + #39 + DosyaNo + #39;
+    sql := 'select TakýpNo from Gelisler where dosyaNo = ' + QuotedStr (DosyaNo);
     datalar.QuerySelect(ado, sql);
     if ado.eof then
       Exit;
@@ -5423,7 +5423,7 @@ begin
     ado := TADOQuery.Create(nil);
     try
       ado.Connection := datalar.ADOConnection2;
-      sql := 'select SLX from parametreler where SLK = ''GT''';
+      sql := 'select SLX from parametreler where SLK = ' + QuotedStr ('GT');
       datalar.QuerySelect(ado, sql);
       _sonSQLID := strtoint(trim(datalar.http2.Get(
             'http://www.noktayazilim.net/OSGBupdate.txt')));
@@ -5471,8 +5471,7 @@ begin
   datalar.ADO_SQL.close;
   datalar.ADO_SQL.sql.Clear;
   sql :=
-    'select SLX from parametreler where SLK = ''33'' and SLB = ' + #39 + Tel +
-    #39;
+    'select SLX from parametreler where SLK = ' + QuotedStr ('33') + ' and SLB = ' + QuotedStr (Tel);
   datalar.QuerySelect(datalar.ADO_SQL, sql);
 
   Result := datalar.ADO_SQL.Fields[0].AsInteger;
@@ -5486,8 +5485,7 @@ begin
   datalar.ADO_SQL.close;
   datalar.ADO_SQL.sql.Clear;
   sql :=
-    'select SLX from parametreler where SLK = ''33'' and SLB = ' + #39 + Tel +
-    #39;
+    'select SLX from parametreler where SLK = ' + QuotedStr ('33') + ' and SLB = ' + QuotedStr (Tel);
   datalar.QuerySelect(datalar.ADO_SQL, sql);
 
   if datalar.ADO_SQL.Fields[0].AsInteger = 1 then
@@ -5577,7 +5575,7 @@ function CariAd(_cariKod: string): string;
 var
   sql: string;
 begin
-  sql := 'select cariad from saticilar where carikod = ' + #39 + _cariKod + #39;
+  sql := 'select cariad from saticilar where carikod = ' + QuotedStr (_cariKod);
   datalar.QuerySelect(datalar.ADO_SQL3, sql);
   Result := datalar.ADO_SQL3.Fields[0].AsString;
 end;
@@ -5598,7 +5596,7 @@ function Kurumadi(_kurum: string): string;
 var
   sql: string;
 begin
-  sql := 'select ADI1 from kurumlar where Kurum = ' + #39 + _kurum + #39;
+  sql := 'select ADI1 from kurumlar where Kurum = ' + QuotedStr (_kurum);
   datalar.QuerySelect(datalar.ADO_SQL, sql);
   if not datalar.ADO_SQL.eof then
     Result := datalar.ADO_SQL.Fields[0].AsString;
@@ -6079,7 +6077,7 @@ function tesisAdi(_kod: string): string;
 var
   sql: string;
 begin
-  sql := 'select UNVANI from SAGLIKTESIS where kodu = ' + #39 + _kod + #39;
+  sql := 'select UNVANI from SAGLIKTESIS where kodu = ' + QuotedStr (_kod);
   datalar.QuerySelect(datalar.ADO_SQL, sql);
   Result := datalar.ADO_SQL.FieldByName('UNVANI').AsString;
 end;
@@ -6088,7 +6086,7 @@ function bransAdi(_kod: string): string;
 var
   sql: string;
 begin
-  sql := 'select DALI from KLINIKKODLARI where kodu = ' + #39 + _kod + #39;
+  sql := 'select DALI from KLINIKKODLARI where kodu = ' + QuotedStr (_kod);
   datalar.QuerySelect(datalar.ADO_SQL, sql);
   Result := datalar.ADO_SQL.FieldByName('DALI').AsString;
 end;
@@ -6111,7 +6109,10 @@ var
   ado : TADOQuery;
   sql : string;
 begin
-  sql := 'if not exists(select * from UserSettings where Kullanici = ' +
+  if not CheckmodulIslem (M, Islem) then Exit;
+
+  datalar.QueryExec(ado,sql);
+  sql := 'if not exists(select 1 from UserSettings where Kullanici = ' +
           QuotedStr(User) + ' and Modul = ' + QuotedStr(M) +
           ' and Islem = ' + QuotedStr(Islem) + ')' +
          ' insert into UserSettings(Kullanici,Modul,Islem,Izin) ' +
@@ -6123,18 +6124,37 @@ begin
 
 end;
 
+function CheckModulIslem (const pMenu, pIslem: String):Boolean;
+var
+  ado : TADOQuery;
+  sql : string;
+begin
+  Result := False;
+  sql := 'if not exists(select 1 from ModulIslem where Modul = ' + QuotedStr(pMenu) +
+          ' and Islem = ' + QuotedStr(pIslem) + ')' +
+         ' insert into ModulIslem(KAYITID,Modul,Islem) ' +
+         ' SELECT ISNULL ((SELECT MAX (KAYITID) FROM ModulIslem), 0) + 1,' +
+                      QuotedStr(pMenu) + ',' +
+                      QuotedStr(pIslem);
+  datalar.QueryExec(ado,sql);
+  Result := True;
+end;
 
 function UserRight(M, Islem: string): Boolean;
 var
  adoUG : TADOQuery;
  izinUG : Boolean;
 begin
+  if not CheckModulIslem (M, Islem) then Exit;
+
   adoUG := TADOQuery.Create(nil);
   try
     datalar.QuerySelect(adoUG,
      'SELECT US.Izin FROM UserGroupSettings US ' +
      'join Users U on U.Grup = US.kullanici ' +
-     'WHERE U.Kullanici = ''' + datalar.username + ''' AND US.Modul = ''' + M + ''' AND US.Islem = ''' + Islem + '''');
+     'WHERE U.Kullanici = ' + QuotedStr (datalar.username) +
+     ' AND US.Modul = ' + QuotedStr (M) +
+     ' AND US.Islem = ' + QuotedStr (Islem));
     adoUG.First;
     if adoUG.eof Then
       izinUG := False
@@ -6144,18 +6164,19 @@ begin
 
     if izinUG = True then
     begin
-      UserRight := True;
+      Result := True;
       exit;
     end;
 
     datalar.QuerySelect(adoUG,
-      'SELECT Izin FROM UserSettings WHERE Kullanici = ''' + datalar.username +
-        ''' AND Modul = ''' + M + ''' AND Islem = ''' + Islem + '''');
+      'SELECT Izin FROM UserSettings WHERE Kullanici = ' + QuotedStr (datalar.username) +
+      ' AND Modul = ' + QuotedStr (M) +
+      ' AND Islem = ' + QuotedStr (Islem));
     adoUG.First;
     if adoUG.eof Then
-      UserRight := False
+      Result := False
     Else
-      UserRight := adoUG.Fields[0].AsBoolean;
+      Result := adoUG.Fields[0].AsBoolean;
   finally
     adoUG.free;
   end;
@@ -6181,7 +6202,7 @@ end;
 function PosHesapGetir(_kod: string): string;
 begin
   datalar.QuerySelect(datalar.ADO_SQL2,
-    'select * from Keydat where slk = ''53'' and slb = ' + #39 + _kod + #39);
+    'select * from Keydat where slk = ' + QuotedStr ('53') + ' and slb = ' + QuotedStr (_kod));
   Result := datalar.ADO_SQL2.FieldByName('SLXX').AsString;
 end;
 
@@ -6368,7 +6389,7 @@ var
 begin
   if hesap <> '' then
   begin
-    sql := 'exec hesap_bakiye  ' + #39 + trim(hesap) + #39;
+    sql := 'exec hesap_bakiye  ' + QuotedStr (trim(hesap));
     datalar.QuerySelect(datalar.ADO_SQL, sql);
     borc := datalar.ADO_SQL.FieldByName('borc').AsFloat;
     alacak := datalar.ADO_SQL.FieldByName('alacak').AsFloat;
@@ -6565,8 +6586,7 @@ var
   SQLstr: string;
 begin
   SQLstr :=
-    'SELECT hesap_adi FROM muh_hesap_plani WHERE hesap_kodu = ''' + AnaNo +
-    '''';
+    'SELECT hesap_adi FROM muh_hesap_plani WHERE hesap_kodu = ' + QuotedStr (AnaNo);
   datalar.QuerySelect(datalar.ADO_SQL3, SQLstr);
   AnaHesapAdi := datalar.ADO_SQL3.FieldByName('hesap_adi').AsString;
 end;
@@ -6576,8 +6596,8 @@ var
   SQLstr: string;
 begin
   SQLstr :=
-    'SELECT hesap_adi FROM muh_hesap_plani WHERE hesap_kodu = ''' +
-    hesapkodu + '''';
+    'SELECT hesap_adi FROM muh_hesap_plani WHERE hesap_kodu = ' + QuotedStr (
+    hesapkodu);
   datalar.QuerySelect(datalar.ADO_SQL3, SQLstr);
   _HesapAdi := datalar.ADO_SQL3.FieldByName('hesap_adi').AsString;
 end;
@@ -7138,7 +7158,7 @@ begin
       ' JOIN hastakart h ON h.dosyaNo = g.dosyaNo ' +
       ' left join Kurumlar k on k.kurum = h.kurum ' +
       ' WHERE substring(RTarih,1,6) = ' + QuotedStr(donem) + kodsql + durumsql +
-      ' AND k.KURUMTIPI in (''1'',''99'')';
+      ' AND k.KURUMTIPI in (' + QuotedStr ('1') + ',' + QuotedStr ('99') + ')';
     datalar.QuerySelect(ado, sql);
 
     Result := ado.Fields[0].AsInteger;
@@ -7161,7 +7181,7 @@ begin
       ' FROM gssTakipOkuDiger gtod ' +
       ' WHERE substring(dbo.fn_NoktaliTarihTovarchar(islemTarihi),1,6) = ' +
       QuotedStr(donem) +
-      ' AND sutKodu IN (''P704230'',''P704234'',''P704233'') ' + ' group BY sutKodu ';
+      ' AND sutKodu IN (' + QuotedStr ('P704230') + ',' + QuotedStr ('P704234') + ',' + QuotedStr ('P704233') + ') ' + ' group BY sutKodu ';
     datalar.QuerySelect(ado, sql);
 
     while not ado.eof do
@@ -7221,8 +7241,8 @@ Function tariharalikkontrol(Tarih: Tdate; donem: string): string;
 begin
   datalar.ADO_SQL.close;
   datalar.ADO_SQL.sql.Clear;
-  datalar.ADO_SQL.sql.Add('exec dbo.tarih_kilit ' + #39 + tarihal(Tarih)
-      + #39 + ',' + #39 + donem + #39);
+  datalar.ADO_SQL.sql.Add('exec dbo.tarih_kilit ' + QuotedStr (tarihal(Tarih)
+     ) + ',' + QuotedStr (donem));
   datalar.ADO_SQL.Open;
 
   if datalar.ADO_SQL.FieldByName('sonuc').AsString = 'ok' then
@@ -7720,7 +7740,7 @@ var
 begin
   if sql = '' then
     sql :=
-      'select SLT from Parametreler where SLK = ''40'' and SLB = ' + QuotedStr
+      'select SLT from Parametreler where SLK = ' + QuotedStr ('40') + ' and SLB = ' + QuotedStr
       (c.Name);
 
   Q := TADOQuery.Create(nil);
@@ -7752,7 +7772,7 @@ var
 begin
   if sql = '' then
     sql :=
-      'select SLT from Parametreler where SLK = ''40'' and SLB = ' + QuotedStr
+      'select SLT from Parametreler where SLK = ' + QuotedStr ('40') + ' and SLB = ' + QuotedStr
       (c.Name);
 
   Q := TADOQuery.Create(nil);
@@ -7827,7 +7847,7 @@ var
   _sql_: string;
 begin
   _sql_ :=
-    'select SLT from Parametreler where SLK = ''40'' and SLB = ' + QuotedStr
+    'select SLT from Parametreler where SLK = ' + QuotedStr ('40') + ' and SLB = ' + QuotedStr
     (name);
 
   Q := TADOQuery.Create(nil);
@@ -8015,7 +8035,7 @@ begin
     ado.Connection := datalar.ADOConnection2;
 
     sql :=
-      'select SLVV s,SLXX u ,SLYY p , SLZZ db from parametreler where SLK = ''GA'' and SLB = ''00''';
+      'select SLVV s,SLXX u ,SLYY p , SLZZ db from parametreler where SLK = ' + QuotedStr ('GA') + ' and SLB = ' + QuotedStr ('00');
     datalar.QuerySelect(ado, sql);
     if not ado.eof then
     begin
@@ -8077,40 +8097,40 @@ begin
         case ay1 of
           1:
             sql :=
-              'update muh_hesap_plani set ay1topb=ay1topb+ :t,ay1topa=ay1topa+ :t1  where hesap_kodu=''' + hesapkodu + '''';
+              'update muh_hesap_plani set ay1topb=ay1topb+ :t,ay1topa=ay1topa+ :t1  where hesap_kodu=' + QuotedStr (hesapkodu);
           2:
             sql :=
-              'update muh_hesap_plani set ay2topb=ay2topb+ :t,ay2topa=ay2topa+ :t1  where hesap_kodu=''' + hesapkodu + '''';
+              'update muh_hesap_plani set ay2topb=ay2topb+ :t,ay2topa=ay2topa+ :t1  where hesap_kodu=' + QuotedStr (hesapkodu);
           3:
             sql :=
-              'update muh_hesap_plani set ay3topb=ay3topb+ :t,ay3topa=ay3topa+ :t1  where hesap_kodu=''' + hesapkodu + '''';
+              'update muh_hesap_plani set ay3topb=ay3topb+ :t,ay3topa=ay3topa+ :t1  where hesap_kodu=' + QuotedStr (hesapkodu);
           4:
             sql :=
-              'update muh_hesap_plani set ay4topb=ay4topb+ :t,ay4topa=ay4topa+ :t1  where hesap_kodu=''' + hesapkodu + '''';
+              'update muh_hesap_plani set ay4topb=ay4topb+ :t,ay4topa=ay4topa+ :t1  where hesap_kodu=' + QuotedStr (hesapkodu);
           5:
             sql :=
-              'update muh_hesap_plani set ay5topb=ay5topb+ :t,ay5topa=ay5topa+ :t1  where hesap_kodu=''' + hesapkodu + '''';
+              'update muh_hesap_plani set ay5topb=ay5topb+ :t,ay5topa=ay5topa+ :t1  where hesap_kodu=' + QuotedStr (hesapkodu);
           6:
             sql :=
-              'update muh_hesap_plani set ay6topb=ay6topb+ :t,ay6topa=ay6topa+ :t1  where hesap_kodu=''' + hesapkodu + '''';
+              'update muh_hesap_plani set ay6topb=ay6topb+ :t,ay6topa=ay6topa+ :t1  where hesap_kodu=' + QuotedStr (hesapkodu);
           7:
             sql :=
-              'update muh_hesap_plani set ay7topb=ay7topb+ :t,ay7topa=ay7topa+ :t1  where hesap_kodu=''' + hesapkodu + '''';
+              'update muh_hesap_plani set ay7topb=ay7topb+ :t,ay7topa=ay7topa+ :t1  where hesap_kodu=' + QuotedStr (hesapkodu);
           8:
             sql :=
-              'update muh_hesap_plani set ay8topb=ay8topb+ :t,ay8topa=ay8topa+ :t1  where hesap_kodu=''' + hesapkodu + '''';
+              'update muh_hesap_plani set ay8topb=ay8topb+ :t,ay8topa=ay8topa+ :t1  where hesap_kodu=' + QuotedStr (hesapkodu);
           9:
             sql :=
-              'update muh_hesap_plani set ay9topb=ay9topb+ :t,ay9topa=ay9topa+ :t1  where hesap_kodu=''' + hesapkodu + '''';
+              'update muh_hesap_plani set ay9topb=ay9topb+ :t,ay9topa=ay9topa+ :t1  where hesap_kodu=' + QuotedStr (hesapkodu);
           10:
             sql :=
-              'update muh_hesap_plani set ay10topb=ay10topb+ :t,ay10topa=ay10topa+ :t1  where hesap_kodu=''' + hesapkodu + '''';
+              'update muh_hesap_plani set ay10topb=ay10topb+ :t,ay10topa=ay10topa+ :t1  where hesap_kodu=' + QuotedStr (hesapkodu);
           11:
             sql :=
-              'update muh_hesap_plani set ay11topb=ay11topb+ :t,ay11topa=ay11topa+ :t1  where hesap_kodu=''' + hesapkodu + '''';
+              'update muh_hesap_plani set ay11topb=ay11topb+ :t,ay11topa=ay11topa+ :t1  where hesap_kodu=' + QuotedStr (hesapkodu);
           12:
             sql :=
-              'update muh_hesap_plani set ay12topb=ay12topb+ :t,ay12topa=ay12topa+ :t1  where hesap_kodu=''' + hesapkodu + '''';
+              'update muh_hesap_plani set ay12topb=ay12topb+ :t,ay12topa=ay12topa+ :t1  where hesap_kodu=' + QuotedStr (hesapkodu);
         else
           Exit;
         end;
@@ -8122,40 +8142,40 @@ begin
         case ay1 of
           1:
             sql :=
-              'update muh_hesap_plani set ay1topb=ay1topb- :t,ay1topa=ay1topa- :t1  where hesap_kodu=''' + hesapkodu + '''';
+              'update muh_hesap_plani set ay1topb=ay1topb- :t,ay1topa=ay1topa- :t1  where hesap_kodu=' + QuotedStr (hesapkodu);
           2:
             sql :=
-              'update muh_hesap_plani set ay2topb=ay2topb- :t,ay2topa=ay2topa- :t1  where hesap_kodu=''' + hesapkodu + '''';
+              'update muh_hesap_plani set ay2topb=ay2topb- :t,ay2topa=ay2topa- :t1  where hesap_kodu=' + QuotedStr (hesapkodu);
           3:
             sql :=
-              'update muh_hesap_plani set ay3topb=ay3topb- :t,ay3topa=ay3topa- :t1  where hesap_kodu=''' + hesapkodu + '''';
+              'update muh_hesap_plani set ay3topb=ay3topb- :t,ay3topa=ay3topa- :t1  where hesap_kodu=' + QuotedStr (hesapkodu);
           4:
             sql :=
-              'update muh_hesap_plani set ay4topb=ay4topb- :t,ay4topa=ay4topa- :t1  where hesap_kodu=''' + hesapkodu + '''';
+              'update muh_hesap_plani set ay4topb=ay4topb- :t,ay4topa=ay4topa- :t1  where hesap_kodu=' + QuotedStr (hesapkodu);
           5:
             sql :=
-              'update muh_hesap_plani set ay5topb=ay5topb- :t,ay5topa=ay5topa- :t1  where hesap_kodu=''' + hesapkodu + '''';
+              'update muh_hesap_plani set ay5topb=ay5topb- :t,ay5topa=ay5topa- :t1  where hesap_kodu=' + QuotedStr (hesapkodu);
           6:
             sql :=
-              'update muh_hesap_plani set ay6topb=ay6topb- :t,ay6topa=ay6topa- :t1  where hesap_kodu=''' + hesapkodu + '''';
+              'update muh_hesap_plani set ay6topb=ay6topb- :t,ay6topa=ay6topa- :t1  where hesap_kodu=' + QuotedStr (hesapkodu);
           7:
             sql :=
-              'update muh_hesap_plani set ay7topb=ay7topb- :t,ay7topa=ay7topa- :t1  where hesap_kodu=''' + hesapkodu + '''';
+              'update muh_hesap_plani set ay7topb=ay7topb- :t,ay7topa=ay7topa- :t1  where hesap_kodu=' + QuotedStr (hesapkodu);
           8:
             sql :=
-              'update muh_hesap_plani set ay8topb=ay8topb- :t,ay8topa=ay8topa- :t1  where hesap_kodu=''' + hesapkodu + '''';
+              'update muh_hesap_plani set ay8topb=ay8topb- :t,ay8topa=ay8topa- :t1  where hesap_kodu=' + QuotedStr (hesapkodu);
           9:
             sql :=
-              'update muh_hesap_plani set ay9topb=ay9topb- :t,ay9topa=ay9topa- :t1  where hesap_kodu=''' + hesapkodu + '''';
+              'update muh_hesap_plani set ay9topb=ay9topb- :t,ay9topa=ay9topa- :t1  where hesap_kodu=' + QuotedStr (hesapkodu);
           10:
             sql :=
-              'update muh_hesap_plani set ay10topb=ay10topb- :t,ay10topa=ay10topa- :t1  where hesap_kodu=''' + hesapkodu + '''';
+              'update muh_hesap_plani set ay10topb=ay10topb- :t,ay10topa=ay10topa- :t1  where hesap_kodu=' + QuotedStr (hesapkodu);
           11:
             sql :=
-              'update muh_hesap_plani set ay11topb=ay11topb- :t,ay11topa=ay11topa- :t1  where hesap_kodu=''' + hesapkodu + '''';
+              'update muh_hesap_plani set ay11topb=ay11topb- :t,ay11topa=ay11topa- :t1  where hesap_kodu=' + QuotedStr (hesapkodu);
           12:
             sql :=
-              'update muh_hesap_plani set ay12topb=ay12topb- :t,ay12topa=ay12topa- :t1  where hesap_kodu=''' + hesapkodu + '''';
+              'update muh_hesap_plani set ay12topb=ay12topb- :t,ay12topa=ay12topa- :t1  where hesap_kodu=' + QuotedStr (hesapkodu);
         else
           Exit;
         end;
@@ -8186,7 +8206,7 @@ var
 begin
 
   try
-    sql := 'select slb,slt from parametreler where slk = ''99''';
+    sql := 'select slb,slt from parametreler where slk = ' + QuotedStr ('99');
     datalar.QuerySelect(datalar.ADO_SQL2, sql);
     _kurumKod := strtoint(datalar.ADO_SQL2.FieldByName('slb').AsString);
     _username := datalar.ADO_SQL2.FieldByName('slb').AsString;
