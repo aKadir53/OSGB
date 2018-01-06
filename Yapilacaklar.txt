@@ -29,6 +29,7 @@ gerçek url / test url adres kontrolü yapýlacak
 doktor bilgileri (tckimlik, parola, þifre, pin, tesis kodu)
 tesis kodu (ornek: 11349903 (istanbul) il koduna göre 34 yerine o ilin kodu yazýlacak)
 bilgisayarýn saati gerçek saatten 2-3 dakikadan fazla geri / ileri olursa reçete gönder al iþlemi hata veriyor.
+sertifika no alaný içindeki "/" karakterlerine kýzýyor. bence sertifika no alanýný yine isg katip programýndan aktaralým, reçeteye sýfýr gönderelim
 reçeteyi kaydederken doktor tesis kodu, reçete silerken kurum þifre bilgilerindeki tesis kodu alýnmýþ, doktorun tesis kodu alýnacak
 
 hasta kartýnda yazdýrma düðmesi ??
@@ -187,3 +188,18 @@ Tek_osgb._-_drarzu (673641668) > diðerine B20
 Tek_osgb._-_drarzu (673641668) > ekleyebilirmisiniz
 Tek_osgb._-_drarzu (673641668) > b9 tehlikeli
 Tek_osgb._-_drarzu (673641668) > b20 çok tehlikeli olan firma
+Reçete ilaç eklemede üstte ilaç listesinden ilacý alt gride eklerken kutu adedi varsayýlan deðer 1 olacak.
+hizlikayitfrm excel'den personel aktarýmý için alan eþleþtirme iþlemi bir kere yapýldý ise, her excel yüklemede alan eþleþtirmeyi otomatik yapsýn.
+ana menü üstündeki þirket kombosundan þirket seçildiðinde alttaki þube otomatik güncelleniyor gibi ama excel aktarýmý þube seçilmemiþ ikazý yapýyor. galiba deðeri atamýyor. birden çok þubesi olan þirketlere geçiþte hataya sebep oluyor
+kalibre osgb çift personel silinmesi
+kalibre osgb 263 þirket koduna ait sgk sicili 34 37 36 ile biten þube pasif olacak
+otomatik excel aktarým altyapýsýna tabloyu boþalt alaný eklenecek. 0 ise boþaltmadan ekleyecek. 1 ise boþaltarak ekleyecek, null ise her seferinde soracak
+kalibre osgb'de geliþlerin çoklandýðý þikayeti var
+personel silerken personel falan firmaya kaydedilecek emin misiniz sorusu soruyor, sadece kaydederken olmalý
+firma kartlarýnda override kelimesi kaybolmuþ, hacý kadir ile aradaki whatsapp notlarýndan tarihine bakýlýp logdan incelenecek
+user kartý silinince usersettings usermenusettings tablolarýný silmiyor, silmesi lazým
+diðer personel ara seçeneði cancel seçildiðinde devam ediyor
+personel kartýnda zorunlu alan kontrolüne takýlsa bile sonraki sql komutlarý çalýþýyor
+reçete ekraný reçete þifremi deðiþtir düðmesi. form baþlýðý dþlsas asdlaiþl olmuþ
+kullanýcý kartý silerken foreign key hatasý çýkýnca ekrandan yine de siliyor
+personel kartýndaki en alttaki sil muayene sil olacak baþlýk eksik
