@@ -738,7 +738,7 @@ object frmHastaKart: TfrmHastaKart
         OnClick = cxKaydetClick
       end
       object MenucxKaydet: TMenuItem
-        Caption = 'Kaydet'
+        Caption = 'Personel Kart'#305'n'#305' Kaydet'
         ImageIndex = 31
         OnClick = cxKaydetClick
       end
@@ -756,14 +756,14 @@ object frmHastaKart: TfrmHastaKart
       end
       object G1: TMenuItem
         Tag = -31
-        Caption = 'D'#252'zenle'
+        Caption = 'Muayeneyi D'#252'zenle'
         ImageIndex = 49
         Visible = False
         OnClick = cxButtonCClick
       end
       object G2: TMenuItem
         Tag = -33
-        Caption = 'Sil'
+        Caption = 'Se'#231'ili Muayeneyi Sil'
         ImageIndex = 50
         OnClick = cxButtonCClick
       end
