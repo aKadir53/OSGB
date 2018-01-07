@@ -204,3 +204,4 @@ reçete ekraný reçete þifremi deðiþtir düðmesi. form baþlýðý dþlsas asdlaiþl olmu
 kullanýcý kartý silerken foreign key hatasý çýkýnca ekrandan yine de siliyor
 personel kartýndaki en alttaki sil muayene sil olacak baþlýk eksik
 þube tanýmlarý, kullanýcý yetkileri gibi gridli ekranlarda dataset post olmadan çýkma problemi var
+güncellemeler otomatik uygulanýp baþarý ile tamamlanýnca uygula düðmesi sönmediði için çift çalýþma hatasý oluþabiliyor
