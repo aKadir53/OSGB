@@ -203,3 +203,4 @@ personel kartýnda zorunlu alan kontrolüne takýlsa bile sonraki sql komutlarý çal
 reçete ekraný reçete þifremi deðiþtir düðmesi. form baþlýðý dþlsas asdlaiþl olmuþ
 kullanýcý kartý silerken foreign key hatasý çýkýnca ekrandan yine de siliyor
 personel kartýndaki en alttaki sil muayene sil olacak baþlýk eksik
+þube tanýmlarý, kullanýcý yetkileri gibi gridli ekranlarda dataset post olmadan çýkma problemi var

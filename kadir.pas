@@ -144,7 +144,7 @@ function sirket(donem: string): string;
 function HesapTanimGetir(_kod: string): string;
 function PosHesapGetir(_kod: string): string;
 function AktifYil(donem: string): string;
-function CheckModulIslem (const pMenu, pIslem: String):Boolean;
+function CheckModulIslem (const pModul, pIslem: String):Boolean;
 function UserRight(M, Islem: string): Boolean;
 procedure UserRightInsert(M, Islem , User: string);
 function Sifrele(s: string): string;
@@ -6124,17 +6124,23 @@ begin
 
 end;
 
-function CheckModulIslem (const pMenu, pIslem: String):Boolean;
+function CheckModulIslem (const pModul, pIslem: String):Boolean;
 var
   ado : TADOQuery;
   sql : string;
 begin
   Result := False;
-  sql := 'if not exists(select 1 from ModulIslem where Modul = ' + QuotedStr(pMenu) +
+  if IsNull (pModul) or IsNull (pIslem) then
+  begin
+    showmessageskin ('Modul veya Ýþlem bilgisi boþ olamaz', '', '', 'info');
+    Exit;
+  end;
+
+  sql := 'if not exists(select 1 from ModulIslem where Modul = ' + QuotedStr(pModul) +
           ' and Islem = ' + QuotedStr(pIslem) + ')' +
          ' insert into ModulIslem(KAYITID,Modul,Islem) ' +
          ' SELECT ISNULL ((SELECT MAX (KAYITID) FROM ModulIslem), 0) + 1,' +
-                      QuotedStr(pMenu) + ',' +
+                      QuotedStr(pModul) + ',' +
                       QuotedStr(pIslem);
   datalar.QueryExec(ado,sql);
   Result := True;
