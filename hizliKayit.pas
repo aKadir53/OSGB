@@ -535,7 +535,7 @@ begin
           //ortalýðýn...
 
   dialogs.showmessage ('');
-          //þ
+          þ
         finally
 
         end;

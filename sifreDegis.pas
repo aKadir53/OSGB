@@ -54,7 +54,7 @@ begin
       ado := TADOQuery.Create(nil);
       try
         datalar.QueryExec(ado,sql);
-        ShowMessageSkin('Þifreniz Deðiþtirildi','','','info');
+        ShowMessageSkin('Þifreniz Deðiþtirildi','','','info');    x
         close;
       finally
         ado.Free;
