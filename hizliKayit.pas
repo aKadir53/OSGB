@@ -48,11 +48,12 @@ type
   private
     { Private declarations }
     FFileName : String;
+    FAlanEslestirmeYapildi : Boolean;
   protected
     FInitialColumnHeaders : TStringList;
     FAcceptedColumnHeaders : TStringList;
     FAssignedColumnIndexes : array of Integer;
-    procedure GridAlanEslestirme;
+    procedure GridAlanEslestirme (pMsg: Boolean = True);
     function GridAtanmisSutunDegerAyarlaGetir (const aGrid: TStringGrid; const ACol, ARow : Integer):String;
     function GridBaslikAyarla (const S: String; const iNumber : Integer) : String;
     procedure GridSoyadiAyarla;
@@ -135,6 +136,8 @@ begin
 
   GridList.LoadFromXLS(dosya);
   FFileName := dosya;
+  if FAlanEslestirmeYapildi then GridAlanEslestirme(False);
+
 
 (*
   v := CreateOleObject('Excel.Application');
@@ -177,17 +180,18 @@ begin
 end;
 
 
-procedure TfrmHizliKayit.GridAlanEslestirme;
+procedure TfrmHizliKayit.GridAlanEslestirme (pMsg: Boolean = True);
 var
   aStringList : TStringList;
   i, j: Integer;
   sItems : String;
   aItems: array of Integer;
 begin
-  if ShowMessageSkin ('Bu iþlem, bu ekraný ilk açtýðýnýzda gördüðünüz standart þablon dýþýndaki personel listelerini aktarabilmeniz için imkân saðlar'#13#10#13#10+
-                      'Baþlýklarý eþleþen sütunlar otomatik olarak eþleþtirilecek ve geri kalaný için size eþleþtirme sorusu sorulacaktýr'#13#10#13#10+
-                      'Devam etmek istiyor musunuz ?',
-                      '', '', 'conf') <> mrYes then Exit;
+  if pMsg then
+    if ShowMessageSkin ('Bu iþlem, bu ekraný ilk açtýðýnýzda gördüðünüz standart þablon dýþýndaki personel listelerini aktarabilmeniz için imkân saðlar'#13#10#13#10+
+                        'Baþlýklarý eþleþen sütunlar otomatik olarak eþleþtirilecek ve geri kalaný için size eþleþtirme sorusu sorulacaktýr'#13#10#13#10+
+                        'Devam etmek istiyor musunuz ?',
+                        '', '', 'conf') <> mrYes then Exit;
   aStringList := TStringList.create;
   try
     for i := 0 to GridList.ColCount - 1 do
@@ -244,7 +248,9 @@ begin
       //Eþleþen baþlýklarý grid üzerinde yerine koyarak göster
       if FAssignedColumnIndexes [i] >= 0 then GridList.Cells [FAssignedColumnIndexes [i], 0] := FInitialColumnHeaders [i];
     end;
-    ShowMessageSkin('Alan Eþleþtirmesi Baþarý ile Tamamlandý', '', '', 'info');
+    FAlanEslestirmeYapildi := True;
+    if pMsg Then
+      ShowMessageSkin('Alan Eþleþtirmesi Baþarý ile Tamamlandý', '', '', 'info');
   finally
     aStringList.Free;
   end;
@@ -615,6 +621,7 @@ begin
     FAssignedColumnIndexes [High (FAssignedColumnIndexes)] := i;
   end;
   FFileName := '';
+  FAlanEslestirmeYapildi := False;
 end;
 isg katip excel'ini programdan aktarma
 taným ekranlarýnda þifre kutularýný *'lamak acil
