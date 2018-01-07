@@ -202,10 +202,13 @@ end;
 
 procedure TAnaForm.GuncellemeBaslat(tip : string);
 begin
-    Application.CreateForm(TfrmUpdate, frmUpdate);
+  Application.CreateForm(TfrmUpdate, frmUpdate);
+  try
     frmUpdate.UpdateTip(tip);
     frmUpdate.ShowModal;
-    frmUpdate := nil;
+  finally
+    FreeandNil (frmUpdate);
+  end;
 end;
 
 
