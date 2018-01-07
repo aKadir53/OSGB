@@ -451,8 +451,11 @@ uses message,AnaUnit,message_y,popupForm,rapor,TedaviKart,Son6AylikTetkikSonuc,
 procedure DBUpdate;
 begin
    Application.CreateForm(TfrmUpdate, frmUpdate);
-   frmUpdate.ShowModal;
-   frmUpdate := Nil;xþ
+   try
+     frmUpdate.ShowModal;
+   finally
+     FreeAndNil (frmUpdate);
+   end;
 end;
 
 function DoktorReceteMedulaGonderimTip(doktor : string) : integer;
