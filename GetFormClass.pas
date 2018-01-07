@@ -142,7 +142,9 @@ begin
   try
     datalar.QuerySelect(ado,sql);
     if not ado.Eof then
-      FormCaption := ado.Fields[0].AsString;
+      FormCaption := ado.Fields[0].AsString
+     else
+      raise Exception.Create('Form Baþlýk Bilgisi Tanýmlanmamýþ : "FormCaption" ('+IntToStr (formID)+')');
   finally
     ado.Free;
   end;
@@ -158,7 +160,9 @@ begin
   try
     datalar.QuerySelect(ado,sql);
     if not ado.Eof then
-      FormAltCaption := ado.Fields[0].AsString;
+      FormAltCaption := ado.Fields[0].AsString
+     else
+      raise Exception.Create('Form Baþlýk Bilgisi Tanýmlanmamýþ : "FormCaption" ('+IntToStr (formID)+')');
   finally
     ado.free;
   end;
