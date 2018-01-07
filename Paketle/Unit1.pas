@@ -85,8 +85,8 @@ implementation
 {$R *.dfm}
 
 function TfrmPaket.SQL_Host(var server : string; var user : string ; var password : string ; var DB : string) : boolean;
-var
-  sql : string;
+//var
+//  sql : string;
 begin
 
    Kaynak.ConnectionString := serverismi('DIALIZ');
@@ -113,7 +113,7 @@ end;
 
 procedure TfrmPaket.SQL_Host_Baglan;
 var
-  sql , servername ,s , u , p , db : string;
+  servername ,s , u , p , db : string;
 begin
 
    if SQL_Host(s,u,p,db) = True
@@ -183,8 +183,8 @@ begin
 end;
 
 procedure TfrmPaket.SpeedButton1Click(Sender: TObject);
-var
-  yol : string;
+//var
+//  yol : string;
 begin
     frmDosyadanPaket.ShowModal;
 
@@ -252,16 +252,21 @@ begin
         if AnsiSameText (Trim (aSL1 [i]), 'go') then
         begin
           //biriken scriptin baþýndaki boþ satýrlarý sil.
-          while TRim (aSL2 [0]) = '' do aSL2.Delete (0);
-          //biriken scriptin baþýndaki boþ satýrlarý sil.
-          while TRim (aSL2 [aSL2.Count - 1]) = '' do aSL2.Delete (aSL2.Count - 1);
-          iScripts := iScripts + 1;
-          table1.Append;
-          table1.FieldByName ('ID').AsInteger := iLastID + iScripts;
-          table1.FieldByName ('REV').AsInteger := iLastID + iScripts;
-          table1.FieldByName ('SQL_CMD').AsString := aSL2.Text;
-          table1.Post;
-          aSL2.Clear;
+          while (aSL2.Count > 0) and (TRim (aSL2 [0]) = '') do aSL2.Delete (0);
+          //biriken scriptin sonundaki boþ satýrlarý sil.
+          while (aSL2.Count > 0) and (TRim (aSL2 [aSL2.Count - 1]) = '') do aSL2.Delete (aSL2.Count - 1);
+          if Trim (aSL2.Text) <> '' then
+          begin
+            iScripts := iScripts + 1;
+            table1.Append;
+            table1.FieldByName ('ID').AsInteger := iLastID + iScripts;
+            table1.FieldByName ('REV').AsInteger := iLastID + iScripts;
+            table1.FieldByName ('SQL_CMD').AsString := aSL2.Text;
+            if Copy (Trim (aSL2 [0]), 1, 2) = '--' then
+              table1.FieldByName('ACIKLAMA').AsString := Trim (Copy (Trim (aSL2 [0]), 3, Length (Trim (aSL2 [0])) - 2));
+            table1.Post;
+            aSL2.Clear;
+          end;
           Continue;
         end;
         aSL2.Add (aSL1 [i]);
@@ -275,8 +280,8 @@ begin
 end;
 
 procedure TfrmPaket.SpeedButton3Click(Sender: TObject);
-var
-  dosya : TFileStream;
+//var
+//  dosya : TFileStream;
 begin
   try
     table1.Last;
@@ -329,8 +334,8 @@ begin
 end;
 
 procedure TfrmPaket.SpeedButton4Click(Sender: TObject);
-var
-  s,u,p,db : string;
+//var
+  //s,u,p,db : string;
 begin
 
 //  winexec('c:\program files\winrar\winrar c -zC:\NoktaDiyaliz\SQLBakim\Update\Paket\Komut.txt C:\NoktaDiyaliz\Update.exe',1);
