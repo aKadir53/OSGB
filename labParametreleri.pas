@@ -4,7 +4,7 @@ interface
 
 uses
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
-  Dialogs, StdCtrls, Mask, Buttons, sBitBtn, ExtCtrls, Grids,
+  Dialogs, StdCtrls, Mask, Buttons,  ExtCtrls, Grids,
   DBGridEh, ADODB, DB, DBCtrls, cxStyles,GirisUnit,KadirType,
   cxCustomData, cxGraphics, cxFilter, cxData, cxDataStorage, cxEdit,
   cxDBData, cxGridLevel, cxGridCustomTableView, cxGridTableView,strutils,
@@ -19,13 +19,11 @@ uses
   dxSkinPumpkin, dxSkinSeven, dxSkinSharp, dxSkinSilver, dxSkinSpringTime,
   dxSkinStardust, dxSkinSummer2008, dxSkinsDefaultPainters, dxSkinValentine,
   dxSkinXmas2008Blue, dxSkinscxPCPainter, cxPCdxBarPopupMenu, DBGridEhGrouping,
-  ToolCtrlsEh, DBGridEhToolCtrls, GridsEh;
+  ToolCtrlsEh, DBGridEhToolCtrls, GridsEh, cxButtons, KadirLabel;
 
 type
   TfrmLabParams = class(TGirisForm)
     pnlToolBar: TPanel;
-    btnYat: TsBitBtn;
-    btnYazdir: TsBitBtn;
     Panel1: TPanel;
     ADO_TESTLER: TADOQuery;
     DataSource1: TDataSource;
@@ -38,15 +36,9 @@ type
     ADO_LABOTODEGER: TADOTable;
     DataSource4: TDataSource;
     DBGridEh1: TDBGridEh;
-    txtBirimler: TComboBox;
-    sBitBtn1: TsBitBtn;
     PopupMenu1: TPopupMenu;
     GrupDeitir1: TMenuItem;
     pnlGrup: TPanel;
-    Button1: TButton;
-    Button2: TButton;
-    txtGrup: TComboBox;
-    Bevel1: TBevel;
     Panel3: TPanel;
     DBNavigator2: TDBNavigator;
     DBNavigator3: TDBNavigator;
@@ -65,6 +57,9 @@ type
     cxStyleRepository1: TcxStyleRepository;
     cxStyle1: TcxStyle;
     Splitter1: TSplitter;
+    txtBirimler: TComboBox;
+    btnYat: TcxButtonKadir;
+    btnGrupAyar: TcxButtonKadir;
     procedure TablolariAc;
     procedure TablolariKapat;
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
@@ -271,22 +266,24 @@ procedure TfrmLabParams.GrupDeitir1Click(Sender: TObject);
 var
   sql : string;
   ado : TADOQuery;
+  item : TcxRadioGroupItem;
 begin
-(*
+
    ado := TADOQuery.Create(nil);
    ado.Connection := datalar.ADOConnection2;
 
-   Sql := 'select SLB+'' - ''+SLT as grup from parametreler where SLK = ''53''';
+   Sql := 'select SLB kod,SLT as grup from parametreler where SLK = ''53''';
    datalar.QuerySelect(ado,sql);
-   txtGrup.Clear;
+   Grup.Clear;
    while not ado.Eof do
    begin
-     txtGrup.Items.Add(ado.Fields[0].AsString);
+     item := Grup.Properties.Items.Add;
+     item.Caption := ado.FieldByName('grup').AsString;
+     item.Value := ado.FieldByName('kod').AsString;
      ado.Next;
    end;
 
    ado.Free;
-  *)
 
   try
    grup.ItemIndex := -1;
@@ -329,11 +326,28 @@ procedure TfrmLabParams.grupClick(Sender: TObject);
 var
   a : string;
   x : integer;
+  ado : TADOQuery;
+  sql : string;
 begin
+  grupCod := varToStr(grup.ActiveProperties.Items.Items[grup.itemindex].Value);
 
-  grupCod := grup.ActiveProperties.Items.Items[grup.itemindex].Value;
-  Button1.Click;
-  //ShowMessage(a,'','','info');
+  try
+   ado := TADOQuery.Create(nil);
+   ado.Connection := datalar.ADOConnection2;
+   sql := 'update HIZMET set OZELKOD = ' + QuotedStr(grupCod) +
+          ' where code = ' + QuotedStr(ADO_TESTLER.fieldbyname('code').AsString);
+   datalar.QueryExec(ado,sql);
+  except
+    ShowMessageSkin('Hata Oluþtu','','','info');
+    ado.Free;
+    exit;
+  End;
+
+  ado.Free;
+
+  ADO_TESTLER.Active := False;
+  ADO_TESTLER.Active := true;
+  pnlGrup.Visible := false;
 
 end;
 

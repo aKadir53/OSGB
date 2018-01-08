@@ -42,7 +42,7 @@ uses message,Data_Modul,AnaUnit,message_y,popupForm,rapor,TedaviKart,Son6AylikTe
              HastaKart,FirmaKart,hizliKayit,receteSablonlari,
              HastaListe,IsKazasi,
              Tnm_UserSettings,HastaAsiKarti,HastaTaniKart,
-             KurumLogin,Update_G,
+             KurumLogin,Update_G, labaratuvarKabul,
              MedulaKurumSifreDegis,labParametreleri,
              Tnm_Doktor,LabTestAyarlari,SahaSaglikGozetim,
              PopupDBGridForm,PopupDBVerticalGridForm,
@@ -197,7 +197,9 @@ begin
    TagfrmAbout : Result := TfrmAbout;
    TagfrmPersonelEgitim : Result := TfrmPersonelEgitim;
    TagfrmTestAyarlari : Result := TfrmTestAyarlari;
+
    TagfrmLabParametreleri : Result := TfrmLabParams;
+   TagfrmLabKabul : Result := TfrmLabaratuvarKabul;
 
    TagfrmIlaclar,TagfrmIlacAnaGrup,TagfrmIlacEtkenMadde : Result := TfrmIlaclar;
    TagfrmSon6AylikTetkikSonuc : Result := TfrmSon6AylikTetkikSonuc;
@@ -242,7 +244,9 @@ begin
    TagfrmReceteler : Result := frmReceteler;
    TagfrmSahaSaglikGozetim : Result := frmSahaSaglikGozetim;
    TagfrmUpdate : Result := frmUpdate;
+
    TagfrmLabParametreleri : Result := frmLabParams;
+   TagfrmLabKabul : Result := frmLabaratuvarKabul;
   end;
 end;
 
@@ -277,7 +281,10 @@ begin
       TagfrmSon6AylikTetkikSonuc : frmSon6AylikTetkikSonuc := TfrmSon6AylikTetkikSonuc.Create(Tab);
       TagfrmReceteler : frmReceteler := TfrmReceteler.Create(Tab);
       TagfrmSahaSaglikGozetim : frmSahaSaglikGozetim := TfrmSahaSaglikGozetim.Create(Tab);
+
       TagfrmLabParametreleri : frmLabParams:= TfrmLabParams.Create(Tab);
+      TagfrmLabKabul : frmLabaratuvarKabul := TfrmLabaratuvarKabul.Create(Tab);
+
      else
       result := nil;
    end;
@@ -365,8 +372,9 @@ begin
       TagfrmSon6AylikTetkikSonuc : frmSon6AylikTetkikSonuc := TfrmSon6AylikTetkikSonuc.Create(Tab);
       TagfrmReceteler : frmReceteler := TfrmReceteler.Create(Tab);
       TagfrmSahaSaglikGozetim : frmSahaSaglikGozetim := TfrmSahaSaglikGozetim.Create(Tab);
-      TagfrmLabParametreleri : frmLabParams := TfrmLabParams.Create(Tab);
 
+      TagfrmLabParametreleri : frmLabParams := TfrmLabParams.Create(Tab);
+      TagfrmLabKabul : frmLabaratuvarKabul := TfrmLabaratuvarKabul.Create(Tab);
      else
       result := nil;
    end;
@@ -432,7 +440,8 @@ begin
     TagfrmIsKazasi : Application.CreateForm(TfrmIsKazasi,frmIsKazasi);
 
 
-      TagfrmLabParametreleri : Application.CreateForm(TfrmLabParams, frmLabParams);
+    TagfrmLabParametreleri : Application.CreateForm(TfrmLabParams, frmLabParams);
+    TagfrmLabKabul : Application.CreateForm(TfrmLabaratuvarKabul, frmLabaratuvarKabul);
 
     TagfrmUsers : Application.CreateForm(TfrmUsers, frmUsers);
     TagfrmHastaTetkikEkle : Application.CreateForm(TfrmHastaTetkikEkle, frmHastaTetkikEkle);
