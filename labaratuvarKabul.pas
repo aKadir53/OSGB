@@ -656,7 +656,7 @@ begin
      ADO_SQL33.close;
      ADO_SQL33.SQL.Clear;
      sql := 'exec sp_LabKabulListesi  @tarih1 = ' + #39 + tarih1 + #39 + ',' +
-            ' @dosyaNo = ' + QuotedStr('') + ',' + '@gelisNo = 0' + ',' + '@detayNo = 0 ' + ',' + '@tip = ' + QuotedStr(tip);
+            ' @dosyaNo = ' + QuotedStr('') + ',' + '@gelisNo = 0' + ',' + '@tip = ' + QuotedStr(tip);
      Application.ProcessMessages;
      datalar.QuerySelect(ADO_SQL33,sql);
 
@@ -1094,13 +1094,13 @@ begin
      datalar.ADO_SQL3.close;
      datalar.ADO_SQL3.SQL.Clear;
      sql := 'exec sp_LabKabulListesi  @tarih1 = ' + #39 + tarih1 + #39 + ',' +
-            ' @dosyaNo = ' + QuotedStr(bilgi.dosyaNo) + ',@gelisNo =' + bilgi.gelisNo + ',@detayNo =' + bilgi.detayNo;
+            ' @dosyaNo = ' + QuotedStr(bilgi.dosyaNo) + ',@gelisNo =' + bilgi.gelisNo;
 
      datalar.QuerySelect(datalar.ADO_SQL3,sql);
 
 
-     ADO_SQL3.Locate('dosyaNo;gelisNo;YTakýpNo',
-                             VarArrayOf([bilgi.dosyaNo,bilgi.gelisNo,bilgi.detayNo])
+     ADO_SQL3.Locate('dosyaNo;gelisNo',
+                             VarArrayOf([bilgi.dosyaNo,bilgi.gelisNo])
                              ,[loPartialKey]);
 
 
@@ -1117,7 +1117,6 @@ begin
          sql := 'exec sp_YeniLabKabul ' +
                 #39 + bilgi.dosyaNo + #39 + ',' +
                 bilgi.gelisNo + ',' +
-       //         bilgi.detayNo + ',' +
                 #39 + bilgi.code + #39 + ',' +
                 #39 + bilgi.grup + #39 + ',' +
                 #39 + bilgi.kabulTarihi + #39 + ',' +
@@ -1486,7 +1485,7 @@ begin
      ADO_SQL3.SQL.Clear;
      sql := 'exec sp_LabKabulListesi  @tarih1 = ' + #39 + tarihal(txtTarih.Date) + #39 + ',' +
             ' @dosyaNo = ' + QuotedStr(ADO_SQL33.fieldbyname('dosyaNo').AsString)  + ',' +
-            '@gelisNo = ' + ADO_SQL33.fieldbyname('gelisNo').AsString + ',' + '@detayNo = 0 ' + ',' + '@tip = ' + QuotedStr('');
+            '@gelisNo = ' + QuotedStr(ADO_SQL33.fieldbyname('gelisNo').AsString) + ',' + '@tip = ' + QuotedStr('');
      datalar.QuerySelect(ADO_SQL3,sql);
 
 

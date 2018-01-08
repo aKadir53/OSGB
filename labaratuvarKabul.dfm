@@ -32,7 +32,6 @@ object frmLabaratuvarKabul: TfrmLabaratuvarKabul
     Font.Style = [fsBold]
     ParentFont = False
     TabOrder = 0
-    ExplicitWidth = 1262
     object txtTarih: TDateEdit
       Left = 561
       Top = 5
@@ -121,7 +120,7 @@ object frmLabaratuvarKabul: TfrmLabaratuvarKabul
     Top = 43
     Width = 1261
     Height = 641
-    ActivePage = TabSheet2
+    ActivePage = TabSheet1
     Align = alClient
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clWindowText
@@ -134,12 +133,9 @@ object frmLabaratuvarKabul: TfrmLabaratuvarKabul
     TabOrder = 1
     TabPosition = tpBottom
     OnChange = sayfalar_LabKabulChange
-    ExplicitWidth = 1262
     object TabSheet1: TTabSheet
       Caption = 'Kabul Bekleyenler'
       ImageIndex = 38
-      ExplicitWidth = 1254
-      ExplicitHeight = 560
       object gridGelisler: TAdvStringGrid
         Tag = 200
         Left = 0
@@ -336,7 +332,6 @@ object frmLabaratuvarKabul: TfrmLabaratuvarKabul
         Align = alLeft
         Caption = 'Panel8'
         TabOrder = 1
-        ExplicitHeight = 560
         object cxGrid4: TcxGrid
           Left = 1
           Top = 1
@@ -354,7 +349,6 @@ object frmLabaratuvarKabul: TfrmLabaratuvarKabul
           LevelTabs.Style = 8
           LookAndFeel.Kind = lfOffice11
           LookAndFeel.NativeStyle = False
-          ExplicitHeight = 558
           object cxGridDBTableView3: TcxGridDBTableView
             OnDblClick = cxGridDBTableView3DblClick
             OnKeyDown = cxGridDBTableView3KeyDown
@@ -555,8 +549,6 @@ object frmLabaratuvarKabul: TfrmLabaratuvarKabul
         Align = alClient
         Caption = 'Panel9'
         TabOrder = 2
-        ExplicitWidth = 680
-        ExplicitHeight = 560
         object cxGrid6: TcxGrid
           Left = 1
           Top = 1
@@ -572,8 +564,6 @@ object frmLabaratuvarKabul: TfrmLabaratuvarKabul
           TabOrder = 0
           LevelTabs.ImageBorder = 2
           LevelTabs.Style = 8
-          ExplicitWidth = 678
-          ExplicitHeight = 558
           object cxGridDBTableView5: TcxGridDBTableView
             PopupMenu = PopupMenu2
             OnKeyDown = cxGridDBTableView3KeyDown
@@ -817,8 +807,6 @@ object frmLabaratuvarKabul: TfrmLabaratuvarKabul
         Align = alBottom
         Color = clBackground
         TabOrder = 3
-        ExplicitTop = 563
-        ExplicitWidth = 1254
         DesignSize = (
           1253
           40)
@@ -845,7 +833,6 @@ object frmLabaratuvarKabul: TfrmLabaratuvarKabul
           TabOrder = 0
           OnClick = btnSendClick
           NewButtonVisible = False
-          ExplicitLeft = 1175
         end
         object btnTumSend: TcxButtonKadir
           Left = 966
@@ -857,7 +844,6 @@ object frmLabaratuvarKabul: TfrmLabaratuvarKabul
           TabOrder = 1
           OnClick = HastannTmTahlilleriniKabulEt1Click
           NewButtonVisible = False
-          ExplicitLeft = 967
         end
         object btnSend1: TcxButtonKadir
           Tag = -1
@@ -870,15 +856,12 @@ object frmLabaratuvarKabul: TfrmLabaratuvarKabul
           TabOrder = 2
           OnClick = btnSendClick
           NewButtonVisible = False
-          ExplicitLeft = 776
         end
       end
     end
     object TabSheet2: TTabSheet
       Caption = 'Kabul Edilenler'
       ImageIndex = 72
-      ExplicitWidth = 1254
-      ExplicitHeight = 560
       object Panel2: TPanel
         Left = 405
         Top = 0
@@ -887,8 +870,6 @@ object frmLabaratuvarKabul: TfrmLabaratuvarKabul
         Align = alClient
         BevelInner = bvLowered
         TabOrder = 0
-        ExplicitWidth = 849
-        ExplicitHeight = 560
         object Panel3: TPanel
           Left = 2
           Top = 2
@@ -897,7 +878,6 @@ object frmLabaratuvarKabul: TfrmLabaratuvarKabul
           Align = alTop
           BevelInner = bvLowered
           TabOrder = 0
-          ExplicitWidth = 845
           object txtDosyaNo: TLabel
             Left = 8
             Top = 8
@@ -979,8 +959,6 @@ object frmLabaratuvarKabul: TfrmLabaratuvarKabul
           LevelTabs.ImageBorder = 2
           LevelTabs.Style = 1
           LookAndFeel.NativeStyle = False
-          ExplicitWidth = 845
-          ExplicitHeight = 519
           object gridLabHazir: TcxGridDBTableView
             PopupMenu = PopupMenu3
             OnDblClick = gridLabHazirDblClick
@@ -1363,7 +1341,6 @@ object frmLabaratuvarKabul: TfrmLabaratuvarKabul
         Align = alLeft
         BevelInner = bvLowered
         TabOrder = 1
-        ExplicitHeight = 560
         object cxGrid5: TcxGrid
           Left = 2
           Top = 2
@@ -1379,7 +1356,6 @@ object frmLabaratuvarKabul: TfrmLabaratuvarKabul
           TabOrder = 0
           LevelTabs.ImageBorder = 2
           LevelTabs.Style = 1
-          ExplicitHeight = 556
           object cxGridDBTableView4: TcxGridDBTableView
             OnDblClick = cxGridDBTableView4DblClick
             Navigator.Buttons.First.Visible = True
@@ -1495,8 +1471,6 @@ object frmLabaratuvarKabul: TfrmLabaratuvarKabul
     object TabSheet3: TTabSheet
       Caption = 'Sonu'#231' Haz'#305'r'
       ImageIndex = 73
-      ExplicitWidth = 1254
-      ExplicitHeight = 560
       object PageControl1: TPageControl
         Left = 0
         Top = 0
@@ -1505,12 +1479,8 @@ object frmLabaratuvarKabul: TfrmLabaratuvarKabul
         ActivePage = TabSheet5
         Align = alClient
         TabOrder = 0
-        ExplicitWidth = 1254
-        ExplicitHeight = 560
         object TabSheet4: TTabSheet
           Caption = 'Sonu'#231'lar'
-          ExplicitWidth = 1246
-          ExplicitHeight = 529
           object cxGrid2: TcxGrid
             Left = 0
             Top = 0
@@ -1528,8 +1498,6 @@ object frmLabaratuvarKabul: TfrmLabaratuvarKabul
             LevelTabs.Style = 1
             LookAndFeel.Kind = lfOffice11
             LookAndFeel.NativeStyle = False
-            ExplicitWidth = 1246
-            ExplicitHeight = 529
             object cxGridDBTableView1: TcxGridDBTableView
               Navigator.Buttons.First.Visible = True
               Navigator.Buttons.PriorPage.Visible = True
@@ -1643,8 +1611,6 @@ object frmLabaratuvarKabul: TfrmLabaratuvarKabul
         object TabSheet5: TTabSheet
           Caption = 'D'#305#351' Lab Sonu'#231' Okuma'
           ImageIndex = 1
-          ExplicitWidth = 1246
-          ExplicitHeight = 529
           object Panel5: TPanel
             Left = 0
             Top = 0
@@ -1652,7 +1618,6 @@ object frmLabaratuvarKabul: TfrmLabaratuvarKabul
             Height = 28
             Align = alTop
             TabOrder = 0
-            ExplicitWidth = 1246
             object Label1: TLabel
               Left = 965
               Top = 6
@@ -1685,8 +1650,6 @@ object frmLabaratuvarKabul: TfrmLabaratuvarKabul
             Align = alClient
             ScrollBars = ssVertical
             TabOrder = 1
-            ExplicitWidth = 1246
-            ExplicitHeight = 501
           end
         end
       end
