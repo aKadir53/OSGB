@@ -1,7 +1,7 @@
 BEGIN TRAN
 GO
 ALTER TRIGGER [dbo].[HareketEkle]
-   ON  [dbo].[Hareketler]
+   ON  dbo.Hareketler
    AFTER UPDATE,INSERT
 AS 
 BEGIN
@@ -121,7 +121,7 @@ Begin
         begin
 		  update hastakart
 	      set AntiHbs = (case @AntiHbs when -1  then '-' when 1 then '+' else '' end)
-          where dosyaNo = @dosyaNo
+    where dosyaNo = @dosyaNo
         end	
         exec sp_HepatitMarkerNormalDegereGoreSonucYaz @dosyaNo,@gelisNo,@code,@gd
     end
