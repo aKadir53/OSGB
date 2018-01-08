@@ -58,7 +58,7 @@ uses
 // KadirMedula3 in '..\..\medula3wsdl\KadirMedula3.pas';
 
 const
-  AppalicationVer : integer = 1024;
+  AppalicationVer : integer = 1025;
   // Versiyon info kontrol etmeyi unutma
 
 {$R *.res}
@@ -72,8 +72,7 @@ begin
   Application.MainFormOnTaskbar := True;
   Application.CreateForm(TDATALAR, DATALAR);
   Application.CreateForm(TAnaForm, AnaForm);
-
-  //  Application.CreateForm(TfrmUpdate, frmUpdate);
+  //Application.CreateForm(TfrmUpdate, frmUpdate);???
 
   // form2.show;
 

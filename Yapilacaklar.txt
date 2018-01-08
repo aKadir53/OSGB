@@ -29,6 +29,7 @@ gerçek url / test url adres kontrolü yapýlacak
 doktor bilgileri (tckimlik, parola, þifre, pin, tesis kodu)
 tesis kodu (ornek: 11349903 (istanbul) il koduna göre 34 yerine o ilin kodu yazýlacak)
 bilgisayarýn saati gerçek saatten 2-3 dakikadan fazla geri / ileri olursa reçete gönder al iþlemi hata veriyor.
+sertifika no alaný içindeki "/" karakterlerine kýzýyor. bence sertifika no alanýný yine isg katip programýndan aktaralým, reçeteye sýfýr gönderelim
 reçeteyi kaydederken doktor tesis kodu, reçete silerken kurum þifre bilgilerindeki tesis kodu alýnmýþ, doktorun tesis kodu alýnacak
 
 hasta kartýnda yazdýrma düðmesi ??
@@ -171,14 +172,36 @@ hastalarýn mevcut saðlýk, tahlil vb bilgileri, önceden yapýlmýþ iþe giriþ muayen
 admin þifreleri deðiþtir
 PERSONEL LÝSTESÝ ÝKÝ buton reçete ve muayene formu disable yapýlacak
 formlarýn enabled disabled durumlarý kontrol edilecek
-taným ekranlarýnda þifre kutularýný *'lamak acil
 excel aktarýmýnda ekrandaki ve veritabanýndaki çift tckimlik numarasý kontrolleri. farklý firmada ve þubde varsa uyarý ver kabul ederse devam et, ayný þirket þubede varsa uyarý ver devam etme, pasifse aktif hale getirilebilir.
 user kartlarýnda pasife çekme ve pasif kullanýcýnýn girememesi lazým
 uyruðu vs alanlarda excel aktarým düzeltmeleri yapýlacak
 reçete header yoksa ekle sil düðmeleri disable
-tek osgb arzu haným, protokol numaralarý ilerlemiyor dedi.
-yeni muayene aç dendiðinde ekrandaki personelin þirketi, soldaki aktif þirketten farklý ise geliþler tablosuna aktif þirketle kayýt açmaya çalýþtýðý için foreign key hatasý çakýyor
 yeni personelde muayene gridinin tazelenmemesi.
 
 Tek_osgb._-_drarzu (286675759) > MONTAJ ELEMANI- ÜRETÝM ELEMANI-PRESHANE ELEMAN-CNC OPERATÖRÜ-MAKÞNE OPERATÖRÜ-AÞÇI-MUTFAK ELEMANI
 Tek_osgb._-_drarzu (286675759) > GÝBÝ BÝR SÜRÜ ÇALIÞAN GRUPLARI EKLENMELÝ
+Tek_osgb._-_drarzu (673641668) > merhaba
+Tek_osgb._-_drarzu (673641668) > ümit bey bir ricam olucak
+Tek_osgb._-_drarzu (673641668) > benim firmalarýmda iki adet kolza biodizel var
+Tek_osgb._-_drarzu (673641668) > bunun birine B9
+Tek_osgb._-_drarzu (673641668) > diðerine B20
+Tek_osgb._-_drarzu (673641668) > ekleyebilirmisiniz
+Tek_osgb._-_drarzu (673641668) > b9 tehlikeli
+Tek_osgb._-_drarzu (673641668) > b20 çok tehlikeli olan firma
+Reçete ilaç eklemede üstte ilaç listesinden ilacý alt gride eklerken kutu adedi varsayýlan deðer 1 olacak.
+hizlikayitfrm excel'den personel aktarýmý için alan eþleþtirme iþlemi bir kere yapýldý ise, her excel yüklemede alan eþleþtirmeyi otomatik yapsýn.
+ana menü üstündeki þirket kombosundan þirket seçildiðinde alttaki þube otomatik güncelleniyor gibi ama excel aktarýmý þube seçilmemiþ ikazý yapýyor. galiba deðeri atamýyor. birden çok þubesi olan þirketlere geçiþte hataya sebep oluyor
+kalibre osgb çift personel silinmesi
+kalibre osgb 263 þirket koduna ait sgk sicili 34 37 36 ile biten þube pasif olacak
+otomatik excel aktarým altyapýsýna tabloyu boþalt alaný eklenecek. 0 ise boþaltmadan ekleyecek. 1 ise boþaltarak ekleyecek, null ise her seferinde soracak
+kalibre osgb'de geliþlerin çoklandýðý þikayeti var
+personel silerken personel falan firmaya kaydedilecek emin misiniz sorusu soruyor, sadece kaydederken olmalý
+firma kartlarýnda override kelimesi kaybolmuþ, hacý kadir ile aradaki whatsapp notlarýndan tarihine bakýlýp logdan incelenecek
+user kartý silinince usersettings usermenusettings tablolarýný silmiyor, silmesi lazým
+diðer personel ara seçeneði cancel seçildiðinde devam ediyor
+personel kartýnda zorunlu alan kontrolüne takýlsa bile sonraki sql komutlarý çalýþýyor
+reçete ekraný reçete þifremi deðiþtir düðmesi. form baþlýðý dþlsas asdlaiþl olmuþ
+kullanýcý kartý silerken foreign key hatasý çýkýnca ekrandan yine de siliyor
+personel kartýndaki en alttaki sil muayene sil olacak baþlýk eksik
+þube tanýmlarý, kullanýcý yetkileri gibi gridli ekranlarda dataset post olmadan çýkma problemi var
+güncellemeler otomatik uygulanýp baþarý ile tamamlanýnca uygula düðmesi sönmediði için çift çalýþma hatasý oluþabiliyor

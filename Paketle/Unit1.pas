@@ -48,6 +48,7 @@ type
     txtRev: TMemo;
     ado_sql: TADOQuery;
     Kaynak: TADOConnection;
+    btPanodanYapistir: TSpeedButton;
     procedure SpeedButton2Click(Sender: TObject);
     procedure SpeedButton1Click(Sender: TObject);
     Function  DosyaKopyala(sSrc : string;sDest : string) : integer;
@@ -67,6 +68,7 @@ type
     procedure SQL_Host_Baglan;
     procedure table1NewRecord(DataSet: TDataSet);
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
+    procedure btPanodanYapistirClick(Sender: TObject);
 
   private
     { Private declarations }
@@ -78,13 +80,13 @@ var
   frmPaket: TfrmPaket;
 
 implementation
- uses DosyadanpaketOlustur;
+ uses DosyadanpaketOlustur, clipbrd;
 
 {$R *.dfm}
 
 function TfrmPaket.SQL_Host(var server : string; var user : string ; var password : string ; var DB : string) : boolean;
-var
-  sql : string;
+//var
+//  sql : string;
 begin
 
    Kaynak.ConnectionString := serverismi('DIALIZ');
@@ -111,7 +113,7 @@ end;
 
 procedure TfrmPaket.SQL_Host_Baglan;
 var
-  sql , servername ,s , u , p , db : string;
+  servername ,s , u , p , db : string;
 begin
 
    if SQL_Host(s,u,p,db) = True
@@ -135,6 +137,7 @@ procedure TfrmPaket.table1NewRecord(DataSet: TDataSet);
 begin
   table1.FieldByName('MODUL').AsString := 'O';
   table1.FieldByName('TIPI').AsString := 'C';
+  table1.FieldByName('TarIH').AsString := FormatDateTime ('yyyymmdd', Date);
 end;
 
 Function TfrmPaket.DosyaKopyala(sSrc : string;sDest : string) : integer;
@@ -180,8 +183,8 @@ begin
 end;
 
 procedure TfrmPaket.SpeedButton1Click(Sender: TObject);
-var
-  yol : string;
+//var
+//  yol : string;
 begin
     frmDosyadanPaket.ShowModal;
 
@@ -224,9 +227,61 @@ begin
 
 end;
 
-procedure TfrmPaket.SpeedButton3Click(Sender: TObject);
+procedure TfrmPaket.btPanodanYapistirClick(Sender: TObject);
 var
-  dosya : TFileStream;
+  aSL1, aSL2 : TStringList;
+  i, iLastID, iScripts : Integer;
+begin
+  aSL1 := TStringList.Create;
+  try
+    aSL2 := TStringList.Create;
+    try
+      aSL1.Text := Clipboard.AsText;
+      if Trim (aSL1.Text) = '' then
+      begin
+        dialogs.ShowMessage('Pano Boþ.');
+        Exit;
+      end;
+      table1.Last;
+      iLastID := table1.FieldByName('ID').AsInteger;
+      iScripts := 0;
+      if not sametext (Trim (aSL1 [aSL1.Count - 1]), 'go') then aSL1.Add('GO');
+      for i := 0 to aSL1.Count -1 do
+      begin
+        //go'ya rastladým.
+        if AnsiSameText (Trim (aSL1 [i]), 'go') then
+        begin
+          //biriken scriptin baþýndaki boþ satýrlarý sil.
+          while (aSL2.Count > 0) and (TRim (aSL2 [0]) = '') do aSL2.Delete (0);
+          //biriken scriptin sonundaki boþ satýrlarý sil.
+          while (aSL2.Count > 0) and (TRim (aSL2 [aSL2.Count - 1]) = '') do aSL2.Delete (aSL2.Count - 1);
+          if Trim (aSL2.Text) <> '' then
+          begin
+            iScripts := iScripts + 1;
+            table1.Append;
+            table1.FieldByName ('ID').AsInteger := iLastID + iScripts;
+            table1.FieldByName ('REV').AsInteger := iLastID + iScripts;
+            table1.FieldByName ('SQL_CMD').AsString := aSL2.Text;
+            if Copy (Trim (aSL2 [0]), 1, 2) = '--' then
+              table1.FieldByName('ACIKLAMA').AsString := Trim (Copy (Trim (aSL2 [0]), 3, Length (Trim (aSL2 [0])) - 2));
+            table1.Post;
+            aSL2.Clear;
+          end;
+          Continue;
+        end;
+        aSL2.Add (aSL1 [i]);
+      end;
+    finally
+      aSL2.Free;
+    end;
+  finally
+    aSL1.Free;
+  end;
+end;
+
+procedure TfrmPaket.SpeedButton3Click(Sender: TObject);
+//var
+//  dosya : TFileStream;
 begin
   try
     table1.Last;
@@ -248,9 +303,6 @@ procedure TfrmPaket.IdFTP1Status(ASender: TObject; const AStatus: TIdStatus;
 begin
   Label1.Caption := AStatusText;
 end;
-
-
-
 
 procedure TfrmPaket.IdFTP1Work(ASender: TObject; AWorkMode: TWorkMode;
   AWorkCount: Int64);
@@ -282,8 +334,8 @@ begin
 end;
 
 procedure TfrmPaket.SpeedButton4Click(Sender: TObject);
-var
-  s,u,p,db : string;
+//var
+  //s,u,p,db : string;
 begin
 
 //  winexec('c:\program files\winrar\winrar c -zC:\NoktaDiyaliz\SQLBakim\Update\Paket\Komut.txt C:\NoktaDiyaliz\Update.exe',1);
@@ -303,6 +355,7 @@ begin
 
 
   SpeedButton1.Enabled := true;
+  btPanodanYapistir.Enabled := True;
 
 
 end;
@@ -311,9 +364,6 @@ procedure TfrmPaket.ComboBox1Change(Sender: TObject);
 begin
      if ComboBox1.Text <> ''
      then SpeedButton3.Enabled := True;
-
-
-
 end;
 
 end.

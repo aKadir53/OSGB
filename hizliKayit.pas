@@ -38,6 +38,7 @@ type
     miAlanEslestir: TMenuItem;
     GridList: TAdvStringGrid;
     miSoyadAyarla: TMenuItem;
+    miOtomatikAktarim: TMenuItem;
     procedure cxButtonCClick(Sender: TObject);
     procedure ExcelToGrid;
     procedure GridToPersonelKartTable;
@@ -47,14 +48,17 @@ type
   private
     { Private declarations }
     FFileName : String;
+    FAlanEslestirmeYapildi : Boolean;
   protected
     FInitialColumnHeaders : TStringList;
     FAcceptedColumnHeaders : TStringList;
     FAssignedColumnIndexes : array of Integer;
-    procedure GridAlanEslestirme;
+    procedure GridAlanEslestirme (pMsg: Boolean = True);
     function GridAtanmisSutunDegerAyarlaGetir (const aGrid: TStringGrid; const ACol, ARow : Integer):String;
     function GridBaslikAyarla (const S: String; const iNumber : Integer) : String;
     procedure GridSoyadiAyarla;
+    procedure GridCiftBaslikAyarla;
+    procedure TanimliOtomatikAktarim;
   public
     { Public declarations }
     constructor Create (Aowver: TComponent); override;
@@ -89,7 +93,7 @@ var
    v,sayfa : Variant;
 
 implementation
-  uses AnaUnit, Math;
+  uses AnaUnit, Math, NThermo;
 {$R *.dfm}
 const
   colTCKimlikNo = 1;
@@ -132,6 +136,8 @@ begin
 
   GridList.LoadFromXLS(dosya);
   FFileName := dosya;
+  if FAlanEslestirmeYapildi then GridAlanEslestirme(False);
+
 
 (*
   v := CreateOleObject('Excel.Application');
@@ -174,21 +180,24 @@ begin
 end;
 
 
-procedure TfrmHizliKayit.GridAlanEslestirme;
+procedure TfrmHizliKayit.GridAlanEslestirme (pMsg: Boolean = True);
 var
   aStringList : TStringList;
   i, j: Integer;
   sItems : String;
   aItems: array of Integer;
 begin
-  if ShowMessageSkin ('Bu iþlem, bu ekraný ilk açtýðýnýzda gördüðünüz standart þablon dýþýndaki personel listelerini aktarabilmeniz için imkân saðlar'#13#10#13#10+
-                      'Baþlýklarý eþleþen sütunlar otomatik olarak eþleþtirilecek ve geri kalaný için size eþleþtirme sorusu sorulacaktýr'#13#10#13#10+
-                      'Devam etmek istiyor musunuz ?',
-                      '', '', 'conf') <> mrYes then Exit;
+  if pMsg then
+    if ShowMessageSkin ('Bu iþlem, bu ekraný ilk açtýðýnýzda gördüðünüz standart þablon dýþýndaki personel listelerini aktarabilmeniz için imkân saðlar'#13#10#13#10+
+                        'Baþlýklarý eþleþen sütunlar otomatik olarak eþleþtirilecek ve geri kalaný için size eþleþtirme sorusu sorulacaktýr'#13#10#13#10+
+                        'Devam etmek istiyor musunuz ?',
+                        '', '', 'conf') <> mrYes then Exit;
   aStringList := TStringList.create;
   try
     for i := 0 to GridList.ColCount - 1 do
       GridList.Cells [i, 0] := GridBaslikAyarla (GridList.Cells [i, 0], i);
+    //ÜÖ 20180105 Gride yüklenen excrl dosyasýnda ayný baþlýklý sütunlar varsa farklýlaþtýr, ileride eþleþmelerde problem çýkarmasýn.
+    GridCiftBaslikAyarla;
     //ÜÖ 20171231 eþleþen sütun baþlýklarýný gridde arayýp indexlerini ata
     for i := 0 to FInitialColumnHeaders.Count - 1 do
       aStringList.Add(IntToStr(GridList.Rows [0].IndexOf(FInitialColumnHeaders [i])));
@@ -239,7 +248,9 @@ begin
       //Eþleþen baþlýklarý grid üzerinde yerine koyarak göster
       if FAssignedColumnIndexes [i] >= 0 then GridList.Cells [FAssignedColumnIndexes [i], 0] := FInitialColumnHeaders [i];
     end;
-    ShowMessageSkin('Alan Eþleþtirmesi Baþarý ile Tamamlandý', '', '', 'info');
+    FAlanEslestirmeYapildi := True;
+    if pMsg Then
+      ShowMessageSkin('Alan Eþleþtirmesi Baþarý ile Tamamlandý', '', '', 'info');
   finally
     aStringList.Free;
   end;
@@ -276,6 +287,32 @@ begin
                     [rfReplaceAll]))),
               'Baþlýksýz Sütun - ' + IntToStr (iNumber),
               Trim (StringReplace (s, #9, '', [rfReplaceAll])));
+end;
+
+procedure TfrmHizliKayit.GridCiftBaslikAyarla;
+var
+  iCol, iRepeat : Integer;
+  aSL : TStringList;
+  sTmp1, sTmp2 : String;
+begin
+  aSL := TStringList.Create;
+  try
+    for iCol := 0 to GridList.ColCount - 1 do
+    begin
+      iRepeat := 1;
+      sTmp1 := GridList.Cells [iCol, 0];
+      sTmp2 := sTmp1;
+      while aSL.IndexOf (sTmp2) >= 0 do
+      begin
+        sTmp2 := sTmp1 + IntToStr (iRepeat);
+        iRepeat := iRepeat + 1;
+      end;
+      aSL.Add(sTmp2);
+      GridList.Cells [iCol, 0] := sTmp2;
+    end;
+  finally
+    aSL.Free;
+  end;
 end;
 
 procedure TfrmHizliKayit.GridSoyadiAyarla;
@@ -326,7 +363,7 @@ procedure TfrmHizliKayit.GridToPersonelKartTable;
 var
   sql : string;
   bBasarili : Boolean;
-  iCount : Integer;
+  iThermo, iCount : Integer;
   _row_, iRowC : integer;
   Cins,Medeni,DTarih,BTarih : String;
 begin
@@ -345,75 +382,87 @@ begin
     bBasarili := False;
     iCount := 0;
     iRowC := 0;
-    datalar.ADOConnection2.BeginTrans;
+    ShowThermo(iThermo, 'Satýrlar veritabanýna yazýlýyor', 0, GridList.RowCount - 1, 0, True);
     try
-      for _row_ := 1 to GridList.RowCount - 1 do
-      begin
-        //hem adý hem TCKimlik numarasý boþ ise atlayarak sonraki satýrdan devam et.
-        if IsNull (GridAtanmisSutunDegerAyarlaGetir(GridList,colTCKimlikNo,_row_))
-          and IsNull (GridAtanmisSutunDegerAyarlaGetir(GridList,colAdi,_row_))
-          and IsNull (GridAtanmisSutunDegerAyarlaGetir(GridList,colSoyadi,_row_)) then Continue;
-        //yukarýdan geçtiyse adý veya TCKimlik dolu demektir.
-        if IsNull (GridAtanmisSutunDegerAyarlaGetir(GridList,colTCKimlikNo,_row_))
-          or IsNull (GridAtanmisSutunDegerAyarlaGetir(GridList,colAdi,_row_))
-          or IsNull (GridAtanmisSutunDegerAyarlaGetir(GridList,colSoyadi,_row_)) then
+      datalar.ADOConnection2.BeginTrans;
+      try
+        for _row_ := 1 to GridList.RowCount - 1 do
         begin
-          //transaction mesajý beklemesin önce rollback olsun sonra mesaj gelsin diye exit ile deðil raise ile yaptýk.
-          raise Exception.Create ('Adý veya Soyadý veya TC Kimlik Numarasý alaný dolu olmalýdýr.');
+          if not UpdateThermo (_row_ - 1,
+            iThermo,
+            IntToStr (_row_) + ' ' +
+            GridAtanmisSutunDegerAyarlaGetir(GridList,colTCKimlikNo,_row_) + ' ' +
+            GridAtanmisSutunDegerAyarlaGetir(GridList,colAdi,_row_) + ' ' +
+            GridAtanmisSutunDegerAyarlaGetir(GridList,colSoyadi,_row_)) then Exit;
+
+          //hem adý hem TCKimlik numarasý boþ ise atlayarak sonraki satýrdan devam et.
+          if IsNull (GridAtanmisSutunDegerAyarlaGetir(GridList,colTCKimlikNo,_row_))
+            and IsNull (GridAtanmisSutunDegerAyarlaGetir(GridList,colAdi,_row_))
+            and IsNull (GridAtanmisSutunDegerAyarlaGetir(GridList,colSoyadi,_row_)) then Continue;
+          //yukarýdan geçtiyse adý veya TCKimlik dolu demektir.
+          if IsNull (GridAtanmisSutunDegerAyarlaGetir(GridList,colTCKimlikNo,_row_))
+            or IsNull (GridAtanmisSutunDegerAyarlaGetir(GridList,colAdi,_row_))
+            or IsNull (GridAtanmisSutunDegerAyarlaGetir(GridList,colSoyadi,_row_)) then
+          begin
+            //transaction mesajý beklemesin önce rollback olsun sonra mesaj gelsin diye exit ile deðil raise ile yaptýk.
+            raise Exception.Create ('Adý veya Soyadý veya TC Kimlik Numarasý alaný dolu olmalýdýr.');
+          end;
+          ;
+          Cins := ifThen(Copy(GridAtanmisSutunDegerAyarlaGetir (GridList, colCinsiyeti,_row_),1,1) = 'B','1',
+                  ifThen(Copy(GridAtanmisSutunDegerAyarlaGetir (GridList, colCinsiyeti,_row_),1,1) = '1','1',
+                  ifThen(Copy(GridAtanmisSutunDegerAyarlaGetir (GridList, colCinsiyeti,_row_),1,1) = 'K','1','0')));
+
+          Medeni := ifThen(Copy(GridAtanmisSutunDegerAyarlaGetir (GridList, colMedeniHali,_row_),1,1) = 'B','1',
+                    ifThen(Copy(GridAtanmisSutunDegerAyarlaGetir (GridList, colMedeniHali,_row_),1,1) = '1','1','0'));
+
+          DTarih := ifThen(pos('.',GridAtanmisSutunDegerAyarlaGetir (GridList, colDogumTarihi,_row_)) > 0,
+                           NoktasizTarih(GridAtanmisSutunDegerAyarlaGetir (GridList, colDogumTarihi,_row_)),
+                           GridAtanmisSutunDegerAyarlaGetir (GridList, colDogumTarihi,_row_));
+
+          BTarih := ifThen(pos('.',GridAtanmisSutunDegerAyarlaGetir (GridList, colIseBaslama,_row_)) > 0,
+                           NoktasizTarih(GridAtanmisSutunDegerAyarlaGetir (GridList, colIseBaslama,_row_)),
+                           GridAtanmisSutunDegerAyarlaGetir (GridList, colIseBaslama,_row_));
+
+          sql := Format(_insertPersonel_,
+                        [QuotedStr(datalar.AktifSirket),
+                         QuotedStr(GridAtanmisSutunDegerAyarlaGetir (GridList, colTCKimlikNo,_row_)),
+                         QuotedStr(GridAtanmisSutunDegerAyarlaGetir (GridList, colAdi,_row_)),
+                         QuotedStr(GridAtanmisSutunDegerAyarlaGetir (GridList, colSoyadi,_row_)),
+                         QuotedStr(Cins),
+                         QuotedStr(Medeni),
+                         QuotedStr(GridAtanmisSutunDegerAyarlaGetir (GridList, colBabaAdi,_row_)),
+                         QuotedStr(GridAtanmisSutunDegerAyarlaGetir (GridList, colAnaAdi,_row_)),
+                         QuotedStr(GridAtanmisSutunDegerAyarlaGetir (GridList, ColAdres,_row_)),
+                         QuotedStr(GridAtanmisSutunDegerAyarlaGetir (GridList, ColTelefon1,_row_)),
+                         QuotedStr(GridAtanmisSutunDegerAyarlaGetir (GridList, ColTelefon2,_row_)),
+                         QuotedStr(GridAtanmisSutunDegerAyarlaGetir (GridList, ColDogumYeri,_row_)),
+                         QuotedStr(DTarih),
+                         QuotedStr(GridAtanmisSutunDegerAyarlaGetir (GridList, colUyruk,_row_)),
+                         QuotedStr(BTarih),
+                         'NULL',
+                         QuotedStr(datalar.username),
+                         QuotedStr('1'),
+                         QuotedStr(datalar.AktifSube),
+                         'NULL']);
+          datalar.queryExec(SelectAdo,sql);
+          iRowC := _row_;
+          iCount := iCount + 1;
         end;
-        ;
-        Cins := ifThen(Copy(GridAtanmisSutunDegerAyarlaGetir (GridList, colCinsiyeti,_row_),1,1) = 'B','1',
-                ifThen(Copy(GridAtanmisSutunDegerAyarlaGetir (GridList, colCinsiyeti,_row_),1,1) = '1','1',
-                ifThen(Copy(GridAtanmisSutunDegerAyarlaGetir (GridList, colCinsiyeti,_row_),1,1) = 'K','1','0')));
-
-        Medeni := ifThen(Copy(GridAtanmisSutunDegerAyarlaGetir (GridList, colMedeniHali,_row_),1,1) = 'B','1',
-                  ifThen(Copy(GridAtanmisSutunDegerAyarlaGetir (GridList, colMedeniHali,_row_),1,1) = '1','1','0'));
-
-        DTarih := ifThen(pos('.',GridAtanmisSutunDegerAyarlaGetir (GridList, colDogumTarihi,_row_)) > 0,
-                         NoktasizTarih(GridAtanmisSutunDegerAyarlaGetir (GridList, colDogumTarihi,_row_)),
-                         GridAtanmisSutunDegerAyarlaGetir (GridList, colDogumTarihi,_row_));
-
-        BTarih := ifThen(pos('.',GridAtanmisSutunDegerAyarlaGetir (GridList, colIseBaslama,_row_)) > 0,
-                         NoktasizTarih(GridAtanmisSutunDegerAyarlaGetir (GridList, colIseBaslama,_row_)),
-                         GridAtanmisSutunDegerAyarlaGetir (GridList, colIseBaslama,_row_));
-
-        sql := Format(_insertPersonel_,
-                      [QuotedStr(datalar.AktifSirket),
-                       QuotedStr(GridAtanmisSutunDegerAyarlaGetir (GridList, colTCKimlikNo,_row_)),
-                       QuotedStr(GridAtanmisSutunDegerAyarlaGetir (GridList, colAdi,_row_)),
-                       QuotedStr(GridAtanmisSutunDegerAyarlaGetir (GridList, colSoyadi,_row_)),
-                       QuotedStr(Cins),
-                       QuotedStr(Medeni),
-                       QuotedStr(GridAtanmisSutunDegerAyarlaGetir (GridList, colBabaAdi,_row_)),
-                       QuotedStr(GridAtanmisSutunDegerAyarlaGetir (GridList, colAnaAdi,_row_)),
-                       QuotedStr(GridAtanmisSutunDegerAyarlaGetir (GridList, ColAdres,_row_)),
-                       QuotedStr(GridAtanmisSutunDegerAyarlaGetir (GridList, ColTelefon1,_row_)),
-                       QuotedStr(GridAtanmisSutunDegerAyarlaGetir (GridList, ColTelefon2,_row_)),
-                       QuotedStr(GridAtanmisSutunDegerAyarlaGetir (GridList, ColDogumYeri,_row_)),
-                       QuotedStr(DTarih),
-                       QuotedStr(GridAtanmisSutunDegerAyarlaGetir (GridList, colUyruk,_row_)),
-                       QuotedStr(BTarih),
-                       'NULL',
-                       QuotedStr(datalar.username),
-                       QuotedStr('1'),
-                       QuotedStr(datalar.AktifSube),
-                       'NULL']);
-        datalar.queryExec(SelectAdo,sql);
-        iRowC := _row_;
-        iCount := iCount + 1;
+        bBasarili := True;
+      finally
+        if bBasarili then
+        begin
+          datalar.ADOConnection2.CommitTrans;
+          showmessageSkin (IntToStr (iCount) + ' adet kayýt baþarý ile aktarýldý', '', '', 'info');
+        end
+        else begin
+          datalar.ADOConnection2.rollbackTrans;
+          showmessageSkin (IntToStr (iRowC + 1) + '. satýrda hata oluþtu, aktarým iþlemi tamamlanamadý.', '', '', 'info');
+          GridList.Row := iRowC;
+        end;
       end;
-      bBasarili := True;
     finally
-      if bBasarili then
-      begin
-        datalar.ADOConnection2.CommitTrans;
-        showmessageSkin (IntToStr (iCount) + ' adet kayýt baþarý ile aktarýldý', '', '', 'info');
-      end
-      else begin
-        datalar.ADOConnection2.rollbackTrans;
-        showmessageSkin (IntToStr (iRowC + 1) + '. satýrda hata oluþtu, aktarým iþlemi tamamlanamadý.', '', '', 'info');
-        GridList.Row := iRowC;
-      end;
+      FreeThermo(iThermo);
     end;
   except on e : exception do
    begin
@@ -424,6 +473,88 @@ begin
 end;
 
 
+
+procedure TfrmHizliKayit.TanimliOtomatikAktarim;
+var
+  aQuery : TADOQuery;
+  aIDs : array of Integer;
+  sItems, sTableName : String;
+  aSL1, aSL2, aSL3 : TStringList;
+  iAktarimTanimID : Integer;
+begin
+  aQuery := TADOQuery.Create (Self);
+  try
+    aQuery.Connection := DATALAR.ADOConnection2;
+    aQuery.SQL.Text := 'Select * From DisAktarimTanim Where Otomatik = 1 order by ID';
+    aQuery.Open;
+    SetLength(aIDS, 0);
+    aSL1 := TStringList.Create;
+    try
+      sItems := '';
+      while not aQuery.Eof do
+      begin
+        SetLength (aIDs, High (aIDs) + 2);
+        aIDs [High (aIDs)] := aQuery.FieldByName ('ID').AsInteger;
+        sItems := sItems + aQuery.FieldByName ('Tanimi').AsString+#13#10;
+        aSL1.Add (aQuery.FieldByName ('HedefTabloAdi').AsString);
+        aQuery.Next;
+      end;
+      if IsNull (sItems) then
+      begin
+        ShowMessageSkin('Seçilebilecek Otomatik Aktarým Tanýmý Bulunamadý', '', '', 'info');
+        Exit;
+      end;
+      Delete (sItems, Length (sItems) - 1, 2);
+      if not CombodanSectir ('Otomatik Aktarým Seçiniz', 'Aktarým Çeþitleri', sItems, iAktarimTanimID) then Exit;
+      if iAktarimTanimID < 0 then
+      begin
+        ShowMessageSkin('Aktarým Tipi düzgün seçilmemiþ', '', '', 'info');
+        Exit;
+      end;
+      sTableName := aSL1 [iAktarimTanimID];
+      iAktarimTanimID := aIDs [iAktarimTanimID];
+      aQuery.SQL.Text :=
+        'select HedefAlanAdi, KaynakBaslik'#13#10 +
+        'from DisAktarimBaglanti'#13#10 +
+        'where AktarimTanimID = ' + IntToStr (iAktarimTanimID) + ''#13#10 +
+        'order by ID';
+      aSL2 := TStringList.Create;
+      try
+        aSL3 := TStringList.Create;
+        try
+          aSL1.Clear;
+          aQuery.Open;
+          while not aQuery.Eof do
+          begin
+            if aSL1.IndexOf (aQuery.FieldByName('HedefAlanAdi').AsString) < 0 then
+              aSL1.Add(aQuery.FieldByName('HedefAlanAdi').AsString);
+            aSL2.Add(aQuery.FieldByName('HedefAlanAdi').AsString);
+            aSL3.Add(aQuery.FieldByName('KaynakBaslik').AsString);
+            aQuery.Next;
+          end;
+          if aSL1.Count <= 0 then
+          begin
+            ShowMessageSkin('Aktarým Tipi için Alan - Baþlýk eþleþtirmesi hiç yapýlmamýþ', '', '', 'info');
+            Exit;
+          end;
+          //þimdi artýk elimizde alanlar ve karþýlýðýnda arayacaðýmýz baþlýklar var.
+          //ortalýðýn...
+
+  dialogs.showmessage ('');
+          //þ
+        finally
+
+        end;
+      finally
+
+      end;
+    finally
+      aSL1.Free;
+    end;
+  finally
+    aQuery.Free;
+  end;
+end;
 
 constructor TfrmHizliKayit.Create(Aowver: TComponent);
 begin
@@ -452,6 +583,7 @@ begin
       GridAlanEslestirme;
        end;
     5: GridSoyadiAyarla;
+    6: TanimliOtomatikAktarim;
   end;
 end;
 
@@ -489,6 +621,7 @@ begin
     FAssignedColumnIndexes [High (FAssignedColumnIndexes)] := i;
   end;
   FFileName := '';
+  FAlanEslestirmeYapildi := False;
 end;
 //isg katip excel'ini programdan aktarma
 //taným ekranlarýnda þifre kutularýný *'lamak acil
