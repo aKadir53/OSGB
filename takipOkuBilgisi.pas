@@ -277,7 +277,7 @@ begin
 
             if TMenuItem(sender).Tag = 2
             Then Begin
-                 if mrYes = ShowMessageSkin('Gruptaki Hizmetler Ýptal Edilecek Eminmisiniz ?','','','msg')
+                 if mrYes = ShowMessageSkin('Gruptaki Hizmetler Ýptal Edilecek Emin misiniz ?','','','msg')
                  Then begin
                         i := datalar.RxTahlilIslem.RecordCount;
                         if i = 0 then exit;
@@ -294,7 +294,7 @@ begin
 
             if TMenuItem(sender).Tag = 1
             Then Begin
-                 if mrYes = ShowMessageSkin('Satýrdaki Hizmet Ýptal Edilecek Eminmisiniz ?','','','msg')
+                 if mrYes = ShowMessageSkin('Satýrdaki Hizmet Ýptal Edilecek Emin misiniz ?','','','msg')
                  Then begin
                       setlength(datalar.islemSiralari,0);
                       i := 1;
@@ -393,7 +393,7 @@ begin
 
             if TMenuItem(sender).Tag = 0
             Then Begin
-                 if mrYes = ShowMessageSkin('Seans Ýptal Edilecek Eminmisiniz ?','','','msg')
+                 if mrYes = ShowMessageSkin('Seans Ýptal Edilecek Emin misiniz ?','','','msg')
                  Then begin
                       setlength(datalar.islemSiralari,0);
                       i := 1;
@@ -448,7 +448,7 @@ begin
 
             if TMenuItem(sender).Tag = 2
             Then Begin
-                 if mrYes = ShowMessageSkin('Gruptaki Hizmetler Ýptal Edilecek Eminmisiniz ?','','','msg')
+                 if mrYes = ShowMessageSkin('Gruptaki Hizmetler Ýptal Edilecek Emin misiniz ?','','','msg')
                  Then begin
                         i := datalar.RxRadIslem.RecordCount;
                         if i = 0 then exit;
@@ -465,7 +465,7 @@ begin
 
             if TMenuItem(sender).Tag = 1
             Then Begin
-                 if mrYes = ShowMessageSkin('Satýrdaki Hizmet Ýptal Edilecek Eminmisiniz ?','','','msg')
+                 if mrYes = ShowMessageSkin('Satýrdaki Hizmet Ýptal Edilecek Emin misiniz ?','','','msg')
                  Then begin
                       setlength(datalar.islemSiralari,0);
                       i := 1;
@@ -518,7 +518,7 @@ begin
 
             if TMenuItem(sender).Tag = 2
             Then Begin
-                 if mrYes = ShowMessageSkin('Gruptaki Hizmetler Ýptal Edilecek Eminmisiniz ?','','','msg')
+                 if mrYes = ShowMessageSkin('Gruptaki Hizmetler Ýptal Edilecek Emin misiniz ?','','','msg')
                  Then begin
                         i := datalar.RxYatakBilgisi.RecordCount;
                         setlength(datalar.islemSiralari,0);
@@ -575,7 +575,7 @@ begin
 
             if TMenuItem(sender).Tag = 2
             Then Begin
-                 if mrYes = ShowMessageSkin('Gruptaki Hizmetler Ýptal Edilecek Eminmisiniz ?','','','msg')
+                 if mrYes = ShowMessageSkin('Gruptaki Hizmetler Ýptal Edilecek Emin misiniz ?','','','msg')
                  Then begin
                         i := datalar.RxMalzemeBilgisi.RecordCount;
                         if i = 0 then exit;
@@ -592,7 +592,7 @@ begin
 
             if TMenuItem(sender).Tag = 1
             Then Begin
-                 if mrYes = ShowMessageSkin('Satýrdaki Hizmet Ýptal Edilecek Eminmisiniz ?','','','msg')
+                 if mrYes = ShowMessageSkin('Satýrdaki Hizmet Ýptal Edilecek Emin misiniz ?','','','msg')
                  Then begin
                       setlength(datalar.islemSiralari,0);
                       i := 1;

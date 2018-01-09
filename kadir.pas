@@ -1211,7 +1211,7 @@ end;
 function TakipMeduladanSil(TakipNo : string) : string;
 begin
 
-   if mrYes = ShowMessageSkin('Takip Ýptal Edilecek Eminmisiniz ?','','','msg')
+   if mrYes = ShowMessageSkin('Takip Ýptal Edilecek Emin misiniz ?','','','msg')
    then begin
   //       msg := TakipSil_3(TakipNo , datalar.HastaKabul);
 
@@ -1925,7 +1925,7 @@ end;
 procedure GonderimMesaj(msj, filename: string);
 begin
   if mryes = ShowMessageSkin('Hata : ' + msj,
-    'Hatalý Gönderim Mesajýný Görmek Ýstermisiniz', '', 'msg') then
+    'Hatalý Gönderim Mesajýný Görmek Ýster misiniz', '', 'msg') then
     ShellExecute(0, 'open', PChar('iexplore.exe'), PChar(filename + '.xml'),
       nil, SW_SHOWNORMAL);
 end;
