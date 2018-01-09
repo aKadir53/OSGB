@@ -159,7 +159,7 @@ var
   ado : TADOQuery;
   i , j : integer;
 begin
-   if mrYes = ShowMessageSkin('Hizmet Ýslem Numaralarý Kayýtlara Ýþlenecek Eminmisiniz ?','','','msg')
+   if mrYes = ShowMessageSkin('Hizmet Ýslem Numaralarý Kayýtlara Ýþlenecek Emin misiniz ?','','','msg')
    then begin
          if datalar.RxTahlilIslem.RecordCount = 0
          then begin
@@ -308,7 +308,7 @@ var
 begin
    if TakipNo = '' then exit;
 
-   if mrYes = ShowMessageSkin('Tüm Hizmetler Ýptal Edilecek Eminmisiniz ?','','','msg')
+   if mrYes = ShowMessageSkin('Tüm Hizmetler Ýptal Edilecek Emin misiniz ?','','','msg')
    then begin
       SetLength(datalar.islemSiralari,0);
       msg := HizmetKaydiIptal(TakipNo ,datalar.HizmetKayit);
