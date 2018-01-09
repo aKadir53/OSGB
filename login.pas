@@ -20,7 +20,7 @@ uses
   dxSkinOffice2010Blue, dxSkinOffice2010Silver, dxSkinPumpkin, dxSkinSeven,
   dxSkinSharp, dxSkinSilver, dxSkinSpringTime, dxSkinStardust, dxSkinSummer2008,
   dxSkinValentine, dxSkinXmas2008Blue, cxGroupBox, acPNG, cxImage,
-  cxDropDownEdit, cxImageComboBox;
+  cxDropDownEdit, cxImageComboBox, cxLabel;
 
 type
   TfrmLogin = class(TForm)
@@ -74,6 +74,8 @@ type
     pnlBottom: TcxGroupBox;
     Image3: TImage;
     dxLayoutControl1Item5: TdxLayoutItem;
+    dxLayoutControl2Item5: TdxLayoutItem;
+    Labelx: TcxLabel;
 
     PROCEDURE YUVARLAK(WDN:HWND;ALAN:TRECT);
     procedure FormCreate(Sender: TObject);
@@ -455,17 +457,19 @@ end;
 
 procedure TfrmLogin.btnBaglanClick(Sender: TObject);
 var
- db : string;
+ db, OSGBDesc : string;
 begin
  if txtOsgbKodu.EditingText <> ''
  Then begin
-     if datalar.MasterBaglan(txtOsgbKodu.EditingValue,db,txtServerName.Text)
+     if datalar.MasterBaglan(txtOsgbKodu.EditingValue,db, OSGBDesc,txtServerName.Text)
      Then begin
          Regyaz('OSGB_servername',Encode64(txtServerName.Text));
          if datalar.Baglan(db,txtServerName.Text)
          then begin
            Regyaz('OSGB_db_name',Encode64(db));
            txtDataBase.EditValue := db;
+           Regyaz('OSGB_description',Encode64(OSGBDesc));
+           Labelx.Caption := OSGBDesc;
            btnBaglan.Caption := 'Baðlandý';
          end;
      end;
@@ -560,6 +564,7 @@ begin
    end;
 
    txtDataBase.EditValue := Decode64(regOku('OSGB_db_name'));
+   Labelx.Caption := Decode64(regOku('OSGB_description'));
    Edit2.SetFocus;
 end;
 
