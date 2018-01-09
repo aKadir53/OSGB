@@ -93,3 +93,7 @@ nacekods-tehlikesiniflari arasýna foreign key eklendi
 uyruðu vs alanlarda excel aktarým düzeltmeleri yapýldý. Telefon alanýnýn içindeki boþluk, tire ve parantez karakterleri silinerek rakamlar birbirleri ile birleþtirildi.
 personel kartýndaki menüdeki en alttaki "sil" "muayene sil" olarak deðiþtirildi
 reçete header yoksa ekle sil düðmelerinde uyarý vermesi saðlandý. hattâ reçete iþlemlerinin tümünde reçete baþlýðý var / yok, medulaya gönderilmiþ / gönderilmemiþ kontroller eklendi.
+hizlikayitfrm excel'den personel aktarýmý için alan eþleþtirme iþlemi bir kere yapýldý ise, her excel yüklemede alan eþleþtirmeyi otomatik yapmasý eklendi.
+Reçete ilaç eklemede üstte ilaç listesinden ilacý alt gride eklerken kutu adedi varsayýlan deðer 1 olacak þekilde ayarlama yapýldý.
+login ekranýnda IP numarasý yýldýzlandý, firma kodu yýldýzlamasý kaldýrýldý, veritabaný yýldýzlý býrakýlarak firma ünvaný osgb tanýmý bilgisi label üzerinde gösterildi.
+yeni personelde muayene gridinin tazelenmemesi problemi giderildi.
