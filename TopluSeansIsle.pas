@@ -1534,7 +1534,7 @@ begin
 
 
 
-   if mrYes = ShowMessageSkin('Hizmet Ýptal Edilecek  Eminmisiniz ?','','','msg')
+   if mrYes = ShowMessageSkin('Hizmet Ýptal Edilecek  Emin misiniz ?','','','msg')
    then begin
     pnlDurum.Visible := True;
     pnlAnimator.Animate := True;
@@ -2102,7 +2102,7 @@ var
  // ado : TADOQuery;
 begin
   (*
-   if mrYEs = ShowMessageSkin('Seçili Takipler ve Hizmetler Ýptal Edilecek eminmisiniz ?','','','msg')
+   if mrYEs = ShowMessageSkin('Seçili Takipler ve Hizmetler Ýptal Edilecek emin misiniz ?','','','msg')
    Then Begin
 
    satirs := 1;

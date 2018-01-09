@@ -105,7 +105,7 @@ var
   sql : string;
   ado : TADOQuery;
 begin
-  if MrYes = ShowMessageSkin('Þablon Ýptal Ediliyor Eminmisiniz ?','','','msg')
+  if MrYes = ShowMessageSkin('Þablon Ýptal Ediliyor Emin misiniz ?','','','msg')
   Then Begin
     try
       ado := TADOQuery.Create(nil);

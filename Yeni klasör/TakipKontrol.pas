@@ -1078,7 +1078,7 @@ begin
   ado.Connection := datalar.ADOConnection2;
 
   try
-    if mrYes = ShowMessageSkin('Hizmet Ýptal Edilecek Eminmisiniz ?', '', '',
+    if mrYes = ShowMessageSkin('Hizmet Ýptal Edilecek Emin misiniz ?', '', '',
       'msg') then
     begin
 
