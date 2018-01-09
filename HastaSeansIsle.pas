@@ -528,7 +528,7 @@ begin
    setlength(datalar.islemSiralari,1);
    datalar.islemSiralari[0] :=  talep;
 
-     if mrYes = ShowMessageSkin('Hizmet Ýptal Edilecek Eminmisiniz ?','','','msg')
+     if mrYes = ShowMessageSkin('Hizmet Ýptal Edilecek Emin misiniz ?','','','msg')
      then begin
         msg := HizmetKaydiIptal(takip ,datalar.HizmetKayit);
 
@@ -823,7 +823,7 @@ begin
 
   if (talep = '') and (durum = 0)
   then begin
-          if mryes = ShowMessageSkin('Satýrý Silmek Ýstediðinizden Eminmisiniz ?','','','msg')
+          if mryes = ShowMessageSkin('Satýrý Silmek Ýstediðinizden Emin misiniz ?','','','msg')
           then begin
             try
              sql := 'delete from gelisdetay where sirano = ' + inttostr(sirano);

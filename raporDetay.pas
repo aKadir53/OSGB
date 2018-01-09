@@ -509,7 +509,7 @@ begin
        Rp := ADO_Raporlar.fieldbyname('RaporNo').AsString;
 
 
-      if mrYES = ShowMessageSkin('Raporu Meduladan Silmek Ýstediðinizden Eminmisiniz ?','','','msg')
+      if mrYES = ShowMessageSkin('Raporu Meduladan Silmek Ýstediðinizden Emin misiniz ?','','','msg')
       then
       RaporBul(Rp,
                ADO_Raporlar.fieldbyname('RaporTarihi').AsString,

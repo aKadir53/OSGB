@@ -952,7 +952,7 @@ begin
       exit;
    End;
 
-   if mryes = ShowMessageSkin('Seçili Hastalara Kart Talebinde Bulunulacak , Eminmisiniz ?','','','msg')
+   if mryes = ShowMessageSkin('Seçili Hastalara Kart Talebinde Bulunulacak , Emin misiniz ?','','','msg')
    Then Begin
      try
       datalar.ADOConnection1.Connected := true;
