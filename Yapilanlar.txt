@@ -86,3 +86,8 @@ yeni muayene aç dendiðinde ekrandaki personelin þirketi, soldaki aktif þirketten
 tek osgb arzu haným, protokol numaralarý ilerlemiyor dedi. düzeltildi
 taným ekranlarýnda þifre kutularýný *'lama
 enabled/disabled eðitim formuna da koyduk
+UZMAN veritabanýnda nace kodlarý (çok tehlikeli = 1, tehlikeli = 3, az tehlikeli = 5) * 365 nace kodlarý tablosu update edildi
+TehlikeSiniflari adlý tablo açýldý
+nacekods tablosundan ilk deðerleri dolduruldu
+nacekods-tehlikesiniflari arasýna foreign key eklendi
+uyruðu vs alanlarda excel aktarým düzeltmeleri yapýldý. Telefon alanýnýn içindeki boþluk, tire ve parantez karakterleri silinerek rakamlar birbirleri ile birleþtirildi.
