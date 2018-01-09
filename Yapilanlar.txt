@@ -91,3 +91,5 @@ TehlikeSiniflari adlý tablo açýldý
 nacekods tablosundan ilk deðerleri dolduruldu
 nacekods-tehlikesiniflari arasýna foreign key eklendi
 uyruðu vs alanlarda excel aktarým düzeltmeleri yapýldý. Telefon alanýnýn içindeki boþluk, tire ve parantez karakterleri silinerek rakamlar birbirleri ile birleþtirildi.
+personel kartýndaki menüdeki en alttaki "sil" "muayene sil" olarak deðiþtirildi
+reçete header yoksa ekle sil düðmelerinde uyarý vermesi saðlandý. hattâ reçete iþlemlerinin tümünde reçete baþlýðý var / yok, medulaya gönderilmiþ / gönderilmemiþ kontroller eklendi.
