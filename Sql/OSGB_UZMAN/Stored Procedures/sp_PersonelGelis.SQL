@@ -10,6 +10,7 @@ select dosyaNO,gelisNo,cast(BHDAT as datetime) Tarih,
    else 'Normal' end) as TEDAVITURU
 from gelisler
 where dosyaNo = @dosyaNO 
+order by BHDAT desc
 GO
 exec sp_vw_sys_upd 'P ', 'dbo', 'sp_PersonelGelis'
 GO

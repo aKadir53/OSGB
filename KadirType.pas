@@ -543,6 +543,8 @@ Const
   TagfrmFirmaBolumTetkikIstemSablon = 670;
   TagfrmFirmaBolumTanim = 680;
   TagfrmLabParametreleri = 690;
+  TagfrmLabKabul = 700;
+  TagfrmLabSonucGir = 710;
 
   ExceleGonder = 9997;
   SeansTarihiUpdate = 0;
