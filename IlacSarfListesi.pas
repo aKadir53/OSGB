@@ -400,6 +400,9 @@ begin
               Eklenenler.FieldByName('tani').AsString := ADO_ILACSARF.fieldbyname('ICD').AsString;
               Eklenenler.FieldByName('doz').AsString := ADO_ILACSARF.fieldbyname('doz').AsString;
               Eklenenler.FieldByName('adet').AsString := ADO_ILACSARF.fieldbyname('adet').AsString;
+              if StrToIntDef (Eklenenler.FieldByName('adet').AsString, -1) <= 0 then
+                Eklenenler.FieldByName('adet').AsInteger := 1;
+
            //   Eklenenler.FieldByName('tani').AsString := ADO_ILACSARF.fieldbyname('taniKodu').AsString;
 
               Eklenenler.Post;
