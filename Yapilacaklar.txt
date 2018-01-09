@@ -205,3 +205,15 @@ kullanýcý kartý silerken foreign key hatasý çýkýnca ekrandan yine de siliyor
 personel kartýndaki en alttaki sil muayene sil olacak baþlýk eksik
 þube tanýmlarý, kullanýcý yetkileri gibi gridli ekranlarda dataset post olmadan çýkma problemi var
 güncellemeler otomatik uygulanýp baþarý ile tamamlanýnca uygula düðmesi sönmediði için çift çalýþma hatasý oluþabiliyor
+müþteri tablosundaki 4 haneli kodlarýn vergi kimlik numarasý gibi bir þey 
+IP numarasý yýldýzla
+firma kodu yýldýz kaldýr
+veritabaný yýldýzlý kalsýn fakat firma ünvaný vs yazmalý aþaðýda.
+þube tanýmlama ekranýnda doktor ve iþ güvenlik uzmaný kombolarýndan deðer silinemiyor
+personel eklerken user doktorsa yeni deðil aktif default olabilir.
+isg katip exceline þube açýklamasý ve firma ünvaný birleþtirme ve ayýrmaya yarayan sütunlar eklenecek
+þirket birleþtir þube ayýr menüsü eklenebilir.
+
+nace kodlarý çok tehlikeli = 1, tehlikeli = 3, az tehlikeli = 5 * 365
+nace kodlarý tablosu update olacak
+

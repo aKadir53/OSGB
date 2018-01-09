@@ -90,7 +90,7 @@ BEGIN
 
 
 	select 
-		cast(
+		
 		'<?xml version="1.0" encoding="iso-8859-9"?>'+
 		'<ereceteDVO>'+-- xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">' +
 	    @receteBaslik + 
@@ -99,7 +99,7 @@ BEGIN
 		
 	--	isnull(@receteAck,'') +
 		'</ereceteDVO>'
-		 as xml)
+		 
 		 recete
 		 ,@tesisKodu tesisKodu,@user doktorKullanici,@sifre doktorSifre,@doktorTc doktorTc,isnull(@receteAck,'')
 

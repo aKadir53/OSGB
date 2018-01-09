@@ -85,3 +85,4 @@ reçeteden geliþler tblosuna foreign key kontrol edilip eklendi
 yeni muayene aç dendiðinde ekrandaki personelin þirketi, soldaki aktif þirketten farklý ise geliþler tablosuna aktif þirketle kayýt açmaya çalýþtýðý için foreign key hatasý çakýyor
 tek osgb arzu haným, protokol numaralarý ilerlemiyor dedi. düzeltildi
 taným ekranlarýnda þifre kutularýný *'lama
+enabled/disabled eðitim formuna da koyduk

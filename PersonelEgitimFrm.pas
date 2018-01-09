@@ -150,6 +150,7 @@ begin
   if length(datalar.ButtonEditSecimlist) > 0 then
   begin
     enabled;
+    FormInputZorunluKontrolPaint(self,$00FCDDD1);
   end;
   //if TcxButtonEditKadir(FindComponent('id')).Text = '' then exit;
   ResetDetayDataset;
@@ -287,7 +288,7 @@ begin
   Menu := PopupMenu1;
   //setDataStringC(self,'EgitimUcretiOdendi','Ödendi mi?',Kolon1,'',100, 'Evet,Hayýr');
 
-  //Disabled(self,True);
+  Disabled(self,True);
   SayfaCaption('Eðitim Bilgileri', 'Eðitime Katýlan Personeller', '', '', '');
   //_HastaBilgileriniCaptionGoster_ := True;
 end;
