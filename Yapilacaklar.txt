@@ -174,7 +174,6 @@ PERSONEL LÝSTESÝ ÝKÝ buton reçete ve muayene formu disable yapýlacak
 formlarýn enabled disabled durumlarý kontrol edilecek
 excel aktarýmýnda ekrandaki ve veritabanýndaki çift tckimlik numarasý kontrolleri. farklý firmada ve þubde varsa uyarý ver kabul ederse devam et, ayný þirket þubede varsa uyarý ver devam etme, pasifse aktif hale getirilebilir.
 user kartlarýnda pasife çekme ve pasif kullanýcýnýn girememesi lazým
-uyruðu vs alanlarda excel aktarým düzeltmeleri yapýlacak
 reçete header yoksa ekle sil düðmeleri disable
 yeni personelde muayene gridinin tazelenmemesi.
 
@@ -214,6 +213,4 @@ personel eklerken user doktorsa yeni deðil aktif default olabilir.
 isg katip exceline þube açýklamasý ve firma ünvaný birleþtirme ve ayýrmaya yarayan sütunlar eklenecek
 þirket birleþtir þube ayýr menüsü eklenebilir.
 
-nace kodlarý çok tehlikeli = 1, tehlikeli = 3, az tehlikeli = 5 * 365
-nace kodlarý tablosu update olacak
 

@@ -41,6 +41,9 @@ function REV: string;
 function TesisTuruAdi(deger: string): string;
 function ZorunluTel(Tel: string): Boolean;
 function IcmalBlok(Tel: string): integer;
+function StringKarakterSurusuTemizle (const sHamString, sTemizlenecekKarakterler: String): String;
+function AktarimTelefonNoTemizle (const sHamTelefon: String): String;
+function AktarimUyrukDuzelt (const sHamUyruk: String): String;
 
 procedure Login;
 
@@ -8643,6 +8646,31 @@ begin
   end;
   pAd := Trim (pAd);
   pSoyad := Trim (pSoyad);
+end;
+
+function StringKarakterSurusuTemizle (const sHamString, sTemizlenecekKarakterler: String): String;
+var
+  i : Integer;
+begin
+  Result := sHamString;
+  for i := 1 to Length (sTemizlenecekKarakterler) do
+    Result := StringReplace (Result, Copy (sTemizlenecekKarakterler, i, 1), '', [rfReplaceAll]);
+end;
+
+function AktarimTelefonNoTemizle (const sHamTelefon: String): String;
+begin
+  Result := StringKarakterSurusuTemizle (sHamTelefon, ' ().-');
+end;
+
+function AktarimUyrukDuzelt (const sHamUyruk: String): String;
+begin
+  Result := StringKarakterSurusuTemizle(sHamUyruk, ' .()-');
+  if AnsiSameText (Result, 'TC')
+    or AnsiSameText (Result, 'TR')
+    or AnsiSameText (Result, 'TURKIYE')
+    or AnsiSameText (Result, 'TÜRKÝYE')
+    or AnsiSameText (Result, 'TURKIYECUMHURIYETI')
+    or AnsiSameText (Result, 'TÜRKÝYECUMHURÝYETÝ') then Result := 'TR';
 end;
 
 function IsNull (const s: String): Boolean;
