@@ -174,7 +174,6 @@ PERSONEL LÝSTESÝ ÝKÝ buton reçete ve muayene formu disable yapýlacak
 formlarýn enabled disabled durumlarý kontrol edilecek
 excel aktarýmýnda ekrandaki ve veritabanýndaki çift tckimlik numarasý kontrolleri. farklý firmada ve þubde varsa uyarý ver kabul ederse devam et, ayný þirket þubede varsa uyarý ver devam etme, pasifse aktif hale getirilebilir.
 user kartlarýnda pasife çekme ve pasif kullanýcýnýn girememesi lazým
-yeni personelde muayene gridinin tazelenmemesi.
 
 Tek_osgb._-_drarzu (286675759) > MONTAJ ELEMANI- ÜRETÝM ELEMANI-PRESHANE ELEMAN-CNC OPERATÖRÜ-MAKÞNE OPERATÖRÜ-AÞÇI-MUTFAK ELEMANI
 Tek_osgb._-_drarzu (286675759) > GÝBÝ BÝR SÜRÜ ÇALIÞAN GRUPLARI EKLENMELÝ
@@ -186,8 +185,6 @@ Tek_osgb._-_drarzu (673641668) > diðerine B20
 Tek_osgb._-_drarzu (673641668) > ekleyebilirmisiniz
 Tek_osgb._-_drarzu (673641668) > b9 tehlikeli
 Tek_osgb._-_drarzu (673641668) > b20 çok tehlikeli olan firma
-Reçete ilaç eklemede üstte ilaç listesinden ilacý alt gride eklerken kutu adedi varsayýlan deðer 1 olacak.
-hizlikayitfrm excel'den personel aktarýmý için alan eþleþtirme iþlemi bir kere yapýldý ise, her excel yüklemede alan eþleþtirmeyi otomatik yapsýn.
 ana menü üstündeki þirket kombosundan þirket seçildiðinde alttaki þube otomatik güncelleniyor gibi ama excel aktarýmý þube seçilmemiþ ikazý yapýyor. galiba deðeri atamýyor. birden çok þubesi olan þirketlere geçiþte hataya sebep oluyor
 kalibre osgb çift personel silinmesi
 kalibre osgb 263 þirket koduna ait sgk sicili 34 37 36 ile biten þube pasif olacak
@@ -203,12 +200,8 @@ kullanýcý kartý silerken foreign key hatasý çýkýnca ekrandan yine de siliyor
 þube tanýmlarý, kullanýcý yetkileri gibi gridli ekranlarda dataset post olmadan çýkma problemi var
 güncellemeler otomatik uygulanýp baþarý ile tamamlanýnca uygula düðmesi sönmediði için çift çalýþma hatasý oluþabiliyor
 müþteri tablosundaki 4 haneli kodlarýn vergi kimlik numarasý gibi bir þey 
-IP numarasý yýldýzla
-firma kodu yýldýz kaldýr
-veritabaný yýldýzlý kalsýn fakat firma ünvaný vs yazmalý aþaðýda.
 þube tanýmlama ekranýnda doktor ve iþ güvenlik uzmaný kombolarýndan deðer silinemiyor
 personel eklerken user doktorsa yeni deðil aktif default olabilir.
 isg katip exceline þube açýklamasý ve firma ünvaný birleþtirme ve ayýrmaya yarayan sütunlar eklenecek
 þirket birleþtir þube ayýr menüsü eklenebilir.
-
-
+kullanýcý kartlarýnda grup yetkilerinden yeniden al gibi bir düðme yapýlmalý
