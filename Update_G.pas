@@ -109,7 +109,7 @@ var
 
 
 implementation
-uses data_modul  , Math;
+uses data_modul, Math, NThermo;
 {$R *.dfm}
 
 procedure TfrmUpdate.UpdateTip(tip : string);
@@ -310,7 +310,7 @@ end;
 procedure TfrmUpdate.btnSendClick(Sender: TObject);
 var
   sql : string;
-  i , _hata : integer;
+  i, iThermo, _hata : integer;
 begin
   datalar.ADO_SQL3.Close;
   datalar.ADO_SQL3.SQL.Clear;
@@ -327,35 +327,42 @@ begin
    exit;
   end;
   try
-    for i := 1 to gridDetay.RowCount - 2 do
-    begin
-      if gridDetay.Cells[25,i] = 'T'
-      then begin
-          try
-             sql := gridDetay.Cells[5,i];//ADO_SQL1.Fieldbyname('SQL_CMD').AsString;
-             datalar.QueryExec(datalar.ADO_SQL3,sql);
-             sql := 'update Parametreler set SLT = ' + #39 + tarihal(date()) + #39 +
-                    ',SLX = ' + datalar.Ado_Guncellemeler.fieldbyname('ID').AsString +
-                    ' where SLK = ''GT'' and SLB =''0000''';
-             datalar.QueryExec(datalar.ADO_SQL3,sql);
+    ShowThermo (iThermo, 'Güncellemeler Uygulanıyor...', 0, gridDetay.RowCount - 1, 0, True);
+    try
+      for i := 1 to gridDetay.RowCount - 2 do
+      begin
+        if not UpdateThermo (i - 1, iThermo, IntToStr (i)) then Exit;
 
-             gridDetay.Row := i;
+        if gridDetay.Cells[25,i] = 'T'
+        then begin
+            try
+               sql := gridDetay.Cells[5,i];//ADO_SQL1.Fieldbyname('SQL_CMD').AsString;
+               datalar.QueryExec(datalar.ADO_SQL3,sql);
+               sql := 'update Parametreler set SLT = ' + #39 + tarihal(date()) + #39 +
+                      ',SLX = ' + datalar.Ado_Guncellemeler.fieldbyname('ID').AsString +
+                      ' where SLK = ''GT'' and SLB =''0000''';
+               datalar.QueryExec(datalar.ADO_SQL3,sql);
 
-             txtLog.Lines.Add('OK - ' + gridDetay.Cells[2,griddetay.row] + ' Güncellemesi Yapıldı');
+               gridDetay.Row := i;
 
-             sql := 'insert into GuncellemeLog (Tarih,ACIKLAMA,ID,Sonuc) ' +
-                    ' values (' + QuotedStr(gridDetay.Cells[0,i]) + ',' +
-                                  QuotedStr(gridDetay.Cells[1,i]) + ',' +
-                                  gridDetay.Cells[2,i] + ',' +
-                                  QuotedStr('Ok') + ')';
-             datalar.QueryExec(datalar.ADO_SQL3,sql);
-          except on e : Exception do
-            begin
-              txtLOG.Lines.Add('HATA - ' + gridDetay.Cells[2,griddetay.row] + 'Güncellemesi Yapılmadı : ' + e.Message);
-              _hata := 1;
+               txtLog.Lines.Add('OK - ' + gridDetay.Cells[2,griddetay.row] + ' Güncellemesi Yapıldı');
+
+               sql := 'insert into GuncellemeLog (Tarih,ACIKLAMA,ID,Sonuc) ' +
+                      ' values (' + QuotedStr(gridDetay.Cells[0,i]) + ',' +
+                                    QuotedStr(gridDetay.Cells[1,i]) + ',' +
+                                    gridDetay.Cells[2,i] + ',' +
+                                    QuotedStr('Ok') + ')';
+               datalar.QueryExec(datalar.ADO_SQL3,sql);
+            except on e : Exception do
+              begin
+                txtLOG.Lines.Add('HATA - ' + gridDetay.Cells[2,griddetay.row] + 'Güncellemesi Yapılmadı : ' + e.Message);
+                _hata := 1;
+              end;
             end;
-          end;
+        end;
       end;
+    finally
+      FreeThermo (iThermo);
     end;
   finally
     if (datalar.Ado_Guncellemeler.RecordCount > 0) and (_hata = 1) then
