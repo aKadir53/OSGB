@@ -15,6 +15,7 @@ object frmUpdate: TfrmUpdate
   Position = poDesktopCenter
   OnActivate = FormActivate
   OnClose = FormClose
+  OnCreate = FormCreate
   OnShow = FormShow
   PixelsPerInch = 96
   TextHeight = 13
