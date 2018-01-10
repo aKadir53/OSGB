@@ -101,4 +101,11 @@ diðer personel ara seçeneði cancel seçildiðinde devam etme problemi giderildi
 þube tanýmlama ekranýnda doktor ve iþ güvenlik uzmaný kombolarýndan deðer silinememe hatasý düzeltildi.
 þirket elemaný grubunda login olurken bu þirkette çalýþma yetkiniz yok mesajý verme hatasý giderildi
 þube tanýmlarý gibi popupgridform ekranýnda çalýþan formlarda tamam seçilince dataset post, vazgeç seçilince dataset.cancel yapýlmasý saðlandý
+kullanýcý kartlarýnda grup yetkilerinden yeniden al ve kullanýcý yetkilerini sil düðmeleri eklendi
+güncellemeler otomatik uygulanýp baþarý ile tamamlanýnca uygula düðmesi sönmediði için çift çalýþma hatasý oluþabiliyordu, sönmesi saðlandý
+güncelleme formunda iþlem göstergesi eklendi
+güncelleme formunda iþlem göstergesi gözüküp kaybolunca formActivate eventi tekrar tetiklenip listeyi temizliyordu, FormActivate kodunda liste yenileme sadece form ilk açýlýnca yapýlacak þekilde ayarlandý
+otomatik excel aktarým altyapýsýna tabloyu boþalt alaný eklendi. 0 ise boþaltmadan ekleyecek. 1 ise boþaltarak ekleyecek, null ise her seferinde soracak
+otomatik excel aktarým altyapýsýna aktarým sonrasýnda çalýþtýrýlacak bir sp varsa tanýmlanabilmesi için alan eklendi
+PERSONEL LÝSTESÝ ÝKÝ buton reçete ve muayene formu disable yapýldý
 
