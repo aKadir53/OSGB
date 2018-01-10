@@ -393,6 +393,7 @@ procedure TfrmUpdate.FormActivate(Sender: TObject);
 begin
   if (_Tip_ = 'Auto') and (not FFirstActivated) Then
   Begin
+    FFirstActivated := True;
     gridDetay.Enabled := false;
     CheckBox1.Checked := True;
     btnListe.Click;
