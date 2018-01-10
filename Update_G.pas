@@ -92,8 +92,10 @@ type
     procedure cxButton3Click(Sender: TObject);
     procedure UpdateTip(tip : string);
     procedure FormActivate(Sender: TObject);
+    procedure FormCreate(Sender: TObject);
   private
     { Private declarations }
+    FFirstActivated : Boolean;
   public
     { Public declarations }
     guncellemeIslemi : string;
@@ -389,12 +391,13 @@ end;
 
 procedure TfrmUpdate.FormActivate(Sender: TObject);
 begin
-    if _Tip_ = 'Auto'
-    Then Begin
-      gridDetay.Enabled := false;
-      CheckBox1.Checked := True;
-      btnListe.Click;
-    End;
+  if (_Tip_ = 'Auto') and (not FFirstActivated) Then
+  Begin
+    gridDetay.Enabled := false;
+    CheckBox1.Checked := True;
+    btnListe.Click;
+  End;
+  FFirstActivated := True;
 end;
 
 procedure TfrmUpdate.FormClose(Sender: TObject; var Action: TCloseAction);
@@ -402,6 +405,11 @@ begin
  // Action := cafree;
  datalar.ADOConnection1.Connected := False;
 
+end;
+
+procedure TfrmUpdate.FormCreate(Sender: TObject);
+begin
+  FFirstActivated := False;
 end;
 
 procedure TfrmUpdate.gridDetayGetEditorType(Sender: TObject; ACol,
