@@ -97,3 +97,8 @@ hizlikayitfrm excel'den personel aktarýmý için alan eþleþtirme iþlemi bir kere y
 Reçete ilaç eklemede üstte ilaç listesinden ilacý alt gride eklerken kutu adedi varsayýlan deðer 1 olacak þekilde ayarlama yapýldý.
 login ekranýnda IP numarasý yýldýzlandý, firma kodu yýldýzlamasý kaldýrýldý, veritabaný yýldýzlý býrakýlarak firma ünvaný osgb tanýmý bilgisi label üzerinde gösterildi.
 yeni personelde muayene gridinin tazelenmemesi problemi giderildi.
+diðer personel ara seçeneði cancel seçildiðinde devam etme problemi giderildi
+þube tanýmlama ekranýnda doktor ve iþ güvenlik uzmaný kombolarýndan deðer silinememe hatasý düzeltildi.
+þirket elemaný grubunda login olurken bu þirkette çalýþma yetkiniz yok mesajý verme hatasý giderildi
+þube tanýmlarý gibi popupgridform ekranýnda çalýþan formlarda tamam seçilince dataset post, vazgeç seçilince dataset.cancel yapýlmasý saðlandý
+

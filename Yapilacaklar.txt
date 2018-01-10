@@ -193,14 +193,12 @@ kalibre osgb'de geliþlerin çoklandýðý þikayeti var
 personel silerken personel falan firmaya kaydedilecek emin misiniz sorusu soruyor, sadece kaydederken olmalý
 firma kartlarýnda override kelimesi kaybolmuþ, hacý kadir ile aradaki whatsapp notlarýndan tarihine bakýlýp logdan incelenecek
 user kartý silinince usersettings usermenusettings tablolarýný silmiyor, silmesi lazým
-diðer personel ara seçeneði cancel seçildiðinde devam ediyor
 personel kartýnda zorunlu alan kontrolüne takýlsa bile sonraki sql komutlarý çalýþýyor
 reçete ekraný reçete þifremi deðiþtir düðmesi. form baþlýðý dþlsas asdlaiþl olmuþ
 kullanýcý kartý silerken foreign key hatasý çýkýnca ekrandan yine de siliyor
-þube tanýmlarý, kullanýcý yetkileri gibi gridli ekranlarda dataset post olmadan çýkma problemi var
+kullanýcý yetkileri gibi gridli ekranlarda dataset post olmadan çýkma problemi var
 güncellemeler otomatik uygulanýp baþarý ile tamamlanýnca uygula düðmesi sönmediði için çift çalýþma hatasý oluþabiliyor
 müþteri tablosundaki 4 haneli kodlarýn vergi kimlik numarasý gibi bir þey 
-þube tanýmlama ekranýnda doktor ve iþ güvenlik uzmaný kombolarýndan deðer silinemiyor
 personel eklerken user doktorsa yeni deðil aktif default olabilir.
 isg katip exceline þube açýklamasý ve firma ünvaný birleþtirme ve ayýrmaya yarayan sütunlar eklenecek
 þirket birleþtir þube ayýr menüsü eklenebilir.
