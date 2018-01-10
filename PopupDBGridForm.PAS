@@ -242,6 +242,7 @@ begin
       if Columns[i] = 'subeDoktor' then
       begin
         DBgrid.Columns[i].PropertiesClassName := 'TcxImageComboBoxProperties';
+        TcxImageComboBoxProperties(DBgrid.Columns[i].Properties).ClearKey := 46;
         TcxImageComboBoxProperties(DBgrid.Columns[i].Properties).Items.Clear;
 
         datalar.Ado_Doktorlar.First;
@@ -257,6 +258,7 @@ begin
       if Columns[i] = 'IGU' then
       begin
         DBgrid.Columns[i].PropertiesClassName := 'TcxImageComboBoxProperties';
+        TcxImageComboBoxProperties(DBgrid.Columns[i].Properties).ClearKey := 46;
         TcxImageComboBoxProperties(DBgrid.Columns[i].Properties).Items.Clear;
 
         datalar.Ado_IGU.First;
