@@ -543,6 +543,7 @@ object frmHastaListe: TfrmHastaListe
       Tag = -7
       Caption = 'Re'#231'ete'
       ImageIndex = 97
+      Visible = False
       OnClick = cxButtonCClick
       Modul = 'TEDAVI KARTI'
       Islem = 'Recete'
@@ -569,6 +570,7 @@ object frmHastaListe: TfrmHastaListe
     object Epikriz1: TMenuItemModul
       Caption = #304#351'e Giri'#351' Muayene Formu'
       ImageIndex = 89
+      Visible = False
       FormId = 0
     end
     object e1: TMenuItemModul
