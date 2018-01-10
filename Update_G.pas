@@ -219,7 +219,7 @@ begin
                while deneme < 3 do
                begin
                     try
-                         txtinfo.Caption := 'Server Baðlantýsý Yapýlýyor...';
+                         txtinfo.Caption := 'Server Baðlantýsý Yapýlýyor...('+IntToStr (deneme)+')';
                          Application.ProcessMessages;
                          SQL_Host_Baglan;
                          Application.ProcessMessages;
@@ -277,9 +277,8 @@ begin
 
 
 
-    if CheckBox1.Checked
-    then
-    btnSend.Click;
+    if CheckBox1.Checked then
+      btnSendClick (btnSend);
 
 
 end;
@@ -327,55 +326,56 @@ begin
    txtLOG.Lines.Add(datetimetostr(now) + ' Güncelleme Server Sorgu Sonucu :  Güncellenecek Paket Bulunamadý...');
    exit;
   end;
+  try
+    for i := 1 to gridDetay.RowCount - 2 do
+    begin
+      if gridDetay.Cells[25,i] = 'T'
+      then begin
+          try
+             sql := gridDetay.Cells[5,i];//ADO_SQL1.Fieldbyname('SQL_CMD').AsString;
+             datalar.QueryExec(datalar.ADO_SQL3,sql);
+             sql := 'update Parametreler set SLT = ' + #39 + tarihal(date()) + #39 +
+                    ',SLX = ' + datalar.Ado_Guncellemeler.fieldbyname('ID').AsString +
+                    ' where SLK = ''GT'' and SLB =''0000''';
+             datalar.QueryExec(datalar.ADO_SQL3,sql);
 
-  for i := 1 to gridDetay.RowCount - 2 do
-  begin
-     if gridDetay.Cells[25,i] = 'T'
-     then begin
-         try
-            sql := gridDetay.Cells[5,i];//ADO_SQL1.Fieldbyname('SQL_CMD').AsString;
-            datalar.QueryExec(datalar.ADO_SQL3,sql);
-            sql := 'update Parametreler set SLT = ' + #39 + tarihal(date()) + #39 +
-                   ',SLX = ' + datalar.Ado_Guncellemeler.fieldbyname('ID').AsString +
-                   ' where SLK = ''GT'' and SLB =''0000''';
-            datalar.QueryExec(datalar.ADO_SQL3,sql);
+             gridDetay.Row := i;
 
-            gridDetay.Row := i;
+             txtLog.Lines.Add('OK - ' + gridDetay.Cells[2,griddetay.row] + ' Güncellemesi Yapýldý');
 
-            txtLog.Lines.Add('OK - ' + gridDetay.Cells[2,griddetay.row] + ' Güncellemesi Yapýldý');
-
-            sql := 'insert into GuncellemeLog (Tarih,ACIKLAMA,ID,Sonuc) ' +
-                   ' values (' + QuotedStr(gridDetay.Cells[0,i]) + ',' +
-                                 QuotedStr(gridDetay.Cells[1,i]) + ',' +
-                                 gridDetay.Cells[2,i] + ',' +
-                                 QuotedStr('Ok') + ')';
-            datalar.QueryExec(datalar.ADO_SQL3,sql);
-         except on e : Exception do
-           begin
-             txtLOG.Lines.Add('HATA - ' + gridDetay.Cells[2,griddetay.row] + 'Güncellemesi Yapýlmadý : ' + e.Message);
-             _hata := 1;
-           end;
-         end;
-     end;
-  end;
-
-  if (datalar.Ado_Guncellemeler.RecordCount > 0) and (_hata = 1) then
-  begin
-    txtLOG.Lines.Add('Güncellenemeyen Paket Var , Tüm Ýþlemler Geri Alýndý');
-    datalar.ADOConnection2.RollbackTrans;
-    guncellemeIslemi := 'No';
-    ShowMessageSkin('Hata','','','info');
-   (*
-    if _Tip_ = 'Auto'
-    then
-     cxButton1.Click;  *)
-
-  end else
-  begin
-    datalar.ADOConnection2.CommitTrans;
-    txtLOG.Lines.Add('Database Güncelleme Baþarýyla Yapýldý');
-    ShowMessageSkin('Database Güncelleme Baþarýyla Yapýldý','Veritabanýnýz Güncel','Güncelleme Bilgilerini Okuyup Kapatýnýz , Programýnýz Devam Edecektir... ','info');
-    guncellemeIslemi := 'Yes';
+             sql := 'insert into GuncellemeLog (Tarih,ACIKLAMA,ID,Sonuc) ' +
+                    ' values (' + QuotedStr(gridDetay.Cells[0,i]) + ',' +
+                                  QuotedStr(gridDetay.Cells[1,i]) + ',' +
+                                  gridDetay.Cells[2,i] + ',' +
+                                  QuotedStr('Ok') + ')';
+             datalar.QueryExec(datalar.ADO_SQL3,sql);
+          except on e : Exception do
+            begin
+              txtLOG.Lines.Add('HATA - ' + gridDetay.Cells[2,griddetay.row] + 'Güncellemesi Yapýlmadý : ' + e.Message);
+              _hata := 1;
+            end;
+          end;
+      end;
+    end;
+  finally
+    if (datalar.Ado_Guncellemeler.RecordCount > 0) and (_hata = 1) then
+    begin
+      datalar.ADOConnection2.RollbackTrans;
+      txtLOG.Lines.Add('Güncellenemeyen Paket Var , Tüm Ýþlemler Geri Alýndý');
+      guncellemeIslemi := 'No';
+      ShowMessageSkin('Hata','','','info');
+     (*
+      if _Tip_ = 'Auto'
+      then
+       cxButton1.Click;  *)
+    end else
+    begin
+      datalar.ADOConnection2.CommitTrans;
+      txtLOG.Lines.Add('Database Güncelleme Baþarýyla Yapýldý');
+      ShowMessageSkin('Database Güncelleme Baþarýyla Yapýldý','Veritabanýnýz Güncel','Güncelleme Bilgilerini Okuyup Kapatýnýz , Programýnýz Devam Edecektir... ','info');
+      guncellemeIslemi := 'Yes';
+      btnSend.Enabled := False;
+    end;
   end;
 
 end;
