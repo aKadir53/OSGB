@@ -15,6 +15,7 @@ object frmPopupDBGridForm: TfrmPopupDBGridForm
   OldCreateOrder = False
   Position = poDesktopCenter
   OnActivate = FormActivate
+  OnCloseQuery = FormCloseQuery
   OnCreate = FormCreate
   OnShow = FormShow
   PixelsPerInch = 96
@@ -323,6 +324,7 @@ object frmPopupDBGridForm: TfrmPopupDBGridForm
       Left = 2
       Top = -2
       Align = alTop
+      Properties.ClearKey = 46
       Properties.Items = <>
       Properties.OnChange = txtTablePropertiesChange
       TabOrder = 1
