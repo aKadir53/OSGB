@@ -80,7 +80,7 @@ type
     procedure cxTextEditBKeyDown(Sender: TObject; var Key: Word;
       Shift: TShiftState);
     procedure cxKaydetClick(Sender: TObject);
-    procedure IslemveMenuGorunumSetEkle(Tip : userGroup);
+    function IslemveMenuGorunumSetEkle(Tip : userGroup): boolean;
     procedure formlarClick(Sender: TObject);
     procedure userSkinPropertiesChange(Sender: TObject);
     procedure SayfalarPageChanging(Sender: TObject; NewPage: TcxTabSheet;
@@ -95,6 +95,8 @@ type
 
   private
     { Private declarations }
+  protected
+    procedure YetkiAyarButtonsClick(Sender: TObject);
   public
     { Public declarations }
      function Init(Sender: TObject) : Boolean; override;
@@ -352,8 +354,8 @@ begin
   pnlUserGrup.Align := alClient;
 //  setDataStringKontrol(self,pnlUserGrup,'pnlUserGrup','',sayfa2_kolon1,'',350,350);
 
-
-
+  addButton(self,nil,'btnYetkileriSil','','Yetkileri Sil',Kolon1,'gr1',120,YetkiAyarButtonsClick);
+  addButton(self,nil,'btnYetkileriGruptanAl','','Yetkileri Gruptan Getir',Kolon1,'gr1',120,YetkiAyarButtonsClick);
 
   UserSettings.Filtered := True;
   User_Menu_Settings.Filtered := True;
@@ -403,11 +405,81 @@ begin
   AnaForm.dxSkinController1.SkinName := userSkin.EditingValue;
 end;
 
-procedure TfrmUsers.IslemveMenuGorunumSetEkle(Tip : userGroup);
+procedure TfrmUsers.YetkiAyarButtonsClick(Sender: TObject);
+var
+  iTip : Integer;
+  bBasari : Boolean;
+  xQuery : TADOQuery;
+  sKullanici : String;
+begin
+  iTip := -1;
+  sKullanici := TcxButtonEditKadir (FindComponent('Kullanici')).Text;
+  if IsNull (sKullanici) then
+  begin
+    ShowMessageSkin('Kullanýcý seçmeden bu iþlem kullanýlamaz', '', '', 'info');
+    Exit;
+  end;
+  if TcxButtonKadir(sender).ButtonName = 'btnYetkileriSil' then
+  begin
+    if ShowMessageSkin (
+        'Bu iþlem, Kullanýcý kartýna baðlý menü ve iþlem yetki tanýmlarýný silecektir.'#13#10+
+        'Kullanýcý yetki tanýmlarý silinen kullanýcý, yetkileri baðlý olduðu gruptan alýr'#13#10#13#10 +
+        'Devam etmek istiyor musunuz ?',
+        '', '', 'conf') <> mrYes then Exit;
+    iTip := 1;
+  end
+  else if TcxButtonKadir(sender).ButtonName = 'btnYetkileriGruptanAl' then
+  begin
+    if ShowMessageSkin (
+        'Bu iþlem, Kullanýcý kartýna baðlý menü ve iþlem yetki tanýmlarýný silecek ve grup yetkilerinden yeniden dolduracaktýr.'#13#10+
+        'Kullanýcýnýn baðlý olduðu grubunu deðiþtirdiðinizde veya gruptan bir yetki kaldýrdýðýnýzda bu iþlemi yapmanýzý tavsiye ederiz'#13#10#13#10 +
+        'Devam etmek istiyor musunuz ?',
+        '', '', 'conf') <> mrYes then Exit;
+    iTip := 2;
+  end;
+
+  if iTip <= 0 then Exit;
+  bBasari := False;
+  DATALAR.ADOConnection2.BeginTrans;
+  try
+    xQuery := TADOQuery.Create (Self);
+    try
+      xQuery.Connection := DATALAR.ADOConnection2;
+      if not DATALAR.QueryExec(xQuery, 'delete from UserMenuSettings where Kullanici = ' + QuotedStr(sKullanici)) then Exit;
+      if not DATALAR.QueryExec(xQuery, 'delete from UserSettings where Kullanici = ' + QuotedStr(sKullanici)) then Exit;
+      if iTip = 2 then
+        if not IslemveMenuGorunumSetEkle (ugUser) then Exit
+        else
+      else begin
+        User_Menu_Settings.Active := false;
+        User_Menu_Settings.Active := True;
+        UserSettings.Active := false;
+        UserSettings.Active := true;
+      end;
+      bBasari := True;
+    finally
+      xQuery.Free;
+    end;
+  finally
+    if bBasari then
+    begin
+      DATALAR.ADOConnection2.CommitTrans;
+      ShowMessageSkin('Ýþlem Tamamlandý', '', '', 'info');
+    end
+    else begin
+      DATALAR.ADOConnection2.RollbackTrans;
+      ShowMessageSkin('Hata Oluþtu', '', '', 'info');
+    end;
+  end;
+
+end;
+
+function TfrmUsers.IslemveMenuGorunumSetEkle(Tip : userGroup) : Boolean;
 var
   ado : TADOQuery;
   sql,kullanici,sqlUserGroup,sqlUserGroupMenu : string;
 begin
+  Result := False;
   try
     ado := TADOQuery.Create(nil);
     try
@@ -445,7 +517,7 @@ begin
               'WHERE U.Modul IS null ';
 
       datalar.QueryExec(ado,sql);
-
+      Result := True;
 
       User_Menu_Settings.Active := false;
       User_Menu_Settings.Active := True;
