@@ -367,7 +367,7 @@ var
   _row_, iRowC : integer;
   Cins,Medeni,DTarih,BTarih : String;
   ado1 : TADOQuery;
-  aModalResult : TModalResult;
+  //aModalResult : TModalResult;
 begin
   try
     if showmessageskin (
@@ -655,7 +655,5 @@ begin
   FAlanEslestirmeYapildi := False;
 end;
 //isg katip excel'ini programdan aktarma
-//taným ekranlarýnda þifre kutularýný *'lamak acil
-//otomatik excel aktarým altyapýsýna tabloyu boþalt alaný eklenecek. 0 ise boþaltmadan ekleyecek. 1 ise boþaltarak ekleyecek, null ise her seferinde soracak
 
 end.
