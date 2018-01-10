@@ -347,8 +347,10 @@ begin
         begin
            if trim(login.FieldValues['password']) = edit2.Text
            then begin
-             if (login.FieldValues['grup'] <> 10)
-               or (DATALAR.AktifSirket = trim(login.FieldValues['Sirketkodu'])) then begin
+             //ÜÖ20180110 Þirket giriþi / seçimi içeri taþýndýðý için burada problem çýkarýyordu
+             {if (login.FieldValues['grup'] <> 10)
+               or (DATALAR.AktifSirket = trim(login.FieldValues['Sirketkodu'])) then{}
+             begin
 
                datalar.username := edit1.Text;
                DATALAR.usersifre := edit2.Text;
@@ -385,9 +387,9 @@ begin
 
                close;
                exit;
-             end else begin
+             end {else begin
                showMessageSkin('Bu þirkette çalýþma yetkiniz yok','','','info');
-             end;
+             end{};
            end else begin
            ShowMessageSkin('Þifre Hatalý','','','info');
            end;
