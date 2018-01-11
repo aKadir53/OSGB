@@ -281,128 +281,125 @@ end;
 
 procedure TfrmLogin.Image1Click(Sender: TObject);
 begin
+  try
     try
-       try
-        Datalar.ADOConnection2.Connected := false;
-        Datalar.Baglan();
+      Datalar.ADOConnection2.Connected := false;
+      Datalar.Baglan();
 
-       (*
-        if txtDonemler.Text = ''
-        then begin
-          ShowMessageSkin('Þirket Seçmeden Devam Edemezsiniz','','','info');
-          exit;
-        end;
+      (*
+      if txtDonemler.Text = ''
+      then begin
+        ShowMessageSkin('Þirket Seçmeden Devam Edemezsiniz','','','info');
+        exit;
+      end;
 
-        if IsNull (txtSirket.Text) then
-        begin
-          ShowMessageSkin('Þirket Seçmeden Devam Edemezsiniz','','','info');
-          exit;
-        end;
-         *)
-        datalar.ProgTarih := FormattedTarih(tarihal(date()));
-        datalar.AktifSirket := txtDonemler.Text;
+      if IsNull (txtSirket.Text) then
+      begin
+        ShowMessageSkin('Þirket Seçmeden Devam Edemezsiniz','','','info');
+        exit;
+      end;
+       *)
+      datalar.ProgTarih := FormattedTarih(tarihal(date()));
+      datalar.AktifSirket := txtDonemler.Text;
 
-        (*
-         if InternetVarmi
-         Then Begin
-              // internet serverdan Tarihi alýyor
-              try
+      (*
+       if InternetVarmi
+       Then Begin
+            // internet serverdan Tarihi alýyor
+            try
 
-                  txtip.Caption := 'Lisans Okunuyor...';
+                txtip.Caption := 'Lisans Okunuyor...';
 
-                    datalar.ProgTarih := FormattedTarih(tarihal(date()));
+                  datalar.ProgTarih := FormattedTarih(tarihal(date()));
 
-                   try
-                    ado := TADOQuery.Create(nil);
-                    ado.Connection := datalar.ADOConnection2;
-                    sql := 'exec sp_dbcmptlevel DIALIZ,90';
-                    datalar.QueryExec(ado,sql);
-                    ado.Free;
-                   except
-                   end;
+                 try
+                  ado := TADOQuery.Create(nil);
+                  ado.Connection := datalar.ADOConnection2;
+                  sql := 'exec sp_dbcmptlevel DIALIZ,90';
+                  datalar.QueryExec(ado,sql);
+                  ado.Free;
+                 except
+                 end;
 
 
-              except on e : Exception do
-                begin
-                  ShowMessageSkin('Hata : ' + e.Message,'','','info');
-                  datalar.ProgTarih := '';
-                end;
-
+            except on e : Exception do
+              begin
+                ShowMessageSkin('Hata : ' + e.Message,'','','info');
+                datalar.ProgTarih := '';
               end;
-             // internet serverdan Tarihi alýyor
-        // HGBal;
-        *
-         End
-         Else
-         datalar.ProgTarih := '';    *)
-       except on e : Exception do
-           begin
-             ShowMessageSkin('Hata : ' + e.Message,'','','info');
-           end;
-       end;
 
-        login.Active := true;
+            end;
+           // internet serverdan Tarihi alýyor
+      // HGBal;
+      *
+       End
+       Else
+       datalar.ProgTarih := '';    *)
+    except on e : Exception do
+     begin
+       ShowMessageSkin('Hata : ' + e.Message,'','','info');
+     end;
+    end;
 
-        if login.Locate('Kullanici',edit1.Text,[]) = true then
-        begin
-           if trim(login.FieldValues['password']) = edit2.Text
-           then begin
-             //ÜÖ20180110 Þirket giriþi / seçimi içeri taþýndýðý için burada problem çýkarýyordu
-             {if (login.FieldValues['grup'] <> 10)
-               or (DATALAR.AktifSirket = trim(login.FieldValues['Sirketkodu'])) then{}
-             begin
+    login.Active := true;
 
-               datalar.username := edit1.Text;
-               DATALAR.usersifre := edit2.Text;
-               regyazLastLogin;
-               log := true;
-               datalar.loginLog := True;
-               //SUTKODU;
-               datalar.doktorKodu := login.FieldByName('doktor').AsString;
-               datalar.sirketKodu := login.FieldByName('SirketKodu').AsString;
-               datalar.IGU := login.FieldByName('IGU').AsString;
+    if not login.Locate('Kullanici',edit1.Text,[]) then
+    begin
+      ShowMessageSkin('Kullanýcý Adý Hatalý','','','info');
+      Exit;
+    end;
+    if IsNull (trim(login.FieldValues['password'])) then
+    begin
+      ShowMessageSkin('Kullanýcý Adý Kullanýma Kapalý','','','info');
+      Exit;
+    end;
+    if trim(login.FieldValues['password']) <> edit2.Text then
+    begin
+      ShowMessageSkin('Þifre Hatalý','','','info');
+      Exit;
+    end;
 
-               AnaForm.dxSkinController1.SkinName := login.FieldByName('userSkin').AsString;
-               FormatSettings.DateSeparator := '.';
-               LoginSayfalar.ActivePageIndex := 2;
-               Application.ProcessMessages;
-               datalar.login;
-               datalar.ReceteKullanimYollari.active := True;
-               datalar.Ado_Doktorlar.Active := True;
-               datalar.Ado_IGU.Active := True;
-               datalar.KontrolZorunlu.Active := True;
+    datalar.username := edit1.Text;
+    DATALAR.usersifre := edit2.Text;
+    regyazLastLogin;
+    log := true;
+    datalar.loginLog := True;
+    //SUTKODU;
+    datalar.doktorKodu := login.FieldByName('doktor').AsString;
+    datalar.sirketKodu := login.FieldByName('SirketKodu').AsString;
+    datalar.IGU := login.FieldByName('IGU').AsString;
 
-               WanIp(datalar.WanIPURL);
-               datalar.LoginInOut.Kullanici := datalar.username;
-               datalar.LoginInOut.Login := lgnIn;
-               datalar.LoginInOut.Execute;
+    AnaForm.dxSkinController1.SkinName := login.FieldByName('userSkin').AsString;
+    FormatSettings.DateSeparator := '.';
+    LoginSayfalar.ActivePageIndex := 2;
+    Application.ProcessMessages;
+    datalar.login;
+    datalar.ReceteKullanimYollari.active := True;
+    datalar.Ado_Doktorlar.Active := True;
+    datalar.Ado_IGU.Active := True;
+    datalar.KontrolZorunlu.Active := True;
 
-               Hide;
-             (*
-                if LocalIP(IPAdres) then
-                txtip.Caption := IpAdres
-                else
-                txtip.Caption := '';
-               *)
+    WanIp(datalar.WanIPURL);
+    datalar.LoginInOut.Kullanici := datalar.username;
+    datalar.LoginInOut.Login := lgnIn;
+    datalar.LoginInOut.Execute;
 
-               close;
-               exit;
-             end {else begin
-               showMessageSkin('Bu þirkette çalýþma yetkiniz yok','','','info');
-             end{};
-           end else begin
-           ShowMessageSkin('Þifre Hatalý','','','info');
-           end;
-        end else begin
-            ShowMessageSkin('Kullanýcý Adý Hatalý','','','info');
-        end;
+    Hide;
+    (*
+       if LocalIP(IPAdres) then
+       txtip.Caption := IpAdres
+       else
+       txtip.Caption := '';
+      *)
 
-        except on e:exception do
-           begin
-             showmessageSkin('Hata : ' + e.Message,'','','info');
-           end;
-        end;
+    close;
+    exit;
 
+  except on e:exception do
+     begin
+       showmessageSkin('Hata : ' + e.Message,'','','info');
+     end;
+  end;
 end;
 
 procedure TfrmLogin.Edit2KeyDown(Sender: TObject; var Key: Word;
