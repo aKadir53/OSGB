@@ -8,16 +8,16 @@ ALTER PROCEDURE [dbo].[sp_GelisKaydet]
 @SERVIS varchar(4),
 @TEDAVITURU varchar(1),
 @Kullanici varchar(20),
-@sirketKod varchar(6)
+@sirketKod varchar(6),
+@PN varchar(10) = ''
 
 AS
 begin
-  declare @PN varchar(50)
-  set @PN = ''
+
 
   set @gelisno = isnull( (select max(isnull(gelisno,0))+1  from Gelisler where dosyaNo = @dosyaNo),1)
 
-  set @PN = dbo.ProtokolUret (@dosyaNo,@gelisno)
+ -- set @PN = dbo.ProtokolUret (@dosyaNo,@gelisno)
 
   IF @doktor = ''
     select @doktor = Doktor from Users where Kullanici = @Kullanici
