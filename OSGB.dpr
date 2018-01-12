@@ -53,7 +53,8 @@ uses
   SahaSaglikGozetim in 'SahaSaglikGozetim.pas' {frmSahaSaglikGozetim},
   labParametreleri in 'labParametreleri.pas' {frmLabParams},
   labaratuvarKabul in 'labaratuvarKabul.pas' {frmLabaratuvarKabul},
-  LabSonucGir in 'LabSonucGir.pas' {frmLabSonucGir};
+  LabSonucGir in 'LabSonucGir.pas' {frmLabSonucGir},
+  HastaListe in 'HastaListe.pas' {frmHastaListe};
 
 // KadirMedula3 in '..\..\medula3wsdl\KadirMedula3.pas';
 

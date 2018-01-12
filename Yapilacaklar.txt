@@ -151,32 +151,11 @@ Mobil uygulama Þirket seçim ekraný en alt satýr baþlat menüsü altýnda kalýyor.
 
 Doktor yetkileri kopyaladýk uzman'dan fakat yetkisiz çýktý.
 
-Personel aktarýrken þube seçili deðilse hata.
-
-Firma logo ekleyince þirket kodu null olamaz hatasý veriyor veritabaný
-
-E-imzasýz reçete gönderme özelliði açýlacak.
-
-Osgb doktoru kendine baðlý olmayan firma personelinin tamamýný görsün diyor Zafer Bey. Osgb polikliniði için lazým.
-
-doktorlar için personelim olmayan personel arama gibi birþey ekleyebiliriz
-
-Personel kartýnda bazý bilgiler boþ ise yeni muayene açarken hata veriyor.
-
-muayene kartýnda doktor seçimi gerekebilir.
-
-Burada karýþmasýn iki farklý hata var. Biri giren User Admin gibi doktor olmayan bir User ise geliþ tablosu doktor alanýna null atmaya çalýþýp hata veriyor. Diðer hata null olestr hatasý. Bu personel kartýnda bazý bilgiler boþ ise her durumda çýkýyor.
 muayene giriþi zorunlu yapýlabilir, zorunlu olup olmamasý osgb'nin program ayarlarýndan seçebileceði bir hale getirilebilir mi.
 
 hastalarýn mevcut saðlýk, tahlil vb bilgileri, önceden yapýlmýþ iþe giriþ muayene formlarý (ek-2) sisteme aktarýlabilir mi ?
 admin þifreleri deðiþtir
-PERSONEL LÝSTESÝ ÝKÝ buton reçete ve muayene formu disable yapýlacak
 formlarýn enabled disabled durumlarý kontrol edilecek
-excel aktarýmýnda ekrandaki ve veritabanýndaki çift tckimlik numarasý kontrolleri. farklý firmada ve þubde varsa uyarý ver kabul ederse devam et, ayný þirket þubede varsa uyarý ver devam etme, pasifse aktif hale getirilebilir.
-user kartlarýnda pasife çekme ve pasif kullanýcýnýn girememesi lazým
-uyruðu vs alanlarda excel aktarým düzeltmeleri yapýlacak
-reçete header yoksa ekle sil düðmeleri disable
-yeni personelde muayene gridinin tazelenmemesi.
 
 Tek_osgb._-_drarzu (286675759) > MONTAJ ELEMANI- ÜRETÝM ELEMANI-PRESHANE ELEMAN-CNC OPERATÖRÜ-MAKÞNE OPERATÖRÜ-AÞÇI-MUTFAK ELEMANI
 Tek_osgb._-_drarzu (286675759) > GÝBÝ BÝR SÜRÜ ÇALIÞAN GRUPLARI EKLENMELÝ
@@ -188,20 +167,19 @@ Tek_osgb._-_drarzu (673641668) > diðerine B20
 Tek_osgb._-_drarzu (673641668) > ekleyebilirmisiniz
 Tek_osgb._-_drarzu (673641668) > b9 tehlikeli
 Tek_osgb._-_drarzu (673641668) > b20 çok tehlikeli olan firma
-Reçete ilaç eklemede üstte ilaç listesinden ilacý alt gride eklerken kutu adedi varsayýlan deðer 1 olacak.
-hizlikayitfrm excel'den personel aktarýmý için alan eþleþtirme iþlemi bir kere yapýldý ise, her excel yüklemede alan eþleþtirmeyi otomatik yapsýn.
 ana menü üstündeki þirket kombosundan þirket seçildiðinde alttaki þube otomatik güncelleniyor gibi ama excel aktarýmý þube seçilmemiþ ikazý yapýyor. galiba deðeri atamýyor. birden çok þubesi olan þirketlere geçiþte hataya sebep oluyor
 kalibre osgb çift personel silinmesi
 kalibre osgb 263 þirket koduna ait sgk sicili 34 37 36 ile biten þube pasif olacak
-otomatik excel aktarým altyapýsýna tabloyu boþalt alaný eklenecek. 0 ise boþaltmadan ekleyecek. 1 ise boþaltarak ekleyecek, null ise her seferinde soracak
 kalibre osgb'de geliþlerin çoklandýðý þikayeti var
 personel silerken personel falan firmaya kaydedilecek emin misiniz sorusu soruyor, sadece kaydederken olmalý
 firma kartlarýnda override kelimesi kaybolmuþ, hacý kadir ile aradaki whatsapp notlarýndan tarihine bakýlýp logdan incelenecek
 user kartý silinince usersettings usermenusettings tablolarýný silmiyor, silmesi lazým
-diðer personel ara seçeneði cancel seçildiðinde devam ediyor
 personel kartýnda zorunlu alan kontrolüne takýlsa bile sonraki sql komutlarý çalýþýyor
 reçete ekraný reçete þifremi deðiþtir düðmesi. form baþlýðý dþlsas asdlaiþl olmuþ
 kullanýcý kartý silerken foreign key hatasý çýkýnca ekrandan yine de siliyor
-personel kartýndaki en alttaki sil muayene sil olacak baþlýk eksik
-þube tanýmlarý, kullanýcý yetkileri gibi gridli ekranlarda dataset post olmadan çýkma problemi var
-güncellemeler otomatik uygulanýp baþarý ile tamamlanýnca uygula düðmesi sönmediði için çift çalýþma hatasý oluþabiliyor
+kullanýcý yetkileri gibi gridli ekranlarda dataset post olmadan çýkma problemi var
+müþteri tablosundaki 4 haneli kodlarýn vergi kimlik numarasý gibi bir þey 
+personel eklerken user doktorsa yeni deðil aktif default olabilir.
+isg katip exceline þube açýklamasý ve firma ünvaný birleþtirme ve ayýrmaya yarayan sütunlar eklenecek
+þirket birleþtir þube ayýr menüsü eklenebilir.
+userGroups gridinden grup silerken beforeDelete'de usergroupsettings ve usergroupmenusettings tablolarýndan data siliyor, fakat users'ta o grupta bir kullanýcý varsa foreign key çakýyor. yetki tanýmlarý silinmiþ olarak kalýyor

@@ -462,7 +462,7 @@ type
     procedure LiosBeforeExecute(const MethodName: string; SOAPRequest: TStream);
     procedure LiosAfterExecute(const MethodName: string; SOAPResponse: TStream);
     function Baglan(db : string = '' ; Server : string = ''; username : String = '') : Boolean;
-    function MasterBaglan(MasterKod : string ; var DB : string ; Server : string = '') : boolean;
+    function MasterBaglan(MasterKod : string ; var DB, OSGBDesc : string ; Server : string = '') : boolean;
     procedure ADOConnection2WillExecute(Connection: TADOConnection;
       var CommandText: WideString; var CursorType: TCursorType;
       var LockType: TADOLockType; var CommandType: TCommandType;
@@ -552,7 +552,7 @@ uses AnaUnit,kadir;
 
 {$R *.dfm}
 
-function TDatalar.MasterBaglan(MasterKod : string ; var DB : string ; Server : string = '') : Boolean;
+function TDatalar.MasterBaglan(MasterKod : string ; var DB, OSGBDesc : string ; Server : string = '') : Boolean;
 var
   ado : TADOQuery;
 begin
@@ -567,10 +567,11 @@ begin
     ado := TADOQuery.Create(nil);
     try
       ado.Connection := Master;
-      QuerySelect(ado,'select db from OSGB_TNM where OSGB_KOD = ' + QuotedStr(MasterKod));
+      QuerySelect(ado,'select db, Tanimi from OSGB_TNM where OSGB_KOD = ' + QuotedStr(MasterKod));
       if not ado.Eof
       then Begin
         DB := ado.Fields[0].AsString;
+        OSGBDesc := ado.Fields[1].AsString;
       End;
       Result := True;
     finally

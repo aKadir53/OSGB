@@ -184,7 +184,7 @@ var
   sql : string;
 begin
 
-    if MrYes = ShowMessageSkin('Rapor Bilgisi Silinecek','Eminmisiniz?','','msg')
+    if MrYes = ShowMessageSkin('Rapor Bilgisi Silinecek','Emin misiniz?','','msg')
     Then Begin
          sql := 'delete from Raporlar1 where raporKodu = ' + QuotedStr(ADO_SQL1.fieldbyname('raporKodu').AsString);
          datalar.ADO_SQL.close;

@@ -20,7 +20,7 @@ uses
   dxSkinOffice2010Blue, dxSkinOffice2010Silver, dxSkinPumpkin, dxSkinSeven,
   dxSkinSharp, dxSkinSilver, dxSkinSpringTime, dxSkinStardust, dxSkinSummer2008,
   dxSkinValentine, dxSkinXmas2008Blue, cxGroupBox, acPNG, cxImage,
-  cxDropDownEdit, cxImageComboBox;
+  cxDropDownEdit, cxImageComboBox, cxLabel;
 
 type
   TfrmLogin = class(TForm)
@@ -74,6 +74,8 @@ type
     pnlBottom: TcxGroupBox;
     Image3: TImage;
     dxLayoutControl1Item5: TdxLayoutItem;
+    dxLayoutControl2Item5: TdxLayoutItem;
+    Labelx: TcxLabel;
 
     PROCEDURE YUVARLAK(WDN:HWND;ALAN:TRECT);
     procedure FormCreate(Sender: TObject);
@@ -341,12 +343,21 @@ begin
 
         login.Active := true;
 
-        if login.Locate('Kullanici',edit1.Text,[]) = true then
+    if not login.Locate('Kullanici',edit1.Text,[]) then
         begin
-           if trim(login.FieldValues['password']) = edit2.Text
-           then begin
-             if (login.FieldValues['grup'] <> 10)
-               or (DATALAR.AktifSirket = trim(login.FieldValues['Sirketkodu'])) then begin
+      ShowMessageSkin('Kullanýcý Adý Hatalý','','','info');
+      Exit;
+    end;
+    if IsNull (trim(login.FieldValues['password'])) then
+    begin
+      ShowMessageSkin('Kullanýcý Adý Kullanýma Kapalý','','','info');
+      Exit;
+    end;
+    if trim(login.FieldValues['password']) <> edit2.Text then
+    begin
+      ShowMessageSkin('Þifre Hatalý','','','info');
+      Exit;
+    end;
 
                datalar.username := edit1.Text;
                DATALAR.usersifre := edit2.Text;
@@ -384,22 +395,12 @@ begin
 
                close;
                exit;
-             end else begin
-               showMessageSkin('Bu þirkette çalýþma yetkiniz yok','','','info');
-             end;
-           end else begin
-           ShowMessageSkin('Þifre Hatalý','','','info');
-           end;
-        end else begin
-            ShowMessageSkin('Kullanýcý Adý Hatalý','','','info');
-        end;
 
         except on e:exception do
            begin
              showmessageSkin('Hata : ' + e.Message,'','','info');
            end;
         end;
-
 end;
 
 procedure TfrmLogin.Edit2KeyDown(Sender: TObject; var Key: Word;
@@ -456,17 +457,19 @@ end;
 
 procedure TfrmLogin.btnBaglanClick(Sender: TObject);
 var
- db : string;
+ db, OSGBDesc : string;
 begin
  if txtOsgbKodu.EditingText <> ''
  Then begin
-     if datalar.MasterBaglan(txtOsgbKodu.EditingValue,db,txtServerName.Text)
+     if datalar.MasterBaglan(txtOsgbKodu.EditingValue,db, OSGBDesc,txtServerName.Text)
      Then begin
          Regyaz('OSGB_servername',Encode64(txtServerName.Text));
          if datalar.Baglan(db,txtServerName.Text)
          then begin
            Regyaz('OSGB_db_name',Encode64(db));
            txtDataBase.EditValue := db;
+           Regyaz('OSGB_description',Encode64(OSGBDesc));
+           Labelx.Caption := OSGBDesc;
            btnBaglan.Caption := 'Baðlandý';
          end;
      end;
@@ -561,6 +564,7 @@ begin
    end;
 
    txtDataBase.EditValue := Decode64(regOku('OSGB_db_name'));
+   Labelx.Caption := Decode64(regOku('OSGB_description'));
    Edit2.SetFocus;
 end;
 

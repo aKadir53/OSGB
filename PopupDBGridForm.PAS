@@ -63,6 +63,7 @@ type
     procedure ADOBeforePost(DataSet: TDataSet);
     procedure NaceKodPropertiesButtonClick(Sender: TObject;
       AButtonIndex: Integer);
+    procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
   private
     { Private declarations }
   public
@@ -281,6 +282,7 @@ begin
       if Columns[i] = 'subeDoktor' then
       begin
         DBgrid.Columns[i].PropertiesClassName := 'TcxImageComboBoxProperties';
+        TcxImageComboBoxProperties(DBgrid.Columns[i].Properties).ClearKey := 46;
         TcxImageComboBoxProperties(DBgrid.Columns[i].Properties).Items.Clear;
 
         datalar.Ado_Doktorlar.First;
@@ -296,6 +298,7 @@ begin
       if Columns[i] = 'IGU' then
       begin
         DBgrid.Columns[i].PropertiesClassName := 'TcxImageComboBoxProperties';
+        TcxImageComboBoxProperties(DBgrid.Columns[i].Properties).ClearKey := 46;
         TcxImageComboBoxProperties(DBgrid.Columns[i].Properties).Items.Clear;
 
         datalar.Ado_IGU.First;
@@ -341,6 +344,17 @@ begin
   DBGrid.DataController.DataSource.DataSet := sqlRun;
   DBGrid.DataController.CreateAllItems(True);
   SetGrid;
+end;
+
+procedure TfrmPopupDBGridForm.FormCloseQuery(Sender: TObject;
+  var CanClose: Boolean);
+begin
+  inherited;
+  if (DBGrid.DataController.DataSource.DataSet.State in [dsEdit, dsInsert]) then
+    if ModalResult = mrYes then
+      DBGrid.DataController.DataSource.DataSet.Post
+     else
+      DBGrid.DataController.DataSource.DataSet.Cancel;
 end;
 
 procedure TfrmPopupDBGridForm.FormCreate(Sender: TObject);

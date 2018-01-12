@@ -552,6 +552,8 @@ begin
           end;
       6 : begin
            tc := InputBox('Personel Ara','Tc Kimlik No','');
+           if IsNull (TC) then Exit;
+
            if FindTab(AnaForm.sayfalar,TagfrmHastaKart)
            Then begin
              F := TGirisForm(FormClassType(TagfrmHastaKart));

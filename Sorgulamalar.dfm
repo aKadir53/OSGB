@@ -106,6 +106,7 @@ object frmSorgulamalar: TfrmSorgulamalar
           object txtSP_name: TcxImageComboKadir
             Left = 16
             Top = 118
+            Properties.ClearKey = 46
             Properties.Items = <>
             TabOrder = 1
             Conn = DATALAR.ADOConnection2

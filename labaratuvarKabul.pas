@@ -1294,7 +1294,7 @@ begin
         End
         Else
         Begin
-          if mryes = ShowMessageSkin('Onay Ýptal Ediliyor Eminmisiniz?','','','msg')
+          if mryes = ShowMessageSkin('Onay Ýptal Ediliyor Emin misiniz?','','','msg')
           Then Begin
               sql  := 'update LaboratuvarKabul set sec = ' + '0' +
                       ' where sira = ' + labKabul.fieldbyname('sira').AsString;
@@ -1660,7 +1660,7 @@ begin
 
     if sayfalar_LabKabul.TabIndex = 1
     Then Begin
-          if mrYes = ShowMessageSkin('Kabul Ýptal Edilecek Eminmisiniz ?','','','msg')
+          if mrYes = ShowMessageSkin('Kabul Ýptal Edilecek Emin misiniz ?','','','msg')
           Then Begin
               dosyaNo := labKabul.fieldbyname('dosyaNo').AsString;
               testNo := labKabul.fieldbyname('TestKodu').AsString;

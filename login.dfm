@@ -4,7 +4,7 @@ object frmLogin: TfrmLogin
   BorderIcons = []
   BorderStyle = bsDialog
   Caption = 'l'
-  ClientHeight = 246
+  ClientHeight = 263
   ClientWidth = 309
   Color = 13750737
   Font.Charset = DEFAULT_CHARSET
@@ -297,7 +297,7 @@ object frmLogin: TfrmLogin
     Left = 0
     Top = 0
     Width = 309
-    Height = 190
+    Height = 207
     Align = alClient
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clWindowText
@@ -323,7 +323,7 @@ object frmLogin: TfrmLogin
         Left = 0
         Top = 0
         Width = 299
-        Height = 157
+        Height = 174
         Align = alClient
         TabOrder = 0
         LayoutLookAndFeel = dxLayoutSkinLookAndFeel1
@@ -767,22 +767,24 @@ object frmLogin: TfrmLogin
         Align = alClient
         Caption = 'Server Bilgisi'
         TabOrder = 0
-        Height = 157
+        Height = 174
         Width = 299
         object dxLayoutControl2: TdxLayoutControl
           Left = 3
           Top = 15
           Width = 293
-          Height = 132
+          Height = 149
           Align = alClient
           TabOrder = 0
           ExplicitLeft = 2
           ExplicitTop = -2
           ExplicitWidth = 295
-          ExplicitHeight = 157
+          ExplicitHeight = 174
           object txtServerName: TcxTextEditKadir
             Left = 104
             Top = 10
+            Properties.EchoMode = eemPassword
+            Properties.PasswordChar = '*'
             Style.BorderColor = clWindowFrame
             Style.BorderStyle = ebs3D
             Style.HotTrack = False
@@ -792,7 +794,7 @@ object frmLogin: TfrmLogin
           object btnBaglan: TcxButtonKadir
             Left = 10
             Top = 91
-            Width = 75
+            Width = 271
             Height = 25
             Caption = 'Ba'#287'lant'#305'y'#305' Test Et'
             TabOrder = 3
@@ -809,18 +811,25 @@ object frmLogin: TfrmLogin
             Style.BorderStyle = ebs3D
             Style.HotTrack = False
             TabOrder = 2
-            Width = 121
+            Width = 177
           end
           object txtOsgbKodu: TcxTextEdit
             Left = 104
             Top = 37
-            Properties.EchoMode = eemPassword
-            Properties.PasswordChar = '*'
             Style.BorderColor = clWindowFrame
             Style.BorderStyle = ebs3D
             Style.HotTrack = False
             TabOrder = 1
-            Width = 121
+            Width = 177
+          end
+          object Labelx: TcxLabel
+            Left = 10
+            Top = 122
+            AutoSize = False
+            Caption = 'ddddd'
+            Style.HotTrack = False
+            Height = 17
+            Width = 271
           end
           object dxLayoutControl2Group_Root: TdxLayoutGroup
             AlignHorz = ahLeft
@@ -858,6 +867,13 @@ object frmLogin: TfrmLogin
             Control = txtOsgbKodu
             ControlOptions.ShowBorder = False
             Index = 1
+          end
+          object dxLayoutControl2Item5: TdxLayoutItem
+            CaptionOptions.Visible = False
+            Parent = dxLayoutControl2Group_Root
+            Control = Labelx
+            ControlOptions.ShowBorder = False
+            Index = 4
           end
         end
       end
@@ -1551,7 +1567,7 @@ object frmLogin: TfrmLogin
   end
   object dxStatusBar1: TdxStatusBar
     Left = 0
-    Top = 226
+    Top = 243
     Width = 309
     Height = 20
     Panels = <
@@ -1576,15 +1592,17 @@ object frmLogin: TfrmLogin
     Font.Height = -11
     Font.Name = 'Tahoma'
     Font.Style = []
+    ExplicitTop = 226
   end
   object pnlBottom: TcxGroupBox
     Left = 0
-    Top = 190
+    Top = 207
     Align = alBottom
     PanelStyle.Active = True
     ParentShowHint = False
     ShowHint = False
     TabOrder = 2
+    ExplicitTop = 190
     Height = 36
     Width = 309
     object btnGiris: TcxButton

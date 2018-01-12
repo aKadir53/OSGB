@@ -136,7 +136,7 @@ begin
 
   GridList.LoadFromXLS(dosya);
   FFileName := dosya;
-  if FAlanEslestirmeYapildi then GridAlanEslestirme(False);
+  FAlanEslestirmeYapildi := False;
 
 
 (*
@@ -366,6 +366,8 @@ var
   iThermo, iCount : Integer;
   _row_, iRowC : integer;
   Cins,Medeni,DTarih,BTarih : String;
+  ado1 : TADOQuery;
+  //aModalResult : TModalResult;
 begin
   try
     if showmessageskin (
@@ -379,6 +381,7 @@ begin
       ShowMessageSkin('Aktif þube seçmeden personel aktarýmý yapamazsýnýz.'#13#10'Personeller, seçili þubeye aktarýlacak.', '', '', 'info');
       Exit;
     end;
+    if not FAlanEslestirmeYapildi then GridAlanEslestirme(False);
     bBasarili := False;
     iCount := 0;
     iRowC := 0;
@@ -407,7 +410,36 @@ begin
             //transaction mesajý beklemesin önce rollback olsun sonra mesaj gelsin diye exit ile deðil raise ile yaptýk.
             raise Exception.Create ('Adý veya Soyadý veya TC Kimlik Numarasý alaný dolu olmalýdýr.');
           end;
-          ;
+
+          sql :=
+            'select pk.SirketKod, s.Tanimi SirketAdi, pk.sube, ss.subeTanim SubeAdi,'#13#10 +
+            '  cast (case when pk.SirketKod = ' + QuotedStr (DATALAR.AktifSirket) + ' and pk.Sube = ' + QuotedStr (DATALAR.AktifSube) + ' then 1 else 0 end as bit) AktarilandaVar'#13#10 +
+            'from personelkart pk'#13#10 +
+            'inner join SIRKEtler_tnm s on s.SirketKod = pk.SirketKod'#13#10 +
+            'inner join SIRKET_SUBE_TNM ss on ss.sirketKod = pk.Sirketkod'#13#10 +
+            '  and ss.Subekod = pk.Sube'#13#10 +
+            'where pk.TCKIMLIKNO = ' + QuotedStr (GridAtanmisSutunDegerAyarlaGetir (GridList, colTCKimlikNo,_row_)) + ''#13#10 +
+            'order by AktarilandaVar desc';
+          ado1 := DATALAR.QuerySelect(sql);
+          try
+            if not ado1.Eof then
+            begin
+              if ado1.FieldByName ('AktarilandaVar').AsBoolean then
+                raise Exception.Create(GridAtanmisSutunDegerAyarlaGetir (GridList, colTCKimlikNo,_row_) + ' TC Kimlik Numarasý bu þirket ve þubede tanýmlý.'#13#10'Daha önceden girilmiþ veya bu excel içinde iki kere yer almýþ olabilir')
+              else begin
+                if ShowMessageSkin (
+                     GridAtanmisSutunDegerAyarlaGetir (GridList, colTCKimlikNo,_row_) +
+                     ' TC Kimlik Numarasý, '#13#10 +
+                     ado1.FieldByName ('SirketAdi').AsString + ' þirketi'#13#10+
+                     ado1.FieldByName ('SubeAdi').AsString + ' þubesinde tanýmlý.'#13#10#13#10+
+                     'Devam Edilsin Mi ?' , '', '', 'conf') <> mrYes then
+                  raise Exception.Create('Ýþlem iptal edildi');
+              end;
+            end;
+          finally
+            ado1.Free;
+          end;
+
           Cins := ifThen(Copy(GridAtanmisSutunDegerAyarlaGetir (GridList, colCinsiyeti,_row_),1,1) = 'B','1',
                   ifThen(Copy(GridAtanmisSutunDegerAyarlaGetir (GridList, colCinsiyeti,_row_),1,1) = '1','1',
                   ifThen(Copy(GridAtanmisSutunDegerAyarlaGetir (GridList, colCinsiyeti,_row_),1,1) = 'K','1','0')));
@@ -433,11 +465,11 @@ begin
                          QuotedStr(GridAtanmisSutunDegerAyarlaGetir (GridList, colBabaAdi,_row_)),
                          QuotedStr(GridAtanmisSutunDegerAyarlaGetir (GridList, colAnaAdi,_row_)),
                          QuotedStr(GridAtanmisSutunDegerAyarlaGetir (GridList, ColAdres,_row_)),
-                         QuotedStr(GridAtanmisSutunDegerAyarlaGetir (GridList, ColTelefon1,_row_)),
-                         QuotedStr(GridAtanmisSutunDegerAyarlaGetir (GridList, ColTelefon2,_row_)),
+                         QuotedStr(AktarimTelefonNoTemizle (GridAtanmisSutunDegerAyarlaGetir (GridList, ColTelefon1,_row_))),
+                         QuotedStr(AktarimTelefonNoTemizle (GridAtanmisSutunDegerAyarlaGetir (GridList, ColTelefon2,_row_))),
                          QuotedStr(GridAtanmisSutunDegerAyarlaGetir (GridList, ColDogumYeri,_row_)),
                          QuotedStr(DTarih),
-                         QuotedStr(GridAtanmisSutunDegerAyarlaGetir (GridList, colUyruk,_row_)),
+                         QuotedStr(AktarimUyrukDuzelt (GridAtanmisSutunDegerAyarlaGetir (GridList, colUyruk,_row_))),
                          QuotedStr(BTarih),
                          'NULL',
                          QuotedStr(datalar.username),
@@ -624,6 +656,4 @@ begin
   FAlanEslestirmeYapildi := False;
 end;
 //isg katip excel'ini programdan aktarma
-//taným ekranlarýnda þifre kutularýný *'lamak acil
-//excel aktarýmýnda ekrandaki ve veritabanýndaki çift tckimlik numarasý kontrolleri. farklý firmada ve þubde varsa uyarý ver kabul ederse devam et, ayný þirket þubede varsa uyarý ver devam etme, pasifse aktif hale getirilebilir.
 end.

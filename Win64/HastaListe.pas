@@ -220,7 +220,7 @@ end;
 procedure TfrmHastaListe.btnGuncelleClick(Sender: TObject);
 begin
 
-  if mrYes = ShowMessageSkin('Satýr Silmek Ýstediðinize Eminmisiniz ?','','','msg')
+  if mrYes = ShowMessageSkin('Satýr Silmek Ýstediðinize Emin misiniz ?','','','msg')
   then begin
      ado_BransKodlari.Delete;
   end;

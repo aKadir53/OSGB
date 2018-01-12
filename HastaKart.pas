@@ -1356,7 +1356,7 @@ begin
             ShowMessageskin('Dosya No Alýnamadý','','','info');
           end;
           foto.Picture.Assign(nil);
-
+          HastaGelis (dosyaNo.Text, ADO_Gelisler);
           TcxImageComboKadir(FindComponent('SirketKod')).EditValue := datalar.AktifSirket;
           TcxImageComboKadir(FindComponent('Sube')).EditValue :=
           ifThen(datalar.AktifSube = '','00',ifThen(pos(',',datalar.AktifSube) > 0,'00',datalar.AktifSube));

@@ -85,3 +85,34 @@ reçeteden geliþler tblosuna foreign key kontrol edilip eklendi
 yeni muayene aç dendiðinde ekrandaki personelin þirketi, soldaki aktif þirketten farklý ise geliþler tablosuna aktif þirketle kayýt açmaya çalýþtýðý için foreign key hatasý çakýyor
 tek osgb arzu haným, protokol numaralarý ilerlemiyor dedi. düzeltildi
 taným ekranlarýnda þifre kutularýný *'lama
+enabled/disabled eðitim formuna da koyduk
+UZMAN veritabanýnda nace kodlarý (çok tehlikeli = 1, tehlikeli = 3, az tehlikeli = 5) * 365 nace kodlarý tablosu update edildi
+TehlikeSiniflari adlý tablo açýldý
+nacekods tablosundan ilk deðerleri dolduruldu
+nacekods-tehlikesiniflari arasýna foreign key eklendi
+uyruðu vs alanlarda excel aktarým düzeltmeleri yapýldý. Telefon alanýnýn içindeki boþluk, tire ve parantez karakterleri silinerek rakamlar birbirleri ile birleþtirildi.
+personel kartýndaki menüdeki en alttaki "sil" "muayene sil" olarak deðiþtirildi
+reçete header yoksa ekle sil düðmelerinde uyarý vermesi saðlandý. hattâ reçete iþlemlerinin tümünde reçete baþlýðý var / yok, medulaya gönderilmiþ / gönderilmemiþ kontroller eklendi.
+hizlikayitfrm excel'den personel aktarýmý için alan eþleþtirme iþlemi bir kere yapýldý ise, her excel yüklemede alan eþleþtirmeyi otomatik yapmasý eklendi.
+Reçete ilaç eklemede üstte ilaç listesinden ilacý alt gride eklerken kutu adedi varsayýlan deðer 1 olacak þekilde ayarlama yapýldý.
+login ekranýnda IP numarasý yýldýzlandý, firma kodu yýldýzlamasý kaldýrýldý, veritabaný yýldýzlý býrakýlarak firma ünvaný osgb tanýmý bilgisi label üzerinde gösterildi.
+yeni personelde muayene gridinin tazelenmemesi problemi giderildi.
+diðer personel ara seçeneði cancel seçildiðinde devam etme problemi giderildi
+þube tanýmlama ekranýnda doktor ve iþ güvenlik uzmaný kombolarýndan deðer silinememe hatasý düzeltildi.
+þirket elemaný grubunda login olurken bu þirkette çalýþma yetkiniz yok mesajý verme hatasý giderildi
+þube tanýmlarý gibi popupgridform ekranýnda çalýþan formlarda tamam seçilince dataset post, vazgeç seçilince dataset.cancel yapýlmasý saðlandý
+kullanýcý kartlarýnda grup yetkilerinden yeniden al ve kullanýcý yetkilerini sil düðmeleri eklendi
+güncellemeler otomatik uygulanýp baþarý ile tamamlanýnca uygula düðmesi sönmediði için çift çalýþma hatasý oluþabiliyordu, sönmesi saðlandý
+güncelleme formunda iþlem göstergesi eklendi
+güncelleme formunda iþlem göstergesi gözüküp kaybolunca formActivate eventi tekrar tetiklenip listeyi temizliyordu, FormActivate kodunda liste yenileme sadece form ilk açýlýnca yapýlacak þekilde ayarlandý
+otomatik excel aktarým altyapýsýna tabloyu boþalt alaný eklendi. 0 ise boþaltmadan ekleyecek. 1 ise boþaltarak ekleyecek, null ise her seferinde soracak
+otomatik excel aktarým altyapýsýna aktarým sonrasýnda çalýþtýrýlacak bir sp varsa tanýmlanabilmesi için alan eklendi
+PERSONEL LÝSTESÝ ÝKÝ buton reçete ve muayene formu disable yapýldý
+excel aktarýmýnda ekrandaki ve veritabanýndaki çift tckimlik numarasý kontrolleri. farklý firmada ve þubde varsa uyarý ver kabul ederse devam et, ayný þirket þubede varsa uyarý ver devam etme, pasifse aktif hale getirilebilir.
+Personel aktarýrken þube seçili deðilse hata verdirildi.
+Firma logo ekleyince þirket kodu null olamaz hatasý veriyordu veritabaný, append'den sonra þirket kodu atamasý yapýldý
+E-imzasýz reçete gönderme özelliði açýldý (kadir)
+Osgb doktoru kendine baðlý olmayan firma personelinin tamamýný görsün diyor Zafer Bey. Osgb polikliniði için lazým. doktorlar için personelim olmayan personel arama gibi birþey ekleyebiliriz (kadir yapmýþ)
+Personel kartýnda bazý bilgiler boþ ise yeni muayene açarken hata veriyor.(kadir düzeltmiþti)
+muayene kartýnda doktor seçimi gerekebilir. (kadir eklemiþti)
+user kartlarýnda pasife çekme ve pasif kullanýcýnýn girememesi lazým demiþiz. þifresi boþ olan kullanýcýlar pasif sayýldý. ayrýca alan eklemedik.
