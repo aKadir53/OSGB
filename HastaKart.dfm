@@ -300,6 +300,7 @@ object frmHastaKart: TfrmHastaKart
           item
             Caption = 'Muayene Bilgileri'
             Styles.Header = cxStyle2
+            Width = 606
           end>
         object cxGridGelislerTakpNo: TcxGridDBBandedColumn
           Caption = 'Takip No'
@@ -343,7 +344,7 @@ object frmHastaKart: TfrmHastaKart
           Properties.Alignment.Horz = taCenter
           HeaderAlignmentHorz = taCenter
           HeaderAlignmentVert = vaCenter
-          Width = 38
+          Width = 44
           Position.BandIndex = 1
           Position.ColIndex = 0
           Position.RowIndex = 0
@@ -355,6 +356,7 @@ object frmHastaKart: TfrmHastaKart
           Properties.Alignment.Vert = taVCenter
           HeaderAlignmentHorz = taCenter
           HeaderAlignmentVert = vaCenter
+          Width = 74
           Position.BandIndex = 1
           Position.ColIndex = 1
           Position.RowIndex = 0
@@ -366,7 +368,7 @@ object frmHastaKart: TfrmHastaKart
           Properties.Alignment.Horz = taCenter
           HeaderAlignmentHorz = taCenter
           HeaderAlignmentVert = vaCenter
-          Width = 63
+          Width = 73
           Position.BandIndex = 1
           Position.ColIndex = 4
           Position.RowIndex = 0
@@ -378,7 +380,7 @@ object frmHastaKart: TfrmHastaKart
           Properties.Alignment.Horz = taCenter
           HeaderAlignmentHorz = taCenter
           HeaderAlignmentVert = vaCenter
-          Width = 56
+          Width = 65
           Position.BandIndex = 1
           Position.ColIndex = 2
           Position.RowIndex = 0
@@ -391,7 +393,7 @@ object frmHastaKart: TfrmHastaKart
           Properties.Alignment.Vert = taVCenter
           HeaderAlignmentHorz = taCenter
           HeaderAlignmentVert = vaCenter
-          Width = 115
+          Width = 134
           Position.BandIndex = 1
           Position.ColIndex = 3
           Position.RowIndex = 0
@@ -402,7 +404,7 @@ object frmHastaKart: TfrmHastaKart
           Properties.Alignment.Horz = taCenter
           HeaderAlignmentHorz = taCenter
           HeaderAlignmentVert = vaCenter
-          Width = 58
+          Width = 67
           Position.BandIndex = 1
           Position.ColIndex = 5
           Position.RowIndex = 0
@@ -426,8 +428,21 @@ object frmHastaKart: TfrmHastaKart
           Properties.Alignment.Horz = taCenter
           HeaderAlignmentHorz = taCenter
           HeaderAlignmentVert = vaCenter
+          Width = 48
           Position.BandIndex = 1
           Position.ColIndex = 6
+          Position.RowIndex = 0
+        end
+        object cxGridGelislerPROTOKOLNO: TcxGridDBBandedColumn
+          Caption = 'Protokol No'
+          DataBinding.FieldName = 'PROTOKOLNO'
+          PropertiesClassName = 'TcxTextEditProperties'
+          Properties.Alignment.Horz = taCenter
+          Properties.Alignment.Vert = taVCenter
+          HeaderAlignmentHorz = taCenter
+          Width = 101
+          Position.BandIndex = 1
+          Position.ColIndex = 7
           Position.RowIndex = 0
         end
       end
