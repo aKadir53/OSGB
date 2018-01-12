@@ -201,7 +201,7 @@ begin
    if High (List) < 0 then Exit;
    TcxTextEditKadir(FindComponent('naceKod')).EditValue := List[0].kolon1;
    TcxTextEditKadir(FindComponent('anaFaliyet')).EditValue := List[0].kolon2;
-   TcxTextEditKadir(FindComponent('tehlikeSinifi')).EditValue := List[0].kolon4;
+   TcxImageComboKadir(FindComponent('tehlikeSinifi')).EditValue := List[0].kolon4;
 
 end;
 
@@ -459,7 +459,7 @@ end;
 procedure TfrmFirmaKart.FormCreate(Sender: TObject);
 var
   List : TListeAc;
-  SEHIR ,ILCE ,BUCAK ,KOY,MAHALLE,doktor : TcxImageComboKadir;
+  SEHIR ,ILCE ,BUCAK ,KOY,MAHALLE,doktor,tehlikeSinifi : TcxImageComboKadir;
 begin
   // Burdaki User_ID ve sirketKod base formda dolduruluyor. Visible false (true set etmeyin)
   // Eðer kayýt eklediðiniz tabloda bu alanlar varsa ve bunlarý otomatik set etmek isterseniz
@@ -496,7 +496,19 @@ begin
   setDataString(self,'tanimi','Firma Adý  ',Kolon1,'',350,True);
   setDataStringKontrol(self,NaceKod, 'NaceKod','Nace Kodu  ',Kolon1,'',130);
   setDataString(self,'anaFaliyet','Firma Ana Faaliye',Kolon1,'',450,True);
-  setDataString(self,'tehlikeSinifi','Tehlike Sýnýfý',Kolon1,'',100,True);
+ // setDataString(self,'tehlikeSinifi','Tehlike Sýnýfý',Kolon1,'',100,True);
+
+  tehlikeSinifi := TcxImageComboKadir.Create(self);
+  tehlikeSinifi.Conn := Datalar.ADOConnection2;
+  tehlikeSinifi.TableName := 'TehlikeSiniflari';
+  tehlikeSinifi.ValueField := 'TehlikeSinifi';
+  tehlikeSinifi.DisplayField := 'Tanimi';
+  tehlikeSinifi.BosOlamaz := False;
+  tehlikeSinifi.Filter := '';
+  setDataStringKontrol(self,tehlikeSinifi,'tehlikeSinifi','Tehlike Sýnýfý',kolon1,'',100);
+  OrtakEventAta(tehlikeSinifi);
+
+
   doktor := TcxImageComboKadir.Create(self);
   doktor.Conn := Datalar.ADOConnection2;
   doktor.TableName := 'DoktorlarT';

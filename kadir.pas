@@ -383,6 +383,7 @@ procedure AdSoyadAyir (const pAdSoyad: String; var pAd, pSoyad : String);
 function WebErisimBilgi(slk,slb : string) : string;
 function DoktorReceteMedulaGonderimTip(doktor : string) : integer;
 procedure DBUpdate;
+function SirketSubeTehlikeSinifi(Sirket,Sube : string) : string;
 
 const
   _YTL_ = 'YTL';
@@ -478,6 +479,25 @@ begin
      ado.Free;
    end;
 end;
+
+function SirketSubeTehlikeSinifi(Sirket,Sube : string) : string;
+var
+  sql : string;
+  ado : TADOQuery;
+begin
+   SirketSubeTehlikeSinifi := '';
+   ado := TADOQuery.Create(nil);
+   try
+     ado.Connection := datalar.ADOConnection2;
+     sql := 'select tehlikeSinifi from SIRKET_SUBE_TNM where sirketKod = ' + QuotedStr(Sirket) +
+            ' and SubeKod = ' + QuotedStr(Sube);
+     datalar.QuerySelect(ado,sql);
+     SirketSubeTehlikeSinifi := ado.Fields[0].AsString;
+   finally
+     ado.Free;
+   end;
+end;
+
 
 function WebErisimBilgi(slk,slb : string) : string;
 var

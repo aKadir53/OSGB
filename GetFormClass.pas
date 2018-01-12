@@ -40,7 +40,7 @@ uses message,Data_Modul,AnaUnit,message_y,popupForm,rapor,TedaviKart,Son6AylikTe
              HastaRecete,sifreDegis,HastaTetkikEkle,
              Receteler,Sorgulamalar,sorguRaporCalistir,
              HastaKart,FirmaKart,hizliKayit,receteSablonlari,
-             HastaListe,IsKazasi,
+             HastaListe,IsKazasi,Anamnez,
              Tnm_UserSettings,HastaAsiKarti,HastaTaniKart,
              KurumLogin,Update_G, labaratuvarKabul,
              MedulaKurumSifreDegis,labParametreleri,
@@ -137,7 +137,7 @@ var
   sql : string;
   ado : TADOQuery;
 begin
-  sql := 'select formCaption from FormCaption where formTag = ' + inttostr(formId);
+  sql := 'select formCaption from FormCaption where formTag = ' + inttostr(abs(formId));
   ado := TADOQuery.Create(nil);
   try
     datalar.QuerySelect(ado,sql);
@@ -155,7 +155,7 @@ var
   sql : string;
   ado : TADOQuery;
 begin
-  sql := 'select formAltCaption from FormCaption where formTag = ' + inttostr(formId);
+  sql := 'select formAltCaption from FormCaption where formTag = ' + inttostr(abs(formId));
   ado := TADOQuery.Create(nil);
   try
     datalar.QuerySelect(ado,sql);
@@ -170,7 +170,7 @@ end;
 
 function FormClass(formId : integer) : TComponentClass;
 begin
-  case formId of
+  case abs(formId) of
    TagfrmHastaKart : Result := TfrmHastaKart;
    TagfrmFirmaKart : Result := TfrmFirmaKart;
    TagfrmPopupDBGridForm,TagfrmBolum,TagfrmBirim : Result := TfrmPopupDBGridForm;
@@ -180,6 +180,7 @@ begin
    TagfrmSorgulamalar : Result := TfrmSorgulamalar;
    TagfrmSorguCalistir : Result := TfrmRaporCalistir;
    TagfrmIsKazasi : Result := TfrmIsKazasi;
+   TagfrmAnamnez : Result := TfrmAnamnez;
 
    TagfrmTedaviBilgisi : Result := TfrmTedaviBilgisi;
    TagfrmHastaRecete : Result := TfrmHastaRecete;
@@ -211,7 +212,7 @@ end;
 
 function FormClassType(formId : integer) : TComponent;
 begin
-  case formId of
+  case abs(formId) of
    TagfrmHastaKart : Result := frmHastaKart;
    TagfrmFirmaKart : Result := frmFirmaKart;
    TagfrmPopupDBGridForm,TagfrmBolum,TagfrmBirim,TagfrmSube,TagFirmaCalismalari : Result := frmPopupDBGridForm;
@@ -222,7 +223,7 @@ begin
    TagfrmSorguCalistir : Result := frmRaporCalistir;
    TagfrmIsKazasi : Result := frmIsKazasi;
    TagfrmTedaviBilgisi : Result := frmTedaviBilgisi;
-
+   TagfrmAnamnez : Result := frmAnamnez;
    TagfrmHastaRecete : Result := frmHastaRecete;
    TagfrmHastaListe,TagfrmDoktorHastaListe : Result := frmHastaListe;
 
@@ -258,19 +259,19 @@ function FormINIT(FormTag : Integer;MidiForm : TForm;
 var
   Form : TGirisForm;
 begin
-   izinPrm := ifThen(izinPrm = '',FormAltCaption(FormTag),izinPrm);
+   izinPrm := ifThen(izinPrm = '',FormAltCaption(abs(FormTag)),izinPrm);
    if ik = ikEvet
    then
-   if UserRight(FormCaption(FormTag), izinPrm) = False
+   if UserRight(FormCaption(abs(FormTag)), izinPrm) = False
    then begin
-       UserRightInsert(FormCaption(FormTag),izinPrm,datalar.username);
-       ShowMessageSkin(FormCaption(FormTag),izinPrm + ' Ýþlemi Ýçin Yetkiniz Bulunmamaktadýr !','','info');
+       UserRightInsert(FormCaption(abs(FormTag)),izinPrm,datalar.username);
+       ShowMessageSkin(FormCaption(abs(FormTag)),izinPrm + ' Ýþlemi Ýçin Yetkiniz Bulunmamaktadýr !','','info');
        Tab.Free;
        result := nil;
        exit;
    end;
 
-   case FormTag of
+   case abs(FormTag) of
       TagfrmHastaKart : frmHastaKart := TfrmHastaKart.Create(Tab);
       TagfrmFirmaKart : frmFirmaKart := TfrmFirmaKart.Create(Tab);
       TagfrmHizliKayit : frmHizliKayit := TfrmHizliKayit.Create(Tab);
@@ -284,7 +285,7 @@ begin
 
       TagfrmLabParametreleri : frmLabParams:= TfrmLabParams.Create(Tab);
       TagfrmLabKabul : frmLabaratuvarKabul := TfrmLabaratuvarKabul.Create(Tab);
-
+      TagfrmAnamnez : frmAnamnez := TfrmAnamnez.Create(Tab);
      else
       result := nil;
    end;
@@ -293,15 +294,15 @@ begin
    begin
      Form.BorderStyle := bsToolWindow;
      Form.Align := alNone;
-     Form.Tag := FormTag;
+     Form.Tag := abs(FormTag);
      Result := Form;
      Exit;
    end;
 
-   Form := TGirisForm(FormClassType(FormTag));
-   Tab.Caption := FormAltCaption(FormTag);
+   Form := TGirisForm(FormClassType(abs(FormTag)));
+   Tab.Caption := FormAltCaption(abs(FormTag));
    TGirisForm(Form).cxTab.Tabs[0].Caption := Tab.Caption;
-   TGirisForm(Form).cxTab.Tabs[0].ImageIndex := FormTabImageIndex(FormTag);
+   TGirisForm(Form).cxTab.Tabs[0].ImageIndex := FormTabImageIndex(abs(FormTag));
    if Tab = nil
    then begin
     TgirisForm(Form).BorderStyle := bsToolWindow;
@@ -347,10 +348,10 @@ function FormINIT(FormTag : Integer;MidiForm : TForm;Value : String = '';
 var
   Form : TGirisForm;
 begin
-   izinPrm := ifThen(izinPrm = '',FormAltCaption(FormTag),izinPrm);
+   izinPrm := ifThen(izinPrm = '',FormAltCaption(abs(FormTag)),izinPrm);
    if ik = ikEvet
    then
-   if UserRight(FormCaption(FormTag), izinPrm) = False
+   if UserRight(FormCaption(abs(FormTag)), izinPrm) = False
    then begin
        UserRightInsert(FormCaption(FormTag),izinPrm,datalar.username);
        ShowMessageSkin(FormCaption(FormTag),izinPrm + ' Ýþlemi Ýçin Yetkiniz Bulunmamaktadýr !','','info');
@@ -359,12 +360,13 @@ begin
        exit;
    end;
 
-   case FormTag of
+   case abs(FormTag) of
       TagfrmHastaKart : frmHastaKart := TfrmHastaKart.Create(Tab);
       TagfrmFirmaKart : frmFirmaKart := TfrmFirmaKart.Create(Tab);
       TagfrmHizliKayit : frmHizliKayit := TfrmHizliKayit.Create(Tab);
       TagfrmSorgulamalar : frmSorgulamalar := TfrmSorgulamalar.Create(Tab);
       TagfrmSorguCalistir : frmRaporCalistir := TfrmRaporCalistir.Create(Tab);
+      TagfrmAnamnez : frmAnamnez := TfrmAnamnez.Create(Tab);
 
       TagfrmHastaListe,TagfrmDoktorHastaListe : frmHastaListe := TfrmHastaListe.Create(Tab);
       TagfrmPopupDBVerticalGridForm : frmPopupDBVerticalGridForm := TfrmPopupDBVerticalGridForm.Create(Tab);
@@ -380,10 +382,10 @@ begin
    end;
 
 
-   Form := TGirisForm(FormClassType(FormTag));
-   Tab.Caption := FormAltCaption(FormTag);
+   Form := TGirisForm(FormClassType(abs(FormTag)));
+   Tab.Caption := FormAltCaption(abs(FormTag));
    TGirisForm(Form).cxTab.Tabs[0].Caption := Tab.Caption;
-   TGirisForm(Form).cxTab.Tabs[0].ImageIndex := FormTabImageIndex(FormTag);
+   TGirisForm(Form).cxTab.Tabs[0].ImageIndex := FormTabImageIndex(abs(FormTag));
    if Tab = nil
    then begin
     TgirisForm(Form).BorderStyle := bsToolWindow;
@@ -411,18 +413,18 @@ function FormINIT(FormTag : Integer; Value : TGirisFormRecord;ik : izinKontrol =
 var
   Form : TGirisForm;
 begin
-   izinPrm := ifThen(izinPrm = '',FormAltCaption(FormTag),izinPrm);
+   izinPrm := ifThen(izinPrm = '',FormAltCaption(abs(FormTag)),izinPrm);
    if ik = ikEvet
    then
-   if UserRight(FormCaption(FormTag), izinPrm) = False
+   if UserRight(FormCaption(abs(FormTag)), izinPrm) = False
    then begin
-       UserRightInsert(FormCaption(FormTag),izinPrm,datalar.username);
-       ShowMessageSkin(FormCaption(FormTag),izinPrm + ' Ýþlemi Ýçin Yetkiniz Bulunmamaktadýr !','','info');
+       UserRightInsert(FormCaption(abs(FormTag)),izinPrm,datalar.username);
+       ShowMessageSkin(FormCaption(abs(FormTag)),izinPrm + ' Ýþlemi Ýçin Yetkiniz Bulunmamaktadýr !','','info');
        result := nil;
        exit;
    end;
 
-  case FormTag of
+  case abs(FormTag) of
     TagfrmFirmaKart : Application.CreateForm(TfrmFirmaKart,frmFirmaKart);
     TagfrmPopupDBGridForm,TagfrmBolum,TagfrmBirim,TagfrmSube,TagFirmaCalismalari: Application.CreateForm(TfrmPopupDBGridForm , frmPopupDBGridForm);
     TagfrmDoktorlar,TagfrmIGU :  Application.CreateForm(TfrmDoktorlar, frmDoktorlar);
@@ -435,7 +437,7 @@ begin
     TagfrmUpdate :  Application.CreateForm(TfrmUpdate ,frmUpdate );
     TagfrmSorgulamalar : Application.CreateForm(TfrmSorgulamalar, frmSorgulamalar);
     TagfrmSorguCalistir : Application.CreateForm(TfrmRaporCalistir, frmRaporCalistir);
-
+    TagfrmAnamnez : Application.CreateForm(TfrmAnamnez, frmAnamnez);
     TagfrmTedaviBilgisi : Application.CreateForm(TfrmTedaviBilgisi,frmTedaviBilgisi);
     TagfrmIsKazasi : Application.CreateForm(TfrmIsKazasi,frmIsKazasi);
 
@@ -459,13 +461,13 @@ begin
       result := nil;
    end;
 
-  Form := TGirisForm(FormClassType(FormTag));
+  Form := TGirisForm(FormClassType(abs(FormTag)));
 
   if not (Form is TGirisForm) then þ
   begin
     Form.BorderStyle := bsToolWindow;
     Form.Align := alNone;
-    Form.Tag := FormTag;
+    Form.Tag := abs(FormTag);
     Result := Form;
     Exit;
   end;
@@ -490,7 +492,7 @@ begin
   TGirisForm(Form)._kod_ := Value.F_kod_;
   TGirisForm(Form)._sube_ := Value.F_sube_;
 
-  TgirisForm(Form).Caption := FormCaption(FormTag) + ' - ' + FormAltCaption(FormTag);
+  TgirisForm(Form).Caption := FormCaption(abs(FormTag)) + ' - ' + FormAltCaption(abs(FormTag));
   if ik = ikEvet
    then
     TGirisForm(Form).cxTab.Tabs[0].Caption := izinPrm
@@ -501,7 +503,7 @@ begin
       TGirisForm(Form).cxTab.Tabs[0].Caption := izinPrm;
 
    end;
-  TGirisForm(Form).cxTab.Tabs[0].ImageIndex := FormTabImageIndex(FormTag);
+  TGirisForm(Form).cxTab.Tabs[0].ImageIndex := FormTabImageIndex(abs(FormTag));
 
   TGirisForm(Form).Tag := FormTag;
    if TGirisForm(Form).Init(Form) = True
@@ -524,8 +526,8 @@ var
   Form : TComponent;
   FormC : TComponentClass;
 begin
-  Form := FormClassType(FormTag);
-  Application.CreateForm(FormClass(FormTag), Form);
+  Form := FormClassType(abs(FormTag));
+  Application.CreateForm(FormClass(abs(FormTag)), Form);
   Form.Tag := FormTag;
   case FormTag of
     TagfrmSaglikNetOnline : begin
