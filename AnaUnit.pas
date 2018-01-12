@@ -82,6 +82,7 @@ type
     MenuPanel: TcxGroupBox;
     Sirketler: TcxImageComboKadir;
     Subeler: TcxImageComboKadir;
+    cxSchedulerDBStorage2: TcxSchedulerDBStorage;
     procedure FormCreate(Sender: TObject);
     procedure ToolButton1Click(Sender: TObject);
     procedure FormResize(Sender: TObject);
@@ -113,6 +114,8 @@ type
       ALink: TdxNavBarItemLink);
     procedure SirketlerPropertiesChange(Sender: TObject);
     procedure SubelerPropertiesChange(Sender: TObject);
+    procedure cxScheduler1InitEventImages(Sender: TcxCustomScheduler;
+      AEvent: TcxSchedulerControlEvent; AImages: TcxSchedulerEventImages);
   private
     { Private declarations }
   public
@@ -270,6 +273,18 @@ begin
   end;
 end;
 
+procedure TAnaForm.cxScheduler1InitEventImages(Sender: TcxCustomScheduler;
+  AEvent: TcxSchedulerControlEvent; AImages: TcxSchedulerEventImages);
+var
+  intValue  : Integer;
+begin
+  case integer(AEvent.TaskStatus) of
+   0 : AImages.Add(77);
+   1 : AImages.Add(85);
+   2 : AImages.Add(82);
+  end;
+end;
+
 procedure TAnaForm.FormClose(Sender: TObject; var Action: TCloseAction);
 begin
   datalar.LoginInOut.Login := lgnOut;
@@ -296,15 +311,13 @@ begin
   WebBrowser1.Navigate('https://www.noktayazilim.net/destek/GenelMesajlar2.aspx?Tip=O');
 
 
-
-
  try
   LisansKontrol(f);
  except
    ShowMessageSkin('Lisans Hatasý','Lütfen Lisans ALýnýz','','info');
  end;
 
-  cxSetResourceString(@scxEvent,'Olay');
+//  cxSetResourceString(@scxEvent,'Olay');
 
 end;
 
@@ -359,6 +372,9 @@ begin
   Sirketler.tag := -100;
   Sirketler.ItemIndex := 0;
 
+
+  cxScheduler1.Storage.ConString := datalar.ADOConnection2.ConnectionString;
+  cxScheduler1.Storage.Sirketler.Properties.Items := Sirketler.Properties.Items;
 
   if GuncelKontrol = 'Evet'
   then

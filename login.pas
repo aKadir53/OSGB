@@ -366,6 +366,7 @@ begin
                datalar.ReceteKullanimYollari.active := True;
                datalar.Ado_Doktorlar.Active := True;
                datalar.Ado_IGU.Active := True;
+               datalar.ADO_TehlikeSiniflari.Active := True;
                datalar.KontrolZorunlu.Active := True;
 
                WanIp(datalar.WanIPURL);

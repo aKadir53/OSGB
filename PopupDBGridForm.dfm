@@ -64,10 +64,10 @@ object frmPopupDBGridForm: TfrmPopupDBGridForm
     Height = 285
     Width = 769
     object cxGrid3: TcxGridKadir
-      Left = 2
-      Top = 19
-      Width = 765
-      Height = 264
+      Left = 3
+      Top = 36
+      Width = 763
+      Height = 239
       Align = alClient
       Font.Charset = TURKISH_CHARSET
       Font.Color = clWindowText
@@ -79,6 +79,10 @@ object frmPopupDBGridForm: TfrmPopupDBGridForm
       LevelTabs.ImageBorder = 2
       LevelTabs.Style = 1
       ExceleGonder = False
+      ExplicitLeft = 2
+      ExplicitTop = 19
+      ExplicitWidth = 765
+      ExplicitHeight = 264
       object DBGrid: TcxGridDBTableView
         Navigator.Buttons.First.Visible = False
         Navigator.Buttons.PriorPage.Visible = False
@@ -320,16 +324,18 @@ object frmPopupDBGridForm: TfrmPopupDBGridForm
       end
     end
     object txtTable: TcxImageComboKadir
-      Left = 2
-      Top = -2
+      Left = 3
+      Top = 15
       Align = alTop
       Properties.Items = <>
       Properties.OnChange = txtTablePropertiesChange
       TabOrder = 1
       Visible = False
       BosOlamaz = False
-      ExplicitWidth = 763
-      Width = 765
+      ExplicitLeft = 2
+      ExplicitTop = -2
+      ExplicitWidth = 765
+      Width = 763
     end
   end
   object PopupMenu1: TPopupMenu
@@ -341,5 +347,33 @@ object frmPopupDBGridForm: TfrmPopupDBGridForm
     object H1: TMenuItem
       Caption = 'Hem'#351'ire '#304'zlem'
     end
+  end
+  object ListeNaceKods: TListeAc
+    ListeBaslik = 'Nace Kodlari'
+    TColcount = 4
+    TColsW = '50,200,200,80'
+    Table = 'nacekodsView'
+    Conn = DATALAR.ADOConnection2
+    Filtercol = 1
+    BaslikRenk = clBackground
+    DipRenk = clBackground
+    ButtonImajIndex = 132
+    Kolonlar.Strings = (
+      'NACEKODU'
+      'NaceTANIMI'
+      'GrupTanimi'
+      'TEHLIKESINIFI')
+    KolonBasliklari.Strings = (
+      'Nace Kodu'
+      'Nace Tan'#305'm'#305
+      'Grubu'
+      'Tehlike')
+    Calistir = fgEvet
+    BiriktirmeliSecim = False
+    SkinName = 'Lilian'
+    Grup = True
+    GrupCol = 2
+    Left = 232
+    Top = 93
   end
 end

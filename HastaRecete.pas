@@ -1016,18 +1016,19 @@ procedure TfrmHastaRecete.TaniEkle;
 var
   List : ArrayListeSecimler;
   I : integer;
-  sql : string;
+  sql,id : string;
   ado : TADOQuery;
 begin
    TaniListe.Where := ifThen(cxChkSIK.Checked,'Sikkullan > 0','');
    TaniListe.SkinName := AnaForm.dxSkinController1.SkinName;
    TaniListe.SiralamaKolonu := ifThen(cxChkSIK.Checked,'Sikkullan Desc,TANI','TANI');
    List := TaniListe.ListeGetir;
+   id := ADO_Recete.FieldByName('id').AsString;
 
    for I := 0 to length(List) - 1 do
    begin
     try
-       if not ADO_receteTani.Locate('taniKodu',List[I].kolon1,[])
+       if not ADO_receteTani.Locate('receteId,taniKodu',VarArrayOf([id,List[I].kolon1]),[])
        then begin
          ADO_receteTani.Append;
          ADO_receteTani.FieldByName('taniKodu').AsString := List[I].kolon1;

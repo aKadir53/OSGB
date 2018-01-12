@@ -5,7 +5,7 @@ interface
 uses
   Windows, Messages, SysUtils, Classes, Graphics, Controls, Forms, Dialogs,
   StdCtrls, Buttons, ExtCtrls, ComCtrls, jpeg, kadir,kadirType,kadirLabel,
-  dxGDIPlusClasses, cxGraphics, cxControls,GirisUnit,StrUtils,
+  dxGDIPlusClasses, cxGraphics, cxControls,GirisUnit,StrUtils,Variants,
   cxLookAndFeels, cxLookAndFeelPainters, cxContainer, cxEdit, dxSkinsCore,
   Menus, cxButtons, cxGroupBox, dxSkinBlack, dxSkinBlue, dxSkinCaramel,
   dxSkinCoffee, dxSkinDarkRoom, dxSkinDarkSide, dxSkinFoggy, dxSkinGlassOceans,
@@ -20,7 +20,7 @@ uses
   DB, cxDBData, cxCurrencyEdit, cxGridLevel, cxGridBandedTableView,
   cxGridDBBandedTableView, cxGridCustomTableView, cxGridTableView,
   cxGridDBTableView, cxClasses, cxGridCustomView, cxGrid, cxLabel, cxCheckBox,
-  cxImageComboBox, cxMemo,adoDb,cxDBLookupComboBox;
+  cxImageComboBox, cxMemo,adoDb,cxDBLookupComboBox,cxButtonEdit;
 
 type
   TfrmPopupDBGridForm = class(TGirisForm)
@@ -52,6 +52,7 @@ type
     K1: TMenuItem;
     H1: TMenuItem;
     txtTable: TcxImageComboKadir;
+    ListeNaceKods: TListeAc;
     procedure FormCreate(Sender: TObject);
     procedure txtMsgEnter(Sender: TObject);
     procedure FormShow(Sender: TObject);
@@ -60,7 +61,8 @@ type
     procedure SetGrid;
     procedure txtTablePropertiesChange(Sender: TObject);
     procedure ADOBeforePost(DataSet: TDataSet);
-
+    procedure NaceKodPropertiesButtonClick(Sender: TObject;
+      AButtonIndex: Integer);
   private
     { Private declarations }
   public
@@ -86,6 +88,22 @@ uses message, data_modul;
 
 {$R *.DFM}
 
+procedure TfrmPopupDBGridForm.NaceKodPropertiesButtonClick(Sender: TObject;
+  AButtonIndex: Integer);
+var
+  List : ArrayListeSecimler;
+begin
+   List := ListeNaceKods.ListeGetir;
+   if High (List) < 0 then Exit;
+   cxGrid3.Dataset.edit;
+   cxGrid3.Dataset.FieldByName('NaceKod').AsString := List[0].kolon1;
+   cxGrid3.Dataset.FieldByName('tehlikeSinifi').AsString := List[0].kolon4;
+
+
+
+ //  TcxImageComboBoxProperties(DBgrid.Columns[0].Properties).
+end;
+
 procedure TfrmPopupDBGridForm.ADOBeforePost(DataSet: TDataSet);
 begin
   inherited;
@@ -104,7 +122,7 @@ var
 begin
   inherited;
 
-  case Tag of
+  case abs(Tag) of
      TagfrmBolum,TagfrmBirim :
   begin
       txtTable.Visible := True;
@@ -118,6 +136,20 @@ begin
       indexFieldName := '1=1';
       cxPanel.Visible := false;
       SayfaCaption('','','','','');
+
+      case Tag of
+      -1*TagfrmBolum :
+                 begin
+                   txtTable.EditValue := 1;
+                   txtTable.Enabled := False;
+                 end;
+      -1*TagfrmBirim :
+                 begin
+                   txtTable.EditValue := 2;
+                   txtTable.Enabled := False;
+                 end;
+
+      end;
       Result := True;
   end;
 
@@ -126,15 +158,15 @@ begin
         ClientHeight := 300;
         ClientWidth := 700;
         TableName := 'SIRKET_SUBE_TNM';
-        _fields_ := 'sirketKod,subeKod,subeTanim,subeSiciNo,subeDoktor,IGU,BolgeMudurlukSicilNo,MuayeneProtokolNo,DoktorCalismaDakika,IGUCalismaDakika';
-        _fieldBaslik_ := ',ÞubeKodu,ÞubeTanimi,ÝþYeriSicilNo,Doktor,ÝþGüvenlikUzmaný,BölgeMdSicilNo,MuayeneProtokolNo,DoktorCalismaDakika,IGUCalismaDakika';
-        _fieldTips_ := 'string,string,string,string,ImageDoktorCombo,ImageDoktorCombo,string,string,string,string';
+        _fields_ := 'sirketKod,subeKod,subeTanim,subeSiciNo,subeDoktor,IGU,BolgeMudurlukSicilNo,MuayeneProtokolNo,DoktorCalismaDakika,IGUCalismaDakika,NaceKod,tehlikeSinifi';
+        _fieldBaslik_ := ',ÞubeKodu,ÞubeTanimi,ÝþYeriSicilNo,Doktor,ÝþGüvenlikUzmaný,BölgeMdSicilNo,MuayeneProtokolNo,DoktorCalismaDakika,IGUCalismaDakika,NaceKodu,TehlikeSinifi';
+        _fieldTips_ := 'string,string,string,string,ImageDoktorCombo,ImageDoktorCombo,string,string,string,stringi,ButtonEdit,ImageDoktorCombo';
         indexFieldName := 'sirketKod = ' + QuotedStr(_firmaKod_);
         cxPanel.Visible := false;
         cxGroupDoktorlar.Caption := 'Þube Bilgileri';
         cxGrid3.Dataset.BeforePost := ADOBeforePost;
         cxGrid3.Dataset.Connection := datalar.ADOConnection2;
-        cxGrid3.Dataset.SQL.Text := 'Select sirketKod,subeKod,subeTanim,subeSiciNo,subeDoktor,IGU,BolgeMudurlukSicilNo,MuayeneProtokolNo,DoktorCalismaDakika,IGUCalismaDakika ' +
+        cxGrid3.Dataset.SQL.Text := 'Select sirketKod,subeKod,subeTanim,subeSiciNo,subeDoktor,IGU,BolgeMudurlukSicilNo,MuayeneProtokolNo,DoktorCalismaDakika,IGUCalismaDakika,NaceKod,tehlikeSinifi ' +
                                     ' from SIRKET_SUBE_TNM where sirketKod = ' + QuotedStr(_firmaKod_);
         cxGrid3.Dataset.Open;
         DBGrid.ClearItems;
@@ -237,6 +269,13 @@ begin
       DBgrid.Columns[i].PropertiesClassName := 'TcxDateEditProperties';
      end;
 
+    if Tips[i] = 'ButtonEdit' then
+     begin
+      DBgrid.Columns[i].PropertiesClassName := 'TcxButtonEditProperties';
+      TcxButtonEditProperties(DBgrid.Columns[i].Properties).OnButtonClick := NaceKodPropertiesButtonClick;
+     end;
+
+
     if Tips[i] = 'ImageDoktorCombo' then
      begin
       if Columns[i] = 'subeDoktor' then
@@ -268,6 +307,22 @@ begin
           datalar.Ado_IGU.Next;
         end;
       end;
+
+      if Columns[i] = 'tehlikeSinifi' then
+      begin
+        DBgrid.Columns[i].PropertiesClassName := 'TcxImageComboBoxProperties';
+        TcxImageComboBoxProperties(DBgrid.Columns[i].Properties).Items.Clear;
+
+        datalar.ADO_TehlikeSiniflari.First;
+        while not datalar.ADO_TehlikeSiniflari.Eof do
+        begin
+          FItem := TcxImageComboBoxProperties(DBgrid.Columns[i].Properties).Items.add;
+          FItem.Value := datalar.ADO_TehlikeSiniflari.FieldByName('TehlikeSinifi').AsString;
+          FItem.Description := datalar.ADO_TehlikeSiniflari.FieldByName('tanimi').AsString;
+          datalar.ADO_TehlikeSiniflari.Next;
+        end;
+      end;
+
 
      end;
 
@@ -311,7 +366,7 @@ begin
 
   ado := TADOQuery.Create(nil);
   ado.Connection := datalar.ADOConnection2;
-  sql := 'select * from PopupDBGridFormTabloTanim where id = ' + txtTable.EditingValue;
+  sql := 'select * from PopupDBGridFormTabloTanim where id = ' + varToStr(txtTable.EditingValue);
   datalar.QuerySelect(ado,sql);
 
   TableName := ado.FieldByName('tableName').AsString;
