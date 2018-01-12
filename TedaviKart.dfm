@@ -26,18 +26,18 @@ object frmTedaviBilgisi: TfrmTedaviBilgisi
     Height = 517
     Width = 249
     object LeftPanelcxPageControl: TcxPageControl
-      Left = 2
-      Top = 18
-      Width = 245
-      Height = 497
+      Left = 3
+      Top = 15
+      Width = 243
+      Height = 492
       Align = alClient
       TabOrder = 0
-      Properties.ActivePage = cxTabHastaGelis
+      Properties.ActivePage = cxTabHastaListe
       Properties.TabPosition = tpBottom
-      ClientRectBottom = 473
-      ClientRectLeft = 4
-      ClientRectRight = 241
-      ClientRectTop = 4
+      ClientRectBottom = 462
+      ClientRectLeft = 3
+      ClientRectRight = 236
+      ClientRectTop = 3
       object cxTabHastaListe: TcxTabSheet
         Caption = 'Hasta Liste'
         ImageIndex = 0
@@ -49,10 +49,11 @@ object frmTedaviBilgisi: TfrmTedaviBilgisi
           Caption = 'Hasta Listesi  [ Salon Bilgisi ]'
           TabOrder = 0
           Height = 51
-          Width = 237
+          Width = 233
           object cxSalonBilgisi: TcxComboBox
-            Left = 2
-            Top = 18
+            Tag = -100
+            Left = 3
+            Top = 15
             Align = alClient
             Properties.DropDownListStyle = lsFixedList
             Properties.Items.Strings = (
@@ -64,14 +65,18 @@ object frmTedaviBilgisi: TfrmTedaviBilgisi
               'Salon 5')
             Properties.OnChange = cxSalonBilgisiPropertiesChange
             TabOrder = 0
-            Width = 233
+            ExplicitLeft = 2
+            ExplicitTop = -2
+            ExplicitWidth = 229
+            ExplicitHeight = 51
+            Width = 227
           end
         end
         object cxGrid2: TcxGrid
           Left = 0
           Top = 51
-          Width = 237
-          Height = 418
+          Width = 233
+          Height = 408
           Align = alClient
           TabOrder = 1
           object cxGridHastaListesi: TcxGridDBTableView
@@ -119,23 +124,29 @@ object frmTedaviBilgisi: TfrmTedaviBilgisi
       object cxTabHastaGelis: TcxTabSheet
         Caption = 'Personel Muayeneleri'
         ImageIndex = 1
+        ExplicitLeft = 0
+        ExplicitTop = 0
+        ExplicitWidth = 0
+        ExplicitHeight = 0
         object cxGroupBox2: TcxGroupBox
           Left = 0
           Top = 0
           Align = alClient
           Caption = 'Muayeneler'
           TabOrder = 0
-          Height = 469
-          Width = 237
+          Height = 459
+          Width = 233
           object cxGrid1: TcxGrid
             Left = 2
-            Top = 18
-            Width = 233
-            Height = 449
+            Top = -2
+            Width = 229
+            Height = 459
             Align = alClient
             TabOrder = 0
-            ExplicitTop = 5
-            ExplicitHeight = 462
+            ExplicitLeft = 3
+            ExplicitTop = 15
+            ExplicitWidth = 227
+            ExplicitHeight = 434
             object cxGridHastaGelis: TcxGridDBTableView
               OnFocusedRecordChanged = cxGridHastaGelisFocusedRecordChanged
               DataController.DataModeController.GridMode = True

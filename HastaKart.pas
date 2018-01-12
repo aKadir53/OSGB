@@ -100,6 +100,7 @@ type
     IseGirisMuayeneLevel1: TcxGridLevel;
     cxStyleRepository2: TcxStyleRepository;
     cxStyle3: TcxStyle;
+    A1: TMenuItem;
     procedure FormCreate(Sender: TObject);
     procedure cxKaydetClick(Sender: TObject);
     procedure cxButtonCClick(Sender: TObject);
@@ -137,6 +138,7 @@ type
     procedure FormShow(Sender: TObject);
     procedure SirketlerPropertiesChange(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
+    procedure ButtonClick(Sender: TObject);
   private
     { Private declarations }
   public
@@ -163,8 +165,26 @@ var
   kart : sqlType;
 
 implementation
-    uses AnaUnit, HastaAsiKArti,SMS;
+    uses AnaUnit, HastaAsiKArti,SMS,Anamnez;
 {$R *.dfm}
+
+
+
+
+procedure TfrmHastaKart.ButtonClick(Sender: TObject);
+var
+  F : TGirisForm;
+  GirisRecord : TGirisFormRecord;
+begin
+//  GirisRecord.F_firmaKod_ := TcxButtonEditKadir(FindComponent('SirketKod')).EditValue;
+//  GirisRecord.F_HastaAdSoyad_ := TcxTextEditKadir(FindComponent('tanimi')).EditValue;
+  F := FormINIT(TcxButtonKadir(sender).Tag,GirisRecord,ikHayir,'');
+  if F <> nil then F.ShowModal;
+  TcxImageComboKadir(FindComponent('bolum')).Filter := '';
+  TcxImageComboKadir(FindComponent('birim')).Filter := '';
+
+
+end;
 
 procedure TfrmHastaKart.SirketlerPropertiesChange(Sender: TObject);
 var
@@ -183,6 +203,18 @@ begin
   TcxImageComboKadir(FindComponent('Sube')).TableName := 'SIRKET_SUBE_TNM';
   TcxImageComboKadir(FindComponent('Sube')).Filter := ' SirketKod = ' +
   QuotedStr(varToStr(TcxImageComboKadir(FindComponent('SirketKod')).EditValue)) + sube;
+
+
+  if (TcxImageComboKadir(Sender).name = 'SirketKod') or
+     (TcxImageComboKadir(Sender).name = 'sube')
+  then
+  begin
+      TcxImageComboKadir(FindComponent('muayenePeryot')).EditValue :=
+      SirketSubeTehlikeSinifi(vartostr(TcxImageComboKadir(FindComponent('SirketKod')).EditValue),
+                              vartostr(TcxImageComboKadir(FindComponent('Sube')).EditValue));
+  end;
+
+
 
 end;
 
@@ -549,6 +581,15 @@ var
   filter : string;
 begin
   inherited;
+
+  if (TcxImageComboKadir(Sender).name = 'SirketKod') or
+     (TcxImageComboKadir(Sender).name = 'Sube')
+  then
+  begin
+      TcxImageComboKadir(FindComponent('muayenePeryot')).EditValue :=
+      SirketSubeTehlikeSinifi(vartostr(TcxImageComboKadir(FindComponent('SirketKod')).EditValue),
+                              vartostr(TcxImageComboKadir(FindComponent('Sube')).EditValue));
+  end;
 
   if TcxImageComboKadir(sender).Name = 'EV_SEHIR'
   then begin
@@ -920,6 +961,7 @@ var
   DEV_KURUM,Kurum,EGITIM : TcxImageComboKadir;
   askerlik,ozur,bolum,birim,risk,muayenePeryot,Subeler,sirketlerx,SirketKodNew: TcxImageComboKadir;
   where,sube : string;
+  bolumEkle,birimEkle : TcxButtonKadir;
 begin
   USER_ID.Tag := 0;
   //sirketKod.Tag := 0;
@@ -1048,6 +1090,7 @@ begin
   setDataStringKontrol(self,subeler,'sube','Þube',Kolon2,'',120);
  // OrtakEventAta(subeler);
   sirketlerx.Properties.OnEditValueChanged := SirketlerPropertiesChange;
+  subeler.Properties.OnEditValueChanged := SirketlerPropertiesChange;
 
   setDataString(self,'SicilNo','Sigorta No',Kolon2,'',70);
   setDataStringBLabel(self,'BosSatir1',Kolon2,'',10);
@@ -1172,8 +1215,9 @@ begin
   bolum.DisplayField := 'tanimi';
   bolum.Filter := '';
   bolum.BosOlamaz := True;
-  setDataStringKontrol(self,bolum,'bolum','Bölümü',kolon3,'',120);
+  setDataStringKontrol(self,bolum,'bolum','Bölümü',kolon3,'bolumGrp',120);
   OrtakEventAta(bolum);
+  addButton(self,nil,'btnBolum','','Ekle',Kolon3,'bolumGrp',50,ButtonClick,TagfrmBolum*-1);
 
   birim := TcxImageComboKadir.Create(self);
   birim.Conn := Datalar.ADOConnection2;
@@ -1182,8 +1226,9 @@ begin
   birim.DisplayField := 'tanimi';
   birim.Filter := '';
   birim.BosOlamaz := True;
-  setDataStringKontrol(self,birim,'birim','Birimi',kolon3,'',120);
+  setDataStringKontrol(self,birim,'birim','Birimi',kolon3,'birimGrp',120);
   OrtakEventAta(birim);
+  addButton(self,nil,'btnBirim','','Ekle',Kolon3,'birimGrp',50,ButtonClick,TagfrmBirim*-1);
 
 
 
@@ -1314,7 +1359,12 @@ begin
           HastaGelis (dosyaNo.Text, ADO_Gelisler);
           TcxImageComboKadir(FindComponent('SirketKod')).EditValue := datalar.AktifSirket;
           TcxImageComboKadir(FindComponent('Sube')).EditValue :=
-          ifThen(datalar.AktifSube = '','00',datalar.AktifSube);
+          ifThen(datalar.AktifSube = '','00',ifThen(pos(',',datalar.AktifSube) > 0,'00',datalar.AktifSube));
+
+          TcxImageComboKadir(FindComponent('muayenePeryot')).EditValue :=
+          SirketSubeTehlikeSinifi(vartostr(TcxImageComboKadir(FindComponent('SirketKod')).EditValue),
+                                  vartostr(TcxImageComboKadir(FindComponent('Sube')).EditValue));
+
           if IsNull (TcxLabel(FindComponent('LabelSirketKod')).Caption) then
             TcxLabel(FindComponent('LabelSirketKod')).Caption := datalar.AktifSirket;
           TcxImageComboBox (FindComponent ('Aktif')).ItemIndex := 2;//aktif pasif yeni  kombosu yeni kayýtta Yeni deðeri varsayýlan olacak.
@@ -1465,6 +1515,13 @@ begin
 
  -50 : begin
           FotoEkle;
+       end;
+
+ -51 : begin
+            GirisFormRecord.F_dosyaNO_ := dosyaNO.Text;
+            GirisFormRecord.F_gelisNO_ := ADO_Gelisler.FieldByName('gelisNo').AsString;
+            F := FormINIT(TagfrmAnamnez,GirisFormRecord,ikEvet,'');
+            if F <> nil then F.ShowModal;
        end;
 
  130 : begin
