@@ -687,7 +687,7 @@ begin
                                 case DoktorReceteMedulaGonderimTip(_d_) of
                                  imzali :  Sonuc := ReceteImzalaGonder;
                                  imzasiz : Sonuc := ReceteGonder;
-                                          end;
+                                end;
 
                                 if Copy(Sonuc,1,4) = '0000'
                                 then begin
@@ -750,7 +750,7 @@ begin
    if (ADO_Recete.FieldByName('ereceteNo').AsString = '') or
       (ADO_Recete.FieldByName('ereceteNo').AsString = '0000') Then
    Begin
-     if MrYes = ShowMessageSkin('Reçete Ýptal Ediliyor Eminmisiniz ?','','','msg') Then
+     if MrYes = ShowMessageSkin('Reçete Ýptal Ediliyor Emin misiniz ?','','','msg') Then
      Begin
        ado := TADOQuery.Create(nil);
        try
@@ -845,7 +845,7 @@ begin
           songel := _gelisNo_;
         end;
 
-        if mrYes = ShowMessageSkin('Reçeteden Reçete Üretilecek , Eminmisiniz?','','','msg')
+        if mrYes = ShowMessageSkin('Reçeteden Reçete Üretilecek , Emin misiniz?','','','msg')
         then begin
           try
            ado := TADOQuery.Create(nil);
@@ -1018,7 +1018,7 @@ procedure TfrmHastaRecete.TaniEkle;
 var
   List : ArrayListeSecimler;
   I : integer;
-  sql,id : string;
+  sql : string;
   ado : TADOQuery;
 begin
    TaniListe.Where := ifThen(cxChkSIK.Checked,'Sikkullan > 0','');
@@ -1175,7 +1175,7 @@ begin
    if (ADO_Recete.FieldByName('ereceteNo').AsString = '0000') or
       (ADO_Recete.FieldByName('ereceteNo').AsString = '')
    Then
-     if MrYes = ShowMessageSkin('Ýlaç Reçeteden Çýkartýlýyor Eminmisiniz ?','','','msg')
+     if MrYes = ShowMessageSkin('Ýlaç Reçeteden Çýkartýlýyor Emin misiniz ?','','','msg')
      Then Begin
         ado := TADOQuery.Create(nil);
         try
@@ -1331,7 +1331,7 @@ procedure TfrmHastaRecete.cxButtonKadirAckSilClick(Sender: TObject);
 begin
   inherited;
   if not CheckReceteStatus (True, False, True) then Exit;
-   ADO_receteAcikla.Delete;
+  ADO_receteAcikla.Delete;
 end;
 
 procedure TfrmHastaRecete.cxButtonKadirIlacAckEkleClick(Sender: TObject);
@@ -1445,7 +1445,7 @@ begin
            if (ADO_Recete.FieldByName('ereceteNo').AsString = '0000') or
               (ADO_Recete.FieldByName('ereceteNo').AsString = '')
            Then
-             if MrYes = ShowMessageSkin('Ýlaç Reçeteden Çýkartýlýyor Eminmisiniz ?','','','msg')
+             if MrYes = ShowMessageSkin('Ýlaç Reçeteden Çýkartýlýyor Emin misiniz ?','','','msg')
              Then Begin
                 ado := TADOQuery.Create(nil);
                 try
