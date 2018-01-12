@@ -159,7 +159,7 @@ begin
 
   case Tcontrol(sender).tag of
  -1 : begin
-          F := FormINIT(TagfrmHastaIlacTedavi,GirisFormRecord,ikEvet,'Giriþ');
+          F := FormINIT(TagfrmHastaIlacTedavi,GirisFormRecord,ikEvet,'');
           if F <> nil then F.ShowModal;
       end;
  -2 : begin
@@ -167,7 +167,7 @@ begin
       end;
 
  -7 : begin
-          F := FormINIT(TagfrmHastaRecete,GirisFormRecord,ikEvet,'Giriþ');
+          F := FormINIT(TagfrmHastaRecete,GirisFormRecord,ikEvet,'');
           if F <> nil then F.ShowModal;
        // ReceteForm(ado_BransKodlari.FieldByName('dosyaNo').AsString,ado_BransKodlari.FieldByName('gelisNo').AsString);
       end;

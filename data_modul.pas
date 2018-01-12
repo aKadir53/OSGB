@@ -309,6 +309,8 @@ type
     LoginInOut: Tlogin;
     Ado_IGU: TADOQuery;
     IGU_DataSource: TDataSource;
+    TehlikeSiniflari_DataSource: TDataSource;
+    ADO_TehlikeSiniflari: TADOQuery;
     procedure pcarihareketlerAfterScroll(DataSet: TDataSet);
     procedure TempConnectionAfterConnect(Sender: TObject);
     procedure TakipHTTPWebNode1BeforePost(const HTTPReqResp: THTTPReqResp;

@@ -661,7 +661,7 @@ object frmHastaKart: TfrmHastaKart
     end
   end
   object PopupMenu1: TPopupMenu
-    Images = DATALAR.imag32png
+    Images = DATALAR.imag24png
     Left = 72
     Top = 64
     object Kapat1: TMenuItem
@@ -716,6 +716,12 @@ object frmHastaKart: TfrmHastaKart
       Caption = 'Hasta Raporlar'#305
       ImageIndex = 98
       Visible = False
+      OnClick = cxButtonCClick
+    end
+    object A1: TMenuItem
+      Tag = -51
+      Caption = 'Anamnez'
+      ImageIndex = 56
       OnClick = cxButtonCClick
     end
     object N2: TMenuItem
