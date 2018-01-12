@@ -53,7 +53,7 @@ type
     FInitialColumnHeaders : TStringList;
     FAcceptedColumnHeaders : TStringList;
     FAssignedColumnIndexes : array of Integer;
-    procedure GridAlanEslestirme (pMsg: Boolean = True);
+    procedure GridAlanEslestirme (const pReset : Boolean; pMsg: Boolean = True);
     function GridAtanmisSutunDegerAyarlaGetir (const aGrid: TStringGrid; const ACol, ARow : Integer):String;
     function GridBaslikAyarla (const S: String; const iNumber : Integer) : String;
     procedure GridSoyadiAyarla;
@@ -180,7 +180,7 @@ begin
 end;
 
 
-procedure TfrmHizliKayit.GridAlanEslestirme (pMsg: Boolean = True);
+procedure TfrmHizliKayit.GridAlanEslestirme (const pReset : Boolean; pMsg: Boolean = True);
 var
   aStringList : TStringList;
   i, j: Integer;
@@ -194,6 +194,10 @@ begin
                         '', '', 'conf') <> mrYes then Exit;
   aStringList := TStringList.create;
   try
+    if pReset then
+      for i := 0 to GridList.ColCount - 1 do
+        GridList.Cells [i, 0] := GridBaslikAyarla ('[' + GridList.Cells [i, 0] + ']', i);
+
     for i := 0 to GridList.ColCount - 1 do
       GridList.Cells [i, 0] := GridBaslikAyarla (GridList.Cells [i, 0], i);
     //ÜÖ 20180105 Gride yüklenen excrl dosyasýnda ayný baþlýklý sütunlar varsa farklýlaþtýr, ileride eþleþmelerde problem çýkarmasýn.
@@ -381,7 +385,7 @@ begin
       ShowMessageSkin('Aktif þube seçmeden personel aktarýmý yapamazsýnýz.'#13#10'Personeller, seçili þubeye aktarýlacak.', '', '', 'info');
       Exit;
     end;
-    if not FAlanEslestirmeYapildi then GridAlanEslestirme(False);
+    if not FAlanEslestirmeYapildi then GridAlanEslestirme (False, False);
     bBasarili := False;
     iCount := 0;
     iRowC := 0;
@@ -612,7 +616,7 @@ begin
           GridToPersonelKartTable;
         end;
     4: begin
-      GridAlanEslestirme;
+      GridAlanEslestirme (True);
        end;
     5: GridSoyadiAyarla;
     6: TanimliOtomatikAktarim;
