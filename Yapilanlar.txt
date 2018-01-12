@@ -108,4 +108,11 @@ güncelleme formunda iþlem göstergesi gözüküp kaybolunca formActivate eventi tekr
 otomatik excel aktarým altyapýsýna tabloyu boþalt alaný eklendi. 0 ise boþaltmadan ekleyecek. 1 ise boþaltarak ekleyecek, null ise her seferinde soracak
 otomatik excel aktarým altyapýsýna aktarým sonrasýnda çalýþtýrýlacak bir sp varsa tanýmlanabilmesi için alan eklendi
 PERSONEL LÝSTESÝ ÝKÝ buton reçete ve muayene formu disable yapýldý
-
+excel aktarýmýnda ekrandaki ve veritabanýndaki çift tckimlik numarasý kontrolleri. farklý firmada ve þubde varsa uyarý ver kabul ederse devam et, ayný þirket þubede varsa uyarý ver devam etme, pasifse aktif hale getirilebilir.
+Personel aktarýrken þube seçili deðilse hata verdirildi.
+Firma logo ekleyince þirket kodu null olamaz hatasý veriyordu veritabaný, append'den sonra þirket kodu atamasý yapýldý
+E-imzasýz reçete gönderme özelliði açýldý (kadir)
+Osgb doktoru kendine baðlý olmayan firma personelinin tamamýný görsün diyor Zafer Bey. Osgb polikliniði için lazým. doktorlar için personelim olmayan personel arama gibi birþey ekleyebiliriz (kadir yapmýþ)
+Personel kartýnda bazý bilgiler boþ ise yeni muayene açarken hata veriyor.(kadir düzeltmiþti)
+muayene kartýnda doktor seçimi gerekebilir. (kadir eklemiþti)
+user kartlarýnda pasife çekme ve pasif kullanýcýnýn girememesi lazým demiþiz. þifresi boþ olan kullanýcýlar pasif sayýldý. ayrýca alan eklemedik.
