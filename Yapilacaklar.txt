@@ -151,28 +151,11 @@ Mobil uygulama Þirket seçim ekraný en alt satýr baþlat menüsü altýnda kalýyor.
 
 Doktor yetkileri kopyaladýk uzman'dan fakat yetkisiz çýktý.
 
-Personel aktarýrken þube seçili deðilse hata.
-
-Firma logo ekleyince þirket kodu null olamaz hatasý veriyor veritabaný
-
-E-imzasýz reçete gönderme özelliði açýlacak.
-
-Osgb doktoru kendine baðlý olmayan firma personelinin tamamýný görsün diyor Zafer Bey. Osgb polikliniði için lazým.
-
-doktorlar için personelim olmayan personel arama gibi birþey ekleyebiliriz
-
-Personel kartýnda bazý bilgiler boþ ise yeni muayene açarken hata veriyor.
-
-muayene kartýnda doktor seçimi gerekebilir.
-
-Burada karýþmasýn iki farklý hata var. Biri giren User Admin gibi doktor olmayan bir User ise geliþ tablosu doktor alanýna null atmaya çalýþýp hata veriyor. Diðer hata null olestr hatasý. Bu personel kartýnda bazý bilgiler boþ ise her durumda çýkýyor.
 muayene giriþi zorunlu yapýlabilir, zorunlu olup olmamasý osgb'nin program ayarlarýndan seçebileceði bir hale getirilebilir mi.
 
 hastalarýn mevcut saðlýk, tahlil vb bilgileri, önceden yapýlmýþ iþe giriþ muayene formlarý (ek-2) sisteme aktarýlabilir mi ?
 admin þifreleri deðiþtir
 formlarýn enabled disabled durumlarý kontrol edilecek
-excel aktarýmýnda ekrandaki ve veritabanýndaki çift tckimlik numarasý kontrolleri. farklý firmada ve þubde varsa uyarý ver kabul ederse devam et, ayný þirket þubede varsa uyarý ver devam etme, pasifse aktif hale getirilebilir.
-user kartlarýnda pasife çekme ve pasif kullanýcýnýn girememesi lazým
 
 Tek_osgb._-_drarzu (286675759) > MONTAJ ELEMANI- ÜRETÝM ELEMANI-PRESHANE ELEMAN-CNC OPERATÖRÜ-MAKÞNE OPERATÖRÜ-AÞÇI-MUTFAK ELEMANI
 Tek_osgb._-_drarzu (286675759) > GÝBÝ BÝR SÜRÜ ÇALIÞAN GRUPLARI EKLENMELÝ
@@ -199,3 +182,4 @@ müþteri tablosundaki 4 haneli kodlarýn vergi kimlik numarasý gibi bir þey
 personel eklerken user doktorsa yeni deðil aktif default olabilir.
 isg katip exceline þube açýklamasý ve firma ünvaný birleþtirme ve ayýrmaya yarayan sütunlar eklenecek
 þirket birleþtir þube ayýr menüsü eklenebilir.
+userGroups gridinden grup silerken beforeDelete'de usergroupsettings ve usergroupmenusettings tablolarýndan data siliyor, fakat users'ta o grupta bir kullanýcý varsa foreign key çakýyor. yetki tanýmlarý silinmiþ olarak kalýyor
