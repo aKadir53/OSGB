@@ -233,7 +233,7 @@ type
     procedure addButton(sender : Tform ;cxButton:TcxButtonKadir;
                         Name ,captionItem,captionButton: string; parent : TdxLayoutGroup;
                         grup : string;uzunluk : integer;
-                        Event : TNotifyEvent = nil);
+                        Event : TNotifyEvent = nil;Tag : integer = 0);
     procedure addButtonTopPanel(sender : Tform ; Name,caption: string ; uzunluk,Tag : integer; Event : TNotifyEvent = nil);
     procedure setDataImage(sender : Tform; Name ,captionItem : string; parent : TdxLayoutGroup; grup : string;uzunluk,yukseklik : integer);
     procedure setDataStringChk(sender : Tform ; fieldName,caption : string;
@@ -1340,7 +1340,7 @@ end;
 procedure TGirisForm.addButton(sender : Tform;cxButton : TcxButtonKadir; Name ,
                               captionItem,captionButton: string; parent : TdxLayoutGroup;
                               grup : string;uzunluk : integer;
-                              Event : TNotifyEvent = nil);
+                              Event : TNotifyEvent = nil;Tag : integer = 0);
 var
 //  cxButton : TcxButton;
   dxLa : TdxLayoutItem;
@@ -1354,6 +1354,7 @@ begin
 
   cxButton.ButtonName := Name;
   cxButton.Caption := captionButton;
+  cxButton.Tag := Tag;
   dxLa := TdxLayoutGroup(parent).CreateItemForControl(cxButton);
   dxLa.Name := 'dxLaB'+Name;
   dxLa.AlignHorz := ahLeft;
@@ -1506,6 +1507,7 @@ begin
   cxEdit.OnEnter := cxEditEnter;
   cxEdit.OnExit := cxEditExit;
   cxEdit.OnKeyDown := cxTextEditKeyDown;
+  cxEdit.Properties.OnEditValueChanged := PropertiesEditValueChanged;
 end;
 
 

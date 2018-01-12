@@ -119,6 +119,20 @@ begin
                                    frmHastaTetkikEkle.Sonuclar;
                                 end;
 
+        TagfrmAnamnez :         begin
+                                    Kolon2.Visible := False;
+                                    Kolon3.Visible := False;
+                                    Kolon4.Visible := False;
+
+                                    ClientWidth := 850;
+                                    ClientHeight := 560;
+                                    cxPanel.Visible := True;
+                                    cxYeni.Visible := False;
+                                    cxIptal.Visible := False;
+                                    indexFieldName := 'dosyaNo = ' + _dosyaNO_ + ' and  gelisNo = ' + _gelisNo_ ;
+                                    yukle;
+                                    sqlRunLoad;
+                                end;
 
 
       end;

@@ -545,6 +545,7 @@ Const
   TagfrmLabParametreleri = 690;
   TagfrmLabKabul = 700;
   TagfrmLabSonucGir = 710;
+  TagfrmAnamnez = 720;
 
   ExceleGonder = 9997;
   SeansTarihiUpdate = 0;
