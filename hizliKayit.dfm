@@ -269,7 +269,7 @@ object frmHizliKayit: TfrmHizliKayit
     end
     object miAlanEslestir: TMenuItem
       Tag = 4
-      Caption = 'Alan E'#351'le'#351'tir'
+      Caption = 'Otomatik Alan E'#351'le'#351'tirmeyi Gözard'#305' Et ve Ba'#351'tan Yap'
       ImageIndex = 80
       OnClick = cxButtonCClick
     end
