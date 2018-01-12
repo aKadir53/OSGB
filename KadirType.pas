@@ -454,6 +454,7 @@ type
     F_sp_ : string;
     F_kod_ : string;
     F_sube_ : string;
+    F_MuayeneProtokolNo_ : string;
   End;
 
   TSifreDegistir = record

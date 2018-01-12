@@ -188,6 +188,7 @@ type
     F_kod_ : string;
     F_sube_ : string;
     F_SahaDenetimVeri_ : TSahaDenetimler;
+    F_MuayeneProtokolNo_ : string;
   protected
     F_IDENTITY : Integer;
     { Private declarations }
@@ -281,6 +282,7 @@ type
     property _kod_ : string read F_kod_ write F_kod_;
     property _sube_ : string read F_sube_ write F_sube_;
     property _SahaDenetimVeri_ : TSahaDenetimler read F_SahaDenetimVeri_ write F_SahaDenetimVeri_;
+     property _MuayeneProtokolNo_ : string read F_MuayeneProtokolNo_ write F_MuayeneProtokolNo_;
   end;
 
 const
