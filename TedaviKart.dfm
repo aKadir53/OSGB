@@ -32,7 +32,7 @@ object frmTedaviBilgisi: TfrmTedaviBilgisi
       Height = 492
       Align = alClient
       TabOrder = 0
-      Properties.ActivePage = cxTabHastaListe
+      Properties.ActivePage = cxTabHastaGelis
       Properties.TabPosition = tpBottom
       ClientRectBottom = 462
       ClientRectLeft = 3
@@ -65,10 +65,6 @@ object frmTedaviBilgisi: TfrmTedaviBilgisi
               'Salon 5')
             Properties.OnChange = cxSalonBilgisiPropertiesChange
             TabOrder = 0
-            ExplicitLeft = 2
-            ExplicitTop = -2
-            ExplicitWidth = 229
-            ExplicitHeight = 51
             Width = 227
           end
         end
@@ -79,6 +75,8 @@ object frmTedaviBilgisi: TfrmTedaviBilgisi
           Height = 408
           Align = alClient
           TabOrder = 1
+          ExplicitLeft = 120
+          ExplicitTop = 54
           object cxGridHastaListesi: TcxGridDBTableView
             OnDblClick = cxGridHastaListesiDblClick
             OnFocusedRecordChanged = cxGridHastaListesiFocusedRecordChanged
@@ -124,10 +122,6 @@ object frmTedaviBilgisi: TfrmTedaviBilgisi
       object cxTabHastaGelis: TcxTabSheet
         Caption = 'Personel Muayeneleri'
         ImageIndex = 1
-        ExplicitLeft = 0
-        ExplicitTop = 0
-        ExplicitWidth = 0
-        ExplicitHeight = 0
         object cxGroupBox2: TcxGroupBox
           Left = 0
           Top = 0
@@ -137,16 +131,12 @@ object frmTedaviBilgisi: TfrmTedaviBilgisi
           Height = 459
           Width = 233
           object cxGrid1: TcxGrid
-            Left = 2
-            Top = -2
-            Width = 229
-            Height = 459
+            Left = 3
+            Top = 15
+            Width = 227
+            Height = 434
             Align = alClient
             TabOrder = 0
-            ExplicitLeft = 3
-            ExplicitTop = 15
-            ExplicitWidth = 227
-            ExplicitHeight = 434
             object cxGridHastaGelis: TcxGridDBTableView
               OnFocusedRecordChanged = cxGridHastaGelisFocusedRecordChanged
               DataController.DataModeController.GridMode = True
@@ -194,6 +184,14 @@ object frmTedaviBilgisi: TfrmTedaviBilgisi
                   end>
                 HeaderAlignmentHorz = taCenter
                 Width = 77
+              end
+              object cxGridHastaGelisColumn1: TcxGridDBColumn
+                Caption = 'Protokol No'
+                DataBinding.FieldName = 'PROTOKOLNO'
+                PropertiesClassName = 'TcxTextEditProperties'
+                Properties.Alignment.Horz = taCenter
+                Properties.Alignment.Vert = taVCenter
+                HeaderAlignmentHorz = taCenter
               end
             end
             object cxGrid1Level1: TcxGridLevel

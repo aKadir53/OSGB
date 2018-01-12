@@ -330,6 +330,7 @@ begin
    TGirisForm(Form)._SeansSira_ := Values.F_SeansSira_;
    TGirisForm(Form)._sube_ := Values.F_Sube_;
    TGirisForm(Form)._firmaKod_ := Values.F_firmaKod_;
+   TGirisForm(Form)._MuayeneProtokolNo_ := Values.F_MuayeneProtokolNo_;
 
    TGirisForm(Form).Tag := FormTag;
    TgirisForm(Form).Parent := Tab;
@@ -491,6 +492,7 @@ begin
   TGirisForm(Form)._sp_ := Value.F_sp_;
   TGirisForm(Form)._kod_ := Value.F_kod_;
   TGirisForm(Form)._sube_ := Value.F_sube_;
+  TGirisForm(Form)._MuayeneProtokolNo_ := Value.F_MuayeneProtokolNo_;
 
   TgirisForm(Form).Caption := FormCaption(abs(FormTag)) + ' - ' + FormAltCaption(abs(FormTag));
   if ik = ikEvet

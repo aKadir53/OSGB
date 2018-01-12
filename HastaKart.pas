@@ -101,6 +101,7 @@ type
     cxStyleRepository2: TcxStyleRepository;
     cxStyle3: TcxStyle;
     A1: TMenuItem;
+    cxGridGelislerPROTOKOLNO: TcxGridDBBandedColumn;
     procedure FormCreate(Sender: TObject);
     procedure cxKaydetClick(Sender: TObject);
     procedure cxButtonCClick(Sender: TObject);
@@ -402,7 +403,7 @@ end;
 
 procedure TfrmHastaKart.gelisAc;
 var
-  sql , Gelis , error , TedaviTuru : string;
+  sql , Gelis , error , TedaviTuru ,protokolNo : string;
   _tarih_ : Tdate;
 begin
 
@@ -443,6 +444,8 @@ begin
    *)
 
 
+   protokolNo := EnsonSeansProtokolNo(vartostr(TcxImageComboKadir(FindComponent('SirketKod')).EditValue),
+                                      vartostr(TcxImageComboKadir(FindComponent('Sube')).EditValue));
 
    sql := 'exec sp_GelisKaydet ' +
           '@dosyaNo = ' + #39 + dosyaNo.Text + #39 + ',' +
@@ -452,7 +455,8 @@ begin
           '@SERVIS = ' + #39 + '' + #39 + ',' +
           '@TEDAVITURU = ' + #39 + TedaviTuru + #39 + ',' +
           '@Kullanici = ' + #39 + datalar.username + #39 + ',' +
-          '@sirketKod = ' + QuotedStr(TcxImageComboKadir(FindComponent('SirketKod')).EditValue);
+          '@sirketKod = ' + QuotedStr(TcxImageComboKadir(FindComponent('SirketKod')).EditValue) + ',' +
+          '@PN = ' + protokolNo;
 
 
      datalar.QuerySelect(datalar.ADO_SQL,sql);
@@ -1395,6 +1399,7 @@ begin
 
   GirisFormRecord.F_dosyaNo_ := dosyaNo.Text;
   GirisFormRecord.F_gelisNo_ := ADO_Gelisler.FieldByName('gelisNo').AsString;
+  GirisFormRecord.F_MuayeneProtokolNo_ := ADO_Gelisler.FieldByName('PROTOKOLNO').AsString;
   GirisFormRecord.F_provizyonTarihi_ := NoktasizTarih(ADO_Gelisler.FieldByName('Tarih').AsString);
   GirisFormRecord.F_TC_ := sqlRun.FieldByName('TCKimlikNo').AsString;
   GirisFormRecord.F_Doktor_ := ADO_Gelisler.FieldByName('doktor').AsString;
@@ -1527,7 +1532,7 @@ begin
  130 : begin
           datalar.HastaBil.dosyaNO := dosyaNo.Text;
           datalar.HastaBil.gelisNo := _gelisNo_;
-          F := FormINIT(TagfrmHastaRecete,GirisFormRecord,ikEvet,'Giriþ');
+          F := FormINIT(TagfrmHastaRecete,GirisFormRecord,ikEvet,'');
           if F <> nil then F.ShowModal;
 
        end;
