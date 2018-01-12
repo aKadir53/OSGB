@@ -8614,7 +8614,7 @@ begin
       aLabel.name := 'label1';
       aLabel.Caption := sComboCaption;
       aLabel.Left := 0;
-      aLabel.Top := 10;
+      aLabel.Top := 16;
       aLabel.AutoSize := True;
       aLabel.AutoSize := False;
 
@@ -8623,7 +8623,7 @@ begin
       aComboBox.name := 'cb1';
       aComboBox.Left := aLabel.Left + aLabel.Width + 2;
       aComboBox.Top := 10;
-      aComboBox.Width := 150;
+      aComboBox.Width := 200;
       aComboBox.Items.Text := sItemsList;
       aComboBox.Style := csDropDownList;
       aComboBox.ItemIndex := iItemIndex;
