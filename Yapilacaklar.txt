@@ -184,3 +184,5 @@ isg katip exceline þube açýklamasý ve firma ünvaný birleþtirme ve ayýrmaya yaray
 þirket birleþtir þube ayýr menüsü eklenebilir.
 userGroups gridinden grup silerken beforeDelete'de usergroupsettings ve usergroupmenusettings tablolarýndan data siliyor, fakat users'ta o grupta bir kullanýcý varsa foreign key çakýyor. yetki tanýmlarý silinmiþ olarak kalýyor
 þifre minimum 6 karakter en az 1 harf gibi kontroller
+doktor tanýmlarýnda seçim kutusunda kullanýcý doktor ise dpoktor filtresi ekleyip doktorlara kendi ayarlarýný deðiþtirebilme imkâný verilebilir
+muayene eklerken view'dan almýyor türleri
