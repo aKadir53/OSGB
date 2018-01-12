@@ -46,6 +46,7 @@ type
     AdoHastaGelisDataSource: TDataSource;
     TC: TcxGridDBColumn;
     ProvizyonTarihi: TcxGridDBColumn;
+    cxGridHastaGelisColumn1: TcxGridDBColumn;
     procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
@@ -103,11 +104,13 @@ begin
       datalar.HastaBil.Tarih := tarihal(AdoHastaGelis.FieldByName('Tarih').AsDateTime);
       self._gelisNO_ := AdoHastaGelis.FieldByName('gelisNo').AsString;
       self._provizyonTarihi_ := AdoHastaGelis.FieldByName('Tarih').AsString;
+      self._MuayeneProtokolNo_ := AdoHastaGelis.FieldByName('PROTOKOLNO').AsString;
 
       case TfrmTedaviBilgisi(self).Tag of
         TagfrmHastaRecete :     begin
                                    frmHastaRecete._dosyaNO_ := self._dosyaNO_;
                                    frmHastaRecete._gelisNO_ := self._gelisNO_;
+                                   frmHastaRecete._MuayeneProtokolNo_ := self._MuayeneProtokolNo_;
                                    frmHastaRecete.ReceteGetir(self._dosyaNO_,self._gelisNO_);
                                    frmHastaRecete._provizyonTarihi_ := self._provizyonTarihi_;
                                 end;
