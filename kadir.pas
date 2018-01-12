@@ -1157,7 +1157,7 @@ function HastaGelisSelect(dosyaNo : string ; var ado : TADOQuery) : integer;
 var
   sql : string;
 begin
-   sql := 'select top 24 dosyaNo,gelisNo,cast(BHDAT as Datetime) Tarih,TakýpNo TakIpNo,TEDAVITURU from gelisler where dosyaNo = ' + QuotedStr(dosyaNo) + ' order by BHDAT desc';
+   sql := 'select top 24 dosyaNo,gelisNo,cast(BHDAT as Datetime) Tarih,TakýpNo TakIpNo,TEDAVITURU,PROTOKOLNO from gelisler where dosyaNo = ' + QuotedStr(dosyaNo) + ' order by BHDAT desc';
    datalar.QuerySelect(ado,sql);
    HastaGelisSelect := ado.RecordCount;
 end;

@@ -802,7 +802,7 @@ var
 begin
     datalar.YeniRecete.doktor := datalar.doktorKodu;
     datalar.YeniRecete.doktorAdi := doktorAdi(datalar.doktorKodu);
-    datalar.YeniRecete.protokolNo := EnsonSeansProtokolNo(_firmaKod_,_sube_);
+    datalar.YeniRecete.protokolNo := _MuayeneProtokolNo_; //EnsonSeansProtokolNo(_firmaKod_,_sube_);
     datalar.YeniRecete.Tarih := datetostr(date);
     datalar.YeniRecete.ReceteTuru := '1';
     datalar.YeniRecete.ReceteAltTuru := '1';
@@ -1020,7 +1020,6 @@ var
   I : integer;
   sql : string;
   ado : TADOQuery;
-  id : String;
 begin
    TaniListe.Where := ifThen(cxChkSIK.Checked,'Sikkullan > 0','');
    TaniListe.SkinName := AnaForm.dxSkinController1.SkinName;
