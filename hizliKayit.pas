@@ -136,7 +136,7 @@ begin
 
   GridList.LoadFromXLS(dosya);
   FFileName := dosya;
-  if FAlanEslestirmeYapildi then GridAlanEslestirme(False);
+  FAlanEslestirmeYapildi := False;
 
 
 (*
@@ -381,6 +381,7 @@ begin
       ShowMessageSkin('Aktif þube seçmeden personel aktarýmý yapamazsýnýz.'#13#10'Personeller, seçili þubeye aktarýlacak.', '', '', 'info');
       Exit;
     end;
+    if not FAlanEslestirmeYapildi then GridAlanEslestirme(False);
     bBasarili := False;
     iCount := 0;
     iRowC := 0;
@@ -655,5 +656,4 @@ begin
   FAlanEslestirmeYapildi := False;
 end;
 isg katip excel'ini programdan aktarma
-
 end.
