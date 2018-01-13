@@ -529,17 +529,17 @@ procedure TfrmHizliKayit.TanimliOtomatikAktarim;
 var
   aQuery : TADOQuery;
   sAktarimSonrasiStoredProc, sItems, sTableName : String;
-  aSL1, aSL2, aSL3 : TStringList;
+  aHedefAlanlar, aBasliginHedefAlani, aAramaBasliklari, aSecilenAlanlar : TStringList;
   iAktarimTanimID : Integer;
   bHedefTabloyuBosalt : Boolean;
-
+  aSecilenIndexler : TIntegerArray;
 begin
   aQuery := TADOQuery.Create (Self);
   try
     aQuery.Connection := DATALAR.ADOConnection2;
     aQuery.SQL.Text := 'Select * From DisAktarimTanim Where Otomatik = 1 order by ID';
     aQuery.Open;
-    aSL1 := TStringList.Create;
+    aHedefAlanlar := TStringList.Create;
     try
       sItems := '';
       while not aQuery.Eof do
@@ -569,21 +569,21 @@ begin
         'from DisAktarimBaglanti'#13#10 +
         'where AktarimTanimID = ' + IntToStr (iAktarimTanimID) + ''#13#10 +
         'order by ID';
-      aSL2 := TStringList.Create;
+      aBasliginHedefAlani := TStringList.Create;
       try
-        aSL3 := TStringList.Create;
+        aAramaBasliklari := TStringList.Create;
         try
-          aSL1.Clear;
+          aHedefAlanlar.Clear;
           aQuery.Open;
           while not aQuery.Eof do
           begin
-            if aSL1.IndexOf (aQuery.FieldByName('HedefAlanAdi').AsString) < 0 then
-              aSL1.Add(aQuery.FieldByName('HedefAlanAdi').AsString);
-            aSL2.Add(aQuery.FieldByName('HedefAlanAdi').AsString);
-            aSL3.Add(aQuery.FieldByName('KaynakBaslik').AsString);
+            if aHedefAlanlar.IndexOf (aQuery.FieldByName('HedefAlanAdi').AsString) < 0 then
+              aHedefAlanlar.Add(aQuery.FieldByName('HedefAlanAdi').AsString);
+            aBasliginHedefAlani.Add(aQuery.FieldByName('HedefAlanAdi').AsString);
+            aAramaBasliklari.Add(aQuery.FieldByName('KaynakBaslik').AsString);
             aQuery.Next;
           end;
-          if aSL1.Count <= 0 then
+          if aHedefAlanlar.Count <= 0 then
           begin
             ShowMessageSkin('Aktarým Tipi için Alan - Baþlýk eþleþtirmesi hiç yapýlmamýþ', '', '', 'info');
             Exit;
@@ -592,15 +592,20 @@ begin
           //ortalýðýn...
 
   dialogs.showmessage ('');
-          //þ
+          if not GridAlanEslestirme (aHedefAlanlar, aSecilenAlanlar, aSecilenIndexler, False, False) then
+          begin
+            ShowMessageSkin('Ýþlem Ýptal Edildi', '', '', 'info');
+            Exit;
+          end;
+
         finally
-          aSL3.Free;
+          aAramaBasliklari.Free;
         end;
       finally
-        aSL2.Free;
+        aBasliginHedefAlani.Free;
       end;
     finally
-      aSL1.Free;
+      aHedefAlanlar.Free;
     end;
   finally
     aQuery.Free;
