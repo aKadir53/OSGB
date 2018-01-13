@@ -539,65 +539,69 @@ begin
     aQuery.Connection := DATALAR.ADOConnection2;
     aQuery.SQL.Text := 'Select * From DisAktarimTanim Where Otomatik = 1 order by ID';
     aQuery.Open;
+    sItems := '';
+    while not aQuery.Eof do
+    begin
+      sItems := sItems + aQuery.FieldByName ('Tanimi').AsString+#13#10;
+      aQuery.Next;
+    end;
+    if IsNull (sItems) then
+    begin
+      ShowMessageSkin('Seçilebilecek Otomatik Aktarým Tanýmý Bulunamadý', '', '', 'info');
+      Exit;
+    end;
+    Delete (sItems, Length (sItems) - 1, 2);
+    if not CombodanSectir ('Otomatik Aktarým Seçiniz', 'Aktarým Çeþitleri', sItems, iAktarimTanimID) then Exit;
+    if iAktarimTanimID < 0 then
+    begin
+      ShowMessageSkin('Aktarým Tipi düzgün seçilmemiþ', '', '', 'info');
+      Exit;
+    end;
+    aQuery.RecNo := iAktarimTanimID + 1;
+    sTableName := aQuery.FieldByName ('HedefTabloAdi').AsString;
+    sAktarimSonrasiStoredProc := aQuery.FieldByName ('AktarimSonrasiStoredProc').AsString;
+    bHedefTabloyuBosalt := aQuery.FieldByName ('HedefTabloyuBosalt').AsBoolean;
+    iAktarimTanimID := aQuery.FieldByName ('ID').AsInteger;
+    aQuery.SQL.Text :=
+      'select HedefAlanAdi, KaynakBaslik'#13#10 +
+      'from DisAktarimBaglanti'#13#10 +
+      'where AktarimTanimID = ' + IntToStr (iAktarimTanimID) + ''#13#10 +
+      'order by ID';
     aHedefAlanlar := TStringList.Create;
     try
-      sItems := '';
-      while not aQuery.Eof do
-      begin
-        sItems := sItems + aQuery.FieldByName ('Tanimi').AsString+#13#10;
-        aQuery.Next;
-      end;
-      if IsNull (sItems) then
-      begin
-        ShowMessageSkin('Seçilebilecek Otomatik Aktarým Tanýmý Bulunamadý', '', '', 'info');
-        Exit;
-      end;
-      Delete (sItems, Length (sItems) - 1, 2);
-      if not CombodanSectir ('Otomatik Aktarým Seçiniz', 'Aktarým Çeþitleri', sItems, iAktarimTanimID) then Exit;
-      if iAktarimTanimID < 0 then
-      begin
-        ShowMessageSkin('Aktarým Tipi düzgün seçilmemiþ', '', '', 'info');
-        Exit;
-      end;
-      aQuery.RecNo := iAktarimTanimID + 1;
-      sTableName := aQuery.FieldByName ('HedefTabloAdi').AsString;
-      sAktarimSonrasiStoredProc := aQuery.FieldByName ('AktarimSonrasiStoredProc').AsString;
-      bHedefTabloyuBosalt := aQuery.FieldByName ('HedefTabloyuBosalt').AsBoolean;
-      iAktarimTanimID := aQuery.FieldByName ('ID').AsInteger;
-      aQuery.SQL.Text :=
-        'select HedefAlanAdi, KaynakBaslik'#13#10 +
-        'from DisAktarimBaglanti'#13#10 +
-        'where AktarimTanimID = ' + IntToStr (iAktarimTanimID) + ''#13#10 +
-        'order by ID';
       aBasliginHedefAlani := TStringList.Create;
       try
         aAramaBasliklari := TStringList.Create;
         try
-          aHedefAlanlar.Clear;
-          aQuery.Open;
-          while not aQuery.Eof do
-          begin
-            if aHedefAlanlar.IndexOf (aQuery.FieldByName('HedefAlanAdi').AsString) < 0 then
-              aHedefAlanlar.Add(aQuery.FieldByName('HedefAlanAdi').AsString);
-            aBasliginHedefAlani.Add(aQuery.FieldByName('HedefAlanAdi').AsString);
-            aAramaBasliklari.Add(aQuery.FieldByName('KaynakBaslik').AsString);
-            aQuery.Next;
-          end;
-          if aHedefAlanlar.Count <= 0 then
-          begin
-            ShowMessageSkin('Aktarým Tipi için Alan - Baþlýk eþleþtirmesi hiç yapýlmamýþ', '', '', 'info');
-            Exit;
-          end;
-          //þimdi artýk elimizde alanlar ve karþýlýðýnda arayacaðýmýz baþlýklar var.
-          //ortalýðýn...
+          aSecilenAlanlar := TStringList.Create;
+          try
+            aHedefAlanlar.Clear;
+            aQuery.Open;
+            while not aQuery.Eof do
+            begin
+              if aHedefAlanlar.IndexOf (aQuery.FieldByName('HedefAlanAdi').AsString) < 0 then
+                aHedefAlanlar.Add(aQuery.FieldByName('HedefAlanAdi').AsString);
+              aBasliginHedefAlani.Add(aQuery.FieldByName('HedefAlanAdi').AsString);
+              aAramaBasliklari.Add(aQuery.FieldByName('KaynakBaslik').AsString);
+              aQuery.Next;
+            end;
+            if aHedefAlanlar.Count <= 0 then
+            begin
+              ShowMessageSkin('Aktarým Tipi için Alan - Baþlýk eþleþtirmesi hiç yapýlmamýþ', '', '', 'info');
+              Exit;
+            end;
+            //þimdi artýk elimizde alanlar ve karþýlýðýnda arayacaðýmýz baþlýklar var.
+            //ortalýðýn...
 
-  dialogs.showmessage ('');
-          if not GridAlanEslestirme (aHedefAlanlar, aSecilenAlanlar, aSecilenIndexler, False, False) then
-          begin
-            ShowMessageSkin('Ýþlem Ýptal Edildi', '', '', 'info');
-            Exit;
+    dialogs.showmessage ('');
+            if not GridAlanEslestirme (aHedefAlanlar, aSecilenAlanlar, aSecilenIndexler, False, False) then
+            begin
+              ShowMessageSkin('Ýþlem Ýptal Edildi', '', '', 'info');
+              Exit;
+            end;
+          finally
+            aSecilenAlanlar.Free;
           end;
-
         finally
           aAramaBasliklari.Free;
         end;
