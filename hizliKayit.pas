@@ -530,8 +530,8 @@ var
   aQuery : TADOQuery;
   sAktarimSonrasiStoredProc, sItems, sTableName : String;
   aHedefAlanlar, aBasliginHedefAlani, aAramaBasliklari, aSecilenAlanlar : TStringList;
-  iAktarimTanimID : Integer;
-  bHedefTabloyuBosalt : Boolean;
+  iTmp, iAktarimTanimID : Integer;
+  bTmp, bHedefTabloyuBosalt : Boolean;
   aSecilenIndexler : TIntegerArray;
 begin
   aQuery := TADOQuery.Create (Self);
@@ -591,13 +591,33 @@ begin
               Exit;
             end;
             //þimdi artýk elimizde alanlar ve karþýlýðýnda arayacaðýmýz baþlýklar var.
-            //ortalýðýn...
-
-    dialogs.showmessage ('');
+            //ortalýðýn... ... ... için alan eþleþtirmeyi çaðýrýyoruz...
             if not GridAlanEslestirme (aHedefAlanlar, aSecilenAlanlar, aSecilenIndexler, False, False) then
             begin
               ShowMessageSkin('Ýþlem Ýptal Edildi', '', '', 'info');
               Exit;
+            end;
+            bTmp := False;
+            aQuery.Connection.BeginTrans;
+            try
+              for iTmp := 0 to aSecilenAlanlar.Count -1 do
+                if not IsNull (aSecilenAlanlar [iTmp])
+                  and (aAramaBasliklari.IndexOf (aSecilenAlanlar [iTmp]) < 0) then
+                begin
+                  aAramaBasliklari.Add(aSecilenAlanlar [iTmp]);
+                  aBasliginHedefAlani.Add(aHedefAlanlar [iTmp]);
+                  aQuery.SQL.Text := 'insert into dbo.DisaktarimBaglanti (AktarimTanimID, HedefAlanAdi, KaynakBaslik) '+
+                                     'Select '+ IntToStr (iAktarimTanimID) + ', ' +
+                                     QuotedStr (aHedefAlanlar [iTmp]) + ', ' +
+                                     QuotedStr (aSecilenAlanlar [iTmp]);
+                  aQuery.ExecSQL;
+                end;
+                bTmp := True;
+            finally
+              if bTmp then
+                aQuery.Connection.CommitTrans
+               else
+                aQuery.Connection.RollbackTrans;
             end;
           finally
             aSecilenAlanlar.Free;
