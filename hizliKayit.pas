@@ -52,8 +52,11 @@ type
   protected
     FInitialColumnHeaders : TStringList;
     FAcceptedColumnHeaders : TStringList;
-    FAssignedColumnIndexes : array of Integer;
-    procedure GridAlanEslestirme (const pReset : Boolean; pMsg: Boolean = True);
+    FAssignedColumnIndexes : TIntegerArray;
+    function GridAlanEslestirme (const aTargetFields : TStringList;
+      var aAcceptedSourceColumns : TStringList;
+      var aAcceptedColumnIndexes : TIntegerArray;
+      const pReset : Boolean; pMsg: Boolean = True) : Boolean;
     function GridAtanmisSutunDegerAyarlaGetir (const aGrid: TStringGrid; const ACol, ARow : Integer):String;
     function GridBaslikAyarla (const S: String; const iNumber : Integer) : String;
     procedure GridSoyadiAyarla;
@@ -180,16 +183,23 @@ begin
 end;
 
 
-procedure TfrmHizliKayit.GridAlanEslestirme (const pReset : Boolean; pMsg: Boolean = True);
+function TfrmHizliKayit.GridAlanEslestirme (const aTargetFields : TStringList;
+  var aAcceptedSourceColumns : TStringList;
+  var aAcceptedColumnIndexes : TIntegerArray;
+  const pReset : Boolean; pMsg: Boolean = True): Boolean;
 var
   aStringList : TStringList;
   i, j: Integer;
   sItems : String;
-  aItems: array of Integer;
+  aItems: TIntegerArray;
 begin
+  Result := False;
   if pMsg then
     if ShowMessageSkin ('Bu iþlem, bu ekraný ilk açtýðýnýzda gördüðünüz standart þablon dýþýndaki personel listelerini aktarabilmeniz için imkân saðlar'#13#10#13#10+
-                        'Baþlýklarý eþleþen sütunlar otomatik olarak eþleþtirilecek ve geri kalaný için size eþleþtirme sorusu sorulacaktýr'#13#10#13#10+
+                        IfThen (pReset,
+                          'Önceden yapýlmýþ eþleþtirmeler unutularak tüm sütunlar için',
+                          'Baþlýklarý eþleþen sütunlar otomatik olarak eþleþtirilecek ve geri kalaný için')+
+                        ' size eþleþtirme sorusu sorulacaktýr'#13#10#13#10+
                         'Devam etmek istiyor musunuz ?',
                         '', '', 'conf') <> mrYes then Exit;
   aStringList := TStringList.create;
@@ -197,20 +207,22 @@ begin
     if pReset then
       for i := 0 to GridList.ColCount - 1 do
         GridList.Cells [i, 0] := GridBaslikAyarla ('[' + GridList.Cells [i, 0] + ']', i);
+    while aAcceptedSourceColumns.Count < aTargetFields.Count do
+      aAcceptedSourceColumns.Add(aTargetFields [aAcceptedSourceColumns.Count]);
 
     for i := 0 to GridList.ColCount - 1 do
       GridList.Cells [i, 0] := GridBaslikAyarla (GridList.Cells [i, 0], i);
     //ÜÖ 20180105 Gride yüklenen excrl dosyasýnda ayný baþlýklý sütunlar varsa farklýlaþtýr, ileride eþleþmelerde problem çýkarmasýn.
     GridCiftBaslikAyarla;
     //ÜÖ 20171231 eþleþen sütun baþlýklarýný gridde arayýp indexlerini ata
-    for i := 0 to FInitialColumnHeaders.Count - 1 do
-      aStringList.Add(IntToStr(GridList.Rows [0].IndexOf(FInitialColumnHeaders [i])));
+    for i := 0 to aTargetFields.Count - 1 do
+      aStringList.Add(IntToStr(GridList.Rows [0].IndexOf(aTargetFields [i])));
     //ÜÖ 20180103 son aktarýlan ve eþleþtirilmiþ excel baþlýklarý ile uyuþanlarý da eþleþtir
-    for i := 0 to FAcceptedColumnHeaders.Count - 1 do
+    for i := 0 to aAcceptedSourceColumns.Count - 1 do
       if (StrToInt (aStringList [i]) < 0)
-        and (GridList.Rows [0].IndexOf(FAcceptedColumnHeaders [i]) >= 0)
-        and (aStringList.IndexOf (IntToStr(GridList.Rows [0].IndexOf(FAcceptedColumnHeaders [i]))) < 0) then
-          aStringList [i] := IntToStr(GridList.Rows [0].IndexOf(FAcceptedColumnHeaders [i]));
+        and (GridList.Rows [0].IndexOf(aAcceptedSourceColumns [i]) >= 0)
+        and (aStringList.IndexOf (IntToStr(GridList.Rows [0].IndexOf(aAcceptedSourceColumns [i]))) < 0) then
+          aStringList [i] := IntToStr(GridList.Rows [0].IndexOf(aAcceptedSourceColumns [i]));
     //bulunamayanlar için kullanýcýya baþvur
     for i := 0 to aStringList.Count - 1 do
     begin
@@ -233,7 +245,7 @@ begin
         if High (aItems) <= 0 then Break;
 
         j := -1;
-        if (not CombodanSectir ('Alan seçiniz', FInitialColumnHeaders [i], sItems, j))
+        if (not CombodanSectir ('Alan seçiniz', aTargetFields [i], sItems, j))
           or (j < 0) then
         begin
           ShowMessageSkin('Ýþlem iptal edildi', '', '', 'info');
@@ -243,16 +255,18 @@ begin
       end;
     end;
     //buraya kadar sað salim geldikse olay tamam, geçici yerel diziyi form dizisine aktarýp ortamý terk edelim...
-    for i := Low (FAssignedColumnIndexes) to High (FAssignedColumnIndexes) do
+    SetLength(aAcceptedColumnIndexes, 0);
+    for i := 0 to aStringList.Count - 1 do
     begin
-      FAssignedColumnIndexes [i] := StrToInt (aStringList [i]);
+      SetLength(aAcceptedColumnIndexes, High (aAcceptedColumnIndexes) + 2);
+      aAcceptedColumnIndexes [i] := StrToInt (aStringList [i]);
       //eþleþen yeni grid sütun baþlýðý boþ deðilse onu son excel kabul edilen sütunlar listesine ekle.
-      if (FAssignedColumnIndexes [i] >= 0) and (not IsNull (GridList.Cells [FAssignedColumnIndexes [i], 0])) then
-        FAcceptedColumnHeaders [i] := GridList.Cells [FAssignedColumnIndexes [i], 0];
+      if (aAcceptedColumnIndexes [i] >= 0) and (not IsNull (GridList.Cells [aAcceptedColumnIndexes [i], 0])) then
+        aAcceptedSourceColumns [i] := GridList.Cells [aAcceptedColumnIndexes [i], 0];
       //Eþleþen baþlýklarý grid üzerinde yerine koyarak göster
-      if FAssignedColumnIndexes [i] >= 0 then GridList.Cells [FAssignedColumnIndexes [i], 0] := FInitialColumnHeaders [i];
+      if aAcceptedColumnIndexes [i] >= 0 then GridList.Cells [aAcceptedColumnIndexes [i], 0] := aTargetFields [i];
     end;
-    FAlanEslestirmeYapildi := True;
+    Result := True;
     if pMsg Then
       ShowMessageSkin('Alan Eþleþtirmesi Baþarý ile Tamamlandý', '', '', 'info');
   finally
@@ -385,7 +399,8 @@ begin
       ShowMessageSkin('Aktif þube seçmeden personel aktarýmý yapamazsýnýz.'#13#10'Personeller, seçili þubeye aktarýlacak.', '', '', 'info');
       Exit;
     end;
-    if not FAlanEslestirmeYapildi then GridAlanEslestirme (False, False);
+    if not FAlanEslestirmeYapildi then
+      FAlanEslestirmeYapildi := GridAlanEslestirme (FInitialColumnHeaders, FAcceptedColumnHeaders, FAssignedColumnIndexes, False, False);
     bBasarili := False;
     iCount := 0;
     iRowC := 0;
@@ -513,26 +528,23 @@ end;
 procedure TfrmHizliKayit.TanimliOtomatikAktarim;
 var
   aQuery : TADOQuery;
-  aIDs : array of Integer;
-  sItems, sTableName : String;
+  sAktarimSonrasiStoredProc, sItems, sTableName : String;
   aSL1, aSL2, aSL3 : TStringList;
   iAktarimTanimID : Integer;
+  bHedefTabloyuBosalt : Boolean;
+
 begin
   aQuery := TADOQuery.Create (Self);
   try
     aQuery.Connection := DATALAR.ADOConnection2;
     aQuery.SQL.Text := 'Select * From DisAktarimTanim Where Otomatik = 1 order by ID';
     aQuery.Open;
-    SetLength(aIDS, 0);
     aSL1 := TStringList.Create;
     try
       sItems := '';
       while not aQuery.Eof do
       begin
-        SetLength (aIDs, High (aIDs) + 2);
-        aIDs [High (aIDs)] := aQuery.FieldByName ('ID').AsInteger;
         sItems := sItems + aQuery.FieldByName ('Tanimi').AsString+#13#10;
-        aSL1.Add (aQuery.FieldByName ('HedefTabloAdi').AsString);
         aQuery.Next;
       end;
       if IsNull (sItems) then
@@ -547,8 +559,11 @@ begin
         ShowMessageSkin('Aktarým Tipi düzgün seçilmemiþ', '', '', 'info');
         Exit;
       end;
-      sTableName := aSL1 [iAktarimTanimID];
-      iAktarimTanimID := aIDs [iAktarimTanimID];
+      aQuery.RecNo := iAktarimTanimID + 1;
+      sTableName := aQuery.FieldByName ('HedefTabloAdi').AsString;
+      sAktarimSonrasiStoredProc := aQuery.FieldByName ('AktarimSonrasiStoredProc').AsString;
+      bHedefTabloyuBosalt := aQuery.FieldByName ('HedefTabloyuBosalt').AsBoolean;
+      iAktarimTanimID := aQuery.FieldByName ('ID').AsInteger;
       aQuery.SQL.Text :=
         'select HedefAlanAdi, KaynakBaslik'#13#10 +
         'from DisAktarimBaglanti'#13#10 +
@@ -579,10 +594,10 @@ begin
   dialogs.showmessage ('');
           //þ
         finally
-
+          aSL3.Free;
         end;
       finally
-
+        aSL2.Free;
       end;
     finally
       aSL1.Free;
@@ -616,7 +631,7 @@ begin
           GridToPersonelKartTable;
         end;
     4: begin
-      GridAlanEslestirme (True);
+      FAlanEslestirmeYapildi := GridAlanEslestirme (FInitialColumnHeaders, FAcceptedColumnHeaders, FAssignedColumnIndexes, True);
        end;
     5: GridSoyadiAyarla;
     6: TanimliOtomatikAktarim;
