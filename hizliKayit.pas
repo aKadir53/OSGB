@@ -56,7 +56,10 @@ type
     function GridAlanEslestirme (const aTargetFields : TStringList;
       var aAcceptedSourceColumns : TStringList;
       var aAcceptedColumnIndexes : TIntegerArray;
-      const pReset : Boolean; pMsg: Boolean = True) : Boolean;
+      const pReset : Boolean;
+      pMsg: Boolean = True;
+      aLookupColumnHeaders : TStringList = nil;
+      aLookupColumnHeaderFieldNames : TStringList = nil) : Boolean;
     function GridAtanmisSutunDegerAyarlaGetir (const aGrid: TStringGrid; const ACol, ARow : Integer):String;
     function GridBaslikAyarla (const S: String; const iNumber : Integer) : String;
     procedure GridSoyadiAyarla;
@@ -186,7 +189,10 @@ end;
 function TfrmHizliKayit.GridAlanEslestirme (const aTargetFields : TStringList;
   var aAcceptedSourceColumns : TStringList;
   var aAcceptedColumnIndexes : TIntegerArray;
-  const pReset : Boolean; pMsg: Boolean = True): Boolean;
+  const pReset : Boolean;
+  pMsg: Boolean = True;
+  aLookupColumnHeaders : TStringList = nil;
+  aLookupColumnHeaderFieldNames : TStringList = nil): Boolean;
 var
   aStringList : TStringList;
   i, j: Integer;
@@ -204,9 +210,11 @@ begin
                         '', '', 'conf') <> mrYes then Exit;
   aStringList := TStringList.create;
   try
+    //reset gelmiþse grid baþlýklarý eþleþmesin diye tahrip et.
     if pReset then
       for i := 0 to GridList.ColCount - 1 do
         GridList.Cells [i, 0] := GridBaslikAyarla ('[' + GridList.Cells [i, 0] + ']', i);
+    //stringlist boylarýný eþitle
     while aAcceptedSourceColumns.Count < aTargetFields.Count do
       aAcceptedSourceColumns.Add(aTargetFields [aAcceptedSourceColumns.Count]);
 
@@ -217,6 +225,12 @@ begin
     //ÜÖ 20171231 eþleþen sütun baþlýklarýný gridde arayýp indexlerini ata
     for i := 0 to aTargetFields.Count - 1 do
       aStringList.Add(IntToStr(GridList.Rows [0].IndexOf(aTargetFields [i])));
+    //arama baþlýðý listeleri geçilmiþse o baþlýklardan sütunlarý bulma gayreti içinde kendini kaybet...
+    if Assigned (aLookupColumnHeaders) and Assigned (aLookupColumnHeaderFieldNames) then
+    begin
+     //þþþ
+    end;
+
     //ÜÖ 20180103 son aktarýlan ve eþleþtirilmiþ excel baþlýklarý ile uyuþanlarý da eþleþtir
     for i := 0 to aAcceptedSourceColumns.Count - 1 do
       if (StrToInt (aStringList [i]) < 0)
@@ -523,8 +537,6 @@ begin
 
 end;
 
-
-
 procedure TfrmHizliKayit.TanimliOtomatikAktarim;
 var
   aQuery : TADOQuery;
@@ -592,7 +604,7 @@ begin
             end;
             //þimdi artýk elimizde alanlar ve karþýlýðýnda arayacaðýmýz baþlýklar var.
             //ortalýðýn... ... ... için alan eþleþtirmeyi çaðýrýyoruz...
-            if not GridAlanEslestirme (aHedefAlanlar, aSecilenAlanlar, aSecilenIndexler, False, False) then
+            if not GridAlanEslestirme (aHedefAlanlar, aSecilenAlanlar, aSecilenIndexler, False, False, aAramaBasliklari, aBasliginHedefAlani) then
             begin
               ShowMessageSkin('Ýþlem Ýptal Edildi', '', '', 'info');
               Exit;
@@ -600,6 +612,7 @@ begin
             bTmp := False;
             aQuery.Connection.BeginTrans;
             try
+              //Arama baþlýklarýný veritabanýna yaz...
               for iTmp := 0 to aSecilenAlanlar.Count -1 do
                 if not IsNull (aSecilenAlanlar [iTmp])
                   and (aAramaBasliklari.IndexOf (aSecilenAlanlar [iTmp]) < 0) then
