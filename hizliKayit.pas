@@ -52,9 +52,16 @@ type
   protected
     FInitialColumnHeaders : TStringList;
     FAcceptedColumnHeaders : TStringList;
-    FAssignedColumnIndexes : array of Integer;
-    procedure GridAlanEslestirme (const pReset : Boolean; pMsg: Boolean = True);
+    FAssignedColumnIndexes : TIntegerArray;
+    function GridAlanEslestirme (const aTargetFields : TStringList;
+      var aAcceptedSourceColumns : TStringList;
+      var aAcceptedColumnIndexes : TIntegerArray;
+      const pReset : Boolean;
+      pMsg: Boolean = True;
+      aLookupColumnHeaders : TStringList = nil;
+      aLookupColumnHeaderFieldNames : TStringList = nil) : Boolean;
     function GridAtanmisSutunDegerAyarlaGetir (const aGrid: TStringGrid; const ACol, ARow : Integer):String;
+    function GridBagliSutunDegerAyarlaGetir (const aGrid: TStringGrid; const aBaglantiList: TIntegerArray; const ACol, ARow : Integer):String;
     function GridBaslikAyarla (const S: String; const iNumber : Integer) : String;
     procedure GridSoyadiAyarla;
     procedure GridCiftBaslikAyarla;
@@ -180,37 +187,57 @@ begin
 end;
 
 
-procedure TfrmHizliKayit.GridAlanEslestirme (const pReset : Boolean; pMsg: Boolean = True);
+function TfrmHizliKayit.GridAlanEslestirme (const aTargetFields : TStringList;
+  var aAcceptedSourceColumns : TStringList;
+  var aAcceptedColumnIndexes : TIntegerArray;
+  const pReset : Boolean;
+  pMsg: Boolean = True;
+  aLookupColumnHeaders : TStringList = nil;
+  aLookupColumnHeaderFieldNames : TStringList = nil): Boolean;
 var
   aStringList : TStringList;
   i, j: Integer;
   sItems : String;
-  aItems: array of Integer;
+  aItems: TIntegerArray;
 begin
+  Result := False;
   if pMsg then
     if ShowMessageSkin ('Bu iþlem, bu ekraný ilk açtýðýnýzda gördüðünüz standart þablon dýþýndaki personel listelerini aktarabilmeniz için imkân saðlar'#13#10#13#10+
-                        'Baþlýklarý eþleþen sütunlar otomatik olarak eþleþtirilecek ve geri kalaný için size eþleþtirme sorusu sorulacaktýr'#13#10#13#10+
+                        IfThen (pReset,
+                          'Önceden yapýlmýþ eþleþtirmeler unutularak tüm sütunlar için',
+                          'Baþlýklarý eþleþen sütunlar otomatik olarak eþleþtirilecek ve geri kalaný için')+
+                        ' size eþleþtirme sorusu sorulacaktýr'#13#10#13#10+
                         'Devam etmek istiyor musunuz ?',
                         '', '', 'conf') <> mrYes then Exit;
   aStringList := TStringList.create;
   try
+    //reset gelmiþse grid baþlýklarý eþleþmesin diye tahrip et.
     if pReset then
       for i := 0 to GridList.ColCount - 1 do
         GridList.Cells [i, 0] := GridBaslikAyarla ('[' + GridList.Cells [i, 0] + ']', i);
+    //stringlist boylarýný eþitle
+    while aAcceptedSourceColumns.Count < aTargetFields.Count do
+      aAcceptedSourceColumns.Add(aTargetFields [aAcceptedSourceColumns.Count]);
 
     for i := 0 to GridList.ColCount - 1 do
       GridList.Cells [i, 0] := GridBaslikAyarla (GridList.Cells [i, 0], i);
     //ÜÖ 20180105 Gride yüklenen excrl dosyasýnda ayný baþlýklý sütunlar varsa farklýlaþtýr, ileride eþleþmelerde problem çýkarmasýn.
     GridCiftBaslikAyarla;
     //ÜÖ 20171231 eþleþen sütun baþlýklarýný gridde arayýp indexlerini ata
-    for i := 0 to FInitialColumnHeaders.Count - 1 do
-      aStringList.Add(IntToStr(GridList.Rows [0].IndexOf(FInitialColumnHeaders [i])));
+    for i := 0 to aTargetFields.Count - 1 do
+      aStringList.Add(IntToStr(GridList.Rows [0].IndexOf(aTargetFields [i])));
+    //arama baþlýðý listeleri geçilmiþse o baþlýklardan sütunlarý bulma gayreti içinde kendini kaybet...
+    if Assigned (aLookupColumnHeaders) and Assigned (aLookupColumnHeaderFieldNames) then
+    begin
+      //þþþ
+    end;
+
     //ÜÖ 20180103 son aktarýlan ve eþleþtirilmiþ excel baþlýklarý ile uyuþanlarý da eþleþtir
-    for i := 0 to FAcceptedColumnHeaders.Count - 1 do
+    for i := 0 to aAcceptedSourceColumns.Count - 1 do
       if (StrToInt (aStringList [i]) < 0)
-        and (GridList.Rows [0].IndexOf(FAcceptedColumnHeaders [i]) >= 0)
-        and (aStringList.IndexOf (IntToStr(GridList.Rows [0].IndexOf(FAcceptedColumnHeaders [i]))) < 0) then
-          aStringList [i] := IntToStr(GridList.Rows [0].IndexOf(FAcceptedColumnHeaders [i]));
+        and (GridList.Rows [0].IndexOf(aAcceptedSourceColumns [i]) >= 0)
+        and (aStringList.IndexOf (IntToStr(GridList.Rows [0].IndexOf(aAcceptedSourceColumns [i]))) < 0) then
+          aStringList [i] := IntToStr(GridList.Rows [0].IndexOf(aAcceptedSourceColumns [i]));
     //bulunamayanlar için kullanýcýya baþvur
     for i := 0 to aStringList.Count - 1 do
     begin
@@ -233,7 +260,7 @@ begin
         if High (aItems) <= 0 then Break;
 
         j := -1;
-        if (not CombodanSectir ('Alan seçiniz', FInitialColumnHeaders [i], sItems, j))
+        if (not CombodanSectir ('Alan seçiniz', aTargetFields [i], sItems, j))
           or (j < 0) then
         begin
           ShowMessageSkin('Ýþlem iptal edildi', '', '', 'info');
@@ -243,16 +270,18 @@ begin
       end;
     end;
     //buraya kadar sað salim geldikse olay tamam, geçici yerel diziyi form dizisine aktarýp ortamý terk edelim...
-    for i := Low (FAssignedColumnIndexes) to High (FAssignedColumnIndexes) do
+    SetLength(aAcceptedColumnIndexes, 0);
+    for i := 0 to aStringList.Count - 1 do
     begin
-      FAssignedColumnIndexes [i] := StrToInt (aStringList [i]);
+      SetLength(aAcceptedColumnIndexes, High (aAcceptedColumnIndexes) + 2);
+      aAcceptedColumnIndexes [i] := StrToInt (aStringList [i]);
       //eþleþen yeni grid sütun baþlýðý boþ deðilse onu son excel kabul edilen sütunlar listesine ekle.
-      if (FAssignedColumnIndexes [i] >= 0) and (not IsNull (GridList.Cells [FAssignedColumnIndexes [i], 0])) then
-        FAcceptedColumnHeaders [i] := GridList.Cells [FAssignedColumnIndexes [i], 0];
+      if (aAcceptedColumnIndexes [i] >= 0) and (not IsNull (GridList.Cells [aAcceptedColumnIndexes [i], 0])) then
+        aAcceptedSourceColumns [i] := GridList.Cells [aAcceptedColumnIndexes [i], 0];
       //Eþleþen baþlýklarý grid üzerinde yerine koyarak göster
-      if FAssignedColumnIndexes [i] >= 0 then GridList.Cells [FAssignedColumnIndexes [i], 0] := FInitialColumnHeaders [i];
+      if aAcceptedColumnIndexes [i] >= 0 then GridList.Cells [aAcceptedColumnIndexes [i], 0] := aTargetFields [i];
     end;
-    FAlanEslestirmeYapildi := True;
+    Result := True;
     if pMsg Then
       ShowMessageSkin('Alan Eþleþtirmesi Baþarý ile Tamamlandý', '', '', 'info');
   finally
@@ -260,23 +289,31 @@ begin
   end;
 end;
 
-function TfrmHizliKayit.GridAtanmisSutunDegerAyarlaGetir(
-  const aGrid: TStringGrid; const ACol, ARow: Integer): String;
+function TfrmHizliKayit.GridBagliSutunDegerAyarlaGetir (
+  const aGrid: TStringGrid;
+  const aBaglantiList: TIntegerArray;
+  const ACol, ARow : Integer):String;
 begin
   Result := Trim (
               StringReplace (
                 IfThen (
-                  FAssignedColumnIndexes [ACol] >= 0,
+                  aBaglantiList [ACol] >= 0,
                   aGrid.Cells[
                     IfThen (
-                      FAssignedColumnIndexes [ACol] <0,
+                      aBaglantiList [ACol] <0,
                       0,
-                      FAssignedColumnIndexes [ACol]),
+                      aBaglantiList [ACol]),
                     ARow],
                   ''),
                 #9,
                 '',
                 [rfReplaceAll]));
+end;
+
+function TfrmHizliKayit.GridAtanmisSutunDegerAyarlaGetir(
+  const aGrid: TStringGrid; const ACol, ARow: Integer): String;
+begin
+  Result := GridBagliSutunDegerAyarlaGetir (aGrid, FAssignedColumnIndexes, ACol, ARow);
 end;
 
 function TfrmHizliKayit.GridBaslikAyarla(const S: String; const iNumber : Integer): String;
@@ -385,7 +422,8 @@ begin
       ShowMessageSkin('Aktif þube seçmeden personel aktarýmý yapamazsýnýz.'#13#10'Personeller, seçili þubeye aktarýlacak.', '', '', 'info');
       Exit;
     end;
-    if not FAlanEslestirmeYapildi then GridAlanEslestirme (False, False);
+    if not FAlanEslestirmeYapildi then
+      FAlanEslestirmeYapildi := GridAlanEslestirme (FInitialColumnHeaders, FAcceptedColumnHeaders, FAssignedColumnIndexes, False, False);
     bBasarili := False;
     iCount := 0;
     iRowC := 0;
@@ -508,84 +546,182 @@ begin
 
 end;
 
-
-
 procedure TfrmHizliKayit.TanimliOtomatikAktarim;
 var
   aQuery : TADOQuery;
-  aIDs : array of Integer;
-  sItems, sTableName : String;
-  aSL1, aSL2, aSL3 : TStringList;
-  iAktarimTanimID : Integer;
+  sAktarimSonrasiStoredProc, sItems, sTableName : String;
+  aHedefAlanlar, aBasliginHedefAlani, aAramaBasliklari, aSecilenAlanlar : TStringList;
+  iCol, iTmp, iAktarimTanimID, iThermo : Integer;
+  bTmpPost, bHepsiBos, bTmp, bHedefTabloyuBosalt, bHedefTabloyuBosaltSor : Boolean;
+  aSecilenIndexler : TIntegerArray;
 begin
   aQuery := TADOQuery.Create (Self);
   try
     aQuery.Connection := DATALAR.ADOConnection2;
     aQuery.SQL.Text := 'Select * From DisAktarimTanim Where Otomatik = 1 order by ID';
     aQuery.Open;
-    SetLength(aIDS, 0);
-    aSL1 := TStringList.Create;
+    sItems := '';
+    while not aQuery.Eof do
+    begin
+      sItems := sItems + aQuery.FieldByName ('Tanimi').AsString+#13#10;
+      aQuery.Next;
+    end;
+    if IsNull (sItems) then
+    begin
+      ShowMessageSkin('Seçilebilecek Otomatik Aktarým Tanýmý Bulunamadý', '', '', 'info');
+      Exit;
+    end;
+    Delete (sItems, Length (sItems) - 1, 2);
+    if not CombodanSectir ('Otomatik Aktarým Seçiniz', 'Aktarým Çeþitleri', sItems, iAktarimTanimID) then Exit;
+    if iAktarimTanimID < 0 then
+    begin
+      ShowMessageSkin('Aktarým Tipi düzgün seçilmemiþ', '', '', 'info');
+      Exit;
+    end;
+    aQuery.RecNo := iAktarimTanimID + 1;
+    sTableName := aQuery.FieldByName ('HedefTabloAdi').AsString;
+    sAktarimSonrasiStoredProc := aQuery.FieldByName ('AktarimSonrasiStoredProc').AsString;
+    bHedefTabloyuBosalt := aQuery.FieldByName ('HedefTabloyuBosalt').AsBoolean;
+    bHedefTabloyuBosaltSor := aQuery.FieldByName ('HedefTabloyuBosalt').IsNull;
+    iAktarimTanimID := aQuery.FieldByName ('ID').AsInteger;
+    aQuery.SQL.Text :=
+      'select HedefAlanAdi, KaynakBaslik'#13#10 +
+      'from DisAktarimBaglanti'#13#10 +
+      'where AktarimTanimID = ' + IntToStr (iAktarimTanimID) + ''#13#10 +
+      'order by ID';
+    aHedefAlanlar := TStringList.Create;
     try
-      sItems := '';
-      while not aQuery.Eof do
-      begin
-        SetLength (aIDs, High (aIDs) + 2);
-        aIDs [High (aIDs)] := aQuery.FieldByName ('ID').AsInteger;
-        sItems := sItems + aQuery.FieldByName ('Tanimi').AsString+#13#10;
-        aSL1.Add (aQuery.FieldByName ('HedefTabloAdi').AsString);
-        aQuery.Next;
-      end;
-      if IsNull (sItems) then
-      begin
-        ShowMessageSkin('Seçilebilecek Otomatik Aktarým Tanýmý Bulunamadý', '', '', 'info');
-        Exit;
-      end;
-      Delete (sItems, Length (sItems) - 1, 2);
-      if not CombodanSectir ('Otomatik Aktarým Seçiniz', 'Aktarým Çeþitleri', sItems, iAktarimTanimID) then Exit;
-      if iAktarimTanimID < 0 then
-      begin
-        ShowMessageSkin('Aktarým Tipi düzgün seçilmemiþ', '', '', 'info');
-        Exit;
-      end;
-      sTableName := aSL1 [iAktarimTanimID];
-      iAktarimTanimID := aIDs [iAktarimTanimID];
-      aQuery.SQL.Text :=
-        'select HedefAlanAdi, KaynakBaslik'#13#10 +
-        'from DisAktarimBaglanti'#13#10 +
-        'where AktarimTanimID = ' + IntToStr (iAktarimTanimID) + ''#13#10 +
-        'order by ID';
-      aSL2 := TStringList.Create;
+      aBasliginHedefAlani := TStringList.Create;
       try
-        aSL3 := TStringList.Create;
+        aAramaBasliklari := TStringList.Create;
         try
-          aSL1.Clear;
-          aQuery.Open;
-          while not aQuery.Eof do
-          begin
-            if aSL1.IndexOf (aQuery.FieldByName('HedefAlanAdi').AsString) < 0 then
-              aSL1.Add(aQuery.FieldByName('HedefAlanAdi').AsString);
-            aSL2.Add(aQuery.FieldByName('HedefAlanAdi').AsString);
-            aSL3.Add(aQuery.FieldByName('KaynakBaslik').AsString);
-            aQuery.Next;
-          end;
-          if aSL1.Count <= 0 then
-          begin
-            ShowMessageSkin('Aktarým Tipi için Alan - Baþlýk eþleþtirmesi hiç yapýlmamýþ', '', '', 'info');
-            Exit;
-          end;
-          //þimdi artýk elimizde alanlar ve karþýlýðýnda arayacaðýmýz baþlýklar var.
-          //ortalýðýn...
+          aSecilenAlanlar := TStringList.Create;
+          try
+            aHedefAlanlar.Clear;
+            aQuery.Open;
+            while not aQuery.Eof do
+            begin
+              if aHedefAlanlar.IndexOf (aQuery.FieldByName('HedefAlanAdi').AsString) < 0 then
+                aHedefAlanlar.Add(aQuery.FieldByName('HedefAlanAdi').AsString);
+              aBasliginHedefAlani.Add(aQuery.FieldByName('HedefAlanAdi').AsString);
+              aAramaBasliklari.Add(aQuery.FieldByName('KaynakBaslik').AsString);
+              aQuery.Next;
+            end;
+            if aHedefAlanlar.Count <= 0 then
+            begin
+              ShowMessageSkin('Aktarým Tipi için Alan - Baþlýk eþleþtirmesi hiç yapýlmamýþ', '', '', 'info');
+              Exit;
+            end;
+            //þimdi artýk elimizde alanlar ve karþýlýðýnda arayacaðýmýz baþlýklar var.
+            //ortalýðýn... ... ... için alan eþleþtirmeyi çaðýrýyoruz...
+            if not GridAlanEslestirme (aHedefAlanlar, aSecilenAlanlar, aSecilenIndexler, False, False, aAramaBasliklari, aBasliginHedefAlani) then
+            begin
+              ShowMessageSkin('Ýþlem Ýptal Edildi', '', '', 'info');
+              Exit;
+            end;
+            if bHedefTabloyuBosaltSor then
+            begin
+              //showmessageSkin iþimizi görmedi, evet hayýr vazgeç lazým oldu
+              case dialogs.MessageDlg ('Hedef Tablo önce boþaltýlsýn mý ?', mtConfirmation, [mbYes, mbNo, mbCancel], 0, mbNo) of
+                mrYes : bHedefTabloyuBosalt := True;
+                mrNo : bHedefTabloyuBosalt := False;
+                else Exit;
+              end;
+            end;
+            bTmp := False;
+            aQuery.Connection.BeginTrans;
+            try
+              //Aktarým tanýmlarýnda tablo boþaltýlýp doldurulacak tipteyse boþalt (null ise kullanýcýya sormuþtuk)
+              if bHedefTabloyuBosalt then
+              begin
+                aQuery.SQL.Text := 'Delete from '+ sTableName;
+                aQuery.ExecSQL;
+              end;
 
-  dialogs.showmessage ('');
-          þ
+              //Alan listesinin SQL'ini oluþtur
+              sItems := '';
+              for iTmp := 0 to aHedefAlanlar.Count - 1 do
+                sItems := sItems + aHedefAlanlar [iTmp] + ', ';
+              if IsNull (sItems) then
+              begin
+                ShowMessageSkin('Alan listesi olmamýþ', '', '', 'info');
+                Exit;
+              end;
+              Delete (sItems, Length (sItems) - 1, 2);
+
+              sItems := 'SELECT ' + sItems + ' FROM '+ sTableName;
+
+              aQuery.sql.Text := sItems;
+              aQuery.Open;
+              try
+                ShowThermo (iThermo, 'Bilgiler Veritabanýna Yazýlýyor...', 0, GridList.RowCount - 1, 0, True);
+                try
+                  for iTmp := 1 to GridList.RowCount -1 do
+                  begin
+                    if not UpdateThermo (iTmp - 1, iThermo, 'Satýr: '+ IntToStr (iTmp)) then Exit;
+                    bTmpPost := False;
+                    aQuery.Append;
+                    try
+                      //Griddeki bütün sütunlarý boþsa o satýrý yazmamasý için kontrol
+                      bHepsiBos := True;
+                      for iCol := 0 to aHedefAlanlar.Count - 1 do
+                      begin
+                        sItems := GridBagliSutunDegerAyarlaGetir (GridList, aSecilenIndexler, iCol, iTmp);
+                        bHepsiBos := bHepsiBos and IsNull (sItems);
+                        if not IsNull (sItems) then
+                          aQuery.FieldByName(aHedefAlanlar [iCol]).AsString := sItems
+                         else
+                          aQuery.FieldByName(aHedefAlanlar [iCol]).Clear;
+                        //ccc
+                      end;
+                      if bHepsiBos then Continue;
+                      bTmpPost := True;
+                    finally
+                      if bTmpPost then
+                        aQuery.Post
+                       else
+                        aQuery.Cancel;
+                    end;
+                  end;
+                finally
+                  FreeThermo(iThermo);
+                end;
+
+              finally
+                aQuery.Close;
+              end;
+
+              //Arama baþlýklarýný veritabanýna yaz...
+              for iTmp := 0 to aSecilenAlanlar.Count -1 do
+                if not IsNull (aSecilenAlanlar [iTmp])
+                  and (aAramaBasliklari.IndexOf (aSecilenAlanlar [iTmp]) < 0) then
+                begin
+                  aAramaBasliklari.Add(aSecilenAlanlar [iTmp]);
+                  aBasliginHedefAlani.Add(aHedefAlanlar [iTmp]);
+                  aQuery.SQL.Text := 'insert into dbo.DisaktarimBaglanti (AktarimTanimID, HedefAlanAdi, KaynakBaslik) '+
+                                     'Select '+ IntToStr (iAktarimTanimID) + ', ' +
+                                     QuotedStr (aHedefAlanlar [iTmp]) + ', ' +
+                                     QuotedStr (aSecilenAlanlar [iTmp]);
+                  aQuery.ExecSQL;
+                end;
+                bTmp := True;
+            finally
+              if bTmp then
+                aQuery.Connection.CommitTrans
+               else
+                aQuery.Connection.RollbackTrans;
+            end;
+          finally
+            aSecilenAlanlar.Free;
+          end;
         finally
-
+          aAramaBasliklari.Free;
         end;
       finally
-
+        aBasliginHedefAlani.Free;
       end;
     finally
-      aSL1.Free;
+      aHedefAlanlar.Free;
     end;
   finally
     aQuery.Free;
@@ -616,7 +752,7 @@ begin
           GridToPersonelKartTable;
         end;
     4: begin
-      GridAlanEslestirme (True);
+      FAlanEslestirmeYapildi := GridAlanEslestirme (FInitialColumnHeaders, FAcceptedColumnHeaders, FAssignedColumnIndexes, True);
        end;
     5: GridSoyadiAyarla;
     6: TanimliOtomatikAktarim;
@@ -658,6 +794,6 @@ begin
   end;
   FFileName := '';
   FAlanEslestirmeYapildi := False;
-end;
+end;//þþþ
 isg katip excel'ini programdan aktarma
 end.
