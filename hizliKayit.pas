@@ -649,7 +649,7 @@ begin
               end;
               Delete (sItems, Length (sItems) - 1, 2);
 
-              sItems := 'SELECT ' + sItems + ' FROM '+ sTableName;
+              sItems := 'SELECT TOP 0 ' + sItems + ' FROM '+ sTableName;
               iInserted := 0;
               aQuery.sql.Text := sItems;
               aQuery.Open;
@@ -672,7 +672,14 @@ begin
                           aQuery.FieldByName(aHedefAlanlar [iCol]).AsString := sItems
                          else
                           aQuery.FieldByName(aHedefAlanlar [iCol]).Clear;
-                        //ccc
+                        if (aQuery.FieldByName(aHedefAlanlar [iCol]) is TStringField)
+                          and (aQuery.FieldByName(aHedefAlanlar [iCol]).Size < Length (sItems)) then
+                        begin
+                          GridList.Row := iTmp;
+                          GridList.Col := aSecilenIndexler [iCol];
+                          showmessageSkin (IntToStr (iTmp) + '. satýrda ' + aHedefAlanlar [iCol] + ' alaný için girilen deðer ayrýlan alandan ('+
+                            IntToStr (aQuery.FieldByName(aHedefAlanlar [iCol]).Size)+') geniþ', '', '', 'info');
+                        end;
                       end;
                       if bHepsiBos then Continue;
                       bTmpPost := True;
@@ -813,6 +820,6 @@ begin
   end;
   FFileName := '';
   FAlanEslestirmeYapildi := False;
-end;//þþþ
-//isg katip excel'ini programdan aktarma
+end;
+
 end.
