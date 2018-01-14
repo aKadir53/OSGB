@@ -551,7 +551,7 @@ var
   aQuery : TADOQuery;
   sAktarimSonrasiStoredProc, sItems, sTableName : String;
   aHedefAlanlar, aBasliginHedefAlani, aAramaBasliklari, aSecilenAlanlar : TStringList;
-  iCol, iTmp, iAktarimTanimID, iThermo : Integer;
+  iInserted, iCol, iTmp, iAktarimTanimID, iThermo : Integer;
   bTmpPost, bHepsiBos, bTmp, bHedefTabloyuBosalt, bHedefTabloyuBosaltSor : Boolean;
   aSecilenIndexler : TIntegerArray;
 begin
@@ -649,8 +649,8 @@ begin
               end;
               Delete (sItems, Length (sItems) - 1, 2);
 
-              sItems := 'SELECT ' + sItems + ' FROM '+ sTableName;
-
+              sItems := 'SELECT TOP 0 ' + sItems + ' FROM '+ sTableName;
+              iInserted := 0;
               aQuery.sql.Text := sItems;
               aQuery.Open;
               try
@@ -672,10 +672,18 @@ begin
                           aQuery.FieldByName(aHedefAlanlar [iCol]).AsString := sItems
                          else
                           aQuery.FieldByName(aHedefAlanlar [iCol]).Clear;
-                        //ccc
+                        if (aQuery.FieldByName(aHedefAlanlar [iCol]) is TStringField)
+                          and (aQuery.FieldByName(aHedefAlanlar [iCol]).Size < Length (sItems)) then
+                        begin
+                          GridList.Row := iTmp;
+                          GridList.Col := aSecilenIndexler [iCol];
+                          showmessageSkin (IntToStr (iTmp) + '. satýrda ' + aHedefAlanlar [iCol] + ' alaný için girilen deðer ayrýlan alandan ('+
+                            IntToStr (aQuery.FieldByName(aHedefAlanlar [iCol]).Size)+') geniþ', '', '', 'info');
+                        end;
                       end;
                       if bHepsiBos then Continue;
                       bTmpPost := True;
+                      iInserted := iInserted + 1;
                     finally
                       if bTmpPost then
                         aQuery.Post
@@ -690,26 +698,44 @@ begin
               finally
                 aQuery.Close;
               end;
-
-              //Arama baþlýklarýný veritabanýna yaz...
-              for iTmp := 0 to aSecilenAlanlar.Count -1 do
-                if not IsNull (aSecilenAlanlar [iTmp])
-                  and (aAramaBasliklari.IndexOf (aSecilenAlanlar [iTmp]) < 0) then
-                begin
-                  aAramaBasliklari.Add(aSecilenAlanlar [iTmp]);
-                  aBasliginHedefAlani.Add(aHedefAlanlar [iTmp]);
-                  aQuery.SQL.Text := 'insert into dbo.DisaktarimBaglanti (AktarimTanimID, HedefAlanAdi, KaynakBaslik) '+
-                                     'Select '+ IntToStr (iAktarimTanimID) + ', ' +
-                                     QuotedStr (aHedefAlanlar [iTmp]) + ', ' +
-                                     QuotedStr (aSecilenAlanlar [iTmp]);
-                  aQuery.ExecSQL;
-                end;
-                bTmp := True;
+              aQuery.SQL.Text := 'Select top 0 AktarimTanimID, HedefAlanAdi, KaynakBaslik from dbo.DisaktarimBaglanti';
+              aQuery.Open;
+              try
+                //Arama baþlýklarýný veritabanýna yaz...
+                for iTmp := 0 to aSecilenAlanlar.Count -1 do
+                  if not IsNull (aSecilenAlanlar [iTmp])
+                    and (aAramaBasliklari.IndexOf (aSecilenAlanlar [iTmp]) < 0) then
+                  begin
+                    aAramaBasliklari.Add(aSecilenAlanlar [iTmp]);
+                    aBasliginHedefAlani.Add(aHedefAlanlar [iTmp]);
+                    aQuery.Append;
+                    btmpPost := False;
+                    try
+                      aQuery.FieldByName('AktarimTanimID').AsInteger := iAktarimTanimID;
+                      aQuery.FieldByName('HedefAlanAdi').AsString := aHedefAlanlar [iTmp];
+                      aQuery.FieldByName('KaynakBaslik').AsString := aSecilenAlanlar [iTmp];
+                      bTmpPost := True;
+                    finally
+                      if bTmpPost then
+                        aQuery.Post
+                       else
+                        aQuery.Cancel;
+                    end;
+                  end;
+              finally
+                aQuery.Close;
+              end;
+              bTmp := True;
             finally
               if bTmp then
-                aQuery.Connection.CommitTrans
-               else
+              begin
+                aQuery.Connection.CommitTrans;
+                showmessageSkin (IntToStr (iInserted) + ' adet satýr baþarý ile aktarýldý', '', '', 'info');
+              end
+              else begin
                 aQuery.Connection.RollbackTrans;
+                showmessageSkin ('Aktarým iþlemi sýrasýnda bir hata oluþtu ve iþlem tamamlanamadý', '', '', 'info');
+              end;
             end;
           finally
             aSecilenAlanlar.Free;
@@ -794,6 +820,6 @@ begin
   end;
   FFileName := '';
   FAlanEslestirmeYapildi := False;
-end;//þþþ
-//isg katip excel'ini programdan aktarma
+end;
+
 end.
