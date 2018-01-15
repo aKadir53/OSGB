@@ -645,7 +645,7 @@ begin
             end;
             bTmp := False;
             iInserted := 0;
-            aQuery.Connection.BeginTrans;
+            BeginTrans (aQuery);
             try
               //Aktarým tanýmlarýnda tablo boþaltýlýp doldurulacak tipteyse boþalt (null ise kullanýcýya sormuþtuk)
               if bHedefTabloyuBosalt then
@@ -744,10 +744,10 @@ begin
             finally
               if bTmp then
               begin
-                aQuery.Connection.CommitTrans;
+                CommitTrans (aQuery);
               end
               else begin
-                aQuery.Connection.RollbackTrans;
+                RollbackTrans (aQuery);
                 showmessageSkin ('Aktarým iþlemi sýrasýnda bir hata oluþtu ve iþlem tamamlanamadý', '', '', 'info');
               end;
             end;
@@ -757,7 +757,7 @@ begin
             bQuery := TADOQuery.Create(Self);
             try
               bQuery.Connection := aQuery.Connection;
-              aQuery.Connection.BeginTrans;
+              BeginTrans (aQuery);
               try
                 aQuery.SQL.Text := 'exec '+ sAktarimSonrasiStoredProc +' 0';
                 aQuery.Open;
@@ -794,11 +794,11 @@ begin
               finally
                 if bTmp then
                 begin
-                  aQuery.Connection.CommitTrans;
+                  CommitTrans (aQuery);
                   showmessageSkin (IntToStr (iInserted) + ' adet satýr baþarý ile aktarýldý', '', '', 'info');
                 end
                 else begin
-                  aQuery.Connection.RollbackTrans;
+                  RollbackTrans (aQuery);
                   showmessageSkin ('Aktarým iþlemi sýrasýnda bir hata oluþtu ve iþlem tamamlanamadý', '', '', 'info');
                   if bTmpPost then
                     DBGridDialog (sItems, bQuery, [mbOk], mbOk);
