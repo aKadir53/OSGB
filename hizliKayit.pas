@@ -229,6 +229,22 @@ begin
     //arama baþlýðý listeleri geçilmiþse o baþlýklardan sütunlarý bulma gayreti içinde kendini kaybet...
     if Assigned (aLookupColumnHeaders) and Assigned (aLookupColumnHeaderFieldNames) then
     begin
+      //grid sütunlarýný tara, sütun eþleþmemiþse sütun baþlýðý lookup baþlýklarda varsa, onun karþýlýðýndaki sütun da eþleþmemiþse nikahla ikisini
+      for i := 0 to GridList.ColCount - 1 do
+      begin
+        if aStringList.IndexOf (IntToStr (i)) < 0 then
+        begin
+          //sütun baþlýklarýnda var mý
+          j := aLookupColumnHeaders.IndexOf(GridList.Cells [i, 0]);
+          if j < 0 then Continue;
+          //karþýlýðýndaki sütunun adý ne ?
+          sItems := aLookupColumnHeaderFieldNames [j];
+          //alanýn indexi ne ?
+          j := aTargetFields.IndexOf(sItems);
+          //Alanýn indexindeki deðer -1 ise eþlenmemiþ, hemen nikahla.
+          if StrToInt (aStringList [j]) < 0 then aStringList [j] := IntToStr (i);
+        end;
+      end;
       //þþþ
     end;
 
