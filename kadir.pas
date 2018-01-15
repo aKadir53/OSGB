@@ -385,6 +385,11 @@ function DoktorReceteMedulaGonderimTip(doktor : string) : integer;
 procedure DBUpdate;
 function SirketSubeTehlikeSinifi(Sirket,Sube : string) : string;
 function DBGridDialog (const pCaption: String; const aDataset: TDataset; aButtons : TMsgDlgButtons; aDefaultButton : TMsgDlgBtn) : TModalResult;
+procedure BeginTrans (const aQuery : TADOQuery);
+procedure RollBackTrans (const aQuery : TADOQuery);
+procedure CommitTrans (const aQuery : TADOQuery);
+function TranCount (const aQuery : TADOQuery): Integer;
+
 
 const
   _YTL_ = 'YTL';
@@ -8545,7 +8550,7 @@ function FotografGoruntule (const aPicture: TPicture) : TModalResult;
 var
   aForm : TForm;
   aImage: TcxImage;
-  aCheckBox: TCheckBox;
+  //aCheckBox: TCheckBox;
 begin
   aForm := TForm.Create (Application);
   try
@@ -8793,6 +8798,76 @@ begin
     end;
   finally
     aForm.Free;
+  end;
+end;
+
+procedure BeginTrans (const aQuery : TADOQuery);
+var
+  bQuery : TADOQuery;
+  iTranCountBefore, iTranCountAfter : Integer;
+begin
+  bQuery := TADOQuery.Create (nil);
+  try
+    iTranCountBefore := trancount (aQuery);
+    bQuery.Connection := aQuery.Connection;
+    bQuery.SQL.Text := 'BEGIN TRAN';
+    bQuery.ExecSQL;
+    iTranCountAfter := trancount (aQuery);
+    if iTranCountBefore + 1 <> iTranCountAfter then Abort;
+  finally
+    bQuery.Free;
+  end;
+end;
+
+procedure RollBackTrans (const aQuery : TADOQuery);
+var
+  bQuery : TADOQuery;
+  iTranCountAfter : Integer;
+begin
+  bQuery := TADOQuery.Create (nil);
+  try
+    bQuery.Connection := aQuery.Connection;
+    bQuery.SQL.Text := 'ROLLBACK';
+    bQuery.ExecSQL;
+    iTranCountAfter := trancount (aQuery);
+    if 0 <> iTranCountAfter then Abort;
+  finally
+    bQuery.Free;
+  end;
+end;
+
+procedure CommitTrans (const aQuery : TADOQuery);
+var
+  bQuery : TADOQuery;
+  iTranCountBefore, iTranCountAfter : Integer;
+begin
+  bQuery := TADOQuery.Create (nil);
+  try
+    iTranCountBefore := trancount (aQuery);
+    bQuery.Connection := aQuery.Connection;
+    bQuery.SQL.Text := 'COMMIT';
+    bQuery.ExecSQL;
+    iTranCountAfter := trancount (aQuery);
+    if iTranCountBefore - 1 <> iTranCountAfter then Abort;
+  finally
+    bQuery.Free;
+  end;
+end;
+
+function TranCount (const aQuery : TADOQuery): Integer;
+var
+  bQuery : TADOQuery;
+begin
+  Result := -1;
+  if Result < 0 then ;;;;
+  bQuery := TADOQuery.Create (nil);
+  try
+    bQuery.Connection := aQuery.Connection;
+    bQuery.SQL.Text := 'SELECT @@TRANCOUNT TRC';
+    bQuery.Open;
+    Result := bQuery.FieldByName('TRC').AsInteger;
+  finally
+    bQuery.Free;
   end;
 end;
 
