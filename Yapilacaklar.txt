@@ -186,3 +186,6 @@ userGroups gridinden grup silerken beforeDelete'de usergroupsettings ve usergrou
 þifre minimum 6 karakter en az 1 harf gibi kontroller
 doktor tanýmlarýnda seçim kutusunda kullanýcý doktor ise dpoktor filtresi ekleyip doktorlara kendi ayarlarýný deðiþtirebilme imkâný verilebilir
 muayene eklerken view'dan almýyor türleri
+eðitim baskýsýnda problem varmýþ
+personel eðitimlerinde personel seçiminde filtre kalkmasý lazým
+personel tablosunda primary key ve unique index kurgusu düzeltilecek
