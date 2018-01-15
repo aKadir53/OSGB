@@ -245,7 +245,6 @@ begin
           if StrToInt (aStringList [j]) < 0 then aStringList [j] := IntToStr (i);
         end;
       end;
-      //þþþ
     end;
 
     //ÜÖ 20180103 son aktarýlan ve eþleþtirilmiþ excel baþlýklarý ile uyuþanlarý da eþleþtir
@@ -564,7 +563,7 @@ end;
 
 procedure TfrmHizliKayit.TanimliOtomatikAktarim;
 var
-  aQuery : TADOQuery;
+  aQuery, bQuery : TADOQuery;
   sAktarimSonrasiStoredProc, sItems, sTableName : String;
   aHedefAlanlar, aBasliginHedefAlani, aAramaBasliklari, aSecilenAlanlar : TStringList;
   iInserted, iCol, iTmp, iAktarimTanimID, iThermo : Integer;
@@ -645,6 +644,7 @@ begin
               end;
             end;
             bTmp := False;
+            iInserted := 0;
             aQuery.Connection.BeginTrans;
             try
               //Aktarým tanýmlarýnda tablo boþaltýlýp doldurulacak tipteyse boþalt (null ise kullanýcýya sormuþtuk)
@@ -666,7 +666,6 @@ begin
               Delete (sItems, Length (sItems) - 1, 2);
 
               sItems := 'SELECT TOP 0 ' + sItems + ' FROM '+ sTableName;
-              iInserted := 0;
               aQuery.sql.Text := sItems;
               aQuery.Open;
               try
@@ -746,12 +745,67 @@ begin
               if bTmp then
               begin
                 aQuery.Connection.CommitTrans;
-                showmessageSkin (IntToStr (iInserted) + ' adet satýr baþarý ile aktarýldý', '', '', 'info');
               end
               else begin
                 aQuery.Connection.RollbackTrans;
                 showmessageSkin ('Aktarým iþlemi sýrasýnda bir hata oluþtu ve iþlem tamamlanamadý', '', '', 'info');
               end;
+            end;
+            if IsNull (sAktarimSonrasiStoredProc) then Exit;
+            bTmp := False;
+            bTmpPost := False;
+            bQuery := TADOQuery.Create(Self);
+            try
+              bQuery.Connection := aQuery.Connection;
+              aQuery.Connection.BeginTrans;
+              try
+                aQuery.SQL.Text := 'exec '+ sAktarimSonrasiStoredProc +' 0';
+                aQuery.Open;
+                try
+                  ShowThermo(iThermo, 'Aktarým sonrasý güncellemeler yapýlýyor', 0, aQuery.RecordCount, 0, );
+                  try
+                    while not aQuery.Eof do
+                    begin
+                      if not UpdateThermo (aQuery.RecNo - 1, iThermo, aQuery.FieldByName ('Aciklama').AsString) then Exit;
+                      bQuery.SQL.Text := 'exec '+ sAktarimSonrasiStoredProc +' ' + IntToStr (aQuery.FieldByName ('iTip').AsInteger);
+                      if aQuery.FieldByName ('Rowset').AsBoolean then
+                      begin
+                        bQuery.Open;
+                        if aQuery.FieldByName ('RowsetHata').AsBoolean then
+                          if bQuery.RecordCount > 0 then
+                          begin
+                            bTmpPost := True;
+                            sItems:= aQuery.FieldByName ('HataMesaji').AsString;
+                            Exit;
+                          end;
+                      end
+                      else begin
+                        bQuery.ExecSQL;
+                      end;
+                      aQuery.Next;
+                    end;
+                  finally
+                    FreeThermo(iThermo);
+                  end;
+                finally
+                  aQuery.Close;
+                end;
+                bTmp := True;
+              finally
+                if bTmp then
+                begin
+                  aQuery.Connection.CommitTrans;
+                  showmessageSkin (IntToStr (iInserted) + ' adet satýr baþarý ile aktarýldý', '', '', 'info');
+                end
+                else begin
+                  aQuery.Connection.RollbackTrans;
+                  showmessageSkin ('Aktarým iþlemi sýrasýnda bir hata oluþtu ve iþlem tamamlanamadý', '', '', 'info');
+                  if bTmpPost then
+                    DBGridDialog (sItems, bQuery, [mbOk], mbOk);
+                end;
+              end;
+            finally
+              bQuery.Free;
             end;
           finally
             aSecilenAlanlar.Free;
