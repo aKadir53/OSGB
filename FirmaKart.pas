@@ -459,7 +459,7 @@ end;
 procedure TfrmFirmaKart.FormCreate(Sender: TObject);
 var
   List : TListeAc;
-  SEHIR ,ILCE ,BUCAK ,KOY,MAHALLE,doktor,tehlikeSinifi : TcxImageComboKadir;
+  SEHIR ,ILCE ,BUCAK ,KOY,MAHALLE,doktor,tehlikeSinifi,odeme : TcxImageComboKadir;
 begin
   // Burdaki User_ID ve sirketKod base formda dolduruluyor. Visible false (true set etmeyin)
   // Eðer kayýt eklediðiniz tabloda bu alanlar varsa ve bunlarý otomatik set etmek isterseniz
@@ -598,12 +598,24 @@ begin
   setdatastring (self, 'Yetkili', 'Yetkili Kiþi', Kolon1, '', 100);
   setdatastring (self, 'yetkiliTel', 'Yetkili Telefon', Kolon1, '', 100);
   setdatastring (self, 'yetkilimail', 'Yetkili EPosta', Kolon1, '', 100);
+
+  odeme := TcxImageComboKadir.Create(self);
+  odeme.Conn := nil;
+  odeme.ItemList := '1;Kurum Öder,2;Personel Öder';
+  odeme.Filter := '';
+  odeme.BosOlamaz := True;
+  setDataStringKontrol(self,odeme,'OdemeKimYapar','Ýþe Giriþ Ödemesini',Kolon1,'',120);
+  OrtakEventAta(odeme);
+
  // setDataString(self,'EMAIL','E-Posta',Kolon2,'',166);
 
 
 
   setDataStringKontrol(self,cxFotoPanel , 'cxFotoPanel','',Kolon2,'',110);
   setDataStringKontrol(self,txtAktif , 'Aktif','',Kolon2,'',110);
+
+
+
 //  setDataStringKontrol(self,txtTip , 'Tip','',Kolon3,'',110);
 
   setDataStringBLabel(self,'bosSatir2',sayfa2_Kolon1,'',1);

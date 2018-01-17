@@ -54,12 +54,13 @@ uses
   labParametreleri in 'labParametreleri.pas' {frmLabParams},
   labaratuvarKabul in 'labaratuvarKabul.pas' {frmLabaratuvarKabul},
   LabSonucGir in 'LabSonucGir.pas' {frmLabSonucGir},
-  HastaListe in 'HastaListe.pas' {frmHastaListe};
+  HastaListe in 'HastaListe.pas' {frmHastaListe},
+  GrupDetayTanim in 'GrupDetayTanim.pas' {frmGrupDetayTanim};
 
 // KadirMedula3 in '..\..\medula3wsdl\KadirMedula3.pas';
 
 const
-  AppalicationVer : integer = 1028;
+  AppalicationVer : integer = 1029;
   // Versiyon info kontrol etmeyi unutma
 
 {$R *.res}
@@ -73,6 +74,7 @@ begin
   Application.MainFormOnTaskbar := True;
   Application.CreateForm(TDATALAR, DATALAR);
   Application.CreateForm(TAnaForm, AnaForm);
+
   //Application.CreateForm(TfrmUpdate, frmUpdate);???
 
   // form2.show;
