@@ -762,7 +762,7 @@ begin
                 aQuery.SQL.Text := 'exec '+ sAktarimSonrasiStoredProc +' 0';
                 aQuery.Open;
                 try
-                  ShowThermo(iThermo, 'Aktarým sonrasý güncellemeler yapýlýyor', 0, aQuery.RecordCount, 0, );
+                  ShowThermo(iThermo, 'Aktarým sonrasý güncellemeler yapýlýyor', 0, aQuery.RecordCount, 0, True);
                   try
                     while not aQuery.Eof do
                     begin
