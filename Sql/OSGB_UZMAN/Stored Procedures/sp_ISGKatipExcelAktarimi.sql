@@ -75,8 +75,8 @@ begin
     update ss set HizmetAlanKurum = 'sil', HizmetAlanKurumSGKSicilNo = TCKimlikNo
     from ISGKatipExcelAktarim ss
     where GorevTuru = 'Ýçe Grv.'
-	  and LTRIM (RTRIM (IsNull (HizmetAlanKurumSGKSicilNo, ''))) <> ''
-	  and LTRIM (RTRIM (IsNull (HizmetalanKurum, ''))) <> ''
+	  and LTRIM (RTRIM (IsNull (HizmetAlanKurumSGKSicilNo, ''))) = ''
+	  and LTRIM (RTRIM (IsNull (HizmetalanKurum, ''))) = ''
   end
   -- Ayrýldý durumunda olanlarýn silinmesi
   if @iTip = 2 or @iTip is Null
@@ -159,8 +159,8 @@ begin
     delete ss
     from ISGKatipExcelAktarim ss
     where GorevTuru = 'Ýçe Grv.'
-  	  and LTRIM (RTRIM (IsNull (HizmetAlanKurumSGKSicilNo, ''))) <> ''
-	  and LTRIM (RTRIM (IsNull (HizmetalanKurum, ''))) <> ''
+  	  and LTRIM (RTRIM (IsNull (HizmetAlanKurumSGKSicilNo, ''))) = 'sil'
+	  and LTRIM (RTRIM (IsNull (HizmetalanKurum, ''))) = TCKimlikNo
 end
   
   if @iTip = 9 or @iTip is Null
