@@ -22,9 +22,6 @@ type
     PopupMenu1: TPopupMenu;
     cxIlacTedaviPanel: TcxGroupBox;
     N1: TMenuItem;
-    T1: TMenuItem;
-    N2: TMenuItem;
-    S1: TMenuItem;
     ADO_Tetkikler: TADOQuery;
     DataSource8: TDataSource;
     frmHastaIlacTedavi_cxGroupBox1: TcxGroupBox;
@@ -78,7 +75,6 @@ type
     cxGridTetkiklergrupKodu: TcxGridDBColumn;
     cxGridTetkiklergrupKodu_Centro: TcxGridDBColumn;
     cxGridTetkiklerColumn1: TcxGridDBColumn;
-    H1: TMenuItem;
     T2: TMenuItem;
     T3: TMenuItem;
     K1: TMenuItem;
@@ -101,8 +97,13 @@ type
     T4: TMenuItem;
     T5: TMenuItem;
     Tetkikler: TListeAc;
+    cxGridTetkiklerColumn2: TcxGridDBColumn;
+    cxGridTetkiklerColumn3: TcxGridDBColumn;
+    T6: TMenuItem;
     procedure FormCreate(Sender: TObject);
     procedure ItemClick(Sender: TObject);
+
+    procedure SubItemClick(Sender: TObject);
     procedure cxKaydetClick(Sender: TObject);
     procedure cxGridIlacTedaviPlaniStylesGetContentStyle(
       Sender: TcxCustomGridTableView; ARecord: TcxCustomGridRecord;
@@ -115,6 +116,7 @@ type
     procedure ktvClick(Sender: TObject);
     procedure spKtvClick(Sender: TObject);
     procedure cxBtnHesapKaydetClick(Sender: TObject);
+    procedure PopupMenuItemEkle(MenuCaptionField,MenuTagField,sql : string;SubMenu : TMenuItem);
   private
     { Private declarations }
   public
@@ -122,7 +124,7 @@ type
   end;
 
 const _TableName_ = 'Hareketler';
-      formGenislik = 900;
+      formGenislik = 950;
       formYukseklik = 600;
 var
   frmHastaTetkikEkle: TfrmHastaTetkikEkle;
@@ -131,6 +133,40 @@ var
 implementation
       uses Data_Modul,AnaUnit;
 {$R *.dfm}
+
+procedure TfrmHastaTetkikEkle.SubItemClick(Sender: TObject);
+begin
+ GrupTetkikEkle(TMenuItem(sender).Tag);
+end;
+
+procedure TfrmHastaTetkikEkle.PopupMenuItemEkle(MenuCaptionField,MenuTagField,Sql : string;SubMenu : TMenuItem);
+var
+  Ado : TADOQuery;
+  caption : string;
+  tag : integer;
+  item : TMenuItem;
+begin
+  Ado := TADOQuery.Create(nil);
+  datalar.QuerySelect(ado,sql);
+  try
+    SubMenu.Clear;
+    while not ado.Eof do
+    begin
+      caption := Ado.FieldByName(MenuCaptionField).AsString;
+      tag := Ado.FieldByName(MenuTagField).AsInteger;
+      item := TMenuItem.Create(SubMenu);
+      item.Caption := caption;
+      item.Tag := tag;
+      item.OnClick := SubItemClick;
+      SubMenu.Add(item);
+      ado.Next;
+    end;
+  finally
+     ado.Free;
+  end;
+
+
+end;
 
 procedure TfrmHastaTetkikEkle.cxKaydetClick(Sender: TObject);
 begin
@@ -142,6 +178,7 @@ procedure TfrmHastaTetkikEkle.cxTabTetkikChange(Sender: TObject);
 begin
   inherited;
   sonuclar;
+(*
   case cxTabTetkik.TabIndex of
   1 : begin
          SonucGiris.Visible := false;
@@ -155,14 +192,23 @@ begin
       end;
 
   end;
-
+  *)
 end;
 
 procedure TfrmHastaTetkikEkle.Sonuclar;
+var
+ F : string;
 begin
+   case cxTabTetkik.TabIndex  of
+    0 : F := '';
+    1 : F := '02';
+    2 : F := '03';
+    3 : F := '04';
+   end;
+
    sql := 'select h.*,t.NAME1 from hareketler h join HIZMET t on t.code = h.code ' +
           ' where dosyaNo = ' + #39 + _dosyaNo_ + #39 +
-          ' and gelisNo = ' + _gelisNo_ + ' and abs(t.TANIM) = ' + '0'+inttostr(ABS(cxTabTetkik.TabIndex+2)) + // sql1 +
+          ' and gelisNo = ' + _gelisNo_ + ' and t.TANIM like ' + QuotedStr('%'+F+'%') + // sql1 +
           ' order by h.TARIH,h.SIRANO ';
    datalar.QuerySelect(ADO_Tetkikler,sql);
 
@@ -175,14 +221,28 @@ end;
 
 procedure TfrmHastaTetkikEkle.TetkikSil;
 var
-  sql : string;
+  sql,sira : string;
   ado : TADOQuery;
 begin
+  sira := ADO_Tetkikler.FieldByName('SIRANO').AsString;
   try
     ado := TADOQuery.Create(nil);
     try
-      sql := 'delete from hareketler where SIRANO = ' + ADO_Tetkikler.FieldByName('SIRANO').AsString;
-      datalar.QueryExec(ado,sql);
+      sql :=
+            'if not exists(select * from LaboratuvarKabul where hareketlerSira = ' + sira + ')' +
+            'begin '+
+            '  delete from hareketler where SIRANO = ' + sira +
+            '  select @@rowcount ' +
+            'end '+
+            'else ' +
+            'begin '+
+            '  select -1 ' +
+            'end';
+      datalar.QuerySelect(ado,sql);
+      if ado.Fields[0].AsInteger = -1
+      then
+       ShowMessageSkin('Tetkik Kabul Yapýlmýþ , Silinemez','Kabul Ýptal Etmeniz Gerekmektedir','','info');
+
       AdoQueryActiveYenile(ADO_Tetkikler);
     finally
       ado.Free;
@@ -197,13 +257,20 @@ end;
 procedure TfrmHastaTetkikEkle.TetkikEkle;
 var
   List : ArrayListeSecimler;
+  F : string;
 begin
-   if cxTabTetkik.TabIndex = 0
-    then
-       Tetkikler.Filter := '%02%'
-    else
-       Tetkikler.Filter := '%03%';
+
+   case cxTabTetkik.TabIndex  of
+    0 : F := '';
+    1 : F := '02';
+    2 : F := '03';
+    3 : F := '04';
+   end;
+
    Tetkikler.SkinName := AnaForm.dxSkinController1.SkinName;
+
+   Tetkikler.Table := 'exec sp_KurumHizmetFiyat ' + QuotedStr(_dosyaNo_) + ',' + QuotedStr(F);
+
    List := Tetkikler.ListeGetir;
    if length(List) > 0 then
    begin
@@ -216,6 +283,8 @@ begin
      ADO_Tetkikler.FieldByName('code').AsString := List[0].kolon1;
      ADO_Tetkikler.FieldByName('name1').AsString := List[0].kolon2;
      ADO_Tetkikler.FieldByName('tip').AsString := List[0].kolon3;
+     ADO_Tetkikler.FieldByName('SATISF').AsString := List[0].kolon4;
+
      ADO_Tetkikler.Post;
    end;
 end;
@@ -227,11 +296,11 @@ var
 begin
   ado := TADOQuery.Create(nil);
   try
-    if mrYES = ShowMessageSkin('Var Olan Tablo Silinip Yeniden Oluþturulacak , Girilmiþ Sonuçlar Varsa , Bu Ýþlem Yapýlmaz','','','msg')
+    if mrYES = ShowMessageSkin('Grup Tetkik Ýþlenecek','','','msg')
     Then Begin
       try
         sql := 'exec sp_hastaLabIsle ' + QuotedStr(_dosyaNo_) + ',' +
-                _gelisNo_ + ',' + QuotedStr(tarihal(date())) + ',' + inttostr(-1*grup);
+                _gelisNo_ + ',' + QuotedStr(tarihal(date())) + ',' + inttostr(grup);
         datalar.QueryExec(ado,sql);
         AdoQueryActiveYenile(ADO_Tetkikler);
       except on e : Exception do
@@ -406,12 +475,17 @@ begin
 
   TableName := _TableName_;
   cxPanel.Visible := false;
-  SayfaCaption('Tetkikler','','','','');
-  Olustur(self,_TableName_,'Hasta Tetkikleri',23);
+  SayfaCaption('Tetkik ve Hizmetler','','','','');
+  Olustur(self,_TableName_,'Hasta Hizmetleri',23);
+
+  PopupMenuItemEkle('Tanimi','Kod','select tanimi,Kod from TetkikIstemGrupSablon',T6);
+
+
+
   Menu := PopupMenu1;
 
-  cxTabTetkik.Tabs[0].ImageIndex := 47;
-  cxTabTetkik.Tabs[1].ImageIndex := 95;
+  cxTabTetkik.Tabs[1].ImageIndex := 47;
+  cxTabTetkik.Tabs[2].ImageIndex := 95;
 
 
 end;

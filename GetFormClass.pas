@@ -40,7 +40,7 @@ uses message,Data_Modul,AnaUnit,message_y,popupForm,rapor,TedaviKart,Son6AylikTe
              HastaRecete,sifreDegis,HastaTetkikEkle,
              Receteler,Sorgulamalar,sorguRaporCalistir,
              HastaKart,FirmaKart,hizliKayit,receteSablonlari,
-             HastaListe,IsKazasi,Anamnez,
+             HastaListe,IsKazasi,Anamnez,GrupDetayTanim,
              Tnm_UserSettings,HastaAsiKarti,HastaTaniKart,
              KurumLogin,Update_G, labaratuvarKabul,
              MedulaKurumSifreDegis,labParametreleri,
@@ -181,6 +181,8 @@ begin
    TagfrmSorguCalistir : Result := TfrmRaporCalistir;
    TagfrmIsKazasi : Result := TfrmIsKazasi;
    TagfrmAnamnez : Result := TfrmAnamnez;
+   TagfrmTetkikIstemSablon : Result := TfrmGrupDetayTanim;
+
 
    TagfrmTedaviBilgisi : Result := TfrmTedaviBilgisi;
    TagfrmHastaRecete : Result := TfrmHastaRecete;
@@ -226,6 +228,7 @@ begin
    TagfrmAnamnez : Result := frmAnamnez;
    TagfrmHastaRecete : Result := frmHastaRecete;
    TagfrmHastaListe,TagfrmDoktorHastaListe : Result := frmHastaListe;
+   TagfrmTetkikIstemSablon : Result := frmGrupDetayTanim;
 
    TagfrmUsers : Result := frmUsers;
    TagfrmHastaTetkikEkle : Result := frmHastaTetkikEkle;
@@ -248,6 +251,7 @@ begin
 
    TagfrmLabParametreleri : Result := frmLabParams;
    TagfrmLabKabul : Result := frmLabaratuvarKabul;
+
   end;
 end;
 
@@ -286,6 +290,8 @@ begin
       TagfrmLabParametreleri : frmLabParams:= TfrmLabParams.Create(Tab);
       TagfrmLabKabul : frmLabaratuvarKabul := TfrmLabaratuvarKabul.Create(Tab);
       TagfrmAnamnez : frmAnamnez := TfrmAnamnez.Create(Tab);
+      TagfrmTetkikIstemSablon : frmGrupDetayTanim := TfrmGrupDetayTanim.Create(Tab);
+
      else
       result := nil;
    end;
@@ -378,6 +384,7 @@ begin
 
       TagfrmLabParametreleri : frmLabParams := TfrmLabParams.Create(Tab);
       TagfrmLabKabul : frmLabaratuvarKabul := TfrmLabaratuvarKabul.Create(Tab);
+      TagfrmTetkikIstemSablon : frmGrupDetayTanim := TfrmGrupDetayTanim.Create(Tab);
      else
       result := nil;
    end;
@@ -441,6 +448,7 @@ begin
     TagfrmAnamnez : Application.CreateForm(TfrmAnamnez, frmAnamnez);
     TagfrmTedaviBilgisi : Application.CreateForm(TfrmTedaviBilgisi,frmTedaviBilgisi);
     TagfrmIsKazasi : Application.CreateForm(TfrmIsKazasi,frmIsKazasi);
+    TagfrmTetkikIstemSablon : Application.CreateForm(TfrmGrupDetayTanim, frmGrupDetayTanim);
 
 
     TagfrmLabParametreleri : Application.CreateForm(TfrmLabParams, frmLabParams);
