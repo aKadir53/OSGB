@@ -384,6 +384,12 @@ function WebErisimBilgi(slk,slb : string) : string;
 function DoktorReceteMedulaGonderimTip(doktor : string) : integer;
 procedure DBUpdate;
 function SirketSubeTehlikeSinifi(Sirket,Sube : string) : string;
+function DBGridDialog (const pCaption: String; const aDataset: TDataset; aButtons : TMsgDlgButtons; aDefaultButton : TMsgDlgBtn) : TModalResult;
+procedure BeginTrans (const aQuery : TADOQuery);
+procedure RollBackTrans (const aQuery : TADOQuery);
+procedure CommitTrans (const aQuery : TADOQuery);
+function TranCount (const aQuery : TADOQuery): Integer;
+
 
 const
   _YTL_ = 'YTL';
@@ -450,7 +456,7 @@ var
 implementation
 
 uses message,AnaUnit,message_y,popupForm,rapor,TedaviKart,Son6AylikTetkikSonuc,
-             HastaRecete,sifreDegis,HastaTetkikEkle,GirisUnit,SMS,LisansUzat,Update_G;
+             HastaRecete,sifreDegis,HastaTetkikEkle,GirisUnit,SMS,LisansUzat,Update_G, DBGrids;
 
 procedure DBUpdate;
 begin
@@ -8544,7 +8550,7 @@ function FotografGoruntule (const aPicture: TPicture) : TModalResult;
 var
   aForm : TForm;
   aImage: TcxImage;
-  aCheckBox: TCheckBox;
+  //aCheckBox: TCheckBox;
 begin
   aForm := TForm.Create (Application);
   try
@@ -8614,7 +8620,7 @@ begin
       aLabel.name := 'label1';
       aLabel.Caption := sComboCaption;
       aLabel.Left := 0;
-      aLabel.Top := 10;
+      aLabel.Top := 16;
       aLabel.AutoSize := True;
       aLabel.AutoSize := False;
 
@@ -8623,7 +8629,7 @@ begin
       aComboBox.name := 'cb1';
       aComboBox.Left := aLabel.Left + aLabel.Width + 2;
       aComboBox.Top := 10;
-      aComboBox.Width := 150;
+      aComboBox.Width := 200;
       aComboBox.Items.Text := sItemsList;
       aComboBox.Style := csDropDownList;
       aComboBox.ItemIndex := iItemIndex;
@@ -8634,6 +8640,7 @@ begin
       aForm.AutoSize := False;
       aForm.Position := poDesktopCenter;
       aForm.Caption := sFormCaption;
+      aComboBox.TabOrder := 0;
       repeat
         Result := aForm.ShowModal = mrYes;
         iItemIndex := aComboBox.ItemIndex;
@@ -8691,6 +8698,177 @@ begin
     or AnsiSameText (Result, 'TÜRKÝYE')
     or AnsiSameText (Result, 'TURKIYECUMHURIYETI')
     or AnsiSameText (Result, 'TÜRKÝYECUMHURÝYETÝ') then Result := 'TR';
+end;
+
+function DBGridDialog (const pCaption: String; const aDataset: TDataset; aButtons : TMsgDlgButtons; aDefaultButton : TMsgDlgBtn) : TModalResult;
+var
+  aForm : TForm;
+  aDataSource: TDataSource;
+  aPanel : TPanel;
+  aButton : TButton;
+  iButton, iTopPos : Integer;
+begin
+  aForm := TForm.Create (Application);
+  try
+    aForm.BorderStyle := bsDialog;
+    aForm.FormStyle := fsNormal;
+    aPanel := TPanel.Create (aForm);
+    try
+      aPanel.Parent := aForm;
+      aPanel.Height := 35;
+      aPanel.Caption := ' ';
+      aPanel.Top := 50;
+
+      if mbYes in aButtons then
+      begin
+        aButton := TButton.Create (aForm);
+        aButton.Parent := aPanel;
+        aButton.name := 'btnEvet';
+        aButton.Caption := 'Evet';
+        aButton.Top := 5;
+        aButton.Width := 75;
+        aButton.Default := aDefaultButton = mbYes;
+        aButton.ModalResult := mrYes;
+      end;
+
+      if mbNo in aButtons then
+      begin
+        aButton := TButton.Create (aForm);
+        aButton.Parent := aPanel;
+        aButton.name := 'btnHayir';
+        aButton.Caption := 'Hayýr';
+        aButton.Top := 5;
+        aButton.Width := 75;
+        aButton.Default := aDefaultButton = mbNo;
+        aButton.ModalResult := mrCancel;
+      end;
+
+      if mbCancel in aButtons then
+      begin
+        aButton := TButton.Create (aForm);
+        aButton.Parent := aPanel;
+        aButton.name := 'btnVazgec';
+        aButton.Caption := 'Vazgeç';
+        aButton.Top := 5;
+        aButton.Width := 75;
+        aButton.Cancel := True;
+        aButton.Default := aDefaultButton = mbCancel;
+        aButton.ModalResult := mrCancel;
+      end;
+
+      if mbOk in aButtons then
+      begin
+        aButton := TButton.Create (aForm);
+        aButton.Parent := aPanel;
+        aButton.name := 'btnTamam';
+        aButton.Caption := 'Tamam';
+        aButton.Top := 5;
+        aButton.Width := 75;
+        aButton.Default := aDefaultButton = mbOk;
+        aButton.ModalResult := mrOK;
+      end;
+
+      iTopPos := 10;
+      for iButton := 0 to aPanel.ControlCount - 1 do
+      begin
+        TButton (aPanel.Controls [iButton]).Left := iTopPos;
+        iTopPos := iTopPos + TButton (aPanel.Controls [iButton]).Width + 5;
+        TButton (aPanel.Controls [iButton]).TabOrder := iButton;
+      end;
+      aDataSource := TDataSource.Create (aForm);
+      aDataSource.DataSet := aDataset;
+      with TDBGrid.Create (aForm) do
+      begin
+        Parent := aForm;
+        Align := alClient;
+        DataSource := aDataSource;
+        TabOrder := 0;
+      end;
+
+      aForm.AutoSize := True;
+      aPanel.Align := alBottom;
+
+      aForm.AutoSize := False;
+      aForm.Position := poDesktopCenter;
+      aForm.Caption := pCaption;
+      Result := aForm.ShowModal;
+      aDataset.First;
+    finally
+      aPanel.Free;
+    end;
+  finally
+    aForm.Free;
+  end;
+end;
+
+procedure BeginTrans (const aQuery : TADOQuery);
+var
+  bQuery : TADOQuery;
+  iTranCountBefore, iTranCountAfter : Integer;
+begin
+  bQuery := TADOQuery.Create (nil);
+  try
+    iTranCountBefore := trancount (aQuery);
+    bQuery.Connection := aQuery.Connection;
+    bQuery.SQL.Text := 'BEGIN TRAN';
+    bQuery.ExecSQL;
+    iTranCountAfter := trancount (aQuery);
+    if iTranCountBefore + 1 <> iTranCountAfter then Abort;
+  finally
+    bQuery.Free;
+  end;
+end;
+
+procedure RollBackTrans (const aQuery : TADOQuery);
+var
+  bQuery : TADOQuery;
+  iTranCountAfter : Integer;
+begin
+  bQuery := TADOQuery.Create (nil);
+  try
+    bQuery.Connection := aQuery.Connection;
+    bQuery.SQL.Text := 'ROLLBACK';
+    bQuery.ExecSQL;
+    iTranCountAfter := trancount (aQuery);
+    if 0 <> iTranCountAfter then Abort;
+  finally
+    bQuery.Free;
+  end;
+end;
+
+procedure CommitTrans (const aQuery : TADOQuery);
+var
+  bQuery : TADOQuery;
+  iTranCountBefore, iTranCountAfter : Integer;
+begin
+  bQuery := TADOQuery.Create (nil);
+  try
+    iTranCountBefore := trancount (aQuery);
+    bQuery.Connection := aQuery.Connection;
+    bQuery.SQL.Text := 'COMMIT';
+    bQuery.ExecSQL;
+    iTranCountAfter := trancount (aQuery);
+    if iTranCountBefore - 1 <> iTranCountAfter then Abort;
+  finally
+    bQuery.Free;
+  end;
+end;
+
+function TranCount (const aQuery : TADOQuery): Integer;
+var
+  bQuery : TADOQuery;
+begin
+  Result := -1;
+  if Result < 0 then ;;;;
+  bQuery := TADOQuery.Create (nil);
+  try
+    bQuery.Connection := aQuery.Connection;
+    bQuery.SQL.Text := 'SELECT @@TRANCOUNT TRC';
+    bQuery.Open;
+    Result := bQuery.FieldByName('TRC').AsInteger;
+  finally
+    bQuery.Free;
+  end;
 end;
 
 function IsNull (const s: String): Boolean;

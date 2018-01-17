@@ -1018,7 +1018,7 @@ procedure TfrmHastaRecete.TaniEkle;
 var
   List : ArrayListeSecimler;
   I : integer;
-  sql,id : string;
+  sql, id : string;
   ado : TADOQuery;
 begin
    TaniListe.Where := ifThen(cxChkSIK.Checked,'Sikkullan > 0','');

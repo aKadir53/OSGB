@@ -470,7 +470,7 @@ type
     DenetimDefterNo : String;
   end;
 
-
+  TIntegerArray = array of Integer;
 Const
   TagfrmHastaKart = 90;
   TagfrmFirmaKart = 100;

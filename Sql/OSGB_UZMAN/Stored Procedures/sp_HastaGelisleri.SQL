@@ -5,7 +5,7 @@ ALTER PROCEDURE [dbo].[sp_HastaGelisleri]
 AS
 select GelisNo,cast(BHDAT as datetime)  as Tarih,
        SERVIS,Mt.Tanim TEDAVITURU,Doktor,kullanici,      
-       PROTOKOLNO
+       PROTOKOLNO,SIRANO
 
 from Gelisler g
 left join VW_MuayeneTipleri Mt on Mt.Kod = g.TEDAVITURU
