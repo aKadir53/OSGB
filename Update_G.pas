@@ -333,7 +333,7 @@ begin
     try
       for i := 1 to gridDetay.RowCount - 2 do
       begin
-        if not UpdateThermo (i - 1, iThermo, IntToStr (i)) then Exit;
+        if not UpdateThermo (i - 1, iThermo, IntToStr (i) + ' - ' + gridDetay.Cells[1,i]) then Exit;
 
         if gridDetay.Cells[25,i] = 'T'
         then begin
