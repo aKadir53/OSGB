@@ -12,6 +12,7 @@ object frmHastaTetkikEkle: TfrmHastaTetkikEkle
   Font.Name = 'Tahoma'
   Font.Style = []
   OldCreateOrder = False
+  PopupMenu = PopupMenu1
   OnCreate = FormCreate
   OnShow = FormShow
   PixelsPerInch = 96
@@ -31,18 +32,18 @@ object frmHastaTetkikEkle: TfrmHastaTetkikEkle
       PanelStyle.Active = True
       TabOrder = 0
       Height = 567
-      Width = 639
+      Width = 711
       object frmHastaIlacTedavi_cxPageControl1: TcxPageControl
         Left = 2
         Top = 2
-        Width = 635
+        Width = 707
         Height = 563
         Align = alClient
         TabOrder = 0
         Properties.ActivePage = cxTabTetkikler
         ClientRectBottom = 556
         ClientRectLeft = 3
-        ClientRectRight = 628
+        ClientRectRight = 700
         ClientRectTop = 26
         object cxTabTetkikler: TcxTabSheet
           Caption = 'Hasta Tetkikleri'
@@ -50,7 +51,7 @@ object frmHastaTetkikEkle: TfrmHastaTetkikEkle
           object cxGrid15: TcxGrid
             Left = 0
             Top = 0
-            Width = 625
+            Width = 697
             Height = 450
             Align = alClient
             Font.Charset = TURKISH_CHARSET
@@ -100,6 +101,16 @@ object frmHastaTetkikEkle: TfrmHastaTetkikEkle
                   Format = 'Tetkik Say'#305's'#305' : #'
                   Kind = skCount
                   Column = cxGridTetkiklerNAME1
+                end
+                item
+                  Format = '#.##'
+                  Kind = skSum
+                  Column = cxGridTetkiklerColumn2
+                end
+                item
+                  Format = '#.##'
+                  Kind = skSum
+                  Column = cxGridTetkiklerColumn3
                 end>
               DataController.Summary.SummaryGroups = <
                 item
@@ -160,11 +171,11 @@ object frmHastaTetkikEkle: TfrmHastaTetkikEkle
               end
               object cxGridTetkiklerNAME1: TcxGridDBColumn
                 Caption = 'Tetkik Ad'#305
-                DataBinding.FieldName = 'tanimi'
+                DataBinding.FieldName = 'NAME1'
                 HeaderAlignmentHorz = taCenter
                 HeaderAlignmentVert = vaCenter
                 Options.Editing = False
-                Width = 108
+                Width = 137
               end
               object cxGridTetkiklerADET: TcxGridDBColumn
                 Caption = 'Adet'
@@ -180,6 +191,7 @@ object frmHastaTetkikEkle: TfrmHastaTetkikEkle
                 HeaderAlignmentHorz = taCenter
                 HeaderAlignmentVert = vaCenter
                 Options.Editing = False
+                Width = 72
               end
               object cxGridTetkiklerKurum: TcxGridDBColumn
                 DataBinding.FieldName = 'Kurum'
@@ -204,6 +216,7 @@ object frmHastaTetkikEkle: TfrmHastaTetkikEkle
               object SonucGiris: TcxGridDBColumn
                 Caption = 'Sonu'#231
                 DataBinding.FieldName = 'Gd'
+                Visible = False
                 HeaderAlignmentHorz = taCenter
                 Width = 58
               end
@@ -317,10 +330,31 @@ object frmHastaTetkikEkle: TfrmHastaTetkikEkle
               object cxGridTetkiklerColumn1: TcxGridDBColumn
                 Caption = 'Grubu'
                 DataBinding.FieldName = 'SLT'
+                Visible = False
                 HeaderAlignmentHorz = taCenter
                 HeaderAlignmentVert = vaCenter
                 Options.Editing = False
                 Width = 77
+              end
+              object cxGridTetkiklerColumn2: TcxGridDBColumn
+                Caption = 'Fiyat'
+                DataBinding.FieldName = 'SATISF'
+                PropertiesClassName = 'TcxCurrencyEditProperties'
+                Properties.Alignment.Horz = taRightJustify
+                Properties.Alignment.Vert = taVCenter
+                Properties.AssignedValues.DisplayFormat = True
+                HeaderAlignmentHorz = taCenter
+                Width = 99
+              end
+              object cxGridTetkiklerColumn3: TcxGridDBColumn
+                Caption = 'Kurum Fiyat'
+                DataBinding.FieldName = 'KSATISF'
+                PropertiesClassName = 'TcxCurrencyEditProperties'
+                Properties.Alignment.Horz = taRightJustify
+                Properties.AssignedValues.DisplayFormat = True
+                Visible = False
+                HeaderAlignmentHorz = taCenter
+                Width = 80
               end
             end
             object cxGridLevel15: TcxGridLevel
@@ -333,19 +367,21 @@ object frmHastaTetkikEkle: TfrmHastaTetkikEkle
           object cxTabTetkik: TcxTabControl
             Left = 0
             Top = 495
-            Width = 625
+            Width = 697
             Height = 35
             Align = alBottom
             TabOrder = 1
             Properties.TabIndex = 0
             Properties.TabPosition = tpBottom
             Properties.Tabs.Strings = (
+              'T'#252'm'#252
               'Laboratuvar'
-              'Tele - EKG')
+              'Radyoloji'
+              'Klinik Hizmetleri')
             OnChange = cxTabTetkikChange
             ClientRectBottom = 5
             ClientRectLeft = 3
-            ClientRectRight = 618
+            ClientRectRight = 690
             ClientRectTop = 3
           end
           object cxPanelHesapla: TcxGroupBox
@@ -356,7 +392,7 @@ object frmHastaTetkikEkle: TfrmHastaTetkikEkle
             TabOrder = 2
             Visible = False
             Height = 45
-            Width = 625
+            Width = 697
             object Label2: TLabel
               Left = 97
               Top = 15
@@ -372,8 +408,6 @@ object frmHastaTetkikEkle: TfrmHastaTetkikEkle
               Font.Style = []
               ParentFont = False
               Layout = tlCenter
-              ExplicitLeft = 96
-              ExplicitTop = -2
               ExplicitHeight = 13
             end
             object Label1: TLabel
@@ -391,8 +425,6 @@ object frmHastaTetkikEkle: TfrmHastaTetkikEkle
               Font.Style = []
               ParentFont = False
               Layout = tlCenter
-              ExplicitLeft = 181
-              ExplicitTop = -2
               ExplicitHeight = 13
             end
             object Label3: TLabel
@@ -410,8 +442,6 @@ object frmHastaTetkikEkle: TfrmHastaTetkikEkle
               Font.Style = []
               ParentFont = False
               Layout = tlCenter
-              ExplicitLeft = 268
-              ExplicitTop = -2
               ExplicitHeight = 13
             end
             object Label4: TLabel
@@ -429,8 +459,6 @@ object frmHastaTetkikEkle: TfrmHastaTetkikEkle
               Font.Style = []
               ParentFont = False
               Layout = tlCenter
-              ExplicitLeft = 2
-              ExplicitTop = -2
               ExplicitHeight = 13
             end
             object txtUrr: TcxDBTextEdit
@@ -514,7 +542,7 @@ object frmHastaTetkikEkle: TfrmHastaTetkikEkle
               Width = 56
             end
             object ktv: TcxButtonKadir
-              Left = 472
+              Left = 544
               Top = 15
               Width = 75
               Height = 20
@@ -523,12 +551,12 @@ object frmHastaTetkikEkle: TfrmHastaTetkikEkle
               TabOrder = 4
               OnClick = ktvClick
               NewButtonVisible = False
-              ExplicitLeft = 473
+              ExplicitLeft = 545
               ExplicitTop = -2
               ExplicitHeight = 45
             end
             object spKtv: TcxButtonKadir
-              Left = 397
+              Left = 469
               Top = 15
               Width = 75
               Height = 20
@@ -537,12 +565,12 @@ object frmHastaTetkikEkle: TfrmHastaTetkikEkle
               TabOrder = 5
               OnClick = spKtvClick
               NewButtonVisible = False
-              ExplicitLeft = 398
+              ExplicitLeft = 470
               ExplicitTop = -2
               ExplicitHeight = 45
             end
             object cxBtnHesapKaydet: TcxButtonKadir
-              Left = 547
+              Left = 619
               Top = 15
               Width = 75
               Height = 20
@@ -551,7 +579,7 @@ object frmHastaTetkikEkle: TfrmHastaTetkikEkle
               TabOrder = 6
               OnClick = cxBtnHesapKaydetClick
               NewButtonVisible = False
-              ExplicitLeft = 548
+              ExplicitLeft = 620
               ExplicitTop = -2
               ExplicitHeight = 45
             end
@@ -570,36 +598,6 @@ object frmHastaTetkikEkle: TfrmHastaTetkikEkle
       ImageIndex = 18
       OnClick = cxKaydetClick
     end
-    object N1: TMenuItem
-      Tag = -1
-      Caption = 'Ayl'#305'k Ekle'
-      ImageIndex = 61
-      OnClick = ItemClick
-    end
-    object T1: TMenuItem
-      Tag = -3
-      Caption = '3 Ayl'#305'k Ekle'
-      ImageIndex = 62
-      OnClick = ItemClick
-    end
-    object N2: TMenuItem
-      Tag = -6
-      Caption = '6 Ayl'#305'k Ekle'
-      ImageIndex = 64
-      OnClick = ItemClick
-    end
-    object S1: TMenuItem
-      Tag = -12
-      Caption = 'Y'#305'll'#305'k Ekle'
-      ImageIndex = 94
-      OnClick = ItemClick
-    end
-    object H1: TMenuItem
-      Tag = -5
-      Caption = 'Hepatit Marker Ekle'
-      Visible = False
-      OnClick = ItemClick
-    end
     object T2: TMenuItem
       Tag = -2
       Caption = 'Tetkik Sil'
@@ -609,17 +607,20 @@ object frmHastaTetkikEkle: TfrmHastaTetkikEkle
     object T3: TMenuItem
       Tag = -4
       Caption = 'Tetkik Takip Formu'
+      Visible = False
       OnClick = ItemClick
     end
     object K2: TMenuItem
       Tag = -20
       Caption = #304'stem Guruplar'#305
+      Visible = False
       OnClick = ItemClick
     end
     object T4: TMenuItem
       Tag = -21
       Caption = 'Tetkik De'#287'erlendir'
       ImageIndex = 32
+      Visible = False
       OnClick = ItemClick
     end
     object T5: TMenuItem
@@ -627,6 +628,17 @@ object frmHastaTetkikEkle: TfrmHastaTetkikEkle
       Caption = 'Tetkik Ekle'
       ImageIndex = 30
       OnClick = ItemClick
+    end
+    object T6: TMenuItem
+      Caption = 'Tetkik Ekle '#350'ablon'
+      ImageIndex = 81
+      object N1: TMenuItem
+        Tag = -1
+        Caption = 'Ayl'#305'k Ekle'
+        ImageIndex = 61
+        Visible = False
+        OnClick = SubItemClick
+      end
     end
   end
   object ADO_Tetkikler: TADOQuery
@@ -710,7 +722,7 @@ object frmHastaTetkikEkle: TfrmHastaTetkikEkle
   object Tetkikler: TListeAc
     ListeBaslik = 'Tetkik Listesi'
     TColcount = 3
-    TColsW = '50,350,0'
+    TColsW = '50,350,0,60'
     Table = 'HIZMET'
     Conn = DATALAR.ADOConnection2
     Filtercol = 2
@@ -720,15 +732,18 @@ object frmHastaTetkikEkle: TfrmHastaTetkikEkle
     Kolonlar.Strings = (
       'Code'
       'NAME1'
-      'TANIM')
+      'TANIM'
+      'FIYAT')
     KolonBasliklari.Strings = (
       'Sut Kodu'
       'Tanimi'
-      'Tip')
+      'Tip'
+      'Fiyat')
     Calistir = fgEvet
     BiriktirmeliSecim = False
     Grup = False
     GrupCol = 0
+    KaynakTableTip = tpSp
     Left = 328
     Top = 205
   end

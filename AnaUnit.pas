@@ -25,7 +25,7 @@ uses
   dxSkinOffice2010Blue, dxSkinOffice2010Silver, dxSkinPumpkin, dxSkinSeven,
   dxSkinSharp, dxSkinSilver, dxSkinSpringTime, dxSkinStardust, dxSkinSummer2008,
   dxSkinValentine, dxSkinXmas2008Blue,cxSchedulerStrs, cxMaskEdit,
-  cxDropDownEdit, cxImageComboBox;
+  cxDropDownEdit, cxImageComboBox, Data.SqlExpr;
 
 type
   TAnaForm = class(TForm)
@@ -318,6 +318,8 @@ begin
  end;
 
 //  cxSetResourceString(@scxEvent,'Olay');
+
+
 
 end;
 
