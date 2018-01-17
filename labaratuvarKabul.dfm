@@ -120,7 +120,7 @@ object frmLabaratuvarKabul: TfrmLabaratuvarKabul
     Top = 43
     Width = 1261
     Height = 641
-    ActivePage = TabSheet1
+    ActivePage = TabSheet2
     Align = alClient
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clWindowText

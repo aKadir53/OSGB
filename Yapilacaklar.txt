@@ -197,3 +197,5 @@ update formunda sql güncelleme açýklamasýný thermo'da gösterebiliriz
 sorgulama çalýþmamasý
 
 ilaç gruplarý antibiyotik vs
+
+eðitim ekraný þirket seçimi olmadan genel çalýþmasý ve farklý firmalardan personel seçebilmesi güncellemeleri

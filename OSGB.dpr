@@ -54,7 +54,8 @@ uses
   labParametreleri in 'labParametreleri.pas' {frmLabParams},
   labaratuvarKabul in 'labaratuvarKabul.pas' {frmLabaratuvarKabul},
   LabSonucGir in 'LabSonucGir.pas' {frmLabSonucGir},
-  HastaListe in 'HastaListe.pas' {frmHastaListe};
+  HastaListe in 'HastaListe.pas' {frmHastaListe},
+  GrupDetayTanim in 'GrupDetayTanim.pas' {frmGrupDetayTanim};
 
 // KadirMedula3 in '..\..\medula3wsdl\KadirMedula3.pas';
 
@@ -73,6 +74,7 @@ begin
   Application.MainFormOnTaskbar := True;
   Application.CreateForm(TDATALAR, DATALAR);
   Application.CreateForm(TAnaForm, AnaForm);
+
   //Application.CreateForm(TfrmUpdate, frmUpdate);???
 
   // form2.show;

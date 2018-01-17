@@ -80,7 +80,7 @@ begin
     end;
     PersonelList.Where :=
       'Aktif = 1 '+
-      'and SirketKod = ' + QuotedStr (datalar.AktifSirket)+
+      'and SirketKod = ' + QuotedStr(varTOstr(TcxImageComboKadir((FindComponent('PersonelSirketKod'))).EditingValue)) +
       'and not exists (select 1 '+
       'from Personel_Egitim pe '+
       'where pe.EgitimId '+ IfThen (IsNull (TcxButtonEditKadir (FindComponent('id')).Text), 'is NULL', '= ' +  TcxButtonEditKadir (FindComponent('id')).Text) + ' '+
@@ -182,7 +182,7 @@ end;
 procedure TfrmPersonelEgitim.FormCreate(Sender: TObject);
 var
   List : TListeAc;
-  kombo ,sirketlerx : TcxImageComboKadir;
+  kombo ,sirketlerx ,sirketlerxx: TcxImageComboKadir;
   dateEdit: TcxDateEditKadir;
 begin
   Tag := TagfrmPersonelEgitim;
@@ -213,7 +213,7 @@ begin
   List.Name := 'id';
   List.Conn := Datalar.ADOConnection2;
   List.SkinName := 'coffee';//AnaForm.dxSkinController1.SkinName;
-  List.Where := 'SirketKod = ' + QuotedStr (DATALAR.AktifSirket);
+  List.Where := '';//'SirketKod = ' + QuotedStr (DATALAR.AktifSirket);
   setDataStringB(self,'id','Eðitim No.',Kolon1,'',70,List,True,nil, 'tanimi', '', False, True, -100);
 
  // setDataStringB(self,'SirketKod','Þirket Kodu',Kolon1,'',100,nil, True, SirketKod);
@@ -226,7 +226,6 @@ begin
   sirketlerx.DisplayField := 'Tanimi';
   sirketlerx.BosOlamaz := False;
   sirketlerx.Filter := SirketComboFilter;
-
   setDataStringKontrol(self,sirketlerx,'SirketKod','Þirket',Kolon1,'',250,0,alNone,'');
 
   þube kodu ekle
@@ -281,6 +280,17 @@ begin
   kombo.Filter := '';
   OrtakEventAta(kombo);
   setDataStringKontrol(self,kombo,'EgitimUcretiOdendi','Ödendi mi?',kolon1,'',120);
+
+  sirketlerxx := TcxImageComboKadir.Create(self);
+  sirketlerxx.Conn := Datalar.ADOConnection2;
+  sirketlerxx.TableName := 'SIRKETLER_TNM';
+  sirketlerxx.ValueField := 'SirketKod';
+  sirketlerxx.DisplayField := 'Tanimi';
+  sirketlerxx.BosOlamaz := False;
+  sirketlerxx.Filter := '';
+  sirketlerxx.Tag := -100;
+  setDataStringKontrol(self,sirketlerxx,'PersonelSirketKod','Þirketler',Sayfa2_Kolon1,'',250,0,alNone,'');
+
   addButton(self,nil,'btnPersonelEkle','','Personel Getir',Sayfa2_Kolon1,'PERS',120,ButtonClick);
   addButton(self,nil,'btnPersonelSil','','Seçili Personeli Sil',Sayfa2_Kolon1,'PERS',120,ButtonClick);
   setDataStringKontrol(self,EgitimPersonel,'EgitimPersonel','',sayfa2_kolon1,'',410,300);

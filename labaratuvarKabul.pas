@@ -770,8 +770,8 @@ begin
          Else Begin
 
                ShowMessageSkin('Laboratuvar Kaydý ALýndý','','','info');
-               ADO_SQL3.Locate('dosyaNo;gelisNo;YTakýpNo',
-                                       VarArrayOf([bilgi.dosyaNo,bilgi.gelisNo,bilgi.detayNo])
+               ADO_SQL3.Locate('dosyaNo;gelisNo',
+                                       VarArrayOf([bilgi.dosyaNo,bilgi.gelisNo])
                                        ,[loPartialKey]);
 
 
@@ -1454,9 +1454,6 @@ begin
    if (ARecord.Values[7] > 0)
    Then AStyle := cxStyle12
    else AStyle := cxStyle1;
-
-
-
 end;
 
 procedure TfrmLabaratuvarKabul.btnYatClick(Sender: TObject);
