@@ -459,7 +459,7 @@ end;
 procedure TfrmFirmaKart.FormCreate(Sender: TObject);
 var
   List : TListeAc;
-  SEHIR ,ILCE ,BUCAK ,KOY,MAHALLE,doktor,tehlikeSinifi,odeme : TcxImageComboKadir;
+  SEHIR ,ILCE ,BUCAK ,KOY,MAHALLE,tehlikeSinifi,odeme : TcxImageComboKadir;
 begin
   // Burdaki User_ID ve sirketKod base formda dolduruluyor. Visible false (true set etmeyin)
   // Eðer kayýt eklediðiniz tabloda bu alanlar varsa ve bunlarý otomatik set etmek isterseniz
@@ -508,18 +508,6 @@ begin
   setDataStringKontrol(self,tehlikeSinifi,'tehlikeSinifi','Tehlike Sýnýfý',kolon1,'',100);
   OrtakEventAta(tehlikeSinifi);
 
-
-  doktor := TcxImageComboKadir.Create(self);
-  doktor.Conn := Datalar.ADOConnection2;
-  doktor.TableName := 'DoktorlarT';
-  doktor.ValueField := 'KOD';
-  doktor.DisplayField := 'Tanimi';
-  doktor.BosOlamaz := False;
-  doktor.Filter := '';
-  setDataStringKontrol(self,doktor,'doktor','Doktor',kolon1,'doktrin',120);
-  OrtakEventAta(doktor);
-  //doktor yanýna ayný gruptan izahat ekle
-  setDataStringBLabel(self,'doktorizahat',Kolon1,'doktrin',350, 'Þube kartý açýlýrken varsayýlan doktor olarak kullanýlacaktýr');
 
   setDataString(self,'VD','Vergi Dairesi',Kolon1,'',100,True);
   setDataString(self,'VN','Vergi No',Kolon1,'',100,True);
@@ -833,7 +821,6 @@ begin
             if F <> nil then F.ShowModal;
       //  IlacTedaviKarti(dosyaNo.Text,_gelisNo_,noktasizTarih(DATALAR.Bilgi.ProvizyonTarihi));
        end;
-
   end;
 end;
 
