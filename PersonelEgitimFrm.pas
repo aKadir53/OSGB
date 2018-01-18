@@ -91,9 +91,14 @@ begin
       for i := Low (datalar.ButtonEditSecimlist) to High (datalar.ButtonEditSecimlist) do
       begin
         EgitimPersonel.Dataset.Append;
-        EgitimPersonel.Dataset.FieldByName('PersonelDosyaNo').AsString := DATALAR.ButtonEditSecimlist [i].kolon1;
-        EgitimPersonel.Dataset.FieldByName('Egitimid').AsString := TcxButtonEditKadir (FindComponent('id')).Text;
-        EgitimPersonel.Dataset.Post;
+        try
+          EgitimPersonel.Dataset.FieldByName('PersonelDosyaNo').AsString := DATALAR.ButtonEditSecimlist [i].kolon1;
+          EgitimPersonel.Dataset.FieldByName('Egitimid').AsString := TcxButtonEditKadir (FindComponent('id')).Text;
+          EgitimPersonel.Dataset.Post;
+        except
+          EgitimPersonel.Dataset.Cancel;
+          raise;
+        end;
       end;
       EgitimPersonel.Dataset.Active := False;
       EgitimPersonel.Dataset.Active := True;
@@ -104,9 +109,13 @@ begin
     sTmp := EgitimPersonel.Dataset.FieldByName ('id').AsString;
     if not IsNull (sTmp) then
     begin
+      if ShowMessageSkin ('Seçilli Personeli Silmek Ýstiyor Musunuz ?', '', '', 'conf') <> mrYes then Exit;
+      i := EgitimPersonel.Dataset.RecNo;
       datalar.QueryExec(ado, 'delete from Personel_Egitim where id = '+ sTmp);
       EgitimPersonel.Dataset.Active := False;
       EgitimPersonel.Dataset.Active := True;
+      if i > EgitimPersonel.Dataset.RecordCount then i := EgitimPersonel.Dataset.RecordCount;
+      if i > 0 then EgitimPersonel.Dataset.RecNo := i;
     end;
 
   end;
@@ -195,21 +204,26 @@ begin
 
   List := TListeAc.Create(nil);
 
-  List.Table := '(Select e.*, et.tanimi from Egitimler e inner join Egitim_Tnm et on et.Kod = e.EgitimKod) Egitimler';
+  List.Table :=
+    '(Select e.id, e.EgitimKod, e.BaslamaTarihi, et.tanimi, s.Tanimi SirketTanimi '+
+    'from Egitimler e inner join Egitim_Tnm et on et.Kod = e.EgitimKod '+
+    'left outer join SIRKETLER_TNM s on s.SirketKod = e.SirketKod) Egitimler';
 
   List.kolonlar.Add('id');// := Ts;
   List.kolonlar.Add('EgitimKod');// := Ts;
   List.kolonlar.Add('Tanimi');// := Ts;
   List.kolonlar.Add('BaslamaTarihi'); // := Ts;
+  List.kolonlar.Add('SirketTanimi'); // := Ts;
 
 
   List.KolonBasliklari.Add('ID');// := Ts1;
   List.KolonBasliklari.Add('Eðitim Kodu');// := Ts1;
   List.KolonBasliklari.Add('Tanýmý');// := Ts1;
   List.KolonBasliklari.Add('Baþlama Tarihi');// := Ts1;
-  List.TColcount := 4;
-  List.TColsW := '10,10,140,70';
-  List.ListeBaslik := 'Eðitimler';
+  List.KolonBasliklari.Add('Þirket'); // := Ts;
+  List.TColcount := 5;
+  List.TColsW := '10,10,140,70,200';
+  List.ListeBaslik := 'Kayýtlý Eðitimler';
   List.Name := 'id';
   List.Conn := Datalar.ADOConnection2;
   List.SkinName := 'coffee';//AnaForm.dxSkinController1.SkinName;
