@@ -116,3 +116,5 @@ Osgb doktoru kendine baðlý olmayan firma personelinin tamamýný görsün diyor Zafe
 Personel kartýnda bazý bilgiler boþ ise yeni muayene açarken hata veriyor.(kadir düzeltmiþti)
 muayene kartýnda doktor seçimi gerekebilir. (kadir eklemiþti)
 user kartlarýnda pasife çekme ve pasif kullanýcýnýn girememesi lazým demiþiz. þifresi boþ olan kullanýcýlar pasif sayýldý. ayrýca alan eklemedik.
+"eðitime personel seçince liste boþsa boþ satýr eklemeye çalýþýyor kýrýlýnca post yapamadýðý zaman cancel yapmalý, yoksa gride gidip esc'ye basmadan baþka personel eklenemiyor." except'e cancel eklendi.
+seçili personeli sil seçilince onay sormasý ve silme iþleminden sonra refresh olunca o satýrda kalmasý saðlandý
