@@ -160,6 +160,7 @@ begin
   try
     FDefaultConnection.ConnectionString :=
        'Provider=SQLOLEDB.1;Password='+pPassword+';Persist Security Info=True;User ID='+pUserName+';Initial Catalog=' + pDBName +';Data Source='+pServerName;
+    FDefaultConnection.CommandTimeout := 1000;
     FDefaultConnection.Connected := True;
     Result := True;
   finally
@@ -219,7 +220,7 @@ end;
 constructor TFSQuery.Create(AOwner: TComponent);
 begin
   inherited;
-
+  CommandTimeout := 1000;
 end;
 
 destructor TFSQuery.Destroy;

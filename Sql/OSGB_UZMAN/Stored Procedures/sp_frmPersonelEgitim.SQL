@@ -1,7 +1,7 @@
 BEGIN TRAN
 GO
 ALTER -- create
-  procedure dbo.sp_frmPersonelEgitim @EgitimId int = 0, @PersonelDosyaNo varchar (6) = ''
+  procedure [dbo].[sp_frmPersonelEgitim] @EgitimId int = 0, @PersonelDosyaNo varchar (6) = ''
 as 
 begin
   select st.tanimi SirketAdi, pk.HASTAADI + ' ' + pk.HASTASOYADI PersonelAdiSoyadi, cast (convert (varchar, E.BaslamaTarihi, 112) as datetime) BaslamaTarihi, cast (E.Sure as varchar) + ' Saat' Sure, E.EgitimYeri, E.EgitimIcerigi, dt.tanimi EgitimiVeren, IsNull (e.SertifikaNo + '/', '') + pe.PersonelDosyaNo SertifikaNo,
@@ -10,9 +10,8 @@ begin
   from dbo.Egitimler E
   inner join dbo.Egitim_Tnm et on et.Kod = e.EgitimKod
   inner join dbo.Personel_Egitim pe on pe.EgitimID = e.id
-  inner join dbo.PersonelKart pk on pk.Sirketkod = E.sirketkod
-    and pk.DosyaNo = pE.personelDosyaNo
-  inner join dbo.SIRKETLER_TNM st on st.SirketKod = e.SirketKod
+  left join dbo.PersonelKart pk on pk.DosyaNo = pE.personelDosyaNo
+  inner join dbo.SIRKETLER_TNM st on st.SirketKod = pk.SirketKod
   inner join dbo.DoktorlarT dt on dt.kod = e.egitimci
   where (IsNull (@EgitimId, 0) = 0 or E.id = @EgitimId)
     and (IsNull (@PersonelDosyaNo, '') = '' or pe.PersonelDosyaNo = @PersonelDosyaNo)
