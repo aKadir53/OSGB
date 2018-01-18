@@ -167,7 +167,7 @@ end;
 
 procedure TfrmPaket.FormCloseQuery(Sender: TObject; var CanClose: Boolean);
 begin
-  SpeedButton3.Click;
+  if SpeedButton3.Enabled then SpeedButton3Click (SpeedButton3);
 end;
 
 procedure TfrmPaket.FormCreate(Sender: TObject);
@@ -271,6 +271,7 @@ begin
         end;
         aSL2.Add (aSL1 [i]);
       end;
+      Clipboard.Clear;
     finally
       aSL2.Free;
     end;
