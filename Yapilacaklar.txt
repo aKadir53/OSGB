@@ -215,3 +215,6 @@ personel aktarým soyadý ayarlamasýnda alan eþleþtirme yapýlmamýþsa yapýlmalý. sa
 resetli alan eþleþtirmede grid sütun baþlýklarý yedeklenip iþlem iptal edildiðinde geri konulabilir
 
 sunucuya son update'i güncellemesek bile önceden bekleyen update varsa hepsini alýyor. mesela sunucu 1026, yayýnlanmamýþ update 1046, o veritabaný 1026 ise update çalýþtýrmýyor, doðru. fakat o veritabaný 1022'de kalmýþsa 4 update var diye pencereyi açýyor fakat tümünü güncelliyor.
+
+imes osgb dr Murat: eczacý reçetede çalýþtýðý firma ismi açýklama olarak olmalý demiþ
+sýk kullanýlanlar kalkýk gelsin istiyor ilaçlarda ayrýca
