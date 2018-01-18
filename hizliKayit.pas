@@ -29,9 +29,6 @@ uses
 type
   TfrmHizliKayit = class(TGirisForm)
     cxPageControl1: TcxPageControl;
-    DataSource3: TDataSource;
-    MemTable_Personel: TSQLMemTable;
-    DataSource2: TDataSource;
     PopupMenu1: TPopupMenu;
     miExcelYukle: TMenuItem;
     miVeritabaninaYaz: TMenuItem;
@@ -43,7 +40,6 @@ type
     procedure ExcelToGrid;
     procedure GridToPersonelKartTable;
     procedure FormCreate(Sender: TObject);
-    procedure FormClose(Sender: TObject; var Action: TCloseAction);
 
   private
     { Private declarations }
@@ -439,6 +435,7 @@ begin
     end;
     if not FAlanEslestirmeYapildi then
       FAlanEslestirmeYapildi := GridAlanEslestirme (FInitialColumnHeaders, FAcceptedColumnHeaders, FAssignedColumnIndexes, False, False);
+    if not FAlanEslestirmeYapildi then Exit;
     bBasarili := False;
     iCount := 0;
     iRowC := 0;
@@ -546,8 +543,8 @@ begin
         end
         else begin
           datalar.ADOConnection2.rollbackTrans;
+          GridList.Row := iRowC + 1;
           showmessageSkin (IntToStr (iRowC + 1) + '. satýrda hata oluþtu, aktarým iþlemi tamamlanamadý.', '', '', 'info');
-          GridList.Row := iRowC;
         end;
       end;
     finally
@@ -673,6 +670,7 @@ begin
                 try
                   for iTmp := 1 to GridList.RowCount -1 do
                   begin
+                    GridList.Row := iTmp;
                     if not UpdateThermo (iTmp - 1, iThermo, 'Satýr: '+ IntToStr (iTmp)) then Exit;
                     bTmpPost := False;
                     aQuery.Append;
@@ -855,22 +853,11 @@ begin
   end;
 end;
 
-
-
-
-procedure TfrmHizliKayit.FormClose(Sender: TObject; var Action: TCloseAction);
-begin
-  inherited;
-  MemTable_Personel.Active := False;
-  MemTable_Personel.EmptyTable;
-end;
-
 procedure TfrmHizliKayit.FormCreate(Sender: TObject);
 var
   i : Integer;
 begin
   inherited;
-  MemTable_Personel.active := True;
   Menu := PopupMenu1;
   cxPanel.Visible := false;
   SayfaCaption('','','' ,'','');
