@@ -199,3 +199,14 @@ sorgulama çalýþmamasý
 ilaç gruplarý antibiyotik vs
 
 eðitim ekraný þirket seçimi olmadan genel çalýþmasý ve farklý firmalardan personel seçebilmesi güncellemeleri
+
+kullanýcý grup tanýmlarýna þifre yenileme peryodu gün cinsinden alan ekle
+kullanýcý kartýnýn son þifre deðiþiklik tarihinden o kadar günden fazla geçmiþse deðiþiklik iste
+kullanýcý kartýnda baþkasýnýn þifresini deðiþtirince ne olacak ?
+gruba baðlý olmayan kullanýcýlar için grup tablosundaki sýfýrdan farklý olan en küçük peryodu alabiliriz.
+
+data modul'deki lüzumsuz deðiþkenleri sil
+
+personel aktarým soyadý ayarlamasýnda alan eþleþtirme yapýlmamýþsa yapýlmalý. sadece adý ve soyadý alanlarý eþleþtirilebilir.
+resetli alan eþleþtirmede grid sütun baþlýklarý yedeklenip iþlem iptal edildiðinde geri konulabilir
+
