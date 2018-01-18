@@ -199,6 +199,10 @@ sorgulama çalýþmamasý
 ilaç gruplarý antibiyotik vs
 
 eðitim ekraný þirket seçimi olmadan genel çalýþmasý ve farklý firmalardan personel seçebilmesi güncellemeleri
+eðitimci için iþ güvenlik uzmaný ya da doktor seçebilmeli, veritabanýna free format isim yazabiliriz.
+ilk sekmedeki þirket kombosuna farklý, ikincisine farklý liste geliyor.
+liste aç formunda genel olarak tamam'a basýlsa bile gridde kayýt yoksa boþ satýr ekleme problemi var. dizi eleman sayýsý sýfýrda kalmalý
+
 
 kullanýcý grup tanýmlarýna þifre yenileme peryodu gün cinsinden alan ekle
 kullanýcý kartýnýn son þifre deðiþiklik tarihinden o kadar günden fazla geçmiþse deðiþiklik iste

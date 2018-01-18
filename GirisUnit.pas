@@ -313,7 +313,7 @@ function TGirisForm.SirketComboFilter : string;
 var
  where,sube : string;
 begin
-  SirketComboFilter := '';
+  Result := '';
   if datalar.DoktorKodu <> '' then
   begin
     where := '';
@@ -335,7 +335,7 @@ begin
     Where := '';
     Sube := '';
   end;
-  SirketComboFilter := where + Sube;
+  Result := where + Sube;
 end;
 
 function TGirisForm.ResultDataset(FormTag : integer) : TADOQuery;

@@ -11,8 +11,8 @@ BEGIN
   --firma kartý bilgileri güncellendiðinde ayný bilgi þubede merkezdeki ile ayný deðere sahipse onlarý da deðiþtirir.
   if exists (select 1 from inserted)
   begin
-    insert into SIRKET_SUBE_TNM (SirketKod, subeKod, subeTanim, SubeDoktor, BolgeMudurlukSicilNo, subeSiciNo)
-    select SirketKod, '00' subeKod, 'MERKEZ' subeTanim, doktor, BolgeMudurlukSicilNo, IsyeriSicilNo
+    insert into SIRKET_SUBE_TNM (SirketKod, subeKod, subeTanim, BolgeMudurlukSicilNo, subeSiciNo)
+    select SirketKod, '00' subeKod, 'MERKEZ' subeTanim, BolgeMudurlukSicilNo, IsyeriSicilNo
     from inserted s
     where not exists (select 1 from SIRKET_SUBE_TNM sb where sb.sirketKod = s.SirketKod and sb.subeKod = '00')
   end
@@ -28,16 +28,6 @@ BEGIN
       and ISNULL (del.BolgeMudurlukSicilNo, '') <> IsNull (ins.BolgeMudurlukSicilNo, '')
     inner join SIRKET_SUBE_TNM sube on sube.sirketKod = del.SirketKod
       and ISNULL (sube.BolgeMudurlukSicilNo, '') = ISNULL (del.BolgeMudurlukSicilNo, '')
-
-    -- ÜÖ 20171024 ve doktor deðiþmiþse 
-    --             ve herhangi bir þubenin doktor deðeri ana firma kartýnýn eski doktor deðeri ile ayný ise 
-    --             o þubelerin doktorlarýný merkezinki ile birlikte deðiþtir
-    update Sube set sube.subedoktor = ins.doktor 
-    from inserted ins
-    inner join deleted del on del.SirketKod = ins.SirketKod
-      and ISNULL (del.doktor, '') <> IsNull (ins.doktor, '')
-    inner join SIRKET_SUBE_TNM sube on sube.sirketKod = del.SirketKod
-      and ISNULL (sube.subedoktor, '') = ISNULL (del.doktor, '')
 
     -- ÜÖ 20171024 ve iþyeri sicili deðiþmiþse 
     --             ve herhangi bir þubenin iþyeri sicili deðeri ana firma kartýnýn eski iþyeri sicili deðeri ile ayný ise 
