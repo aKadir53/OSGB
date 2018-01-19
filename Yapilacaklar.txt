@@ -184,11 +184,7 @@ isg katip exceline þube açýklamasý ve firma ünvaný birleþtirme ve ayýrmaya yaray
 þirket birleþtir þube ayýr menüsü eklenebilir.
 userGroups gridinden grup silerken beforeDelete'de usergroupsettings ve usergroupmenusettings tablolarýndan data siliyor, fakat users'ta o grupta bir kullanýcý varsa foreign key çakýyor. yetki tanýmlarý silinmiþ olarak kalýyor
 þifre minimum 6 karakter en az 1 harf gibi kontroller
-doktor tanýmlarýnda seçim kutusunda kullanýcý doktor ise dpoktor filtresi ekleyip doktorlara kendi ayarlarýný deðiþtirebilme imkâný verilebilir
 muayene eklerken view'dan almýyor türleri
-eðitim baskýsýnda problem varmýþ
-personel eðitimlerinde personel seçiminde filtre kalkmasý lazým
-personel tablosunda primary key ve unique index kurgusu düzeltilecek
 
 yapýlabilecek otomatik aktarýmlar: 
 sgk sicil numarasýndan firma ünvan ve þube açýklamalarý güncelleme
@@ -198,10 +194,8 @@ sorgulama çalýþmamasý
 
 ilaç gruplarý antibiyotik vs
 
-eðitim ekraný þirket seçimi olmadan genel çalýþmasý ve farklý firmalardan personel seçebilmesi güncellemeleri
 eðitimci için iþ güvenlik uzmaný ya da doktor seçebilmeli, veritabanýna free format isim yazabiliriz.
 ilk sekmedeki þirket kombosuna farklý, ikincisine farklý liste geliyor.
-liste aç formunda genel olarak tamam'a basýlsa bile gridde kayýt yoksa boþ satýr ekleme problemi var. dizi eleman sayýsý sýfýrda kalmalý
 
 
 kullanýcý grup tanýmlarýna þifre yenileme peryodu gün cinsinden alan ekle
