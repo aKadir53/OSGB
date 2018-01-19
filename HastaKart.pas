@@ -190,7 +190,7 @@ end;
 procedure TfrmHastaKart.SirketlerPropertiesChange(Sender: TObject);
 var
   sube : string;
-begin þirkedkod branþý için örnek kod iþaret
+begin
 
   if (datalar.doktorKodu <> '')
   then
