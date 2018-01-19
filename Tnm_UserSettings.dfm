@@ -239,6 +239,12 @@ object frmUsers: TfrmUsers
           Caption = 'Grup Tan'#305'm'#305
           DataBinding.FieldName = 'ADI'
           HeaderAlignmentHorz = taCenter
+          Width = 269
+        end
+        object cxGridUserGrupSifreDegistirmePeryod: TcxGridDBColumn
+          Caption = #350'ifre De'#287'i'#351'.G'#252'n'
+          DataBinding.FieldName = 'SifreDegistirmePeryod'
+          Width = 81
         end
       end
       object cxGridLevel2: TcxGridLevel
