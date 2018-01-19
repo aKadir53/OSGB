@@ -496,26 +496,16 @@ type
    YeniRecete : TYeniRecete;
    SeansOlusturPrm : TSeansOlusturPrm;
    TeleEkg : TTeleEKG;
-   HastaYas , yardimciIslemMethod: string;
+   yardimciIslemMethod: string;
    DigerIslemTalebi : TDigerIslemTalep;
    ProgTarih : string;
-   ProgBitis : string;
-   forum , SOAPRequestText ,Skin : string;
    HastaBil : THasta;
-   bt:integer;
-   HkA : integer;
    VeriSeti : THizmetVeriSeti;
    islemSiralari : Array_Of_string;
-   _Program_ , _takip_ : string;
-   protokolIslemTip , DosyaNOONEK: string;
-   vatandasTip : integer;
-   _kilo_ : double;
+   _Program_ : string;
    browserOk : integer;
-   browserTime : integer;
-   duyuruPanel : string;
-   Cup_Specified : boolean;
-   LisansAlURL,ftpUrl : string;
-   ftpUser,ftpPassword,versiyon: string;
+   LisansAlURL : string;
+   versiyon: string;
    KontrolUserSet : Boolean;
    ZorunluAlanVar : Boolean;
    SifreDegistir : TSifreDegistir;
@@ -526,8 +516,6 @@ type
    hizmetKayitURL : string;
    receteURL :string;
    raporIlacURL :string;
-   raporURL :string;
-   DyopURL :string;
    DonemSonlandir :string;
    ButtonEditSecimlist : ArrayListeSecimler;
    aSahaDenetimVeri : TSahaDenetimler;
@@ -1023,7 +1011,7 @@ end;
 
 procedure TDATALAR.TempConnectionAfterConnect(Sender: TObject);
 begin
-  bt := 1;
+  //bt := 1;
 end;
 
 procedure TDATALAR.TenayBIOAfterExecute(const MethodName: string;
