@@ -124,3 +124,6 @@ eðitim baskýsýnda problem varmýþ deniyordu sp'sinde þirket baðlantýsý düzeltilip
 personel eðitimlerinde personel seçiminde filtre kalkmasý lazým (kadir'le kaldýrdýk)
 personel tablosunda primary key ve unique index kurgusu düzeltilecek (dosyaNo tek unique key yapýldý, foreign key tanýmlarý da buna göre düzeltildi)
 doktor tanýmlarýnda seçim kutusunda kullanýcý doktor ise doktor filtresi ekleyip doktorlara kendi ayarlarýný deðiþtirebilme imkâný verilebilir (verdik. Ýþ güvenlik uzmanlarýna da aynýsýný yaptýk)
+ISG Katip programýndan iþyerleri ve hekimler dökümü için Excel aktarýmý yapýldý
+eðitim formunda Yeni (!) düðmesine basmadan kayýt girince sapýtýyor sorununa karþý disabled / enabled...
+usersettings usermenusettings vs tablolarýn foreign key vs ile korumaya alýnmasý
