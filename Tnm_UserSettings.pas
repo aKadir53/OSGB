@@ -68,6 +68,7 @@ type
     btnGrupEkle: TcxButtonKadir;
     UserGroup_Menu_Settings: TADOQuery;
     UserGroupSettings: TADOQuery;
+    cxGridUserGrupSifreDegistirmePeryod: TcxGridDBColumn;
     procedure FormCreate(Sender: TObject);
 
     procedure cxTextEditKeyDown(Sender: TObject; var Key: Word;
