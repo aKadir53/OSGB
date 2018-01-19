@@ -70,6 +70,7 @@ type
     gridRaporlarImageVar: TcxGridDBColumn;
     gridRaporlarGozlemGrupTanim: TcxGridDBColumn;
     gridRaporGrupBaslikRakamli: TcxGridDBColumn;
+    gridRaporlarSubeTanimi: TcxGridDBColumn;
     procedure cxButtonCClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure Gozlem(islem: Integer);
@@ -155,12 +156,15 @@ end;
 
 function TfrmSahaSaglikGozetim.Init(Sender : TObject) : Boolean;
 begin
+  //þube kodu ekle
   ADO_SahaGozetim.SQL.Text :=
-    'select SR.ID, DenetimiYapanKullanici, DenetimTarihi, Date_Create, GozetimDefterNo, FirmaKodu, '#13#10+
+    'select SR.ID, SR.SubeKod, sst.subeTanim SubeTanimi, DenetimiYapanKullanici, DenetimTarihi, Date_Create, GozetimDefterNo, FirmaKodu, '#13#10+
     '  cast (case when Image Is NULL then 0 else 1 end as bit) ImageVar, '#13#10+
     '  SR.GozlemGrup, SGR.Tanimi GozlemGrupTanim '#13#10+
     'from SahaGozlemRaporlari SR'#13#10+
     'inner join SahaGozlemSoruGrup SGR on SGR.GozlemGrup = SR.GozlemGrup'#13#10+
+    'left outer join SIRKET_SUBE_TNM sst on sst.SirketKod = SR.FirmaKodu'#13#10+
+    '  and sst.SubeKod = SR.SubeKod'#13#10+
     'where FirmaKodu = ' + QuotedStr (DATALAR.AktifSirket) + ''#13#10+
     'order by SR.ID';
   ADO_SahaGozetim .Active := true;
@@ -330,6 +334,7 @@ begin
       begin
         aSahaDenetimVeri.KullaniciAdi := DATALAR.username;
         aSahaDenetimVeri.FirmaKod := datalar.AktifSirket;
+        aSahaDenetimVeri.SubeKod := ifThen(IsNull (datalar.AktifSube),'',ifThen(pos(',',datalar.AktifSube) > 0,'',datalar.AktifSube));
         aSahaDenetimVeri.DenetimTarihi := DateToStr (date);
         aSahaDenetimVeri.DenetimDefterNo := '';
         aSahaDenetimVeri.GozlemGrubu := '';
@@ -337,6 +342,7 @@ begin
       else begin
         aSahaDenetimVeri.KullaniciAdi := ADO_SahaGozetim.FieldByName('DenetimiYapanKullanici').AsString;
         aSahaDenetimVeri.FirmaKod := ADO_SahaGozetim.FieldByName('FirmaKodu').AsString;
+        aSahaDenetimVeri.SubeKod := ADO_SahaGozetim.FieldByName('SubeKod').AsString;
         aSahaDenetimVeri.DenetimTarihi := ADO_SahaGozetim.FieldByName('DenetimTarihi').AsString;
         aSahaDenetimVeri.DenetimDefterNo := ADO_SahaGozetim.FieldByName('GozetimDefterNo').AsString;
         aSahaDenetimVeri.GozlemGrubu := ADO_SahaGozetim.FieldByName('GozlemGrup').AsString;
@@ -354,6 +360,7 @@ begin
           try
             ADO_SahaGozetim.FieldByName('DenetimiYapanKullanici').AsString := _SahaDenetimVeri_.KullaniciAdi;
             ADO_SahaGozetim.FieldByName('FirmaKodu').AsString := _SahaDenetimVeri_.FirmaKod;
+            ADO_SahaGozetim.FieldByName('SubeKod').AsString := _SahaDenetimVeri_.SubeKod;
             ADO_SahaGozetim.FieldByName('DenetimTarihi').AsString := _SahaDenetimVeri_.DenetimTarihi;
             ADO_SahaGozetim.FieldByName('GozetimDefterNo').AsString := _SahaDenetimVeri_.DenetimDefterNo;
             ADO_SahaGozetim.FieldByName('GozlemGrup').AsString := _SahaDenetimVeri_.GozlemGrubu;

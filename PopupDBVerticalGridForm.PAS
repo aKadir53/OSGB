@@ -105,12 +105,12 @@ end;
 
 
 procedure TfrmPopupDBVerticalGridForm.SetGrid;
-var
+{var
  i : integer;
  Columns,Baslik,Tips : TstringList;
  ColName : string;
  Col : TcxGridDBColumn;
- FItem : TcxImageComboBoxItem;
+ FItem : TcxImageComboBoxItem;     {}
 begin
 (*
   Columns := TStringList.Create;
@@ -187,8 +187,8 @@ begin
 end;
 
 procedure TfrmPopupDBVerticalGridForm.FormShow(Sender: TObject);
-var
-  ilacList,kulYolList,Doktorlar : TlisteAc;
+//var
+//  ilacList,kulYolList,Doktorlar : TlisteAc;
 begin
 inherited;
   btnYes.Visible := True;
@@ -204,7 +204,7 @@ procedure TfrmPopupDBVerticalGridForm.cGridcxButtonEditPropertiesButtonClick(
   Sender: TObject; AButtonIndex: Integer);
 var
   list : ArrayListeSecimler;
-  key : word;
+  //key : word;
 begin
   list := PersonelList.ListeGetir;
   if High (list) < 0 then Exit;

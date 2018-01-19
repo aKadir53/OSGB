@@ -242,6 +242,7 @@ begin
   sirketlerx.Filter := SirketComboFilter;
   setDataStringKontrol(self,sirketlerx,'SirketKod','Þirket',Kolon1,'',250,0,alNone,'');
 
+  //þube kodu ekle
   kombo := TcxImageComboKadir.Create(self);
   kombo.Conn := Datalar.ADOConnection2;
   kombo.TableName := 'Egitim_tnm';
