@@ -389,7 +389,7 @@ procedure BeginTrans (const aQuery : TADOQuery);
 procedure RollBackTrans (const aQuery : TADOQuery);
 procedure CommitTrans (const aQuery : TADOQuery);
 function TranCount (const aQuery : TADOQuery): Integer;
-
+function GetUserDoktorFilter : String;
 
 const
   _YTL_ = 'YTL';
@@ -8869,6 +8869,11 @@ begin
   finally
     bQuery.Free;
   end;
+end;
+
+function GetUserDoktorFilter : String;
+begin
+  Result := '';
 end;
 
 function IsNull (const s: String): Boolean;
