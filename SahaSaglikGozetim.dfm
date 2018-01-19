@@ -124,10 +124,20 @@ object frmSahaSaglikGozetim: TfrmSahaSaglikGozetim
         DataBinding.FieldName = 'ID'
         Width = 41
       end
+      object gridRaporlarSubeTanimi: TcxGridDBColumn
+        Caption = #350'ube'
+        DataBinding.FieldName = 'SubeTanimi'
+        Width = 100
+      end
+      object gridRaporlarGozlemGrupTanim: TcxGridDBColumn
+        Caption = 'G'#246'zlem T'#252'r'#252
+        DataBinding.FieldName = 'GozlemGrupTanim'
+        Width = 150
+      end
       object gridRaporlarDenetimiYapanKullanici: TcxGridDBColumn
         Caption = 'Denetimi Yapan'
         DataBinding.FieldName = 'DenetimiYapanKullanici'
-        Width = 124
+        Width = 90
       end
       object gridRaporlarDenetimTarihi: TcxGridDBColumn
         Caption = 'Denetim Tarihi'
@@ -137,21 +147,17 @@ object frmSahaSaglikGozetim: TfrmSahaSaglikGozetim
       object gridRaporlarDate_Create: TcxGridDBColumn
         Caption = 'Denetim Kay'#305't Zaman'#305
         DataBinding.FieldName = 'Date_Create'
-        Width = 105
+        Width = 110
       end
       object gridRaporlarGozetimDefterNo: TcxGridDBColumn
         Caption = 'Defter No.'
         DataBinding.FieldName = 'GozetimDefterNo'
-        Width = 86
+        Width = 70
       end
       object gridRaporlarImageVar: TcxGridDBColumn
         Caption = 'Resim Var'
         DataBinding.FieldName = 'ImageVar'
         Width = 54
-      end
-      object gridRaporlarGozlemGrupTanim: TcxGridDBColumn
-        Caption = 'G'#246'zlem T'#252'r'#252
-        DataBinding.FieldName = 'GozlemGrupTanim'
       end
     end
     object cxGridLevel1: TcxGridLevel
@@ -170,14 +176,18 @@ object frmSahaSaglikGozetim: TfrmSahaSaglikGozetim
     Parameters = <>
     SQL.Strings = (
       
-        'select SR.ID, DenetimiYapanKullanici, DenetimTarihi, Date_Create' +
-        ', GozetimDefterNo, FirmaKodu, cast (case when Image Is NULL then' +
-        ' 0 else 1 end as bit) ImageVar, SR.GozlemGrup, SGR.Tanimi Gozlem' +
-        'GrupTanim'
+        'select SR.ID, sst.subeTanim SubeTanimi, DenetimiYapanKullanici, ' +
+        'DenetimTarihi, Date_Create, GozetimDefterNo, FirmaKodu, cast (ca' +
+        'se when Image Is NULL then 0 else 1 end as bit) ImageVar, SR.Goz' +
+        'lemGrup, SGR.Tanimi GozlemGrupTanim'
       'from SahaGozlemRaporlari SR'
       
         'inner join SahaGozlemSoruGrup SGR on SGR.GozlemGrup = SR.GozlemG' +
         'rup'
+      
+        'left outer join SIRKET_SUBE_TNM sst on sst.SirketKod = SR.FirmaK' +
+        'odu'
+      '  and sst.SubeKod = SR.SubeKod'
       'where FirmaKodu = '#39'0001'#39
       'order by SR.ID')
     Left = 64

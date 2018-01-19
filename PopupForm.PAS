@@ -85,12 +85,8 @@ var
    frmTop_ :word = 0;
    frmLeft_ :word = 0;
    mevcutTarih_,txtT_,ReceteTarih , _Tarih_ : TcxDateEditKadir;
-   chkEv,chkPlan : TcxCheckBox;
-   txtGun : TcxCurrencyEdit;
    ImageCombo : TcxImageComboBox;
-   ImageComboItem : TcxImageComboBoxItem;
    MemoKalanLen : integer;
-   ImageComboKadir : TcxImageComboKadir;
    textEdit : TcxTextEdit;
    _sahaDenetim_ : TSahaDenetimler;
 
@@ -113,7 +109,6 @@ end;
 
 procedure TfrmPopup.FormClose(Sender: TObject; var Action: TCloseAction);
 var
- HizmetKod : TcxImageComboKadir;
   xSahaDenetimVeri : TSahaDenetimler;
 begin
   if frmPopup.ModalResult = mrYes
@@ -210,6 +205,7 @@ begin
            begin
              xSahaDenetimVeri.DenetimTarihi := TcxTextEdit(FindComponent('DenetimTarihi')).EditValue;
              xSahaDenetimVeri.FirmaKod := TcxTextEdit(FindComponent('FirmaKodu')).EditValue;
+             xSahaDenetimVeri.SubeKod := TcxTextEdit(FindComponent('SubeKod')).EditValue;
              xSahaDenetimVeri.KullaniciAdi := TcxTextEdit(FindComponent('Kullanici')).EditValue;
              xSahaDenetimVeri.DenetimDefterNo := TcxTextEdit(FindComponent('DenetimDefterNo')).EditValue;
              xSahaDenetimVeri.GozlemGrubu := TcxTextEdit(FindComponent('GozlemGrup')).EditValue;
@@ -221,8 +217,6 @@ begin
 end;
 
 procedure TfrmPopup.FormCreate(Sender: TObject);
-var
-   Year, Month, Day: Word;
 begin
   Image2.Visible := false;
   cxPanel.Visible := false;
@@ -238,7 +232,7 @@ end;
 procedure TfrmPopup.FormShow(Sender: TObject);
 var
   ilacList : TlisteAc;
-  Doktorlar,kulYolList,HizmetKod : TcxImageComboKadir;
+  Doktorlar,kulYolList : TcxImageComboKadir;
   TabCaption : string;
 begin
 inherited;
@@ -522,7 +516,7 @@ inherited;
 
    yeniGozlem, GozlemDuzenle :
        begin
-         ClientHeight := 280;
+         ClientHeight := 310;
          ClientWidth := 442;
          textEdit := TcxTextEdit.Create(self);
          textEdit.Name := 'FirmaKodu';
@@ -536,6 +530,17 @@ inherited;
          setDataStringKontrol(self,textEdit, 'FirmaAdi','Firma Ünvaný',Kolon1,'',250);
          TcxTextEdit(FindComponent('FirmaAdi')).EditValue := DATALAR.AktifSirketAdi;
 
+         Doktorlar := TcxImageComboKadir.Create(self);
+         Doktorlar.Conn := Datalar.ADOConnection2;
+         Doktorlar.TableName := 'SIRKET_SUBE_TNM';
+         Doktorlar.ValueField := 'subeKod';
+         Doktorlar.DisplayField := 'subeTanim';
+         Doktorlar.BosOlamaz := True;
+         setDataStringKontrol(self,Doktorlar,'SubeKod','Þube',Kolon1,'',150);
+         Doktorlar.EditValue := _SahaDenetimVeri_.SubeKod;
+         Doktorlar.Filter := ' SirketKod = ' + QuotedStr(_SahaDenetimVeri_.FirmaKod);
+
+
          doktorlar := TcxImageComboKadir.Create(self);
          doktorlar.Conn := Datalar.ADOConnection2;
          doktorlar.TableName := 'SahaGozlemSoruGrup';
@@ -545,7 +550,7 @@ inherited;
          doktorlar.Filter := '';
          Doktorlar.Properties.ReadOnly := (frmPopup._islem_ <> yeniGozlem);
          OrtakEventAta(doktorlar);
-         setDataStringKontrol(self,doktorlar,'GozlemGrup','Saha Gözlem Tipi',kolon1,'',145);
+         setDataStringKontrol(self,doktorlar,'GozlemGrup','Saha Gözlem Tipi',kolon1,'',250);
          TcxTextEdit(FindComponent('GozlemGrup')).EditValue := _SahaDenetimVeri_.GozlemGrubu;
 
 
