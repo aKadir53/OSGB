@@ -75,6 +75,7 @@ case self.Tag of
         List.ListeBaslik := 'Doktorlar';
         List.Name := 'kod';
         List.Conn := Datalar.ADOConnection2;
+        list.Where := GetUserDoktorFilter;//login olan kullanýcý admin grubunda deðilse onun doktor kodu;
         List.SkinName := 'coffee';//AnaForm.dxSkinController1.SkinName;
 
         setDataStringB(self,'kod','Doktor Kodu',Kolon1,'',70,List,True,nil);
@@ -184,6 +185,7 @@ case self.Tag of
         List.ListeBaslik := 'Ýþ Güvenlik Uzmanlarý';
         List.Name := 'kod';
         List.Conn := Datalar.ADOConnection2;
+        list.Where := GetUserIGUFilter;//login olan kullanýcý admin grubunda deðilse onun doktor kodu;
         List.SkinName := 'coffee';//AnaForm.dxSkinController1.SkinName;
 
         setDataStringB(self,'kod','Uzman Kodu',Kolon1,'',70,List,True,nil);
