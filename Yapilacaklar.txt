@@ -218,3 +218,15 @@ sunucuya son update'i güncellemesek bile önceden bekleyen update varsa hepsini a
 
 imes osgb dr Murat: eczacý reçetede çalýþtýðý firma ismi açýklama olarak olmalý demiþ
 sýk kullanýlanlar kalkýk gelsin istiyor ilaçlarda ayrýca
+
+disAktarimParametre gibi bir tablo ile @@spid bazýnda aktif þirket, aktif kullanýcý, aktif þube, aktif doktor gibi bilgileri yaz oku sil yapabiliriz. 
+otomatik excel aktarimi sp'lerinde bu tabloya join ile data alabiliriz. 
+tablodan silmek yerine aktif pasif güncellemesi ile kayýt biriktirilebilir zira ara tablo dolup da sp güncellemesi çalýþmadýðý zaman dýþarýdan çalýþtýrmak için lazým olacaktýr.
+disAktarim_... ile baþlayan tablolara disAktarimParametreID isimli bir alan ekleyip baðlayarak geçmiþ aktarým baðlantýlarýnda bile olsa iliþki kurarýz
+eðer disAktarim_... tablolarýndan hiçbirinde o ID geçmiyorsa silebiliriz.
+özet: dýþ aktarým baþlarken parametre tablosuna o @@spid ile aktif kayýt at, ayný @spid'e ait eski kayýtlarý pasif yap ya da hiçbir tabloda iliþkili kaydý kalmamýþsa sil.
+ilgili dýþ aktarýmýn tablosuna ilk kayýt yazarken disAktarimParametre tablosu ile aktif = 1 olan kaydýn ID'sini yaz. 
+çünkü ayný connection içinde þirket deðiþtirip ikinci aktarýmý yapabilir, bunun için ikinci parametre kaydýný atmasý gerekir.
+dýþ aktarým sp'sinde, ara tablodan data alýp kullanýrken þirket kodu, user vs bilgiler için gidip kendisindeki aktarim parametre id'sindeki parametre kaydýna gidilip data kullanýlabilir.
+iþte bu kadar basit.
+
