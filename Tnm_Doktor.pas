@@ -50,9 +50,8 @@ function TfrmDoktorlar.Init(Sender: TObject) : Boolean;
 begin
   Result := False;
 
-case self.Tag of
- TagfrmDoktorlar
-  : begin
+  case self.Tag of
+    TagfrmDoktorlar : begin
         Tag := TagfrmDoktorlar;
         ClientHeight := formYukseklik;
         ClientWidth := formGenislik;
@@ -155,14 +154,16 @@ case self.Tag of
        // setDataImage(self,'foto','Foto',Kolon2,'',120,100);
 
         SayfaCaption('Taným Bilgileri','Çalýþma Bilgileri','','','');
-
-
-
         Result := True;
-  end;
+        Disabled(self,True);
+        if not IsNull (datalar.doktorkodu) then
+        begin
+          indexKaydiBul(datalar.DoktorKodu);
+          Enabled;
+        end;
+    end;
 
- TagfrmIGU
-  : begin
+  TagfrmIGU : begin
         Tag := TagfrmIGU;
         ClientHeight := formYukseklik;
         ClientWidth := formGenislik;
@@ -195,9 +196,6 @@ case self.Tag of
 
         setDataString(self,'Sinifi','Sýnýfý',Kolon1,'', 20, True);
 
-     //   setDataString(self,'tescilNo','Tescil No',Kolon1,'',80,True);
-    //    setDataString(self,'eReceteKullanici','Reçete Kullanýcý Adý',Kolon1,'cc',100,True);
-   //     setDataString(self,'eReceteSifre','Reçete Þifresi',Kolon1,'',100,True);
         setDataString(self,'pin','Ýmza Token Pin',Kolon1,'',50);
 
         cardType := TcxImageComboKadir.Create(self);
@@ -215,28 +213,20 @@ case self.Tag of
         setDataString(self,'EPosta','E-Posta',Kolon1,'',200);
         setDataString(self,'sertifika','Sertifika',Kolon1,'',80);
 
-    (*
-        calismaTipi := TcxImageComboKadir.Create(self);
-        calismaTipi.Conn := nil;
-        calismaTipi.BosOlamaz := True;
-        calismaTipi.ItemList := '0;Tam Zamanlý,1;Yarý Zamanlý';
-        calismaTipi.Filter := '';
-        OrtakEventAta(calismaTipi);
-        setDataStringKontrol(self,calismaTipi,'calismaTipi','Çalýþma Tipi',kolon1,'',120);
-        *)
      //   setDataStringC(self,'uzman','Uzman mý?',Kolon1,'',80,'Evet,Hayýr');
         setDataStringC(self,'durum','Durum',Kolon1,'',80,'Aktif,Pasif');
 
         SayfaCaption('Taným Bilgileri','','','','');
-
-
-
         Result := True;
-    end;
-
-
-end;
         Disabled(self,True);
+        if not IsNull (datalar.IGU) then
+        begin
+          indexKaydiBul(datalar.IGU);
+          Enabled;
+        end;
+    end;
+  end;
+
 end;
 
 
