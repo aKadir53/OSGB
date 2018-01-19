@@ -70,6 +70,7 @@ type
     gridRaporlarImageVar: TcxGridDBColumn;
     gridRaporlarGozlemGrupTanim: TcxGridDBColumn;
     gridRaporGrupBaslikRakamli: TcxGridDBColumn;
+    gridRaporlarSubeTanimi: TcxGridDBColumn;
     procedure cxButtonCClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure Gozlem(islem: Integer);
@@ -157,11 +158,13 @@ function TfrmSahaSaglikGozetim.Init(Sender : TObject) : Boolean;
 begin
   þube kodu ekle
   ADO_SahaGozetim.SQL.Text :=
-    'select SR.ID, DenetimiYapanKullanici, DenetimTarihi, Date_Create, GozetimDefterNo, FirmaKodu, '#13#10+
+    'select SR.ID, sst.subeTanim SubeTanimi, DenetimiYapanKullanici, DenetimTarihi, Date_Create, GozetimDefterNo, FirmaKodu, '#13#10+
     '  cast (case when Image Is NULL then 0 else 1 end as bit) ImageVar, '#13#10+
     '  SR.GozlemGrup, SGR.Tanimi GozlemGrupTanim '#13#10+
     'from SahaGozlemRaporlari SR'#13#10+
     'inner join SahaGozlemSoruGrup SGR on SGR.GozlemGrup = SR.GozlemGrup'#13#10+
+    'left outer join SIRKET_SUBE_TNM sst on sst.SirketKod = SR.FirmaKodu'#13#10+
+    '  and sst.SubeKod = SR.SubeKod'#13#10+
     'where FirmaKodu = ' + QuotedStr (DATALAR.AktifSirket) + ''#13#10+
     'order by SR.ID';
   ADO_SahaGozetim .Active := true;
