@@ -33,7 +33,6 @@ sertifika no alaný içindeki "/" karakterlerine kýzýyor. bence sertifika no alaný
 reçeteyi kaydederken doktor tesis kodu, reçete silerken kurum þifre bilgilerindeki tesis kodu alýnmýþ, doktorun tesis kodu alýnacak
 
 hasta kartýnda yazdýrma düðmesi ??
-eðitim formunda Yeni (!) düðmesine basmadan kayýt girince sapýtýyor
 kullanýcý yetki ayarlarýnda kaydet'e basýnca gridde alt üst satýra geçilmemiþse o satýrý kaydetmeden kapatýyor (datasetleri tarayýp post metodunu çaðýrmak lazým)
 ------------------------------------------------------------------------------------------------------------------------
 iptal olanlar
@@ -105,10 +104,6 @@ personel aþý oldum dediyse doktor aþý kartýný getir diyecek sisteme iþleyecek.
 
 bizim tik yapýldý manasýna gelmeyebilir, yapýlacak, yapýlma isteði manasýna da getirilebilir
 
-7) mutfak denetim formu
-saha gözetiminde dahil edebilir.
-8) soyunma odalarý 
-saha gözetimine dahil edilebilir
 
 
 0532 502 77 97 doktor Nigar Haným, Çekmeköy Belediyesi'nde, e-imza, iþyeri hekimliði hususunda bilgilendirilecek.
@@ -119,8 +114,6 @@ yanlýþ þirkete girip saha gözetimi yaptýysa ???
 
 iþyeri hekimi çalýþmalarý grup tablosu
 sorular grup baþlýklý
-
-ISG Katip programýndan iþyerleri ve hekimler dökümü için Excel aktarýmý yapýlacak.
 
 muayene tipleri için tablo açýlýp tablodan getirtilebilir. zannediyorum view yapmýþtýk ama muayene türlerini gösteren yerlerde sadece eskilerinin tanýmlarý gözüküyor.
 
@@ -146,10 +139,7 @@ gebe muayenesi
 ve hastaneye sevk isteniyormuþ
 
 doktor kartýndan, iþ güvenliði uzman kartýndan "Kullanýcý aç" düðmesi eklenebilir mi ?
-usersettings usermenusettings vs tablolarýn foreign key vs ile korumaya alýnmasý
 Mobil uygulama Þirket seçim ekraný en alt satýr baþlat menüsü altýnda kalýyor.
-
-Doktor yetkileri kopyaladýk uzman'dan fakat yetkisiz çýktý.
 
 muayene giriþi zorunlu yapýlabilir, zorunlu olup olmamasý osgb'nin program ayarlarýndan seçebileceði bir hale getirilebilir mi.
 
