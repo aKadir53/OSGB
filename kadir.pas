@@ -389,7 +389,8 @@ procedure BeginTrans (const aQuery : TADOQuery);
 procedure RollBackTrans (const aQuery : TADOQuery);
 procedure CommitTrans (const aQuery : TADOQuery);
 function TranCount (const aQuery : TADOQuery): Integer;
-function GetUserDoktorFilter : String;
+function GetUserDoktorFilter (pFieldName : String = ''): String;
+function GetUserIGUFilter (pFieldName : String = ''): String;
 
 const
   _YTL_ = 'YTL';
@@ -8871,9 +8872,24 @@ begin
   end;
 end;
 
-function GetUserDoktorFilter : String;
+function GetUserDoktorFilter (pFieldName : String = ''): String;
 begin
-  Result := '';
+  //yönetici ise ya da datalar.doktorkodu boþ ise filtre koyma. yönetici deðil ama doktor ise koy
+  if IsNull (pFieldName) then pFieldName := 'Kod';
+  if (datalar.UserGroup = '1') or IsNull (DATALAR.doktorKodu) then
+    Result := ''
+   else
+    Result := pFieldName + ' = '+ QuotedStr(DATALAR.doktorKodu);
+end;
+
+function GetUserIGUFilter (pFieldName : String = ''): String;
+begin
+  //yönetici ise ya da datalar.IGU boþ ise filtre koyma. yönetici deðil ama iþ güv. uz. ise koy
+  if IsNull (pFieldName) then pFieldName := 'Kod';
+  if (datalar.UserGroup = '1') or IsNull (DATALAR.IGU) then
+    Result := ''
+   else
+    Result := pFieldName + ' = '+ QuotedStr(DATALAR.IGU);
 end;
 
 function IsNull (const s: String): Boolean;

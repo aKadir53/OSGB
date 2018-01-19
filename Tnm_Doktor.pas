@@ -185,6 +185,7 @@ case self.Tag of
         List.ListeBaslik := 'Ýþ Güvenlik Uzmanlarý';
         List.Name := 'kod';
         List.Conn := Datalar.ADOConnection2;
+        list.filter := GetUserIGUFilter;//login olan kullanýcý admin grubunda deðilse onun doktor kodu;
         List.SkinName := 'coffee';//AnaForm.dxSkinController1.SkinName;
 
         setDataStringB(self,'kod','Uzman Kodu',Kolon1,'',70,List,True,nil);
