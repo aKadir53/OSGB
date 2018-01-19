@@ -55,7 +55,8 @@ uses
   labaratuvarKabul in 'labaratuvarKabul.pas' {frmLabaratuvarKabul},
   LabSonucGir in 'LabSonucGir.pas' {frmLabSonucGir},
   HastaListe in 'HastaListe.pas' {frmHastaListe},
-  GrupDetayTanim in 'GrupDetayTanim.pas' {frmGrupDetayTanim};
+  GrupDetayTanim in 'GrupDetayTanim.pas' {frmGrupDetayTanim},
+  MESSAGE_y in 'MESSAGE_y.PAS' {frmMessage_y};
 
 // KadirMedula3 in '..\..\medula3wsdl\KadirMedula3.pas';
 
