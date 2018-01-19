@@ -368,6 +368,7 @@ begin
     datalar.doktorKodu := login.FieldByName('doktor').AsString;
     datalar.sirketKodu := login.FieldByName('SirketKodu').AsString;
     datalar.IGU := login.FieldByName('IGU').AsString;
+    datalar.UserGroup := login.FieldByName('Grup').AsString;
 
     AnaForm.dxSkinController1.SkinName := login.FieldByName('userSkin').AsString;
     FormatSettings.DateSeparator := '.';
