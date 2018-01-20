@@ -193,7 +193,7 @@ function TfrmHizliKayit.GridAlanEslestirme (const aTargetFields : TStringList;
 var
   aStringList : TStringList;
   i, j: Integer;
-  sItems : String;
+  sItems, sHeaderBackup : String;
   aItems: TIntegerArray;
 begin
   Result := False;
@@ -209,92 +209,105 @@ begin
   try
     //reset gelmiþse grid baþlýklarý eþleþmesin diye tahrip et.
     if pReset then
+    begin
+      sHeaderBackup := GridList.Rows [0].Text;
       for i := 0 to GridList.ColCount - 1 do
         GridList.Cells [i, 0] := GridBaslikAyarla ('[' + GridList.Cells [i, 0] + ']', i);
-    //stringlist boylarýný eþitle
-    while aAcceptedSourceColumns.Count < aTargetFields.Count do
-      aAcceptedSourceColumns.Add(aTargetFields [aAcceptedSourceColumns.Count]);
+    end;
+    try
+      //stringlist boylarýný eþitle
+      while aAcceptedSourceColumns.Count < aTargetFields.Count do
+        aAcceptedSourceColumns.Add(aTargetFields [aAcceptedSourceColumns.Count]);
 
-    for i := 0 to GridList.ColCount - 1 do
-      GridList.Cells [i, 0] := GridBaslikAyarla (GridList.Cells [i, 0], i);
-    //ÜÖ 20180105 Gride yüklenen excrl dosyasýnda ayný baþlýklý sütunlar varsa farklýlaþtýr, ileride eþleþmelerde problem çýkarmasýn.
-    GridCiftBaslikAyarla;
-    //ÜÖ 20171231 eþleþen sütun baþlýklarýný gridde arayýp indexlerini ata
-    for i := 0 to aTargetFields.Count - 1 do
-      aStringList.Add(IntToStr(GridList.Rows [0].IndexOf(aTargetFields [i])));
-    //arama baþlýðý listeleri geçilmiþse o baþlýklardan sütunlarý bulma gayreti içinde kendini kaybet...
-    if Assigned (aLookupColumnHeaders) and Assigned (aLookupColumnHeaderFieldNames) then
-    begin
-      //grid sütunlarýný tara, sütun eþleþmemiþse sütun baþlýðý lookup baþlýklarda varsa, onun karþýlýðýndaki sütun da eþleþmemiþse nikahla ikisini
       for i := 0 to GridList.ColCount - 1 do
+        GridList.Cells [i, 0] := GridBaslikAyarla (GridList.Cells [i, 0], i);
+      //ÜÖ 20180105 Gride yüklenen excrl dosyasýnda ayný baþlýklý sütunlar varsa farklýlaþtýr, ileride eþleþmelerde problem çýkarmasýn.
+      GridCiftBaslikAyarla;
+      //ÜÖ 20171231 eþleþen sütun baþlýklarýný gridde arayýp indexlerini ata
+      for i := 0 to aTargetFields.Count - 1 do
+        aStringList.Add(IntToStr(GridList.Rows [0].IndexOf(aTargetFields [i])));
+      //arama baþlýðý listeleri geçilmiþse o baþlýklardan sütunlarý bulma gayreti içinde kendini kaybet...
+      if Assigned (aLookupColumnHeaders) and Assigned (aLookupColumnHeaderFieldNames) then
       begin
-        if aStringList.IndexOf (IntToStr (i)) < 0 then
+        //grid sütunlarýný tara, sütun eþleþmemiþse sütun baþlýðý lookup baþlýklarda varsa, onun karþýlýðýndaki sütun da eþleþmemiþse nikahla ikisini
+        for i := 0 to GridList.ColCount - 1 do
         begin
-          //sütun baþlýklarýnda var mý
-          j := aLookupColumnHeaders.IndexOf(GridList.Cells [i, 0]);
-          if j < 0 then Continue;
-          //karþýlýðýndaki sütunun adý ne ?
-          sItems := aLookupColumnHeaderFieldNames [j];
-          //alanýn indexi ne ?
-          j := aTargetFields.IndexOf(sItems);
-          //Alanýn indexindeki deðer -1 ise eþlenmemiþ, hemen nikahla.
-          if StrToInt (aStringList [j]) < 0 then aStringList [j] := IntToStr (i);
-        end;
-      end;
-    end;
-
-    //ÜÖ 20180103 son aktarýlan ve eþleþtirilmiþ excel baþlýklarý ile uyuþanlarý da eþleþtir
-    for i := 0 to aAcceptedSourceColumns.Count - 1 do
-      if (StrToInt (aStringList [i]) < 0)
-        and (GridList.Rows [0].IndexOf(aAcceptedSourceColumns [i]) >= 0)
-        and (aStringList.IndexOf (IntToStr(GridList.Rows [0].IndexOf(aAcceptedSourceColumns [i]))) < 0) then
-          aStringList [i] := IntToStr(GridList.Rows [0].IndexOf(aAcceptedSourceColumns [i]));
-    //bulunamayanlar için kullanýcýya baþvur
-    for i := 0 to aStringList.Count - 1 do
-    begin
-      //o sütun karþýlýðý bir sütun eþleþmemiþ.
-      if StrToInt (aStringList [i]) < 0 then
-      begin
-        //grid baþlýklarýndan, daha önce eþleþmemiþ olanlarýndan bir ItemList oluþtur.
-        sItems:= 'Yok / Alma / Atla';
-        SetLength (aItems, 1);
-        aItems [0] := -1;
-        for j := 0 to GridList.ColCount - 1 do
-          if aStringList.IndexOf (IntToStr(j)) < 0 then
+          if aStringList.IndexOf (IntToStr (i)) < 0 then
           begin
-            sItems := sItems + #13#10 +
-              StringReplace (GridBaslikAyarla(GridList.Cells [j, 0], J), #13#10, '_', [rfReplaceAll]);
-            SetLength (aItems, High (aItems) + 2);
-            aItems [High (aItems)] := j;
+            //sütun baþlýklarýnda var mý
+            j := aLookupColumnHeaders.IndexOf(GridList.Cells [i, 0]);
+            if j < 0 then Continue;
+            //karþýlýðýndaki sütunun adý ne ?
+            sItems := aLookupColumnHeaderFieldNames [j];
+            //alanýn indexi ne ?
+            j := aTargetFields.IndexOf(sItems);
+            //Alanýn indexindeki deðer -1 ise eþlenmemiþ, hemen nikahla.
+            if StrToInt (aStringList [j]) < 0 then aStringList [j] := IntToStr (i);
           end;
-        //seçtirecek alan kalmadýysa döngüyü kýr
-        if High (aItems) <= 0 then Break;
-
-        j := -1;
-        if (not CombodanSectir ('Alan seçiniz', aTargetFields [i], sItems, j))
-          or (j < 0) then
-        begin
-          ShowMessageSkin('Ýþlem iptal edildi', '', '', 'info');
-          Exit;
         end;
-        aStringList [i] := IntToStr (aItems [j]);
+      end;
+
+      //ÜÖ 20180103 son aktarýlan ve eþleþtirilmiþ excel baþlýklarý ile uyuþanlarý da eþleþtir
+      for i := 0 to aAcceptedSourceColumns.Count - 1 do
+        if (StrToInt (aStringList [i]) < 0)
+          and (GridList.Rows [0].IndexOf(aAcceptedSourceColumns [i]) >= 0)
+          and (aStringList.IndexOf (IntToStr(GridList.Rows [0].IndexOf(aAcceptedSourceColumns [i]))) < 0) then
+            aStringList [i] := IntToStr(GridList.Rows [0].IndexOf(aAcceptedSourceColumns [i]));
+      //bulunamayanlar için kullanýcýya baþvur
+      for i := 0 to aStringList.Count - 1 do
+      begin
+        //o sütun karþýlýðý bir sütun eþleþmemiþ.
+        if StrToInt (aStringList [i]) < 0 then
+        begin
+          //grid baþlýklarýndan, daha önce eþleþmemiþ olanlarýndan bir ItemList oluþtur.
+          sItems:= 'Yok / Alma / Atla';
+          SetLength (aItems, 1);
+          aItems [0] := -1;
+          for j := 0 to GridList.ColCount - 1 do
+            if aStringList.IndexOf (IntToStr(j)) < 0 then
+            begin
+              sItems := sItems + #13#10 +
+                StringReplace (GridBaslikAyarla(GridList.Cells [j, 0], J), #13#10, '_', [rfReplaceAll]);
+              SetLength (aItems, High (aItems) + 2);
+              aItems [High (aItems)] := j;
+            end;
+          //seçtirecek alan kalmadýysa döngüyü kýr
+          if High (aItems) <= 0 then Break;
+
+          j := -1;
+          if (not CombodanSectir ('Alan seçiniz', aTargetFields [i], sItems, j))
+            or (j < 0) then
+          begin
+            ShowMessageSkin('Ýþlem iptal edildi', '', '', 'info');
+            Exit;
+          end;
+          aStringList [i] := IntToStr (aItems [j]);
+        end;
+      end;
+      //buraya kadar sað salim geldikse olay tamam, geçici yerel diziyi form dizisine aktarýp ortamý terk edelim...
+      SetLength(aAcceptedColumnIndexes, 0);
+      for i := 0 to aStringList.Count - 1 do
+      begin
+        SetLength(aAcceptedColumnIndexes, High (aAcceptedColumnIndexes) + 2);
+        aAcceptedColumnIndexes [i] := StrToInt (aStringList [i]);
+        //eþleþen yeni grid sütun baþlýðý boþ deðilse onu son excel kabul edilen sütunlar listesine ekle.
+        if (aAcceptedColumnIndexes [i] >= 0) and (not IsNull (GridList.Cells [aAcceptedColumnIndexes [i], 0])) then
+          aAcceptedSourceColumns [i] := GridList.Cells [aAcceptedColumnIndexes [i], 0];
+        //Eþleþen baþlýklarý grid üzerinde yerine koyarak göster
+        if aAcceptedColumnIndexes [i] >= 0 then GridList.Cells [aAcceptedColumnIndexes [i], 0] := aTargetFields [i];
+      end;
+      Result := True;
+      if pMsg Then
+        ShowMessageSkin('Alan Eþleþtirmesi Baþarý ile Tamamlandý', '', '', 'info');
+    finally
+      //resetli gelmiþ fakat iþlem iptal olmuþsa sütun baþlýklarýný geri koy
+      if (not Result) and pReset then
+      begin
+        aStringList.Text := sHeaderBackup;
+        for i := 0 to GridList.ColCount - 1 do
+          GridList.Cells [i, 0] := aStringList [i];
       end;
     end;
-    //buraya kadar sað salim geldikse olay tamam, geçici yerel diziyi form dizisine aktarýp ortamý terk edelim...
-    SetLength(aAcceptedColumnIndexes, 0);
-    for i := 0 to aStringList.Count - 1 do
-    begin
-      SetLength(aAcceptedColumnIndexes, High (aAcceptedColumnIndexes) + 2);
-      aAcceptedColumnIndexes [i] := StrToInt (aStringList [i]);
-      //eþleþen yeni grid sütun baþlýðý boþ deðilse onu son excel kabul edilen sütunlar listesine ekle.
-      if (aAcceptedColumnIndexes [i] >= 0) and (not IsNull (GridList.Cells [aAcceptedColumnIndexes [i], 0])) then
-        aAcceptedSourceColumns [i] := GridList.Cells [aAcceptedColumnIndexes [i], 0];
-      //Eþleþen baþlýklarý grid üzerinde yerine koyarak göster
-      if aAcceptedColumnIndexes [i] >= 0 then GridList.Cells [aAcceptedColumnIndexes [i], 0] := aTargetFields [i];
-    end;
-    Result := True;
-    if pMsg Then
-      ShowMessageSkin('Alan Eþleþtirmesi Baþarý ile Tamamlandý', '', '', 'info');
   finally
     aStringList.Free;
   end;
@@ -371,6 +384,8 @@ procedure TfrmHizliKayit.GridSoyadiAyarla;
 var
   iRow, iAd, iSoyad : Integer;
   sSonKelime, sBasTaraf : String;
+  aTargetFields, aAccepted : TStringList;
+  aAcceptedIndexes : TIntegerArray;
 begin
   if ShowMessageSkin (
       'Bu iþlem, Soyadý sütunu boþ olan satýrlara Adý '+
@@ -378,6 +393,30 @@ begin
       'olan satýrlara Soyadý sütununun ilk kelimelerini atayacaktýr.'#13#10#13#10+
       'Emin misiniz ?',
       '', '', 'conf') <> mrYes then Exit;
+  if not FAlanEslestirmeYapildi then
+  begin
+    aTargetFields := TStringList.Create;
+    try
+      aAccepted := TStringList.Create;
+      try
+        aTargetFields.Clear;
+        aTargetFields.Add(FInitialColumnHeaders [colAdi]);
+        aTargetFields.Add(FInitialColumnHeaders [colSoyadi]);
+        aAccepted.Add(FAcceptedColumnHeaders [colAdi]);
+        aAccepted.Add(FAcceptedColumnHeaders [colSoyadi]);
+        if not GridAlanEslestirme (aTargetFields, aAccepted, aAcceptedIndexes, False, False) then Exit;
+        FAssignedColumnIndexes [colAdi] := aAcceptedIndexes [0];
+        FAssignedColumnIndexes [colSoyadi] := aAcceptedIndexes [1];
+        FAcceptedColumnHeaders [colAdi] := aAccepted [0];
+        FAcceptedColumnHeaders [colSoyadi] := aAccepted [1];
+      finally
+        aAccepted.Free;
+      end;
+    finally
+      aTargetFields.Free;
+    end;
+  end;
+
   if (FAssignedColumnIndexes [colAdi] < 0)
     or (FAssignedColumnIndexes [colSoyadi] < 0) then
   begin
