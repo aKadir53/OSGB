@@ -371,6 +371,8 @@ procedure TfrmHizliKayit.GridSoyadiAyarla;
 var
   iRow, iAd, iSoyad : Integer;
   sSonKelime, sBasTaraf : String;
+  aTargetFields, aAccepted : TStringList;
+  aAcceptedIndexes : TIntegerArray;
 begin
   if ShowMessageSkin (
       'Bu iþlem, Soyadý sütunu boþ olan satýrlara Adý '+
@@ -378,6 +380,30 @@ begin
       'olan satýrlara Soyadý sütununun ilk kelimelerini atayacaktýr.'#13#10#13#10+
       'Emin misiniz ?',
       '', '', 'conf') <> mrYes then Exit;
+  if not FAlanEslestirmeYapildi then
+  begin
+    aTargetFields := TStringList.Create;
+    try
+      aAccepted := TStringList.Create;
+      try
+        aTargetFields.Clear;
+        aTargetFields.Add(FInitialColumnHeaders [colAdi]);
+        aTargetFields.Add(FInitialColumnHeaders [colSoyadi]);
+        aAccepted.Add(FAcceptedColumnHeaders [colAdi]);
+        aAccepted.Add(FAcceptedColumnHeaders [colSoyadi]);
+        if not GridAlanEslestirme (aTargetFields, aAccepted, aAcceptedIndexes, False, False) then Exit;
+        FAssignedColumnIndexes [colAdi] := aAcceptedIndexes [0];
+        FAssignedColumnIndexes [colSoyadi] := aAcceptedIndexes [1];
+        FAcceptedColumnHeaders [colAdi] := aAccepted [0];
+        FAcceptedColumnHeaders [colSoyadi] := aAccepted [1];
+      finally
+        aAccepted.Free;
+      end;
+    finally
+      aTargetFields.Free;
+    end;
+  end;
+
   if (FAssignedColumnIndexes [colAdi] < 0)
     or (FAssignedColumnIndexes [colSoyadi] < 0) then
   begin
