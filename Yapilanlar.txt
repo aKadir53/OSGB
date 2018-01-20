@@ -127,3 +127,6 @@ doktor tanýmlarýnda seçim kutusunda kullanýcý doktor ise doktor filtresi ekleyip
 ISG Katip programýndan iþyerleri ve hekimler dökümü için Excel aktarýmý yapýldý
 eðitim formunda Yeni (!) düðmesine basmadan kayýt girince sapýtýyor sorununa karþý disabled / enabled...
 usersettings usermenusettings vs tablolarýn foreign key vs ile korumaya alýnmasý
+
+personel aktarým soyadý ayarlamasýnda alan eþleþtirme yapýlmamýþsa yapýlmalý. sadece adý ve soyadý alanlarý eþleþtirilebilir (evet aynen böyle yaptýk ve çok güzel oldu). 
+personel kartlarýný excel'den aktarýmda resetli alan eþleþtirmede grid sütun baþlýklarý yedeklenip, iþlem iptal edildiðinde geri konulmasý eklendi
