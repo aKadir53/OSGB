@@ -701,6 +701,15 @@ begin
               end;
               Delete (sItems, Length (sItems) - 1, 2);
 
+              aQuery.SQL.Text := 'Update dbo.DisAktarim_Parametre set Aktif = 0 where SPID = @@SPID and Aktif = 1';
+              aQuery.ExecSQL;
+              aQuery.SQL.Text :=
+                'Insert into dbo.DisAktarim_Parametre (SPID, Aktif, SirketKod, SubeKod, Doktor, Kullanici, HostName, RecDatetime) '+
+                'SELECT @@SPID SPID, 1 Aktif, ' + QuotedStr(DATALAR.AktifSirket) + ' SirketKod, ' + QuotedStr (DATALAR.AktifSube) +
+                ' SubeKod, ' + QuotedStr(DATALAR.doktorKodu)+' Doktor, ' + QuotedStr (DATALAR.username) +
+                ' Kullanici, HOST_NAME () HostName, getdate () RecDatetime';
+              aQuery.ExecSQL;
+
               sItems := 'SELECT TOP 0 ' + sItems + ' FROM '+ sTableName;
               aQuery.sql.Text := sItems;
               aQuery.Open;
