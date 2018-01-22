@@ -81,9 +81,6 @@ type
     procedure FormCreate(Sender: TObject);
     procedure FormActivate(Sender: TObject);
     procedure Image1Click(Sender: TObject);
-    procedure Edit2KeyDown(Sender: TObject; var Key: Word;
-      Shift: TShiftState);
-    procedure Edit2KeyPress(Sender: TObject; var Key: Char);
     procedure Edit1KeyPress(Sender: TObject; var Key: Char);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure FormMouseDown(Sender: TObject; Button: TMouseButton;
@@ -402,23 +399,6 @@ begin
        showmessageSkin('Hata : ' + e.Message,'','','info');
      end;
   end;
-end;
-
-procedure TfrmLogin.Edit2KeyDown(Sender: TObject; var Key: Word;
-  Shift: TShiftState);
-begin
-    if key=vk_return
-    then begin
-    end;
-end;
-
-procedure TfrmLogin.Edit2KeyPress(Sender: TObject; var Key: Char);
-begin
-    if key=#13
-    then begin
-              image1.OnClick(image1);
-//speedbutton1.Click;
-    end;
 end;
 
 procedure TfrmLogin.Edit1KeyPress(Sender: TObject; var Key: Char);

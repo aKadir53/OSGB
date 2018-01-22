@@ -465,9 +465,7 @@ begin
         'Ekrana yüklenen "' + FFileName + '" dosyasý içeriði "' + DATALAR.AktifSirketAdi + '" þirketine aktarýlacak'#13#10#13#10+
         'Onaylýyor musunuz ?', '', '', 'conf') <> mrYes then Exit;
 
-    if IsNull (Datalar.AktifSube)
-      or (Length (datalar.AktifSube) > 2)
-      or (Pos (',', datalar.AktifSube) > 0) then
+    if IsNull (HakikiAktifSube) then
     begin
       ShowMessageSkin('Aktif þube seçmeden personel aktarýmý yapamazsýnýz.'#13#10'Personeller, seçili þubeye aktarýlacak.', '', '', 'info');
       Exit;
@@ -506,12 +504,12 @@ begin
 
           sql :=
             'select pk.SirketKod, s.Tanimi SirketAdi, pk.sube, ss.subeTanim SubeAdi,'#13#10 +
-            '  cast (case when pk.SirketKod = ' + QuotedStr (DATALAR.AktifSirket) + ' and pk.Sube = ' + QuotedStr (DATALAR.AktifSube) + ' then 1 else 0 end as bit) AktarilandaVar'#13#10 +
+            '  cast (case when pk.SirketKod = ' + SQLValue (DATALAR.AktifSirket) + ' and pk.Sube = ' + SQLValue (HakikiAktifSube) + ' then 1 else 0 end as bit) AktarilandaVar'#13#10 +
             'from personelkart pk'#13#10 +
             'inner join SIRKEtler_tnm s on s.SirketKod = pk.SirketKod'#13#10 +
             'inner join SIRKET_SUBE_TNM ss on ss.sirketKod = pk.Sirketkod'#13#10 +
             '  and ss.Subekod = pk.Sube'#13#10 +
-            'where pk.TCKIMLIKNO = ' + QuotedStr (GridAtanmisSutunDegerAyarlaGetir (GridList, colTCKimlikNo,_row_)) + ''#13#10 +
+            'where pk.TCKIMLIKNO = ' + SQLValue (GridAtanmisSutunDegerAyarlaGetir (GridList, colTCKimlikNo,_row_)) + ''#13#10 +
             'order by AktarilandaVar desc';
           ado1 := DATALAR.QuerySelect(sql);
           try
@@ -549,25 +547,25 @@ begin
                            GridAtanmisSutunDegerAyarlaGetir (GridList, colIseBaslama,_row_));
 
           sql := Format(_insertPersonel_,
-                        [QuotedStr(datalar.AktifSirket),
-                         QuotedStr(GridAtanmisSutunDegerAyarlaGetir (GridList, colTCKimlikNo,_row_)),
-                         QuotedStr(GridAtanmisSutunDegerAyarlaGetir (GridList, colAdi,_row_)),
-                         QuotedStr(GridAtanmisSutunDegerAyarlaGetir (GridList, colSoyadi,_row_)),
-                         QuotedStr(Cins),
-                         QuotedStr(Medeni),
-                         QuotedStr(GridAtanmisSutunDegerAyarlaGetir (GridList, colBabaAdi,_row_)),
-                         QuotedStr(GridAtanmisSutunDegerAyarlaGetir (GridList, colAnaAdi,_row_)),
-                         QuotedStr(GridAtanmisSutunDegerAyarlaGetir (GridList, ColAdres,_row_)),
-                         QuotedStr(AktarimTelefonNoTemizle (GridAtanmisSutunDegerAyarlaGetir (GridList, ColTelefon1,_row_))),
-                         QuotedStr(AktarimTelefonNoTemizle (GridAtanmisSutunDegerAyarlaGetir (GridList, ColTelefon2,_row_))),
-                         QuotedStr(GridAtanmisSutunDegerAyarlaGetir (GridList, ColDogumYeri,_row_)),
-                         QuotedStr(DTarih),
-                         QuotedStr(AktarimUyrukDuzelt (GridAtanmisSutunDegerAyarlaGetir (GridList, colUyruk,_row_))),
-                         QuotedStr(BTarih),
+                        [SQLValue(datalar.AktifSirket),
+                         SQLValue(GridAtanmisSutunDegerAyarlaGetir (GridList, colTCKimlikNo,_row_)),
+                         SQLValue(GridAtanmisSutunDegerAyarlaGetir (GridList, colAdi,_row_)),
+                         SQLValue(GridAtanmisSutunDegerAyarlaGetir (GridList, colSoyadi,_row_)),
+                         SQLValue(Cins),
+                         SQLValue(Medeni),
+                         SQLValue(GridAtanmisSutunDegerAyarlaGetir (GridList, colBabaAdi,_row_)),
+                         SQLValue(GridAtanmisSutunDegerAyarlaGetir (GridList, colAnaAdi,_row_)),
+                         SQLValue(GridAtanmisSutunDegerAyarlaGetir (GridList, ColAdres,_row_)),
+                         SQLValue(AktarimTelefonNoTemizle (GridAtanmisSutunDegerAyarlaGetir (GridList, ColTelefon1,_row_))),
+                         SQLValue(AktarimTelefonNoTemizle (GridAtanmisSutunDegerAyarlaGetir (GridList, ColTelefon2,_row_))),
+                         SQLValue(GridAtanmisSutunDegerAyarlaGetir (GridList, ColDogumYeri,_row_)),
+                         SQLValue(DTarih),
+                         SQLValue(AktarimUyrukDuzelt (GridAtanmisSutunDegerAyarlaGetir (GridList, colUyruk,_row_))),
+                         SQLValue(BTarih),
                          'NULL',
-                         QuotedStr(datalar.username),
-                         QuotedStr('1'),
-                         QuotedStr(datalar.AktifSube),
+                         SQLValue(datalar.username),
+                         SQLValue('1'),
+                         SQLValue(HakikiAktifSube),
                          'NULL']);
           datalar.queryExec(SelectAdo,sql);
           iRowC := _row_;
@@ -705,8 +703,8 @@ begin
               aQuery.ExecSQL;
               aQuery.SQL.Text :=
                 'Insert into dbo.DisAktarim_Parametre (SPID, Aktif, SirketKod, SubeKod, Doktor, Kullanici, HostName, RecDatetime) '+
-                'SELECT @@SPID SPID, 1 Aktif, ' + QuotedStr(DATALAR.AktifSirket) + ' SirketKod, ' + QuotedStr (DATALAR.AktifSube) +
-                ' SubeKod, ' + QuotedStr(DATALAR.doktorKodu)+' Doktor, ' + QuotedStr (DATALAR.username) +
+                'SELECT @@SPID SPID, 1 Aktif, ' + SQLValue(DATALAR.AktifSirket) + ' SirketKod, ' + SQLValue (HakikiAktifSube) +
+                ' SubeKod, ' + SQLValue(DATALAR.doktorKodu)+' Doktor, ' + SQLValue (DATALAR.username) +
                 ' Kullanici, HOST_NAME () HostName, getdate () RecDatetime';
               aQuery.ExecSQL;
 
