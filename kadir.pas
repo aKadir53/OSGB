@@ -391,6 +391,8 @@ procedure CommitTrans (const aQuery : TADOQuery);
 function TranCount (const aQuery : TADOQuery): Integer;
 function GetUserDoktorFilter (pFieldName : String = ''): String;
 function GetUserIGUFilter (pFieldName : String = ''): String;
+function HakikiAktifSube: String;
+function SQLValue (const sValue: String): String;
 
 const
   _YTL_ = 'YTL';
@@ -8890,6 +8892,17 @@ begin
     Result := ''
    else
     Result := pFieldName + ' = '+ QuotedStr(DATALAR.IGU);
+end;
+
+function HakikiAktifSube: String;
+begin
+  ifThen(IsNull (datalar.AktifSube),'',ifThen(pos(',',datalar.AktifSube) > 0,'',datalar.AktifSube));
+end;
+
+function SQLValue (const sValue: String): String;
+begin
+  if IsNull (sValue) then Result := 'NULL'
+                     else Result := QuotedStr(sValue);
 end;
 
 function IsNull (const s: String): Boolean;

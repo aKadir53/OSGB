@@ -658,7 +658,6 @@ object frmLogin: TfrmLogin
           Style.HotTrack = False
           Style.IsFontAssigned = True
           TabOrder = 1
-          OnKeyPress = Edit2KeyPress
           Width = 121
         end
         object txtSirket: TcxButtonEditKadir
@@ -1612,6 +1611,7 @@ object frmLogin: TfrmLogin
       Height = 32
       Align = alRight
       Caption = 'Giri'#351' Yap'
+      Default = True
       TabOrder = 0
       OnClick = Image1Click
     end
@@ -1621,6 +1621,7 @@ object frmLogin: TfrmLogin
       Width = 100
       Height = 32
       Align = alRight
+      Cancel = True
       Caption = 'Vazge'#231
       TabOrder = 1
       OnClick = btnVazgecClick
