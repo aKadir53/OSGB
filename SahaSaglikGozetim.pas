@@ -334,7 +334,7 @@ begin
       begin
         aSahaDenetimVeri.KullaniciAdi := DATALAR.username;
         aSahaDenetimVeri.FirmaKod := datalar.AktifSirket;
-        aSahaDenetimVeri.SubeKod := ifThen(IsNull (datalar.AktifSube),'',ifThen(pos(',',datalar.AktifSube) > 0,'',datalar.AktifSube));
+        aSahaDenetimVeri.SubeKod := HakikiAktifSube;
         aSahaDenetimVeri.DenetimTarihi := DateToStr (date);
         aSahaDenetimVeri.DenetimDefterNo := '';
         aSahaDenetimVeri.GozlemGrubu := '';
