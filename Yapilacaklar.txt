@@ -179,7 +179,6 @@ muayene eklerken view'dan almýyor türleri
 yapýlabilecek otomatik aktarýmlar: 
 sgk sicil numarasýndan firma ünvan ve þube açýklamalarý güncelleme
 
-update formunda sql güncelleme açýklamasýný thermo'da gösterebiliriz
 sorgulama çalýþmamasý
 
 ilaç gruplarý antibiyotik vs

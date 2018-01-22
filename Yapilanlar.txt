@@ -130,3 +130,4 @@ usersettings usermenusettings vs tablolarýn foreign key vs ile korumaya alýnmasý
 
 personel aktarým soyadý ayarlamasýnda alan eþleþtirme yapýlmamýþsa yapýlmalý. sadece adý ve soyadý alanlarý eþleþtirilebilir (evet aynen böyle yaptýk ve çok güzel oldu). 
 personel kartlarýný excel'den aktarýmda resetli alan eþleþtirmede grid sütun baþlýklarý yedeklenip, iþlem iptal edildiðinde geri konulmasý eklendi
+update formunda sql güncelleme açýklamasýný thermo'da kutuda açýklama olarak gösterdik
