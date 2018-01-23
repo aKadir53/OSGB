@@ -194,8 +194,6 @@ gruba baðlý olmayan kullanýcýlar için grup tablosundaki sýfýrdan farklý olan en 
 
 data modul'deki lüzumsuz deðiþkenleri sil
 
-sunucuya son update'i güncellemesek bile önceden bekleyen update varsa hepsini alýyor. mesela sunucu 1026, yayýnlanmamýþ update 1046, o veritabaný 1026 ise update çalýþtýrmýyor, doðru. fakat o veritabaný 1022'de kalmýþsa 4 update var diye pencereyi açýyor fakat tümünü güncelliyor.
-
 imes osgb dr Murat: eczacý reçetede çalýþtýðý firma ismi açýklama olarak olmalý demiþ
 sýk kullanýlanlar kalkýk gelsin istiyor ilaçlarda ayrýca
 
@@ -210,3 +208,4 @@ ilgili dýþ aktarýmýn tablosuna ilk kayýt yazarken disAktarimParametre tablosu il
 dýþ aktarým sp'sinde, ara tablodan data alýp kullanýrken þirket kodu, user vs bilgiler için gidip kendisindeki aktarim parametre id'sindeki parametre kaydýna gidilip data kullanýlabilir.
 iþte bu kadar basit.
 
+uygulamanýn mevcut kopyalarýný kapatmasýný ve halt komutlarýný, application.terminate'leri kaldýrmak lazým
