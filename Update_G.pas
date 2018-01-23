@@ -28,7 +28,6 @@ type
     ADO_SQL: TADOQuery;
     DataSource1: TDataSource;
     ADO_SQL1: TADOQuery;
-    HTTP1: TIdHTTP;
     HTTP2: TIdHTTP;
     ADO_SQL_ID: TADOQuery;
     global_img_list4: TImageList;
@@ -69,7 +68,6 @@ type
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure gridDetayGetEditorType(Sender: TObject; ACol, ARow: Integer;
       var AEditor: TEditorType);
-    Procedure TMemoFieldToTMemo;
     procedure btnListeClick(Sender: TObject);
     function DownloadFile(SourceFile, DestFile: string): Boolean;
     procedure FormShow(Sender: TObject);
@@ -85,17 +83,15 @@ type
     procedure gridDetayClick(Sender: TObject);
     procedure Timer1Timer(Sender: TObject);
     procedure K1Click(Sender: TObject);
-    procedure HTTP1WorkBegin(ASender: TObject; AWorkMode: TWorkMode;
-      AWorkCountMax: Int64);
-    procedure HTTP1Work(ASender: TObject; AWorkMode: TWorkMode;
-      AWorkCount: Int64);
     procedure cxButton3Click(Sender: TObject);
-    procedure UpdateTip(tip : string);
+    procedure UpdateTip (const bAutomatic: Boolean);
     procedure FormActivate(Sender: TObject);
     procedure FormCreate(Sender: TObject);
   private
     { Private declarations }
     FFirstActivated : Boolean;
+    FSonYayinlananGuncelleme, FSonGuncelleme : String;
+    FAuto : Boolean;
   public
     { Public declarations }
     guncellemeIslemi : string;
@@ -103,20 +99,15 @@ type
 
 var
   frmUpdate: TfrmUpdate;
-  dosyaboyutu , _sonGuncelleme , filename , _Tip_ : string;
-  dosya ,dosya1: TFileStream;
-  _button : integer;
-  _baglanti : boolean;
-  snonay : integer;
 
 
 implementation
 uses data_modul, Math, NThermo;
 {$R *.dfm}
 
-procedure TfrmUpdate.UpdateTip(tip : string);
+procedure TfrmUpdate.UpdateTip (const bAutomatic: Boolean);
 begin
-  _Tip_ := tip;
+  FAuto := bAutomatic;
 end;
 
 
@@ -194,13 +185,6 @@ begin
 
 end;
 
-Procedure TfrmUpdate.TMemoFieldToTMemo;
-Begin
-//   aBlobStream := TBlobStream.Create(tblobfield(TQuery.fieldbyname('SQL')), bmRead);
-//   Memo1.Lines.LoadFromStream( aBlobStream );
- //  aBlobStream.Free;
-end;
-
 procedure TfrmUpdate.UpdateSQL;
 var
    sql : string;
@@ -210,7 +194,7 @@ var
 begin
     sql := 'select SLK,SLT,SLX from parametreler where SLK = ''GT'' and SLB = ''0000''';
     datalar.QuerySelect(datalar.ADO_SQL,sql);
-    _sonGuncelleme := datalar.ADO_SQL.Fieldbyname('SLX').AsString;
+    FSonGuncelleme := datalar.ADO_SQL.Fieldbyname('SLX').AsString;
     pnlBilgi.Caption := 'Son Güncelleme : ' + FormattedTarih(datalar.ADO_SQL.FieldList[1].AsString) +
                         ' Güncelleme ID :' + datalar.ADO_SQL.FieldList[2].AsString;
 
@@ -240,7 +224,7 @@ begin
                     end;
       end;
 
-    sql := 'select * from UPDATE_CMD_OSGB where ID > ' + _sonGuncelleme + ' and Modul = ''O''' +
+    sql := 'select * from UPDATE_CMD_OSGB where ID > ' + FSonGuncelleme + ' and Modul = ''O''' + ' and ID <= ' + FSonYayinlananGuncelleme +
            ' Order by ID ';
     datalar.QuerySelect(datalar.Ado_Guncellemeler,sql);
 
@@ -313,6 +297,7 @@ procedure TfrmUpdate.btnSendClick(Sender: TObject);
 var
   sql : string;
   i, iThermo, _hata : integer;
+  xDonguBasarili : Boolean;
 begin
   datalar.ADO_SQL3.Close;
   datalar.ADO_SQL3.SQL.Clear;
@@ -357,7 +342,7 @@ begin
                datalar.QueryExec(datalar.ADO_SQL3,sql);
             except on e : Exception do
               begin
-                txtLOG.Lines.Add('HATA - ' + gridDetay.Cells[2,griddetay.row] + 'Güncellemesi Yapýlmadý : ' + e.Message);
+                txtLOG.Lines.Add('HATA - ' + gridDetay.Cells[2,i] + 'Güncellemesi Yapýlmadý : ' + e.Message);
                 _hata := 1;
               end;
             end;
@@ -391,7 +376,7 @@ end;
 
 procedure TfrmUpdate.FormActivate(Sender: TObject);
 begin
-  if (_Tip_ = 'Auto') and (not FFirstActivated) Then
+  if (FAuto) and (not FFirstActivated) Then
   Begin
     FFirstActivated := True;
     gridDetay.Enabled := false;
@@ -430,32 +415,13 @@ begin
    GuncellemeBilgileri;
    http2.ConnectTimeout := 10000;
    try
-     http2.Get('http://www.noktayazilim.net/OSGBupdate.txt');
+     FSonYayinlananGuncelleme := HTTP2.Get('http://www.noktayazilim.net/OSGBupdate.txt');
    except
      txtLOG.Lines.Add('Baðlantý Hatasý , Ýnternetinizi Kontrol Edip Tekrar Denayiniz...');
      //exit;
    end;
 
    UpdateSQL;
-end;
-
-procedure TfrmUpdate.HTTP1Work(ASender: TObject; AWorkMode: TWorkMode;
-  AWorkCount: Int64);
-begin
-  pb.Progress := AWorkCount;
-  //txtPosition.Caption := inttostr(AWorkCount) + '/' + dosyaboyutu;
-  Application.ProcessMessages;
-end;
-
-procedure TfrmUpdate.HTTP1WorkBegin(ASender: TObject; AWorkMode: TWorkMode;
-  AWorkCountMax: Int64);
-begin
-  dosyaboyutu := inttostr(AWorkCountMax);
-  pb.MaxValue := AWorkCountMax;
-  pb.Progress := 0;
-//  pb.Max := AWorkCountMax;
-  if AWorkCountMax > 0 then
-  Application.ProcessMessages;
 end;
 
 procedure TfrmUpdate.K1Click(Sender: TObject);
@@ -525,3 +491,4 @@ begin
 end;
 
 end.
+
