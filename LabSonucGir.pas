@@ -42,6 +42,7 @@ type
     cxGridLevel1: TcxGridLevel;
     PopupMenu1: TPopupMenu;
     x1: TMenuItem;
+    sonucGirColumn5: TcxGridDBColumn;
     procedure btnYazdirClick(Sender: TObject);
     procedure sonucGirEditKeyDown(Sender: TcxCustomGridTableView;
       AItem: TcxCustomGridTableItem; AEdit: TcxCustomEdit; var Key: Word;
