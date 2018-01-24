@@ -1,14 +1,13 @@
 BEGIN TRAN
 GO
--- fn_KelimeAl fonksiyonu, verilen string'in ilk birkaç kelimesini alýp getirir altýn tepside sunar
+-- fn_KelimeSayisi fonksiyonu, verilen string'in ayraçlarla ayrýlmýþ kaç kelimeden ibaret olduðunu döndürür
 ALTER -- CREATE 
-  FUNCTION [dbo].[fn_KelimeAl] (@KaynakIfade varchar (500), @KelimeSayisi int, @Ayraclar varchar (20))
-returns varchar (500)
+  FUNCTION [dbo].[fn_KelimeSayisi] (@KaynakIfade varchar (500), @Ayraclar varchar (20))
+returns int
 with schemabinding 
 as
 begin
   declare 
-    @ret varchar (500) = '',
 	@iKelimeSayisi int = 0,
 	@KaynakIfadeTmp varchar (501),
 	@iTmpPos int
@@ -27,25 +26,23 @@ begin
   if substring (@KaynakIfadeTmp, Len ('X' + @KaynakIfadeTmp + 'X') - 2, 1) <> ' ' 
     set @KaynakIfadeTmp = @KaynakIfadeTmp + ' '
 
-  while (@iKelimeSayisi < @KelimeSayisi) and (@KaynakIfadeTmp <> '')
+  while (@KaynakIfadeTmp <> '')
   begin
     SET @iTmpPos = CHARINDEX (' ', @KaynakIfadeTmp)
 	if @iTmpPos > 0
 	begin
-	  SET @ret = @REt + ' ' + substring (@KaynakIfadeTmp, 1, @iTmpPos - 1)
 	  set @KaynakIfadeTmp = LTRIM (substring (@KaynakIfadeTmp, @iTmpPos + 1, len ('X' + @KaynakIfadeTmp + 'X') - 2))
 	end
 	else begin
-	  SET @ret = @REt + ' ' + @KaynakIfadeTmp
 	  set @KaynakIfadeTmp = ''
 	end
 	SET @iKelimeSayisi = @iKelimeSayisi + 1
   end
-  return (@ret)
+  return (@iKelimeSayisi)
 end
 GO
--- fn_KelimeAl () fonksiyonu deðiþiklik takip sistemi güncellemesi
-exec sp_vw_sys_upd 'FN', 'dbo', 'fn_KelimeAl'
+-- fn_KelimeSayisi () fonksiyonu deðiþiklik takip sistemi güncellemesi
+exec sp_vw_sys_upd 'FN', 'dbo', 'fn_KelimeSayisi'
 GO
 COMMIT
 GO
