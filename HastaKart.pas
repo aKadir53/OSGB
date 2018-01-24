@@ -102,6 +102,14 @@ type
     cxStyle3: TcxStyle;
     A1: TMenuItem;
     cxGridGelislerPROTOKOLNO: TcxGridDBBandedColumn;
+    GridPersonelEgitim: TcxGridKadir;
+    GridEgitim: TcxGridDBBandedTableView;
+    cxGridLevel1: TcxGridLevel;
+    GridEgitimColumn1: TcxGridDBBandedColumn;
+    GridEgitimColumn2: TcxGridDBBandedColumn;
+    GridEgitimColumn3: TcxGridDBBandedColumn;
+    GridEgitimColumn4: TcxGridDBBandedColumn;
+    GridEgitimColumn5: TcxGridDBBandedColumn;
     procedure FormCreate(Sender: TObject);
     procedure cxKaydetClick(Sender: TObject);
     procedure cxButtonCClick(Sender: TObject);
@@ -176,13 +184,36 @@ procedure TfrmHastaKart.ButtonClick(Sender: TObject);
 var
   F : TGirisForm;
   GirisRecord : TGirisFormRecord;
+  TopluDataset : TDataSetKadir;
+  Ado : TADOQuery;
+  sql : string;
 begin
-//  GirisRecord.F_firmaKod_ := TcxButtonEditKadir(FindComponent('SirketKod')).EditValue;
-//  GirisRecord.F_HastaAdSoyad_ := TcxTextEditKadir(FindComponent('tanimi')).EditValue;
-  F := FormINIT(TcxButtonKadir(sender).Tag,GirisRecord,ikHayir,'');
-  if F <> nil then F.ShowModal;
-  TcxImageComboKadir(FindComponent('bolum')).Filter := '';
-  TcxImageComboKadir(FindComponent('birim')).Filter := '';
+  case TcxButtonKadir(sender).Tag of
+   -50 : begin
+            ado := TADOQuery.Create(nil);
+            try
+              ado.Connection := datalar.ADOConnection2;
+              sql := 'sp_frmPersonelEgitim @EgitimId = ' + GridPersonelEgitim.Dataset.FieldByName('egitimID').AsString +
+                     ',@PersonelDosyaNo = ' + QuotedStr(dosyaNo.Text);
+              datalar.QuerySelect(ado, sql);
+              TopluDataset.Dataset0 := ado;
+              PrintYap('005','Personel Eðitimi Sertifikasý','',TopluDataset,kadirType.pTNone);
+            finally
+             ado.free;
+            end;
+         end;
+         else
+         begin
+            F := FormINIT(TcxButtonKadir(sender).Tag,GirisRecord,ikHayir,'');
+            if F <> nil then F.ShowModal;
+            TcxImageComboKadir(FindComponent('bolum')).Filter := '';
+            TcxImageComboKadir(FindComponent('birim')).Filter := '';
+         end;
+  end;
+
+
+
+
 
 
 end;
@@ -766,6 +797,12 @@ begin
            end;
            Gelisler(TcxButtonEditKadir(sender).Text);
       //     _gelisNO_ := ADO_Gelisler.FieldByName('gelisNO').AsString;
+
+          GridPersonelEgitim.Dataset.Connection := datalar.ADOConnection2;
+          GridPersonelEgitim.Dataset.SQL.Text := 'sp_frmPersonelEgitim @PersonelDosyaNo = ' + QuotedStr(dosyaNo.Text);
+          GridPersonelEgitim.Dataset.Open;
+//          GridEgitim.DataController.CreateAllItems(True);
+
         except
 
         end;
@@ -1240,20 +1277,10 @@ begin
   setDataStringBLabel(self,'bosSatir2',Kolon3,'',350);
 
  // setDataStringC(self,'seans','Seans',sayfa2_Kolon1,'_s_',50,'1,2,3,4,5');
-  setDataString(self,'seansSuresi','Günlük Çalýþma Süre',sayfa2_Kolon1,'_s_',30);
+ // setDataString(self,'seansSuresi','Günlük Çalýþma Süre',sayfa2_Kolon1,'_s_',30);
 //  setDataString(self,'makinaNo','Makina',sayfa2_Kolon1,'_s_',40);
-  setDataStringKontrol(self,seansGunleri , 'seansGunleri','Çalýþma Günleri',sayfa2_Kolon1,'',230);
+//  setDataStringKontrol(self,seansGunleri , 'seansGunleri','Çalýþma Günleri',sayfa2_Kolon1,'',230);
 
-
-  setDataStringCurr(self,'idealKilo','Kilo',sayfa2_Kolon2,'kilo',50,'0.00');
-  setDataStringCurr(self,'boy','Boy',sayfa2_Kolon2,'_boy_',50,'0');
-
-
-  setDataStringC(self,'HbsAg','HbsAg',sayfa2_Kolon2,'kilo',40,'-,+');
-  setDataStringC(self,'AntiHbs','AntiHbs',sayfa2_Kolon2,'kilo',40,'-,+');
-  setDataStringC(self,'AntiHCV','AntiHCV',sayfa2_Kolon2,'_boy_',40,'-,+');
-  setDataStringC(self,'HIV','AntiHIV',sayfa2_Kolon2,'_boy_',40,'-,+');
-  setDataStringBLabel(self,'bosSatir3',sayfa2_Kolon2,'',1);
 
 
   setDataStringMemo(self,'soygecmis','Soy Geçmiþ',sayfa3_Kolon1,'',630,40);
@@ -1262,13 +1289,24 @@ begin
 
   setDataStringKontrol(self,txtSeansSikayet , 'GELHAST','Kronik Hast/Baðým',sayfa3_Kolon1,'',300);
 
+  setDataStringCurr(self,'idealKilo','Kilo',sayfa3_Kolon1,'kilo',50,'0.00');
+  setDataStringCurr(self,'boy','Boy',sayfa3_Kolon1,'_boy_',50,'0');
+  setDataStringC(self,'HbsAg','HbsAg',sayfa3_Kolon1,'hbs',40,'-,+');
+  setDataStringC(self,'AntiHbs','AntiHbs',sayfa3_Kolon1,'hbs',40,'-,+');
+  setDataStringC(self,'AntiHCV','AntiHCV',sayfa3_Kolon1,'_hbs_',40,'-,+');
+  setDataStringC(self,'HIV','AntiHIV',sayfa3_Kolon1,'_hbs_',40,'-,+');
+
+
+
   setDataStringKontrol(self,IseGirisMuayene,'IseGirisMuayene','',sayfa4_Kolon1,'',800,350,alClient);
+  setDataStringKontrol(self,GridPersonelEgitim,'GridPersonelEgitim','',sayfa2_Kolon1,'',800,290,alClient);
+  addButton(self,nil,'btnSertifikaP','','Yazdýr',sayfa2_Kolon1,'',50,ButtonClick,-50);
 
 
  // tableColumnDescCreate;
   cxpnlHastaGelisler.Align := alBottom;
 
-  SayfaCaption('Kimlik Bilgileri','DÝðer Bilgileri','Öz Geçmiþ','Ýþe Giriþ Muayene','');
+  SayfaCaption('Kimlik Bilgileri','Eðitim Bilgileri','Öz Geçmiþ','Ýþe Giriþ Muayene','');
 
   Disabled(self,True);
 
