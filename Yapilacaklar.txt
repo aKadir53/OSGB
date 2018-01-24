@@ -209,3 +209,4 @@ dýþ aktarým sp'sinde, ara tablodan data alýp kullanýrken þirket kodu, user vs bi
 iþte bu kadar basit.
 
 uygulamanýn mevcut kopyalarýný kapatmasýný ve halt komutlarýný, application.terminate'leri kaldýrmak lazým
+hizlikayit formunu iki ayrý menüye koyalým...

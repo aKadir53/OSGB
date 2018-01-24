@@ -22,6 +22,7 @@ begin
        primary key clustered (iTip),
        RowsetHata bit,
        Rowset Bit,
+       RowsetEditInput bit default 0,
        Aciklama varchar (200),
        HataMesaji varchar (200))
        
@@ -60,9 +61,25 @@ begin
     insert into #t (RowsetHata, Rowset, Aciklama, HataMesaji) 
     Select 0 RowsetHata, 0 Rowset, 'Þube Kartlarýna Ýþ Güvenliði Uzmaný ve aylýk çalýþma dakika bilgileri güncelleniyor' Aciklama, null HataMesaji
     insert into #t (RowsetHata, Rowset, Aciklama, HataMesaji) 
+    Select 0 RowsetHata, 0 Rowset, 'Kullanýcý kartlarýna oluþturulacak doktor tanýmlarý hazýrlanýyor' Aciklama, null HataMesaji
+    insert into #t (RowsetHata, Rowset, Aciklama, HataMesaji) 
+    Select 0 RowsetHata, 0 Rowset, 'Çift Kullanýcý isimleri eleniyor' Aciklama, null HataMesaji
+    insert into #t (RowsetHata, Rowset, Aciklama, HataMesaji, RowsetEditInput) 
+    Select 0 RowsetHata, 1 Rowset, 'Kullanýcý kartlarýna oluþturulacak doktor tanýmlarý girdiriliyor' Aciklama, 'Doktor Kullanýcý Kartý Onayý' HataMesaji, 1 RowsetEditInput
+    insert into #t (RowsetHata, Rowset, Aciklama, HataMesaji) 
     Select 0 RowsetHata, 0 Rowset, 'Kullanýcý kartlarýna doktor tanýmlarýndan doktor kullanýcýlarý oluþturuluyor' Aciklama, null HataMesaji
     insert into #t (RowsetHata, Rowset, Aciklama, HataMesaji) 
+    Select 0 RowsetHata, 0 Rowset, 'Geçici tablo kaldýrýlýyor' Aciklama, null HataMesaji
+    insert into #t (RowsetHata, Rowset, Aciklama, HataMesaji) 
+    Select 0 RowsetHata, 0 Rowset, 'Kullanýcý kartlarýna oluþturulacak iþ güvenliði uzmaný tanýmlarý hazýrlanýyor' Aciklama, null HataMesaji
+    insert into #t (RowsetHata, Rowset, Aciklama, HataMesaji) 
+    Select 0 RowsetHata, 0 Rowset, 'Çift Kullanýcý isimleri eleniyor' Aciklama, null HataMesaji
+    insert into #t (RowsetHata, Rowset, Aciklama, HataMesaji, RowsetEditInput) 
+    Select 0 RowsetHata, 1 Rowset, 'Kullanýcý kartlarýna oluþturulacak iþ güvenliði uzmaný tanýmlarý girdiriliyor' Aciklama, 'Ýþ Güvenlik Uzmaný Kullanýcý Kartý Onayý' HataMesaji, 1 RowsetEditInput
+    insert into #t (RowsetHata, Rowset, Aciklama, HataMesaji) 
     Select 0 RowsetHata, 0 Rowset, 'Kullanýcý kartlarýna Ýþ güvenliði uzmaný tanýmlarýndan iþ güvenliði uzmaný kullanýcýlarý oluþturuluyor' Aciklama, null HataMesaji
+    insert into #t (RowsetHata, Rowset, Aciklama, HataMesaji) 
+    Select 0 RowsetHata, 0 Rowset, 'Geçici tablo kaldýrýlýyor' Aciklama, null HataMesaji
     insert into #t (RowsetHata, Rowset, Aciklama, HataMesaji) 
     Select 0 RowsetHata, 0 Rowset, 'Firma kartlarýna SGK sicil numaralarýndan hesaplanan nace kodlarý yazýlýyor' Aciklama, null HataMesaji
 
@@ -300,12 +317,39 @@ begin
   
   if @iTip = @iTipInt or @iTip is Null
   begin  
-    insert into dbo.Users (kullanici, password, [default], donem, parametreler, yet1, yet2, ADISOYADI, doktor, grup, Saat, userSkin, email, ustUser, sirketKodu, IGU)
-    select 'dr' + dbo.TurkCharToEng (case when CHARINDEX (' ', tanimi) <= 0 then Tanimi else substring (tanimi, 1, CHARINDEX (' ', tanimi)-1) end) kullanici, 
-      tcKimlikNo password, 0 [default], null donem, null parametreler, null yet1, null yet2, Tanimi ADISOYADI, kod doktor, 2 grup, getdate () Saat, 'iMaginary' userSkin, null email, null ustUser, null sirketKodu, null IGU
-    -- select *
+    select IDENTITY (int, 1, 1) ID, 'dr' + dbo.TurkCharToEng (case when CHARINDEX (' ', tanimi) <= 0 then Tanimi else substring (tanimi, 1, CHARINDEX (' ', tanimi)-1) end) kullanici, 
+      Tanimi ADISOYADI, kod doktor
+    into dbo.tmpUsr
     from dbo.DoktorlarT dt
     where not Exists (Select 1 from dbo.Users U where U.doktor = dt.kod)
+    order by dt.Tanimi
+  end
+
+  set @iTipInt = @iTipInt + 1
+  
+  if @iTip = @iTipInt or @iTip is Null
+  begin  
+    while exists (select Kullanici, count (*) Sayi from dbo.tmpUsr group by Kullanici having count (*) > 1)
+    begin
+      update tu2 set tu2.Kullanici = tw.YK
+      from dbo.tmpUsr tu2
+      inner join
+      (
+      Select tu.Kullanici + cast (row_Number () over (partition by tu.kullanici order by tu.ID) as varchar (10)) YK, tu.ID
+      from dbo.tmpUsr tu
+      inner join
+        (select Kullanici, count (*) Sayi from dbo.tmpUsr group by Kullanici having count (*) > 1) w on w.Kullanici = tu.Kullanici
+      ) tw on tw.ID = tu2.ID
+    end
+  end
+
+  set @iTipInt = @iTipInt + 1
+  
+  if @iTip = @iTipInt or @iTip is Null
+  begin  
+    select ID, kullanici, cast (doktor as varchar (4)) as [Doktor Kodu], cast (ADISOYADI as varchar (50)) [ADI SOYADI]
+    from dbo.tmpUsr
+    order by ID
   end
 
   set @iTipInt = @iTipInt + 1
@@ -313,11 +357,78 @@ begin
   if @iTip = @iTipInt or @iTip is Null
   begin  
     insert into dbo.Users (kullanici, password, [default], donem, parametreler, yet1, yet2, ADISOYADI, doktor, grup, Saat, userSkin, email, ustUser, sirketKodu, IGU)
-    select 'isg' + dbo.TurkCharToEng (case when CHARINDEX (' ', tanimi) <= 0 then Tanimi else substring (tanimi, 1, CHARINDEX (' ', tanimi)-1) end) kullanici, 
+    select uuu.kullanici kullanici, 
+      tcKimlikNo password, 0 [default], null donem, null parametreler, null yet1, null yet2, Tanimi ADISOYADI, kod doktor, 2 grup, getdate () Saat, 'iMaginary' userSkin, null email, null ustUser, null sirketKodu, null IGU
+    -- select *
+    from dbo.DoktorlarT dt
+    inner join dbo.tmpUsr uuu on uuu.Doktor = dt.Kod
+    where not Exists (Select 1 from dbo.Users U where U.doktor = dt.kod)
+  end
+
+  set @iTipInt = @iTipInt + 1
+  
+  if @iTip = @iTipInt or @iTip is Null
+  begin  
+    drop table dbo.tmpUsr
+  end
+
+  set @iTipInt = @iTipInt + 1
+  
+  if @iTip = @iTipInt or @iTip is Null
+  begin  
+    select IDENTITY (int, 1, 1) ID, 'isg' + dbo.TurkCharToEng (case when CHARINDEX (' ', tanimi) <= 0 then Tanimi else substring (tanimi, 1, CHARINDEX (' ', tanimi)-1) end) kullanici, 
+      Tanimi ADISOYADI, kod IsGuvUzm
+    into dbo.tmpUsr
+    from dbo.IGU dt
+    where not Exists (Select 1 from dbo.Users U where U.IGU = dt.kod)
+    order by dt.Tanimi
+  end
+
+  set @iTipInt = @iTipInt + 1
+  
+  if @iTip = @iTipInt or @iTip is Null
+  begin  
+    while exists (select Kullanici, count (*) Sayi from dbo.tmpUsr group by Kullanici having count (*) > 1)
+    begin
+      update tu2 set tu2.Kullanici = tw.YK
+      from dbo.tmpUsr tu2
+      inner join
+      (
+      Select tu.Kullanici + cast (row_Number () over (partition by tu.kullanici order by tu.ID) as varchar (10)) YK, tu.ID
+      from dbo.tmpUsr tu
+      inner join
+        (select Kullanici, count (*) Sayi from dbo.tmpUsr group by Kullanici having count (*) > 1) w on w.Kullanici = tu.Kullanici
+      ) tw on tw.ID = tu2.ID
+    end
+  end
+
+  set @iTipInt = @iTipInt + 1
+  
+  if @iTip = @iTipInt or @iTip is Null
+  begin  
+    select ID, kullanici, cast (IsGuvUzm as varchar (4)) as [Ýþ Güv. Uzm. Kodu], cast (ADISOYADI as varchar (50)) [ADI SOYADI]
+    from dbo.tmpUsr
+    order by ID
+  end
+
+  set @iTipInt = @iTipInt + 1
+  
+  if @iTip = @iTipInt or @iTip is Null
+  begin  
+    insert into dbo.Users (kullanici, password, [default], donem, parametreler, yet1, yet2, ADISOYADI, doktor, grup, Saat, userSkin, email, ustUser, sirketKodu, IGU)
+    select uuu.Kullanici kullanici, 
       tcKimlikNo password, 0 [default], null donem, null parametreler, null yet1, null yet2, Tanimi ADISOYADI, null doktor, 11 grup, getdate () Saat, 'iMaginary' userSkin, null email, null ustUser, null sirketKodu, kod IGU
     -- select *
     from dbo.IGU dt
+    inner join dbo.tmpUsr uuu on uuu.IsGuvUzm = dt.Kod
     where not Exists (Select 1 from dbo.Users U where U.IGU = dt.kod)
+  end
+
+  set @iTipInt = @iTipInt + 1
+  
+  if @iTip = @iTipInt or @iTip is Null
+  begin  
+    drop table dbo.tmpUsr
   end
 
   set @iTipInt = @iTipInt + 1
@@ -376,8 +487,74 @@ begin
   set nocount off
 
 end
+GO
+--exec sp_vw_sys_upd 'P ', 'dbo', 'sp_ISGKatipExcelAktarimi'
+GO
+exec dbo.sp_ISGKatipExcelAktarimi 0
 go
-exec sp_vw_sys_upd 'P ', 'dbo', 'sp_ISGKatipExcelAktarimi'
+exec dbo.sp_ISGKatipExcelAktarimi 1
 go
-COMMIT
+exec dbo.sp_ISGKatipExcelAktarimi 2
+go
+exec dbo.sp_ISGKatipExcelAktarimi 3
+go
+exec dbo.sp_ISGKatipExcelAktarimi 4
+go
+exec dbo.sp_ISGKatipExcelAktarimi 5
+go
+exec dbo.sp_ISGKatipExcelAktarimi 6
+go
+exec dbo.sp_ISGKatipExcelAktarimi 7
+go
+exec dbo.sp_ISGKatipExcelAktarimi 8
+go
+exec dbo.sp_ISGKatipExcelAktarimi 9
+go
+exec dbo.sp_ISGKatipExcelAktarimi 10
+go
+exec dbo.sp_ISGKatipExcelAktarimi 11
+go
+exec dbo.sp_ISGKatipExcelAktarimi 12
+go
+exec dbo.sp_ISGKatipExcelAktarimi 13
+go
+exec dbo.sp_ISGKatipExcelAktarimi 14
+go
+exec dbo.sp_ISGKatipExcelAktarimi 15
+go
+exec dbo.sp_ISGKatipExcelAktarimi 16
+go
+exec dbo.sp_ISGKatipExcelAktarimi 17
+go
+exec dbo.sp_ISGKatipExcelAktarimi 18
+go
+exec dbo.sp_ISGKatipExcelAktarimi 19
+go
+exec dbo.sp_ISGKatipExcelAktarimi 20
+go
+update #tempUser set Kullanici = Kullanici + 'XX' where ID in (1, 2)
+go
+update #tempUser set Kullanici = 'XX' where ID in (1, 2)
+go
+update #tempUser set Kullanici = 'YY' where ID in (3, 4)
+go
+exec dbo.sp_ISGKatipExcelAktarimi 21
+go
+exec dbo.sp_ISGKatipExcelAktarimi 22
+go
+exec dbo.sp_ISGKatipExcelAktarimi 23
+go
+exec dbo.sp_ISGKatipExcelAktarimi 24
+go
+exec dbo.sp_ISGKatipExcelAktarimi 25
+go
+exec dbo.sp_ISGKatipExcelAktarimi 26
+go
+exec dbo.sp_ISGKatipExcelAktarimi 27
+go
+exec dbo.sp_ISGKatipExcelAktarimi 28
+go
+select * from Users
+go
+ROLLBACK -- COMMIT
 GO
