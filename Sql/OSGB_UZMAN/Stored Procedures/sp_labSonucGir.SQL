@@ -1,5 +1,6 @@
 BEGIN TRAN
 GO
+-- sp_labSonucGir ALTER proc
 ALTER PROCEDURE [dbo].[sp_labSonucGir] @tarih varchar(10),@hasta varchar(10),@kod varchar(20),
                                 @yas int ,@cinsiyet varchar(1)
 AS
@@ -21,7 +22,7 @@ select k.sira,k.dosyaNo as DosyaNo,k.gelisNo as GelisNo,
        lp.parametreadi2,lp.[type],parametreadi3,k.hareketlersira,k.OZELKOD,lp.duyarlik
 
 from LaboratuvarKabul k
-    left join laboratuvar_parametre lp on lp.kodu = k.Icode
+    left join laboratuvar_parametre lp on lp.kodu = k.code
 	left join lab_normaldeger nd on nd.sira = lp.sira and isnull(nd.aCiklama,'') = ''
                                     and nd.testkodu = lp.kodu and (@yas between nd.yas1 and nd.yas2)      
    -- JOIN HIZMET H ON H.CODE = K.ICODE
