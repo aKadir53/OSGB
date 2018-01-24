@@ -350,26 +350,6 @@ object frmUpdate: TfrmUpdate
     Left = 102
     Top = 398
   end
-  object HTTP1: TIdHTTP
-    OnWork = HTTP1Work
-    OnWorkBegin = HTTP1WorkBegin
-    AllowCookies = True
-    ProxyParams.BasicAuthentication = False
-    ProxyParams.ProxyPort = 0
-    Request.ContentLength = -1
-    Request.ContentRangeEnd = -1
-    Request.ContentRangeStart = -1
-    Request.ContentRangeInstanceLength = -1
-    Request.ContentType = 'text/html'
-    Request.Accept = 'text/html, */*'
-    Request.BasicAuthentication = False
-    Request.UserAgent = 'Mozilla/3.0 (compatible; Indy Library)'
-    Request.Ranges.Units = 'bytes'
-    Request.Ranges = <>
-    HTTPOptions = [hoForceEncodeParams]
-    Left = 717
-    Top = 153
-  end
   object HTTP2: TIdHTTP
     AllowCookies = True
     ProxyParams.BasicAuthentication = False

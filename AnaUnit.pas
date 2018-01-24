@@ -105,7 +105,7 @@ type
     procedure sayfalarPageChanging(Sender: TObject; NewPage: TcxTabSheet;
       var AllowChange: Boolean);
     function GuncellemeKontrol : boolean;
-    procedure GuncellemeBaslat(tip : string);
+    procedure GuncellemeBaslat(const bAutomatic: Boolean);
     procedure MainMenuKadir1DragDrop(Sender, Source: TObject; X, Y: Integer);
     procedure MainMenuKadir1DragOver(Sender, Source: TObject; X, Y: Integer;
       State: TDragState; var Accept: Boolean);
@@ -203,11 +203,11 @@ begin
 
 end;
 
-procedure TAnaForm.GuncellemeBaslat(tip : string);
+procedure TAnaForm.GuncellemeBaslat(const bAutomatic: Boolean);
 begin
   Application.CreateForm(TfrmUpdate, frmUpdate);
   try
-    frmUpdate.UpdateTip(tip);
+    frmUpdate.UpdateTip(bAutomatic);
     frmUpdate.ShowModal;
   finally
     FreeandNil (frmUpdate);
@@ -382,7 +382,7 @@ begin
   then
     if rev = 'G'
     then begin
-       GuncellemeBaslat('Auto');
+       GuncellemeBaslat(True);
     end;
 
   UserTable.Active := True;

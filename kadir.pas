@@ -8896,7 +8896,7 @@ end;
 
 function HakikiAktifSube: String;
 begin
-  ifThen(IsNull (datalar.AktifSube),'',ifThen(pos(',',datalar.AktifSube) > 0,'',datalar.AktifSube));
+  Result := ifThen(IsNull (datalar.AktifSube),'',ifThen(pos(',',datalar.AktifSube) > 0,'',datalar.AktifSube));
 end;
 
 function SQLValue (const sValue: String): String;
