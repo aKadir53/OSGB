@@ -640,6 +640,12 @@ object frmHastaTetkikEkle: TfrmHastaTetkikEkle
         OnClick = SubItemClick
       end
     end
+    object T1: TMenuItem
+      Tag = -30
+      Caption = 'Tetkik Sonu'#231' Ekle/G'#246'r'
+      ImageIndex = 45
+      OnClick = ItemClick
+    end
   end
   object ADO_Tetkikler: TADOQuery
     Connection = DATALAR.ADOConnection2

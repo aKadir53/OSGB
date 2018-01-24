@@ -733,18 +733,6 @@ begin
 
          if TcxButton(sender).Tag = -1
          Then Begin
-         (*
-              datalar.ADO_SQL.Close;
-              datalar.ADO_SQL.SQL.Clear;
-
-              sql := 'exec sp_labSonucGir ' + #39 + tarihal(txtTarih.Date) + #39 + ',' +
-                     #39 + bilgi.dosyaNo + #39 + ',' +
-                     #39 + bilgi.Icode + #39 + ',' +
-                     #39 + bilgi.yas + #39 + ',' +
-                     #39 + bilgi.cins + #39;
-
-              datalar.QueryExec(datalar.ADO_SQL,sql);
-           *)
 
              dosyaNo := bilgi.dosyaNo;
              gelisNo := bilgi.gelisNo;
@@ -933,18 +921,25 @@ begin
 
      if txtGrup.Checked = False
      Then
-           sql := 'select parametre_sira,parametreadi,parametreadi1,parametrebirim ,normal1,normal2,ref_aciklama,sonuc1,sonuc2,sonuc3,aciklama,tip,testno ' +
-                  ' from laboratuvar_sonuc ' +
-                  ' where dosyaNo = ' + QuotedStr(dosyaNo) + ' and gelisno = ' + gelisno +
-                  ' and code = ' + QuotedStr(code) + ' and hareketSira = ' + sira +
+           sql := 'select parametre_sira,parametreadi,parametreadi1,parametrebirim ,normal1,normal2,ref_aciklama,sonuc1,sonuc2,sonuc3,' +
+                  ' aciklama,tip,testno,lk.OZELKOD,g.SLT ' +
+                  ' from laboratuvar_sonuc ls ' +
+                  ' left join HIZMET lk on lk.code = ls.testno ' +
+                  ' left join lab_gruplari g on g.SLB = lk.OZELKOD ' +
+                  ' where ls.dosyaNo = ' + QuotedStr(dosyaNo) + ' and ls.gelisno = ' + gelisno +
+                  ' and ls.testno = ' + QuotedStr(code) + ' and ls.hareketSira = ' + sira +
                   ' order by parametre_sira '
 
+
      Else
-           sql := 'select parametre_sira,parametreadi,parametreadi1,parametrebirim ,normal1,normal2,ref_aciklama,sonuc1,sonuc2,sonuc3,aciklama,tip,testno ' +
-                  ' from laboratuvar_sonuc ' +
-                  ' where dosyaNo = ' + QuotedStr(dosyaNo) + ' and gelisno = ' + gelisno +
-                  ' and OZELKOD = ' + QuotedStr(_grup_) +
-                  ' order by code,parametre_sira ';
+           sql := 'select parametre_sira,parametreadi,parametreadi1,parametrebirim ,normal1,normal2,ref_aciklama,sonuc1,sonuc2,sonuc3,' +
+                  ' aciklama,tip,testno,lk.OZELKOD,g.SLT ' +
+                  ' from laboratuvar_sonuc ls ' +
+                  ' left join HIZMET lk on lk.code = ls.testno ' +
+                  ' left join lab_gruplari g on g.SLB = lk.OZELKOD ' +
+                  ' where ls.dosyaNo = ' + QuotedStr(dosyaNo) + ' and ls.gelisno = ' + gelisno +
+                  ' and ls.OZELKOD = ' + QuotedStr(_grup_) +
+                  ' order by ls.code,parametre_sira ';
                 //  ' and code = ' + QuotedStr(code) + ' and hareketSira = ' + sira;
 
 
@@ -963,6 +958,7 @@ begin
   //   ifThen(txtGrup.Checked,LabGrupKodAdi(_grup_),labKabul.fieldbyname('TestAdý').AsString);
 
      Application.CreateForm(TfrmLabSonucGir, frmLabSonucGir);
+     frmLabSonucGir.sonucGir.DataController.DataSource := DataSource2;
      frmLabSonucGir.ShowModal;
      frmLabSonucGir := nil;
 

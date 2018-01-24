@@ -1845,6 +1845,7 @@ object frmLabaratuvarKabul: TfrmLabaratuvarKabul
   end
   object ADO_TESTSONUCLARI: TADOQuery
     Connection = DATALAR.ADOConnection2
+    CursorType = ctStatic
     BeforePost = ADO_TESTSONUCLARIBeforePost
     Parameters = <>
     SQL.Strings = (
