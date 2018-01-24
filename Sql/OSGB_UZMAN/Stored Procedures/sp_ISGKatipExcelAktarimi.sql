@@ -12,6 +12,9 @@ begin
   end
 
   set nocount on
+
+  declare @iTipInt int = 0
+
   if @iTip = 0
   begin
     create table #t 
@@ -38,6 +41,8 @@ begin
     Select 0 RowsetHata, 0 Rowset, 'Ýþ Güvenlik Uzmaný tanýmlarý oluþturuluyor' Aciklama, null HataMesaji
     insert into #t (RowsetHata, Rowset, Aciklama, HataMesaji) 
     Select 0 RowsetHata, 0 Rowset, 'Ýç görev satýrlarý ayýklanýyor' Aciklama, null HataMesaji
+    insert into #t (RowsetHata, Rowset, Aciklama, HataMesaji) 
+    Select 0 RowsetHata, 0 Rowset, 'Hizmet alan kurum ünvan alaný için ilk kelimelerden seçim yap' Aciklama, null HataMesaji
     insert into #t (RowsetHata, Rowset, Aciklama, HataMesaji) 
     Select 0 RowsetHata, 0 Rowset, 'Firma Tanýmlarý tablosu eklenecek firma tanýmlarý için hazýrlanýyor' Aciklama, null HataMesaji
     insert into #t (RowsetHata, Rowset, Aciklama, HataMesaji) 
@@ -69,8 +74,10 @@ begin
 
     drop table #t
   end
+
+  set @iTipInt = @iTipInt + 1
   -- Ýçe görevlendirme olanlarýn hizmet alan kurum adýný ve þubelerini, tekrarlayan kayýt olarak görmemesi için doldur...
-  if @iTip = 1 or @iTip is Null
+  if @iTip = @iTipInt or @iTip is Null
   begin
     update ss set HizmetAlanKurum = 'sil', HizmetAlanKurumSGKSicilNo = TCKimlikNo
     from ISGKatipExcelAktarim ss
@@ -78,15 +85,19 @@ begin
       and LTRIM (RTRIM (IsNull (HizmetAlanKurumSGKSicilNo, ''))) = ''
       and LTRIM (RTRIM (IsNull (HizmetalanKurum, ''))) = ''
   end
+
+  set @iTipInt = @iTipInt + 1
   -- Ayrýldý durumunda olanlarýn silinmesi
-  if @iTip = 2 or @iTip is Null
+  if @iTip = @iTipInt or @iTip is Null
   begin
     delete d
     from ISGKatipExcelAktarim d
     where CalismaDurumu = 'Ayrýldý'
   end
+
+  set @iTipInt = @iTipInt + 1
   -- görev baþlama tarihi ayný olan ayný sicildeki ayný kategoride olan kayýtlarýn bire indirilmesi. eski ID siliniyor
-  if @iTip = 3 or @iTip is Null
+  if @iTip = @iTipInt or @iTip is Null
   begin  
     delete ee
     from dbo.ISGKatipExcelAktarim ee
@@ -99,8 +110,10 @@ begin
     and ww.PersonelKategoriAdi = ee.PersonelKategoriAdi
     and ww.ID = ee.ID
   end
+
+  set @iTipInt = @iTipInt + 1
   -- þube sgk bazýnda ayný kategoride tek personel býrakýlýyor
-  if @iTip = 4 or @iTip is Null
+  if @iTip = @iTipInt or @iTip is Null
   begin
     delete ee
     from dbo.ISGKatipExcelAktarim ee
@@ -113,7 +126,9 @@ begin
     and ww.PersonelKategoriAdi = ee.PersonelKategoriAdi
   end
 
-  if @iTip = 5 or @iTip is Null
+  set @iTipInt = @iTipInt + 1
+
+  if @iTip = @iTipInt or @iTip is Null
   begin
     insert into dbo.doktorlarT (kod, tanimi, tescilNo, tcKimlikNo, bransKodu, calismaTipi, durum, sertifika, receteBrans, TDisID, uzman, eReceteKullanici, eReceteSifre, pin, pazartesi, sali, carsamba, persembe, cuma, cumartesi, TesisKodu, GSM, EPosta, cardType)
     select substring (cast (10000 + IsNull ((select max (cast (kod as int)) from doktorlarT where IsNumeric (Kod) = 1), 0) + row_number () over (order by AdiSoyadi) as varchar (5)), 2, 4) Kod, AdiSoyadi tanimi, null tescilNo, TCKimlikNo tcKimlikNo, null bransKodu, 
@@ -132,12 +147,16 @@ begin
     order by AdiSoyadi
   end
   
-  if @iTip = 6 or @iTip is Null
+  set @iTipInt = @iTipInt + 1
+
+  if @iTip = @iTipInt or @iTip is Null
   begin  
     update doktorlart set Durum = 'Aktif' where Durum is null
   end
+
+  set @iTipInt = @iTipInt + 1
   
-  if @iTip = 7 or @iTip is Null
+  if @iTip = @iTipInt or @iTip is Null
   begin
     insert into dbo.IGU (kod, tanimi, tcKimlikNo, calismaTipi, durum, sertifika, pin, TesisKodu, GSM, EPosta, cardType, Sinifi)
     select substring (cast (10000 + IsNull ((select max (cast (kod as int)) from IGU where IsNumeric (Kod) = 1), 0) + row_number () over (order by AdiSoyadi) as varchar (5)), 2, 4) kod, 
@@ -154,22 +173,36 @@ begin
     order by AdiSoyadi
   end
 
-  if @iTip = 8 or @iTip is Null
+  set @iTipInt = @iTipInt + 1
+
+  if @iTip = @iTipInt or @iTip is Null
   begin  
     delete ss
     from ISGKatipExcelAktarim ss
     where GorevTuru = 'Ýçe Grv.'
       and LTRIM (RTRIM (IsNull (HizmetalanKurum, ''))) = 'sil'
       and LTRIM (RTRIM (IsNull (HizmetAlanKurumSGKSicilNo, ''))) = TCKimlikNo
-end
+  end
+
+  set @iTipInt = @iTipInt + 1
   
-  if @iTip = 9 or @iTip is Null
+  if @iTip = @iTipInt or @iTip is Null
+  begin
+    -- Hizmet alan kurum ünvan alaný null olanlar için ilk kelimelerden seçim yap
+    update ISGKatipExcelAktarim SET HizmetAlanKurumUnvan = dbo.fn_KelimeAl (HizmetAlanKurum, 4, './\=(){}[]+*-_,;<>') where HizmetAlanKurumUnvan Is NULL
+  end
+
+  set @iTipInt = @iTipInt + 1
+  
+  if @iTip = @iTipInt or @iTip is Null
   begin
     -- merkez subeler otomatik insert olmasýn diye triggeri kapat geçici süre
     alter table dbo.SIRKETLER_TNM disable Trigger SIRKETLER_TNM_TRG
   end
 
-  if @iTip = 10 or @iTip is Null
+  set @iTipInt = @iTipInt + 1
+
+  if @iTip = @iTipInt or @iTip is Null
   begin  
     insert into dbo.SIRKETLER_TNM (SirketKod, tanimi, NaceKod, anaFaliyet, tehlikeSinifi, SGKKod, calisanSayisi, Tel1, Tel2, Fax, Yetkili, yetkiliTel, yetkilimail, SEHIR, ILCE, MAHALLE, CADDE, BUCAK, KOY, SOKAK, Adres, VD, VN, Istigal, IsguvenlikUzman, SorunluRevirPersonel, Aktif, User_ID, Date_Create, IsyeriSicilNo, BolgeMudurlukSicilNo)
     select substring (cast (1000000 + IsNull ((select max (cast (SirketKod as int)) from SIRKETLER_TNM where IsNumeric (SirketKod) = 1), 0) + row_number () over (order by substring (LTRIM (RTRIM (ISNULL (pa.HizmetAlanKurumUnvan, pa.HizmetAlanKurum))), 1, 100)) as varchar (7)), 2, 6) SirketKod, substring (LTRIM (RTRIM (ISNULL (pa.HizmetAlanKurumUnvan, pa.HizmetAlanKurum))), 1, 100) tanimi, 
@@ -180,22 +213,28 @@ end
     group by substring (LTRIM (RTRIM (ISNULL (pa.HizmetAlanKurumUnvan, pa.HizmetAlanKurum))), 1, 100)
     order by substring (LTRIM (RTRIM (ISNULL (pa.HizmetAlanKurumUnvan, pa.HizmetAlanKurum))), 1, 100)
   end
+
+  set @iTipInt = @iTipInt + 1
   
-  if @iTip = 11 or @iTip is Null
+  if @iTip = @iTipInt or @iTip is Null
   begin
     -- triggeri geri aç
     alter table dbo.SIRKETLER_TNM enable Trigger SIRKETLER_TNM_TRG
   end
 
-  if @iTip = 12 or @iTip is Null
+  set @iTipInt = @iTipInt + 1
+
+  if @iTip = @iTipInt or @iTip is Null
   begin
     -- son þirketin koduna göre numaratörü güncelle
     declare @dn varchar (10)
     select @dn = max (cast (SirketKod as int)) from SIRKETLER_TNM where IsNumeric (SirketKod) = 1
     exec sp_DosyaNoYaz @dn, 'FN'
   end
+
+  set @iTipInt = @iTipInt + 1
   
-  if @iTip = 13 or @iTip is Null
+  if @iTip = @iTipInt or @iTip is Null
   begin
     insert into dbo.SIRKET_SUBE_TNM (sirketKod, subeKod, subeTanim, subeSiciNo, subeDoktor, BolgeMudurlukSicilNo, MuayeneProtokolNo, IGU)
     select srk.SirketKod SirketKod, 
@@ -212,7 +251,9 @@ end
     order by srk.SirketKod, IsNull (HizmetAlanKurumSubeTanimi, Replace (HizmetAlanKurumSGKSicilNo, ' ', '')), HizmetAlanKurumSGKSicilNo
   end
 
-  if @iTip = 14 or @iTip is Null
+  set @iTipInt = @iTipInt + 1
+
+  if @iTip = @iTipInt or @iTip is Null
   begin
     -- ayný þube sicili iki kere insert olmuþ, muhtemelen farklý þirketlerde...
     select s.tanimi, w.*, dd.*
@@ -225,7 +266,9 @@ end
     inner join SIRKETLER_TNM s on s.SirketKod = dd.sirketKod
   end
 
-  if @iTip = 15 or @iTip is Null
+  set @iTipInt = @iTipInt + 1
+
+  if @iTip = @iTipInt or @iTip is Null
   begin  
     --doktor aylýk çalýþma dakika bilgilerinin güncellenmesi
     update ssb set subeDoktor = dt.kod, DoktorCalismaDakika = AylikCalismaDakika
@@ -237,8 +280,10 @@ end
     where IsNull (subeDoktor, '') <> IsNull (dt.kod, '')
       or IsNull (DoktorCalismaDakika, 0) <> IsNull (AylikCalismaDakika, 0)
   end
+
+  set @iTipInt = @iTipInt + 1
   
-  if @iTip = 16 or @iTip is Null
+  if @iTip = @iTipInt or @iTip is Null
   begin  
     -- Ýþ güvenliði uzmaný aylýk çalýþma dakika bilgisi güncelleniyor
     update ssb set IGU = dt.kod, IGUCalismaDakika = AylikCalismaDakika
@@ -250,8 +295,10 @@ end
     where IsNull (IGU, '') <> IsNull (dt.kod, '')
       or IsNull (IGUCalismaDakika, 0) <> IsNull (AylikCalismaDakika, 0)
   end
+
+  set @iTipInt = @iTipInt + 1
   
-  if @iTip = 17 or @iTip is Null
+  if @iTip = @iTipInt or @iTip is Null
   begin  
     insert into dbo.Users (kullanici, password, [default], donem, parametreler, yet1, yet2, ADISOYADI, doktor, grup, Saat, userSkin, email, ustUser, sirketKodu, IGU)
     select 'dr' + dbo.TurkCharToEng (case when CHARINDEX (' ', tanimi) <= 0 then Tanimi else substring (tanimi, 1, CHARINDEX (' ', tanimi)-1) end) kullanici, 
@@ -260,8 +307,10 @@ end
     from dbo.DoktorlarT dt
     where not Exists (Select 1 from dbo.Users U where U.doktor = dt.kod)
   end
+
+  set @iTipInt = @iTipInt + 1
   
-  if @iTip = 18 or @iTip is Null
+  if @iTip = @iTipInt or @iTip is Null
   begin  
     insert into dbo.Users (kullanici, password, [default], donem, parametreler, yet1, yet2, ADISOYADI, doktor, grup, Saat, userSkin, email, ustUser, sirketKodu, IGU)
     select 'isg' + dbo.TurkCharToEng (case when CHARINDEX (' ', tanimi) <= 0 then Tanimi else substring (tanimi, 1, CHARINDEX (' ', tanimi)-1) end) kullanici, 
@@ -270,8 +319,10 @@ end
     from dbo.IGU dt
     where not Exists (Select 1 from dbo.Users U where U.IGU = dt.kod)
   end
+
+  set @iTipInt = @iTipInt + 1
   
-  if @iTip = 19 or @iTip is Null
+  if @iTip = @iTipInt or @iTip is Null
   begin  
     update ss set ss.NaceKod =  nnn.NACEKODU, ss.anaFaliyet = nnn.NACETANIMI, ss.tehlikeSinifi = nnn.TEHLIKESINIFI
     from
