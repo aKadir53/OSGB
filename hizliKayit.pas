@@ -815,6 +815,14 @@ begin
                       if aQuery.FieldByName ('Rowset').AsBoolean then
                       begin
                         bQuery.Open;
+                        if aQuery.FieldByName ('RowsetEditInput').AsBoolean then
+                        begin
+                          if bQuery.RecordCount > 0 then
+                          begin
+                            if DBGridDialog (aQuery.FieldByName ('HataMesaji').AsString, bQuery, [mbOk], mbOk) <> mrOk Then Exit;
+                          end;
+                        end
+                        else
                         if aQuery.FieldByName ('RowsetHata').AsBoolean then
                           if bQuery.RecordCount > 0 then
                           begin
