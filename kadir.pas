@@ -8713,7 +8713,7 @@ var
 begin
   aForm := TForm.Create (Application);
   try
-    aForm.BorderStyle := bsDialog;
+    aForm.BorderStyle := bsSizeToolWin;
     aForm.FormStyle := fsNormal;
     aPanel := TPanel.Create (aForm);
     try
@@ -8786,6 +8786,10 @@ begin
         Align := alClient;
         DataSource := aDataSource;
         TabOrder := 0;
+        for iButton := 0 to Columns.Count - 1 do
+          if Columns [iButton].Width > 200 then
+            Columns [iButton].Width := 200;
+
       end;
 
       aForm.AutoSize := True;
