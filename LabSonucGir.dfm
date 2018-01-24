@@ -69,8 +69,6 @@ object frmLabSonucGir: TfrmLabSonucGir
     Align = alClient
     Caption = 'Panel1'
     TabOrder = 1
-    ExplicitTop = 62
-    ExplicitHeight = 425
     object cxGrid2: TcxGrid
       Left = 1
       Top = 1
@@ -88,7 +86,6 @@ object frmLabSonucGir: TfrmLabSonucGir
       LevelTabs.Style = 1
       LookAndFeel.Kind = lfOffice11
       LookAndFeel.NativeStyle = False
-      ExplicitHeight = 423
       object sonucGir: TcxGridDBTableView
         PopupMenu = PopupMenu1
         Navigator.Buttons.First.Visible = True
@@ -138,57 +135,64 @@ object frmLabSonucGir: TfrmLabSonucGir
         OptionsView.HeaderHeight = 25
         OptionsView.Indicator = True
         OptionsView.RowSeparatorColor = clBlack
+        object sonucGirColumn5: TcxGridDBColumn
+          Caption = 'Grup Tan'#305'm'
+          DataBinding.FieldName = 'slt'
+          Visible = False
+          GroupIndex = 0
+          Width = 74
+        end
         object sonucGirColumn3: TcxGridDBColumn
           Caption = 'Sira'
           DataBinding.FieldName = 'parametre_sira'
           Options.Editing = False
-          Width = 37
+          Width = 32
         end
         object cxGridDBColumn1: TcxGridDBColumn
           Caption = 'Parametre Ad'#305
           DataBinding.FieldName = 'parametreadi'
           HeaderAlignmentHorz = taCenter
           Options.Editing = False
-          Width = 114
+          Width = 101
         end
         object sonucGirColumn2: TcxGridDBColumn
           Caption = 'ParametreAd'#305'2'
           DataBinding.FieldName = 'parametreadi1'
           Options.Editing = False
-          Width = 108
+          Width = 96
         end
         object cxGridDBColumn2: TcxGridDBColumn
           Caption = 'Birim'
           DataBinding.FieldName = 'parametrebirim'
           HeaderAlignmentHorz = taCenter
           Options.Editing = False
-          Width = 68
+          Width = 60
         end
         object cxGridDBColumn3: TcxGridDBColumn
           Caption = '>'
           DataBinding.FieldName = 'normal1'
           HeaderAlignmentHorz = taCenter
           Options.Editing = False
-          Width = 47
+          Width = 42
         end
         object cxGridDBColumn4: TcxGridDBColumn
           Caption = '<'
           DataBinding.FieldName = 'normal2'
           HeaderAlignmentHorz = taCenter
           Options.Editing = False
-          Width = 43
+          Width = 38
         end
         object cxGridDBColumn5: TcxGridDBColumn
           Caption = 'Referans'
           DataBinding.FieldName = 'ref_aciklama'
           HeaderAlignmentHorz = taCenter
           Options.Editing = False
-          Width = 79
+          Width = 70
         end
         object cxGridDBColumn6: TcxGridDBColumn
           Caption = 'Sonu'#231'(1)'
           DataBinding.FieldName = 'sonuc1'
-          Width = 276
+          Width = 244
         end
         object cxGridDBColumn7: TcxGridDBColumn
           Caption = 'Sonu'#231'(2)'

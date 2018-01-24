@@ -385,9 +385,14 @@ begin
        GuncellemeBaslat('Auto');
     end;
 
-
   UserTable.Active := True;
-  UserTable.Filter := 'Kullanici = ' + QuotedStr(datalar.username);
+  if UserRight('Kullanýcý Ýþlemleri', 'Herkesin Ýþ Planýný Görsün') = True
+  then begin
+       UserTable.Filter := '';
+  end
+  else
+   UserTable.Filter := 'Kullanici = ' + QuotedStr(datalar.username);
+
   EventsTable.Active := True;
 
 (*
