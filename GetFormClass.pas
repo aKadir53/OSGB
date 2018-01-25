@@ -83,7 +83,8 @@ begin
      TagfrmMakina : Result := 89;
      TagfrmTestAyarlari : Result := -1;
      TagfrmKiloOrder : Result := -1;
-     TagfrmHizliKayit : Result := -1;
+     TagfrmHizliKayitPersonel : Result := -1;
+     TagfrmHizliKayitDisAktarimlar : Result := -1;
      TagfrmIlaclar : Result := -1;
      TagfrmReceteler : Result := -1;
   end;
@@ -175,7 +176,7 @@ begin
    TagfrmFirmaKart : Result := TfrmFirmaKart;
    TagfrmPopupDBGridForm,TagfrmBolum,TagfrmBirim : Result := TfrmPopupDBGridForm;
    TagfrmPopupDBVerticalGridForm : Result := TfrmPopupDBVerticalGridForm;
-   TagfrmHizliKayit : Result := TfrmHizliKayit;
+   TagfrmHizliKayitPersonel, TagfrmHizliKayitDisAktarimlar : Result := TfrmHizliKayit;
    TagfrmReceteSablon : Result := TfrmReceteSablon;
    TagfrmSorgulamalar : Result := TfrmSorgulamalar;
    TagfrmSorguCalistir : Result := TfrmRaporCalistir;
@@ -219,7 +220,7 @@ begin
    TagfrmFirmaKart : Result := frmFirmaKart;
    TagfrmPopupDBGridForm,TagfrmBolum,TagfrmBirim,TagfrmSube,TagFirmaCalismalari : Result := frmPopupDBGridForm;
    TagfrmPopupDBVerticalGridForm : Result := frmPopupDBVerticalGridForm;
-   TagfrmHizliKayit : Result := frmHizliKayit;
+   TagfrmHizliKayitPersonel, TagfrmHizliKayitDisAktarimlar : Result := frmHizliKayit;
    TagfrmReceteSablon : Result := frmReceteSablon;
    TagfrmSorgulamalar : Result := frmSorgulamalar;
    TagfrmSorguCalistir : Result := frmRaporCalistir;
@@ -278,7 +279,7 @@ begin
    case abs(FormTag) of
       TagfrmHastaKart : frmHastaKart := TfrmHastaKart.Create(Tab);
       TagfrmFirmaKart : frmFirmaKart := TfrmFirmaKart.Create(Tab);
-      TagfrmHizliKayit : frmHizliKayit := TfrmHizliKayit.Create(Tab);
+      TagfrmHizliKayitPersonel, TagfrmHizliKayitDisAktarimlar : frmHizliKayit := TfrmHizliKayit.Create(Tab);
       TagfrmPopupDBVerticalGridForm : frmPopupDBVerticalGridForm := TfrmPopupDBVerticalGridForm.Create(Tab);
 
       TagfrmHastaListe,TagfrmDoktorHastaListe : frmHastaListe := TfrmHastaListe.Create(Tab);
@@ -370,7 +371,7 @@ begin
    case abs(FormTag) of
       TagfrmHastaKart : frmHastaKart := TfrmHastaKart.Create(Tab);
       TagfrmFirmaKart : frmFirmaKart := TfrmFirmaKart.Create(Tab);
-      TagfrmHizliKayit : frmHizliKayit := TfrmHizliKayit.Create(Tab);
+      TagfrmHizliKayitPersonel, TagfrmHizliKayitDisAktarimlar : frmHizliKayit := TfrmHizliKayit.Create(Tab);
       TagfrmSorgulamalar : frmSorgulamalar := TfrmSorgulamalar.Create(Tab);
       TagfrmSorguCalistir : frmRaporCalistir := TfrmRaporCalistir.Create(Tab);
       TagfrmAnamnez : frmAnamnez := TfrmAnamnez.Create(Tab);
