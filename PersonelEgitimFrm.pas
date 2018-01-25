@@ -265,13 +265,13 @@ begin
   setDataString(self,'Sure','Süre (Saat)',Kolon1,'',100);
   kombo := TcxImageComboKadir.Create(self);
   kombo.Conn := Datalar.ADOConnection2;
-  kombo.TableName := 'DoktorlarT';
-  kombo.ValueField := 'kod';
-  kombo.DisplayField := 'tanimi';
+  kombo.TableName := 'Egitimci_view';
+  kombo.ValueField := 'tanimi1';
+  kombo.DisplayField := 'tanimi2';
   kombo.BosOlamaz := True;
   kombo.Filter := '';
   OrtakEventAta(kombo);
-  setDataStringKontrol(self,kombo,'Egitimci','Eðitimci',kolon1,'',120);{}
+  setDataStringKontrol(self,kombo,'Egitimci','Eðitimci',kolon1,'',200);{}
   //setDataString(self,'Egitimci','Eðitimci',Kolon1,'',100);
   kombo := TcxImageComboKadir.Create(self);
   kombo.Conn := nil;
