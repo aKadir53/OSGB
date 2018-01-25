@@ -133,3 +133,7 @@ personel kartlarýný excel'den aktarýmda resetli alan eþleþtirmede grid sütun baþ
 update formunda sql güncelleme açýklamasýný thermo'da kutuda açýklama olarak gösterdik
 sunucuya son update'i güncellemesek bile önceden bekleyen update varsa hepsini alýyordu. mesela sunucu 1026, yayýnlanmamýþ update 1046, o veritabaný 1026 ise update çalýþtýrmýyor, doðru. fakat o veritabaný 1022'de kalmýþsa 4 update var diye pencereyi açýyor fakat tümünü güncelliyordu. düzeltildi.
 
+eðitimci için iþ güvenlik uzmaný ya da doktor seçebilmeli, veritabanýna free format isim yazabiliriz notu kapsamýnda view yapýlarak doktor ve iþ güvenlik uzmaný isimlerinin toplamý liste olarak seçtirildi ve kodu yerine adý yazdýrýlacak hâle getirildi.
+hizlikayit formunu iki ayrý menüye koyduk. personel kartlarýný excel'den aktar iþleminin düðmeleri ile isg katip aktarýmý ve benzer aktarýmlarýn düðmeleri birbirlerine karýþýyordu. form tagý bazýnda düðme gösterip gizleme ile karýþýklýk izale edildi
+
+isg katip exceline þube açýklamasý ve firma ünvaný birleþtirme ve ayýrmaya yarayan sütunlar eklenmiþti
