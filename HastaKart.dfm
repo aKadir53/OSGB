@@ -23,6 +23,7 @@ object frmHastaKart: TfrmHastaKart
   object CINSIYETI: TcxImageComboKadir
     Left = 144
     Top = 8
+    Properties.ClearKey = 46
     Properties.Items = <
       item
         Description = 'Bay'
@@ -45,6 +46,7 @@ object frmHastaKart: TfrmHastaKart
   object MEDENI: TcxImageComboKadir
     Left = 144
     Top = 35
+    Properties.ClearKey = 46
     Properties.Items = <
       item
         Description = 'Evli'
@@ -63,6 +65,7 @@ object frmHastaKart: TfrmHastaKart
   object DURUM: TcxImageComboKadir
     Left = 296
     Top = 8
+    Properties.ClearKey = 46
     Properties.Items = <
       item
         Description = #199'al'#305#351'an'
@@ -89,6 +92,7 @@ object frmHastaKart: TfrmHastaKart
   object VatandasTip: TcxImageComboKadir
     Left = 296
     Top = 35
+    Properties.ClearKey = 46
     Properties.Items = <
       item
         Description = 'Vatanda'#351
@@ -146,6 +150,7 @@ object frmHastaKart: TfrmHastaKart
       end>
     Properties.OnEditValueChanged = seansGunleriPropertiesEditValueChanged
     TabOrder = 5
+    Visible = False
     Height = 64
     Width = 121
   end
@@ -557,7 +562,7 @@ object frmHastaKart: TfrmHastaKart
   end
   object IseGirisMuayene: TcxGridKadir
     Left = 8
-    Top = 292
+    Top = 301
     Width = 513
     Height = 109
     TabOrder = 12
@@ -673,6 +678,92 @@ object frmHastaKart: TfrmHastaKart
     end
     object IseGirisMuayeneLevel1: TcxGridLevel
       GridView = GridList
+    end
+  end
+  object GridPersonelEgitim: TcxGridKadir
+    Left = 46
+    Top = 186
+    Width = 709
+    Height = 109
+    TabOrder = 13
+    ExceleGonder = False
+    object GridEgitim: TcxGridDBBandedTableView
+      DataController.DataSource = DataSource1
+      DataController.Summary.DefaultGroupSummaryItems = <>
+      DataController.Summary.FooterSummaryItems = <>
+      DataController.Summary.SummaryGroups = <>
+      OptionsCustomize.ColumnFiltering = False
+      OptionsCustomize.ColumnSorting = False
+      OptionsData.Deleting = False
+      OptionsData.Editing = False
+      OptionsData.Inserting = False
+      OptionsView.GridLines = glHorizontal
+      OptionsView.GroupByBox = False
+      OptionsView.GroupByHeaderLayout = ghlHorizontal
+      Styles.Inactive = cxStyle1
+      Styles.Group = cxStyle3
+      Bands = <
+        item
+          Caption = 'Personelin Kat'#305'ld'#305#287#305' E'#287'itim Bilgileri'
+          Width = 690
+        end>
+      object GridEgitimColumn1: TcxGridDBBandedColumn
+        Caption = 'Personel Ad'#305
+        DataBinding.FieldName = 'PersonelAdiSoyadi'
+        PropertiesClassName = 'TcxTextEditProperties'
+        Properties.Alignment.Horz = taCenter
+        Properties.Alignment.Vert = taVCenter
+        Width = 250
+        Position.BandIndex = 0
+        Position.ColIndex = 0
+        Position.RowIndex = 0
+      end
+      object GridEgitimColumn2: TcxGridDBBandedColumn
+        Caption = 'E'#287'itim Ad'#305
+        DataBinding.FieldName = 'EgitimAdi'
+        PropertiesClassName = 'TcxTextEditProperties'
+        Properties.Alignment.Horz = taCenter
+        Properties.Alignment.Vert = taVCenter
+        Width = 200
+        Position.BandIndex = 0
+        Position.ColIndex = 1
+        Position.RowIndex = 0
+      end
+      object GridEgitimColumn3: TcxGridDBBandedColumn
+        Caption = 'Ba'#351'lama Tarihi'
+        DataBinding.FieldName = 'BaslamaTarihi'
+        PropertiesClassName = 'TcxTextEditProperties'
+        Properties.Alignment.Horz = taCenter
+        Properties.Alignment.Vert = taVCenter
+        Width = 150
+        Position.BandIndex = 0
+        Position.ColIndex = 2
+        Position.RowIndex = 0
+      end
+      object GridEgitimColumn4: TcxGridDBBandedColumn
+        Caption = 'S'#252're'
+        DataBinding.FieldName = 'Sure'
+        PropertiesClassName = 'TcxTextEditProperties'
+        Properties.Alignment.Horz = taCenter
+        Properties.Alignment.Vert = taVCenter
+        Position.BandIndex = 0
+        Position.ColIndex = 3
+        Position.RowIndex = 0
+      end
+      object GridEgitimColumn5: TcxGridDBBandedColumn
+        Caption = 'E'#287'itim '#304#231'eri'#287'i'
+        DataBinding.FieldName = 'EgitimIcerigi'
+        PropertiesClassName = 'TcxMemoProperties'
+        Properties.ScrollBars = ssVertical
+        Properties.VisibleLineCount = 3
+        Width = 350
+        Position.BandIndex = 0
+        Position.ColIndex = 4
+        Position.RowIndex = 0
+      end
+    end
+    object cxGridLevel1: TcxGridLevel
+      GridView = GridEgitim
     end
   end
   object PopupMenu1: TPopupMenu
@@ -847,12 +938,12 @@ object frmHastaKart: TfrmHastaKart
     SiralamaKolonu = 'tani'
     Grup = False
     GrupCol = 0
-    Left = 464
-    Top = 173
+    Left = 376
+    Top = 141
   end
   object PopupMenu2: TPopupMenu
-    Left = 232
-    Top = 184
+    Left = 344
+    Top = 136
   end
   object cxStyleRepository2: TcxStyleRepository
     PixelsPerInch = 96

@@ -1171,7 +1171,16 @@ begin
    HastaGelisSelect := ado.RecordCount;
 end;
 
+(*
+procedure PersonelEgitimler;
+begin
+      IseGirisMuayene.Dataset.Connection := datalar.ADOConnection2;
+      IseGirisMuayene.Dataset.SQL.Text := 'sp_frmPersonelIseGirisMuayene ' + QuotedStr(dosyaNo.Text)+ ',' +
+                                                                         _gelisNO_ + ',' + QuotedStr('0');
+      IseGirisMuayene.Dataset.Open;
 
+end;
+  *)
 
 function HastaGelis(dosyaNo : string ; var ado : TADOQuery) : integer;
 var
