@@ -66,6 +66,7 @@ type
     { Public declarations }
     constructor Create (Aowver: TComponent); override;
     destructor Destroy; override;
+    function Init(Sender: TObject) : Boolean; override;
   end;
 
   Const
@@ -93,7 +94,6 @@ type
 
 var
   frmHizliKayit: TfrmHizliKayit;
-   v,sayfa : Variant;
 
 implementation
   uses AnaUnit, Math, NThermo;
@@ -593,6 +593,16 @@ begin
    end;
   end;
 
+end;
+
+function TfrmHizliKayit.Init(Sender: TObject): Boolean;
+begin
+  Result := inherited Init (Sender);
+  miExcelYukle .Visible := (Tag = TagfrmHizliKayitPersonel) or (Tag = TagfrmHizliKayitDisAktarimlar);
+  miVeritabaninaYaz .Visible := Tag = TagfrmHizliKayitPersonel;
+  miAlanEslestir .Visible := Tag = TagfrmHizliKayitPersonel;
+  miSoyadAyarla .Visible := Tag = TagfrmHizliKayitPersonel;
+  miOtomatikAktarim .Visible := Tag = TagfrmHizliKayitDisAktarimlar;
 end;
 
 procedure TfrmHizliKayit.TanimliOtomatikAktarim;

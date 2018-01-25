@@ -523,7 +523,7 @@ Const
   TagfrmMakinaBakim = 460;
   TagfrmTestAyarlari = 470;
   TagfrmKiloOrder = 480;
-  TagfrmHizliKayit = 490;
+  TagfrmHizliKayitPersonel = 490;
   TagfrmTedaviListP = 500;
   TagfrmHemsiraTakip = 510;
   TagfrmIlaclar = 520;
@@ -549,6 +549,7 @@ Const
   TagfrmLabSonucGir = 710;
   TagfrmAnamnez = 720;
   TagfrmTetkikIstemSablon = 730;
+  TagfrmHizliKayitDisAktarimlar = 740;
 
   ExceleGonder = 9997;
   SeansTarihiUpdate = 0;
