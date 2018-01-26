@@ -210,7 +210,7 @@ uygulamanýn mevcut kopyalarýný kapatmasýný ve halt komutlarýný, application.term
 þube kartlarýna aktif / pasif ayarý eklenecek
 isg katip aktarýmýnda nace kodlarý firma kartýna güncelleniyor, þube kartýna da güncellemek lazým
 
-
+intran, begintran commit rollback'ler aranacak try finally kontrolleri yapýlacak
 
 Semih > abi bu çekmeköy belediyesi kurulum istiyor, herhalde kendi serverlarýna kuracakmýþsýnýz programý
 Semih > alpemix verdi, bu baðlanýlan bilgisayardan sanal sunucularýna uzak masaüstü yapacaklarmýþ
