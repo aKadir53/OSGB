@@ -310,10 +310,10 @@ begin
   txtLOG.Lines.Add(datetimetostr(now) + ' Güncelleme Server Sorgu Sonucu : Güncelleme Ýþlemleri Baþlatýlýyor..');
   xDonguBasarili := False;
   bHataOldu := False;
-  BeginTrans (datalar.ADO_SQL3);
+  BeginTrans (datalar.ADOConnection2);
   try
     //transaction sayýsýný sakla.
-    iBaslangicTranCount := TranCount(datalar.ADO_SQL3);
+    iBaslangicTranCount := TranCount(datalar.ADOConnection2);
     ShowThermo (iThermo, 'Güncellemeler Uygulanýyor...', 0, gridDetay.RowCount - 1, 0, True);
     try
       for i := 1 to gridDetay.RowCount - 2 do
@@ -345,7 +345,7 @@ begin
               //bhataoldu deðiþkeni true yap.
               bHataOldu := True;
               //except'te ikinci deðiþkene o anki transaction sayýsýný al.
-              iIslemTranCount := TranCount(datalar.ADO_SQL3);
+              iIslemTranCount := TranCount(datalar.ADOConnection2);
               txtLOG.Lines.Add('HATA - ' + gridDetay.Cells[2,i] + ' Güncellemesi Yapýlmadý : ' + e.Message);
               //sayýlar deðiþmiþse raise yap.
               if iBaslangicTranCount <> iIslemTranCount then raise;
@@ -361,13 +361,13 @@ begin
   finally
     if not xDonguBasarili then
     begin
-      RollBackTrans (datalar.ADO_SQL3);
+      RollBackTrans (datalar.ADOConnection2);
       txtLOG.Lines.Add('Güncellenemeyen Paket Var , Tüm Ýþlemler Geri Alýndý');
       guncellemeIslemi := 'No';
       ShowMessageSkin('Hata','','','info');
     end
     else begin
-      CommitTrans(datalar.ADO_SQL3);
+      CommitTrans(datalar.ADOConnection2);
       btnSend.Enabled := False;
       txtLOG.Lines.Add('Database Güncelleme Baþarýyla Yapýldý');
       ShowMessageSkin('Database Güncelleme Baþarýyla Yapýldý','Veritabanýnýz Güncel','Güncelleme Bilgilerini Okuyup Kapatýnýz , Programýnýz Devam Edecektir... ','info');
