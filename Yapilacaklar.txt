@@ -209,3 +209,26 @@ iþte bu kadar basit.
 uygulamanýn mevcut kopyalarýný kapatmasýný ve halt komutlarýný, application.terminate'leri kaldýrmak lazým
 þube kartlarýna aktif / pasif ayarý eklenecek
 isg katip aktarýmýnda nace kodlarý firma kartýna güncelleniyor, þube kartýna da güncellemek lazým
+
+
+
+Semih > abi bu çekmeköy belediyesi kurulum istiyor, herhalde kendi serverlarýna kuracakmýþsýnýz programý
+Semih > alpemix verdi, bu baðlanýlan bilgisayardan sanal sunucularýna uzak masaüstü yapacaklarmýþ
+Umit : Saliha Haným'ýn dün söylediðine göre öyleydi, kendi sunucularýna istiyorlar
+Semih > müsait misin baðlanacaksan vereyim abi alpemixlerini
+Umit : baðlanýnca ne yapýlacak sadece bizim program mý indirilecek ? bizim program baþka sunucuya baðlanmaya hazýr mý bilmiyorum hiç test etmedik
+Umit : bizim program 213.159.30.6 sunucusuna baðlanýnca oradaki OSGB_MASTER veritabanýna gidiyor
+Umit : oradan girilen osgb koduna göre baðlanýlacak veritabanýný alýyor
+Umit : sonra ayný sunucudaki OSGB_XXXX osgb veritabanýna baðlanýyor
+Semih > kendi lokalinde çalýþan bi yer olmadý mý abi hiç
+Umit : osgb olarak olmadý. en baþta o sunucu yokken lokaldeydi ama o zaman yine master ile osgb veritabanlarý ayný sunucuda olduðu için çalýþýyordu
+Semih > muhtemelen sql port yönlendirmesi yapmalarý gerekiyor
+Umit : þimdi master veritabaný için ayrý osgb veritabaný için ayrý sunucu ayarý mý gireceðiz yoksa master'ý da mý kopyalayacaðýz onu sormak lazým kadir bey'e
+Semih > evet onu düþündüm ben de
+Semih > bi kadir abi gelsin soralým ona
+Umit : master'ý kopyalarsak uzak master'a güncelleme atabilen bir altyapý yapmak lazým
+Umit : bu sefer bizim master güncellendikçe onlarýnki eski kalacak
+Semih > evet o da var
+Semih > bi sorarýz
+Umit : biz ilaç taný gibi þeyleri master'a taþýyalým data tekrarý olmasýn lüzumsuz yere diyorduk. adamýn lokalinde veritabaný varken master'a gitmesi de garip olacak ilaç için. gerçi müþteri firmada çalýþýrken lokal de uzak bizimki de
+Umit : ama çekmeköy sadece belediyede kullanacaksa onlarýn hep lokal olacak belki de

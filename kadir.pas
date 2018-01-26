@@ -392,6 +392,7 @@ function TranCount (const aConnection : TADOConnection): Integer;
 function GetUserDoktorFilter (pFieldName : String = ''): String;
 function GetUserIGUFilter (pFieldName : String = ''): String;
 function HakikiAktifSube: String;
+procedure KademeliStoredProcCalistir (const pSPName : String; const pParameters : String);
 function SQLValue (const sValue: String): String;
 
 const
@@ -459,7 +460,7 @@ var
 implementation
 
 uses message,AnaUnit,message_y,popupForm,rapor,TedaviKart,Son6AylikTetkikSonuc,
-             HastaRecete,sifreDegis,HastaTetkikEkle,GirisUnit,SMS,LisansUzat,Update_G, DBGrids;
+             HastaRecete,sifreDegis,HastaTetkikEkle,GirisUnit,SMS,LisansUzat,Update_G, DBGrids, NThermo;
 
 procedure DBUpdate;
 begin
@@ -8930,6 +8931,86 @@ end;
 function HakikiAktifSube: String;
 begin
   Result := ifThen(IsNull (datalar.AktifSube),'',ifThen(pos(',',datalar.AktifSube) > 0,'',datalar.AktifSube));
+end;
+
+procedure KademeliStoredProcCalistir (const pSPName : String; const pParameters : String);
+var
+  //starring in order of appearance of Type, then appearance :)
+  bTmp, bTmpPost : Boolean;
+  aQuery, bQuery : TADOQuery;
+  iThermo : Integer;
+  sHataUyariMesaji : String;
+begin
+  if IsNull (pSPName) then Exit;
+  bTmp := False;
+  bTmpPost := False;
+  aQuery := TADOQuery.Create (nil);
+  try
+    aQuery.Connection := DATALAR.ADOConnection2;
+    bQuery := TADOQuery.Create(nil);
+    try
+      bQuery.Connection := aQuery.Connection;
+      BeginTrans (datalar.ADOConnection2);
+      try
+        aQuery.SQL.Text := 'exec '+ pSPName +' 0 ' + pParameters;
+        aQuery.Open;
+        try
+          ShowThermo(iThermo, 'Aktarým sonrasý güncellemeler yapýlýyor', 0, aQuery.RecordCount, 0, True);
+          try
+            while not aQuery.Eof do
+            begin
+              if not UpdateThermo (aQuery.RecNo - 1, iThermo, aQuery.FieldByName ('Aciklama').AsString) then Exit;
+              bQuery.SQL.Text := 'exec '+ pSPName +' ' + IntToStr (aQuery.FieldByName ('iTip').AsInteger) + ' ' + pParameters;
+              if aQuery.FieldByName ('Rowset').AsBoolean then
+              begin
+                bQuery.Open;
+                if aQuery.FieldByName ('RowsetEditInput').AsBoolean then
+                begin
+                  if bQuery.RecordCount > 0 then
+                  begin
+                    if DBGridDialog (aQuery.FieldByName ('HataMesaji').AsString, bQuery, [mbOk], mbOk) <> mrOk Then Exit;
+                  end;
+                end
+                else
+                if aQuery.FieldByName ('RowsetHata').AsBoolean then
+                  if bQuery.RecordCount > 0 then
+                  begin
+                    bTmpPost := True;
+                    sHataUyariMesaji:= aQuery.FieldByName ('HataMesaji').AsString;
+                    Exit;
+                  end;
+              end
+              else begin
+                bQuery.ExecSQL;
+              end;
+              aQuery.Next;
+            end;
+          finally
+            FreeThermo(iThermo);
+          end;
+        finally
+          aQuery.Close;
+        end;
+        bTmp := True;
+      finally
+        if bTmp then
+        begin
+          CommitTrans (datalar.ADOConnection2);
+          showmessageSkin ('Ýþlem baþarý ile tamamlandý', '', '', 'info');
+        end
+        else begin
+          RollbackTrans (datalar.ADOConnection2);
+          showmessageSkin ('Ýþlemler sýrasýnda bir hata oluþtu ve görev tamamlanamadý', '', '', 'info');
+          if bTmpPost then
+            DBGridDialog (sHataUyariMesaji, bQuery, [mbOk], mbOk);
+        end;
+      end;
+    finally
+      bQuery.Free;
+    end;
+  finally
+    aQuery.Free;
+  end;
 end;
 
 function SQLValue (const sValue: String): String;
