@@ -8827,9 +8827,13 @@ begin
     iTranCountBefore := trancount (aQuery);
     bQuery.Connection := aQuery.Connection;
     bQuery.SQL.Text := 'BEGIN TRAN';
-    bQuery.ExecSQL;
-    iTranCountAfter := trancount (aQuery);
-    if iTranCountBefore + 1 <> iTranCountAfter then Abort;
+    if not bQuery.Prepared then bQuery.Prepared := True;
+    try
+      bQuery.ExecSQL;
+    except
+      iTranCountAfter := trancount (aQuery);
+      if iTranCountBefore + 1 <> iTranCountAfter then Raise;
+    end;
   finally
     bQuery.Free;
   end;
@@ -8838,15 +8842,21 @@ end;
 procedure RollBackTrans (const aQuery : TADOQuery);
 var
   bQuery : TADOQuery;
-  iTranCountAfter : Integer;
+  iTranCountBefore, iTranCountAfter : Integer;
 begin
+  iTranCountBefore := trancount (aQuery);
+  if iTranCountBefore <= 0 then Exit;
   bQuery := TADOQuery.Create (nil);
   try
     bQuery.Connection := aQuery.Connection;
     bQuery.SQL.Text := 'ROLLBACK';
-    bQuery.ExecSQL;
-    iTranCountAfter := trancount (aQuery);
-    if 0 <> iTranCountAfter then Abort;
+    if not bQuery.Prepared then bQuery.Prepared := True;
+    try
+      bQuery.ExecSQL;
+    except
+      iTranCountAfter := trancount (aQuery);
+      if 0 <> iTranCountAfter then raise;
+    end;
   finally
     bQuery.Free;
   end;
@@ -8857,14 +8867,19 @@ var
   bQuery : TADOQuery;
   iTranCountBefore, iTranCountAfter : Integer;
 begin
+  iTranCountBefore := trancount (aQuery);
+  if iTranCountBefore <= 0 then Exit;
   bQuery := TADOQuery.Create (nil);
   try
-    iTranCountBefore := trancount (aQuery);
     bQuery.Connection := aQuery.Connection;
     bQuery.SQL.Text := 'COMMIT';
-    bQuery.ExecSQL;
-    iTranCountAfter := trancount (aQuery);
-    if iTranCountBefore - 1 <> iTranCountAfter then Abort;
+    if not bQuery.Prepared then bQuery.Prepared := True;
+    try
+      bQuery.ExecSQL;
+    except
+      iTranCountAfter := trancount (aQuery);
+      if iTranCountBefore - 1 <> iTranCountAfter then Raise;
+    end;
   finally
     bQuery.Free;
   end;
@@ -8880,8 +8895,13 @@ begin
   try
     bQuery.Connection := aQuery.Connection;
     bQuery.SQL.Text := 'SELECT @@TRANCOUNT TRC';
+    if not bQuery.Prepared then bQuery.Prepared := True;
     bQuery.Open;
-    Result := bQuery.FieldByName('TRC').AsInteger;
+    try
+      Result := bQuery.FieldByName('TRC').AsInteger;
+    finally
+      bQuery.Close;
+    end;
   finally
     bQuery.Free;
   end;
@@ -8925,3 +8945,4 @@ end;
    //çaðrýldýðý yerler kontrol edilecekler:
    //SQLSelectToDataSet ListeAcCreate BuyukHarf SayisalVeri NextKontrol TurkCharKontrol FormInputZorunluKontrolPaint
 end.
+
