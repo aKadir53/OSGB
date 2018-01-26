@@ -88,6 +88,8 @@ type
 
   private
     { Private declarations }
+  protected
+    procedure FirmaSubeBirlestir;
   public
     { Public declarations }
     procedure OrtakEventAta(Sender : TObject);overload;
@@ -119,15 +121,22 @@ var
   F : TGirisForm;
   GirisRecord : TGirisFormRecord;
 begin
+  if IsNull (TcxButtonEditKadir(FindComponent('SirketKod')).EditValue) then
+  begin
+    ShowMessageSkin('Bir þirket kartý açmadan bu iþleme devam edemezsiniz', '', '', 'info');
+    Exit;
+  end;
   GirisRecord.F_firmaKod_ := TcxButtonEditKadir(FindComponent('SirketKod')).EditValue;
   GirisRecord.F_HastaAdSoyad_ := TcxTextEditKadir(FindComponent('tanimi')).EditValue;
-
-  if TcxButtonKadir(sender).ButtonName = 'btnSubeler'
-  then
+  F := nil;
+  if TcxButtonKadir(sender).ButtonName = 'btnSubeler' then
     F := FormINIT(TagfrmSube,GirisRecord,ikHayir,'')
-  else
-    F := FormINIT(TagFirmaCalismalari,GirisRecord,ikHayir,'');
-
+  else if TcxButtonKadir(sender).ButtonName = 'btnCalismalar' then
+    F := FormINIT(TagFirmaCalismalari,GirisRecord,ikHayir,'')
+  else if TcxButtonKadir(sender).ButtonName = 'btnSubeGetir' then
+  begin
+    FirmaSubeBirlestir;
+  end;
   if F <> nil then F.ShowModal;
 end;
 
@@ -456,6 +465,48 @@ begin
 end;
 
 
+procedure TfrmFirmaKart.FirmaSubeBirlestir;
+var
+  List: TListeAc;
+  sKaynakSirketKod, sKaynakSubeKod : String;
+begin
+  List :=
+    ListeAcCreate
+      ('SIRKETLER_TNM',
+       'sirketKod,tanimi,Aktif',
+       'SirketKod,Sirket,Durum',
+       '50,250,50',
+       'SirketKodList',
+       'Þubenin Olduðu Kaynak Firma Seçimi',
+       'SirketKod <> ' + SQLValue (TcxButtonEditKadir(FindComponent('SirketKod')).EditingValue)+
+       ' and Exists (Select 1 from SIRKET_SUBE_TNM sss where sss.SirketKod = SIRKETLER_TNM.SirketKod)',3,True);
+  try
+    datalar.ButtonEditSecimlist := List.ListeGetir;
+    if length (datalar.ButtonEditSecimlist) <= 0 then Exit;
+    sKaynakSirketKod := DATALAR.ButtonEditSecimlist [0].kolon1;
+  finally
+    List.Free;
+  end;
+  List :=
+    ListeAcCreate
+      ('SIRKET_SUBE_TNM',
+       'subeKod,subeTanim,subeSiciNo',
+       'Þube Kodu,Þube,Sicil No',
+       '10,80,250',
+       'SubeKodList',
+       'Taþýnýp Birleþtirilecek Þube Seçimi',
+       'SirketKod = ' + SQLValue (sKaynakSirketKod),3,True);
+  try
+    datalar.ButtonEditSecimlist := List.ListeGetir;
+    if length (datalar.ButtonEditSecimlist) <= 0 then Exit;
+    sKaynakSubeKod := DATALAR.ButtonEditSecimlist [0].kolon1;
+  finally
+    List.Free;
+  end;
+
+  //sdiþfdsifþlsdil
+end;
+
 procedure TfrmFirmaKart.FormCreate(Sender: TObject);
 var
   List : TListeAc;
@@ -609,8 +660,9 @@ begin
   setDataStringBLabel(self,'bosSatir2',sayfa2_Kolon1,'',1);
 
 
-  addButton(self,nil,'btnSubeler','','Þube Tanýmla / Getir',Kolon3,'',120,ButtonClick);
-  addButton(self,nil,'btnCalismalar','','Firma Çalýþmalarý',Kolon3,'',120,ButtonClick);
+  addButton(self,nil,'btnSubeler','','Þube Tanýmla / Görüntüle',Kolon3,'',230,ButtonClick);
+  addButton(self,nil,'btnSubeGetir','','Baþka Firmadan Þube Taþý (Firma Birleþtir)',Kolon3,'',230,ButtonClick);
+  addButton(self,nil,'btnCalismalar','','Firma Çalýþmalarý',Kolon3,'',230,ButtonClick);
 
   tableColumnDescCreate;
 
