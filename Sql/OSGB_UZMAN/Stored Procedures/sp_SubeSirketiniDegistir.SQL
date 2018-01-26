@@ -1,10 +1,11 @@
 BEGIN TRAN
 go
+-- Þube taþýma birleþtirme stored proc sp_SubeSirketiniDegistir
 ALTER -- create 
-  procedure dbo.sp_SubeSirketiniDegistir @iTip tinyint
+  procedure dbo.sp_SubeSirketiniDegistir @iTip tinyint, @KaynakSirketKod varchar (10), @KaynakSubeKod varchar (2), @HedefSirketKod varchar (10), @HedefSubeKod varchar (2)
 as
 begin
-  -- Ümit ÖZTÜRK 2018-01-15 ÝSG Kâtip Excel'i aktarým tablosundan doktor, iþ güvenlik uzmaný, firma, þube ve kullanýcý kartlarýnýn açýlmasý vazifelerini üstlenmiþ olan sp
+  -- Ümit ÖZTÜRK 2018-01-26 firma kartlarý arasýnda þube transferi yapmaya yarayan sp
   if @@TRANCOUNT <= 0
   begin
     raiserror ('Bu prosedür transaction içinde çalýþýr', 18, 1)
@@ -27,61 +28,25 @@ begin
        HataMesaji varchar (200))
        
     insert into #t (RowsetHata, Rowset, Aciklama, HataMesaji) 
-    Select 0 RowsetHata, 0 Rowset, 'Ýçe Görevlendirmeler Ayarlanýyor' Aciklama, null HataMesaji
+    Select 0 RowsetHata, 0 Rowset, 'Þube Tanýmlarý Personel Kartý Baðlantý Kontrolleri devre dýþý býrakýlýyor' Aciklama, null HataMesaji
     insert into #t (RowsetHata, Rowset, Aciklama, HataMesaji) 
-    Select 0 RowsetHata, 0 Rowset, 'Çalýþma Durumu "Ayrýldý" olanlar ayýklanýyor' Aciklama, null HataMesaji
+    Select 0 RowsetHata, 0 Rowset, 'Þube Tanýmlarý Saha Gözlem Raporlarý Baðlantý Kontrolleri devre dýþý býrakýlýyor' Aciklama, null HataMesaji
     insert into #t (RowsetHata, Rowset, Aciklama, HataMesaji) 
-    Select 0 RowsetHata, 0 Rowset, 'Göreve Baþlama Tarihi ayný olan ayný þube ayný kategori personel' Aciklama, null HataMesaji
+    Select 0 RowsetHata, 0 Rowset, 'Þube Tanýmlarý Dýþ Aktarým Parametreleri Baðlantý Kontrolleri devre dýþý býrakýlýyor' Aciklama, null HataMesaji
     insert into #t (RowsetHata, Rowset, Aciklama, HataMesaji) 
-    Select 0 RowsetHata, 0 Rowset, 'Þube Sicili bazýnda ayný kategoride tek personel (en yenisi) býrakýlýyor' Aciklama, null HataMesaji
+    Select 0 RowsetHata, 0 Rowset, 'Þube Tanýmlarý Güncelleniyor' Aciklama, null HataMesaji
     insert into #t (RowsetHata, Rowset, Aciklama, HataMesaji) 
-    Select 0 RowsetHata, 0 Rowset, 'Doktor Tanýmlarý oluþturuluyor' Aciklama, null HataMesaji
+    Select 0 RowsetHata, 0 Rowset, 'Dýþ Aktarým Parametre Tablosu yeni þube yapýsýna göre güncelleniyor' Aciklama, null HataMesaji
     insert into #t (RowsetHata, Rowset, Aciklama, HataMesaji) 
-    Select 0 RowsetHata, 0 Rowset, 'Doktor Tanýmlarý ayarlanýyor' Aciklama, null HataMesaji
+    Select 0 RowsetHata, 0 Rowset, 'Personel Kayýtlarý yeni þube yapýsýna göre güncelleniyor' Aciklama, null HataMesaji
     insert into #t (RowsetHata, Rowset, Aciklama, HataMesaji) 
-    Select 0 RowsetHata, 0 Rowset, 'Ýþ Güvenlik Uzmaný tanýmlarý oluþturuluyor' Aciklama, null HataMesaji
+    Select 0 RowsetHata, 0 Rowset, 'Saha Gözlem Raporu kayýtlarý yeni þube yapýsýna göre güncelleniyor' Aciklama, null HataMesaji
     insert into #t (RowsetHata, Rowset, Aciklama, HataMesaji) 
-    Select 0 RowsetHata, 0 Rowset, 'Ýç görev satýrlarý ayýklanýyor' Aciklama, null HataMesaji
+    Select 0 RowsetHata, 0 Rowset, 'Þube Tanýmlarý Dýþ Aktarým Parametreleri Baðlantý Kontrolleri aktifleþtiriliyor' Aciklama, null HataMesaji
     insert into #t (RowsetHata, Rowset, Aciklama, HataMesaji) 
-    Select 0 RowsetHata, 0 Rowset, 'Hizmet alan kurum ünvan alaný için ilk kelimelerden seçim yap' Aciklama, null HataMesaji
+    Select 0 RowsetHata, 0 Rowset, 'Þube Tanýmlarý Saha Gözlem Raporlarý Baðlantý Kontrolleri aktifleþtiriliyor' Aciklama, null HataMesaji
     insert into #t (RowsetHata, Rowset, Aciklama, HataMesaji) 
-    Select 0 RowsetHata, 0 Rowset, 'Firma Tanýmlarý tablosu eklenecek firma tanýmlarý için hazýrlanýyor' Aciklama, null HataMesaji
-    insert into #t (RowsetHata, Rowset, Aciklama, HataMesaji) 
-    Select 0 RowsetHata, 0 Rowset, 'ÝSG Kâtip Hizmet Alan Kurum bilgisi üzerinden Firma kartlarý oluþturuluyor' Aciklama, null HataMesaji
-    insert into #t (RowsetHata, Rowset, Aciklama, HataMesaji) 
-    Select 0 RowsetHata, 0 Rowset, 'Firma Tanýmlarý Tablosu iþlemleri Tamamlanýyor' Aciklama, null HataMesaji
-    insert into #t (RowsetHata, Rowset, Aciklama, HataMesaji) 
-    Select 0 RowsetHata, 0 Rowset, 'Firma kartlarý numaratörü güncelleniyor' Aciklama, null HataMesaji
-    insert into #t (RowsetHata, Rowset, Aciklama, HataMesaji) 
-    Select 0 RowsetHata, 0 Rowset, 'Firma þubeleri SGK Sicilleri üzerinden oluþturuluyor' Aciklama, null HataMesaji
-    insert into #t (RowsetHata, Rowset, Aciklama, HataMesaji) 
-    Select 1 RowsetHata, 1 Rowset, 'Ayný sicil numarasýndan birden çok oluþan Þube kartý kontrolü yapýlýyor' Aciklama, 'Çiftlenen Þube SGK Sicil numarasý oluþtu' HataMesaji
-    insert into #t (RowsetHata, Rowset, Aciklama, HataMesaji) 
-    Select 0 RowsetHata, 0 Rowset, 'Þube Kartlarýna doktor ve aylýk çalýþma dakika bilgileri güncelleniyor' Aciklama, null HataMesaji
-    insert into #t (RowsetHata, Rowset, Aciklama, HataMesaji) 
-    Select 0 RowsetHata, 0 Rowset, 'Þube Kartlarýna Ýþ Güvenliði Uzmaný ve aylýk çalýþma dakika bilgileri güncelleniyor' Aciklama, null HataMesaji
-    insert into #t (RowsetHata, Rowset, Aciklama, HataMesaji) 
-    Select 0 RowsetHata, 0 Rowset, 'Kullanýcý kartlarýna oluþturulacak doktor tanýmlarý hazýrlanýyor' Aciklama, null HataMesaji
-    insert into #t (RowsetHata, Rowset, Aciklama, HataMesaji) 
-    Select 0 RowsetHata, 0 Rowset, 'Çift Kullanýcý isimleri eleniyor' Aciklama, null HataMesaji
-    insert into #t (RowsetHata, Rowset, Aciklama, HataMesaji, RowsetEditInput) 
-    Select 0 RowsetHata, 1 Rowset, 'Kullanýcý kartlarýna oluþturulacak doktor tanýmlarý girdiriliyor' Aciklama, 'Doktor Kullanýcý Kartý Onayý' HataMesaji, 1 RowsetEditInput
-    insert into #t (RowsetHata, Rowset, Aciklama, HataMesaji) 
-    Select 0 RowsetHata, 0 Rowset, 'Kullanýcý kartlarýna doktor tanýmlarýndan doktor kullanýcýlarý oluþturuluyor' Aciklama, null HataMesaji
-    insert into #t (RowsetHata, Rowset, Aciklama, HataMesaji) 
-    Select 0 RowsetHata, 0 Rowset, 'Geçici tablo kaldýrýlýyor' Aciklama, null HataMesaji
-    insert into #t (RowsetHata, Rowset, Aciklama, HataMesaji) 
-    Select 0 RowsetHata, 0 Rowset, 'Kullanýcý kartlarýna oluþturulacak iþ güvenliði uzmaný tanýmlarý hazýrlanýyor' Aciklama, null HataMesaji
-    insert into #t (RowsetHata, Rowset, Aciklama, HataMesaji) 
-    Select 0 RowsetHata, 0 Rowset, 'Çift Kullanýcý isimleri eleniyor' Aciklama, null HataMesaji
-    insert into #t (RowsetHata, Rowset, Aciklama, HataMesaji, RowsetEditInput) 
-    Select 0 RowsetHata, 1 Rowset, 'Kullanýcý kartlarýna oluþturulacak iþ güvenliði uzmaný tanýmlarý girdiriliyor' Aciklama, 'Ýþ Güvenlik Uzmaný Kullanýcý Kartý Onayý' HataMesaji, 1 RowsetEditInput
-    insert into #t (RowsetHata, Rowset, Aciklama, HataMesaji) 
-    Select 0 RowsetHata, 0 Rowset, 'Kullanýcý kartlarýna Ýþ güvenliði uzmaný tanýmlarýndan iþ güvenliði uzmaný kullanýcýlarý oluþturuluyor' Aciklama, null HataMesaji
-    insert into #t (RowsetHata, Rowset, Aciklama, HataMesaji) 
-    Select 0 RowsetHata, 0 Rowset, 'Geçici tablo kaldýrýlýyor' Aciklama, null HataMesaji
-    insert into #t (RowsetHata, Rowset, Aciklama, HataMesaji) 
-    Select 0 RowsetHata, 0 Rowset, 'Firma kartlarýna SGK sicil numaralarýndan hesaplanan nace kodlarý yazýlýyor' Aciklama, null HataMesaji
+    Select 0 RowsetHata, 0 Rowset, 'Þube Tanýmlarý Personel Kartý Baðlantý Kontrolleri aktifleþtiriliyor' Aciklama, null HataMesaji
 
     set nocount off
     select * 
@@ -92,77 +57,104 @@ begin
     drop table #t
   end
 
+
   set @iTipInt = @iTipInt + 1
-  -- Ýçe görevlendirme olanlarýn hizmet alan kurum adýný ve þubelerini, tekrarlayan kayýt olarak görmemesi için doldur...
+
   if @iTip = @iTipInt or @iTip is Null
   begin
-    update ss set HizmetAlanKurum = 'sil', HizmetAlanKurumSGKSicilNo = TCKimlikNo
-    from ISGKatipExcelAktarim ss
-    where GorevTuru = 'Ýçe Grv.'
-      and LTRIM (RTRIM (IsNull (HizmetAlanKurumSGKSicilNo, ''))) = ''
-      and LTRIM (RTRIM (IsNull (HizmetalanKurum, ''))) = ''
+    alter table PersonelKart nocheck constraint FK_PersonelKart_PersonelKart
   end
 
   set @iTipInt = @iTipInt + 1
-  -- Ayrýldý durumunda olanlarýn silinmesi
+
   if @iTip = @iTipInt or @iTip is Null
   begin
-    delete d
-    from ISGKatipExcelAktarim d
-    where CalismaDurumu = 'Ayrýldý'
+    alter table SahaGozlemRaporlari nocheck constraint FK_SahaGozlemRaporlari_SIRKET_SUBE_TNM
+  end
+
+  set @iTipInt = @iTipInt + 1
+
+  if @iTip = @iTipInt or @iTip is Null
+  begin
+    alter table DisAktarim_Parametre nocheck constraint FK_DisAktarim_Parametre_SIRKET_SUBE_TNM
+  end
+
+  set @iTipInt = @iTipInt + 1
+
+  if @iTip = @iTipInt or @iTip is Null
+  begin
+    update su
+	  SET su.SirketKod = @HedefSirketKod,
+	      su.SubeKod = @HedefSubeKod,
+		  su.SubeTanim = su.SubeTanim + '2'
+	from SIRKET_SUBE_TNM su
+	WHERE su.SirketKod = @KaynakSirketKod
+	  and su.SubeKod = @KaynakSubeKod
+  end
+
+  set @iTipInt = @iTipInt + 1
+
+  if @iTip = @iTipInt or @iTip is Null
+  begin
+    update su
+	  SET su.SirketKod = @HedefSirketKod,
+	      su.SubeKod = @HedefSubeKod
+	from DisAktarim_Parametre su
+	WHERE su.SirketKod = @KaynakSirketKod
+	  and su.SubeKod = @KaynakSubeKod
+  end
+
+  set @iTipInt = @iTipInt + 1
+
+  if @iTip = @iTipInt or @iTip is Null
+  begin
+    update su
+	  SET su.SirketKod = @HedefSirketKod,
+	      su.Sube = @HedefSubeKod
+	from PersonelKart su
+	WHERE su.SirketKod = @KaynakSirketKod
+	  and su.Sube = @KaynakSubeKod
+  end
+
+  set @iTipInt = @iTipInt + 1
+
+  if @iTip = @iTipInt or @iTip is Null
+  begin
+    update su
+	  SET su.FirmaKodu = @HedefSirketKod,
+	      su.SubeKod = @HedefSubeKod
+	from SahaGozlemRaporlari su
+	WHERE su.FirmaKodu = @KaynakSirketKod
+	  and su.SubeKod = @KaynakSubeKod
+  end
+
+  set @iTipInt = @iTipInt + 1
+
+  if @iTip = @iTipInt or @iTip is Null
+  begin
+    alter table DisAktarim_Parametre check constraint FK_DisAktarim_Parametre_SIRKET_SUBE_TNM
+  end
+
+  set @iTipInt = @iTipInt + 1
+
+  if @iTip = @iTipInt or @iTip is Null
+  begin
+    alter table SahaGozlemRaporlari check constraint FK_SahaGozlemRaporlari_SIRKET_SUBE_TNM
+  end
+
+  set @iTipInt = @iTipInt + 1
+
+  if @iTip = @iTipInt or @iTip is Null
+  begin
+    alter table PersonelKart check constraint FK_PersonelKart_PersonelKart
   end
 
   set nocount off
 
 end
 GO
---exec sp_vw_sys_upd 'P ', 'dbo', 'sp_SubeSirketiniDegistir'
+-- sp_SubeSirketiniDegistir deðiþiklik takip sistemi güncellemesi
+exec sp_vw_sys_upd 'P ', 'dbo', 'sp_SubeSirketiniDegistir'
 GO
-exec dbo.sp_SubeSirketiniDegistir 0
-go
-select * from Users
-go
-ROLLBACK -- COMMIT
+COMMIT--ROLLBACK
 GO
-use osgb_kalIbre
-go
-begin tran
-go
-alter table personelkart nocheck constraint FK_PersonelKart_PersonelKart
-go
-alter table personelkart nocheck constraint FK_PersonelKart_SIRKETLER_TNM
-go
-alter table Gelisler nocheck constraint FK_Gelisler_SirketKod
-go
-alter table Gelisler nocheck constraint FK_Gelisler_PersonelKart
-go
-select sss.* 
--- update sss set SirketKod = '000054', SubeKod = '01', SubeTanim = 'SANCAKTEPE'
--- delete ss
-from SIRKETLER_TNM ss
-left join SIRKET_SUBE_TNM sss on sss.SirketKod = ss.SirketKod
-where tanimi like '%CEMKEN%'
-  and ss.SirketKod = '000055'
-go
-select * 
--- update sss set SirketKod = '000054', Sube = '01'
-from PersonelKart sss
-where SirketKod = '000055'
-  and Sube = '00'
-go
-select * 
--- update sss set SirketKod = '000054'
-from Gelisler sss
-where SirketKod = '000055'
-  and Sube = '00'
-go
-alter table personelkart check constraint FK_PersonelKart_PersonelKart
-go
-alter table personelkart check constraint FK_PersonelKart_SIRKETLER_TNM
-go
-alter table Gelisler check constraint FK_Gelisler_SirketKod
-go
-alter table Gelisler check constraint FK_Gelisler_PersonelKart
-go
-rollback -- commit
-go
