@@ -9000,7 +9000,7 @@ begin
         end
         else begin
           RollbackTrans (datalar.ADOConnection2);
-          showmessageSkin ('Aktarým iþlemi sýrasýnda bir hata oluþtu ve iþlem tamamlanamadý', '', '', 'info');
+          showmessageSkin ('Ýþlemler sýrasýnda bir hata oluþtu ve görev tamamlanamadý', '', '', 'info');
           if bTmpPost then
             DBGridDialog (sHataUyariMesaji, bQuery, [mbOk], mbOk);
         end;

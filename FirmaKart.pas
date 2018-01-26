@@ -468,8 +468,13 @@ end;
 procedure TfrmFirmaKart.FirmaSubeBirlestir;
 var
   List: TListeAc;
-  sKaynakSirketKod, sKaynakSubeKod : String;
+  sKaynakSirketKod, sKaynakSubeKod, sHedefSirketKod, sHedefSubeKod, sTmp1, sTmp2 : String;
+  aQuery : TADOQuery;
+  iMaxSubeNo: Integer;
 begin
+  sHedefSirketKod := TcxButtonEditKadir(FindComponent('SirketKod')).EditingValue;
+  if IsNull (sHedefSirketKod) then Exit;
+  //o þirket dýþýndaki ve þubesi olan þirketler
   List :=
     ListeAcCreate
       ('SIRKETLER_TNM',
@@ -478,15 +483,17 @@ begin
        '50,250,50',
        'SirketKodList',
        'Þubenin Olduðu Kaynak Firma Seçimi',
-       'SirketKod <> ' + SQLValue (TcxButtonEditKadir(FindComponent('SirketKod')).EditingValue)+
+       'SirketKod <> ' + SQLValue (sHedefSirketKod)+
        ' and Exists (Select 1 from SIRKET_SUBE_TNM sss where sss.SirketKod = SIRKETLER_TNM.SirketKod)',3,True);
   try
     datalar.ButtonEditSecimlist := List.ListeGetir;
     if length (datalar.ButtonEditSecimlist) <= 0 then Exit;
     sKaynakSirketKod := DATALAR.ButtonEditSecimlist [0].kolon1;
+    sTmp1 := DATALAR.ButtonEditSecimlist [0].kolon2;
   finally
     List.Free;
   end;
+  //seçilen kaynak þirketin þubeleri
   List :=
     ListeAcCreate
       ('SIRKET_SUBE_TNM',
@@ -500,11 +507,27 @@ begin
     datalar.ButtonEditSecimlist := List.ListeGetir;
     if length (datalar.ButtonEditSecimlist) <= 0 then Exit;
     sKaynakSubeKod := DATALAR.ButtonEditSecimlist [0].kolon1;
+    sTmp2 := DATALAR.ButtonEditSecimlist [0].kolon2;
   finally
     List.Free;
   end;
+  if ShowMessageSkin (
+       '"' + sTmp1 + '" þirketinin'#13#10+
+       '"' + sTmp2 + '" þubesi'#13#10+
+       '"' + TcxTextEditKadir(FindComponent('tanimi')).EditValue + '" þirketi altýna taþýnacak!'#13#10#13#10+
+       'Emin Misiniz ?', '', '', 'conf') <> mrYes then Exit;
 
-  //sdiþfdsifþlsdil
+  aQuery := TADOQuery.Create (Self);
+  try
+    aQuery.Connection := DATALAR.ADOConnection2;
+    aQuery.SQL.Text := 'Select IsNull ((select max (cast (SubeKod as int)) from SIRKET_SUBE_TNM sb where sb.SirketKod = ' + SQLValue (sHedefSirketKod) + ' and IsNumeric (SubeKod) = 1), -1) + 1 XX';
+    aQuery.Open;
+    iMaxSubeNo := aQuery.FieldByName('XX').AsInteger;
+    sHedefSubeKod := FormatFloat('00', iMaxSubeNo + 1);
+    KademeliStoredProcCalistir('sp_SubeSirketiniDegistir', ', ' + SQLValue(sKaynakSirketKod) + ', ' + SQLValue(sKaynakSubeKod) + ', ' + SQLValue(sHedefSirketKod) + ', ' + SQLValue(sHedefSubeKod));
+  finally
+    aQuery.Free;
+  end;
 end;
 
 procedure TfrmFirmaKart.FormCreate(Sender: TObject);
