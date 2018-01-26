@@ -296,23 +296,20 @@ end;
 procedure TfrmUpdate.btnSendClick(Sender: TObject);
 var
   sql : string;
-  i, iThermo, _hata : integer;
+  i, iThermo : integer;
   xDonguBasarili : Boolean;
 begin
   datalar.ADO_SQL3.Close;
   datalar.ADO_SQL3.SQL.Clear;
 
-  _hata := 0;
-
-  if datalar.Ado_Guncellemeler.RecordCount > 0
-  then begin
-   txtLOG.Lines.Add(datetimetostr(now) + ' Güncelleme Server Sorgu Sonucu : Güncelleme Ýþlemleri Baþlatýlýyor..');
-   datalar.ADOConnection2.BeginTrans;
-  end
-  else begin
-   txtLOG.Lines.Add(datetimetostr(now) + ' Güncelleme Server Sorgu Sonucu :  Güncellenecek Paket Bulunamadý...');
-   exit;
+  if datalar.Ado_Guncellemeler.RecordCount <= 0 then
+  begin
+    txtLOG.Lines.Add(datetimetostr(now) + ' Güncelleme Server Sorgu Sonucu :  Güncellenecek Paket Bulunamadý...');
+    exit;
   end;
+  txtLOG.Lines.Add(datetimetostr(now) + ' Güncelleme Server Sorgu Sonucu : Güncelleme Ýþlemleri Baþlatýlýyor..');
+  xDonguBasarili := False;
+  datalar.ADOConnection2.BeginTrans;
   try
     ShowThermo (iThermo, 'Güncellemeler Uygulanýyor...', 0, gridDetay.RowCount - 1, 0, True);
     try
@@ -320,55 +317,52 @@ begin
       begin
         if not UpdateThermo (i - 1, iThermo, IntToStr (i) + ' - ' + gridDetay.Cells[1,i]) then Exit;
 
-        if gridDetay.Cells[25,i] = 'T'
-        then begin
-            try
-               sql := gridDetay.Cells[5,i];//ADO_SQL1.Fieldbyname('SQL_CMD').AsString;
-               datalar.QueryExec(datalar.ADO_SQL3,sql);
-               sql := 'update Parametreler set SLT = ' + #39 + tarihal(date()) + #39 +
-                      ',SLX = ' + datalar.Ado_Guncellemeler.fieldbyname('ID').AsString +
-                      ' where SLK = ''GT'' and SLB =''0000''';
-               datalar.QueryExec(datalar.ADO_SQL3,sql);
+        if gridDetay.Cells[25,i] = 'T' then
+        begin
+          try
+            sql := gridDetay.Cells[5,i];//ADO_SQL1.Fieldbyname('SQL_CMD').AsString;
+            datalar.QueryExec(datalar.ADO_SQL3,sql);
+            sql := 'update Parametreler set SLT = ' + #39 + tarihal(date()) + #39 +
+                   ',SLX = ' + datalar.Ado_Guncellemeler.fieldbyname('ID').AsString +
+                   ' where SLK = ''GT'' and SLB =''0000''';
+            datalar.QueryExec(datalar.ADO_SQL3,sql);
 
-               gridDetay.Row := i;
+            gridDetay.Row := i;
 
-               txtLog.Lines.Add('OK - ' + gridDetay.Cells[2,griddetay.row] + ' Güncellemesi Yapýldý');
+            txtLog.Lines.Add('OK - ' + gridDetay.Cells[2,griddetay.row] + ' Güncellemesi Yapýldý');
 
-               sql := 'insert into GuncellemeLog (Tarih,ACIKLAMA,ID,Sonuc) ' +
-                      ' values (' + QuotedStr(gridDetay.Cells[0,i]) + ',' +
-                                    QuotedStr(gridDetay.Cells[1,i]) + ',' +
-                                    gridDetay.Cells[2,i] + ',' +
-                                    QuotedStr('Ok') + ')';
-               datalar.QueryExec(datalar.ADO_SQL3,sql);
-            except on e : Exception do
-              begin
-                txtLOG.Lines.Add('HATA - ' + gridDetay.Cells[2,i] + 'Güncellemesi Yapýlmadý : ' + e.Message);
-                _hata := 1;
-              end;
+            sql := 'insert into GuncellemeLog (Tarih,ACIKLAMA,ID,Sonuc) ' +
+                   ' values (' + QuotedStr(gridDetay.Cells[0,i]) + ',' +
+                                 QuotedStr(gridDetay.Cells[1,i]) + ',' +
+                                 gridDetay.Cells[2,i] + ',' +
+                                 QuotedStr('Ok') + ')';
+            datalar.QueryExec(datalar.ADO_SQL3,sql);
+          except on e : Exception do
+            begin
+              txtLOG.Lines.Add('HATA - ' + gridDetay.Cells[2,i] + 'Güncellemesi Yapýlmadý : ' + e.Message);
+              raise;
             end;
+          end;
         end;
       end;
+      xDonguBasarili := True;
     finally
       FreeThermo (iThermo);
     end;
   finally
-    if (datalar.Ado_Guncellemeler.RecordCount > 0) and (_hata = 1) then
+    if not xDonguBasarili then
     begin
       datalar.ADOConnection2.RollbackTrans;
       txtLOG.Lines.Add('Güncellenemeyen Paket Var , Tüm Ýþlemler Geri Alýndý');
       guncellemeIslemi := 'No';
       ShowMessageSkin('Hata','','','info');
-     (*
-      if _Tip_ = 'Auto'
-      then
-       cxButton1.Click;  *)
-    end else
-    begin
+    end
+    else begin
       datalar.ADOConnection2.CommitTrans;
+      btnSend.Enabled := False;
       txtLOG.Lines.Add('Database Güncelleme Baþarýyla Yapýldý');
       ShowMessageSkin('Database Güncelleme Baþarýyla Yapýldý','Veritabanýnýz Güncel','Güncelleme Bilgilerini Okuyup Kapatýnýz , Programýnýz Devam Edecektir... ','info');
       guncellemeIslemi := 'Yes';
-      btnSend.Enabled := False;
     end;
   end;
 
