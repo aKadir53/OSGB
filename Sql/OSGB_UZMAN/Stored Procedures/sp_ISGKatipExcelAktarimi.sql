@@ -206,7 +206,7 @@ begin
   if @iTip = @iTipInt or @iTip is Null
   begin
     -- Hizmet alan kurum ünvan alaný null olanlar için ilk kelimelerden seçim yap
-    update ISGKatipExcelAktarim SET HizmetAlanKurumUnvan = dbo.fn_KelimeAl (HizmetAlanKurum, 4, './\=(){}[]+*-_,;<>') where HizmetAlanKurumUnvan Is NULL
+    update ISGKatipExcelAktarim SET HizmetAlanKurumUnvan = dbo.fn_KelimeAl (HizmetAlanKurum, 4, './\=(){}[]+*-_,;<>', 1) where HizmetAlanKurumUnvan Is NULL
   end
 
   set @iTipInt = @iTipInt + 1
@@ -488,7 +488,7 @@ begin
 
 end
 GO
---exec sp_vw_sys_upd 'P ', 'dbo', 'sp_ISGKatipExcelAktarimi'
+exec sp_vw_sys_upd 'P ', 'dbo', 'sp_ISGKatipExcelAktarimi'
 GO
 exec dbo.sp_ISGKatipExcelAktarimi 0
 go

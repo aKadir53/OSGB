@@ -206,7 +206,7 @@ ilgili dýþ aktarýmýn tablosuna ilk kayýt yazarken disAktarimParametre tablosu il
 dýþ aktarým sp'sinde, ara tablodan data alýp kullanýrken þirket kodu, user vs bilgiler için gidip kendisindeki aktarim parametre id'sindeki parametre kaydýna gidilip data kullanýlabilir.
 iþte bu kadar basit.
 
-uygulamanýn mevcut kopyalarýný kapatmasýný ve halt komutlarýný, application.terminate'leri kaldýrmak lazým
+uygulamanýn mevcut kopyalarýný kapatmasýný ve halt komutlarýný, application.terminate'leri kaldýrmak lazým kill killtask
 þube kartlarýna aktif / pasif ayarý eklenecek
 isg katip aktarýmýnda nace kodlarý firma kartýna güncelleniyor, þube kartýna da güncellemek lazým
 
