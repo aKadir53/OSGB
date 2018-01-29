@@ -80,6 +80,9 @@ type
     txtServerUserName: TcxTextEditKadir;
     dxLayoutControl2Item7: TdxLayoutItem;
     txtServerPassword: TcxTextEditKadir;
+    dxLayoutControl2Group2: TdxLayoutGroup;
+    dxLayoutControl2Group1: TdxLayoutGroup;
+    dxLayoutControl2Group3: TdxLayoutGroup;
 
     PROCEDURE YUVARLAK(WDN:HWND;ALAN:TRECT);
     procedure FormCreate(Sender: TObject);

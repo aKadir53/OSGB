@@ -306,30 +306,26 @@ object frmLogin: TfrmLogin
     Font.Style = []
     ParentFont = False
     TabOrder = 0
-    Properties.ActivePage = SayfaConTest
+    Properties.ActivePage = SayfaLogin
     OnPageChanging = LoginSayfalarPageChanging
-    ClientRectBottom = 183
-    ClientRectLeft = 3
-    ClientRectRight = 302
-    ClientRectTop = 26
+    ClientRectBottom = 203
+    ClientRectLeft = 4
+    ClientRectRight = 305
+    ClientRectTop = 24
     object SayfaLogin: TcxTabSheet
       Caption = 'Kullan'#305'c'#305' Giri'#351'i   '
       ImageIndex = 17
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object dxLayoutControl1: TdxLayoutControl
         Left = 0
         Top = 0
-        Width = 299
-        Height = 174
+        Width = 301
+        Height = 179
         Align = alClient
         TabOrder = 0
         LayoutLookAndFeel = dxLayoutSkinLookAndFeel1
         object Image3: TImage
-          Left = 20
-          Top = 23
+          Left = 22
+          Top = 28
           Width = 53
           Height = 42
           Align = alLeft
@@ -628,8 +624,8 @@ object frmLogin: TfrmLogin
           Transparent = True
         end
         object Edit1: TcxTextEdit
-          Left = 105
-          Top = 71
+          Left = 107
+          Top = 76
           ParentFont = False
           Style.Font.Charset = DEFAULT_CHARSET
           Style.Font.Color = clWindowText
@@ -643,8 +639,8 @@ object frmLogin: TfrmLogin
           Width = 25
         end
         object Edit2: TcxTextEdit
-          Left = 105
-          Top = 101
+          Left = 107
+          Top = 106
           ParentFont = False
           ParentShowHint = False
           Properties.EchoMode = eemPassword
@@ -661,8 +657,8 @@ object frmLogin: TfrmLogin
           Width = 121
         end
         object txtSirket: TcxButtonEditKadir
-          Left = 105
-          Top = 131
+          Left = 107
+          Top = 136
           ParentFont = False
           Properties.Buttons = <
             item
@@ -685,8 +681,8 @@ object frmLogin: TfrmLogin
         end
         object txtSube: TcxImageComboKadir
           Tag = 1
-          Left = 105
-          Top = 158
+          Left = 107
+          Top = 163
           Properties.ClearKey = 46
           Properties.Items = <>
           Properties.OnChange = txtSubePropertiesChange
@@ -766,19 +762,15 @@ object frmLogin: TfrmLogin
         Align = alClient
         Caption = 'Server Bilgisi'
         TabOrder = 0
-        Height = 174
-        Width = 299
+        Height = 179
+        Width = 301
         object dxLayoutControl2: TdxLayoutControl
-          Left = 3
-          Top = 15
-          Width = 293
-          Height = 149
+          Left = 2
+          Top = 18
+          Width = 297
+          Height = 159
           Align = alClient
           TabOrder = 0
-          ExplicitLeft = 2
-          ExplicitTop = -2
-          ExplicitWidth = 295
-          ExplicitHeight = 174
           object txtServerName: TcxTextEditKadir
             Left = 104
             Top = 10
@@ -788,12 +780,12 @@ object frmLogin: TfrmLogin
             Style.BorderStyle = ebs3D
             Style.HotTrack = False
             TabOrder = 0
-            Width = 177
+            Width = 178
           end
           object btnBaglan: TcxButtonKadir
             Left = 10
-            Top = 145
-            Width = 271
+            Top = 91
+            Width = 105
             Height = 25
             Caption = 'Ba'#287'lant'#305'y'#305' Test Et'
             TabOrder = 5
@@ -801,8 +793,8 @@ object frmLogin: TfrmLogin
             NewButtonVisible = False
           end
           object txtDataBase: TcxTextEdit
-            Left = 104
-            Top = 118
+            Left = 207
+            Top = 64
             Properties.EchoMode = eemPassword
             Properties.PasswordChar = '*'
             Properties.ReadOnly = True
@@ -810,28 +802,28 @@ object frmLogin: TfrmLogin
             Style.BorderStyle = ebs3D
             Style.HotTrack = False
             TabOrder = 4
-            Width = 177
+            Width = 75
           end
           object txtOsgbKodu: TcxTextEdit
             Left = 104
-            Top = 91
+            Top = 64
             Style.BorderColor = clWindowFrame
             Style.BorderStyle = ebs3D
             Style.HotTrack = False
             TabOrder = 3
-            Width = 177
+            Width = 45
           end
           object Labelx: TcxLabel
-            Left = 10
-            Top = 176
+            Left = 121
+            Top = 91
             AutoSize = False
             Caption = 'ddddd'
             Style.HotTrack = False
             Height = 17
-            Width = 271
+            Width = 162
           end
           object txtServerUserName: TcxTextEditKadir
-            Left = 10
+            Left = 104
             Top = 37
             Properties.EchoMode = eemPassword
             Properties.PasswordChar = '*'
@@ -839,18 +831,18 @@ object frmLogin: TfrmLogin
             Style.BorderStyle = ebs3D
             Style.HotTrack = False
             TabOrder = 1
-            Width = 271
+            Width = 69
           end
           object txtServerPassword: TcxTextEditKadir
-            Left = 10
-            Top = 64
+            Left = 205
+            Top = 37
             Properties.EchoMode = eemPassword
             Properties.PasswordChar = '*'
             Style.BorderColor = clWindowFrame
             Style.BorderStyle = ebs3D
             Style.HotTrack = False
             TabOrder = 2
-            Width = 271
+            Width = 77
           end
           object dxLayoutControl2Group_Root: TdxLayoutGroup
             AlignHorz = ahLeft
@@ -870,45 +862,72 @@ object frmLogin: TfrmLogin
           object dxLayoutControl2Item1: TdxLayoutItem
             CaptionOptions.Text = 'cxButtonKadir1'
             CaptionOptions.Visible = False
-            Parent = dxLayoutControl2Group_Root
+            Parent = dxLayoutControl2Group3
             Control = btnBaglan
             ControlOptions.ShowBorder = False
-            Index = 5
+            Index = 0
           end
           object dxLayoutControl2Item3: TdxLayoutItem
-            CaptionOptions.Text = 'DataBase             :'
-            Parent = dxLayoutControl2Group_Root
+            CaptionOptions.Text = 'DataBase'
+            Parent = dxLayoutControl2Group1
             Control = txtDataBase
-            ControlOptions.ShowBorder = False
-            Index = 4
-          end
-          object dxLayoutControl2Item4: TdxLayoutItem
-            CaptionOptions.Text = 'Firma Kodunuz'
-            Parent = dxLayoutControl2Group_Root
-            Control = txtOsgbKodu
-            ControlOptions.ShowBorder = False
-            Index = 3
-          end
-          object dxLayoutControl2Item5: TdxLayoutItem
-            CaptionOptions.Visible = False
-            Parent = dxLayoutControl2Group_Root
-            Control = Labelx
-            ControlOptions.ShowBorder = False
-            Index = 6
-          end
-          object dxLayoutControl2Item6: TdxLayoutItem
-            CaptionOptions.Text = 'Veritabaný Kullanýcý'
-            Parent = dxLayoutControl2Group_Root
-            Control = txtServerUserName
             ControlOptions.ShowBorder = False
             Index = 1
           end
+          object dxLayoutControl2Item4: TdxLayoutItem
+            CaptionOptions.Text = 'Firma Kodunuz'
+            Parent = dxLayoutControl2Group1
+            Control = txtOsgbKodu
+            ControlOptions.ShowBorder = False
+            Index = 0
+          end
+          object dxLayoutControl2Item5: TdxLayoutItem
+            CaptionOptions.Visible = False
+            Parent = dxLayoutControl2Group3
+            Control = Labelx
+            ControlOptions.ShowBorder = False
+            Index = 1
+          end
+          object dxLayoutControl2Item6: TdxLayoutItem
+            CaptionOptions.Text = 'Server Kullan'#305'c'#305
+            Parent = dxLayoutControl2Group2
+            Control = txtServerUserName
+            ControlOptions.ShowBorder = False
+            Index = 0
+          end
           object dxLayoutControl2Item7: TdxLayoutItem
-            CaptionOptions.Text = 'Veritabaný Sifresi'
-            Parent = dxLayoutControl2Group_Root
+            CaptionOptions.Text = #350'ifre'
+            Parent = dxLayoutControl2Group2
             Control = txtServerPassword
             ControlOptions.ShowBorder = False
+            Index = 1
+          end
+          object dxLayoutControl2Group2: TdxLayoutGroup
+            CaptionOptions.Text = 'New Group'
+            Parent = dxLayoutControl2Group_Root
+            ButtonOptions.Buttons = <>
+            Hidden = True
+            LayoutDirection = ldHorizontal
+            ShowBorder = False
+            Index = 1
+          end
+          object dxLayoutControl2Group1: TdxLayoutGroup
+            CaptionOptions.Text = 'New Group'
+            Parent = dxLayoutControl2Group_Root
+            ButtonOptions.Buttons = <>
+            Hidden = True
+            LayoutDirection = ldHorizontal
+            ShowBorder = False
             Index = 2
+          end
+          object dxLayoutControl2Group3: TdxLayoutGroup
+            CaptionOptions.Text = 'New Group'
+            Parent = dxLayoutControl2Group_Root
+            ButtonOptions.Buttons = <>
+            Hidden = True
+            LayoutDirection = ldHorizontal
+            ShowBorder = False
+            Index = 3
           end
         end
       end
@@ -917,10 +936,6 @@ object frmLogin: TfrmLogin
       Caption = 'cxTabSheet1'
       ImageIndex = 2
       TabVisible = False
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object Label1: TLabel
         Left = 154
         Top = 46
@@ -1627,7 +1642,6 @@ object frmLogin: TfrmLogin
     Font.Height = -11
     Font.Name = 'Tahoma'
     Font.Style = []
-    ExplicitTop = 226
   end
   object pnlBottom: TcxGroupBox
     Left = 0
@@ -1637,7 +1651,6 @@ object frmLogin: TfrmLogin
     ParentShowHint = False
     ShowHint = False
     TabOrder = 2
-    ExplicitTop = 190
     Height = 36
     Width = 309
     object btnGiris: TcxButton
