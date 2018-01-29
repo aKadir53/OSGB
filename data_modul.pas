@@ -461,8 +461,8 @@ type
     procedure AENBeforeExecute(const MethodName: string; SOAPRequest: TStream);
     procedure LiosBeforeExecute(const MethodName: string; SOAPRequest: TStream);
     procedure LiosAfterExecute(const MethodName: string; SOAPResponse: TStream);
-    function Baglan(db : string = '' ; Server : string = ''; username : String = '') : Boolean;
-    function MasterBaglan(MasterKod : string ; var DB, OSGBDesc : string ; Server : string = '') : boolean;
+    function Baglan(db : string = '' ; Server : string = ''; username : String = ''; pSQLUserName : String = ''; pSQLPassword : String = '') : Boolean;
+    function MasterBaglan(MasterKod : string ; var DB, OSGBDesc : string ; Server : string = ''; pSQLUserName : String = ''; pSQLPassword : String = '') : boolean;
     procedure ADOConnection2WillExecute(Connection: TADOConnection;
       var CommandText: WideString; var CursorType: TCursorType;
       var LockType: TADOLockType; var CommandType: TCommandType;
@@ -543,14 +543,14 @@ uses AnaUnit,kadir;
 
 {$R *.dfm}
 
-function TDatalar.MasterBaglan(MasterKod : string ; var DB, OSGBDesc : string ; Server : string = '') : Boolean;
+function TDatalar.MasterBaglan(MasterKod : string ; var DB, OSGBDesc : string ; Server : string = ''; pSQLUserName : String = ''; pSQLPassword : String = '') : Boolean;
 var
   ado : TADOQuery;
 begin
   servername := Server;
   Master.Connected := false;
   Master.ConnectionString :=
-  'Provider=SQLOLEDB.1;Password=5353;Persist Security Info=True;User ID=Nokta;Initial Catalog=OSGB_MASTER;Data Source='+servername;
+  'Provider=SQLOLEDB.1;Password='+pSQLPassword+';Persist Security Info=True;User ID='+pSQLUserName+';Initial Catalog=OSGB_MASTER;Data Source='+servername;
   Master.Connected := True;
 
   if Master.Connected = True then
@@ -574,34 +574,35 @@ begin
 end;
 
 
-function TDatalar.Baglan(db : string = '' ; Server : string = ''; username : String = '') : Boolean;
+function TDatalar.Baglan(db : string = '' ; Server : string = ''; username : String = ''; pSQLUserName : String = ''; pSQLPassword : String = '') : Boolean;
 var
   _db_ : string;
 begin
   //Result := False;
   try
-   _db_ := RegOku('OSGB_db_name');
-   _db_ := Decode64(_db_);
-   servername := ifThen(Server = '', Decode64(RegOku('OSGB_servername')),Server);
-   _db_ := ifThen(db = '', Decode64(RegOku('OSGB_db_name')),db);
+    _db_ := RegOku('OSGB_db_name');
+    _db_ := Decode64(_db_);
+    servername := ifThen(Server = '', Decode64(RegOku('OSGB_servername')),Server);
+    _db_ := ifThen(db = '', Decode64(RegOku('OSGB_db_name')),db);
 
-   if username = 'demo' then begin
-     _db_ := 'OSGB_UZMAN';
-     servername := '213.159.30.6';
-   end;
-   if (_db_ <> '')
-   Then Begin
-     ADOConnection2.Connected := false;
-
-     ADOConnection2.ConnectionString :=
-     'Provider=SQLOLEDB.1;Password=5353;Persist Security Info=True;User ID=Nokta;Initial Catalog=' + _db_ +';Data Source='+servername;
-     ADOConnection2.Connected := True;
-     Result := True;
-   End
-   Else
-   Begin
-    Result := False;
-   End;
+    if username = 'demo' then begin
+      _db_ := 'OSGB_UZMAN';
+      servername := '213.159.30.6';
+      pSQLPassword := '5353';
+      pSQLUserName := 'Nokta';
+    end;
+    if (_db_ <> '')
+    Then Begin
+      ADOConnection2.Connected := false;
+      ADOConnection2.ConnectionString :=
+        'Provider=SQLOLEDB.1;Password='+pSQLPassword+';Persist Security Info=True;User ID='+pSQLUserName+';Initial Catalog=' + _db_ +';Data Source='+servername;
+      ADOConnection2.Connected := True;
+      Result := True;
+    End
+    Else
+    Begin
+     Result := False;
+    End;
   except on e : Exception do
    begin
       ShowMessageSkin(e.Message,'','','info');

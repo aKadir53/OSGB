@@ -76,6 +76,10 @@ type
     dxLayoutControl1Item5: TdxLayoutItem;
     dxLayoutControl2Item5: TdxLayoutItem;
     Labelx: TcxLabel;
+    dxLayoutControl2Item6: TdxLayoutItem;
+    txtServerUserName: TcxTextEditKadir;
+    dxLayoutControl2Item7: TdxLayoutItem;
+    txtServerPassword: TcxTextEditKadir;
 
     PROCEDURE YUVARLAK(WDN:HWND;ALAN:TRECT);
     procedure FormCreate(Sender: TObject);
@@ -281,7 +285,7 @@ begin
   try
     try
       Datalar.ADOConnection2.Connected := false;
-      Datalar.Baglan();
+      Datalar.Baglan(txtDataBase.EditingText, txtServerName.Text, '', txtServerUserName.Text, txtServerPassword.Text);
 
       (*
       if txtDonemler.Text = ''
@@ -442,10 +446,12 @@ var
 begin
  if txtOsgbKodu.EditingText <> ''
  Then begin
-     if datalar.MasterBaglan(txtOsgbKodu.EditingValue,db, OSGBDesc,txtServerName.Text)
+     if datalar.MasterBaglan(txtOsgbKodu.EditingValue,db, OSGBDesc, txtServerName.Text, txtServerUserName.Text, txtServerPassword.Text)
      Then begin
          Regyaz('OSGB_servername',Encode64(txtServerName.Text));
-         if datalar.Baglan(db,txtServerName.Text)
+         Regyaz('OSGB_serverUserName',Encode64(txtServerUserName.Text));
+         Regyaz('OSGB_serverPassword',Encode64(txtServerPassword.Text));
+         if datalar.Baglan(db,txtServerName.Text, '',txtServerUserName.Text, txtServerPassword.Text)
          then begin
            Regyaz('OSGB_db_name',Encode64(db));
            txtDataBase.EditValue := db;
@@ -477,7 +483,7 @@ var
   List : ArrayListeSecimler;
   sql,sube : string;
 begin
-  if Datalar.Baglan ('', '', Edit1.Text)
+  if Datalar.Baglan ('', '', Edit1.Text, '', '')
   Then Begin
      sql := 'select doktor,sirketKodu from Users where kullanici = ' + QuotedStr(edit1.text);
      datalar.QuerySelect(DONEMBUL,sql);
@@ -531,6 +537,8 @@ begin
  //  Height := dxLayoutControl1Group2. btnGiris.Top + btnGiris.Height + 10;
 
    txtServerName.EditValue := Decode64(regOku('OSGB_servername'));
+   txtServerUserName.EditValue := Decode64(regOku('OSGB_serverUserName'));
+   txtServerPassword.EditValue := Decode64(regOku('OSGB_serverPassWord'));
    if Trim (txtServerName.EditValue) = '' then
    begin
      txtServerName.Text := '213.159.30.6';
@@ -542,6 +550,11 @@ begin
      Else
       LoginSayfalar.ActivePageIndex := 0;{}
 
+   end;
+   if Trim (txtServerName.EditValue) = '213.159.30.6' then
+   begin
+     if IsNull (txtServerUserName.EditValue) then txtServerUserName.EditValue := 'Nokta';
+     if IsNull (txtServerPassword.EditValue) then txtServerPassword.EditValue := '5353';
    end;
 
    txtDataBase.EditValue := Decode64(regOku('OSGB_db_name'));

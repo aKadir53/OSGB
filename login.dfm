@@ -792,42 +792,64 @@ object frmLogin: TfrmLogin
           end
           object btnBaglan: TcxButtonKadir
             Left = 10
-            Top = 91
+            Top = 145
             Width = 271
             Height = 25
             Caption = 'Ba'#287'lant'#305'y'#305' Test Et'
-            TabOrder = 3
+            TabOrder = 5
             OnClick = btnBaglanClick
             NewButtonVisible = False
           end
           object txtDataBase: TcxTextEdit
             Left = 104
-            Top = 64
+            Top = 118
             Properties.EchoMode = eemPassword
             Properties.PasswordChar = '*'
             Properties.ReadOnly = True
             Style.BorderColor = clWindowFrame
             Style.BorderStyle = ebs3D
             Style.HotTrack = False
-            TabOrder = 2
+            TabOrder = 4
             Width = 177
           end
           object txtOsgbKodu: TcxTextEdit
             Left = 104
-            Top = 37
+            Top = 91
             Style.BorderColor = clWindowFrame
             Style.BorderStyle = ebs3D
             Style.HotTrack = False
-            TabOrder = 1
+            TabOrder = 3
             Width = 177
           end
           object Labelx: TcxLabel
             Left = 10
-            Top = 122
+            Top = 176
             AutoSize = False
             Caption = 'ddddd'
             Style.HotTrack = False
             Height = 17
+            Width = 271
+          end
+          object txtServerUserName: TcxTextEditKadir
+            Left = 10
+            Top = 37
+            Properties.EchoMode = eemPassword
+            Properties.PasswordChar = '*'
+            Style.BorderColor = clWindowFrame
+            Style.BorderStyle = ebs3D
+            Style.HotTrack = False
+            TabOrder = 1
+            Width = 271
+          end
+          object txtServerPassword: TcxTextEditKadir
+            Left = 10
+            Top = 64
+            Properties.EchoMode = eemPassword
+            Properties.PasswordChar = '*'
+            Style.BorderColor = clWindowFrame
+            Style.BorderStyle = ebs3D
+            Style.HotTrack = False
+            TabOrder = 2
             Width = 271
           end
           object dxLayoutControl2Group_Root: TdxLayoutGroup
@@ -851,28 +873,42 @@ object frmLogin: TfrmLogin
             Parent = dxLayoutControl2Group_Root
             Control = btnBaglan
             ControlOptions.ShowBorder = False
-            Index = 3
+            Index = 5
           end
           object dxLayoutControl2Item3: TdxLayoutItem
             CaptionOptions.Text = 'DataBase             :'
             Parent = dxLayoutControl2Group_Root
             Control = txtDataBase
             ControlOptions.ShowBorder = False
-            Index = 2
+            Index = 4
           end
           object dxLayoutControl2Item4: TdxLayoutItem
             CaptionOptions.Text = 'Firma Kodunuz'
             Parent = dxLayoutControl2Group_Root
             Control = txtOsgbKodu
             ControlOptions.ShowBorder = False
-            Index = 1
+            Index = 3
           end
           object dxLayoutControl2Item5: TdxLayoutItem
             CaptionOptions.Visible = False
             Parent = dxLayoutControl2Group_Root
             Control = Labelx
             ControlOptions.ShowBorder = False
-            Index = 4
+            Index = 6
+          end
+          object dxLayoutControl2Item6: TdxLayoutItem
+            CaptionOptions.Text = 'Veritabaný Kullanýcý'
+            Parent = dxLayoutControl2Group_Root
+            Control = txtServerUserName
+            ControlOptions.ShowBorder = False
+            Index = 1
+          end
+          object dxLayoutControl2Item7: TdxLayoutItem
+            CaptionOptions.Text = 'Veritabaný Sifresi'
+            Parent = dxLayoutControl2Group_Root
+            Control = txtServerPassword
+            ControlOptions.ShowBorder = False
+            Index = 2
           end
         end
       end
