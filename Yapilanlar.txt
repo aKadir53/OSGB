@@ -137,3 +137,12 @@ eðitimci için iþ güvenlik uzmaný ya da doktor seçebilmeli, veritabanýna free for
 hizlikayit formunu iki ayrý menüye koyduk. personel kartlarýný excel'den aktar iþleminin düðmeleri ile isg katip aktarýmý ve benzer aktarýmlarýn düðmeleri birbirlerine karýþýyordu. form tagý bazýnda düðme gösterip gizleme ile karýþýklýk izale edildi
 
 isg katip exceline þube açýklamasý ve firma ünvaný birleþtirme ve ayýrmaya yarayan sütunlar eklenmiþti
+ilgili yapýlacaklar notu:
+muayene tipleri için tablo açýlýp tablodan getirtilebilir. zannediyorum view yapmýþtýk ama muayene türlerini gösteren yerlerde sadece eskilerinin tanýmlarý gözüküyor.
+muayene eklerken türleri view'dan almýyordu. önce view'dan alýr hâle getirdik. sonra tablo yapýp foreign key ekledik. view'ý kaldýrmayýp tablodan getirir hale getirdik
+gebe muayenesi tanýmý view'a eklenmiþti, bugün muayene türleri tablosuna da taþýdýk
+ilave olarak seçilecek bilgi tanýmlama ekranýnda muayene türleri tanýmlanabilmesi için gerekli tanýmlar eklendi.
+
+firma kartlarýna þirket birleþtir þube ayýr iþlemleri için þube kaydýrma düðmesi eklendi.
+
+

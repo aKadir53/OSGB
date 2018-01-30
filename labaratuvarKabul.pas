@@ -327,20 +327,20 @@ var
   ado : TADOQuery;
 begin
   ado := TADOQuery.Create(nil);
-  ado.Connection := datalar.ADOConnection2;
+  try
+    ado.Connection := datalar.ADOConnection2;
 
-  sql := 'select top 1 barkodNo from  LaboratuvarKabul where disLabBarkodNo = ' + QuotedStr(dislabBarkod);
-  datalar.QuerySelect(ado,sql);
+    sql := 'select top 1 barkodNo from  LaboratuvarKabul where disLabBarkodNo = ' + QuotedStr(dislabBarkod);
+    datalar.QuerySelect(ado,sql);
 
-  if not ado.Eof
-  then begin
-    dislabbarkodTObarkod := ado.Fields[0].AsString;
-  end
-  else dislabbarkodTObarkod := '0';
-
-  ado.Free;
-
-
+    if not ado.Eof
+    then begin
+      dislabbarkodTObarkod := ado.Fields[0].AsString;
+    end
+    else dislabbarkodTObarkod := '0';
+  finally
+    ado.Free;
+  end;
 end;
 
 (*
@@ -412,11 +412,14 @@ var
   ado : TADOQuery;
 begin
   ado := TADOQuery.Create(nil);
-  ado.Connection := DATALAR.ADOConnection2;
-  sql := 'update LaboratuvarKabul set disLabSonucOk = 1,sec = 1 '  +
-         ' where disLabbarkodNo = ' + QuotedStr(barkod) + ' and code = ' + QuotedStr(code);
-  datalar.QueryExec(ado,sql);
-  ado.Free;
+  try
+    ado.Connection := DATALAR.ADOConnection2;
+    sql := 'update LaboratuvarKabul set disLabSonucOk = 1,sec = 1 '  +
+           ' where disLabbarkodNo = ' + QuotedStr(barkod) + ' and code = ' + QuotedStr(code);
+    datalar.QueryExec(ado,sql);
+  finally
+    ado.Free;
+  end;
 end;
 
 procedure TfrmLabaratuvarKabul.disLabKabul(dosyaNo,gelisNo,barkod , disLabBarkod, code , lab : string);
@@ -425,12 +428,15 @@ var
   ado : TADOQuery;
 begin
   ado := TADOQuery.Create(nil);
-  ado.Connection := DATALAR.ADOConnection2;
+  try
+    ado.Connection := DATALAR.ADOConnection2;
 
-  sql := 'update LaboratuvarKabul set disLabKabul = ' + QuotedStr(lab) + ', disLabbarkodNo = ' + QuotedStr(DisLabBarkod) +
-         ' where dosyaNo = ' + QuotedStr(dosyaNo) + ' and gelisNo = ' + gelisNo + ' and  barkodNo = ' + QuotedStr(barkod);
-  datalar.QueryExec(ado,sql);
-  ado.Free;
+    sql := 'update LaboratuvarKabul set disLabKabul = ' + QuotedStr(lab) + ', disLabbarkodNo = ' + QuotedStr(DisLabBarkod) +
+           ' where dosyaNo = ' + QuotedStr(dosyaNo) + ' and gelisNo = ' + gelisNo + ' and  barkodNo = ' + QuotedStr(barkod);
+    datalar.QueryExec(ado,sql);
+  finally
+    ado.Free;
+  end;
 end;
 
 (*
@@ -508,40 +514,32 @@ var
   ado : TADOQuery;
   TopluDataset : TDataSetKadir;
 begin
-    ado := TADOQuery.Create(nil);
+  ado := TADOQuery.Create(nil);
+  try
     ado.Connection := datalar.ADOConnection2;
+    if CheckBox1.Checked = False
+    Then Begin
+      sql := 'exec sp_barkodBas ' + QuotedStr(kabul) + ',' + QuotedStr(tip);
+      datalar.QuerySelect(ado,sql);
+      TopluDataset.Dataset0 := ado;
+      PrintYap('300','\Labbarkod',inttoStr(TagfrmLabKabul) ,TopluDataset,pTNone);
 
-   if CheckBox1.Checked = False
-   Then Begin
-     sql := 'exec sp_barkodBas ' + QuotedStr(kabul) + ',' + QuotedStr(tip);
-     datalar.QuerySelect(ado,sql);
-     TopluDataset.Dataset0 := ado;
-     PrintYap('300','\Labbarkod',inttoStr(TagfrmLabKabul) ,TopluDataset,pTNone);
-
- //    frmRapor.raporData(ado,'300','\Labbarkod','fis');
- //    frmRapor.ShowModal;
-   End
-   Else
-   Begin
-     sql := 'exec sp_barkodBas ' + QuotedStr(kabul) + ',' + QuotedStr('') +
-           ',' + QuotedStr('1');
-     datalar.QuerySelect(ado,sql);
-     TopluDataset.Dataset0 := ado;
-     PrintYap('300','\Labbarkod',inttoStr(TagfrmLabKabul) ,TopluDataset,pTNone);
-//     frmRapor.raporData(ado,'301','\Labbarkod','fis');
-//     frmRapor.ShowModal;
-
-
-   End;
-
-
-
-
-
-
-
-
+  //    frmRapor.raporData(ado,'300','\Labbarkod','fis');
+  //    frmRapor.ShowModal;
+    End
+    Else
+    Begin
+      sql := 'exec sp_barkodBas ' + QuotedStr(kabul) + ',' + QuotedStr('') +
+            ',' + QuotedStr('1');
+      datalar.QuerySelect(ado,sql);
+      TopluDataset.Dataset0 := ado;
+      PrintYap('300','\Labbarkod',inttoStr(TagfrmLabKabul) ,TopluDataset,pTNone);
+ //     frmRapor.raporData(ado,'301','\Labbarkod','fis');
+ //     frmRapor.ShowModal;
+    End;
+  finally
     ado.Free;
+  end;
 end;
 
 
@@ -688,89 +686,73 @@ var
    sRenk : Tcolor;
    ado : TADOQuery;
 begin
+  ado := TADOQuery.Create(nil);
+  try
+    ado.Connection := datalar.ADOConnection2;
+    sql := ' exec sp_YeniLabKabulNoAl ';
+    datalar.QuerySelect(ado,sql);
+    kabulNO := ado.Fields[0].AsString;
+    ado.Close;
+  finally
+    ado.Free;
+  end;
+  SatiriAl(0);
+
+  datalar.ADO_SQL4.close;
+  datalar.ADO_SQL4.SQL.Clear;
+  sql := 'exec sp_YeniLabKabul ' +
+         #39 + bilgi.dosyaNo + #39 + ',' +
+         bilgi.gelisNo + ',' +
+         #39 + bilgi.code + #39 + ',' +
+         #39 + bilgi.grup + #39 + ',' +
+         #39 + bilgi.kabulTarihi + #39 + ',' +
+         #39 + bilgi.kabulEden + #39 + ',' +
+         #39 + bilgi.durum + #39 + ',' +
+         #39 + bilgi.Icode + #39 + ',' +
+         #39 + bilgi.name + #39 + ',' +
+         #39 + bilgi.sira + #39 + ',' +
+         #39 + kabulNo + #39;
+
+  datalar.QueryExec(datalar.ADO_SQL4,sql);
 
 
-        ado := TADOQuery.Create(nil);
-        ado.Connection := datalar.ADOConnection2;
-        sql := ' exec sp_YeniLabKabulNoAl ';
-        datalar.QuerySelect(ado,sql);
-        kabulNO := ado.Fields[0].AsString;
-        ado.Close;
-        ado.Free;
+  datalar.ADO_SQL.Close;
+  datalar.ADO_SQL.SQL.Clear;
+
+  sql := 'exec sp_labSonucGir ' + #39 + tarihal(txtTarih.Date) + #39 + ',' +
+         #39 + bilgi.dosyaNo + #39 + ',' +
+         #39 + bilgi.Icode + #39 + ',' +
+         #39 + bilgi.yas + #39 + ',' +
+         #39 + bilgi.cins + #39;
+
+  datalar.QueryExec(datalar.ADO_SQL,sql);
 
 
-        SatiriAl(0);
+  if TcxButton(sender).Tag = -1
+  Then Begin
+    dosyaNo := bilgi.dosyaNo;
+    gelisNo := bilgi.gelisNo;
+    detayNo := bilgi.detayNo;
+    code := bilgi.Icode;
+    sira := bilgi.sira;
 
-         datalar.ADO_SQL4.close;
-         datalar.ADO_SQL4.SQL.Clear;
-         sql := 'exec sp_YeniLabKabul ' +
-                #39 + bilgi.dosyaNo + #39 + ',' +
-                bilgi.gelisNo + ',' +
-                #39 + bilgi.code + #39 + ',' +
-                #39 + bilgi.grup + #39 + ',' +
-                #39 + bilgi.kabulTarihi + #39 + ',' +
-                #39 + bilgi.kabulEden + #39 + ',' +
-                #39 + bilgi.durum + #39 + ',' +
-                #39 + bilgi.Icode + #39 + ',' +
-                #39 + bilgi.name + #39 + ',' +
-                #39 + bilgi.sira + #39 + ',' +
-                #39 + kabulNo + #39;
-
-         datalar.QueryExec(datalar.ADO_SQL4,sql);
-
-
-        datalar.ADO_SQL.Close;
-        datalar.ADO_SQL.SQL.Clear;
-
-        sql := 'exec sp_labSonucGir ' + #39 + tarihal(txtTarih.Date) + #39 + ',' +
-               #39 + bilgi.dosyaNo + #39 + ',' +
-               #39 + bilgi.Icode + #39 + ',' +
-               #39 + bilgi.yas + #39 + ',' +
-               #39 + bilgi.cins + #39;
-
-        datalar.QueryExec(datalar.ADO_SQL,sql);
-
-
-         if TcxButton(sender).Tag = -1
-         Then Begin
-
-             dosyaNo := bilgi.dosyaNo;
-             gelisNo := bilgi.gelisNo;
-             detayNo := bilgi.detayNo;
-             code := bilgi.Icode;
-             sira := bilgi.sira;
-
-             sql := 'select * from laboratuvar_sonuc ' +
-                    ' where dosyaNo = ' + QuotedStr(dosyaNo) + ' and gelisno = ' + gelisno +
-                    ' and code = ' + QuotedStr(code) + ' and hareketSira = ' + sira;
-             ADO_TESTSONUCLARI.close;
-             ADO_TESTSONUCLARI.SQL.Clear;
-             datalar.QuerySelect(ADO_TESTSONUCLARI,sql);
-
-
-//             frmLabSonucGir.pnlTitle.Caption := 'Sonuç Giriþi : ' + ADO_SQL33.fieldbyname('Hasta').AsString + ' - ' + code + ' - ' + ADO_SQL3.fieldbyname('HizmetKodu').AsString;
-
-             GorselAyar(frmLabSonucGir,DATALAR.global_img_list4);
-             frmLabSonucGir.ShowModal;
-
-
-         End
-         Else Begin
-
-               ShowMessageSkin('Laboratuvar Kaydý ALýndý','','','info');
-               ADO_SQL3.Locate('dosyaNo;gelisNo',
-                                       VarArrayOf([bilgi.dosyaNo,bilgi.gelisNo])
-                                       ,[loPartialKey]);
-
-
-              cxGridDBTableView3DblClick(nil);
-
-         End;
-
-
-
-
-
+    sql := 'select * from laboratuvar_sonuc ' +
+           ' where dosyaNo = ' + QuotedStr(dosyaNo) + ' and gelisno = ' + gelisno +
+           ' and code = ' + QuotedStr(code) + ' and hareketSira = ' + sira;
+    ADO_TESTSONUCLARI.close;
+    ADO_TESTSONUCLARI.SQL.Clear;
+    datalar.QuerySelect(ADO_TESTSONUCLARI,sql);
+    //frmLabSonucGir.pnlTitle.Caption := 'Sonuç Giriþi : ' + ADO_SQL33.fieldbyname('Hasta').AsString + ' - ' + code + ' - ' + ADO_SQL3.fieldbyname('HizmetKodu').AsString;
+    GorselAyar(frmLabSonucGir,DATALAR.global_img_list4);
+    frmLabSonucGir.ShowModal;
+  End
+  Else Begin
+    ShowMessageSkin('Laboratuvar Kaydý ALýndý','','','info');
+    ADO_SQL3.Locate('dosyaNo;gelisNo',
+                            VarArrayOf([bilgi.dosyaNo,bilgi.gelisNo])
+                            ,[loPartialKey]);
+    cxGridDBTableView3DblClick(nil);
+  End;
 end;
 
 procedure TfrmLabaratuvarKabul.gridGelislerCheckBoxClick(Sender: TObject;
@@ -958,9 +940,12 @@ begin
   //   ifThen(txtGrup.Checked,LabGrupKodAdi(_grup_),labKabul.fieldbyname('TestAdý').AsString);
 
      Application.CreateForm(TfrmLabSonucGir, frmLabSonucGir);
-     frmLabSonucGir.sonucGir.DataController.DataSource := DataSource2;
-     frmLabSonucGir.ShowModal;
-     frmLabSonucGir := nil;
+     try
+       frmLabSonucGir.sonucGir.DataController.DataSource := DataSource2;
+       frmLabSonucGir.ShowModal;
+     finally
+       FreeAndNil (frmLabSonucGir);
+     end;
 
      cxGridDBTableView4DblClick(nil);
 
@@ -1076,79 +1061,82 @@ var
 
 begin
 
-     ado := TADOQuery.Create(nil);
-     ado.Connection := datalar.ADOConnection2;
-     sql := ' exec sp_YeniLabKabulNoAl ';
-     datalar.QuerySelect(ado,sql);
-     kabulNO := ado.Fields[0].AsString;
-     ado.Close;
-     ado.Free;
+  ado := TADOQuery.Create(nil);
+  try
+    ado.Connection := datalar.ADOConnection2;
+    sql := ' exec sp_YeniLabKabulNoAl ';
+    datalar.QuerySelect(ado,sql);
+    kabulNO := ado.Fields[0].AsString;
+    ado.Close;
+  finally
+    ado.Free;
+  end;
 
-     tarih1 := tarihal(txtTarih.Date);
+  tarih1 := tarihal(txtTarih.Date);
+  SatiriAl(0);
+
+  datalar.ADO_SQL3.close;
+  datalar.ADO_SQL3.SQL.Clear;
+  sql := 'exec sp_LabKabulListesi  @tarih1 = ' + #39 + tarih1 + #39 + ',' +
+         ' @dosyaNo = ' + QuotedStr(bilgi.dosyaNo) + ',@gelisNo =' + bilgi.gelisNo;
+
+  datalar.QuerySelect(datalar.ADO_SQL3,sql);
+
+
+  ADO_SQL3.Locate('dosyaNo;gelisNo',
+                          VarArrayOf([bilgi.dosyaNo,bilgi.gelisNo])
+                          ,[loPartialKey]);
+
+
+
+
+  while not ADO_SQL3.Eof do
+  begin
+  //         if seciliSatir <> ''
+  //         then SatiriAl(datalar.ADO_SQL.Fields[0].AsInteger) else
      SatiriAl(0);
 
-     datalar.ADO_SQL3.close;
-     datalar.ADO_SQL3.SQL.Clear;
-     sql := 'exec sp_LabKabulListesi  @tarih1 = ' + #39 + tarih1 + #39 + ',' +
-            ' @dosyaNo = ' + QuotedStr(bilgi.dosyaNo) + ',@gelisNo =' + bilgi.gelisNo;
+      datalar.ADO_SQL4.close;
+      datalar.ADO_SQL4.SQL.Clear;
+      sql := 'exec sp_YeniLabKabul ' +
+             #39 + bilgi.dosyaNo + #39 + ',' +
+             bilgi.gelisNo + ',' +
+             #39 + bilgi.code + #39 + ',' +
+             #39 + bilgi.grup + #39 + ',' +
+             #39 + bilgi.kabulTarihi + #39 + ',' +
+             #39 + bilgi.kabulEden + #39 + ',' +
+             #39 + bilgi.durum + #39 + ',' +
+             #39 + bilgi.Icode + #39 + ',' +
+             #39 + bilgi.name + #39 + ',' +
+             #39 + bilgi.sira + #39 + ',' +
+             #39 + kabulNO + #39;
 
-     datalar.QuerySelect(datalar.ADO_SQL3,sql);
-
-
-     ADO_SQL3.Locate('dosyaNo;gelisNo',
-                             VarArrayOf([bilgi.dosyaNo,bilgi.gelisNo])
-                             ,[loPartialKey]);
-
-
-
-
-     while not ADO_SQL3.Eof do
-     begin
-//         if seciliSatir <> ''
-//         then SatiriAl(datalar.ADO_SQL.Fields[0].AsInteger) else
-        SatiriAl(0);
-
-         datalar.ADO_SQL4.close;
-         datalar.ADO_SQL4.SQL.Clear;
-         sql := 'exec sp_YeniLabKabul ' +
-                #39 + bilgi.dosyaNo + #39 + ',' +
-                bilgi.gelisNo + ',' +
-                #39 + bilgi.code + #39 + ',' +
-                #39 + bilgi.grup + #39 + ',' +
-                #39 + bilgi.kabulTarihi + #39 + ',' +
-                #39 + bilgi.kabulEden + #39 + ',' +
-                #39 + bilgi.durum + #39 + ',' +
-                #39 + bilgi.Icode + #39 + ',' +
-                #39 + bilgi.name + #39 + ',' +
-                #39 + bilgi.sira + #39 + ',' +
-                #39 + kabulNO + #39;
-
-         datalar.QueryExec(datalar.ADO_SQL4,sql);
+      datalar.QueryExec(datalar.ADO_SQL4,sql);
 
 
-        datalar.ADO_SQL.Close;
-        datalar.ADO_SQL.SQL.Clear;
+     datalar.ADO_SQL.Close;
+     datalar.ADO_SQL.SQL.Clear;
 
-        sql := 'exec sp_labSonucGir ' + #39 + tarihal(txtTarih.Date) + #39 + ',' +
-               #39 + bilgi.dosyaNo + #39 + ',' +
-               #39 + bilgi.Icode + #39 + ',' +
-               #39 + bilgi.yas + #39 + ',' +
-               #39 + bilgi.cins + #39;
+     sql := 'exec sp_labSonucGir ' + #39 + tarihal(txtTarih.Date) + #39 + ',' +
+            #39 + bilgi.dosyaNo + #39 + ',' +
+            #39 + bilgi.Icode + #39 + ',' +
+            #39 + bilgi.yas + #39 + ',' +
+            #39 + bilgi.cins + #39;
 
-        datalar.QueryExec(datalar.ADO_SQL,sql);
-         
-
-         ADO_SQL3.Next;
-     end;
-
-     btnAra.Click;
-     ShowMessageSkin('Laboratuvar Kaydý ALýndý','','','info');
-
-     barkodBas(kabulNo,'');
+     datalar.QueryExec(datalar.ADO_SQL,sql);
 
 
-     ADO_SQL3.First;
-     cxGridDBTableView3DblClick(nil);
+      ADO_SQL3.Next;
+  end;
+
+  btnAra.Click;
+  ShowMessageSkin('Laboratuvar Kaydý ALýndý','','','info');
+
+  barkodBas(kabulNo,'');
+
+
+  ADO_SQL3.First;
+  cxGridDBTableView3DblClick(nil);
 
 
 end;
@@ -1240,11 +1228,13 @@ begin
    SOAPRequest.Position := 0;
    SOAPRequest.Read(R[1], Length(R));
    memo := Tmemo.Create(nil);
-   memo.Parent := frmLabaratuvarKabul;
-   memo.Lines.Add(FormatXMLData(R));
-   memo.Lines.SaveToFile('InVitroTest.XML');
-   memo.Free;
-
+   try
+     memo.Parent := frmLabaratuvarKabul;
+     memo.Lines.Add(FormatXMLData(R));
+     memo.Lines.SaveToFile('InVitroTest.XML');
+   finally
+     memo.Free;
+   end;
 end;
 
 procedure TfrmLabaratuvarKabul.gridLabHazirDblClick(
@@ -1374,15 +1364,19 @@ end;
 
 procedure TfrmLabaratuvarKabul.btnPolClick(Sender: TObject);
 begin
-   if UserRight('LABARATUVAR', 'Parametreler') = True
-   then begin
-        Application.CreateForm(TfrmLabParams, frmLabParams);
-        GorselAyar(frmLabParams,datalar.global_img_list4);
-        frmLabParams.TablolariAc;
-        frmLabParams.ShowModal;
-   End
-     else
-      YetkinizYok;
+  if UserRight('LABARATUVAR', 'Parametreler') = True
+  then begin
+    Application.CreateForm(TfrmLabParams, frmLabParams);
+    try
+      GorselAyar(frmLabParams,datalar.global_img_list4);
+      frmLabParams.TablolariAc;
+      frmLabParams.ShowModal;
+    finally
+      FreeAndNil(frmLabParams);
+    end;
+  End
+    else
+     YetkinizYok;
 
 end;
 
@@ -1403,10 +1397,11 @@ begin
   cxPanel.Visible := false;
   SayfaCaption('','','','','');
 
-    txtTarih.Date := date();
-    sayfalar.ActivePageIndex := 0;
+  txtTarih.Date := date();
+  sayfalar.ActivePageIndex := 0;
 
-    ado := TADOQuery.Create(nil);
+  ado := TADOQuery.Create(nil);
+  try
     ado.Connection := datalar.ADOConnection2;
     sql := 'select SLXX from parametreler where SLK = ''54''';
     datalar.QuerySelect(ado,sql);
@@ -1415,9 +1410,9 @@ begin
     Else _comport_ := '';
 
     ado.close;
+  finally
     ado.Free;
-
-
+  end;
 end;
 
 procedure TfrmLabaratuvarKabul.cxGridDBTableView4DblClick(Sender: TObject);
@@ -1530,19 +1525,21 @@ var
    sql : string;
    ado : TADOQuery;
 begin
-   ado := TADOQuery.Create(nil);
-   ado.Connection := datalar.ADOConnection2;
+  ado := TADOQuery.Create(nil);
+  try
+    ado.Connection := datalar.ADOConnection2;
 
-   sql := 'update LaboratuvarKabul set yazdirildi = 0 ' +
-          ' where dosyaNo = ' +  QuotedStr(labkabul.fieldbyname('dosyaNo').AsString) +
-          ' and gelisNo = ' + labkabul.fieldbyname('gelisNo').AsString ;
+    sql := 'update LaboratuvarKabul set yazdirildi = 0 ' +
+           ' where dosyaNo = ' +  QuotedStr(labkabul.fieldbyname('dosyaNo').AsString) +
+           ' and gelisNo = ' + labkabul.fieldbyname('gelisNo').AsString ;
 
-   datalar.QueryExec(ado,sql);
+    datalar.QueryExec(ado,sql);
 
-   ShowMessageSkin('Yazdýrma Ýþlemi Ýptal Edildi','','','info');
-   ado.Free;
-
-   cxGridDBTableView4.OnDblClick(sender);
+    ShowMessageSkin('Yazdýrma Ýþlemi Ýptal Edildi','','','info');
+  finally
+    ado.Free;
+  end;
+  cxGridDBTableView4.OnDblClick(sender);
 
 end;
 
@@ -1565,62 +1562,65 @@ var
    TopluDataset : TDataSetKadir;
 begin
 
-      if sayfalar_LabKabul.ActivePageIndex = 1
-      Then Begin
-         dosya := labKabul.fieldbyname('dosyaNo').AsString;
-         gelis := labKabul.fieldbyname('gelisNo').AsString;
-       //  detay := labKabul.fieldbyname('kartDetay').AsString;
-      End
-      Else
-      Begin
-         dosya := labSonucHazir.fieldbyname('dosyaNo').AsString;
-         gelis := labSonucHazir.fieldbyname('gelisNo').AsString;
-      //   detay := labSonucHazir.fieldbyname('gelisDetay').AsString;
-      End;
+  if sayfalar_LabKabul.ActivePageIndex = 1
+  Then Begin
+     dosya := labKabul.fieldbyname('dosyaNo').AsString;
+     gelis := labKabul.fieldbyname('gelisNo').AsString;
+   //  detay := labKabul.fieldbyname('kartDetay').AsString;
+  End
+  Else
+  Begin
+     dosya := labSonucHazir.fieldbyname('dosyaNo').AsString;
+     gelis := labSonucHazir.fieldbyname('gelisNo').AsString;
+  //   detay := labSonucHazir.fieldbyname('gelisDetay').AsString;
+  End;
 
 
 
 
-      datalar.ADO_SQL3.Close;
-      datalar.ADO_SQL3.SQL.Clear;
-      sql := 'exec sp_LabSonucYazdir ' +  #39 + dosya + #39 + ',' +
-             gelis + ',' + QuotedStr('');
-      datalar.QuerySelect(datalar.ADO_SQL3,sql);
+  datalar.ADO_SQL3.Close;
+  datalar.ADO_SQL3.SQL.Clear;
+  sql := 'exec sp_LabSonucYazdir ' +  #39 + dosya + #39 + ',' +
+         gelis + ',' + QuotedStr('');
+  datalar.QuerySelect(datalar.ADO_SQL3,sql);
 
-      ado2 := TADOQuery.Create(nil);
-      ado2.Connection := datalar.ADOConnection2;
+  ado2 := TADOQuery.Create(nil);
+  try
+    ado2.Connection := datalar.ADOConnection2;
 
-      sql := 'exec sp_LabSonucYazdir ' +  #39 + dosya + #39 + ',' +
-             gelis + ',' + QuotedStr('');
-      datalar.QuerySelect(ado2,sql);
-
-
-      TopluDataset.Dataset1 := datalar.ADO_SQL3;
-      TopluDataset.Dataset0 := ado2;
+    sql := 'exec sp_LabSonucYazdir ' +  #39 + dosya + #39 + ',' +
+           gelis + ',' + QuotedStr('');
+    datalar.QuerySelect(ado2,sql);
 
 
-
-      PrintYap('010','\LabSonuc',inttoStr(TagfrmLabKabul) ,TopluDataset,pTNone);
-
-    //  frmRapor.raporData1(frmRapor.topluset,'010','\LabSonuc');
- //     frmRapor.ShowModal;
+    TopluDataset.Dataset1 := datalar.ADO_SQL3;
+    TopluDataset.Dataset0 := ado2;
 
 
-      sql := 'update LaboratuvarKabul set yazdirildi = 1  ' +
-             'where dosyaNo = ' + QuotedStr(dosya) +
-             ' and sec = 1';
-      ado := TADOQuery.Create(nil);
+
+    PrintYap('010','\LabSonuc',inttoStr(TagfrmLabKabul) ,TopluDataset,pTNone);
+
+  //  frmRapor.raporData1(frmRapor.topluset,'010','\LabSonuc');
+  //     frmRapor.ShowModal;
+
+
+    sql := 'update LaboratuvarKabul set yazdirildi = 1  ' +
+           'where dosyaNo = ' + QuotedStr(dosya) +
+           ' and sec = 1';
+    ado := TADOQuery.Create(nil);
+    try
       ado.Connection := datalar.ADOConnection2;
       datalar.QueryExec(ado,sql);
-
+    finally
       ado.Free;
-      ado2.Free;
+    end;
+  finally
+    ado2.Free;
+  end;
 
-      if sayfalar_LabKabul.ActivePageIndex = 1
-      Then
-      cxGridDBTableView4DblClick(nil);
-
-
+  if sayfalar_LabKabul.ActivePageIndex = 1
+  Then
+  cxGridDBTableView4DblClick(nil);
 end;
 
 

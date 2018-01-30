@@ -308,7 +308,7 @@ var
   ado : TADOQuery;
   sql : string;
 begin
-  ado := TADOQuery.Create(nil);
+  ado := TADOQuery.Create(nil);x
   ado.Connection := datalar.ADOConnection2;
   sql := 'update raporlar set aktif = 0 where dosyaNo = ' + QuotedStr(ADO_RAPORLAR.FieldByName('dosyaNo').AsString);
   datalar.QueryExec(ado,sql);
@@ -364,7 +364,7 @@ begin
      Then Begin
 
       // datalar.ADOConnection2.BeginTrans;
-       ado := TADOQuery.Create(nil);
+       ado := TADOQuery.Create(nil);x
        ado.Connection := datalar.ADOConnection2;
 
       try
@@ -1296,7 +1296,7 @@ var
    sql , TakipFormNo : string;
 begin
 
-     ado := TADOQuery.Create(nil);
+     ado := TADOQuery.Create(nil);x
      ado.Connection := datalar.ADOConnection2;
 
      sql := 'select takipFormuNo from DiyabetTakip where dosyaNo = ' + QuotedStr(ADO_RAPORLAR.fieldbyname('dosyaNo').AsString) +
@@ -1362,7 +1362,7 @@ var
    ado : TADOQuery;
    sql , TakipFormNo : string;
 begin
-     ado := TADOQuery.Create(nil);
+     ado := TADOQuery.Create(nil);x
      ado.Connection := datalar.ADOConnection2;
 
      sql := 'select takipFormuNo from DiyabetTakip where dosyaNo = ' + QuotedStr(ADO_RAPORLAR.fieldbyname('dosyaNo').AsString) +
@@ -1431,7 +1431,7 @@ begin
  //    datalar.ADOConnection2.BeginTrans;
 
      try
-       ado := TADOQuery.Create(nil);
+       ado := TADOQuery.Create(nil);x
        ado.Connection := datalar.ADOConnection2;
 
        sql := 'insert into IlacRaporSablon(SablonTanimi) ' +
@@ -1797,7 +1797,7 @@ var
    dizi , i :integer;
    ado : TADOQuery;
 begin
-      ado := TADOQuery.Create(nil);
+      ado := TADOQuery.Create(nil);x
       ado.Connection := datalar.ADOConnection2;
       sql := 'select datavalue from strtotable('+#39 + RTeshisler + #39 + ',' + #39 + ',' + #39 + ')';
       datalar.QuerySelect(ado,sql);
@@ -1834,9 +1834,9 @@ begin
 
    if L[0].kolon1 <> ''
    Then Begin
-     ado := TADOQuery.Create(nil);
+     ado := TADOQuery.Create(nil);x
      ado.Connection := datalar.ADOConnection2;
-     adod := TADOQuery.Create(nil);
+     adod := TADOQuery.Create(nil);x
      adod.Connection := datalar.ADOConnection2;
 
      sql := 'select * from IlacRaporTeshislerSablon where sablonId = ' + L[0].kolon1;
@@ -1892,7 +1892,7 @@ var
    ado : TADOQuery;
 begin
 
-      ado := TADOQuery.Create(nil);
+      ado := TADOQuery.Create(nil);x
       ado.Connection := datalar.ADOConnection2;
 
       sql := 'select datavalue from strtotable('+#39 + RTanilar + #39 + ',' + #39 + ',' + #39 + ')';
@@ -2065,7 +2065,7 @@ var
    dizi , i :integer;
    ado : TADOQuery;
 begin
-      ado := TADOQuery.Create(nil);
+      ado := TADOQuery.Create(nil);x
       ado.Connection := datalar.ADOConnection2;
       sql := 'select * from IlacRaporTeshisler where RaporSira = ' + ADO_RAPORLAR.fieldbyname('sira').AsString ;
       datalar.QuerySelect(ado,sql);
@@ -2105,7 +2105,7 @@ var
    dizi , i :integer;
    ado : TADOQuery;
 begin
-      ado := TADOQuery.Create(nil);
+      ado := TADOQuery.Create(nil);x
       ado.Connection := datalar.ADOConnection2;
       sql := 'select * from IlacRaporTeshisler where RaporSira = ' + ADO_RAPORLAR.fieldbyname('sira').AsString ;
       datalar.QuerySelect(ado,sql);
@@ -2143,7 +2143,7 @@ var
    ado : TADOQuery;
 begin
 
-      ado := TADOQuery.Create(nil);
+      ado := TADOQuery.Create(nil);x
       ado.Connection := datalar.ADOConnection2;
 
       sql := 'select datavalue from strtotable('+#39 + _tanilar_ + #39 + ',' + #39 + ',' + #39 + ')';
@@ -2176,7 +2176,7 @@ var
    ado : TADOQuery;
 begin
 
-      ado := TADOQuery.Create(nil);
+      ado := TADOQuery.Create(nil);x
       ado.Connection := datalar.ADOConnection2;
 
       sql := 'select datavalue from strtotable('+#39 + _tanilar_ + #39 + ',' + #39 + ',' + #39 + ')';
@@ -2783,7 +2783,7 @@ begin
       TaniListe.Where := '';
     End;
 
-   ado := TADOQuery.Create(nil);
+   ado := TADOQuery.Create(nil);x
    ado.Connection := datalar.ADOConnection2;
    TaniListe.SiralamaKolonu := 'TANI';
    List := TaniListe.ListeGetir;
@@ -2904,7 +2904,7 @@ var
    ado : TADOQuery;
    sql , TakipFormNo : string;
 begin
-    ado := TADOQuery.Create(nil);
+    ado := TADOQuery.Create(nil);x
     ado.Connection := datalar.ADOConnection2;
 
      sql := 'select * from  IlacRaporEtkenMaddeler where isnull(onay,0) = 0 and RaporSira = ' + sira;
@@ -2943,7 +2943,7 @@ var
   sql,ack ,msg,TakipFormNo: string;
   ek : integer;
 begin
-  ado := TADOQuery.Create(nil);
+  ado := TADOQuery.Create(nil);x
   ado.Connection := datalar.ADOConnection2;
   sql := 'select takipFormuNo from DiyabetTakip where dosyaNo = ' + QuotedStr(ADO_RAPORLAR.fieldbyname('dosyaNo').AsString) +
          ' and gelisNo = ' + ADO_RAPORLAR.fieldbyname('gelisNo').AsString;
