@@ -233,109 +233,118 @@ var
  FItem : TcxImageComboBoxItem;
 begin
   Columns := TStringList.Create;
-  Baslik := TStringList.Create;
-  Tips := TStringList.Create;
-  Edits := TStringList.Create;
+  try
+    Baslik := TStringList.Create;
+    try
+      Tips := TStringList.Create;
+      try
+        Edits := TStringList.Create;
+        try
+          Split(',',_fields_,Columns);
+          Split(',',_fieldBaslik_,Baslik);
+          Split(',',_fieldTips_,Tips);
+          Split(',',_fieldsEdit_,Edits);
 
-  Split(',',_fields_,Columns);
-  Split(',',_fieldBaslik_,Baslik);
-  Split(',',_fieldTips_,Tips);
-  Split(',',_fieldsEdit_,Edits);
+          for i := 0 to Columns.Count - 1 do
+          begin
+            DBGrid.Columns[i].Caption := Baslik[i];
+         //   DBgrid.Columns[i].Properties.ReadOnly := StrToBool(ifThen(Edits[i]='1','True','False'));
+            DBgrid.Columns[i].HeaderAlignmentHorz := taCenter;
+            if Tips[i] = 'int' then
+             begin
+              DBgrid.Columns[i].PropertiesClassName := 'TcxCurrencyEditProperties';
+              DBgrid.Columns[i].Properties.Alignment.Horz := taRightJustify;
+              TcxCurrencyEditProperties(DBgrid.Columns[i].Properties).DisplayFormat := '#,###.##';
+             end;
+            if Tips[i] = 'string' then
+             begin
+              DBgrid.Columns[i].PropertiesClassName := 'TcxTextEditProperties';
+             end;
 
-  for i := 0 to Columns.Count - 1 do
-  begin
-    DBGrid.Columns[i].Caption := Baslik[i];
- //   DBgrid.Columns[i].Properties.ReadOnly := StrToBool(ifThen(Edits[i]='1','True','False'));
-    DBgrid.Columns[i].HeaderAlignmentHorz := taCenter;
-    if Tips[i] = 'int' then
-     begin
-      DBgrid.Columns[i].PropertiesClassName := 'TcxCurrencyEditProperties';
-      DBgrid.Columns[i].Properties.Alignment.Horz := taRightJustify;
-      TcxCurrencyEditProperties(DBgrid.Columns[i].Properties).DisplayFormat := '#,###.##';
-     end;
-    if Tips[i] = 'string' then
-     begin
-      DBgrid.Columns[i].PropertiesClassName := 'TcxTextEditProperties';
-     end;
+            if Tips[i] = 'Check' then
+             begin
+              DBgrid.Columns[i].PropertiesClassName := 'TcxCheckBoxProperties';
+              TcxCheckBoxProperties(DBgrid.Columns[i].Properties).ValueChecked := 1;
+              TcxCheckBoxProperties(DBgrid.Columns[i].Properties).ValueUnchecked := 0;
+             end;
 
-    if Tips[i] = 'Check' then
-     begin
-      DBgrid.Columns[i].PropertiesClassName := 'TcxCheckBoxProperties';
-      TcxCheckBoxProperties(DBgrid.Columns[i].Properties).ValueChecked := 1;
-      TcxCheckBoxProperties(DBgrid.Columns[i].Properties).ValueUnchecked := 0;
-     end;
+            if Tips[i] = 'saat' then
+             begin
+              DBgrid.Columns[i].PropertiesClassName := 'TcxDateEditProperties';
+             end;
 
-    if Tips[i] = 'saat' then
-     begin
-      DBgrid.Columns[i].PropertiesClassName := 'TcxDateEditProperties';
-     end;
-
-    if Tips[i] = 'ButtonEdit' then
-     begin
-      DBgrid.Columns[i].PropertiesClassName := 'TcxButtonEditProperties';
-      TcxButtonEditProperties(DBgrid.Columns[i].Properties).OnButtonClick := NaceKodPropertiesButtonClick;
-     end;
+            if Tips[i] = 'ButtonEdit' then
+             begin
+              DBgrid.Columns[i].PropertiesClassName := 'TcxButtonEditProperties';
+              TcxButtonEditProperties(DBgrid.Columns[i].Properties).OnButtonClick := NaceKodPropertiesButtonClick;
+             end;
 
 
-    if Tips[i] = 'ImageDoktorCombo' then
-     begin
-      if Columns[i] = 'subeDoktor' then
-      begin
-        DBgrid.Columns[i].PropertiesClassName := 'TcxImageComboBoxProperties';
-        TcxImageComboBoxProperties(DBgrid.Columns[i].Properties).ClearKey := 46;
-        TcxImageComboBoxProperties(DBgrid.Columns[i].Properties).Items.Clear;
+            if Tips[i] = 'ImageDoktorCombo' then
+             begin
+              if Columns[i] = 'subeDoktor' then
+              begin
+                DBgrid.Columns[i].PropertiesClassName := 'TcxImageComboBoxProperties';
+                TcxImageComboBoxProperties(DBgrid.Columns[i].Properties).ClearKey := 46;
+                TcxImageComboBoxProperties(DBgrid.Columns[i].Properties).Items.Clear;
 
-        datalar.Ado_Doktorlar.First;
-        while not datalar.Ado_Doktorlar.Eof do
-        begin
-          FItem := TcxImageComboBoxProperties(DBgrid.Columns[i].Properties).Items.add;
-          FItem.Value := datalar.Ado_Doktorlar.FieldByName('kod').AsString;
-          FItem.Description := datalar.Ado_Doktorlar.FieldByName('tanimi').AsString;
-          datalar.Ado_Doktorlar.Next;
+                datalar.Ado_Doktorlar.First;
+                while not datalar.Ado_Doktorlar.Eof do
+                begin
+                  FItem := TcxImageComboBoxProperties(DBgrid.Columns[i].Properties).Items.add;
+                  FItem.Value := datalar.Ado_Doktorlar.FieldByName('kod').AsString;
+                  FItem.Description := datalar.Ado_Doktorlar.FieldByName('tanimi').AsString;
+                  datalar.Ado_Doktorlar.Next;
+                end;
+              end;
+
+              if Columns[i] = 'IGU' then
+              begin
+                DBgrid.Columns[i].PropertiesClassName := 'TcxImageComboBoxProperties';
+                TcxImageComboBoxProperties(DBgrid.Columns[i].Properties).ClearKey := 46;
+                TcxImageComboBoxProperties(DBgrid.Columns[i].Properties).Items.Clear;
+
+                datalar.Ado_IGU.First;
+                while not datalar.Ado_IGU.Eof do
+                begin
+                  FItem := TcxImageComboBoxProperties(DBgrid.Columns[i].Properties).Items.add;
+                  FItem.Value := datalar.Ado_IGU.FieldByName('kod').AsString;
+                  FItem.Description := datalar.Ado_IGU.FieldByName('tanimi').AsString;
+                  datalar.Ado_IGU.Next;
+                end;
+              end;
+
+              if Columns[i] = 'tehlikeSinifi' then
+              begin
+                DBgrid.Columns[i].PropertiesClassName := 'TcxImageComboBoxProperties';
+                TcxImageComboBoxProperties(DBgrid.Columns[i].Properties).Items.Clear;
+
+                datalar.ADO_TehlikeSiniflari.First;
+                while not datalar.ADO_TehlikeSiniflari.Eof do
+                begin
+                  FItem := TcxImageComboBoxProperties(DBgrid.Columns[i].Properties).Items.add;
+                  FItem.Value := datalar.ADO_TehlikeSiniflari.FieldByName('TehlikeSinifi').AsString;
+                  FItem.Description := datalar.ADO_TehlikeSiniflari.FieldByName('tanimi').AsString;
+                  datalar.ADO_TehlikeSiniflari.Next;
+                end;
+              end;
+             end;
+
+            DBgrid.Columns[i].Width := 70;
+          end;
+          DBGrid.Columns[0].Visible := false;
+        finally
+          Edits.Free;
         end;
+      finally
+        Tips.Free;
       end;
-
-      if Columns[i] = 'IGU' then
-      begin
-        DBgrid.Columns[i].PropertiesClassName := 'TcxImageComboBoxProperties';
-        TcxImageComboBoxProperties(DBgrid.Columns[i].Properties).ClearKey := 46;
-        TcxImageComboBoxProperties(DBgrid.Columns[i].Properties).Items.Clear;
-
-        datalar.Ado_IGU.First;
-        while not datalar.Ado_IGU.Eof do
-        begin
-          FItem := TcxImageComboBoxProperties(DBgrid.Columns[i].Properties).Items.add;
-          FItem.Value := datalar.Ado_IGU.FieldByName('kod').AsString;
-          FItem.Description := datalar.Ado_IGU.FieldByName('tanimi').AsString;
-          datalar.Ado_IGU.Next;
-        end;
-      end;
-
-      if Columns[i] = 'tehlikeSinifi' then
-      begin
-        DBgrid.Columns[i].PropertiesClassName := 'TcxImageComboBoxProperties';
-        TcxImageComboBoxProperties(DBgrid.Columns[i].Properties).Items.Clear;
-
-        datalar.ADO_TehlikeSiniflari.First;
-        while not datalar.ADO_TehlikeSiniflari.Eof do
-        begin
-          FItem := TcxImageComboBoxProperties(DBgrid.Columns[i].Properties).Items.add;
-          FItem.Value := datalar.ADO_TehlikeSiniflari.FieldByName('TehlikeSinifi').AsString;
-          FItem.Description := datalar.ADO_TehlikeSiniflari.FieldByName('tanimi').AsString;
-          datalar.ADO_TehlikeSiniflari.Next;
-        end;
-      end;
-
-
-     end;
-
-    DBgrid.Columns[i].Width := 70;
-
+    finally
+      Baslik.Free;
+    end;
+  finally
+    Columns.Free;
   end;
-
-  DBGrid.Columns[0].Visible := false;
-
-
 end;
 
 procedure TfrmPopupDBGridForm.Yukle;
@@ -377,18 +386,20 @@ var
   sql : string;
 begin
   inherited;
-
   ado := TADOQuery.Create(nil);
-  ado.Connection := datalar.ADOConnection2;
-  sql := 'select * from PopupDBGridFormTabloTanim where id = ' + varToStr(txtTable.EditingValue);
-  datalar.QuerySelect(ado,sql);
+  try
+    ado.Connection := datalar.ADOConnection2;
+    sql := 'select * from PopupDBGridFormTabloTanim where id = ' + varToStr(txtTable.EditingValue);
+    datalar.QuerySelect(ado,sql);
 
-  TableName := ado.FieldByName('tableName').AsString;
-  _fields_ := ado.FieldByName('_fields_').AsString;
-  _fieldBaslik_ := ado.FieldByName('_fieldBaslik_').AsString;
-  _fieldTips_ := ado.FieldByName('_fieldTips_').AsString;
-  Yukle;
-
+    TableName := ado.FieldByName('tableName').AsString;
+    _fields_ := ado.FieldByName('_fields_').AsString;
+    _fieldBaslik_ := ado.FieldByName('_fieldBaslik_').AsString;
+    _fieldTips_ := ado.FieldByName('_fieldTips_').AsString;
+    Yukle;
+  finally
+    ado.Free;
+  end;
 end;
 
 procedure TfrmPopupDBGridForm.FormShow(Sender: TObject);
