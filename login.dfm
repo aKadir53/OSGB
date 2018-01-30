@@ -307,6 +307,7 @@ object frmLogin: TfrmLogin
     ParentFont = False
     TabOrder = 0
     Properties.ActivePage = SayfaLogin
+    OnChange = LoginSayfalarChange
     OnPageChanging = LoginSayfalarPageChanging
     ClientRectBottom = 203
     ClientRectLeft = 4
@@ -905,6 +906,7 @@ object frmLogin: TfrmLogin
           object dxLayoutControl2Group2: TdxLayoutGroup
             CaptionOptions.Text = 'New Group'
             Parent = dxLayoutControl2Group_Root
+            Visible = False
             ButtonOptions.Buttons = <>
             Hidden = True
             LayoutDirection = ldHorizontal

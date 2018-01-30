@@ -107,6 +107,7 @@ type
     procedure LoginSayfalarPageChanging(Sender: TObject; NewPage: TcxTabSheet;
       var AllowChange: Boolean);
     procedure txtSubePropertiesChange(Sender: TObject);
+    procedure LoginSayfalarChange(Sender: TObject);
 
     //procedure Thread1;
     //procedure Thread2;
@@ -183,6 +184,14 @@ begin
      sleep(100);
      Application.ProcessMessages;
      frmLogin.txtip.Caption := 'Lisans Alýnýyor..........';
+end;
+
+procedure TfrmLogin.LoginSayfalarChange(Sender: TObject);
+begin
+  if LoginSayfalar.ActivePage = SayfaLogin then
+    Edit2.SetFocus
+   else
+    txtOsgbKodu.SetFocus;
 end;
 
 procedure TfrmLogin.LoginSayfalarPageChanging(Sender: TObject;
@@ -449,6 +458,7 @@ var
 begin
  if txtOsgbKodu.EditingText <> ''
  Then begin
+   try
      if datalar.MasterBaglan(txtOsgbKodu.EditingValue,db, OSGBDesc, txtServerName.Text, txtServerUserName.Text, txtServerPassword.Text)
      Then begin
          Regyaz('OSGB_servername',Encode64(txtServerName.Text));
@@ -458,11 +468,15 @@ begin
          then begin
            Regyaz('OSGB_db_name',Encode64(db));
            txtDataBase.EditValue := db;
-           Regyaz('OSGB_description',Encode64(OSGBDesc));
+           Regyaz('OSGB_description',OSGBDesc);
            Labelx.Caption := OSGBDesc;
            btnBaglan.Caption := 'Baðlandý';
          end;
      end;
+   except
+     dxLayoutControl2Group2.Visible := True;
+     raise;
+   end;
  end
  else
   ShowMessageSkin('Firma Kodu Boþ Olmamalýdýr','','','info');
@@ -561,7 +575,7 @@ begin
    end;
 
    txtDataBase.EditValue := Decode64(regOku('OSGB_db_name'));
-   Labelx.Caption := Decode64(regOku('OSGB_description'));
+   Labelx.Caption := regOku('OSGB_description');
    Edit2.SetFocus;
 end;
 
