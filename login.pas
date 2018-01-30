@@ -191,6 +191,7 @@ begin
   if LoginSayfalar.ActivePage = SayfaLogin then
     Edit2.SetFocus
    else
+  if LoginSayfalar.ActivePage = SayfaConTest then
     txtOsgbKodu.SetFocus;
 end;
 
