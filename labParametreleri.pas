@@ -268,22 +268,24 @@ var
   ado : TADOQuery;
   item : TcxRadioGroupItem;
 begin
+  ado := TADOQuery.Create(nil);
+  try
+    ado.Connection := datalar.ADOConnection2;
 
-   ado := TADOQuery.Create(nil);
-   ado.Connection := datalar.ADOConnection2;
+    Sql := 'select SLB kod,SLT as grup from parametreler where SLK = ''53''';
+    datalar.QuerySelect(ado,sql);
+    Grup.Clear;
+    while not ado.Eof do
+    begin
+      item := Grup.Properties.Items.Add;
+      item.Caption := ado.FieldByName('grup').AsString;
+      item.Value := ado.FieldByName('kod').AsString;
+      ado.Next;
+    end;
+  finally
+    ado.Free;
+  end;
 
-   Sql := 'select SLB kod,SLT as grup from parametreler where SLK = ''53''';
-   datalar.QuerySelect(ado,sql);
-   Grup.Clear;
-   while not ado.Eof do
-   begin
-     item := Grup.Properties.Items.Add;
-     item.Caption := ado.FieldByName('grup').AsString;
-     item.Value := ado.FieldByName('kod').AsString;
-     ado.Next;
-   end;
-
-   ado.Free;
 
   try
    grup.ItemIndex := -1;
@@ -299,22 +301,22 @@ var
   ado : TADOQuery;
 begin
   try
-   ado := TADOQuery.Create(nil);
-   ado.Connection := datalar.ADOConnection2;
+    ado := TADOQuery.Create(nil);
+    try
+      ado.Connection := datalar.ADOConnection2;
 
-   sql := 'update HIZMET set OZELKOD = ' + QuotedStr(grupCod) +
-          ' where code = ' + QuotedStr(ADO_TESTLER.fieldbyname('code').AsString);
+      sql := 'update HIZMET set OZELKOD = ' + QuotedStr(grupCod) +
+             ' where code = ' + QuotedStr(ADO_TESTLER.fieldbyname('code').AsString);
 
-   datalar.QueryExec(ado,sql);
-
+      datalar.QueryExec(ado,sql);
+    finally
+     ado.Free;
+    end;
   except
     ShowMessageSkin('Hata Oluþtu','','','info');
-    ado.Free;
     exit;
   End;
  //   ShowMessageSkin('Grup Deðiþtirildi','','','info');
-    ado.Free;
-
 
   ADO_TESTLER.Active := False;
   ADO_TESTLER.Active := true;
@@ -330,21 +332,20 @@ var
   sql : string;
 begin
   grupCod := varToStr(grup.ActiveProperties.Items.Items[grup.itemindex].Value);
-
   try
-   ado := TADOQuery.Create(nil);
-   ado.Connection := datalar.ADOConnection2;
-   sql := 'update HIZMET set OZELKOD = ' + QuotedStr(grupCod) +
-          ' where code = ' + QuotedStr(ADO_TESTLER.fieldbyname('code').AsString);
-   datalar.QueryExec(ado,sql);
+    ado := TADOQuery.Create(nil);
+    try
+      ado.Connection := datalar.ADOConnection2;
+      sql := 'update HIZMET set OZELKOD = ' + QuotedStr(grupCod) +
+             ' where code = ' + QuotedStr(ADO_TESTLER.fieldbyname('code').AsString);
+      datalar.QueryExec(ado,sql);
+    finally
+      ado.Free;
+    end;
   except
     ShowMessageSkin('Hata Oluþtu','','','info');
-    ado.Free;
     exit;
   End;
-
-  ado.Free;
-
   ADO_TESTLER.Active := False;
   ADO_TESTLER.Active := true;
   pnlGrup.Visible := false;
