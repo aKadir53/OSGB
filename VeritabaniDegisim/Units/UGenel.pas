@@ -126,17 +126,17 @@ end;
 
 procedure FSBeginTrans;
 begin
-  FDefaultConnection.BeginTrans;
+  FDefaultConnection.BeginTransx;
 end;
 
 procedure FSCommit;
 begin
-  FDefaultConnection.CommitTrans;
+  FDefaultConnection.CommitTransx;
 end;
 
 procedure FSRollback;
 begin
-  FDefaultConnection.RollbackTrans;
+  FDefaultConnection.RollbackTransx;
 end;
 
 function ExistsRecord (var aQuery : TFSQuery) : Boolean;

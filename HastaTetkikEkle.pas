@@ -148,8 +148,8 @@ var
   item : TMenuItem;
 begin
   Ado := TADOQuery.Create(nil);
-  datalar.QuerySelect(ado,sql);
   try
+    datalar.QuerySelect(ado,sql);
     SubMenu.Clear;
     while not ado.Eof do
     begin
@@ -163,10 +163,8 @@ begin
       ado.Next;
     end;
   finally
-     ado.Free;
+    ado.Free;
   end;
-
-
 end;
 
 procedure TfrmHastaTetkikEkle.cxKaydetClick(Sender: TObject);
@@ -224,13 +222,17 @@ procedure TfrmHastaTetkikEkle.TetkikSil;
 var
   sql,sira : string;
   ado : TADOQuery;
+  bsucc: Boolean;
 begin
   sira := ADO_Tetkikler.FieldByName('SIRANO').AsString;
   try
-      ado := TADOQuery.Create(nil);
+    ado := TADOQuery.Create(nil);
+    try
       if mrYES = ShowMessageSkin('Tekik ve Sonuç Bilgisi Silinecek Emin misiniz?','','','msg')
       then begin
-          datalar.ADOConnection2.BeginTrans;
+        bsucc := False;
+        BeginTrans (datalar.ADOConnection2);
+        try
           sql :=
               //  'if not exists(select * from LaboratuvarKabul where hareketlerSira = ' + sira + ')' +
            //     'begin '+
@@ -245,16 +247,24 @@ begin
             //    '  select -1 ' +
             //    'end';
           datalar.QueryExec(ado,sql);
-          datalar.ADOConnection2.CommitTrans;
+          bsucc := True;
+        finally
+          if bsucc then
+            CommitTrans (datalar.ADOConnection2)
+           else
+            RollbackTrans (datalar.ADOConnection2);
+        end;
       end;
+    finally
+      ado.Free;
+    end;
   except on e : Exception do
    begin
-      datalar.ADOConnection2.RollbackTrans;
       ShowMessageSkin(e.Message,'','','info');
    end;
   end;
   AdoQueryActiveYenile(ADO_Tetkikler);
-  ado.Free;
+
 end;
 
 procedure TfrmHastaTetkikEkle.TetkikEkle;
@@ -359,71 +369,74 @@ begin
 
     -30 : begin
             ado := TADOQuery.Create(nil);
-            ado.Connection := datalar.ADOConnection2;
+            try
+              ado.Connection := datalar.ADOConnection2;
 
-            code := ADO_Tetkikler.FieldByName('CODE').AsString;
-            name := ADO_Tetkikler.FieldByName('NAME1').AsString;
-            sira := ADO_Tetkikler.fieldbyname('SIRANO').AsString;
+              code := ADO_Tetkikler.FieldByName('CODE').AsString;
+              name := ADO_Tetkikler.FieldByName('NAME1').AsString;
+              sira := ADO_Tetkikler.fieldbyname('SIRANO').AsString;
 
-            sql := 'select * from LaboratuvarKabul where hareketlerSira = ' + sira;
-            datalar.QuerySelect(ado,sql);
-            if ado.Eof
-            then begin
-                sql := ' exec sp_YeniLabKabulNoAl ';
-                datalar.QuerySelect(ado,sql);
-                kabulNO := ado.Fields[0].AsString;
-                ado.Close;
+              sql := 'select * from LaboratuvarKabul where hareketlerSira = ' + sira;
+              datalar.QuerySelect(ado,sql);
+              if ado.Eof
+              then begin
+                  sql := ' exec sp_YeniLabKabulNoAl ';
+                  datalar.QuerySelect(ado,sql);
+                  kabulNO := ado.Fields[0].AsString;
+                  ado.Close;
 
-                sql := 'exec sp_YeniLabKabul ' +
-                        #39 + _dosyaNO_ + #39 + ',' +
-                        _gelisNO_ + ',' +
-                        #39 + code + #39 + ',' +
-                        #39 + '' + #39 + ',' +
-                        #39 + tarihal(date()) + #39 + ',' +
-                        #39 + datalar._username + #39 + ',' +
-                        #39 + '' + #39 + ',' +
-                        #39 + '' + #39 + ',' +
-                        #39 + name + #39 + ',' +
-                        #39 + sira + #39 + ',' +
-                        #39 + kabulNo + #39;
+                  sql := 'exec sp_YeniLabKabul ' +
+                          #39 + _dosyaNO_ + #39 + ',' +
+                          _gelisNO_ + ',' +
+                          #39 + code + #39 + ',' +
+                          #39 + '' + #39 + ',' +
+                          #39 + tarihal(date()) + #39 + ',' +
+                          #39 + datalar._username + #39 + ',' +
+                          #39 + '' + #39 + ',' +
+                          #39 + '' + #39 + ',' +
+                          #39 + name + #39 + ',' +
+                          #39 + sira + #39 + ',' +
+                          #39 + kabulNo + #39;
 
-                 datalar.QueryExec(ado,sql);
+                   datalar.QueryExec(ado,sql);
 
 
-                sql := 'exec sp_labSonucGir ' + #39 + tarihal(date()) + #39 + ',' +
-                       #39 + _dosyaNo_ + #39 + ',' +
-                       #39 + code + #39 + ',' +
-                       #39 + '1' + #39 + ',' +
-                       #39 + 'H' + #39;
+                  sql := 'exec sp_labSonucGir ' + #39 + tarihal(date()) + #39 + ',' +
+                         #39 + _dosyaNo_ + #39 + ',' +
+                         #39 + code + #39 + ',' +
+                         #39 + '1' + #39 + ',' +
+                         #39 + 'H' + #39;
 
-                datalar.QueryExec(ado,sql);
+                  datalar.QueryExec(ado,sql);
+              end;
+
+             sql := 'select parametre_sira,parametreadi,parametreadi1,parametrebirim ,normal1,normal2,ref_aciklama,sonuc1,sonuc2,sonuc3,' +
+                    ' aciklama,tip,testno,lk.OZELKOD,g.SLT ' +
+                    ' from laboratuvar_sonuc ls ' +
+                    ' left join HIZMET lk on lk.code = ls.testno ' +
+                    ' left join lab_gruplari g on g.SLB = lk.OZELKOD ' +
+                    ' where ls.dosyaNo = ' + QuotedStr(_dosyaNo_) + ' and ls.gelisno = ' + _gelisNO_ +
+                  //  ' and OZELKOD = ' + QuotedStr(_grup_) +
+                    ' order by ls.code,parametre_sira ';
+
+             datalar.QuerySelect(ado,sql);
+             DataSource := TDataSource.Create(nil);
+             try
+               DataSource.DataSet := ado;
+               Application.CreateForm(TfrmLabSonucGir, frmLabSonucGir);
+               try
+                 frmLabSonucGir.sonucGir.DataController.DataSource := DataSource;
+                 frmLabSonucGir.ShowModal;
+               finally
+                 FreeAndNil(frmLabSonucGir);
+               end;
+             finally
+               DataSource.Free;
+             end;
+            finally
+              ado.Free;
             end;
-
-           sql := 'select parametre_sira,parametreadi,parametreadi1,parametrebirim ,normal1,normal2,ref_aciklama,sonuc1,sonuc2,sonuc3,' +
-                  ' aciklama,tip,testno,lk.OZELKOD,g.SLT ' +
-                  ' from laboratuvar_sonuc ls ' +
-                  ' left join HIZMET lk on lk.code = ls.testno ' +
-                  ' left join lab_gruplari g on g.SLB = lk.OZELKOD ' +
-                  ' where ls.dosyaNo = ' + QuotedStr(_dosyaNo_) + ' and ls.gelisno = ' + _gelisNO_ +
-                //  ' and OZELKOD = ' + QuotedStr(_grup_) +
-                  ' order by ls.code,parametre_sira ';
-
-           datalar.QuerySelect(ado,sql);
-           DataSource := TDataSource.Create(nil);
-           DataSource.DataSet := ado;
-
-           Application.CreateForm(TfrmLabSonucGir, frmLabSonucGir);
-
-
-           frmLabSonucGir.sonucGir.DataController.DataSource := DataSource;
-           frmLabSonucGir.ShowModal;
-           frmLabSonucGir := nil;
-           ado.Free;
-           DataSource.Free;
-
           end;
-
-
     end;
 end;
 
