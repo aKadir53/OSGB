@@ -61,7 +61,7 @@ uses
 // KadirMedula3 in '..\..\medula3wsdl\KadirMedula3.pas';
 
 const
-  AppalicationVer : integer = 1039;
+  AppalicationVer : integer = 1040;
   // Versiyon info kontrol etmeyi unutma
 
 {$R *.res}
@@ -89,32 +89,35 @@ begin
     if FileExists('C:\OSGB\isg.exe') = False
     Then begin
       dosya := TFileStream.Create('C:\OSGB\isg.exe',fmCreate);
-      datalar.HTTP1.Get('http://www.noktayazilim.net/isg.exe' ,TStream(dosya));
-      dosya.Free;
-    end;
-
-  try
-    versiyon := (datalar.HTTP1.Get('http://www.noktayazilim.net/OSGBVersiyon.txt'));
-  except
-    versiyon := inttostr(AppalicationVer);
-  end;
-
-  if versiyon = '' then versiyon := inttostr(AppalicationVer);
-
-  if (strtoint(versiyon) > AppalicationVer)
-  Then Begin
-    try
-     _exe :=  PAnsiChar(AnsiString('C:\OSGB\isg.exe'));
-     WinExec(_exe,SW_SHOW);
-    // datalar.KillTask('Diyaliz.exe');
-    except on e : exception do
-      begin
-        ShowMessageSkin(e.Message,'','','info');
+      try
+        datalar.HTTP1.Get('http://www.noktayazilim.net/isg.exe' ,TStream(dosya));
+      finally
+        dosya.Free;
       end;
     end;
-  End;
 
- (*
+    try
+      versiyon := (datalar.HTTP1.Get('http://www.noktayazilim.net/OSGBVersiyon.txt'));
+    except
+      versiyon := inttostr(AppalicationVer);
+    end;
+
+    if versiyon = '' then versiyon := inttostr(AppalicationVer);
+
+    if (strtoint(versiyon) > AppalicationVer)
+    Then Begin
+      try
+       _exe :=  PAnsiChar(AnsiString('C:\OSGB\isg.exe'));
+       WinExec(_exe,SW_SHOW);
+      // datalar.KillTask('Diyaliz.exe');
+      except on e : exception do
+        begin
+          ShowMessageSkin(e.Message,'','','info');
+        end;
+      end;
+    End;
+
+   (*
     if FileExists('C:\OSGB\AlpemixCMX.exe') = False
     Then begin
       dosya := TFileStream.Create('C:\OSGB\AlpemixCMX.exe',fmCreate);
@@ -166,8 +169,11 @@ begin
 
 
   Application.CreateForm(TfrmLogin, frmLogin);
-  frmLogin.ShowModal;
-  frmLogin := nil;
+  try
+    frmLogin.ShowModal;
+  finally
+    FreeAndNil (frmLogin);
+  end;
 
   if datalar.loginLog = True
   then begin

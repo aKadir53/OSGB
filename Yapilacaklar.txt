@@ -115,8 +115,6 @@ yanlýþ þirkete girip saha gözetimi yaptýysa ???
 iþyeri hekimi çalýþmalarý grup tablosu
 sorular grup baþlýklý
 
-muayene tipleri için tablo açýlýp tablodan getirtilebilir. zannediyorum view yapmýþtýk ama muayene türlerini gösteren yerlerde sadece eskilerinin tanýmlarý gözüküyor.
-
 eðitim, iþ kazasý, saha gözlem gibi ekranlarda tablolara þube kodu alaný eklenecek.
 
 Tablette hiç internet eriþimi olmadan kayýt girme ve sisteme gönderebilme özelliði
@@ -135,7 +133,6 @@ Oooo. Eleman güzel yerden yakaladý. Program kabiliyetlerini kullanarak kendi rek
 
 iþ güvenliði uzmaný 1 þirkete
 
-gebe muayenesi 
 ve hastaneye sevk isteniyormuþ
 
 doktor kartýndan, iþ güvenliði uzman kartýndan "Kullanýcý aç" düðmesi eklenebilir mi ?
@@ -170,9 +167,7 @@ kullanýcý kartý silerken foreign key hatasý çýkýnca ekrandan yine de siliyor
 kullanýcý yetkileri gibi gridli ekranlarda dataset post olmadan çýkma problemi var
 müþteri tablosundaki 4 haneli kodlarýn vergi kimlik numarasý gibi bir þey 
 personel eklerken user doktorsa yeni deðil aktif default olabilir.
-þirket birleþtir þube ayýr menüsü eklenebilir.
 userGroups gridinden grup silerken beforeDelete'de usergroupsettings ve usergroupmenusettings tablolarýndan data siliyor, fakat users'ta o grupta bir kullanýcý varsa foreign key çakýyor. yetki tanýmlarý silinmiþ olarak kalýyor
-muayene eklerken view'dan almýyor türleri
 
 yapýlabilecek otomatik aktarýmlar: 
 sgk sicil numarasýndan firma ünvan ve þube açýklamalarý güncelleme
@@ -206,7 +201,7 @@ ilgili dýþ aktarýmýn tablosuna ilk kayýt yazarken disAktarimParametre tablosu il
 dýþ aktarým sp'sinde, ara tablodan data alýp kullanýrken þirket kodu, user vs bilgiler için gidip kendisindeki aktarim parametre id'sindeki parametre kaydýna gidilip data kullanýlabilir.
 iþte bu kadar basit.
 
-uygulamanýn mevcut kopyalarýný kapatmasýný ve halt komutlarýný, application.terminate'leri kaldýrmak lazým
+uygulamanýn mevcut kopyalarýný kapatmasýný ve halt komutlarýný, application.terminate'leri kaldýrmak lazým kill killtask
 þube kartlarýna aktif / pasif ayarý eklenecek
 isg katip aktarýmýnda nace kodlarý firma kartýna güncelleniyor, þube kartýna da güncellemek lazým
 

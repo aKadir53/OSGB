@@ -271,8 +271,8 @@ begin
       KabulOku(TGirisForm(Form)._TakipNo_,HastaBil,datalar.HastaKabul,1);
       if 1 = 1
       Then Begin
-          Application.CreateForm(TfrmTakipBilgisiOku, frmTakipBilgisiOku);
-
+        Application.CreateForm(TfrmTakipBilgisiOku, frmTakipBilgisiOku);
+        try
           frmTakipBilgisiOku.txtTakipBilgisi.Lines.Add('Takip No       :  ' + HastaBil.Takip);
           frmTakipBilgisiOku.txtTakipBilgisi.Lines.Add('Ýlk Takip No   :  ' + HastaBil.ilkTakip);
           frmTakipBilgisiOku.txtTakipBilgisi.Lines.Add('Takip Tarihi   :  ' + HastaBil.MuayeneTarihi);
@@ -294,7 +294,9 @@ begin
           frmTakipBilgisiOku._HastaAdSoyad_ := TGirisForm(Form)._HastaAdSoyad_;
 
           frmTakipBilgisiOku.ShowModal;
-          frmTakipBilgisiOku := nil;
+        finally
+          FreeAndNil (frmTakipBilgisiOku);
+        end;
       End;
 
 end;
@@ -385,132 +387,136 @@ begin
      // pnlDurum.Visible := True;
 
       hatali := TStringList.Create;
-    //  tedavi := ADO_Gelisler.FieldByName('TEDAVITURU').AsString;
-      verisetleriyenile(TakipNo,'D','G');
+      try
+      //  tedavi := ADO_Gelisler.FieldByName('TEDAVITURU').AsString;
+        verisetleriyenile(TakipNo,'D','G');
 
-      if  Length(datalar.VeriSeti.Tahlil) + Length(datalar.VeriSeti.Diger) +
-          Length(datalar.VeriSeti.Tani) + Length(datalar.VeriSeti.Malzeme) +
-          Length(datalar.VeriSeti.Rad) <= 20
-      then begin
-        sonuc := HizmetKayit_3(BasvuruNo,TakipNo,datalar.HizmetKayit,nil,
-                      nil,nil,nil,
-                      nil,DATALAR.VeriSeti.Malzeme,nil,
-                      datalar.VeriSeti.Tahlil,datalar.VeriSeti.Tani,datalar.VeriSeti.Rad,
-                      nil,
-                      //datalar.veriSeti.KayitliIslem,
-                      hatali,1,'');
-
-        if sonuc = '0000'
-        Then Begin
-          Sonucyaz(sonuc,TakipNo,1,hatali);
-          ShowMessageSkin('Ýþlemler Baþarý ile Kaydedildi','','','info');
-//          Gelisler(DosyaNo.Text);
-        //  gridGelisler.OnClick(gridgelisler);
-        End
-        Else
-         GonderimMesaj(hatali.Text,'C:\NoktaV3\wsHizmetKayit.xml');
-      end
-      Else
-      Begin
-          verisetleriyenile(TakipNo,'D','G');
+        if  Length(datalar.VeriSeti.Tahlil) + Length(datalar.VeriSeti.Diger) +
+            Length(datalar.VeriSeti.Tani) + Length(datalar.VeriSeti.Malzeme) +
+            Length(datalar.VeriSeti.Rad) <= 20
+        then begin
           sonuc := HizmetKayit_3(BasvuruNo,TakipNo,datalar.HizmetKayit,nil,
                         nil,nil,nil,
-                        nil,nil,nil,
-                        nil,datalar.VeriSeti.Tani,datalar.VeriSeti.Rad,
-                        nil,
-                        //datalar.veriSeti.KayitliIslem,
-                        hatali,1,'');
-          if sonuc = '0000'
-          then
-           Sonucyaz(sonuc,TakipNo,1,hatali)
-          else
-           GonderimMesaj(hatali.Text,'C:\NoktaV3\wsHizmetKayit.xml');
-
-          if Length(datalar.VeriSeti.Malzeme) > 0
-          Then Begin
-              sleep(3000);
-              sonuc := HizmetKayit_3(BasvuruNo,TakipNo,datalar.HizmetKayit,nil,
-                        nil,nil,nil,
                         nil,DATALAR.VeriSeti.Malzeme,nil,
-                        nil,nil,nil,
+                        datalar.VeriSeti.Tahlil,datalar.VeriSeti.Tani,datalar.VeriSeti.Rad,
                         nil,
                         //datalar.veriSeti.KayitliIslem,
                         hatali,1,'');
 
-              if sonuc = '0000'
-              then
-               Sonucyaz(sonuc,TakipNo,1,hatali)
-              else
-               GonderimMesaj(hatali.Text,'C:\NoktaV3\wsHizmetKayit.xml');
-            end;
-
-
-          // Tahlilleri kaydet
-          if Length(datalar.VeriSeti.Tahlil) > 20
+          if sonuc = '0000'
           Then Begin
-            sleep(3000);
-            SetLength(datalar.VeriSeti.Tahlil,20);
+            Sonucyaz(sonuc,TakipNo,1,hatali);
+            ShowMessageSkin('Ýþlemler Baþarý ile Kaydedildi','','','info');
+  //          Gelisler(DosyaNo.Text);
+          //  gridGelisler.OnClick(gridgelisler);
+          End
+          Else
+           GonderimMesaj(hatali.Text,'C:\NoktaV3\wsHizmetKayit.xml');
+        end
+        Else
+        Begin
+            verisetleriyenile(TakipNo,'D','G');
             sonuc := HizmetKayit_3(BasvuruNo,TakipNo,datalar.HizmetKayit,nil,
-                        nil,nil,nil,
-                        nil,nil,nil,
-                        datalar.VeriSeti.Tahlil,nil,nil,
-                        nil,
-                        //datalar.veriSeti.KayitliIslem,
-                        hatali,1,'');
-
+                          nil,nil,nil,
+                          nil,nil,nil,
+                          nil,datalar.VeriSeti.Tani,datalar.VeriSeti.Rad,
+                          nil,
+                          //datalar.veriSeti.KayitliIslem,
+                          hatali,1,'');
             if sonuc = '0000'
             then
              Sonucyaz(sonuc,TakipNo,1,hatali)
             else
              GonderimMesaj(hatali.Text,'C:\NoktaV3\wsHizmetKayit.xml');
 
-           verisetleriyenile(TakipNo,'D','G');
-
-           sleep(3000);
-           sonuc := HizmetKayit_3(BasvuruNo,TakipNo,datalar.HizmetKayit,nil,
-                        nil,nil,nil,
-                        nil,nil,nil,
-                        datalar.VeriSeti.Tahlil,nil,nil,
-                        nil,
-                        //datalar.veriSeti.KayitliIslem,
-                        hatali,1,'');
-            Sonucyaz(sonuc,TakipNo,1,hatali);
-            if sonuc = '0000'
+            if Length(datalar.VeriSeti.Malzeme) > 0
             Then Begin
-             Sonucyaz(sonuc,TakipNo,1,hatali);
-             ShowMessageSkin('Ýþlemler Baþarý ile Kaydedildi','','','info');
-            // Gelisler(DosyaNo.Text);
-            // gridGelisler.OnClick(gridgelisler);
+                sleep(3000);
+                sonuc := HizmetKayit_3(BasvuruNo,TakipNo,datalar.HizmetKayit,nil,
+                          nil,nil,nil,
+                          nil,DATALAR.VeriSeti.Malzeme,nil,
+                          nil,nil,nil,
+                          nil,
+                          //datalar.veriSeti.KayitliIslem,
+                          hatali,1,'');
+
+                if sonuc = '0000'
+                then
+                 Sonucyaz(sonuc,TakipNo,1,hatali)
+                else
+                 GonderimMesaj(hatali.Text,'C:\NoktaV3\wsHizmetKayit.xml');
+              end;
+
+
+            // Tahlilleri kaydet
+            if Length(datalar.VeriSeti.Tahlil) > 20
+            Then Begin
+              sleep(3000);
+              SetLength(datalar.VeriSeti.Tahlil,20);
+              sonuc := HizmetKayit_3(BasvuruNo,TakipNo,datalar.HizmetKayit,nil,
+                          nil,nil,nil,
+                          nil,nil,nil,
+                          datalar.VeriSeti.Tahlil,nil,nil,
+                          nil,
+                          //datalar.veriSeti.KayitliIslem,
+                          hatali,1,'');
+
+              if sonuc = '0000'
+              then
+               Sonucyaz(sonuc,TakipNo,1,hatali)
+              else
+               GonderimMesaj(hatali.Text,'C:\NoktaV3\wsHizmetKayit.xml');
+
+             verisetleriyenile(TakipNo,'D','G');
+
+             sleep(3000);
+             sonuc := HizmetKayit_3(BasvuruNo,TakipNo,datalar.HizmetKayit,nil,
+                          nil,nil,nil,
+                          nil,nil,nil,
+                          datalar.VeriSeti.Tahlil,nil,nil,
+                          nil,
+                          //datalar.veriSeti.KayitliIslem,
+                          hatali,1,'');
+              Sonucyaz(sonuc,TakipNo,1,hatali);
+              if sonuc = '0000'
+              Then Begin
+               Sonucyaz(sonuc,TakipNo,1,hatali);
+               ShowMessageSkin('Ýþlemler Baþarý ile Kaydedildi','','','info');
+              // Gelisler(DosyaNo.Text);
+              // gridGelisler.OnClick(gridgelisler);
+              End
+              Else
+               GonderimMesaj(hatali.Text,'C:\NoktaV3\wsHizmetKayit.xml');
             End
             Else
-             GonderimMesaj(hatali.Text,'C:\NoktaV3\wsHizmetKayit.xml');
-          End
-          Else
-          Begin
-            sleep(3000);
-            verisetleriyenile(TakipNo,'D','G');
-            sonuc := HizmetKayit_3(BasvuruNo,TakipNo,datalar.HizmetKayit,nil,
-                        nil,nil,nil,
-                        nil,nil,nil,
-                        datalar.VeriSeti.Tahlil,nil,nil,
-                        nil,
-                        //datalar.veriSeti.KayitliIslem,
-                        hatali,1,'');
-            Sonucyaz(sonuc,TakipNo,1,hatali);
-            if sonuc = '0000'
-            Then Begin
-             Sonucyaz(sonuc,takipNo,1,hatali);
-             ShowMessageSkin('Ýþlemler Baþarý ile Kaydedildi','','','info');
-            // Gelisler(DosyaNo.Text);
-            // gridGelisler.OnClick(gridgelisler);
-            End
-            Else
-             GonderimMesaj(hatali.Text,'C:\NoktaV3\wsHizmetKayit.xml');
-          End;
+            Begin
+              sleep(3000);
+              verisetleriyenile(TakipNo,'D','G');
+              sonuc := HizmetKayit_3(BasvuruNo,TakipNo,datalar.HizmetKayit,nil,
+                          nil,nil,nil,
+                          nil,nil,nil,
+                          datalar.VeriSeti.Tahlil,nil,nil,
+                          nil,
+                          //datalar.veriSeti.KayitliIslem,
+                          hatali,1,'');
+              Sonucyaz(sonuc,TakipNo,1,hatali);
+              if sonuc = '0000'
+              Then Begin
+               Sonucyaz(sonuc,takipNo,1,hatali);
+               ShowMessageSkin('Ýþlemler Baþarý ile Kaydedildi','','','info');
+              // Gelisler(DosyaNo.Text);
+              // gridGelisler.OnClick(gridgelisler);
+              End
+              Else
+               GonderimMesaj(hatali.Text,'C:\NoktaV3\wsHizmetKayit.xml');
+            End;
 
-      End;
-     // pnlDurum.Visible := false;
-      hatali.Free;
+        End;
+       // pnlDurum.Visible := false;
+
+      finally
+        hatali.Free;
+      end;
     End
     Else ShowMessageskin('Lisans Yenileyiniz','','','info');
 end;
@@ -616,37 +622,30 @@ function IlacRaporBul(RaporNo,Tc,tip : string) : TStringList;
 var
    Ts_RaporBulIlac : eraporSorguIstekDVO;
    Ts_RaporCvpIlac : eraporSorguCevapDVO;
-   Cvp : TStringList;
 begin
-      Cvp := TStringList.Create;
-     // SetLength(Cvp,4);
-      Ts_RaporBulIlac := eraporSorguIstekDVO.Create;
-      Ts_RaporCvpIlac := eraporSorguCevapDVO.Create;
-      Ts_RaporBulIlac.tesisKodu := inttostr(datalar._kurumKod);
-      Ts_RaporBulIlac.raporTakipNo := RaporNo;
-   //   if datalar.doktorKodu = ''
-   //   Then datalar.doktorKodu := TescildoktorBul(ADO_DOKTORLAR.FieldByName('drTescilNo').AsString);
-      Ts_RaporBulIlac.doktorTcKimlikNo := doktorTC(datalar.doktorKodu);
-      datalar.doktorTip := 'H';
-      datalar.Rapor_.URL := datalar.raporIlacURL;
+  Result := TStringList.Create;
+  try
+    // SetLength(Cvp,4);
+    Ts_RaporBulIlac := eraporSorguIstekDVO.Create;
+    Ts_RaporCvpIlac := eraporSorguCevapDVO.Create;
+    Ts_RaporBulIlac.tesisKodu := inttostr(datalar._kurumKod);
+    Ts_RaporBulIlac.raporTakipNo := RaporNo;
+    //   if datalar.doktorKodu = ''
+    //   Then datalar.doktorKodu := TescildoktorBul(ADO_DOKTORLAR.FieldByName('drTescilNo').AsString);
+    Ts_RaporBulIlac.doktorTcKimlikNo := doktorTC(datalar.doktorKodu);
+    datalar.doktorTip := 'H';
+    datalar.Rapor_.URL := datalar.raporIlacURL;
 
-      try
-         Ts_RaporCvpIlac := (datalar.Rapor_ as SaglikTesisiRaporIslemleri).eraporSorgula(Ts_RaporBulIlac);
-         Cvp.Add(Ts_RaporCvpIlac.sonucKodu);
-         Cvp.Add(Ts_RaporCvpIlac.eraporDVO.raporTakipNo);
-         Cvp.Add(Ts_RaporCvpIlac.eraporDVO.raporTarihi);
-         Cvp.Add(Ts_RaporCvpIlac.eraporDVO.raporOnayDurumu);
-         IlacRaporBul := Cvp;
+    Ts_RaporCvpIlac := (datalar.Rapor_ as SaglikTesisiRaporIslemleri).eraporSorgula(Ts_RaporBulIlac);
+    Result.Add(Ts_RaporCvpIlac.sonucKodu);
+    Result.Add(Ts_RaporCvpIlac.eraporDVO.raporTakipNo);
+    Result.Add(Ts_RaporCvpIlac.eraporDVO.raporTarihi);
+    Result.Add(Ts_RaporCvpIlac.eraporDVO.raporOnayDurumu);
 
-      except
-           on E: sysUtils.Exception do
-            begin
-             Showmessage(E.Message,'','','info');
-
-            end;
-      end;
-
-
+  except
+    FreeAndNil (Result);
+    raise;
+  end;
 end;
 
 
@@ -969,84 +968,86 @@ function onlineProtokolAl(pro : Protokol ; servis : THTTPRIO; tip : String) : Ce
 var
   sql  , msj : string;
   kul : kullanici;
-  cvp : onlineProtokol.Cevap;
 begin
 
   //datalar.login;
 
   kul := kullanici.Create;
- // pro := Protokol.Create;
-  cvp := onlineProtokol.Cevap.Create;
-
-  kul.KullaniciAdi := datalar._userSaglikNet2_;
-  kul.KullaniciSifre := datalar._passSaglikNet2_;
-  kul.ErisimKodu := 'C740D0288EFAC45FE0407C0A04162BDD';
-
-  if Tip = 'D'
-  then begin
-    //pro.Vatandas_TCK := _tc_;
-    //pro.islem_Tarihi := FormattedTarih(_tarih_) + ' 00:00' ;
-    pro.KurumKodu := datalar._KurumSKRS_;
-    pro.USVSPaketID := 3;
-//    pro.Klinik_Kodu := 13;
-    pro.ProtokolTipi := 1;
-    pro.MHRS := '0';
-
-    //pro.Otomasyon_Kayit_id := _gelisId_;
-  end;
-
-  servis.URL := 'https://op.sagliknet.saglik.gov.tr/onlineprotokol.asmx';
   try
-    cvp := (servis as OnlineProtokolSoap).ProtokolVer(kul,pro);
-  except on e : sysUtils.exception do
-     begin
-     //   ShowMessageSkin(e.Message,'','','info');
-     cvp.CevapKodu := -1;
-     cvp.CevapAciklama := e.Message;
-     end;
+   // pro := Protokol.Create;
+    Result := onlineProtokol.Cevap.Create;
+    kul.KullaniciAdi := datalar._userSaglikNet2_;
+    kul.KullaniciSifre := datalar._passSaglikNet2_;
+    kul.ErisimKodu := 'C740D0288EFAC45FE0407C0A04162BDD';
+
+    if Tip = 'D'
+    then begin
+      //pro.Vatandas_TCK := _tc_;
+      //pro.islem_Tarihi := FormattedTarih(_tarih_) + ' 00:00' ;
+      pro.KurumKodu := datalar._KurumSKRS_;
+      pro.USVSPaketID := 3;
+  //    pro.Klinik_Kodu := 13;
+      pro.ProtokolTipi := 1;
+      pro.MHRS := '0';
+
+      //pro.Otomasyon_Kayit_id := _gelisId_;
+    end;
+
+    servis.URL := 'https://op.sagliknet.saglik.gov.tr/onlineprotokol.asmx';
+    try
+      Result := (servis as OnlineProtokolSoap).ProtokolVer(kul,pro);
+    except on e : sysUtils.exception do
+       begin
+       //   ShowMessageSkin(e.Message,'','','info');
+       Result.CevapKodu := -1;
+       Result.CevapAciklama := e.Message;
+       end;
+    end;
+
+    (*  if cvp.Cevap_Kodu in [0,7]
+    Then OP.Text := cvp.Protokol_No
+    Else
+      ShowMessageSkin(inttostr(cvp.Cevap_Kodu),cvp.Cevap_Aciklama,cvp.Protokol_No,'info');
+    *)
+  finally
+    kul.Free;
   end;
-
-  result := cvp;
-  (*  if cvp.Cevap_Kodu in [0,7]
-  Then OP.Text := cvp.Protokol_No
-  Else
-    ShowMessageSkin(inttostr(cvp.Cevap_Kodu),cvp.Cevap_Aciklama,cvp.Protokol_No,'info');
-  *)
-
 end;
 
 function onlineProtokolIptal(pro : string ; servis : THTTPRIO; tip : String) : Cevap;
 var
   sql  , msj : string;
   kul : kullanici;
-  cvp : Cevap;
 begin
 
   //datalar.login;
   kul := kullanici.Create;
-  cvp := Cevap.Create;
-
-  kul.KullaniciAdi := datalar._userSaglikNet2_;
-  kul.KullaniciSifre := datalar._passSaglikNet2_;
-  kul.ErisimKodu := 'C740D0288EFAC45FE0407C0A04162BDD';
-
-  servis.URL := 'https://op.sagliknet.saglik.gov.tr/onlineprotokol.asmx';
   try
-    cvp := (servis as OnlineProtokolSoap).ProtokolSil(pro,1,kul);
-  except on e : sysUtils.exception do
-     begin
-        ShowMessageSkin(e.Message,'','','info');
-        cvp.CevapKodu := -1;
-     end;
+    Result := Cevap.Create;
+
+    kul.KullaniciAdi := datalar._userSaglikNet2_;
+    kul.KullaniciSifre := datalar._passSaglikNet2_;
+    kul.ErisimKodu := 'C740D0288EFAC45FE0407C0A04162BDD';
+
+    servis.URL := 'https://op.sagliknet.saglik.gov.tr/onlineprotokol.asmx';
+    try
+      Result := (servis as OnlineProtokolSoap).ProtokolSil(pro,1,kul);
+    except on e : sysUtils.exception do
+       begin
+          ShowMessageSkin(e.Message,'','','info');
+          Result.CevapKodu := -1;
+       end;
+    end;
+
+    if Result.CevapKodu = 0
+    Then Begin
+
+    End;
+
+     // ShowMessageSkin(inttostr(cvp.Cevap_Kodu),cvp.Cevap_Aciklama,cvp.Protokol_No,'info');
+  finally
+    kul.Free;
   end;
-
-  if cvp.CevapKodu = 0
-  Then Begin
-
-  End;
-
-   // ShowMessageSkin(inttostr(cvp.Cevap_Kodu),cvp.Cevap_Aciklama,cvp.Protokol_No,'info');
-  result := cvp;
 end;
 
 
@@ -1228,6 +1229,7 @@ var
   IlacCvp1 : IlacListesiSorguCevapDVO;
   sql , msj , userr, pass: string;
   ado : TADOQuery;
+  bBasari : Boolean;
 
 procedure ilacDbYaz(IlacCvp : IlacListesiSorguCevapDVO ; Tip : string);
 var
@@ -1263,87 +1265,89 @@ begin
 end;
 
 begin
-   ado := TADOQuery.Create(nil);
-   ado.Connection := datalar.ADOConnection2;
+  ado := TADOQuery.Create(nil);
+  try
+    ado.Connection := datalar.ADOConnection2;
+    bBasari := False;
+    try
+      BeginTrans (datalar.ADOConnection2);
+      try
+        sql := 'delete from ilacListesi where ReceteTip = ' + QuotedStr(aktif);
+        datalar.QueryExec(ado,sql);
 
-   datalar.ADOConnection2.BeginTrans;
+        IlacGon := IlacListesiSorguIstekDVO.Create;
+        IlacCvp1 := IlacListesiSorguCevapDVO.Create;
 
-   sql := 'delete from ilacListesi where ReceteTip = ' + QuotedStr(aktif);
-   datalar.QueryExec(ado,sql);
+        //datalar.Login;
+        doktorEReceteUser(doktor,userr,pass);
 
-   IlacGon := IlacListesiSorguIstekDVO.Create;
-   IlacCvp1 := IlacListesiSorguCevapDVO.Create;
+        datalar.ilacList.HTTPWebNode.UserName := datalar._username;// userr;
+        datalar.ilacList.HTTPWebNode.Password := datalar._sifre;// pass;
 
-   //datalar.Login;
-   doktorEReceteUser(doktor,userr,pass);
+        IlacGon.tesisKodu :=  datalar._kurumKod;
+        IlacGon.islemTarihi := tarih;
+        IlacGon.doktorTcKimlikNo := StrToInt64(doktorTC(doktor));
 
-   datalar.ilacList.HTTPWebNode.UserName := datalar._username;// userr;
-   datalar.ilacList.HTTPWebNode.Password := datalar._sifre;// pass;
+        datalar.ilacList.URL := 'https://medeczane.sgk.gov.tr/eczanews/services/SaglikTesisiYardimciIslemler';
 
-   IlacGon.tesisKodu :=  datalar._kurumKod;
-   IlacGon.islemTarihi := tarih;
-   IlacGon.doktorTcKimlikNo := StrToInt64(doktorTC(doktor));
-
-   datalar.ilacList.URL := 'https://medeczane.sgk.gov.tr/eczanews/services/SaglikTesisiYardimciIslemler';
-
-   try
-    Application.ProcessMessages;
-     if aktif = 'A'
-     then begin
-      IlacCvp1 := (datalar.ilacList as SaglikTesisiYardimciIslemler).aktifIlacListesiSorgula(IlacGon);
-      sonuc(IlacCvp1);
-      ilacDbYaz(IlacCvp1,'A');
-     end
-     else
-     if aktif = 'N'
-     then begin
-      IlacCvp1 := (datalar.ilacList as SaglikTesisiYardimciIslemler).normalReceteIlacListesiSorgula(IlacGon);
-      sonuc(IlacCvp1);
-      ilacDbYaz(IlacCvp1,'N');
-     end
-     else
-     if aktif = 'Y'
-     then begin
-      IlacCvp1 := (datalar.ilacList as SaglikTesisiYardimciIslemler).yesilReceteIlacListesiSorgula(IlacGon);
-      sonuc(IlacCvp1);
-      ilacDbYaz(IlacCvp1,'Y');
-     end
-     else
-     if aktif = 'K'
-     then begin
-      IlacCvp1 := (datalar.ilacList as SaglikTesisiYardimciIslemler).kirmiziReceteIlacListesiSorgula(IlacGon);
-      sonuc(IlacCvp1);
-      ilacDbYaz(IlacCvp1,'K');
-     end
-     else
-     if aktif = 'T'
-     then begin
-      IlacCvp1 := (datalar.ilacList as SaglikTesisiYardimciIslemler).turuncuReceteIlacListesiSorgula(IlacGon);
-      sonuc(IlacCvp1);
-      ilacDbYaz(IlacCvp1,'T');
-     end
-     else
-     if aktif = 'P'
-     then begin
-      IlacCvp1 := (datalar.ilacList as SaglikTesisiYardimciIslemler).pasifIlacListesiSorgula(IlacGon);
-      ilacDbYaz(IlacCvp1,'P');
+        Application.ProcessMessages;
+        if aktif = 'A'
+        then begin
+         IlacCvp1 := (datalar.ilacList as SaglikTesisiYardimciIslemler).aktifIlacListesiSorgula(IlacGon);
+         sonuc(IlacCvp1);
+         ilacDbYaz(IlacCvp1,'A');
+        end
+        else
+        if aktif = 'N'
+        then begin
+         IlacCvp1 := (datalar.ilacList as SaglikTesisiYardimciIslemler).normalReceteIlacListesiSorgula(IlacGon);
+         sonuc(IlacCvp1);
+         ilacDbYaz(IlacCvp1,'N');
+        end
+        else
+        if aktif = 'Y'
+        then begin
+         IlacCvp1 := (datalar.ilacList as SaglikTesisiYardimciIslemler).yesilReceteIlacListesiSorgula(IlacGon);
+         sonuc(IlacCvp1);
+         ilacDbYaz(IlacCvp1,'Y');
+        end
+        else
+        if aktif = 'K'
+        then begin
+         IlacCvp1 := (datalar.ilacList as SaglikTesisiYardimciIslemler).kirmiziReceteIlacListesiSorgula(IlacGon);
+         sonuc(IlacCvp1);
+         ilacDbYaz(IlacCvp1,'K');
+        end
+        else
+        if aktif = 'T'
+        then begin
+         IlacCvp1 := (datalar.ilacList as SaglikTesisiYardimciIslemler).turuncuReceteIlacListesiSorgula(IlacGon);
+         sonuc(IlacCvp1);
+         ilacDbYaz(IlacCvp1,'T');
+        end
+        else
+        if aktif = 'P'
+        then begin
+         IlacCvp1 := (datalar.ilacList as SaglikTesisiYardimciIslemler).pasifIlacListesiSorgula(IlacGon);
+         ilacDbYaz(IlacCvp1,'P');
+        end;
+        bBasari := True;
+      finally
+        if bBasari then CommitTrans (datalar.ADOConnection2)
+        else begin
+           datalar.ADOConnection2.RollbackTrans;
+        end;
+      end;
+    except
+     on E: sysUtils.Exception do
+     begin
+       Showmessageskin(E.Message,'','','info');
+       msj := 'Servisten Sonuç Alýnamadý yada Sonuçlar Yazýlýrken Hata Oluþtu : ' + e.Message;
      end;
-
-     datalar.ADOConnection2.CommitTrans;
-
-   except
-    on E: sysUtils.Exception do
-    begin
-      Showmessageskin(E.Message,'','','info');
-      msj := 'Servisten Sonuç Alýnamadý yada Sonuçlar Yazýlýrken Hata Oluþtu : ' + e.Message;
-      datalar.ADOConnection2.RollbackTrans;
-      ado.Free;
-      exit;
     end;
-   end;
-
-   ado.Free;
-
+  finally
+    ado.Free;
+  end;
 end;
 
 
@@ -1362,20 +1366,21 @@ var
   receteIlacAciklama : EreceteIlacAciklamaDVO;
   receteIlacAciklamalar : ArrayOfEreceteIlacAciklamaDVO;
   sql : string;
-  ado , ado1 , ado2 : TADOQuery;
+  ado , ado1 : TADOQuery;
   receteId , receteDetayId : string;
   x , y : integer;
   doktorUser , doktorSifre : string;
   yupass : string;
 begin
-    recete := EreceteDVO.Create;
+  recete := EreceteDVO.Create;
   //  kisi := SaglikTesisiReceteIslemleri1.KisiDVO.Create;
 
-    sql := 'select * from gelisler g ' +
-           ' left join takipbilgisi t on t.takipno = g.takýpno ' +
-           ' join HastaKart k on k.dosyaNo = g.dosyaNo ' +
-           ' where g.dosyaNo = ' + QuotedStr(dosyaNo) + ' and gelisno = ' + gelisNo;
-    ado := TADOQuery.Create(nil);
+  sql := 'select * from gelisler g ' +
+         ' left join takipbilgisi t on t.takipno = g.takýpno ' +
+         ' join HastaKart k on k.dosyaNo = g.dosyaNo ' +
+         ' where g.dosyaNo = ' + QuotedStr(dosyaNo) + ' and gelisno = ' + gelisNo;
+  ado := TADOQuery.Create(nil);
+  try
     ado.Connection := datalar.ADOConnection2;
     datalar.QuerySelect(ado,sql);
 
@@ -1492,64 +1497,67 @@ begin
     sql := 'select * from ReceteDetay where receteId = ' + receteId;
     datalar.QuerySelect(ado,sql);
     ado1 := TADOQuery.Create(nil);
-    ado1.Connection := datalar.ADOConnection2;
+    try
+      ado1.Connection := datalar.ADOConnection2;
 
-    SetLength(receteIlaclar,ado.RecordCount);
-    x := 0;
-    while not ado.Eof do
-    begin
-       receteDetayId := ado.fieldbyname('id').AsString;
-       receteIlac := EreceteIlacDVO.Create;
-       receteIlac.barkod := StrToInt64(ado.fieldbyname('ilacKodu').AsString);
-       receteIlac.adet := ado.fieldbyname('Adet').AsInteger;
-       try
-        receteIlac.kullanimPeriyotBirimi := ado.fieldbyname('kullanZamanUnit').AsInteger;
-       except
-        ShowMessageSkin('Kullaným Peryot Birimi Hatalý','','','info');
-       end;
-       try
-        receteIlac.kullanimPeriyot := ado.fieldbyname('kullanimZaman').AsInteger;
-       except
-        ShowMessageSkin('Kullaným Peryot Hatalý','','','info');
-       end;
-       try
-        receteIlac.kullanimSekli := strtoint(trim(copy(ado.fieldbyname('kullanimyolu').AsString,1,2)));
-       except
-        ShowMessageSkin('Kullaným Þekli Hatalý','','','info');
-       end;
-       receteIlac.kullanimDoz1 := ado.fieldbyname('kullanimadet2').AsInteger;
-       receteIlac.kullanimDoz2 := ado.fieldbyname('kullanimAdet').AsFloat;
-       receteIlac.ilacAdi := ado.fieldbyname('ilacAdi').AsString;
+      SetLength(receteIlaclar,ado.RecordCount);
+      x := 0;
+      while not ado.Eof do
+      begin
+         receteDetayId := ado.fieldbyname('id').AsString;
+         receteIlac := EreceteIlacDVO.Create;
+         receteIlac.barkod := StrToInt64(ado.fieldbyname('ilacKodu').AsString);
+         receteIlac.adet := ado.fieldbyname('Adet').AsInteger;
+         try
+          receteIlac.kullanimPeriyotBirimi := ado.fieldbyname('kullanZamanUnit').AsInteger;
+         except
+          ShowMessageSkin('Kullaným Peryot Birimi Hatalý','','','info');
+         end;
+         try
+          receteIlac.kullanimPeriyot := ado.fieldbyname('kullanimZaman').AsInteger;
+         except
+          ShowMessageSkin('Kullaným Peryot Hatalý','','','info');
+         end;
+         try
+          receteIlac.kullanimSekli := strtoint(trim(copy(ado.fieldbyname('kullanimyolu').AsString,1,2)));
+         except
+          ShowMessageSkin('Kullaným Þekli Hatalý','','','info');
+         end;
+         receteIlac.kullanimDoz1 := ado.fieldbyname('kullanimadet2').AsInteger;
+         receteIlac.kullanimDoz2 := ado.fieldbyname('kullanimAdet').AsFloat;
+         receteIlac.ilacAdi := ado.fieldbyname('ilacAdi').AsString;
 
 
 
-       sql := 'select * from receteIlacAciklama where receteDetayId = ' + receteDetayId;
-       datalar.QuerySelect(ado1,sql);
+         sql := 'select * from receteIlacAciklama where receteDetayId = ' + receteDetayId;
+         datalar.QuerySelect(ado1,sql);
 
-       SetLength(receteIlacAciklamalar,ado1.RecordCount);
-       y := 0;
-       while not ado1.Eof do
-       begin
-         receteIlacAciklama := EreceteIlacAciklamaDVO.Create;
-         receteIlacAciklama.aciklamaTuru := ado1.fieldbyname('aciklamaTip').AsInteger;
-         receteIlacAciklama.aciklama := ado1.fieldbyname('aciklama').AsString;
-         receteIlacAciklamalar[y] := receteIlacAciklama;
-         inc(y);
-         ado1.Next;
-       end;
-       receteIlac.ereceteIlacAciklamaListesi := receteIlacAciklamalar;
+         SetLength(receteIlacAciklamalar,ado1.RecordCount);
+         y := 0;
+         while not ado1.Eof do
+         begin
+           receteIlacAciklama := EreceteIlacAciklamaDVO.Create;
+           receteIlacAciklama.aciklamaTuru := ado1.fieldbyname('aciklamaTip').AsInteger;
+           receteIlacAciklama.aciklama := ado1.fieldbyname('aciklama').AsString;
+           receteIlacAciklamalar[y] := receteIlacAciklama;
+           inc(y);
+           ado1.Next;
+         end;
+         receteIlac.ereceteIlacAciklamaListesi := receteIlacAciklamalar;
 
-       receteIlaclar[x] := receteIlac;
+         receteIlaclar[x] := receteIlac;
 
-       inc(x);
-       ado.Next;
+         inc(x);
+         ado.Next;
+      end;
+      recete.ereceteIlacListesi := receteIlaclar;
+      result := recete;
+    finally
+      ado1.Free;
     end;
-    recete.ereceteIlacListesi := receteIlaclar;
-    
-    result := recete;
-
+  finally
     ado.Free;
-    ado2.Free;
+  end;
 
 end;
 
@@ -1698,14 +1706,17 @@ begin
 
    if receteSilCvp.sonucKodu = '0000'
    Then Begin
-       ado := TADOQuery.Create(nil);
+     ado := TADOQuery.Create(nil);
+     try
        ado.Connection := datalar.ADOConnection2;
-       
+
        sql := 'update Recete set eReceteNo =  ' + QuotedStr(receteSilCvp.sonucKodu) +
               ' where eReceteNo = ' + QuotedStr(receteId);
 
        datalar.QueryExec(ado,sql);
+     finally
        ado.Free;
+     end;
    End
    Else
     msj := receteSilCvp.sonucMesaji;
@@ -1732,85 +1743,84 @@ var
   lDoc   : TxmlDocument;
 
 begin
-    ado := TADOQuery.Create(nil);
+  ado := TADOQuery.Create(nil);
+  try
     ado.Connection := DATALAR.ADOConnection2;
 
     receteCvp := EreceteGirisCevapDVO.Create;
     receteGon := EreceteGirisIstekDVO.Create;
+    try
+      //datalar.Login;
+      doktorEReceteUser(doktor,doktorUser,doktorSifre);
+      Http1.HTTPWebNode.UserName := doktorUser;
+      Http1.HTTPWebNode.Password := doktorSifre;
+      if doktorSifre = ''
+      Then Begin
+         Http1.HTTPWebNode.Password := InputBoxM('Doktor Reçete Þifre','Þifreniz :','');
+         if Http1.HTTPWebNode.Password = ''
+         Then Begin
+           ShowMessageSkin('Reçete Þifresi Boþ olamaz','','','info');
+           exit;
+         End;
+      End;
+      Http1.URL := datalar.receteURL; //'https://medeczane.sgk.gov.tr/eczanews/services/SaglikTesisiReceteIslemleri';
+     // datalar.ReceteKayit.URL := 'http://saglikt.sgk.gov.tr/eczanews/services/SaglikTesisiReceteIslemleri';
+      receteGon.tesisKodu := datalar._kurumKod;
+      receteGon.doktorTcKimlikNo := StrToInt64(doktorTC(doktor));
 
+      receteGon.ereceteDVO := eRecete(dosyaNo,gelisNo,Id,doktor);
 
-    //datalar.Login;
-    doktorEReceteUser(doktor,doktorUser,doktorSifre);
+    (*
 
+    lOwner := TComponent.Create(nil);  // Required to make TXmlDocument work!
+    try
+     lDoc := TXmlDocument.Create(lOwner);  // will be freed with lOwner.Free
+     lSerialize := TXmlSerializer<EreceteGirisIstekDVO>.Create;
+    try
 
-    Http1.HTTPWebNode.UserName := doktorUser;
-    Http1.HTTPWebNode.Password := doktorSifre;
-
-    if doktorSifre = ''
-    Then Begin
-       Http1.HTTPWebNode.Password := InputBoxM('Doktor Reçete Þifre','Þifreniz :','');
-       if Http1.HTTPWebNode.Password = ''
-       Then Begin
-         ShowMessageSkin('Reçete Þifresi Boþ olamaz','','','info');
-         exit;
-       End;
-    End;
-
-    Http1.URL := datalar.receteURL; //'https://medeczane.sgk.gov.tr/eczanews/services/SaglikTesisiReceteIslemleri';
-   // datalar.ReceteKayit.URL := 'http://saglikt.sgk.gov.tr/eczanews/services/SaglikTesisiReceteIslemleri';
-    receteGon.tesisKodu := datalar._kurumKod;
-    receteGon.doktorTcKimlikNo := StrToInt64(doktorTC(doktor));
-
-    receteGon.ereceteDVO := eRecete(dosyaNo,gelisNo,Id,doktor);
-
-  (*
-
-  lOwner := TComponent.Create(nil);  // Required to make TXmlDocument work!
-  try
-   lDoc := TXmlDocument.Create(lOwner);  // will be freed with lOwner.Free
-   lSerialize := TXmlSerializer<EreceteGirisIstekDVO>.Create;
-  try
-
-    lSerialize.Serialize(lDoc,receteGon);
-    lDoc.SaveToFile('c:\test.xml');
-  except on e : exception do
-   begin
-    ShowMessage(e.message_,'','','info');
-    lSerialize.Free;
-   end;
-  end;
-  finally
-   lOwner.Free;
-  end;
-    *)
-
-   try
-    Application.ProcessMessages;
-    receteCvp := (Http1 as SaglikTesisiReceteIslemleri).ereceteGiris(receteGon);
-   except
-    on E: sysUtils.Exception do
-    begin
-      Showmessageskin(E.Message,'','','info');
-      msj := 'Servisten Sonuç Alýnamadý : ' + e.Message;
-      exit;
+      lSerialize.Serialize(lDoc,receteGon);
+      lDoc.SaveToFile('c:\test.xml');
+    except on e : exception do
+     begin
+      ShowMessage(e.message_,'','','info');
+      lSerialize.Free;
+     end;
     end;
-   end;
+    finally
+     lOwner.Free;
+    end;
+      *)
 
-   if receteCvp.sonucKodu = '0000'
-   Then Begin
-       sql := 'update Recete set eReceteNo = ' + QuotedStr(receteCvp.ereceteDVO.ereceteNo) +
-              ' where id = ' + Id;
+     try
+      Application.ProcessMessages;
+      receteCvp := (Http1 as SaglikTesisiReceteIslemleri).ereceteGiris(receteGon);
+     except
+      on E: sysUtils.Exception do
+      begin
+        Showmessageskin(E.Message,'','','info');
+        msj := 'Servisten Sonuç Alýnamadý : ' + e.Message;
+        exit;
+      end;
+     end;
 
-       datalar.QueryExec(ado,sql);
+     if receteCvp.sonucKodu = '0000'
+     Then Begin
+         sql := 'update Recete set eReceteNo = ' + QuotedStr(receteCvp.ereceteDVO.ereceteNo) +
+                ' where id = ' + Id;
 
-   End;
+         datalar.QueryExec(ado,sql);
 
-   Http1.HTTPWebNode.Password := '';
+     End;
 
-   ado.Free;
-   result := receteCvp;
-   receteGon.Free;
+     Http1.HTTPWebNode.Password := '';
 
+     result := receteCvp;
+    finally
+      receteGon.Free;
+    end
+  finally
+    ado.Free;
+  end;
 end;
 
 
@@ -1825,7 +1835,8 @@ var
   memo : Tmemo;
   stream: TMemoryStream;
 begin
-    ado := TADOQuery.Create(nil);
+  ado := TADOQuery.Create(nil);
+  try
     ado.Connection := DATALAR.ADOConnection2;
 
     receteCvp := ImzaliEreceteGirisCevapDVO.Create;
@@ -1881,9 +1892,11 @@ begin
 
    Http1.HTTPWebNode.Password := '';
 
-   ado.Free;
    result := receteCvp;
    receteGon.Free;
+  finally
+   ado.Free;
+  end;
 
 end;
 
@@ -1898,26 +1911,29 @@ var
    ado : TADOQuery;
 begin
 
-      ado := TADOQuery.Create(nil);
-      ado.Connection := datalar.ADOConnection2;
+  ado := TADOQuery.Create(nil);
+  try
+    ado.Connection := datalar.ADOConnection2;
 
-      sql := 'select datavalue from strtotable('+#39 + RTanilar + #39 + ',' + #39 + ',' + #39 + ')';
-      datalar.QuerySelect(ado,sql);
+    sql := 'select datavalue from strtotable('+#39 + RTanilar + #39 + ',' + #39 + ',' + #39 + ')';
+    datalar.QuerySelect(ado,sql);
 
-      dizi :=  ado.RecordCount;
-      SetLength(Tanilar,dizi);
+    dizi :=  ado.RecordCount;
+    SetLength(Tanilar,dizi);
 
-      for i := 0 to ado.RecordCount - 1 do
-      begin
-           Tani := raporislemleriWS.TaniBilgisiDVO.Create;
-           Tani.taniKodu := ado.fieldbyname('datavalue').AsString;
-           Tanilar[i] := Tani;
-           ado.Next;
-      end;
-      result := Tanilar;
-      SetLength(Tanilar,dizi);
-      ado.close;
-      ado.Free;
+    for i := 0 to ado.RecordCount - 1 do
+    begin
+         Tani := raporislemleriWS.TaniBilgisiDVO.Create;
+         Tani.taniKodu := ado.fieldbyname('datavalue').AsString;
+         Tanilar[i] := Tani;
+         ado.Next;
+    end;
+    result := Tanilar;
+    SetLength(Tanilar,dizi);
+    ado.close;
+  finally
+    ado.Free;
+  end;
 
 end;
 
@@ -2023,9 +2039,6 @@ begin
         Result := PrvCvp.sonucMesaji;
       end;
     end;
-
-
-
 end;
 
 
@@ -2035,13 +2048,15 @@ var
   sql : string;
   ado : TADOQuery;
 begin
-   ado := TADOQuery.Create(nil);
-   ado.Connection := datalar.ADOConnection2;
+  ado := TADOQuery.Create(nil);
+  try
+    ado.Connection := datalar.ADOConnection2;
 
-   sql := 'update takipBilgisi set durum = 0 where takipno = ' + QuotedStr(takipno);
-   datalar.QueryExec(ado,sql);
-   ado.Free;
-
+    sql := 'update takipBilgisi set durum = 0 where takipno = ' + QuotedStr(takipno);
+    datalar.QueryExec(ado,sql);
+  finally
+    ado.Free;
+  end;
 end;
 
 procedure TakipbilgisiYaz(PrvGrs : ProvizyonGirisDVO ; PrvCvp : ProvizyonCevapDVO);
@@ -2050,49 +2065,48 @@ var
   ado : TADOQuery;
 begin
   ado := TADOQuery.Create(nil);
-  ado.Connection := datalar.ADOConnection2;
-  (*
-  sql := 'delete from takipBilgisi where takipno = ' + QuotedStr(PrvCvp.takipNo);
-  datalar.QueryExec(ado,sql);
-    *)
+  try
+    ado.Connection := datalar.ADOConnection2;
+    (*
+    sql := 'delete from takipBilgisi where takipno = ' + QuotedStr(PrvCvp.takipNo);
+    datalar.QueryExec(ado,sql);
+      *)
 
-  sql := 'select * from takipBilgisi  where takipno = ' + QuotedStr(PrvCvp.takipNo);
-  datalar.QuerySelect(ado,sql);
-  if ado.Eof
-  Then
+    sql := 'select * from takipBilgisi  where takipno = ' + QuotedStr(PrvCvp.takipNo);
+    datalar.QuerySelect(ado,sql);
+    if ado.Eof
+    Then
 
 
-  sql := 'insert into takipbilgisi (takipNo, Basvuruno, sigortaliTuru, bransKodu, devredilenKurum, provizyonTarihi, provizyonTipi, takipTipi, ' +
-         ' yeniDoganBilgisi, yatisBitisTarihi,tedaviTuru, tedaviTipi, SonucKodu, ilktakip,durum,tc) ' +
-         ' values ( ' +
-         QuotedStr(PrvCvp.takipNo) + ',' +
-         QuotedStr(PrvCvp.hastaBasvuruNo) + ',' +
-         QuotedStr(PrvCvp.hastaBilgileri.sigortaliTuru) + ',' +
-         QuotedStr(PrvGrs.bransKodu) + ',' +
-         QuotedStr(PrvCvp.hastaBilgileri.devredilenKurum) + ',' +
-         QuotedStr(PrvGrs.provizyonTarihi) + ',' +
-         QuotedStr(PrvGrs.provizyonTipi) + ',' +
-         QuotedStr(PrvGrs.takipTipi) + ',' +
-         QuotedStr('') + ',' +
-         QuotedStr(PrvGrs.yatisBitisTarihi) + ',' +
-         QuotedStr(PrvGrs.tedaviTuru) + ',' +
-         QuotedStr(PrvGrs.tedaviTipi) + ',' +
-         QuotedStr('0000') + ',' +
-         QuotedStr(PrvGrs.takipNo) + ',' +
-         '1' + ',' +
-         QuotedStr(PrvCvp.hastaBilgileri.tcKimlikNo) +
-         ')'
+    sql := 'insert into takipbilgisi (takipNo, Basvuruno, sigortaliTuru, bransKodu, devredilenKurum, provizyonTarihi, provizyonTipi, takipTipi, ' +
+           ' yeniDoganBilgisi, yatisBitisTarihi,tedaviTuru, tedaviTipi, SonucKodu, ilktakip,durum,tc) ' +
+           ' values ( ' +
+           QuotedStr(PrvCvp.takipNo) + ',' +
+           QuotedStr(PrvCvp.hastaBasvuruNo) + ',' +
+           QuotedStr(PrvCvp.hastaBilgileri.sigortaliTuru) + ',' +
+           QuotedStr(PrvGrs.bransKodu) + ',' +
+           QuotedStr(PrvCvp.hastaBilgileri.devredilenKurum) + ',' +
+           QuotedStr(PrvGrs.provizyonTarihi) + ',' +
+           QuotedStr(PrvGrs.provizyonTipi) + ',' +
+           QuotedStr(PrvGrs.takipTipi) + ',' +
+           QuotedStr('') + ',' +
+           QuotedStr(PrvGrs.yatisBitisTarihi) + ',' +
+           QuotedStr(PrvGrs.tedaviTuru) + ',' +
+           QuotedStr(PrvGrs.tedaviTipi) + ',' +
+           QuotedStr('0000') + ',' +
+           QuotedStr(PrvGrs.takipNo) + ',' +
+           '1' + ',' +
+           QuotedStr(PrvCvp.hastaBilgileri.tcKimlikNo) +
+           ')'
 
-   else
+     else
 
-   sql := 'update takipBilgisi set durum = 1 where takipno = ' + QuotedStr(PrvCvp.takipNo);
-
-         
-  ado.SQL.Clear;
-  datalar.QueryExec(ado,sql);
-
-  ado.Free;
-
+     sql := 'update takipBilgisi set durum = 1 where takipno = ' + QuotedStr(PrvCvp.takipNo);
+    ado.SQL.Clear;
+    datalar.QueryExec(ado,sql);
+  finally
+    ado.Free;
+  end;
 end;
 
 function TakipformuKayit(Diyabet : TakipFormu ; var TakipFormNo : string ; Http1 : THTTPRIO) : string;
@@ -2114,170 +2128,182 @@ var
    r : integer;
    _TXSint_ : TXSInteger;
 begin
-   ado := TADOQuery.Create(nil);
-   ado.Connection := datalar.ADOConnection2;
-   sql := 'select * from Diyabettakip where dosyaNo = ' + QuotedStr(Diyabet.DosyaNo) + ' and gelisNo = ' + Diyabet.GelisNo + ' and gelisdetayNo = ' + Diyabet.DetayNo;
-   datalar.QuerySelect(ado,sql);
+  ado := TADOQuery.Create(nil);
+  try
+     ado.Connection := datalar.ADOConnection2;
+     sql := 'select * from Diyabettakip where dosyaNo = ' + QuotedStr(Diyabet.DosyaNo) + ' and gelisNo = ' + Diyabet.GelisNo + ' and gelisdetayNo = ' + Diyabet.DetayNo;
+     datalar.QuerySelect(ado,sql);
 
-   Ts_Gon := TakipFormuKaydetGirisDVO.Create;
-   //Ts_Cvp := takipFormuKaydetResponse.Create;
-   form := DiabetTakipFormuKayitDVO.Create;
-   doktorbilgi := TakipFormuDoktorBilgisiDVO.Create;
-   diabetEgitimi := TakipFormuDiabetEgitimiDVO.Create;
-
-
-   //datalar.Login;
-   //http1.HTTPWebNode.UserName := datalar._username;
-   //http1.HTTPWebNode.Password := datalar._sifre;
-
-   http1.URL := datalar.DiabetFormURL; //'https://medula.sgk.gov.tr/medula/hastane/takipFormuIslemleriWS';
-
-   Ts_Gon.saglikTesisKodu := datalar._kurumKod;
+     Ts_Gon := TakipFormuKaydetGirisDVO.Create;
+     //Ts_Cvp := takipFormuKaydetResponse.Create;
+     form := DiabetTakipFormuKayitDVO.Create;
+     doktorbilgi := TakipFormuDoktorBilgisiDVO.Create;
+     diabetEgitimi := TakipFormuDiabetEgitimiDVO.Create;
 
 
-   form.tcKimlikNo := Diyabet.Tckimilk;
-   form.ad := TrtoEng(Diyabet.Ad);
-   form.soyad := TrtoEng(Diyabet.Soyad);
-   form.cepTel := Diyabet.CepTel;
-   form.cinsiyet := Diyabet.Cinsiyet;
+     //datalar.Login;
+     //http1.HTTPWebNode.UserName := datalar._username;
+     //http1.HTTPWebNode.Password := datalar._sifre;
 
- //  _TXSint_ := TXSInteger.Create;
-//   _TXSint_.AsInteger := datalar._kurumKod;
-   form.saglikTesisKodu := datalar._kurumKod;
+     http1.URL := datalar.DiabetFormURL; //'https://medula.sgk.gov.tr/medula/hastane/takipFormuIslemleriWS';
 
- //  form.ikametTuru := TXSInteger.Create;
-   form.ikametTuru := ado.fieldbyname('ikametturu').AsInteger;
-   form.vizitTarihi := Diyabet.vizitTarihi;
+     Ts_Gon.saglikTesisKodu := datalar._kurumKod;
 
-   doktorbilgi.drTescilNo := Diyabet.doktor[0].drTescilNo;
-   doktorbilgi.drBransKodu := Diyabet.doktor[0].brans;
-//   doktorbilgi.dmEgitimiAlmisMi := TXSString.Create;
-   doktorbilgi.dmEgitimiAlmisMi := Diyabet.doktor[0].egitimVarmi;
 
-   SetLength(doktorBilgileri,1);
-   doktorBilgileri[0] := doktorbilgi;
+     form.tcKimlikNo := Diyabet.Tckimilk;
+     form.ad := TrtoEng(Diyabet.Ad);
+     form.soyad := TrtoEng(Diyabet.Soyad);
+     form.cepTel := Diyabet.CepTel;
+     form.cinsiyet := Diyabet.Cinsiyet;
 
-   form.doktorBilgileri := doktorBilgileri;
+   //  _TXSint_ := TXSInteger.Create;
+  //   _TXSint_.AsInteger := datalar._kurumKod;
+     form.saglikTesisKodu := datalar._kurumKod;
 
-   form.taniKodu := ado.fieldbyname('tani').AsString;
-   form.taniTarihi := ado.fieldbyname('tanitarihi').AsString;
+   //  form.ikametTuru := TXSInteger.Create;
+     form.ikametTuru := ado.fieldbyname('ikametturu').AsInteger;
+     form.vizitTarihi := Diyabet.vizitTarihi;
 
-   diabetEgitimi.dmEgitimiAlmisMi := ado.fieldbyname('dmEgitimiAlmisMi').AsString;
-   diabetEgitimi.bireyselEgitimSayisi := ado.fieldbyname('bireyselEgitimSayisi').AsInteger;
-   diabetEgitimi.grupEgitimiSayisi :=    ado.fieldbyname('grupEgitimiSayisi').AsInteger;
+     doktorbilgi.drTescilNo := Diyabet.doktor[0].drTescilNo;
+     doktorbilgi.drBransKodu := Diyabet.doktor[0].brans;
+  //   doktorbilgi.dmEgitimiAlmisMi := TXSString.Create;
+     doktorbilgi.dmEgitimiAlmisMi := Diyabet.doktor[0].egitimVarmi;
 
-   form.diabetEgitimi := diabetEgitimi;
+     SetLength(doktorBilgileri,1);
+     doktorBilgileri[0] := doktorbilgi;
 
-   form.tibbiBeslenmeTedavisi := ado.fieldbyname('tibbiBeslenmeTedavisi').AsInteger;
-   form.egzersiz := ado.fieldbyname('egzersiz').AsInteger;
+     form.doktorBilgileri := doktorBilgileri;
 
-   _hastalik_ := ado.fieldbyname('hastalikkodu').AsString;
+     form.taniKodu := ado.fieldbyname('tani').AsString;
+     form.taniTarihi := ado.fieldbyname('tanitarihi').AsString;
 
-   ado1 := TADOQuery.Create(nil);
-   ado1.Connection := datalar.ADOConnection2;
-   sql := 'select datavalue from strtotable(' + QuotedStr(_hastalik_) + ',' + QuotedStr(',') + ')';
-   datalar.QuerySelect(ado1,sql);
+     diabetEgitimi.dmEgitimiAlmisMi := ado.fieldbyname('dmEgitimiAlmisMi').AsString;
+     diabetEgitimi.bireyselEgitimSayisi := ado.fieldbyname('bireyselEgitimSayisi').AsInteger;
+     diabetEgitimi.grupEgitimiSayisi :=    ado.fieldbyname('grupEgitimiSayisi').AsInteger;
 
-   SetLength(hastaliklar,ado1.RecordCount);
-   for r := 0 to ado1.RecordCount - 1 do
+     form.diabetEgitimi := diabetEgitimi;
+
+     form.tibbiBeslenmeTedavisi := ado.fieldbyname('tibbiBeslenmeTedavisi').AsInteger;
+     form.egzersiz := ado.fieldbyname('egzersiz').AsInteger;
+
+     _hastalik_ := ado.fieldbyname('hastalikkodu').AsString;
+
+     ado1 := TADOQuery.Create(nil);
+     try
+       ado1.Connection := datalar.ADOConnection2;
+       sql := 'select datavalue from strtotable(' + QuotedStr(_hastalik_) + ',' + QuotedStr(',') + ')';
+       datalar.QuerySelect(ado1,sql);
+
+       SetLength(hastaliklar,ado1.RecordCount);
+       for r := 0 to ado1.RecordCount - 1 do
+       begin
+          hastalik := TakipFormuHastalikDVO.Create;
+          hastalik.hastalikKodu := ado1.Fields[0].AsInteger;
+          hastaliklar[r] := hastalik;
+          ado1.Next;
+       end;
+     finally
+       ado1.Free;
+     end;
+     form.hastaliklar := hastaliklar;
+
+     form.basvuruNedeni := ado.fieldbyname('basvuruNedeni').AsInteger;
+
+
+     _aliskanlik_ := ado.fieldbyname('aliskanlik').AsString;
+
+     ado1 := TADOQuery.Create(nil);
+     try
+       ado1.Connection := datalar.ADOConnection2;
+       sql := 'select datavalue from strtotable(' + QuotedStr(_aliskanlik_) + ',' + QuotedStr(',') + ')';
+       datalar.QuerySelect(ado1,sql);
+
+       SetLength(aliskanliklar,ado1.RecordCount);
+       for r := 0 to ado1.RecordCount - 1 do
+       begin
+          aliskanlik := TakipFormuAliskanlikDVO.Create;
+          aliskanlik.aliskanlik := ado1.Fields[0].AsInteger;
+          aliskanliklar[r] := aliskanlik;
+          ado1.Next;
+       end;
+     finally
+       ado1.Free;
+     end;
+     form.aliskanliklar := aliskanliklar;
+
+     form.glukoMetre := ado.fieldbyname('glukoMetre').AsString;
+     form.kanSekeriTakipSayisi := ado.fieldbyname('kanSekeriTakipSayisi').AsInteger;
+     form.sistolikKanBasinci := ado.fieldbyname('sistolikKanBasinci').AsInteger;
+     form.diyastolikKanBasinci := ado.fieldbyname('diyastolikKanBasinci').AsInteger;
+
+     form.boy := ado.fieldbyname('boy').AsFloat;
+     form.kilo := ado.fieldbyname('kilo').AsFloat;
+     form.vki := ado.fieldbyname('vki').AsFloat;
+
+     form.apg := ado.fieldbyname('apg').AsFloat;
+     form.tpg := ado.fieldbyname('tpg').AsFloat;
+     form.hbA1c := ado.fieldbyname('hbA1c').AsFloat;
+     form.kreatinin := ado.fieldbyname('kreatinin').AsFloat;
+     form.trigliserid := ado.fieldbyname('trigliserid').AsFloat;
+     form.ldlKol := ado.fieldbyname('ldlKol').AsFloat;
+     form.hdlKol := ado.fieldbyname('hdlKol').AsFloat;
+     form.alt := ado.fieldbyname('alt').AsFloat;
+
+     form.antiGAD := ado.fieldbyname('antiGAD').AsString;
+     form.ekg := ado.fieldbyname('ekg').AsInteger;
+     form.mikroalbuminuri := ado.fieldbyname('mikroalbuminuri').AsString;
+     form.gozMuayenesi := ado.fieldbyname('gozMuayenesi').AsInteger;
+     form.periferikSensoryal := ado.fieldbyname('periferikSensoryal').AsString;
+     form.koronerArterH := ado.fieldbyname('koronerArterH').AsString;
+     form.serebrovaskulerH := ado.fieldbyname('serebrovaskulerH').AsString;
+     form.ayakMuayenesi := ado.fieldbyname('ayakMuayenesi').AsString;
+     form.akutKomplikasyon := ado.fieldbyname('akutKomplikasyon').AsInteger;
+
+     form.insulinPompasi := ado.fieldbyname('InsulinPompasi').AsString;
+     form.insulinPompasiVerTarihi := ado.fieldbyname('insulinPompasiVerTarihi').AsString;
+     form.insulinPompasiDegTarihi := ado.fieldbyname('insulinPompasiDegTarihi').AsString;
+
+     ado1 := TADOQuery.Create(nil);
+     try
+       ado1.Connection := datalar.ADOConnection2;
+       sql := 'select * from Diyabettakip_Ilaclar where dosyaNo = ' + QuotedStr(Diyabet.DosyaNo) + ' and gelisNo = ' + Diyabet.GelisNo + ' and gelisdetayNo = ' + Diyabet.DetayNo;
+       datalar.QuerySelect(ado1,sql);
+
+       SetLength(Ilaclar,ado1.RecordCount);
+       for r := 0 to ado1.RecordCount - 1 do
+       begin
+          Ilac := TakipFormuKullanilanIlaclarDVO.Create;
+          Ilac.barkod := ado1.Fieldbyname('barkod').AsString;
+          Ilac.gunlukDoz := ado1.Fieldbyname('doz').AsString;
+          Ilaclar[r] := Ilac;
+          ado1.Next;
+       end;
+     finally
+       ado1.Free;
+     end;
+  finally
+    ado.free;
+  end;
+
+  form.kullanilanIlaclar := Ilaclar;
+
+
+  Ts_Gon.diabetTakipFormu := form;
+
+
+
+  try
+    Ts_Cvp := (http1 as TakipFormuIslemleri).takipFormuKaydet(Ts_Gon);
+    result := Ts_Cvp.sonucKodu + '-' + Ts_Cvp.sonucMesaji;
+    if Ts_Cvp.sonucKodu = '0000' then TakipFormNo := Ts_Cvp.diabetTakipFormu.takipFormuNo;
+  except on e : sysUtils.Exception do
    begin
-      hastalik := TakipFormuHastalikDVO.Create;
-      hastalik.hastalikKodu := ado1.Fields[0].AsInteger;
-      hastaliklar[r] := hastalik;
-      ado1.Next;
+      ShowMessageSkin(e.Message,'','','info');
+      exit;
    end;
-   ado1.Free;
-   form.hastaliklar := hastaliklar;
+  end;
 
-   form.basvuruNedeni := ado.fieldbyname('basvuruNedeni').AsInteger;
-
-
-   _aliskanlik_ := ado.fieldbyname('aliskanlik').AsString;
-
-   ado1 := TADOQuery.Create(nil);
-   ado1.Connection := datalar.ADOConnection2;
-   sql := 'select datavalue from strtotable(' + QuotedStr(_aliskanlik_) + ',' + QuotedStr(',') + ')';
-   datalar.QuerySelect(ado1,sql);
-
-   SetLength(aliskanliklar,ado1.RecordCount);
-   for r := 0 to ado1.RecordCount - 1 do
-   begin
-      aliskanlik := TakipFormuAliskanlikDVO.Create;
-      aliskanlik.aliskanlik := ado1.Fields[0].AsInteger;
-      aliskanliklar[r] := aliskanlik;
-      ado1.Next;
-   end;
-   ado1.Free;
-   form.aliskanliklar := aliskanliklar;
-
-   form.glukoMetre := ado.fieldbyname('glukoMetre').AsString;
-   form.kanSekeriTakipSayisi := ado.fieldbyname('kanSekeriTakipSayisi').AsInteger;
-   form.sistolikKanBasinci := ado.fieldbyname('sistolikKanBasinci').AsInteger;
-   form.diyastolikKanBasinci := ado.fieldbyname('diyastolikKanBasinci').AsInteger;
-
-   form.boy := ado.fieldbyname('boy').AsFloat;
-   form.kilo := ado.fieldbyname('kilo').AsFloat;
-   form.vki := ado.fieldbyname('vki').AsFloat;
-
-   form.apg := ado.fieldbyname('apg').AsFloat;
-   form.tpg := ado.fieldbyname('tpg').AsFloat;
-   form.hbA1c := ado.fieldbyname('hbA1c').AsFloat;
-   form.kreatinin := ado.fieldbyname('kreatinin').AsFloat;
-   form.trigliserid := ado.fieldbyname('trigliserid').AsFloat;
-   form.ldlKol := ado.fieldbyname('ldlKol').AsFloat;
-   form.hdlKol := ado.fieldbyname('hdlKol').AsFloat;
-   form.alt := ado.fieldbyname('alt').AsFloat;
-
-   form.antiGAD := ado.fieldbyname('antiGAD').AsString;
-   form.ekg := ado.fieldbyname('ekg').AsInteger;
-   form.mikroalbuminuri := ado.fieldbyname('mikroalbuminuri').AsString;
-   form.gozMuayenesi := ado.fieldbyname('gozMuayenesi').AsInteger;
-   form.periferikSensoryal := ado.fieldbyname('periferikSensoryal').AsString;
-   form.koronerArterH := ado.fieldbyname('koronerArterH').AsString;
-   form.serebrovaskulerH := ado.fieldbyname('serebrovaskulerH').AsString;
-   form.ayakMuayenesi := ado.fieldbyname('ayakMuayenesi').AsString;
-   form.akutKomplikasyon := ado.fieldbyname('akutKomplikasyon').AsInteger;
-
-   form.insulinPompasi := ado.fieldbyname('InsulinPompasi').AsString;
-   form.insulinPompasiVerTarihi := ado.fieldbyname('insulinPompasiVerTarihi').AsString;
-   form.insulinPompasiDegTarihi := ado.fieldbyname('insulinPompasiDegTarihi').AsString;
-   
-   ado1 := TADOQuery.Create(nil);
-   ado1.Connection := datalar.ADOConnection2;
-   sql := 'select * from Diyabettakip_Ilaclar where dosyaNo = ' + QuotedStr(Diyabet.DosyaNo) + ' and gelisNo = ' + Diyabet.GelisNo + ' and gelisdetayNo = ' + Diyabet.DetayNo;
-   datalar.QuerySelect(ado1,sql);
-
-   SetLength(Ilaclar,ado1.RecordCount);
-   for r := 0 to ado1.RecordCount - 1 do
-   begin
-      Ilac := TakipFormuKullanilanIlaclarDVO.Create;
-      Ilac.barkod := ado1.Fieldbyname('barkod').AsString;
-      Ilac.gunlukDoz := ado1.Fieldbyname('doz').AsString;
-      Ilaclar[r] := Ilac;
-      ado1.Next;
-   end;
-   ado1.Free;
-   ado.Free;
-
-   form.kullanilanIlaclar := Ilaclar;
-
-
-   Ts_Gon.diabetTakipFormu := form;
-
-
-
-   try
-     Ts_Cvp := (http1 as TakipFormuIslemleri).takipFormuKaydet(Ts_Gon);
-     result := Ts_Cvp.sonucKodu + '-' + Ts_Cvp.sonucMesaji;
-     if Ts_Cvp.sonucKodu = '0000' then TakipFormNo := Ts_Cvp.diabetTakipFormu.takipFormuNo;
-   except on e : sysUtils.Exception do
-    begin
-       ShowMessageSkin(e.Message,'','','info');
-       exit;
-    end;
-   end;
-
-   result := Ts_Cvp.sonucKodu + '-' + Ts_Cvp.sonucMesaji;
+  result := Ts_Cvp.sonucKodu + '-' + Ts_Cvp.sonucMesaji;
 end;
 
 
@@ -2923,134 +2949,135 @@ var
    ado : TADOQuery;
    islemSiraNo , siraNo , sql : string;
 Begin
-
   try
-       ado := TADOQuery.Create(nil);
-       ado.Connection := datalar.ADOConnection2;
+    ado := TADOQuery.Create(nil);
+    try
+      ado.Connection := datalar.ADOConnection2;
 
 
-       datalar.RxTahlilIslem.First;
-       while not datalar.RxTahlilIslem.Eof do
-       Begin
-           islemSiraNo := datalar.RxTahlilIslem.fieldbyname('islemSiraNo').AsString;
-           siraNo := datalar.RxTahlilIslem.fieldbyname('HizmetSunucuRefNo').AsString;
+      datalar.RxTahlilIslem.First;
+      while not datalar.RxTahlilIslem.Eof do
+      Begin
+          islemSiraNo := datalar.RxTahlilIslem.fieldbyname('islemSiraNo').AsString;
+          siraNo := datalar.RxTahlilIslem.fieldbyname('HizmetSunucuRefNo').AsString;
 
-          if siraNo[1] = 'T'
+         if siraNo[1] = 'T'
+         Then Begin
+          sql := 'update Anamnez_ICD set islemSiraNo = ' + QuotedStr(islemSiraNo) +
+                 ' where ID = ' + copy(siraNo,2,15);
+                 datalar.QueryExec(ado,sql);
+         End
+         Else Begin
+          sql := 'update hareketler set islemSiraNo = ' + QuotedStr(islemSiraNo) +
+                 ' where SIRANO = ' + siraNo;
+          datalar.QueryExec(ado,sql);
+         End;
+
+
+          datalar.RxTahlilIslem.Next;
+      End;
+
+      datalar.RxYatakBilgisi.First;
+      while not datalar.RxYatakBilgisi.Eof do
+      Begin
+          islemSiraNO := datalar.RxYatakBilgisi.fieldbyname('islemSiraNo').AsString;
+          siraNO := datalar.RxYatakBilgisi.fieldbyname('HizmetSunucuRefNo').AsString;
+          sql := 'update hareketler set islemSiraNo = ' + QuotedStr(islemSiraNo) +
+                 ' where SIRANO = ' + siraNo;
+          datalar.QueryExec(ado,sql);
+          datalar.RxYatakBilgisi.Next;
+      End;
+
+      datalar.RxDigerIslem.First;
+      while not datalar.RxDigerIslem.Eof do
+      Begin
+          islemSiraNO := datalar.RxDigerIslem.fieldbyname('islemSiraNo').AsString;
+          siraNO := datalar.RxDigerIslem.fieldbyname('HizmetSunucuRefNo').AsString;
+
+
+          if siraNo[1] = 'S'
           Then Begin
-           sql := 'update Anamnez_ICD set islemSiraNo = ' + QuotedStr(islemSiraNo) +
-                  ' where ID = ' + copy(siraNo,2,15);
-                  datalar.QueryExec(ado,sql);
+              sql := 'update gelisDetay set islemSiraNo = ' + QuotedStr(islemSiraNO) +
+                     ' where siraNo = ' + copy(siraNO,2,15);
+              datalar.QueryExec(ado,sql);
           End
-          Else Begin
-           sql := 'update hareketler set islemSiraNo = ' + QuotedStr(islemSiraNo) +
-                  ' where SIRANO = ' + siraNo;
-           datalar.QueryExec(ado,sql);
+          Else
+          Begin
+              sql := 'update hareketler set islemSiraNo = ' + QuotedStr(islemSiraNo) +
+                     ' where SIRANO = ' + siraNO;
+              datalar.QueryExec(ado,sql);
           End;
+          datalar.RxDigerIslem.Next;
+      End;
 
+      datalar.RxMuayeneBilgisi.First;
+      while not datalar.RxMuayeneBilgisi.Eof do
+      Begin
+          islemSiraNO := datalar.RxMuayeneBilgisi.fieldbyname('islemSiraNo').AsString;
+          siraNO := datalar.RxMuayeneBilgisi.fieldbyname('HizmetSunucuRefNo').AsString;
+          sql := 'update hareketler set islemSiraNo = ' + QuotedStr(islemSiraNo) +
+                 ' where SIRANO = ' + siraNO;
+          datalar.QueryExec(ado,sql);
+          datalar.RxMuayeneBilgisi.Next;
+      End;
 
-           datalar.RxTahlilIslem.Next;
-       End;
+      datalar.RxIlacBilgisi.First;
+      while not datalar.RxIlacBilgisi.Eof do
+      Begin
+          islemSiraNO := datalar.RxIlacBilgisi.fieldbyname('islemSiraNo').AsString;
+          siraNO := datalar.RxIlacBilgisi.fieldbyname('HizmetSunucuRefNo').AsString;
+          sql := 'update hareketler set islemSiraNo = ' + QuotedStr(islemSiraNo) +
+                 ' where SIRANO = ' + siraNO;
+          datalar.QueryExec(ado,sql);
+          datalar.RxIlacBilgisi.Next;
+      End;
 
-       datalar.RxYatakBilgisi.First;
-       while not datalar.RxYatakBilgisi.Eof do
-       Begin
-           islemSiraNO := datalar.RxYatakBilgisi.fieldbyname('islemSiraNo').AsString;
-           siraNO := datalar.RxYatakBilgisi.fieldbyname('HizmetSunucuRefNo').AsString;
-           sql := 'update hareketler set islemSiraNo = ' + QuotedStr(islemSiraNo) +
-                  ' where SIRANO = ' + siraNo;
-           datalar.QueryExec(ado,sql);
-           datalar.RxYatakBilgisi.Next;
-       End;
+      datalar.RxMalzemeBilgisi.First;
+      while not datalar.RxMalzemeBilgisi.Eof do
+      Begin
+          islemSiraNO := datalar.RxMalzemeBilgisi.fieldbyname('islemSiraNo').AsString;
+          siraNO := datalar.RxMalzemeBilgisi.fieldbyname('HizmetSunucuRefNo').AsString;
+          sql := 'update hareketler set islemSiraNo = ' + QuotedStr(islemSiraNo) +
+                 ' where SIRANO = ' + siraNO;
+          datalar.QueryExec(ado,sql);
+          datalar.RxMalzemeBilgisi.Next;
+      End;
 
-       datalar.RxDigerIslem.First;
-       while not datalar.RxDigerIslem.Eof do
-       Begin
-           islemSiraNO := datalar.RxDigerIslem.fieldbyname('islemSiraNo').AsString;
-           siraNO := datalar.RxDigerIslem.fieldbyname('HizmetSunucuRefNo').AsString;
+      datalar.RxAmeliyatBilgisi.First;
+      while not datalar.RxAmeliyatBilgisi.Eof do
+      Begin
+          islemSiraNO := datalar.RxAmeliyatBilgisi.fieldbyname('islemSiraNo').AsString;
+          siraNO := datalar.RxAmeliyatBilgisi.fieldbyname('HizmetSunucuRefNo').AsString;
+          sql := 'update hareketler set islemSiraNo = ' + QuotedStr(islemSiraNo) +
+                 ' where SIRANO = ' + siraNO;
+          datalar.QueryExec(ado,sql);
+          datalar.RxAmeliyatBilgisi.Next;
+      End;
 
+      datalar.RxRadIslem.First;
+      while not datalar.RxRadIslem.Eof do
+      Begin
+          islemSiraNO := datalar.RxRadIslem.fieldbyname('islemSiraNo').AsString;
+          siraNO := datalar.RxRadIslem.fieldbyname('HizmetSunucuRefNo').AsString;
+          sql := 'update hareketler set islemSiraNo = ' + QuotedStr(islemSiraNo) +
+                 ' where SIRANO = ' + siraNO;
+          datalar.QueryExec(ado,sql);
+          datalar.RxRadIslem.Next;
+      End;
 
-           if siraNo[1] = 'S'
-           Then Begin
-               sql := 'update gelisDetay set islemSiraNo = ' + QuotedStr(islemSiraNO) +
-                      ' where siraNo = ' + copy(siraNO,2,15);
-               datalar.QueryExec(ado,sql);
-           End
-           Else
-           Begin
-               sql := 'update hareketler set islemSiraNo = ' + QuotedStr(islemSiraNo) +
-                      ' where SIRANO = ' + siraNO;
-               datalar.QueryExec(ado,sql);
-           End;  
-           datalar.RxDigerIslem.Next;
-       End;
-
-       datalar.RxMuayeneBilgisi.First;
-       while not datalar.RxMuayeneBilgisi.Eof do
-       Begin
-           islemSiraNO := datalar.RxMuayeneBilgisi.fieldbyname('islemSiraNo').AsString;
-           siraNO := datalar.RxMuayeneBilgisi.fieldbyname('HizmetSunucuRefNo').AsString;
-           sql := 'update hareketler set islemSiraNo = ' + QuotedStr(islemSiraNo) +
-                  ' where SIRANO = ' + siraNO;
-           datalar.QueryExec(ado,sql);
-           datalar.RxMuayeneBilgisi.Next;
-       End;
-
-       datalar.RxIlacBilgisi.First;
-       while not datalar.RxIlacBilgisi.Eof do
-       Begin
-           islemSiraNO := datalar.RxIlacBilgisi.fieldbyname('islemSiraNo').AsString;
-           siraNO := datalar.RxIlacBilgisi.fieldbyname('HizmetSunucuRefNo').AsString;
-           sql := 'update hareketler set islemSiraNo = ' + QuotedStr(islemSiraNo) +
-                  ' where SIRANO = ' + siraNO;
-           datalar.QueryExec(ado,sql);
-           datalar.RxIlacBilgisi.Next;
-       End;
-
-       datalar.RxMalzemeBilgisi.First;
-       while not datalar.RxMalzemeBilgisi.Eof do
-       Begin
-           islemSiraNO := datalar.RxMalzemeBilgisi.fieldbyname('islemSiraNo').AsString;
-           siraNO := datalar.RxMalzemeBilgisi.fieldbyname('HizmetSunucuRefNo').AsString;
-           sql := 'update hareketler set islemSiraNo = ' + QuotedStr(islemSiraNo) +
-                  ' where SIRANO = ' + siraNO;
-           datalar.QueryExec(ado,sql);
-           datalar.RxMalzemeBilgisi.Next;
-       End;
-
-       datalar.RxAmeliyatBilgisi.First;
-       while not datalar.RxAmeliyatBilgisi.Eof do
-       Begin
-           islemSiraNO := datalar.RxAmeliyatBilgisi.fieldbyname('islemSiraNo').AsString;
-           siraNO := datalar.RxAmeliyatBilgisi.fieldbyname('HizmetSunucuRefNo').AsString;
-           sql := 'update hareketler set islemSiraNo = ' + QuotedStr(islemSiraNo) +
-                  ' where SIRANO = ' + siraNO;
-           datalar.QueryExec(ado,sql);
-           datalar.RxAmeliyatBilgisi.Next;
-       End;
-
-       datalar.RxRadIslem.First;
-       while not datalar.RxRadIslem.Eof do
-       Begin
-           islemSiraNO := datalar.RxRadIslem.fieldbyname('islemSiraNo').AsString;
-           siraNO := datalar.RxRadIslem.fieldbyname('HizmetSunucuRefNo').AsString;
-           sql := 'update hareketler set islemSiraNo = ' + QuotedStr(islemSiraNo) +
-                  ' where SIRANO = ' + siraNO;
-           datalar.QueryExec(ado,sql);
-           datalar.RxRadIslem.Next;
-       End;
-
-       datalar.RxTaniBilgisi.First;
-       while not datalar.RxTaniBilgisi.Eof do
-       Begin
-           islemSiraNO := datalar.RxTaniBilgisi.fieldbyname('islemSiraNo').AsString;
-           siraNO := datalar.RxTaniBilgisi.fieldbyname('HizmetSunucuRefNo').AsString;
-           sql := 'update Anamnez_ICD set islemSiraNo = ' + QuotedStr(islemSiraNo) +
-                  ' where ID = ' + copy(siraNO,2,15);
-           datalar.QueryExec(ado,sql);
-           datalar.RxTaniBilgisi.Next;
-       End;
-
+      datalar.RxTaniBilgisi.First;
+      while not datalar.RxTaniBilgisi.Eof do
+      Begin
+          islemSiraNO := datalar.RxTaniBilgisi.fieldbyname('islemSiraNo').AsString;
+          siraNO := datalar.RxTaniBilgisi.fieldbyname('HizmetSunucuRefNo').AsString;
+          sql := 'update Anamnez_ICD set islemSiraNo = ' + QuotedStr(islemSiraNo) +
+                 ' where ID = ' + copy(siraNO,2,15);
+          datalar.QueryExec(ado,sql);
+          datalar.RxTaniBilgisi.Next;
+      End;
+    finally
       ado.Free;
+    end;
   except on e : Exception do
    begin
     result := '0001';
@@ -3400,35 +3427,34 @@ var
   fFatura : Array_Of_hizmetDetayDVO;
   ado : TADOQuery;
 begin
-      if Detay = '' then Detay := '1';
+  if Detay = '' then Detay := '1';
 
-      ado := TADOQuery.Create(nil);
-      ado.Connection := datalar.ADOConnection2;
+  ado := TADOQuery.Create(nil);
+  try
+    ado.Connection := datalar.ADOConnection2;
 
-      sql := 'exec sp_MedulaDataset_kl_m3 ' + #39 + basvuru + #39 + ',' + #39 + 'HizmetDetay' + #39 + ',' + Detay;
-      datalar.QuerySelect(ado,sql);
-      if ado.Eof then exit;
+    sql := 'exec sp_MedulaDataset_kl_m3 ' + #39 + basvuru + #39 + ',' + #39 + 'HizmetDetay' + #39 + ',' + Detay;
+    datalar.QuerySelect(ado,sql);
+    if ado.Eof then exit;
 
-      dizi :=  ado.RecordCount;
-      SetLength(FFatura,dizi);
+    dizi :=  ado.RecordCount;
+    SetLength(FFatura,dizi);
 
-      for i := 0 to dizi - 1 do
-      begin
-        ts_Fatura := HizmetDetayDVO.Create;
-        ts_Fatura.aciklama := ado.fieldbyname('aciklama').AsString;
-        ts_Fatura.protokolNo := ado.fieldbyname('protokolNo').AsString;
-        ts_Fatura.taburcuKodu := ado.fieldbyname('taburcuKodu').AsString;
-        ts_Fatura.takipNo := ado.fieldbyname('TakipNo').AsString;
-        FFatura[i] := ts_Fatura;
-        ado.Next;
-      end;
-      result := fFatura;
-      SetLength(fFatura,0);
-
-      ado.Free;
-
-
-
+    for i := 0 to dizi - 1 do
+    begin
+      ts_Fatura := HizmetDetayDVO.Create;
+      ts_Fatura.aciklama := ado.fieldbyname('aciklama').AsString;
+      ts_Fatura.protokolNo := ado.fieldbyname('protokolNo').AsString;
+      ts_Fatura.taburcuKodu := ado.fieldbyname('taburcuKodu').AsString;
+      ts_Fatura.takipNo := ado.fieldbyname('TakipNo').AsString;
+      FFatura[i] := ts_Fatura;
+      ado.Next;
+    end;
+    result := fFatura;
+    SetLength(fFatura,0);
+  finally
+    ado.Free;
+  end;
 end;
 
 function FaturaKayitIptal(_teslimNo : FaturaKayitIslemleriWS.Array_Of_string; http1:THTTPRIO) : string;
@@ -4578,47 +4604,48 @@ var
   sql : String;
   mb : MuayeneBilgisiDVO;
   od : HizmetKayitIslemleriWS.Array_Of_string;
-  ado : TADOQuery;
   ozelDurumlar : TStringList;
   I : integer;
 begin
-      datalar.ADO_SQL2.Close;
-      datalar.ADO_SQL2.SQL.Clear;
+  datalar.ADO_SQL2.Close;
+  datalar.ADO_SQL2.SQL.Clear;
 
-      mb := MuayeneBilgisiDVO.Create;
+  mb := MuayeneBilgisiDVO.Create;
 
-      sql := 'exec sp_MedulaDataset_KL_M3 ' + #39 + _takip + #39 + ',' + #39 + 'Muayene' + #39;
-      datalar.QuerySelect(datalar.ADO_SQL2,sql);
-      if DATALAR.ADO_SQL2.Eof then exit;
+  sql := 'exec sp_MedulaDataset_KL_M3 ' + #39 + _takip + #39 + ',' + #39 + 'Muayene' + #39;
+  datalar.QuerySelect(datalar.ADO_SQL2,sql);
+  if DATALAR.ADO_SQL2.Eof then exit;
 
-   //   mb := MuayeneBilgisiDVO.Create;
-      mb.sutKodu := datalar.ADO_SQL2.fieldbyname('butKodu').AsString;
-      mb.bransKodu := datalar.ADO_SQL2.fieldbyname('bransKodu').AsString;
-      mb.muayeneTarihi := FormattedTarih(datalar.ADO_SQL2.fieldbyname('muayeneTarihi').AsString);
-      mb.drTescilNo := datalar.ADO_SQL2.fieldbyname('doktorTescilNo').AsString;
-      mb.hizmetSunucuRefNo := datalar.ADO_SQL2.fieldbyname('hizmetsunucuRefno').AsString;
+//   mb := MuayeneBilgisiDVO.Create;
+  mb.sutKodu := datalar.ADO_SQL2.fieldbyname('butKodu').AsString;
+  mb.bransKodu := datalar.ADO_SQL2.fieldbyname('bransKodu').AsString;
+  mb.muayeneTarihi := FormattedTarih(datalar.ADO_SQL2.fieldbyname('muayeneTarihi').AsString);
+  mb.drTescilNo := datalar.ADO_SQL2.fieldbyname('doktorTescilNo').AsString;
+  mb.hizmetSunucuRefNo := datalar.ADO_SQL2.fieldbyname('hizmetsunucuRefno').AsString;
 
-      ozelDurumlar := TStringList.Create;
-      Split(',',DATALAR.ADO_SQL2.fieldbyname('ozeldurum').AsString,ozelDurumlar);
+  ozelDurumlar := TStringList.Create;
+  try
+    Split(',',DATALAR.ADO_SQL2.fieldbyname('ozeldurum').AsString,ozelDurumlar);
 
-      if ozelDurumlar.Count > 1
-      then begin
-        SetLength(od,ozelDurumlar.Count);
-        for I := 0 to ozelDurumlar.Count  - 1 do
-        begin
-         od[I] := ozelDurumlar[I];
-        end;
-        mb.cokluOzelDurum := od;
+    if ozelDurumlar.Count > 1
+    then begin
+      SetLength(od,ozelDurumlar.Count);
+      for I := 0 to ozelDurumlar.Count  - 1 do
+      begin
+       od[I] := ozelDurumlar[I];
       end;
+      mb.cokluOzelDurum := od;
+    end;
 
-      if length(DATALAR.ADO_SQL2.fieldbyname('ozeldurum').AsString) = 1
-      then
-        mb.ozelDurum :=  DATALAR.ADO_SQL2.fieldbyname('ozeldurum').AsString;
+    if length(DATALAR.ADO_SQL2.fieldbyname('ozeldurum').AsString) = 1
+    then
+      mb.ozelDurum :=  DATALAR.ADO_SQL2.fieldbyname('ozeldurum').AsString;
 
-      result := mb;
+    result := mb;
 
-      ado.Free;
-      ozelDurumlar.Free;
+  finally
+    ozelDurumlar.Free;
+  end;
 end;
 
 
@@ -4841,13 +4868,15 @@ var
   memData : TdxMemData;
 begin
 
-      memData := TdxMemData.Create(nil);
-      memData.Active := true;
-      adoS := TADOQuery.Create(nil);
+  memData := TdxMemData.Create(nil);
+  try
+    memData.Active := true;
+    adoS := TADOQuery.Create(nil);
+    try
       adoS.Connection := datalar.ADOConnection2;
 
       sql := 'exec sp_MedulaDataset_kl_M3 ' + #39 + _takip + #39 + ',' + #39 + 'Tahlil' + #39;
-   //   datalar.QuerySelect(datalar.ADO_SQL2,sql);
+      //datalar.QuerySelect(datalar.ADO_SQL2,sql);
 
       adoS.SQL.Clear;
       datalar.QuerySelect(adoS,sql);
@@ -4863,87 +4892,60 @@ begin
       memData.First;
       adoS.Close;
       ados.Active := false;
+    finally
       ados.Free;
+    end;
 
-      dizi :=  memData.RecordCount;
-      SetLength(Ftahliller,dizi);
-  //    TahlilElemanlar := TahlilBilgisiDVO.Create;
-      for i := 0 to dizi - 1 do
-      begin
-        TahlilElemanlar := HizmetKayitIslemleriws.TahlilBilgisiDVO.Create;
-        TahlilElemanlar.sutKodu := memData.fieldbyname('butKodu').AsString;
-        TahlilElemanlar.adet := memData.fieldbyname('adet').AsInteger;
-        TahlilElemanlar.islemTarihi := FormattedTarih(memData.fieldbyname('islemTarihi').AsString);
-        TahlilElemanlar.drTescilNo := memData.fieldbyname('doktorTescilNo').AsString;
-        TahlilElemanlar.bransKodu := memData.fieldbyname('bransKodu').AsString;
-        TahlilElemanlar.hizmetSunucuRefNo := memData.fieldbyname('hizmetSunucuRefNo').AsString;
-        TahlilElemanlar.ozeldurum := memData.fieldbyname('ozeldurum').AsString;
-    //  sql1 := 'exec sp_MedulaDataset_KL_M3 @dataset = ''TahlilSonuc'',@hsira = ' + memData.fieldbyname('hizmetSunucuRefNo').AsString;
+    dizi :=  memData.RecordCount;
+    SetLength(Ftahliller,dizi);
+    //TahlilElemanlar := TahlilBilgisiDVO.Create;
+    for i := 0 to dizi - 1 do
+    begin
+      TahlilElemanlar := HizmetKayitIslemleriws.TahlilBilgisiDVO.Create;
+      TahlilElemanlar.sutKodu := memData.fieldbyname('butKodu').AsString;
+      TahlilElemanlar.adet := memData.fieldbyname('adet').AsInteger;
+      TahlilElemanlar.islemTarihi := FormattedTarih(memData.fieldbyname('islemTarihi').AsString);
+      TahlilElemanlar.drTescilNo := memData.fieldbyname('doktorTescilNo').AsString;
+      TahlilElemanlar.bransKodu := memData.fieldbyname('bransKodu').AsString;
+      TahlilElemanlar.hizmetSunucuRefNo := memData.fieldbyname('hizmetSunucuRefNo').AsString;
+      TahlilElemanlar.ozeldurum := memData.fieldbyname('ozeldurum').AsString;
+      //sql1 := 'exec sp_MedulaDataset_KL_M3 @dataset = ''TahlilSonuc'',@hsira = ' + memData.fieldbyname('hizmetSunucuRefNo').AsString;
 
 
       if Modul = 'D'
       Then Begin
 
-           if memData.fieldbyname('butKodu').AsString <> '901620'
-           Then Begin
-                  SetLength(Fsonuclar,memData.fieldbyname('adet').AsInteger);
+         if memData.fieldbyname('butKodu').AsString <> '901620'
+         Then Begin
+                SetLength(Fsonuclar,memData.fieldbyname('adet').AsInteger);
+                Sonuclar := HizmetKayitIslemleriws.TahlilSonucDVO.Create;
+                Sonuclar.islemSiraNo := memData.fieldbyname('hizmetSunucuRefNo').AsString;
+                Sonuclar.sonuc := memData.fieldbyname('gd').AsString;
+                Sonuclar.tahlilTipi := memData.fieldbyname('SGKTip').AsString;
+                Sonuclar.birim := memData.fieldbyname('birim').AsString;
+                Fsonuclar[0] := Sonuclar;
+
+                if memData.fieldbyname('adet').AsInteger = 2
+                Then Begin
+                  //SetLength(Fsonuclar,1);
                   Sonuclar := HizmetKayitIslemleriws.TahlilSonucDVO.Create;
                   Sonuclar.islemSiraNo := memData.fieldbyname('hizmetSunucuRefNo').AsString;
-                  Sonuclar.sonuc := memData.fieldbyname('gd').AsString;
+                  Sonuclar.sonuc := memData.fieldbyname('cd').AsString;
                   Sonuclar.tahlilTipi := memData.fieldbyname('SGKTip').AsString;
                   Sonuclar.birim := memData.fieldbyname('birim').AsString;
-                  Fsonuclar[0] := Sonuclar;
+                  Fsonuclar[1] := Sonuclar;
+                 // TahlilElemanlar.tahlilSonuclari := Fsonuclar;
+                End;
 
-                  if memData.fieldbyname('adet').AsInteger = 2
-                  Then Begin
-                    //SetLength(Fsonuclar,1);
-                    Sonuclar := HizmetKayitIslemleriws.TahlilSonucDVO.Create;
-                    Sonuclar.islemSiraNo := memData.fieldbyname('hizmetSunucuRefNo').AsString;
-                    Sonuclar.sonuc := memData.fieldbyname('cd').AsString;
-                    Sonuclar.tahlilTipi := memData.fieldbyname('SGKTip').AsString;
-                    Sonuclar.birim := memData.fieldbyname('birim').AsString;
-                    Fsonuclar[1] := Sonuclar;
-                   // TahlilElemanlar.tahlilSonuclari := Fsonuclar;
-                  End;
+                TahlilElemanlar.tahlilSonuclari := Fsonuclar;
+          End;
 
-                  TahlilElemanlar.tahlilSonuclari := Fsonuclar;
-            End;
-
-           if memData.fieldbyname('butKodu').AsString = '901620'
-           Then Begin
-              sql1 := 'select h.code,''L''+cast(h.SIRANO as varchar) sira ,h.gd,h.cd,t.SGKTip,t.birim ' +
-                      ' from hareketler h ' +
-                      ' join labtestler t on t.butkodu = h.code ' +
-                      '  where dosyaNo = ' + QuotedStr(dosyaNo) + ' and gelisNo = ' + gelisNo + ' and (charindex(''901620.'',h.code)) > 0 and isnull(SGKTip,'''') <> ''''';
-
-              datalar.ADO_SQL2.SQL.Clear;
-              datalar.QuerySelect(datalar.ADO_SQL2,sql1);
-              dizi1 :=  datalar.ADO_SQL2.RecordCount;
-              SetLength(Fsonuclar,dizi1);
-              for r := 0 to dizi1 - 1 do
-              begin
-                  Sonuclar := HizmetKayitIslemleriws.TahlilSonucDVO.Create;
-                  Sonuclar.islemSiraNo := datalar.ADO_SQL2.fieldbyname('sira').AsString;
-                  Sonuclar.sonuc := datalar.ADO_SQL2.fieldbyname('gd').AsString;
-                  Sonuclar.tahlilTipi := datalar.ADO_SQL2.fieldbyname('SGKTip').AsString;
-                  Sonuclar.birim := datalar.ADO_SQL2.fieldbyname('birim').AsString;
-                  Fsonuclar[r] := Sonuclar;
-                  datalar.ADO_SQL2.Next;
-              end;
-              TahlilElemanlar.tahlilSonuclari := Fsonuclar;
-             End;
-
-      End; // Modul = 'D' end
-
-
-
-      if ((Modul = 'K') and ((Tedavi = 'Y') or (Tedavi = 'G'))) or
-         ((Modul = 'K') and (EK10C(memData.fieldbyname('butKodu').AsString) = True))
-      Then BEgin
-          sql1 :=   'select s.hareketsira,s.sonuc1,s.parametrebirim,p.SGKtip  from  laboratuvar_sonuc S ' +
-                    ' join laboratuvar_parametre P on p.sira = s.parametre_sira and p.kodu = s.testno' +
-                    ' where s.hareketSira = ' + memData.fieldbyname('hizmetSunucuRefNo').AsString  +
-                    ' and isnull(p.SGKtip,'''') <> '''' and ISNULL(sonuc1,'''') <> '''' and sonuc1 <> ''0'' ';
+         if memData.fieldbyname('butKodu').AsString = '901620'
+         Then Begin
+            sql1 := 'select h.code,''L''+cast(h.SIRANO as varchar) sira ,h.gd,h.cd,t.SGKTip,t.birim ' +
+                    ' from hareketler h ' +
+                    ' join labtestler t on t.butkodu = h.code ' +
+                    '  where dosyaNo = ' + QuotedStr(dosyaNo) + ' and gelisNo = ' + gelisNo + ' and (charindex(''901620.'',h.code)) > 0 and isnull(SGKTip,'''') <> ''''';
 
             datalar.ADO_SQL2.SQL.Clear;
             datalar.QuerySelect(datalar.ADO_SQL2,sql1);
@@ -4952,29 +4954,53 @@ begin
             for r := 0 to dizi1 - 1 do
             begin
                 Sonuclar := HizmetKayitIslemleriws.TahlilSonucDVO.Create;
-                Sonuclar.islemSiraNo := datalar.ADO_SQL2.fieldbyname('hareketsira').AsString;
-                Sonuclar.sonuc := TrtoEng(datalar.ADO_SQL2.fieldbyname('sonuc1').AsString);
+                Sonuclar.islemSiraNo := datalar.ADO_SQL2.fieldbyname('sira').AsString;
+                Sonuclar.sonuc := datalar.ADO_SQL2.fieldbyname('gd').AsString;
                 Sonuclar.tahlilTipi := datalar.ADO_SQL2.fieldbyname('SGKTip').AsString;
-                Sonuclar.birim := datalar.ADO_SQL2.fieldbyname('parametrebirim').AsString;
+                Sonuclar.birim := datalar.ADO_SQL2.fieldbyname('birim').AsString;
                 Fsonuclar[r] := Sonuclar;
                 datalar.ADO_SQL2.Next;
             end;
             TahlilElemanlar.tahlilSonuclari := Fsonuclar;
+           End;
+
+    End; // Modul = 'D' end
+
+
+
+    if ((Modul = 'K') and ((Tedavi = 'Y') or (Tedavi = 'G'))) or
+       ((Modul = 'K') and (EK10C(memData.fieldbyname('butKodu').AsString) = True))
+    Then BEgin
+        sql1 :=   'select s.hareketsira,s.sonuc1,s.parametrebirim,p.SGKtip  from  laboratuvar_sonuc S ' +
+                  ' join laboratuvar_parametre P on p.sira = s.parametre_sira and p.kodu = s.testno' +
+                  ' where s.hareketSira = ' + memData.fieldbyname('hizmetSunucuRefNo').AsString  +
+                  ' and isnull(p.SGKtip,'''') <> '''' and ISNULL(sonuc1,'''') <> '''' and sonuc1 <> ''0'' ';
+
+          datalar.ADO_SQL2.SQL.Clear;
+          datalar.QuerySelect(datalar.ADO_SQL2,sql1);
+          dizi1 :=  datalar.ADO_SQL2.RecordCount;
+          SetLength(Fsonuclar,dizi1);
+          for r := 0 to dizi1 - 1 do
+          begin
+              Sonuclar := HizmetKayitIslemleriws.TahlilSonucDVO.Create;
+              Sonuclar.islemSiraNo := datalar.ADO_SQL2.fieldbyname('hareketsira').AsString;
+              Sonuclar.sonuc := TrtoEng(datalar.ADO_SQL2.fieldbyname('sonuc1').AsString);
+              Sonuclar.tahlilTipi := datalar.ADO_SQL2.fieldbyname('SGKTip').AsString;
+              Sonuclar.birim := datalar.ADO_SQL2.fieldbyname('parametrebirim').AsString;
+              Fsonuclar[r] := Sonuclar;
+              datalar.ADO_SQL2.Next;
+          end;
+          TahlilElemanlar.tahlilSonuclari := Fsonuclar;
       End;
-
-        Ftahliller[i] := TahlilElemanlar;
-        memData.Next;
-
-
-      end; // for end
-
-
-
-
-      result := Ftahliller;
-      SetLength(Ftahliller,0);
-      SetLength(Fsonuclar,0);
-      memData.Free;
+      Ftahliller[i] := TahlilElemanlar;
+      memData.Next;
+    end; // for end
+    result := Ftahliller;
+  finally
+    memData.Free;
+    SetLength(Ftahliller,0);
+    SetLength(Fsonuclar,0);
+  end;
 
   //    TahlilElemanlar.Free;
 end;
@@ -5092,17 +5118,20 @@ function RaporTakipNoBul(butkodu : string) : string;
 var
   ado : TADOQuery;
 begin
-      ado := TADOQuery.Create(nil);
-      ado.Connection := datalar.ADOConnection2;
-      sql := 'exec sp_MedulaDataset_kl_M3 ' + #39 + _takip + #39 + ',' + QuotedStr('Rapor_' + butkodu);
-      datalar.QuerySelect(ado,sql);
-      if not ado.Eof
-      Then
-        result := ado.fieldbyname('raporTakipNo').AsString
-      Else
-        result := '';
-      ado.close;
-      ado.free;
+  ado := TADOQuery.Create(nil);
+  try
+    ado.Connection := datalar.ADOConnection2;
+    sql := 'exec sp_MedulaDataset_kl_M3 ' + #39 + _takip + #39 + ',' + QuotedStr('Rapor_' + butkodu);
+    datalar.QuerySelect(ado,sql);
+    if not ado.Eof
+    Then
+      result := ado.fieldbyname('raporTakipNo').AsString
+    Else
+      result := '';
+    ado.close;
+  finally
+    ado.free;
+  end;
 end;
 
 begin
@@ -5191,8 +5220,5 @@ begin
       SetLength(FDigerIslemler,0);
 
 end;
-
-
-
 
 end.
