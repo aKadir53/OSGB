@@ -671,9 +671,14 @@ var
   sql : string;
 begin
   Result := TADOQuery.Create(nil);
-  Result.Connection := datalar.ADOConnection2;
-  sql := Format(_SqlSelect_,[Columns,Table,Where]);
-  datalar.QuerySelect(Result,sql);
+  try
+    Result.Connection := datalar.ADOConnection2;
+    sql := Format(_SqlSelect_,[Columns,Table,Where]);
+    datalar.QuerySelect(Result,sql);
+  except
+    FreeAndNil (Result);
+    raise;
+  end;
 end;
 
 function GridCellToString(Grid : TcxGridDBTableView; ColonName : string ; Row : integer) : Variant;
@@ -8449,16 +8454,16 @@ begin
   ado := TADOQuery.Create(nil);
   try
     Result := False;
-    DATALAR.ADOConnection2.BeginTrans;
+    BeginTrans (DATALAR.ADOConnection2);
     try
       datalar.QueryExec (ado, 'delete from SahaGozlemRaporu where RaporlarID = ' + IntToStr (GozlemID));
       datalar.QueryExec (ado, 'delete from SahaGozlemRaporlari where ID = ' + IntToStr (GozlemID));
       Result := True;
     finally
       if Result then
-        DATALAR.ADOConnection2.CommitTrans
+        CommitTrans (DATALAR.ADOConnection2)
        else
-        DATALAR.ADOConnection2.RollbackTrans;
+        RollbackTrans (DATALAR.ADOConnection2);
     end;
   finally
     ado.Free;

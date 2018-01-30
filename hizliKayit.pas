@@ -478,7 +478,7 @@ begin
     iRowC := 0;
     ShowThermo(iThermo, 'Satýrlar veritabanýna yazýlýyor', 0, GridList.RowCount - 1, 0, True);
     try
-      datalar.ADOConnection2.BeginTrans;
+      BeginTrans (datalar.ADOConnection2);
       try
         for _row_ := 1 to GridList.RowCount - 1 do
         begin
@@ -575,11 +575,11 @@ begin
       finally
         if bBasarili then
         begin
-          datalar.ADOConnection2.CommitTrans;
+          CommitTrans (datalar.ADOConnection2);
           showmessageSkin (IntToStr (iCount) + ' adet kayýt baþarý ile aktarýldý', '', '', 'info');
         end
         else begin
-          datalar.ADOConnection2.rollbackTrans;
+          RollBackTrans (datalar.ADOConnection2);
           GridList.Row := iRowC + 1;
           showmessageSkin (IntToStr (iRowC + 1) + '. satýrda hata oluþtu, aktarým iþlemi tamamlanamadý.', '', '', 'info');
         end;
