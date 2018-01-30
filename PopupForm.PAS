@@ -481,15 +481,14 @@ inherited;
           setDataStringKontrol(self,mevcutTarih_, 'GirisTarihi','Muayene Tarih',Kolon1,'',100);
           TcxTextEdit(FindComponent('GirisTarihi')).EditValue := date;
 
-          ImageCombo := TcxImageComboBox.Create(self);
-          ImageCombo.name := 'TEDAVITURU';
-          ImageComboItemAdd('1','Ýþe Giriþ Muayenesi',ImageCombo);
-          ImageComboItemAdd('2','Periyodik Muayene',ImageCombo);
-          ImageComboItemAdd('3','Normal Muayene',ImageCombo);
-          ImageComboItemAdd('4','Ýþten Çýkýþ Muayenesi',ImageCombo);
-          ImageComboItemAdd('5','Ýþe Dönüþ Muayenesi',ImageCombo);
-          ImageComboItemAdd('6','Ýþ Kazasý Muayenesi',ImageCombo);
-          setDataStringKontrol(self,ImageCombo, 'TEDAVITURU','Tedavi Türü',Kolon1,'',120);
+          Doktorlar := TcxImageComboKadir.Create(self);
+          Doktorlar.Conn := Datalar.ADOConnection2;
+          Doktorlar.Name := 'TEDAVITURU';
+          Doktorlar.TableName := 'vw_muayenetipleri';
+          Doktorlar.ValueField := 'Kod';
+          Doktorlar.DisplayField := 'Tanim';
+          Doktorlar.Filter := '';
+          setDataStringKontrol(self,Doktorlar, 'TEDAVITURU','Tedavi Türü',Kolon1,'',120);
 
           if datalar.doktorKodu = ''
           then begin
