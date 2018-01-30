@@ -757,7 +757,7 @@ begin
          ado.Connection := DATALAR.ADOConnection2;
          try
            b := False;
-           ado.Connection.BeginTrans;
+           BeginTrans (ado.Connection);
            try
              sql := 'delete ria from ReceteIlacAciklama ria inner join ReceteDetay rd on rd.id = ria.ReceteDetayID where rd.ReceteId = ' + ADO_Recete.fieldbyname('Id').AsString;
              datalar.QueryExec(ado,sql);
@@ -771,8 +771,8 @@ begin
              datalar.QueryExec(ado,sql);
              b := True;
            finally
-             if b then ado.Connection.CommitTrans
-                  else ado.Connection.RollbackTrans;
+             if b then CommitTrans (ado.Connection)
+                  else RollbackTrans (ado.Connection);
            end;
            ShowMessageSkin('Reçete Ýptal Edildi','','','info');
            ADO_Recete.Active := false;
