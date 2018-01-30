@@ -404,7 +404,7 @@ begin
      ado.Connection := datalar.ADOConnection2;
      try
        bSucc := False;
-       ado.Connection.BeginTrans;
+       BeginTrans (ado.Connection);
        try
          sql := 'Delete from PersoneliseGirisMuayene where Personelkodu = ' + QuotedStr (DosyaNo.Text) +
                 ' and gelisNo = ' + _gelisNo_;
@@ -414,8 +414,8 @@ begin
          datalar.QueryExec(ado, sql);
          bSucc := True;
        finally
-         if bSucc then ado.Connection.CommitTrans
-         else ado.Connection.RollbackTrans;
+         if bSucc then CommitTrans(ado.Connection)
+         else RollbackTrans(ado.Connection);
 
        end;
 
@@ -1457,7 +1457,8 @@ begin
 
   case TControl(sender).Tag  of
     0 : begin
-            List := TListeAc.Create(nil);
+          List := TListeAc.Create(nil);
+          try
             List.Kolonlar.Create;
             List.Table := 'ilacListesi';
             List.Kolonlar.Add('barkod');
@@ -1484,6 +1485,9 @@ begin
               TcxButtonEditKadir(FindComponent(_name_)).Text := _L_ [0].kolon1;
               TcxButtonEditKadir(FindComponent('tanimi')).Text := _L_ [0].kolon2;
             end;
+          finally
+            List.Free;
+          end;
         end;
     1 : begin
          // post;
