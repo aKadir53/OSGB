@@ -189,6 +189,7 @@ type
     F_sube_ : string;
     F_SahaDenetimVeri_ : TSahaDenetimler;
     F_MuayeneProtokolNo_ : string;
+    F_cxKaydetResult : Boolean;
   protected
     F_IDENTITY : Integer;
     { Private declarations }
@@ -282,7 +283,8 @@ type
     property _kod_ : string read F_kod_ write F_kod_;
     property _sube_ : string read F_sube_ write F_sube_;
     property _SahaDenetimVeri_ : TSahaDenetimler read F_SahaDenetimVeri_ write F_SahaDenetimVeri_;
-     property _MuayeneProtokolNo_ : string read F_MuayeneProtokolNo_ write F_MuayeneProtokolNo_;
+    property _MuayeneProtokolNo_ : string read F_MuayeneProtokolNo_ write F_MuayeneProtokolNo_;
+    property cxKaydetResult : boolean read F_cxKaydetResult;
   end;
 
 const
@@ -2197,6 +2199,7 @@ var
   dosyaNo : string;
   sonuc : Boolean;
 begin
+  F_cxKaydetResult := False;
   if KontrolUsers(inttostr(self.Tag),inttostr(TControl(sender).Tag),datalar.username) = False
   Then begin
     datalar.KontrolUserSet := True;
@@ -2224,6 +2227,7 @@ begin
 
              if sonuc = True Then begin
               newButonVisible(false);
+              F_cxKaydetResult := True;
               ShowMessageskin('Kayýt Yapýldý','','','info');
              end;
            except on e: Exception do
@@ -2240,6 +2244,7 @@ begin
            then begin
                try
                 sqlRun.Delete;
+                F_cxKaydetResult := True;
                except on e : Exception do
                 begin
                   ShowMessage(e.Message + ' Silmek isteðiniz kayýt iliþkisel veri olabilir mi?','','','info');
@@ -2271,10 +2276,12 @@ begin
            cxPanelButtonEnabled(false,true,false);
            newButonVisible(true);
            //sirketKod.Text := datalar.AktifSirket;
-          end;
+           F_cxKaydetResult := True;
+        end;
       3 : begin
            sqlRun.Next;
            indexKaydiBul('');
+           F_cxKaydetResult := True;
           end;
 
       9999 : begin
