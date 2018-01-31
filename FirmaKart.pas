@@ -726,34 +726,42 @@ end;
 procedure TfrmFirmaKart.cxKaydetClick(Sender: TObject);
 begin
   datalar.KontrolUserSet := False;
-  case TControl(sender).Tag  of
-    1 : begin
-          FotoDeleteRecord;
-        end;
-  end;
+  BeginTrans (DATALAR.ADOConnection2);
+  try
+    case TControl(sender).Tag  of
+      1 : begin
+            FotoDeleteRecord;
+          end;
+    end;
 
-  inherited;
-  if datalar.KontrolUserSet = True then exit;
+    inherited;
+    if datalar.KontrolUserSet then exit;
+    if not cxKaydetResult then Exit;
 
-  case TControl(sender).Tag  of
-    0 : begin
-         // if TCtoDosyaNo(TcxCustomEdit(FindComponent('TckimlikNo')).EditingValue)
-         FotoNewRecord;
-         Kart := sql_none;
-        end;
-    1 : begin
-          Kart := sql_delete;
-        end;
-    2 : begin
-            Kart := sql_new;
-            TcxButtonEditKadir(FindComponent('SirketKod')).EditValue := dosyaNoYeniNumaraAl('FN');
-            if TcxButtonEditKadir(FindComponent('SirketKod')).EditingValue = '0'
-            then begin
-              ShowMessageskin('Dosya No Alýnamadý','','','info');
-            end;
-            foto.Picture.Assign(nil);
-        end;
-
+    case TControl(sender).Tag  of
+      0 : begin
+           // if TCtoDosyaNo(TcxCustomEdit(FindComponent('TckimlikNo')).EditingValue)
+           FotoNewRecord;
+           Kart := sql_none;
+          end;
+      1 : begin
+            Kart := sql_delete;
+          end;
+      2 : begin
+              Kart := sql_new;
+              TcxButtonEditKadir(FindComponent('SirketKod')).EditValue := dosyaNoYeniNumaraAl('FN');
+              if TcxButtonEditKadir(FindComponent('SirketKod')).EditingValue = '0'
+              then begin
+                ShowMessageskin('Dosya No Alýnamadý','','','info');
+              end;
+              foto.Picture.Assign(nil);
+          end;
+    end;
+  finally
+    if cxKaydetResult then
+      CommitTrans (DATALAR.ADOConnection2)
+     else
+      RollbackTrans (DATALAR.ADOConnection2);
   end;
 
 end;
