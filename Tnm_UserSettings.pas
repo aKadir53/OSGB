@@ -441,7 +441,7 @@ begin
 
   if iTip <= 0 then Exit;
   bBasari := False;
-  DATALAR.ADOConnection2.BeginTrans;
+  BeginTrans (DATALAR.ADOConnection2);
   try
     xQuery := TADOQuery.Create (Self);
     try
@@ -464,11 +464,11 @@ begin
   finally
     if bBasari then
     begin
-      DATALAR.ADOConnection2.CommitTrans;
+      CommitTrans(DATALAR.ADOConnection2);
       ShowMessageSkin('Ýþlem Tamamlandý', '', '', 'info');
     end
     else begin
-      DATALAR.ADOConnection2.RollbackTrans;
+      RollbackTrans(DATALAR.ADOConnection2);
       ShowMessageSkin('Hata Oluþtu', '', '', 'info');
     end;
   end;
@@ -544,16 +544,32 @@ begin
      ShowMessageSkin('Þifre Tekrarý Hatalý','','','info');
      exit;
     end;
-  inherited;
-  case TcxButton(sender).Tag  of
-    2 : begin
-           IslemveMenuGorunumSetEkle(ugUser);
-
-        end;
-    1 : begin
-         // post;
-         //ShowMessage('Ýptal');
+  BeginTrans (DATALAR.ADOConnection2);
+  try
+    if TcxButton(sender).Tag = 1
+    then
+    begin
+      DATALAR.QueryExec('delete from UserMenuSettings where Kullanici = ' + QuotedStr(TcxButtonEditKadir (FindComponent('Kullanici')).Text));
+      DATALAR.QueryExec('delete from UserSettings where Kullanici = ' + QuotedStr(TcxButtonEditKadir (FindComponent('Kullanici')).Text));
     end;
+    inherited;
+    if not cxKaydetResult then Exit;
+
+    case TcxButton(sender).Tag  of
+      2 : begin
+             IslemveMenuGorunumSetEkle(ugUser);
+
+          end;
+      1 : begin
+           // post;
+           //ShowMessage('Ýptal');
+      end;
+    end;
+  finally
+    if cxKaydetResult then
+      CommitTrans (DATALAR.ADOConnection2)
+     else
+      RollbackTrans (DATALAR.ADOConnection2);
   end;
 end;
 

@@ -1330,90 +1330,76 @@ end;
 
 procedure TfrmHastaKart.cxKaydetClick(Sender: TObject);
 begin
-
-    case TControl(sender).Tag  of
-      0,1 :begin
-          if TCKontrol(vartoStr(TcxTextEditKadir(FindComponent('TCKIMLIKNO')).EditingValue)) = False
-           Then begin
-             ShowMessageSkin('TC Kimlik No Hatalý','Lütfen Kontrol Ediniz','','info');
-             TcxCustomEdit(FindComponent('TCKIMLIKNO')).SetFocus;
-             exit;
-           end;
-(*
-           if (vartoStr(TcxImageComboKadir(FindComponent('Sube')).EditingValue) = '') or
-              (vartoStr(TcxImageComboKadir(FindComponent('SirketKod')).EditingValue) = '')
-           Then Begin
-             ShowMessageSkin('Þube Seçmediniz','Lütfen Kontrol Ediniz','','info');
-             TcxImageComboKadir(FindComponent('Sube')).SetFocus;
-             exit;
-           End;
-  *)
-           if MrYes <> ShowMessageSkin('Personel Kartý',TcxImageComboKadir(FindComponent('SirketKod')).Text,
-                                       TcxImageComboKadir(FindComponent('Sube')).Text + ' Þubesine Kayýt Edilecek',
-                                       'msg')
-           Then begin
-             exit;
-           end;
-
-        (*
-
-        if datalar.AktifSirket <> TcxLabel(FindComponent('LabelSirketKod')).Caption
-        then begin
-          ShowMessageSkin('Personel Kartýnda Deðiþiklik için personelin kayýtlý olduðu þirketle programa giriþ yapýnýz!','','','info');
-          exit;
-        end;
-        *)
-      end;
-      2 : begin
-           if datalar.AktifSirket = '' then
-           begin
-              ShowMessageSkin('Þirket Seçmelisiniz','','','info');
-              exit;
-           end;
-
-          if IsNull (TcxLabel(FindComponent('LabelSirketKod')).Caption) then
-          TcxLabel(FindComponent('LabelSirketKod')).Caption := datalar.AktifSirket;
-      end;
-    end;
-
-
-  datalar.KontrolUserSet := False;
-  inherited;
-  if datalar.KontrolUserSet = True then exit;
-
   case TControl(sender).Tag  of
-    0 : begin
-         // if TCtoDosyaNo(TcxCustomEdit(FindComponent('TckimlikNo')).EditingValue)
-         FotoNewRecord;
-         Kart := sql_none;
-        end;
-    1 : begin
-          Kart := sql_delete;
-        end;
+    0 :begin
+        if TCKontrol(vartoStr(TcxTextEditKadir(FindComponent('TCKIMLIKNO')).EditingValue)) = False
+         Then begin
+           ShowMessageSkin('TC Kimlik No Hatalý','Lütfen Kontrol Ediniz','','info');
+           TcxCustomEdit(FindComponent('TCKIMLIKNO')).SetFocus;
+           exit;
+         end;
+         if MrYes <> ShowMessageSkin('Personel Kartý',TcxImageComboKadir(FindComponent('SirketKod')).Text,
+                                     TcxImageComboKadir(FindComponent('Sube')).Text + ' Þubesine Kayýt Edilecek',
+                                     'msg') Then
+           exit;
+    end;
     2 : begin
-          Kart := sql_new;
-          dosyaNo.Text := dosyaNoYeniNumaraAl('DN');
-          if dosyaNo.Text = '0'
-          then begin
-            ShowMessageskin('Dosya No Alýnamadý','','','info');
-          end;
-          foto.Picture.Assign(nil);
-          HastaGelis (dosyaNo.Text, ADO_Gelisler);
-          TcxImageComboKadir(FindComponent('SirketKod')).EditValue := datalar.AktifSirket;
-          TcxImageComboKadir(FindComponent('Sube')).EditValue :=
-          ifThen(datalar.AktifSube = '','00',ifThen(pos(',',datalar.AktifSube) > 0,'00',datalar.AktifSube));
+         if datalar.AktifSirket = '' then
+         begin
+            ShowMessageSkin('Þirket Seçmelisiniz','','','info');
+            exit;
+         end;
 
-          TcxImageComboKadir(FindComponent('muayenePeryot')).EditValue :=
-          SirketSubeTehlikeSinifi(vartostr(TcxImageComboKadir(FindComponent('SirketKod')).EditValue),
-                                  vartostr(TcxImageComboKadir(FindComponent('Sube')).EditValue));
-
-          if IsNull (TcxLabel(FindComponent('LabelSirketKod')).Caption) then
-            TcxLabel(FindComponent('LabelSirketKod')).Caption := datalar.AktifSirket;
-          TcxImageComboBox (FindComponent ('Aktif')).ItemIndex := 2;//aktif pasif yeni  kombosu yeni kayýtta Yeni deðeri varsayýlan olacak.
-        end;
-
+        if IsNull (TcxLabel(FindComponent('LabelSirketKod')).Caption) then
+        TcxLabel(FindComponent('LabelSirketKod')).Caption := datalar.AktifSirket;
+    end;
   end;
 
+  datalar.KontrolUserSet := False;
+  BeginTrans (DATALAR.ADOConnection2);
+  try
+    inherited;
+    if datalar.KontrolUserSet = True then exit;
+    if not cxKaydetResult then Exit;
+
+    case TControl(sender).Tag  of
+      0 : begin
+           // if TCtoDosyaNo(TcxCustomEdit(FindComponent('TckimlikNo')).EditingValue)
+           FotoNewRecord;
+           Kart := sql_none;
+          end;
+      1 : begin
+            Kart := sql_delete;
+          end;
+      2 : begin
+            Kart := sql_new;
+            dosyaNo.Text := dosyaNoYeniNumaraAl('DN');
+            if dosyaNo.Text = '0'
+            then begin
+              ShowMessageskin('Dosya No Alýnamadý','','','info');
+            end;
+            foto.Picture.Assign(nil);
+            HastaGelis (dosyaNo.Text, ADO_Gelisler);
+            TcxImageComboKadir(FindComponent('SirketKod')).EditValue := datalar.AktifSirket;
+            TcxImageComboKadir(FindComponent('Sube')).EditValue :=
+            ifThen(datalar.AktifSube = '','00',ifThen(pos(',',datalar.AktifSube) > 0,'00',datalar.AktifSube));
+
+            TcxImageComboKadir(FindComponent('muayenePeryot')).EditValue :=
+            SirketSubeTehlikeSinifi(vartostr(TcxImageComboKadir(FindComponent('SirketKod')).EditValue),
+                                    vartostr(TcxImageComboKadir(FindComponent('Sube')).EditValue));
+
+            if IsNull (TcxLabel(FindComponent('LabelSirketKod')).Caption) then
+              TcxLabel(FindComponent('LabelSirketKod')).Caption := datalar.AktifSirket;
+            TcxImageComboBox (FindComponent ('Aktif')).ItemIndex := 2;//aktif pasif yeni  kombosu yeni kayýtta Yeni deðeri varsayýlan olacak.
+          end;
+
+    end;
+  finally
+    if cxKaydetResult then
+      CommitTrans (DATALAR.ADOConnection2)
+     else
+      RollbackTrans (DATALAR.ADOConnection2);
+  end;
 end;
 
 
