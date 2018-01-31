@@ -227,3 +227,6 @@ Semih > evet o da var
 Semih > bi sorarýz
 Umit : biz ilaç taný gibi þeyleri master'a taþýyalým data tekrarý olmasýn lüzumsuz yere diyorduk. adamýn lokalinde veritabaný varken master'a gitmesi de garip olacak ilaç için. gerçi müþteri firmada çalýþýrken lokal de uzak bizimki de
 Umit : ama çekmeköy sadece belediyede kullanacaksa onlarýn hep lokal olacak belki de
+
+firma kartlarýnda zorunlu alan kontrolüne takýlsa bile firmalogo insert olmaya çalýþýyor. silerken de silmiyor
+ilaç dataseti lokalde açýk tutabilir miyiz ?
