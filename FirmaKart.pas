@@ -71,6 +71,7 @@ type
     procedure seansGunleriPropertiesEditValueChanged(Sender: TObject);
     procedure FotoEkle;
     procedure FotoNewRecord;
+    procedure FotoDeleteRecord;
     procedure cxButtonEditPropertiesButtonClick(Sender: TObject;
       AButtonIndex: Integer);override;
     function TakipSil(TakipNo : string) : string;
@@ -285,6 +286,21 @@ begin
     sql := 'if not exists(select sirketKod from FirmaLogo where sirketKod = ' + QuotedStr(dosyaNo) + ')' +
            ' insert into FirmaLogo (sirketKod,logo,tip) ' +
            ' values (' + QuotedStr(dosyaNo) + ',NULL,''H'')';
+    datalar.QueryExec(ado,sql);
+  finally
+    ado.Free;
+  end;
+end;
+
+procedure TfrmFirmaKart.FotoDeleteRecord;
+var
+ sql,dosyaNo : string;
+ ado : TADOQuery;
+begin
+  dosyaNo := TcxButtonEditKadir(FindComponent('SirketKod')).Text;
+  ado := TADOQuery.Create(nil);
+  try
+    sql := 'delete FirmaLogo where sirketKod = ' + QuotedStr(dosyaNo);
     datalar.QueryExec(ado,sql);
   finally
     ado.Free;
@@ -710,6 +726,12 @@ end;
 procedure TfrmFirmaKart.cxKaydetClick(Sender: TObject);
 begin
   datalar.KontrolUserSet := False;
+  case TControl(sender).Tag  of
+    1 : begin
+          FotoDeleteRecord;
+        end;
+  end;
+
   inherited;
   if datalar.KontrolUserSet = True then exit;
 
