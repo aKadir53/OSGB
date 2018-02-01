@@ -1075,15 +1075,12 @@ begin
 end;
 
 procedure TfrmHastaRecete.ilacEkle(islem : integer);
-var
-  t : string;
 begin
   if not CheckReceteStatus (True, False, True) then Exit;
    if islem = ReceteIlacEkle
    then
    if ADO_Recete.FieldByName('ereceteNo').AsString = '0000'
    Then Begin
-     t := 'ILACLARMM';
      try
       Application.CreateForm(TfrmIlacSarf, frmIlacSarf);
       try
@@ -1091,7 +1088,7 @@ begin
     //    frmIlacSarf.GonForm('frmHastaRecete',_dosyaNo_,_gelisNo_);
         frmIlacSarf._dosyaNO_ := _dosyaNo_;
         frmIlacSarf._gelisNO_ := _gelisNo_;
-        frmIlacSarf.Tanilar('Recete',t );
+        frmIlacSarf.Tanilar (False);
         frmIlacSarf.Tag := TagfrmIlacSarf;
         frmIlacSarf.cxTab.Tabs[0].Caption := 'Ýlaçlar';
         frmIlacSarf.ShowModal;

@@ -258,7 +258,7 @@ procedure MenuIDRun(MenuId : integer);
 function sureKontrol: Boolean;
 function RaporGecerlimi(_dosyaNo: string): double;
 function IlacReceteAciklama(_dosyaNo, GelisNo, kod, doz: string): tstringlist;
-function IlacReceteTaniEkle(_dosyaNo, GelisNo, kod: string): String;
+function IlacReceteTaniEkle(kod: string): String;
 function IlacKoduToUnite(code, dosya, gelis: string;
   var peryot, peryotAdet: string): real;
 function SeansKontrol(s, mn, t: string; DosyaNo: string = ''): string;
@@ -3066,7 +3066,7 @@ begin
   end;
 end;
 
-function IlacReceteTaniEkle(_dosyaNo, GelisNo, kod: string): String;
+function IlacReceteTaniEkle(kod: string): String;
 var
   ado: TADOQuery;
   sql: string;
