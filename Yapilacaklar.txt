@@ -230,3 +230,5 @@ Umit : ama çekmeköy sadece belediyede kullanacaksa onlarýn hep lokal olacak belk
 
 firma kartlarýnda zorunlu alan kontrolüne takýlsa bile firmalogo insert olmaya çalýþýyor. silerken de silmiyor
 ilaç dataseti lokalde açýk tutabilir miyiz ?
+taný dataseti lokalde açýk tutabilir miyiz ?
+adoconnection2 kapat aç yapabilir miyiz ?
