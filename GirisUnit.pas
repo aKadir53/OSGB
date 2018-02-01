@@ -2204,14 +2204,14 @@ begin
   Then begin
     datalar.KontrolUserSet := True;
     ShowMessageSkin('Bu kontrolü kullanýmýnýz kýsýtlandýrýmýþ','Sistem yöneticinizle görüþün','','info');
-    exit;
+    Abort;
   end;
   DurumGoster();
   try
     case TControl(sender).Tag  of
       0 : begin
            try
-             if FormInputZorunluKontrol(self) Then Exit;
+             if FormInputZorunluKontrol(self) Then Abort;
              if sqlTip = sql_Select
              then begin
                sonuc := post;
@@ -2233,6 +2233,7 @@ begin
            except on e: Exception do
             begin
               ShowMessage(e.Message,'','','info');
+              Abort;
             end;
            end;
 
@@ -2247,7 +2248,8 @@ begin
                 F_cxKaydetResult := True;
                except on e : Exception do
                 begin
-                  ShowMessage(e.Message + ' Silmek isteðiniz kayýt iliþkisel veri olabilir mi?','','','info');
+                  ShowMessage('Silmek isteðiniz kayýt iliþkisel veri olabilir mi?'#13#10+e.Message,'','','info');
+                  Abort;
                 end;
                end;
                try
@@ -2256,6 +2258,7 @@ begin
                except on e : exception do
                 begin
                   ShowMessageSkin(e.Message,'','Boþ Kayýt yüklenirken hata oluþtu','info');
+                  Abort;
                 end;
                end;
                cxPanelButtonEnabled(true,false,false);
@@ -2295,7 +2298,6 @@ begin
   finally
     DurumGoster(False);
   end;
-
 end;
 
 procedure TGirisForm.FormClose(Sender: TObject; var Action: TCloseAction);
