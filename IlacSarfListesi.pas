@@ -33,7 +33,6 @@ type
     gridIlacSarfColumn1: TcxGridDBColumn;
     gridIlacSarfColumn2: TcxGridDBColumn;
     DBNavigator1: TDBNavigator;
-    ADO_ILACSARF: TADOQuery;
     gridIlacSarfColumn3: TcxGridDBColumn;
     cxGrid2: TcxGrid;
     Eklenen: TcxGridDBTableView;
@@ -70,21 +69,14 @@ type
     cxStyle2: TcxStyle;
     procedure txtHizmetGruplariCheckListItemToText(sender: TObject;
       var aText: String);
-    procedure Gruplar;
     procedure btnSendClick(Sender: TObject);
-    procedure DBGridEh1DblClick(Sender: TObject);
     procedure btnVazgecClick(Sender: TObject);
-    procedure Tanilar(_tani , t : string);
-    procedure txtaramaChange(Sender: TObject);
-    procedure TanilarCombo;
-    procedure GonForm(_form , _dosyano , _gelisNo : string);
-    procedure txtGruplarClick(Sender: TObject);
+    procedure Tanilar (const bReset: Boolean);
     procedure gridIlacSarfKeyDown(Sender: TObject; var Key: Word;
       Shift: TShiftState);
     procedure gridIlacSarfDblClick(Sender: TObject);
     procedure gridIlacSarfKeyPress(Sender: TObject; var Key: Char);
     procedure chkDozClick(Sender: TObject);
-    procedure ADO_ILACSARFAfterScroll(DataSet: TDataSet);
     procedure chkSIKClick(Sender: TObject);
     procedure gridIlacSarfStylesGetContentStyle(Sender: TcxCustomGridTableView;
       ARecord: TcxCustomGridRecord; AItem: TcxCustomGridTableItem;
@@ -93,86 +85,77 @@ type
 
   private
     { Private declarations }
+  protected
+    procedure FADO_ILACSARFAfterScroll(DataSet: TDataSet);
   public
     { Public declarations }
+    destructor Destroy; override;
   end;
 
 var
   frmIlacSarf: TfrmIlacSarf;
-  _form_ , dosyaNo , gelisNo , dozTipi , KulPer , KulPerAdet : string;
 
 implementation
    uses HastaRecete;
 
+var
+  FADO_ILACSARF : TADOQuery;
+  FLastSikKull : Integer;
+
 {$R *.dfm}
 
-procedure TfrmIlacSarf.GonForm(_form , _dosyaNo ,_gelisNo: string);
-begin
- _form := _form;
- dosyaNo := _dosyano;
- gelisNO := _gelisNo;
-end;
-
-
-procedure TfrmIlacSarf.TanilarCombo;
-begin
-  (*
-     sql := 'select SLB,SLT from hizmet_gruplari ' +
-            ' where substring(SLXX,1,1) in (''6'',''7'')';
-     datalar.ADO_ILACSARF.close;
-     datalar.ADO_ILACSARF.SQL.Clear;
-     ComboDoldur2(datalar.ADO_ILACSARF,sql,txtGruplar,0,1);
-     *)
-end;
-
-procedure TfrmIlacSarf.Tanilar(_tani , t : string);
+procedure TfrmIlacSarf.Tanilar (const bReset: Boolean);
 var
-   sql : string;
+  sql : string;
+  iTmp : Integer;
+  aNtfEvt: TNotifyEvent;
 begin
-  _form_ := _tani;
-  try
-    ADO_ILACSARF.Close;
-    ADO_ILACSARF.SQL.Clear;
-    sql := 'select * from ' + t +
-           ' where Aktif = 1 order by NAME1 ' ;
-    datalar.QuerySelect(ADO_ILACSARF,sql);
-  except
-  end;
-end;
-
-procedure TfrmIlacSarf.Gruplar;
-begin
- (*
-    sql := 'select SLB,SLT from hizmet_gruplari';
-    datalar.QuerySelect(datalar.ADO_SQL,sql);
-
-    txtHizmetGruplari.Clear;
-
-    for x := 1 to datalar.ADO_SQL.RecordCount do
-    begin
-        txtHizmetGruplari.Items.Add(datalar.ADO_SQL.FieldList[0].AsString + ' ' + datalar.ADO_SQL.FieldList[1].AsString);
-        datalar.ADO_SQL.Next;
+  if not bReset then
+  begin
+    aNtfEvt := chkSIK.OnClick;
+    chkSIK.OnClick := nil;
+    try
+      chkSIK.Checked := FLastSikKull in [1, 2];
+    finally
+      chkSIK.OnClick := aNtfEvt;
     end;
-   *)
+  end;
+  if chkSIK.Checked then iTmp := 1 else iTmp := 0;
+  if not Assigned (FADO_ILACSARF) then
+  begin
+    FADO_ILACSARF := TADOQuery.Create (nil);
+    FADO_ILACSARF.Connection := DATALAR.ADOConnection2;
+    FADO_ILACSARF.CursorType := ctStatic;
+  end;
+  FADO_ILACSARF.AfterScroll := FADO_ILACSARFAfterScroll;
+  DataSource1.DataSet := FADO_ILACSARF;
+  if (FLastSikKull <> iTmp) or (not FADO_ILACSARF.Active) or bReset then
+  begin
+    FADO_ILACSARF.Close;
+    FADO_ILACSARF.SQL.Clear;
+    sql := 'select * from ' + IfThen (chkSIK.Checked, 'ILACLARMM', 'ILACLARM') +
+           ' where Aktif = 1 order by NAME1 ' ;
+    datalar.QuerySelect(FADO_ILACSARF, sql);
+    FLastSikKull := iTmp;
+  end;
+  FADO_ILACSARF.First;
 end;
-
 
 procedure TfrmIlacSarf.txtHizmetGruplariCheckListItemToText(
   sender: TObject; var aText: String);
 begin
- atext :=  copy(atext,1,2);
-
+  atext :=  copy(atext,1,2);
 end;
 
-procedure TfrmIlacSarf.ADO_ILACSARFAfterScroll(DataSet: TDataSet);
+procedure TfrmIlacSarf.FADO_ILACSARFAfterScroll(DataSet: TDataSet);
 begin
   if chkDoz.Checked
   then
     try
      txtDetay.Lines :=
      IlacReceteAciklama(datalar._dosyaNo_,datalar._gelisNo_,
-                    ADO_ILACSARF.FieldByName('code').AsString,
-                    inttostr(1*ADO_ILACSARF.FieldByName('UNITE').AsInteger));
+                    FADO_ILACSARF.FieldByName('code').AsString,
+                    inttostr(FADO_ILACSARF.FieldByName('UNITE').AsInteger));
     except
     end
   else
@@ -182,7 +165,7 @@ end;
 procedure TfrmIlacSarf.btnSendClick(Sender: TObject);
 var
    i,x: integer;
-   s , _tani_ ,sql , keys , doz1,doz2: string;
+   s , _tani_, sql , keys , doz1,doz2: string;
    ado : TADOQuery;
    unite : real;
 begin
@@ -277,7 +260,7 @@ begin
               frmHastaRecete.ADO_receteTani.Active := false;
               frmHastaRecete.ADO_receteTani.Active := True;
 
-              _tani_ := IlacReceteTaniEkle(dosyaNo,gelisNo,Eklenenler.fieldbyname('ETKENMADDE').AsString);
+              _tani_ := IlacReceteTaniEkle(Eklenenler.fieldbyname('ETKENMADDE').AsString);
               x := pos(';',_tani_)-1;
               keys := copy(_tani_,1,x);
               if copy(_tani_,1,x) <> ''
@@ -321,15 +304,10 @@ begin
   end;
 end;
 
-procedure TfrmIlacSarf.DBGridEh1DblClick(Sender: TObject);
-//var
-//   key : word;
+destructor TfrmIlacSarf.Destroy;
 begin
-     (*
-     key := vk_return;
-     DBGridEh1.OnKeyDown(DBGridEh1,key,[]);
-       *)
-
+  FADO_ILACSARF.AfterScroll := nil;
+  inherited;
 end;
 
 procedure TfrmIlacSarf.FormCreate(Sender: TObject);
@@ -363,25 +341,8 @@ var
 begin
   c := chkDoz.Checked;
   chkDoz.Checked := False;
-
-  if chkSIK.Checked
-  Then
-    frmIlacSarf.Tanilar('Recete','ILACLARMM')
-  Else
-    frmIlacSarf.Tanilar('Recete','ILACLARM');
+  frmIlacSarf.Tanilar (True);
   chkDoz.Checked := c;
-
-
-end;
-
-procedure TfrmIlacSarf.txtaramaChange(Sender: TObject);
-begin
-//     Tanilar(txtarama.Text,'');
-end;
-
-procedure TfrmIlacSarf.txtGruplarClick(Sender: TObject);
-begin
-  //   Tanilar(txtarama.Text,'');
 end;
 
 procedure TfrmIlacSarf.gridIlacSarfKeyDown(Sender: TObject; var Key: Word;
@@ -394,12 +355,12 @@ begin
     then begin
 
               Eklenenler.Append;
-              Eklenenler.FieldByName('ETKENMADDE').AsString := ADO_ILACSARF.fieldbyname('code').AsString;
-              Eklenenler.FieldByName('formu').AsString := ADO_ILACSARF.fieldbyname('NAME1').AsString;
-              Eklenenler.FieldByName('KYolu').AsString := ADO_ILACSARF.fieldbyname('kulYol').AsString;
-              Eklenenler.FieldByName('tani').AsString := ADO_ILACSARF.fieldbyname('ICD').AsString;
-              Eklenenler.FieldByName('doz').AsString := ADO_ILACSARF.fieldbyname('doz').AsString;
-              Eklenenler.FieldByName('adet').AsString := ADO_ILACSARF.fieldbyname('adet').AsString;
+              Eklenenler.FieldByName('ETKENMADDE').AsString := FADO_ILACSARF.fieldbyname('code').AsString;
+              Eklenenler.FieldByName('formu').AsString := FADO_ILACSARF.fieldbyname('NAME1').AsString;
+              Eklenenler.FieldByName('KYolu').AsString := FADO_ILACSARF.fieldbyname('kulYol').AsString;
+              Eklenenler.FieldByName('tani').AsString := FADO_ILACSARF.fieldbyname('ICD').AsString;
+              Eklenenler.FieldByName('doz').AsString := FADO_ILACSARF.fieldbyname('doz').AsString;
+              Eklenenler.FieldByName('adet').AsString := FADO_ILACSARF.fieldbyname('adet').AsString;
               if StrToIntDef (Eklenenler.FieldByName('adet').AsString, -1) <= 0 then
                 Eklenenler.FieldByName('adet').AsInteger := 1;
 
@@ -426,7 +387,7 @@ end;
 procedure TfrmIlacSarf.gridIlacSarfKeyPress(Sender: TObject;
   var Key: Char);
  var
-   s:  string;  
+   s:  string;
 begin
    KeyPressGridf(gridIlacSarf,key,s,1,True);
    txtarama.Text := s;
@@ -447,4 +408,11 @@ begin
 
 end;
 
+initialization
+  FADO_ILACSARF := nil;
+  FLastSikKull := 2;
+
+finalization
+  FreeAndNil(FADO_ILACSARF);
 end.
+

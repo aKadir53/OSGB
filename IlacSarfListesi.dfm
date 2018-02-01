@@ -189,7 +189,6 @@ object frmIlacSarf: TfrmIlacSarf
       Enabled = False
       ParentFont = False
       ParentShowHint = False
-      Properties.OnChange = txtaramaChange
       ShowHint = True
       TabOrder = 0
       Width = 454
@@ -220,7 +219,6 @@ object frmIlacSarf: TfrmIlacSarf
       ParentFont = False
       TabOrder = 1
       Visible = False
-      OnClick = txtGruplarClick
     end
     object cxGrid1: TcxGrid
       Left = 2
@@ -442,7 +440,6 @@ object frmIlacSarf: TfrmIlacSarf
     end
   end
   object DataSource1: TDataSource
-    DataSet = ADO_ILACSARF
     Left = 228
     Top = 119
   end
@@ -450,16 +447,6 @@ object frmIlacSarf: TfrmIlacSarf
     DataSet = Eklenenler
     Left = 124
     Top = 529
-  end
-  object ADO_ILACSARF: TADOQuery
-    Connection = DATALAR.ADOConnection2
-    CursorType = ctStatic
-    AfterScroll = ADO_ILACSARFAfterScroll
-    Parameters = <>
-    SQL.Strings = (
-      'select * from Anamnez_ICD')
-    Left = 184
-    Top = 118
   end
   object Eklenenler: TdxMemData
     Active = True
