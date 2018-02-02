@@ -232,3 +232,8 @@ firma kartlarýnda zorunlu alan kontrolüne takýlsa bile firmalogo insert olmaya ç
 ilaç dataseti lokalde açýk tutabilir miyiz ?
 taný dataseti lokalde açýk tutabilir miyiz ?
 adoconnection2 kapat aç yapabilir miyiz ?
+
+þifre boþsa clipboard'da sekme karakterli string arayýp otomatik giriþ vs.. hattâ enter karakteri varsa ilk satýr için kendi giriþ yapýp ikinci program kopyasýný açabiliriz
+
+muayene protokol no düzeltme imkaný.
+þifremi deðiþtir ekranýnda yýldýzlama...
