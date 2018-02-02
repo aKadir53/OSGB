@@ -95,7 +95,7 @@ end
 if @grup = 'TA10'
 begin
 select
-'Alkol alýyor musunu?' soru,
+'Alkol alýyor musunuz?' soru,
 MS.PersonelKodu, s.tanimi MuayeneSoru,s.id,MS.GrupKod,MS.altGrupKod,Ms.value,MS.aciklama,
 (case when MS.value = 'Evet' then 'X' else '' end) Evet,
 (case when MS.value = 'Hayýr' then 'X' else '' end) Hayir,
