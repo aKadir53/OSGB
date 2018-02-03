@@ -30,8 +30,6 @@ type
     login: TADOTable;
     DONEMBUL: TADOQuery;
     ADOConnection2: TADOConnection;
-
-
     txtip: TLabel;
     btnDetay: TSpeedButton;
     ListeAc1: TListeAc;
@@ -83,11 +81,9 @@ type
     dxLayoutControl2Group2: TdxLayoutGroup;
     dxLayoutControl2Group1: TdxLayoutGroup;
 
-    PROCEDURE YUVARLAK(WDN:HWND;ALAN:TRECT);
     procedure FormCreate(Sender: TObject);
     procedure FormActivate(Sender: TObject);
     procedure Image1Click(Sender: TObject);
-    procedure Edit1KeyPress(Sender: TObject; var Key: Char);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure FormMouseDown(Sender: TObject; Button: TMouseButton;
       Shift: TShiftState; X, Y: Integer);
@@ -95,9 +91,7 @@ type
     procedure sBitBtn2Click(Sender: TObject);
     procedure btnVazgecClick(Sender: TObject);
     function IsSQLServerRunning(const server,database,user,password:string): Boolean;
-    procedure LisansAliniyorCaption;
     procedure regyazLastLogin;
-    function SUTKODU : string;
     procedure FormShow(Sender: TObject);
     procedure btnDetayClick(Sender: TObject);
     procedure cxButtonEditKadir1PropertiesButtonClick(Sender: TObject;
@@ -107,46 +101,20 @@ type
       var AllowChange: Boolean);
     procedure txtSubePropertiesChange(Sender: TObject);
     procedure LoginSayfalarChange(Sender: TObject);
-
-    //procedure Thread1;
-    //procedure Thread2;
   private
-   RGN:HRGN;
     { Private declarations }
   public
-    log : boolean;
-    bt:integer;
     { Public declarations }
   end;
 
 var
   frmLogin: TfrmLogin;
-  second : integer = 0;
-  hThr1: THandle;
-  hThr2: THandle;
-  TempConnection: TADOConnection;
 
 implementation
 
-uses AnaUnit, data_modul;
+uses AnaUnit, data_modul, ClipBrd;
 
 {$R *.DFM}
-
-
-
-function TfrmLogin.SUTKODU : string;
-begin
- //   ado := TadoQuery.Create(self);
-  //  ado.Connection := datalar.ADOConnection2;
-
-  //  sql := 'select SLXX from parametreler where SLB = ''SUT'' and SLK = ''33''';
- //   datalar.QuerySelect(ado,sql);
- //   datalar.DigerIslemTalebi.sutKodu := ado.fieldbyname('SLXX').AsString;
- //   ado.Close;
- //   ado.Free;
-
-
-end;
 
 procedure TfrmLogin.txtSubePropertiesChange(Sender: TObject);
 begin
@@ -165,24 +133,6 @@ end;
 procedure TfrmLogin.regyazLastLogin;
 begin
   RegYaz ('LastLogin',Edit1.text);
-end;
-
-procedure TfrmLogin.LisansAliniyorCaption;
-begin
-     Application.ProcessMessages;
-     frmLogin.txtip.Caption := 'Lisans Alýnýyor..';
-     sleep(100);
-     Application.ProcessMessages;
-     frmLogin.txtip.Caption := 'Lisans Alýnýyor....';
-     sleep(100);
-     Application.ProcessMessages;
-     frmLogin.txtip.Caption := 'Lisans Alýnýyor......';
-     sleep(100);
-     Application.ProcessMessages;
-     frmLogin.txtip.Caption := 'Lisans Alýnýyor........';
-     sleep(100);
-     Application.ProcessMessages;
-     frmLogin.txtip.Caption := 'Lisans Alýnýyor..........';
 end;
 
 procedure TfrmLogin.LoginSayfalarChange(Sender: TObject);
@@ -205,59 +155,12 @@ begin
 
 end;
 
-procedure Thread1;
-begin
- //  datalar.bt := 0;
-//   frmLogin.txtip.Caption := 'Lisans Alýnýyor....';
- //  if  frmLogin.IsSQLServerRunning('91.151.81.101','mavi','mavinokta','12345')
- //  then begin
- //     datalar.bt := 1;
- //  End
-//   else
-//      datalar.bt := 2;
-end;
-
-procedure Thread2;
-begin
-
-//   TfrmLogin.Shape1.Brush.Color := clWhite;
- //  for i := 1 to 100 do
-//   begin
-//      frmLogin.ProgressBar1.Position := i;
- //     sleep(50);
- //  end;
-//   if datalar.bt = 1
-//   then begin
- //       frmLogin.txtip.Caption := 'Baglanti Saglandi.' ;
-//        Shape1.Brush.Color := clGreen;
- //  end
- //  else
- //  begin
-   //   frmLogin.txtip.Caption := 'Baglanti Saglanamadi.....';
-//      Shape1.Brush.Color := clRed;
-  // end;
-
-end;
-
 function TfrmLogin.IsSQLServerRunning(const server,database,user,password:string): Boolean;
-//var
-// TempConnection: TADOConnection;
- //uses ADODB  TempConnectionString: string;
 begin
    result := false;
    try
     CoInitialize(nil);  //uses ActiveX
       try
-//        TempConnection := TADOConnection.Create(nil);
-       //  datalar.TempConnection.ConnectionString := 'Provider=SQLOLEDB.1;Password=''12345'';Persist Security Info=False;User ID=mavinokta;Initial Catalog=mavi;Data Source=91.151.81.101';
-      //   'Provider=SQLOLEDB.1;Persist Security Info=False;User ID=%s;Password=%s;Initial Catalog=%s;Data Source=%s';
-     //    datalar.TempConnection.CommandTimeOut := 10;
-    //     datalar.TempConnection.ConnectionTimeOut := 10;
-    //     datalar.TempConnection.ConnectionString := Format(datalar.TempConnection.ConnectionString, [user, password, database, server]);
-    //     datalar.TempConnection.KeepConnection := false;
-    //     datalar.TempConnection.LoginPrompt := false;
-      //   datalar.TempConnection.Connected := true;
-         //datalar.TempConnection.Open;
          result := true;
       except
          result := false;
@@ -268,13 +171,6 @@ begin
    end;
 
 end;
-
-
-PROCEDURE TfrmLogin.YUVARLAK(WDN:HWND;ALAN:TRECT);
-BEGIN
-    RGN := CREATEROUNDRECTRGN(ALAN.LEFT,ALAN.TOP,ALAN.RIGHT,ALAN.BOTTOM,100,100);
-    SETWINDOWRGN(WDN,RGN,TRUE);
-END;
 
 
 procedure TfrmLogin.FormCreate(Sender: TObject);
@@ -293,61 +189,39 @@ begin
 end;
 
 procedure TfrmLogin.Image1Click(Sender: TObject);
+var
+  aSL1 : TStringList;
+  sTmp : String;
 begin
+  aSL1 := TStringList.Create;
+  try
+    aSL1.Text := Clipboard.AsText;
+    if not IsNull (aSL1.Text)  then
+    begin
+      sTmp := aSL1 [0];
+      if pos (#9, sTmp) > 0 then
+      begin
+        txtOsgbKodu.EditingText := Copy (sTmp, 1, pos (#9, sTmp) - 1);
+        Edit2.EditingText := Copy (sTmp, pos (#9, sTmp) + 1, Length (sTmp));
+        btnBaglanClick(btnBaglan);
+        aSL1.Delete (0);
+        Clipboard.AsText := aSL1.Text;
+        þif not IsNull (aSL1.Text) then
+        þ  WinExec(PAnsiChar (ParamStr (0)),SW_SHOW);
+      end;
+    end;
+  finally
+    aSL1.Free;
+  end;
+
   try
     try
       Datalar.ADOConnection2.Connected := false;
       Datalar.Baglan(txtDataBase.EditingText, txtServerName.Text, '', txtServerUserName.Text, txtServerPassword.Text);
 
-      (*
-      if txtDonemler.Text = ''
-      then begin
-        ShowMessageSkin('Þirket Seçmeden Devam Edemezsiniz','','','info');
-        exit;
-      end;
-
-      if IsNull (txtSirket.Text) then
-      begin
-        ShowMessageSkin('Þirket Seçmeden Devam Edemezsiniz','','','info');
-        exit;
-      end;
-       *)
       datalar.ProgTarih := FormattedTarih(tarihal(date()));
       datalar.AktifSirket := txtDonemler.Text;
 
-      (*
-       if InternetVarmi
-       Then Begin
-            // internet serverdan Tarihi alýyor
-            try
-
-                txtip.Caption := 'Lisans Okunuyor...';
-
-                  datalar.ProgTarih := FormattedTarih(tarihal(date()));
-
-                 try
-                  ado := TADOQuery.Create(nil);
-                  ado.Connection := datalar.ADOConnection2;
-                  sql := 'exec sp_dbcmptlevel DIALIZ,90';
-                  datalar.QueryExec(ado,sql);
-                  ado.Free;
-                 except
-                 end;
-
-
-            except on e : Exception do
-              begin
-                ShowMessageSkin('Hata : ' + e.Message,'','','info');
-                datalar.ProgTarih := '';
-              end;
-
-            end;
-           // internet serverdan Tarihi alýyor
-      // HGBal;
-      *
-       End
-       Else
-       datalar.ProgTarih := '';    *)
     except on e : Exception do
      begin
        ShowMessageSkin('Hata : ' + e.Message,'','','info');
@@ -375,7 +249,6 @@ begin
     datalar.username := edit1.Text;
     DATALAR.usersifre := edit2.Text;
     regyazLastLogin;
-    log := true;
     datalar.loginLog := True;
     //SUTKODU;
     datalar.doktorKodu := login.FieldByName('doktor').AsString;
@@ -400,12 +273,6 @@ begin
     datalar.LoginInOut.Execute;
 
     Hide;
-    (*
-       if LocalIP(IPAdres) then
-       txtip.Caption := IpAdres
-       else
-       txtip.Caption := '';
-      *)
 
     close;
     exit;
@@ -415,15 +282,6 @@ begin
        showmessageSkin('Hata : ' + e.Message,'','','info');
      end;
   end;
-end;
-
-procedure TfrmLogin.Edit1KeyPress(Sender: TObject; var Key: Char);
-begin
-    if key=#13
-    then begin
-             edit2.setfocus;
-    end;
-
 end;
 
 procedure TfrmLogin.FormClose(Sender: TObject; var Action: TCloseAction);
@@ -490,7 +348,6 @@ end;
 procedure TfrmLogin.btnVazgecClick(Sender: TObject);
 begin
  DATALAR.KillTask('OSGB.exe');
- log := false;
  halt;
 end;
 
