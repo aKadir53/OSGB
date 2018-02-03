@@ -639,7 +639,6 @@ object frmLogin: TfrmLogin
           Style.HotTrack = False
           Style.IsFontAssigned = True
           TabOrder = 0
-          OnKeyPress = Edit1KeyPress
           Width = 25
         end
         object Edit2: TcxTextEdit
@@ -792,7 +791,7 @@ object frmLogin: TfrmLogin
           object btnBaglan: TcxButtonKadir
             Left = 10
             Top = 91
-            Width = 105
+            Width = 272
             Height = 25
             Caption = 'Ba'#287'lant'#305'y'#305' Test Et'
             TabOrder = 5
@@ -827,7 +826,7 @@ object frmLogin: TfrmLogin
             Caption = 'ddddd'
             Style.HotTrack = False
             Height = 17
-            Width = 162
+            Width = 272
           end
           object txtServerUserName: TcxTextEditKadir
             Left = 104
@@ -1663,6 +1662,7 @@ object frmLogin: TfrmLogin
       Align = alRight
       Caption = 'Giri'#351' Yap'
       Default = True
+      ModalResult = 6
       TabOrder = 0
       OnClick = Image1Click
     end
@@ -1674,8 +1674,8 @@ object frmLogin: TfrmLogin
       Align = alRight
       Cancel = True
       Caption = 'Vazge'#231
+      ModalResult = 2
       TabOrder = 1
-      OnClick = btnVazgecClick
     end
   end
   object DataSource1: TDataSource
