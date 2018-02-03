@@ -207,7 +207,7 @@ begin
         aSL1.Delete (0);
         Clipboard.AsText := aSL1.Text;
         if not IsNull (aSL1.Text) then
-          WinExec(PAnsiChar (ParamStr (0)),SW_SHOW);
+          WinExec(PAnsiChar (AnsiString (ParamStr (0))),SW_SHOW);
       end;
     end;
   finally
@@ -347,8 +347,8 @@ end;
 
 procedure TfrmLogin.btnVazgecClick(Sender: TObject);
 begin
- DATALAR.KillTaskw('OSGB.exe');
- halt;
+ //DATALAR.KillTask('OSGB.exe');    x
+ //haltx;
 end;
 
 procedure TfrmLogin.cxButtonEditKadir1PropertiesButtonClick(Sender: TObject;

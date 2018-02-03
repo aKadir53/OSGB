@@ -1673,6 +1673,7 @@ object frmLogin: TfrmLogin
       Align = alRight
       Cancel = True
       Caption = 'Vazge'#231
+      ModalResult = 2
       TabOrder = 1
       OnClick = btnVazgecClick
     end

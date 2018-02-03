@@ -528,7 +528,7 @@ type
    function FindData (Q: TADOQuery; sql: string): integer;
    procedure Login;
  //  function WebErisimBilgi(slk,slb : string) : string;
-   function KillTask(Dosyadi: string): integer;
+   function KillTaskw(Dosyadi: string): integer;
 
     { Public declarations }
   end;
@@ -611,7 +611,7 @@ begin
   end;
 end;
 
-function TDATALAR.KillTask(Dosyadi: string): integer;
+function TDATALAR.KillTaskw(Dosyadi: string): integer;
 const
    PROCESS_TERMINATE=$0001;
 var
