@@ -507,7 +507,12 @@ inherited;
           setDataString(self,'MevcutSifre','Mevcut Þifre',Kolon1,'',100);
           setDataString(self,'YeniSifre','Yeni Þifre',Kolon1,'',100);
           setDataString(self,'YeniSifreTekrar','Yeni Þifre Tekrar',Kolon1,'',100);
-
+          TcxTextEdit(FindComponent('MevcutSifre')).Properties.EchoMode := eemPassword;
+          TcxTextEdit(FindComponent('MevcutSifre')).Properties.PasswordChar := '*';
+          TcxTextEdit(FindComponent('YeniSifre')).Properties.EchoMode := eemPassword;
+          TcxTextEdit(FindComponent('YeniSifre')).Properties.PasswordChar := '*';
+          TcxTextEdit(FindComponent('YeniSifreTekrar')).Properties.EchoMode := eemPassword;
+          TcxTextEdit(FindComponent('YeniSifreTekrar')).Properties.PasswordChar := '*';
 
           ClientHeight := 250;
           ClientWidth := 400;
