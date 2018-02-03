@@ -144,26 +144,12 @@ hastalarýn mevcut saðlýk, tahlil vb bilgileri, önceden yapýlmýþ iþe giriþ muayen
 admin þifreleri deðiþtir
 formlarýn enabled disabled durumlarý kontrol edilecek
 
-Tek_osgb._-_drarzu (286675759) > MONTAJ ELEMANI- ÜRETÝM ELEMANI-PRESHANE ELEMAN-CNC OPERATÖRÜ-MAKÞNE OPERATÖRÜ-AÞÇI-MUTFAK ELEMANI
-Tek_osgb._-_drarzu (286675759) > GÝBÝ BÝR SÜRÜ ÇALIÞAN GRUPLARI EKLENMELÝ
-Tek_osgb._-_drarzu (673641668) > merhaba
-Tek_osgb._-_drarzu (673641668) > ümit bey bir ricam olucak
-Tek_osgb._-_drarzu (673641668) > benim firmalarýmda iki adet kolza biodizel var
-Tek_osgb._-_drarzu (673641668) > bunun birine B9
-Tek_osgb._-_drarzu (673641668) > diðerine B20
-Tek_osgb._-_drarzu (673641668) > ekleyebilirmisiniz
-Tek_osgb._-_drarzu (673641668) > b9 tehlikeli
-Tek_osgb._-_drarzu (673641668) > b20 çok tehlikeli olan firma
 ana menü üstündeki þirket kombosundan þirket seçildiðinde alttaki þube otomatik güncelleniyor gibi ama excel aktarýmý þube seçilmemiþ ikazý yapýyor. galiba deðeri atamýyor. birden çok þubesi olan þirketlere geçiþte hataya sebep oluyor
 kalibre osgb çift personel silinmesi
 kalibre osgb 263 þirket koduna ait sgk sicili 34 37 36 ile biten þube pasif olacak
 kalibre osgb'de geliþlerin çoklandýðý þikayeti var
-personel silerken personel falan firmaya kaydedilecek emin misiniz sorusu soruyor, sadece kaydederken olmalý
 firma kartlarýnda override kelimesi kaybolmuþ, hacý kadir ile aradaki whatsapp notlarýndan tarihine bakýlýp logdan incelenecek
-user kartý silinince usersettings usermenusettings tablolarýný silmiyor, silmesi lazým
-personel kartýnda zorunlu alan kontrolüne takýlsa bile sonraki sql komutlarý çalýþýyor
 reçete ekraný reçete þifremi deðiþtir düðmesi. form baþlýðý dþlsas asdlaiþl olmuþ
-kullanýcý kartý silerken foreign key hatasý çýkýnca ekrandan yine de siliyor
 kullanýcý yetkileri gibi gridli ekranlarda dataset post olmadan çýkma problemi var
 müþteri tablosundaki 4 haneli kodlarýn vergi kimlik numarasý gibi bir þey 
 personel eklerken user doktorsa yeni deðil aktif default olabilir.
@@ -188,7 +174,6 @@ gruba baðlý olmayan kullanýcýlar için grup tablosundaki sýfýrdan farklý olan en 
 data modul'deki lüzumsuz deðiþkenleri sil
 
 imes osgb dr Murat: eczacý reçetede çalýþtýðý firma ismi açýklama olarak olmalý demiþ
-sýk kullanýlanlar kalkýk gelsin istiyor ilaçlarda ayrýca
 
 disAktarimParametre gibi bir tablo ile @@spid bazýnda aktif þirket, aktif kullanýcý, aktif þube, aktif doktor gibi bilgileri yaz oku sil yapabiliriz. 
 otomatik excel aktarimi sp'lerinde bu tabloya join ile data alabiliriz. 
@@ -201,39 +186,16 @@ ilgili dýþ aktarýmýn tablosuna ilk kayýt yazarken disAktarimParametre tablosu il
 dýþ aktarým sp'sinde, ara tablodan data alýp kullanýrken þirket kodu, user vs bilgiler için gidip kendisindeki aktarim parametre id'sindeki parametre kaydýna gidilip data kullanýlabilir.
 iþte bu kadar basit.
 
-uygulamanýn mevcut kopyalarýný kapatmasýný ve halt komutlarýný, application.terminate'leri kaldýrmak lazým kill killtask
 þube kartlarýna aktif / pasif ayarý eklenecek
 isg katip aktarýmýnda nace kodlarý firma kartýna güncelleniyor, þube kartýna da güncellemek lazým
 
-intran, begintran commit rollback'ler aranacak try finally kontrolleri yapýlacak
 
-Semih > abi bu çekmeköy belediyesi kurulum istiyor, herhalde kendi serverlarýna kuracakmýþsýnýz programý
-Semih > alpemix verdi, bu baðlanýlan bilgisayardan sanal sunucularýna uzak masaüstü yapacaklarmýþ
-Umit : Saliha Haným'ýn dün söylediðine göre öyleydi, kendi sunucularýna istiyorlar
-Semih > müsait misin baðlanacaksan vereyim abi alpemixlerini
-Umit : baðlanýnca ne yapýlacak sadece bizim program mý indirilecek ? bizim program baþka sunucuya baðlanmaya hazýr mý bilmiyorum hiç test etmedik
-Umit : bizim program 213.159.30.6 sunucusuna baðlanýnca oradaki OSGB_MASTER veritabanýna gidiyor
-Umit : oradan girilen osgb koduna göre baðlanýlacak veritabanýný alýyor
-Umit : sonra ayný sunucudaki OSGB_XXXX osgb veritabanýna baðlanýyor
-Semih > kendi lokalinde çalýþan bi yer olmadý mý abi hiç
-Umit : osgb olarak olmadý. en baþta o sunucu yokken lokaldeydi ama o zaman yine master ile osgb veritabanlarý ayný sunucuda olduðu için çalýþýyordu
-Semih > muhtemelen sql port yönlendirmesi yapmalarý gerekiyor
-Umit : þimdi master veritabaný için ayrý osgb veritabaný için ayrý sunucu ayarý mý gireceðiz yoksa master'ý da mý kopyalayacaðýz onu sormak lazým kadir bey'e
-Semih > evet onu düþündüm ben de
-Semih > bi kadir abi gelsin soralým ona
-Umit : master'ý kopyalarsak uzak master'a güncelleme atabilen bir altyapý yapmak lazým
-Umit : bu sefer bizim master güncellendikçe onlarýnki eski kalacak
-Semih > evet o da var
-Semih > bi sorarýz
-Umit : biz ilaç taný gibi þeyleri master'a taþýyalým data tekrarý olmasýn lüzumsuz yere diyorduk. adamýn lokalinde veritabaný varken master'a gitmesi de garip olacak ilaç için. gerçi müþteri firmada çalýþýrken lokal de uzak bizimki de
-Umit : ama çekmeköy sadece belediyede kullanacaksa onlarýn hep lokal olacak belki de
 
-firma kartlarýnda zorunlu alan kontrolüne takýlsa bile firmalogo insert olmaya çalýþýyor. silerken de silmiyor
-ilaç dataseti lokalde açýk tutabilir miyiz ?
 taný dataseti lokalde açýk tutabilir miyiz ?
 adoconnection2 kapat aç yapabilir miyiz ?
 
-þifre boþsa clipboard'da sekme karakterli string arayýp otomatik giriþ vs.. hattâ enter karakteri varsa ilk satýr için kendi giriþ yapýp ikinci program kopyasýný açabiliriz
 
 muayene protokol no düzeltme imkaný.
 þifremi deðiþtir ekranýnda yýldýzlama...
+
+çekmeköy'e restore olacak olan master veritabanýný uzak sunucuya baþka isimle tekrar koy. master veritabaný deðiþikliklerini takip et
