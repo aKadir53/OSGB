@@ -146,3 +146,16 @@ ilave olarak seçilecek bilgi tanýmlama ekranýnda muayene türleri tanýmlanabilmes
 firma kartlarýna þirket birleþtir þube ayýr iþlemleri için þube kaydýrma düðmesi eklendi.
 
 
+þifre boþsa clipboard'da sekme karakterli string arayýp otomatik giriþ vs.. enter karakteri varsa ilk satýr için kendi giriþ yapýp ikinci program kopyasýný açabilme özelliði ekledim kendim için
+
+firma kartlarýnda zorunlu alan kontrolüne takýlsa bile firmalogo insert olmaya çalýþýyor. silerken de silmiyor problemine karþý altyapý müdahalesi
+ilaç dataseti lokalde bir dataset oluþturup ona baðladýk. sýk kullanýlan ayarýný da bellekte tuttuk. programda sadece reçeteden ilk açýlýrken ilaçlarý yükleyecek. sýk kullanýlan tiki deðiþtikçe tazeleyecek. onun dýþýnda bellekten çalýþacak.
+imes osgb murat bey sýk kullanýlanlar kalkýk gelsin istiyordu ilaçlarda. bu düzenleme ile o da hallolmuþ oldu
+
+intran, begintran commit rollback'ler aranýp try finally kontrolleri eklendi, ado transaction yönetiminden sql transaction yönetimine geçirildi
+uygulamanýn mevcut kopyalarýný kapatmasýný ve halt komutlarýný, application.terminate'leri kill ve killtask'larý kaldýrýp programýn düzgün kapanmasý saðlandý
+
+kullanýcý kartý silerken foreign key hatasý çýkýnca ekrandan yine de siliyor hatasý düzeltildi
+personel kartýnda zorunlu alan kontrolüne takýlsa bile sonraki sql komutlarý çalýþýyor hatasý düzeltildi
+user kartý silinince usersettings usermenusettings tablolarýný silmiyor hatasý düzeltildi
+personel silerken personel falan firmaya kaydedilecek emin misiniz sorusu soruyor, sadece kaydederken olacak þekilde düzeltildi
