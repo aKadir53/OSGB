@@ -76,6 +76,7 @@ begin
   Application.CreateForm(TDATALAR, DATALAR);
   Application.CreateForm(TAnaForm, AnaForm);
 
+
   //Application.CreateForm(TfrmUpdate, frmUpdate);???
 
   // form2.show;
@@ -157,33 +158,15 @@ begin
 
   GetBuildInfo(Application.ExeName, V1, V2, V3,V4);
   ExeVersiyon:= Format('%d.%d.%d.%d', [V1, V2, V3,V4]);
- // ShowMessage(ExeVersiyon,'','','info');
-
- // form2.Label1.Caption := ExeVersiyon + ' Versiyon Kontrolü Yapýlýyor, Lütfen Bekleyiniz...';
- // Application.ProcessMessages;
- // Sleep(2000);
-
- // form2.Hide;
 
 
 
 
   Application.CreateForm(TfrmLogin, frmLogin);
   try
-    frmLogin.ShowModal;
+    if frmLogin.ShowModal <> mrYes then Exit;
   finally
     FreeAndNil (frmLogin);
   end;
-
-  if datalar.loginLog = True
-  then begin
-//    Application.CreateForm(TfrmRapor, frmRapor);
-//    form2.Destroy;
-    Application.Run;
-  //  AnaForm.Show;
-  end
-  else
-  begin
-    Application.Terminate;
-  end;
+  Application.Run;
 end.

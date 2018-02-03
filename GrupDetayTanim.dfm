@@ -463,10 +463,6 @@ object frmGrupDetayTanim: TfrmGrupDetayTanim
     Left = 64
     Top = 304
   end
-  object tmr1: TTimer
-    Enabled = False
-    Interval = 100
-  end
   object Tetkikler: TListeAc
     ListeBaslik = 'Tetkik Listesi'
     TColcount = 3
