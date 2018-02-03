@@ -206,8 +206,8 @@ begin
         btnBaglanClick(btnBaglan);
         aSL1.Delete (0);
         Clipboard.AsText := aSL1.Text;
-        þif not IsNull (aSL1.Text) then
-        þ  WinExec(PAnsiChar (ParamStr (0)),SW_SHOW);
+        if not IsNull (aSL1.Text) then
+          WinExec(PAnsiChar (ParamStr (0)),SW_SHOW);
       end;
     end;
   finally
@@ -347,7 +347,7 @@ end;
 
 procedure TfrmLogin.btnVazgecClick(Sender: TObject);
 begin
- DATALAR.KillTask('OSGB.exe');
+ DATALAR.KillTaskw('OSGB.exe');
  halt;
 end;
 
