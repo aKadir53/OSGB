@@ -56,8 +56,6 @@ type
     txtLOG: TMemo;
     Timer1: TTimer;
     cxTabSheet4: TcxTabSheet;
-    PopupMenu2: TPopupMenu;
-    K1: TMenuItem;
     CheckBox1: TCheckBox;
     cxButton3: TcxButton;
     N3: TMenuItem;
@@ -82,7 +80,6 @@ type
     procedure cxButton1Click(Sender: TObject);
     procedure gridDetayClick(Sender: TObject);
     procedure Timer1Timer(Sender: TObject);
-    procedure K1Click(Sender: TObject);
     procedure cxButton3Click(Sender: TObject);
     procedure UpdateTip (const bAutomatic: Boolean);
     procedure FormActivate(Sender: TObject);
@@ -425,11 +422,6 @@ begin
    end;
 
    UpdateSQL;
-end;
-
-procedure TfrmUpdate.K1Click(Sender: TObject);
-begin
-   Halt;
 end;
 
 procedure TfrmUpdate.FormShow(Sender: TObject);
