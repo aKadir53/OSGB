@@ -164,17 +164,9 @@ begin
 
   Application.CreateForm(TfrmLogin, frmLogin);
   try
-    frmLogin.ShowModal;
+    if frmLogin.ShowModal <> mrYes then Exit;
   finally
     FreeAndNil (frmLogin);
   end;
-
-  if datalar.loginLog = True
-  then begin
-    Application.Run;
-  end
-  else
-  begin
-    Application.Terminate;
-  end;
+  Application.Run;
 end.

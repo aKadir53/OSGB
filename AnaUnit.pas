@@ -120,6 +120,7 @@ type
     { Private declarations }
   public
     { Public declarations }
+    destructor Destroy; override;
   end;
 
    const
@@ -285,13 +286,19 @@ begin
   end;
 end;
 
+destructor TAnaForm.Destroy;
+begin
+  inherited;
+  FreeAndNil(Datalar);
+end;
+
 procedure TAnaForm.FormClose(Sender: TObject; var Action: TCloseAction);
 begin
   datalar.LoginInOut.Login := lgnOut;
   datalar.LoginInOut.Execute;
   Datalar.ADOConnection2.Connected := false;
-  FreeAndNil(Datalar);
   Action := caFree;
+  Release;
 end;
 
 procedure TAnaForm.FormCloseQuery(Sender: TObject; var CanClose: Boolean);

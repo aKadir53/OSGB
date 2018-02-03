@@ -473,7 +473,6 @@ type
 
     { Private declarations }
   public
-   loginLog : boolean;
    servername,username, usersifre , _username , _sifre , _donemuser , _donemsifre ,
    _tesisKodu , _labusername , _labsifre , doktor ,doktorKodu,sirketKodu,
    IGU, _dosyaNo_,_gelisNo_,kontrolKod,

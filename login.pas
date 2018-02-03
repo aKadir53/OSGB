@@ -191,89 +191,102 @@ procedure TfrmLogin.Image1Click(Sender: TObject);
 var
   aSL1 : TStringList;
   sTmp : String;
+  bLoginLog : Boolean;
 begin
-  aSL1 := TStringList.Create;
+  bloginLog := False;
   try
-    aSL1.Text := Clipboard.AsText;
-    if not IsNull (aSL1.Text)  then
-    begin
-      sTmp := aSL1 [0];
-      if pos (#9, sTmp) > 0 then
+    aSL1 := TStringList.Create;
+    try
+      aSL1.Text := Clipboard.AsText;
+      if not IsNull (aSL1.Text)  then
       begin
-        txtOsgbKodu.EditingText := Copy (sTmp, 1, pos (#9, sTmp) - 1);
-        Edit2.EditingText := Copy (sTmp, pos (#9, sTmp) + 1, Length (sTmp));
-        btnBaglanClick(btnBaglan);
-        aSL1.Delete (0);
-        Clipboard.AsText := aSL1.Text;
-        if not IsNull (aSL1.Text) then
-          WinExec(PAnsiChar (AnsiString (ParamStr (0))),SW_SHOW);
+        sTmp := aSL1 [0];
+        if pos (#9, sTmp) > 0 then
+        begin
+          txtOsgbKodu.EditingText := Copy (sTmp, 1, pos (#9, sTmp) - 1);
+          Edit2.EditingText := Copy (sTmp, pos (#9, sTmp) + 1, Length (sTmp));
+          btnBaglanClick(btnBaglan);
+          aSL1.Delete (0);
+          Clipboard.AsText := aSL1.Text;
+          Left := aSL1.Count * 3;
+          Top := aSL1.Count * 3;
+          if not IsNull (aSL1.Text) then
+            WinExec(PAnsiChar (AnsiString (ParamStr (0))),SW_SHOW);
+        end;
       end;
+    finally
+      aSL1.Free;
+    end;
+
+    try
+      try
+        Datalar.ADOConnection2.Connected := false;
+        Datalar.Baglan(txtDataBase.EditingText, txtServerName.Text, '', txtServerUserName.Text, txtServerPassword.Text);
+
+        datalar.ProgTarih := FormattedTarih(tarihal(date()));
+        datalar.AktifSirket := txtDonemler.Text;
+
+      except on e : Exception do
+       begin
+         ShowMessageSkin('Hata : ' + e.Message,'','','info');
+       end;
+      end;
+
+      login.Active := true;
+
+      if not login.Locate('Kullanici',edit1.Text,[]) then
+      begin
+        ShowMessageSkin('Kullanýcý Adý Hatalý','','','info');
+        Exit;
+      end;
+      if IsNull (trim(login.FieldValues['password'])) then
+      begin
+        ShowMessageSkin('Kullanýcý Adý Kullanýma Kapalý','','','info');
+        Exit;
+      end;
+      if trim(login.FieldValues['password']) <> edit2.Text then
+      begin
+        ShowMessageSkin('Þifre Hatalý','','','info');
+        Exit;
+      end;
+
+      datalar.username := edit1.Text;
+      DATALAR.usersifre := edit2.Text;
+      regyazLastLogin;
+      bloginLog := True;
+      //SUTKODU;
+      datalar.doktorKodu := login.FieldByName('doktor').AsString;
+      datalar.sirketKodu := login.FieldByName('SirketKodu').AsString;
+      datalar.IGU := login.FieldByName('IGU').AsString;
+      datalar.UserGroup := login.FieldByName('Grup').AsString;
+
+      AnaForm.dxSkinController1.SkinName := login.FieldByName('userSkin').AsString;
+      FormatSettings.DateSeparator := '.';
+      LoginSayfalar.ActivePageIndex := 2;
+      Application.ProcessMessages;
+      datalar.login;
+      datalar.ReceteKullanimYollari.active := True;
+      datalar.Ado_Doktorlar.Active := True;
+      datalar.Ado_IGU.Active := True;
+      datalar.ADO_TehlikeSiniflari.Active := True;
+      datalar.KontrolZorunlu.Active := True;
+
+      WanIp(datalar.WanIPURL);
+      datalar.LoginInOut.Kullanici := datalar.username;
+      datalar.LoginInOut.Login := lgnIn;
+      datalar.LoginInOut.Execute;
+    except on e:exception do
+       begin
+         showmessageSkin('Hata : ' + e.Message,'','','info');
+       end;
     end;
   finally
-    aSL1.Free;
-  end;
-
-  try
-    try
-      Datalar.ADOConnection2.Connected := false;
-      Datalar.Baglan(txtDataBase.EditingText, txtServerName.Text, '', txtServerUserName.Text, txtServerPassword.Text);
-
-      datalar.ProgTarih := FormattedTarih(tarihal(date()));
-      datalar.AktifSirket := txtDonemler.Text;
-
-    except on e : Exception do
-     begin
-       ShowMessageSkin('Hata : ' + e.Message,'','','info');
-     end;
-    end;
-
-    login.Active := true;
-
-    if not login.Locate('Kullanici',edit1.Text,[]) then
+    if not bloginLog then
     begin
-      ShowMessageSkin('Kullanýcý Adý Hatalý','','','info');
-      Exit;
-    end;
-    if IsNull (trim(login.FieldValues['password'])) then
-    begin
-      ShowMessageSkin('Kullanýcý Adý Kullanýma Kapalý','','','info');
-      Exit;
-    end;
-    if trim(login.FieldValues['password']) <> edit2.Text then
-    begin
-      ShowMessageSkin('Þifre Hatalý','','','info');
-      Exit;
+      ModalResult := mrNone;
+      Abort;
     end;
 
-    datalar.username := edit1.Text;
-    DATALAR.usersifre := edit2.Text;
-    regyazLastLogin;
-    datalar.loginLog := True;
-    //SUTKODU;
-    datalar.doktorKodu := login.FieldByName('doktor').AsString;
-    datalar.sirketKodu := login.FieldByName('SirketKodu').AsString;
-    datalar.IGU := login.FieldByName('IGU').AsString;
-    datalar.UserGroup := login.FieldByName('Grup').AsString;
-
-    AnaForm.dxSkinController1.SkinName := login.FieldByName('userSkin').AsString;
-    FormatSettings.DateSeparator := '.';
-    LoginSayfalar.ActivePageIndex := 2;
-    Application.ProcessMessages;
-    datalar.login;
-    datalar.ReceteKullanimYollari.active := True;
-    datalar.Ado_Doktorlar.Active := True;
-    datalar.Ado_IGU.Active := True;
-    datalar.ADO_TehlikeSiniflari.Active := True;
-    datalar.KontrolZorunlu.Active := True;
-
-    WanIp(datalar.WanIPURL);
-    datalar.LoginInOut.Kullanici := datalar.username;
-    datalar.LoginInOut.Login := lgnIn;
-    datalar.LoginInOut.Execute;
-  except on e:exception do
-     begin
-       showmessageSkin('Hata : ' + e.Message,'','','info');
-     end;
   end;
 end;
 
