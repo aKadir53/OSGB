@@ -1662,6 +1662,7 @@ object frmLogin: TfrmLogin
       Align = alRight
       Caption = 'Giri'#351' Yap'
       Default = True
+      ModalResult = 6
       TabOrder = 0
       OnClick = Image1Click
     end
@@ -1675,7 +1676,6 @@ object frmLogin: TfrmLogin
       Caption = 'Vazge'#231
       ModalResult = 2
       TabOrder = 1
-      OnClick = btnVazgecClick
     end
   end
   object DataSource1: TDataSource

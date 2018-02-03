@@ -89,7 +89,6 @@ type
       Shift: TShiftState; X, Y: Integer);
     procedure sBitBtn1Click(Sender: TObject);
     procedure sBitBtn2Click(Sender: TObject);
-    procedure btnVazgecClick(Sender: TObject);
     function IsSQLServerRunning(const server,database,user,password:string): Boolean;
     procedure regyazLastLogin;
     procedure FormShow(Sender: TObject);
@@ -271,12 +270,6 @@ begin
     datalar.LoginInOut.Kullanici := datalar.username;
     datalar.LoginInOut.Login := lgnIn;
     datalar.LoginInOut.Execute;
-
-    Hide;
-
-    close;
-    exit;
-
   except on e:exception do
      begin
        showmessageSkin('Hata : ' + e.Message,'','','info');
@@ -343,12 +336,6 @@ end;
 procedure TfrmLogin.btnDetayClick(Sender: TObject);
 begin
   txtDonemler.Visible := true;
-end;
-
-procedure TfrmLogin.btnVazgecClick(Sender: TObject);
-begin
- //DATALAR.KillTask('OSGB.exe');    x
- //haltx;
 end;
 
 procedure TfrmLogin.cxButtonEditKadir1PropertiesButtonClick(Sender: TObject;
