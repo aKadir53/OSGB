@@ -195,7 +195,6 @@ taný dataseti lokalde açýk tutabilir miyiz ?
 adoconnection2 kapat aç yapabilir miyiz ?
 
 
-muayene protokol no düzeltme imkaný.
-þifremi deðiþtir ekranýnda yýldýzlama...
-
 çekmeköy'e restore olacak olan master veritabanýný uzak sunucuya baþka isimle tekrar koy. master veritabaný deðiþikliklerini takip et
+
+dozlar ters gidiyor þikayeti var
