@@ -538,7 +538,7 @@ var
 
 implementation
 
-uses AnaUnit,kadir;
+uses AnaUnit,kadir, NThermo;
 
 {$R *.dfm}
 
@@ -648,79 +648,105 @@ procedure TDATALAR.Login;
 var
   sql,kurum : string;
   ado : TADOQuery;
+  iThermo : Integer;
 begin
   try
-    ado := TADOQuery.Create(nil);
+    ShowThermo (iThermo, 'Parametreler ve ayarlar yükleniyor', 0, 20, 0);
     try
-      ado.Connection := datalar.ADOConnection2;
-      WanIpURL := WebErisimBilgi('WIP','00');
-      _medulaOrtam_ := WebErisimBilgi('98','00');
-      if _medulaOrtam_ = 'Gerçek'
-      Then begin
-        receteURL := WebErisimBilgi('MDL','05');
-      end
-      Else
-      begin
-        receteURL := WebErisimBilgi('MDL','15');
-      end;
-      _tesisKodu := WebErisimBilgi('99','00');
-      _Kurumkod := strtoint(_tesisKodu);
+      ado := TADOQuery.Create(nil);
+      try
+        ado.Connection := datalar.ADOConnection2;
+        if not UpdateThermo (0, iThermo, 'Wan IP URL') then Exit;
+        WanIpURL := WebErisimBilgi('WIP','00');
+        if not UpdateThermo (1, iThermo, 'Medula Ortamý') then Exit;
+        _medulaOrtam_ := WebErisimBilgi('98','00');
+        if not UpdateThermo (2, iThermo, 'Reçete URL Adresi') then Exit;
+        if _medulaOrtam_ = 'Gerçek'
+        Then begin
+          receteURL := WebErisimBilgi('MDL','05');
+        end
+        Else
+        begin
+          receteURL := WebErisimBilgi('MDL','15');
+        end;
+        if not UpdateThermo (3, iThermo, 'Kurum Tesis Kodu') then Exit;
+        _tesisKodu := WebErisimBilgi('99','00');
+        _Kurumkod := strtoint(_tesisKodu);
 
-      _username := WebErisimBilgi('99','02');
-      _sifre := WebErisimBilgi('99','01');
+        if not UpdateThermo (4, iThermo, 'Kullanýcý Adý') then Exit;
+        _username := WebErisimBilgi('99','02');
+        if not UpdateThermo (5, iThermo, 'Þifre') then Exit;
+        _sifre := WebErisimBilgi('99','01');
 
-      _donemuser := WebErisimBilgi('991','00');
-      _donemsifre := WebErisimBilgi('991','01');
-      _donemGoster := strtoint(ifThen(WebErisimBilgi('99','02') = 'Evet','1','0'));
-      _KurumSKRS_ := WebErisimBilgi('90','02');
-      //_userSaglikNet_ := WebErisimBilgi('90','00');
-      //_passSaglikNet_ := WebErisimBilgi('90','01');
-
-
-      sql := 'select * from DoktorlarT where Kod = ' + QuotedStr(datalar.doktorKodu);
-      datalar.QuerySelect(ado,sql);
-      _doktorReceteUser := ado.fieldbyname('eReceteKullanici').AsString;
-      _doktorRecetePas :=  ado.fieldbyname('eReceteSifre').AsString;
-
-
-
-      sql := 'SELECT MerkezKodu,MerkezAdi FROM merkezBilgisi';
-      datalar.QuerySelect(ado,sql);
-      _merkezAdi := ado.fieldbyname('merkezAdi').AsString;
-      osgbKodu := ado.fieldbyname('merkezKodu').AsString;
-
-      LisansBilgileri(LisansTarih,LisansBasla,LisansBitis,kurum,LisansLimit);
-
-      sql := 'select SLVV from parametreler where slk = ''GA'' and SLB = ''00''';
-      datalar.QuerySelect(ado,sql);
-      LisansALUrl := ado.fieldbyname('SLVV').AsString;
-
-      SMSHesapUser := WebErisimBilgi('SMS','00');
-      SMSHesapSifre := WebErisimBilgi('SMS','01');
-      SMSHesapFrom := WebErisimBilgi('SMS','02');
+        if not UpdateThermo (6, iThermo, 'Dönem Kullanýcýsý') then Exit;
+        _donemuser := WebErisimBilgi('991','00');
+        if not UpdateThermo (7, iThermo, 'Dönem Þifresi') then Exit;
+        _donemsifre := WebErisimBilgi('991','01');
+        if not UpdateThermo (8, iThermo, 'Dönem Göster / Gösterme') then Exit;
+        _donemGoster := strtoint(ifThen(WebErisimBilgi('99','02') = 'Evet','1','0'));
+        if not UpdateThermo (9, iThermo, 'Kurum SKRS') then Exit;
+        _KurumSKRS_ := WebErisimBilgi('90','02');
+        //_userSaglikNet_ := WebErisimBilgi('90','00');
+        //_passSaglikNet_ := WebErisimBilgi('90','01');
 
 
-      sql := 'select SLX from parametreler where slk = ''00'' and SLB = ''UD''';
-      datalar.QuerySelect(ado,sql);
-      AlpemixRun := ado.fieldbyname('SLX').AsString;
+        if not UpdateThermo (10, iThermo, 'Doktor bilgileri') then Exit;
+        sql := 'select * from DoktorlarT where Kod = ' + QuotedStr(datalar.doktorKodu);
+        datalar.QuerySelect(ado,sql);
+        _doktorReceteUser := ado.fieldbyname('eReceteKullanici').AsString;
+        _doktorRecetePas :=  ado.fieldbyname('eReceteSifre').AsString;
 
-      //sql := 'select SLXX from parametreler where slk = ''00'' and SLB = ''IS''';
-      //datalar.QuerySelect(ado,sql);
-      //ImajFTPServer := ado.fieldbyname('SLXX').AsString;
 
-      AlpemixGrupAdi := WebErisimBilgi('UD','00');
-      if AlpemixGrupAdi <> ''
-      then begin
-       // AlpemixGrupAdi := WebErisimBilgi('UD','00');
-        AlpemixGrupParola := WebErisimBilgi('UD','01');
-      end
-      else
-      begin
-        AlpemixGrupAdi := 'DIYALIZLER';
-        AlpemixGrupParola := 'Diyaliz123';
+
+        if not UpdateThermo (11, iThermo, 'Kurum Bilgisi') then Exit;
+        sql := 'SELECT MerkezKodu,MerkezAdi FROM merkezBilgisi';
+        datalar.QuerySelect(ado,sql);
+        _merkezAdi := ado.fieldbyname('merkezAdi').AsString;
+        osgbKodu := ado.fieldbyname('merkezKodu').AsString;
+
+        if not UpdateThermo (12, iThermo, 'Lisans Bilgileri') then Exit;
+        LisansBilgileri(LisansTarih,LisansBasla,LisansBitis,kurum,LisansLimit);
+
+        if not UpdateThermo (13, iThermo, 'lisans bilgileri 2') then Exit;
+        sql := 'select SLVV from parametreler where slk = ''GA'' and SLB = ''00''';
+        datalar.QuerySelect(ado,sql);
+        LisansALUrl := ado.fieldbyname('SLVV').AsString;
+
+        if not UpdateThermo (14, iThermo, 'SMS Kullanýcý Adý') then Exit;
+        SMSHesapUser := WebErisimBilgi('SMS','00');
+        if not UpdateThermo (15, iThermo, 'SMS Þifre') then Exit;
+        SMSHesapSifre := WebErisimBilgi('SMS','01');
+        if not UpdateThermo (16, iThermo, 'SMS Kimden') then Exit;
+        SMSHesapFrom := WebErisimBilgi('SMS','02');
+
+
+        if not UpdateThermo (17, iThermo, 'Alpemix 1') then Exit;
+        sql := 'select SLX from parametreler where slk = ''00'' and SLB = ''UD''';
+        datalar.QuerySelect(ado,sql);
+        AlpemixRun := ado.fieldbyname('SLX').AsString;
+
+        //sql := 'select SLXX from parametreler where slk = ''00'' and SLB = ''IS''';
+        //datalar.QuerySelect(ado,sql);
+        //ImajFTPServer := ado.fieldbyname('SLXX').AsString;
+
+        if not UpdateThermo (18, iThermo, 'Alpemix grup adý') then Exit;
+        AlpemixGrupAdi := WebErisimBilgi('UD','00');
+        if AlpemixGrupAdi <> ''
+        then begin
+         // AlpemixGrupAdi := WebErisimBilgi('UD','00');
+          if not UpdateThermo (19, iThermo, 'Alpemix Grup Parolasý') then Exit;
+          AlpemixGrupParola := WebErisimBilgi('UD','01');
+        end
+        else
+        begin
+          AlpemixGrupAdi := 'DIYALIZLER';
+          AlpemixGrupParola := 'Diyaliz123';
+        end;
+      finally
+        ado.Free;
       end;
     finally
-      ado.Free;
+      FreeThermo (iThermo);
     end;
   except
 
