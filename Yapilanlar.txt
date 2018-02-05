@@ -159,3 +159,5 @@ kullanýcý kartý silerken foreign key hatasý çýkýnca ekrandan yine de siliyor hat
 personel kartýnda zorunlu alan kontrolüne takýlsa bile sonraki sql komutlarý çalýþýyor hatasý düzeltildi
 user kartý silinince usersettings usermenusettings tablolarýný silmiyor hatasý düzeltildi
 personel silerken personel falan firmaya kaydedilecek emin misiniz sorusu soruyor, sadece kaydederken olacak þekilde düzeltildi
+muayene protokol no düzeltme imkaný için muayene düzenle iþleminin hatalarý giderildi
+þifremi deðiþtir ekranýnda yýldýzlama yoktu, eklendi

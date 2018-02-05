@@ -167,20 +167,17 @@ begin
             end;
       gdgelisDuzenle :
             begin
-              datalar.GelisDuzenleRecord.TedaviYontemi := TcxImageComboBox(FindComponent('DiyalizTedaviYonetemi')).EditValue;
+              datalar.GelisDuzenleRecord.TedaviTuru := TcxImageComboKadir(FindComponent('TEDAVITURU')).EditValue;
               datalar.GelisDuzenleRecord.TakipNo := TcxTextEdit(FindComponent('TakipNo')).EditValue;
-              datalar.GelisDuzenleRecord.basvuruNo := TcxTextEdit(FindComponent('BasvuruNo')).EditValue;
               datalar.GelisDuzenleRecord.GirisTarihi := TcxTextEdit(FindComponent('GirisTarihi')).EditValue;
-              datalar.GelisDuzenleRecord.CikisTarih := TcxTextEdit(FindComponent('CikisTarihi')).EditValue;
               datalar.GelisDuzenleRecord.doktor := TcxImageComboKadir(FindComponent('Doktor')).EditValue;
               datalar.GelisDuzenleRecord.BransKodu := TcxTextEdit(FindComponent('BransKodu')).EditValue;
-              datalar.GelisDuzenleRecord.TaburcuKodu := TcxTextEdit(FindComponent('TaburcuKod')).EditValue;
-              datalar.GelisDuzenleRecord.Yupass := TcxTextEdit(FindComponent('Yupass')).EditValue;
+              datalar.GelisDuzenleRecord.ProtokolNo := TcxTextEdit(FindComponent('protokolNo')).EditValue;
             end;
        gdgelisAc :
             begin
               datalar.GelisDuzenleRecord.GirisTarihi := TcxTextEdit(FindComponent('GirisTarihi')).EditValue;
-              datalar.GelisDuzenleRecord.TedaviYontemi := TcxImageComboKadir(FindComponent('TEDAVITURU')).EditValue;
+              datalar.GelisDuzenleRecord.TedaviTuru := TcxImageComboKadir(FindComponent('TEDAVITURU')).EditValue;
 
               if Assigned(FindComponent('Doktor'))
               Then
@@ -403,14 +400,17 @@ inherited;
           //Olustur(self,'','Gelis Duzenle',9,'');
           ClientHeight := 390;
           ClientWidth := 310;
-          ImageCombo := TcxImageComboBox.Create(self);
-          ImageCombo.name := 'DiyalizTedaviYonetemi';
-          ImageComboItemAdd('H','Hemodiyaliz',ImageCombo);
-          ImageComboItemAdd('P','Periton (Ayaktan)',ImageCombo);
-          ImageComboItemAdd('A','Periton (Aletli)',ImageCombo);
-          setDataStringKontrol(self,ImageCombo, 'DiyalizTedaviYonetemi','Tedavi Yöntemi',Kolon1,'',120);
 
-          TcxImageComboBox(FindComponent('DiyalizTedaviYonetemi')).EditValue := datalar.GelisDuzenleRecord.TedaviYontemi;
+          Doktorlar := TcxImageComboKadir.Create(self);
+          Doktorlar.Conn := Datalar.ADOConnection2;
+          Doktorlar.Name := 'TEDAVITURU';
+          Doktorlar.TableName := 'vw_muayenetipleri';
+          Doktorlar.ValueField := 'Kod';
+          Doktorlar.DisplayField := 'Tanim';
+          Doktorlar.Filter := '';
+          setDataStringKontrol(self,Doktorlar, 'TEDAVITURU','Tedavi Türü',Kolon1,'',120);
+
+          TcxImageComboKadir(FindComponent('TEDAVITURU')).EditValue := datalar.GelisDuzenleRecord.TedaviTuru;
 
           textEdit := TcxTextEdit.Create(self);
           textEdit.Name := 'dosyaNo';
@@ -427,27 +427,17 @@ inherited;
           setDataStringKontrol(self,textEdit, 'TakipNo','Takip No',Kolon1,'',100);
           TcxTextEdit(FindComponent('TakipNo')).EditValue := datalar.GelisDuzenleRecord.TakipNo;
 
-          textEdit := TcxTextEdit.Create(self);
-          textEdit.Name := 'BasvuruNo';
-          setDataStringKontrol(self,textEdit, 'BasvuruNo','Basvuru No',Kolon1,'',100);
-          TcxTextEdit(FindComponent('BasvuruNo')).EditValue := datalar.GelisDuzenleRecord.basvuruNo;
-
           mevcutTarih_ := TcxDateEditKadir.Create(self);
           mevcutTarih_.Name := 'GirisTarihi';
           setDataStringKontrol(self,mevcutTarih_, 'GirisTarihi','Giriþ Tarih',Kolon1,'',100);
           TcxTextEdit(FindComponent('GirisTarihi')).EditValue := datalar.GelisDuzenleRecord.GirisTarihi;
 
-          mevcutTarih_ := TcxDateEditKadir.Create(self);
-          mevcutTarih_.Name := 'CikisTarihi';
-          setDataStringKontrol(self,mevcutTarih_, 'CikisTarihi','Çýkýþ Tarih',Kolon1,'',100);
-          TcxTextEdit(FindComponent('CikisTarihi')).EditValue := datalar.GelisDuzenleRecord.CikisTarih;
-
           Doktorlar := TcxImageComboKadir.Create(self);
           Doktorlar.Conn := Datalar.ADOConnection2;
           Doktorlar.Name := 'Doktor';
-          Doktorlar.TableName := 'Doktorlar';
+          Doktorlar.TableName := 'DoktorlarT';
           Doktorlar.ValueField := 'kod';
-          Doktorlar.DisplayField := 'ADI';
+          Doktorlar.DisplayField := 'Tanimi';
           Doktorlar.Filter := '';
           setDataStringKontrol(self,Doktorlar,'Doktor','Doktor',kolon1,'',120);
           TcxImageComboKadir(FindComponent('Doktor')).EditValue := datalar.GelisDuzenleRecord.doktor;
@@ -457,19 +447,11 @@ inherited;
           setDataStringKontrol(self,textEdit, 'BransKodu','Branþ Kodu',Kolon1,'',100);
           TcxTextEdit(FindComponent('BransKodu')).EditValue := datalar.GelisDuzenleRecord.BransKodu;
 
-          Doktorlar := TcxImageComboKadir.Create(self);
-          Doktorlar.Conn := Datalar.ADOConnection2;
-          Doktorlar.TableName := 'TaburcuKodlari';
-          Doktorlar.ValueField := 'kod';
-          Doktorlar.DisplayField := 'ADI';
-          Doktorlar.Filter := '';
-          setDataStringKontrol(self,Doktorlar,'TaburcuKod','Taburcu Kodu',kolon1,'',120);
-          TcxTextEdit(FindComponent('TaburcuKod')).EditValue := datalar.GelisDuzenleRecord.TaburcuKodu;
-
           textEdit := TcxTextEdit.Create(self);
-          textEdit.Name := 'Yupass';
-          setDataStringKontrol(self,textEdit, 'Yupass','Yupass',Kolon1,'',100);
-          TcxTextEdit(FindComponent('Yupass')).EditValue := datalar.GelisDuzenleRecord.Yupass;
+          textEdit.Name := 'protokolNo';
+          setDataStringKontrol(self,textEdit, 'protokolNo','Muayene Protokol No',Kolon1,'',100);
+          TcxTextEdit(FindComponent('protokolNo')).EditValue := datalar.GelisDuzenleRecord.ProtokolNo;
+
        end;
 
     gdgelisAc :

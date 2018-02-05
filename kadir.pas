@@ -762,17 +762,14 @@ var
   ado : TADOQuery;
   sql : string;
 begin
+  ado := nil;
   try
    sql := 'update Gelisler set TakýpNo = ' + QuotedStr (GelisBilgisi.TakipNo) + ',' +
           'BHDAT = ' + QuotedStr (tarihal(GelisBilgisi.GirisTarihi)) + ',' +
-          'CIKTAR = ' + QuotedStr (tarihal(gelisBilgisi.CikisTarih)) + ',' +
           'Doktor = ' + QuotedStr (gelisBilgisi.doktor) + ',' +
           'SERVIS = ' + QuotedStr(gelisBilgisi.BransKodu) + ',' +
-          'taburcu = ' + QuotedStr(gelisBilgisi.TaburcuKodu) + ',' +
-          'basvuruNo = ' + QuotedStr(GelisBilgisi.basvuruNo) + ',' +
           'PROTOKOLNO = ' + QuotedStr(gelisBilgisi.ProtokolNo) + ',' +
-          'diyalizTedaviYontemi = ' + QuotedStr(gelisBilgisi.TedaviYontemi) + ',' +
-          'yupass = ' + QuotedStr(gelisBilgisi.Yupass) +
+          'TEDAVITURU = ' + QuotedStr(gelisBilgisi.TedaviTuru) +
           ' where dosyaNo = ' + QuotedStr (gelisBilgisi.dosyaNo) +
           ' and gelisNo = ' + gelisBilgisi.gelisNo;
    datalar.QueryExec(ado,sql);

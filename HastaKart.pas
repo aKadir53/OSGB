@@ -359,11 +359,10 @@ procedure TfrmHastaKart.gelisDuzenle;
 var
  hata : string;
 begin
-    datalar.GelisDuzenleRecord.TedaviYontemi := ADO_Gelisler.FieldByName('TEDAVITURU').AsString;
+    datalar.GelisDuzenleRecord.TedaviTuru := ADO_Gelisler.FieldByName('TEDAVITURUX').AsString;
     datalar.GelisDuzenleRecord.dosyaNo := dosyaNO.Text;
     datalar.GelisDuzenleRecord.gelisNo := _gelisNo_;
     datalar.GelisDuzenleRecord.TakipNo := _TakipNo_;
-    datalar.GelisDuzenleRecord.basvuruNo := _BasvuruNo_;
     datalar.GelisDuzenleRecord.BransKodu := ADO_Gelisler.FieldByName('SERVIS').AsString;
   //  datalar.GelisDuzenleRecord.TaburcuKodu := ADO_Gelisler.FieldByName('Taburcu').AsString;
     datalar.GelisDuzenleRecord.doktor := ado_gelisler.FieldByName('doktor').AsString;
@@ -458,7 +457,7 @@ begin
     if mrYes = ShowPopupForm('Geliþ Aç',gdgelisAc)
     Then Begin
         _Tarih_ := datalar.GelisDuzenleRecord.GirisTarihi;
-        TedaviTuru := datalar.GelisDuzenleRecord.TedaviYontemi;
+        TedaviTuru := datalar.GelisDuzenleRecord.TedaviTuru;
 
     End
     else

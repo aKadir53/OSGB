@@ -187,19 +187,14 @@ type
 
 type
     TGelisDuzenle = record
-      TedaviYontemi : string;
+      TedaviTuru : string;
       GirisTarihi : Tdate;
-      CikisTarih : TDate;
       dosyaNo : string;
       gelisNo : string;
       TakipNo : string;
-      basvuruNo : string;
       BransKodu : string;
-      TaburcuKodu : string;
       doktor : string;
       ProtokolNo : string;
-      Yupass : string;
-      IdealKilo : string;
     end;
 
 
