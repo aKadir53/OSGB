@@ -610,10 +610,11 @@ var
   aQuery, bQuery : TADOQuery;
   sAktarimSonrasiStoredProc, sItems, sTableName : String;
   aHedefAlanlar, aBasliginHedefAlani, aAramaBasliklari, aSecilenAlanlar : TStringList;
-  iInserted, iCol, iTmp, iAktarimTanimID, iThermo : Integer;
+  iInserted, iCol, iTmp, iAktarimTanimID, iThermo, iTmpRow : Integer;
   bTmpPost, bHepsiBos, bTmp, bHedefTabloyuBosalt, bHedefTabloyuBosaltSor : Boolean;
   aSecilenIndexler : TIntegerArray;
 begin
+  iTmpRow := GridList.Row;
   aQuery := TADOQuery.Create (Self);
   try
     aQuery.Connection := DATALAR.ADOConnection2;
@@ -726,7 +727,7 @@ begin
                 try
                   for iTmp := 1 to GridList.RowCount -1 do
                   begin
-                    GridList.Row := iTmp;
+                    iTmpRow := iTmp;
                     if not UpdateThermo (iTmp - 1, iThermo, 'Satýr: '+ IntToStr (iTmp)) then Exit;
                     bTmpPost := False;
                     aQuery.Append;
@@ -802,6 +803,7 @@ begin
               end
               else begin
                 RollbackTrans (datalar.ADOConnection2);
+                GridList.Row := iTmpRow;
                 showmessageSkin ('Aktarým iþlemi sýrasýnda bir hata oluþtu ve iþlem tamamlanamadý', '', '', 'info');
               end;
             end;
