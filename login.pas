@@ -111,7 +111,7 @@ var
 
 implementation
 
-uses AnaUnit, data_modul, ClipBrd;
+uses AnaUnit, data_modul, ClipBrd, NThermo;
 
 {$R *.DFM}
 
@@ -192,6 +192,7 @@ var
   aSL1 : TStringList;
   sTmp : String;
   bLoginLog : Boolean;
+  iThermo : Integer;
 begin
   bloginLog := False;
   try
@@ -264,17 +265,29 @@ begin
       FormatSettings.DateSeparator := '.';
       LoginSayfalar.ActivePageIndex := 2;
       Application.ProcessMessages;
-      datalar.login;
-      datalar.ReceteKullanimYollari.active := True;
-      datalar.Ado_Doktorlar.Active := True;
-      datalar.Ado_IGU.Active := True;
-      datalar.ADO_TehlikeSiniflari.Active := True;
-      datalar.KontrolZorunlu.Active := True;
+      ShowThermo (iThermo, 'Giriþ Ýþlemleri Yapýlýyor', 0, 7, 0);
+      try
+        if not UpdateThermo (0, iThermo, 'Ýç Ýþlemler Yükleniyor') then Exit;
+        datalar.login;
+        if not UpdateThermo (1, iThermo, 'Kullaným Yollarý Yükleniyor') then Exit;
+        datalar.ReceteKullanimYollari.active := True;
+        if not UpdateThermo (2, iThermo, 'Doktor Tanýmlarý Yükleniyor') then Exit;
+        datalar.Ado_Doktorlar.Active := True;
+        if not UpdateThermo (3, iThermo, 'Ýþ Güvenlik Uzmaný Tanýmlarý Yükleniyor') then Exit;
+        datalar.Ado_IGU.Active := True;
+        if not UpdateThermo (4, iThermo, 'Tehlike Sýnýfý Tanýmlarý Yükleniyor') then Exit;
+        datalar.ADO_TehlikeSiniflari.Active := True;
+        if not UpdateThermo (5, iThermo, 'Giriþi Zorunlu alan tanýmlarý yükleniyor') then Exit;
+        datalar.KontrolZorunlu.Active := True;
 
-      WanIp(datalar.WanIPURL);
-      datalar.LoginInOut.Kullanici := datalar.username;
-      datalar.LoginInOut.Login := lgnIn;
-      datalar.LoginInOut.Execute;
+        WanIp(datalar.WanIPURL);
+        datalar.LoginInOut.Kullanici := datalar.username;
+        datalar.LoginInOut.Login := lgnIn;
+        if not UpdateThermo (6, iThermo, 'Log kaydý yazýlýyor') then Exit;
+        datalar.LoginInOut.Execute;
+      finally
+        FreeThermo (iThermo);
+      end;
     except on e:exception do
        begin
          showmessageSkin('Hata : ' + e.Message,'','','info');
