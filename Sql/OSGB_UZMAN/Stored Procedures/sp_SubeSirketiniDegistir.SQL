@@ -40,6 +40,8 @@ begin
     insert into #t (RowsetHata, Rowset, Aciklama, HataMesaji) 
     Select 0 RowsetHata, 0 Rowset, 'Personel Kayýtlarý yeni þube yapýsýna göre güncelleniyor' Aciklama, null HataMesaji
     insert into #t (RowsetHata, Rowset, Aciklama, HataMesaji) 
+    Select 0 RowsetHata, 0 Rowset, 'Geliþ (Muayene) Kayýtlarý yeni þube yapýsýna göre güncelleniyor' Aciklama, null HataMesaji
+    insert into #t (RowsetHata, Rowset, Aciklama, HataMesaji) 
     Select 0 RowsetHata, 0 Rowset, 'Saha Gözlem Raporu kayýtlarý yeni þube yapýsýna göre güncelleniyor' Aciklama, null HataMesaji
     insert into #t (RowsetHata, Rowset, Aciklama, HataMesaji) 
     Select 0 RowsetHata, 0 Rowset, 'Þube Tanýmlarý Dýþ Aktarým Parametreleri Baðlantý Kontrolleri aktifleþtiriliyor' Aciklama, null HataMesaji
@@ -84,12 +86,12 @@ begin
   if @iTip = @iTipInt or @iTip is Null
   begin
     update su
-	  SET su.SirketKod = @HedefSirketKod,
-	      su.SubeKod = @HedefSubeKod,
-		  su.SubeTanim = su.SubeTanim + '2'
-	from SIRKET_SUBE_TNM su
-	WHERE su.SirketKod = @KaynakSirketKod
-	  and su.SubeKod = @KaynakSubeKod
+      SET su.SirketKod = @HedefSirketKod,
+          su.SubeKod = @HedefSubeKod,
+          su.SubeTanim = su.SubeTanim + '2'
+    from SIRKET_SUBE_TNM su
+    WHERE su.SirketKod = @KaynakSirketKod
+      and su.SubeKod = @KaynakSubeKod
   end
 
   set @iTipInt = @iTipInt + 1
@@ -97,11 +99,11 @@ begin
   if @iTip = @iTipInt or @iTip is Null
   begin
     update su
-	  SET su.SirketKod = @HedefSirketKod,
-	      su.SubeKod = @HedefSubeKod
-	from DisAktarim_Parametre su
-	WHERE su.SirketKod = @KaynakSirketKod
-	  and su.SubeKod = @KaynakSubeKod
+      SET su.SirketKod = @HedefSirketKod,
+          su.SubeKod = @HedefSubeKod
+    from DisAktarim_Parametre su
+    WHERE su.SirketKod = @KaynakSirketKod
+      and su.SubeKod = @KaynakSubeKod
   end
 
   set @iTipInt = @iTipInt + 1
@@ -109,11 +111,21 @@ begin
   if @iTip = @iTipInt or @iTip is Null
   begin
     update su
-	  SET su.SirketKod = @HedefSirketKod,
-	      su.Sube = @HedefSubeKod
-	from PersonelKart su
-	WHERE su.SirketKod = @KaynakSirketKod
-	  and su.Sube = @KaynakSubeKod
+      SET su.SirketKod = @HedefSirketKod,
+          su.Sube = @HedefSubeKod
+    from PersonelKart su
+    WHERE su.SirketKod = @KaynakSirketKod
+      and su.Sube = @KaynakSubeKod
+  end
+
+  set @iTipInt = @iTipInt + 1
+
+  if @iTip = @iTipInt or @iTip is Null
+  begin
+    update g set g.SirketKod = pk.SirketKod
+    from gelisler g
+    inner join personelkart pk on pk.dosyaNo = g.dosyano
+    where g.SirketKod <> pk.SirketKod
   end
 
   set @iTipInt = @iTipInt + 1
@@ -121,11 +133,11 @@ begin
   if @iTip = @iTipInt or @iTip is Null
   begin
     update su
-	  SET su.FirmaKodu = @HedefSirketKod,
-	      su.SubeKod = @HedefSubeKod
-	from SahaGozlemRaporlari su
-	WHERE su.FirmaKodu = @KaynakSirketKod
-	  and su.SubeKod = @KaynakSubeKod
+      SET su.FirmaKodu = @HedefSirketKod,
+          su.SubeKod = @HedefSubeKod
+    from SahaGozlemRaporlari su
+    WHERE su.FirmaKodu = @KaynakSirketKod
+      and su.SubeKod = @KaynakSubeKod
   end
 
   set @iTipInt = @iTipInt + 1

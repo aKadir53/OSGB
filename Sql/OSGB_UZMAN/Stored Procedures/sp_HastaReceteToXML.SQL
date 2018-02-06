@@ -54,10 +54,10 @@ BEGIN
 				'<adet>' + cast(rd.adet as varchar) +'</adet>'+
 				'<barkod>' +rd.ilacKodu +'</barkod>'+
 				'<ilacAdi>'+ rd.ilacAdi +'</ilacAdi>'+
-				'<kullanimDoz1>'+ cast(rd.kullanimAdet as varchar) +'</kullanimDoz1>'+
+				'<kullanimDoz1>'+ cast(rd.kullanimAdet2 as varchar) +'</kullanimDoz1>'+
 				'<kullanimPeriyotBirimi>' + kullanZamanUnit  + '</kullanimPeriyotBirimi>'+
 				'<kullanimSekli>'+ rd.kullanimYolu +'</kullanimSekli>'+
-				'<kullanimDoz2>'+ cast(rd.kullanimAdet2 as varchar) +'</kullanimDoz2>'+
+				'<kullanimDoz2>'+ cast(rd.kullanimAdet as varchar) +'</kullanimDoz2>'+
 				'<kullanimPeriyot>'+ rd.kullanimZaman +'</kullanimPeriyot>'+
                 isnull(dbo.ereceteIlacAciklamaBilgisi(rd.id),'') +
 				'</ereceteIlacBilgisi>'	
