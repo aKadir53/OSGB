@@ -2,6 +2,7 @@ BEGIN TRAN
 GO
 ALTER FUNCTION [dbo].[TurkCharToEng] (@kod varchar(1000))
 RETURNS varchar(1000)
+with schemabinding
 AS
 BEGIN
 declare @durum varchar(1000)
