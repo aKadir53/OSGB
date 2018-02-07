@@ -378,6 +378,8 @@ object frmUsers: TfrmUsers
     CursorType = ctStatic
     AfterPost = UserGroupAfterPost
     BeforeDelete = UserGroupBeforeDelete
+    AfterDelete = UserGroupAfterDelete
+    OnDeleteError = UserGroupDeleteError
     TableName = 'UserGroups'
     Left = 240
     Top = 208
