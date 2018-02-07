@@ -89,7 +89,7 @@ function TfrmPaket.SQL_Host(var server : string; var user : string ; var passwor
 //  sql : string;
 begin
 
-   Kaynak.ConnectionString := serverismi('DIALIZ');  x
+   Kaynak.ConnectionString := serverismi('DIALIZ');
    Kaynak.Connected := True;
 
    try
@@ -120,18 +120,14 @@ begin
    Then Begin
     // ShowMessageSkin(s+' '+db,u,p ,'info');
      servername :=
-     'Provider=SQLOLEDB.1;Password=' + p + ';Persist Security Info=False;User ID=' + u + ';Initial Catalog=' + db + ';Data Source=' + s;
-     datalar.Hedef.ConnectionString := servername;           x
+     'Provider=SQLOLEDB.1;Password=' + p +
+     ';Persist Security Info=False;User ID=' + u +
+     ';Initial Catalog=' + db + ';Data Source=' + s +
+     ';Application Name=Mavi Nokta E-Reçete Veritabaný Günc.Paket Masaüstü Uyg.';
+     datalar.Hedef.ConnectionString := servername;
      datalar.Hedef.Connected := True;
    End;
 end;
-
-
-
-
-
-
-
 
 procedure TfrmPaket.table1NewRecord(DataSet: TDataSet);
 begin
@@ -366,5 +362,5 @@ begin
      if ComboBox1.Text <> ''
      then SpeedButton3.Enabled := True;
 end;
-    kaynak.connectionstr
+
 end.

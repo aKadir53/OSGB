@@ -78,5 +78,5 @@ begin
   Q.SQL.Text := sql;
   Q.Open;
 end;
-    kaynak.connectionstr
+
 end.
