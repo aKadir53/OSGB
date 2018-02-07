@@ -2412,8 +2412,8 @@ VAR
   _pos_ : integer;
 
 begin
-
-    xx := Tregistry.Create;
+  xx := Tregistry.Create;
+  try
     xx.OpenKey('Software\NOKTA\NOKTA',True);
     s := xx.ReadString('servername');
     s1 := xx.ReadString('CS');
@@ -2425,7 +2425,7 @@ begin
 
     //katalog := 'DIALIZ';
     if s1='ODBC'
-    then begin              x
+    then begin
       servername:=
       'Provider=MSDASQL.1;Persist Security Info=False;User ID=SA;Data Source=SQL SERVER;Initial Catalog='+katalog;
     end;
@@ -2433,11 +2433,14 @@ begin
     if s1='SQL'
     then begin
       servername:=
-      'Provider=SQLOLEDB.1;Password='+sifre+';Persist Security Info=False;User ID=Nokta;Initial Catalog='+katalog+';Data Source='+s;
+      'Provider=SQLOLEDB.1;Password='+sifre+';Persist Security Info=False;User ID=Nokta;Initial Catalog='+katalog+
+      ';Data Source='+s+';Application Name=Mavi Nokta E-Reçete Veritabaný Günc.Paket Masaüstü Uyg.';
     end;
 
     result:=servername;
-
+  finally
+    xx.Free;
+  end;
 end;
 
 Function yaz(islem :string; tarih :tdate;hesapkodu :string ;tutarb :real;tutara:real;conn:string) :string;

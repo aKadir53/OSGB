@@ -1178,7 +1178,7 @@ end;
 
 function TDATALAR.UygulamaBaglantiTanimi: String;
 begin
-  Result := 'Nokta Yazýlým E-Reçete Masaüstü Uyg. ('+versiyon +')';
+  Result := 'Mavi Nokta e-Reçete Masaüstü Uyg. v.'+versiyon;
 end;
 
 procedure TDATALAR.VenturaAfterExecute(const MethodName: string;
