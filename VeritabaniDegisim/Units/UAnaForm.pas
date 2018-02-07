@@ -30,11 +30,11 @@ type
     lblDBName: TLabel;
     btnTestConnection: TSpeedButton;
     aTimer: TTimer;
-    LabelConnection: TLabel;
     xDosyaIsimleriniKlasoreYedir: TCheckBox;
     lblLocalFolder: TLabel;
     txtLocalFolder: TEdit;
     btnLocalFolder: TSpeedButton;
+    memo1: TMemo;
     procedure btnIslemYapClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure btnTestConnectionClick(Sender: TObject);
@@ -529,7 +529,7 @@ begin
   if Assigned (aConn) and aConn.Connected then sStr := sStr + 'var' else sStr := sStr + 'yok';
   sStr := sStr + #13#10'Baðlantý Bilgileri: ';
   if Assigned (aConn) and aConn.Connected then sStr := sStr + aConn.ConnectionString else sStr := sStr + 'yok';
-  LabelConnection.Caption := sStr;
+  memo1.Text := sStr;
 end;
 
 procedure TAnaForm.btnIslemYapClick(Sender: TObject);
@@ -556,3 +556,4 @@ begin
 end;
 
 end.
+

@@ -2,8 +2,8 @@ object AnaForm: TAnaForm
   Left = 0
   Top = 0
   Caption = 'AnaForm'
-  ClientHeight = 242
-  ClientWidth = 527
+  ClientHeight = 375
+  ClientWidth = 448
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -14,18 +14,20 @@ object AnaForm: TAnaForm
   OnClose = FormClose
   OnCreate = FormCreate
   DesignSize = (
-    527
-    242)
+    448
+    375)
   PixelsPerInch = 96
   TextHeight = 13
   object btnIslemYap: TSpeedButton
-    Left = 432
-    Top = 212
+    Left = 353
+    Top = 345
     Width = 81
     Height = 22
     Anchors = [akRight, akBottom]
     Caption = #304#351'lem Yap...'
     OnClick = btnIslemYapClick
+    ExplicitLeft = 432
+    ExplicitTop = 212
   end
   object lblServerName: TLabel
     Left = 8
@@ -71,15 +73,6 @@ object AnaForm: TAnaForm
     Caption = 'Ba'#287'lant'#305'y'#305' Test Et...'
     OnClick = btnTestConnectionClick
   end
-  object LabelConnection: TLabel
-    Left = 231
-    Top = 8
-    Width = 75
-    Height = 226
-    AutoSize = False
-    Caption = 'Ba'#287'lant'#305' Bilgileri'
-    WordWrap = True
-  end
   object lblLocalFolder: TLabel
     Left = 8
     Top = 202
@@ -98,7 +91,7 @@ object AnaForm: TAnaForm
     OnClick = btnLocalFolderClick
   end
   object xTran: TCheckBox
-    Left = 312
+    Left = 240
     Top = 32
     Width = 184
     Height = 17
@@ -107,7 +100,7 @@ object AnaForm: TAnaForm
     TabOrder = 0
   end
   object xCreate: TCheckBox
-    Left = 312
+    Left = 240
     Top = 50
     Width = 184
     Height = 17
@@ -116,7 +109,7 @@ object AnaForm: TAnaForm
     TabOrder = 1
   end
   object xUpdateLines: TCheckBox
-    Left = 312
+    Left = 240
     Top = 68
     Width = 184
     Height = 17
@@ -125,7 +118,7 @@ object AnaForm: TAnaForm
     TabOrder = 2
   end
   object xSadeceYeni: TCheckBox
-    Left = 312
+    Left = 240
     Top = 86
     Width = 184
     Height = 17
@@ -134,7 +127,7 @@ object AnaForm: TAnaForm
     TabOrder = 3
   end
   object xTxtUzanti: TCheckBox
-    Left = 312
+    Left = 240
     Top = 104
     Width = 184
     Height = 17
@@ -143,7 +136,7 @@ object AnaForm: TAnaForm
     TabOrder = 4
   end
   object xSadeceDegisenler: TCheckBox
-    Left = 312
+    Left = 240
     Top = 122
     Width = 184
     Height = 17
@@ -152,7 +145,7 @@ object AnaForm: TAnaForm
     TabOrder = 5
   end
   object xAraDegisiklikler: TCheckBox
-    Left = 312
+    Left = 240
     Top = 140
     Width = 184
     Height = 17
@@ -161,7 +154,7 @@ object AnaForm: TAnaForm
     TabOrder = 6
   end
   object xDosyaTarihleriniAta: TCheckBox
-    Left = 312
+    Left = 240
     Top = 176
     Width = 184
     Height = 17
@@ -170,7 +163,7 @@ object AnaForm: TAnaForm
     TabOrder = 8
   end
   object xOtomatikGuncelleme: TCheckBox
-    Left = 312
+    Left = 240
     Top = 158
     Width = 184
     Height = 17
@@ -216,7 +209,7 @@ object AnaForm: TAnaForm
     TabOrder = 13
   end
   object xDosyaIsimleriniKlasoreYedir: TCheckBox
-    Left = 312
+    Left = 240
     Top = 194
     Width = 184
     Height = 17
@@ -231,6 +224,15 @@ object AnaForm: TAnaForm
     Height = 21
     ReadOnly = True
     TabOrder = 15
+  end
+  object memo1: TMemo
+    Left = 0
+    Top = 245
+    Width = 448
+    Height = 130
+    Align = alBottom
+    ScrollBars = ssBoth
+    TabOrder = 16
   end
   object aTimer: TTimer
     OnTimer = aTimerTimer

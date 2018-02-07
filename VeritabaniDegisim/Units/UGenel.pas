@@ -158,7 +158,7 @@ begin
     FDefaultConnection.Connected := False;
   end;
   try
-    FDefaultConnection.ConnectionString :=
+    FDefaultConnection.ConnectionString :=   x
        'Provider=SQLOLEDB.1;Password='+pPassword+';Persist Security Info=True;User ID='+pUserName+';Initial Catalog=' + pDBName +';Data Source='+pServerName;
     FDefaultConnection.CommandTimeout := 1000;
     FDefaultConnection.Connected := True;
