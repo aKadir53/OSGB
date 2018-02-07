@@ -29,7 +29,6 @@ type
     Image2: TImage;
     login: TADOTable;
     DONEMBUL: TADOQuery;
-    ADOConnection2: TADOConnection;
     txtip: TLabel;
     btnDetay: TSpeedButton;
     ListeAc1: TListeAc;

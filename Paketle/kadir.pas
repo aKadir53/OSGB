@@ -2425,7 +2425,7 @@ begin
 
     //katalog := 'DIALIZ';
     if s1='ODBC'
-    then begin
+    then begin              x
       servername:=
       'Provider=MSDASQL.1;Persist Security Info=False;User ID=SA;Data Source=SQL SERVER;Initial Catalog='+katalog;
     end;

@@ -257,7 +257,7 @@ begin
         Application.ProcessMessages;
         txtinfo.Caption := 'Server Baðlantýsý Yapýlýyor...';
        try
-        datalar.Kaynak.ConnectionString := serverbaglan(txtDosya.Text,'mavi','');
+        datalar.Kaynak.ConnectionString := serverbaglan(txtDosya.Text,'mavi','');      x
         datalar.Kaynak.Connected := true;
         _baglanti := true;
         txtinfo.Caption := 'Baðlandý';
@@ -486,7 +486,7 @@ begin
    then begin
 
              txtinfo.Caption := 'Local Baðlantý Saðlanýyor';
-             datalar.Hedef.ConnectionString := serverismi(datalar._database);
+             datalar.Hedef.ConnectionString := serverismi(datalar._database);  x
              //inputbox('Database','Database Adý',datalar._database));
              Application.ProcessMessages;
              datalar.Hedef.Connected := True;
@@ -578,7 +578,7 @@ begin
                     try
                          txtinfo.Caption := 'Server Baðlantýsý Yapýlýyor...';
                          Application.ProcessMessages;
-                         datalar.Kaynak.ConnectionString := serverbaglan(txtDosya.Text,'mavi','');
+                         datalar.Kaynak.ConnectionString := serverbaglan(txtDosya.Text,'mavi','');  x
                          datalar.Kaynak.Connected := true;
                          Application.ProcessMessages;
                          txtinfo.Caption := '';
@@ -777,7 +777,7 @@ begin
    if  datalar.Hedef.Connected = false
    then begin
              txtinfo.Caption := 'Local Baðlantý Saðlanýyor';
-             datalar.Hedef.ConnectionString := serverismi(datalar._database);
+             datalar.Hedef.ConnectionString := serverismi(datalar._database);   x
              Application.ProcessMessages;
              datalar.Hedef.Connected := True;
    end;

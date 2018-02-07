@@ -528,7 +528,7 @@ type
    procedure Login;
  //  function WebErisimBilgi(slk,slb : string) : string;
    function KillTaskw(Dosyadi: string): integer;
-
+   function UygulamaBaglantiTanimi : String;
     { Public declarations }
   end;
 
@@ -549,7 +549,7 @@ begin
   servername := Server;
   Master.Connected := false;
   Master.ConnectionString :=
-  'Provider=SQLOLEDB.1;Password='+pSQLPassword+';Persist Security Info=True;User ID='+pSQLUserName+';Initial Catalog=OSGB_MASTER;Data Source='+servername;
+  'Provider=SQLOLEDB.1;Password='+pSQLPassword+';Persist Security Info=True;User ID='+pSQLUserName+';Initial Catalog=OSGB_MASTER;Data Source='+servername+';Application Name=' + UygulamaBaglantiTanimi;
   Master.Connected := True;
 
   if Master.Connected = True then
@@ -594,7 +594,7 @@ begin
     Then Begin
       ADOConnection2.Connected := false;
       ADOConnection2.ConnectionString :=
-        'Provider=SQLOLEDB.1;Password='+pSQLPassword+';Persist Security Info=True;User ID='+pSQLUserName+';Initial Catalog=' + _db_ +';Data Source='+servername;
+        'Provider=SQLOLEDB.1;Password='+pSQLPassword+';Persist Security Info=True;User ID='+pSQLUserName+';Initial Catalog=' + _db_ +';Data Source='+servername+';Application Name=' + UygulamaBaglantiTanimi;
       ADOConnection2.Connected := True;
       Result := True;
     End
@@ -1174,6 +1174,11 @@ begin
   finally
     memo.Free;
   end;
+end;
+
+function TDATALAR.UygulamaBaglantiTanimi: String;
+begin
+  Result := 'Nokta Yazýlým E-Reçete Masaüstü Uyg. ('+versiyon +')';
 end;
 
 procedure TDATALAR.VenturaAfterExecute(const MethodName: string;
