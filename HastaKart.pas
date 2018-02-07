@@ -1389,7 +1389,11 @@ begin
 
             if IsNull (TcxLabel(FindComponent('LabelSirketKod')).Caption) then
               TcxLabel(FindComponent('LabelSirketKod')).Caption := datalar.AktifSirket;
-            TcxImageComboBox (FindComponent ('Aktif')).ItemIndex := 2;//aktif pasif yeni  kombosu yeni kayýtta Yeni deðeri varsayýlan olacak.
+            //aktif pasif yeni  kombosu yeni kayýtta eðer ekleyen kullanýcý doktor deðilse Yeni deðeri varsayýlan olacak.
+            if IsNull (datalar.doktorKodu) then
+              TcxImageComboBox (FindComponent ('Aktif')).ItemIndex := 2
+             else
+              TcxImageComboBox (FindComponent ('Aktif')).ItemIndex := 1;
           end;
 
     end;
