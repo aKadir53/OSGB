@@ -253,7 +253,7 @@ begin
           while (aSL2.Count > 0) and (TRim (aSL2 [aSL2.Count - 1]) = '') do aSL2.Delete (aSL2.Count - 1);
           if Trim (aSL2.Text) <> '' then
           begin
-            iScripts := iScripts + 1;
+            iScripts := iScripts + 2;
             table1.Append;
             table1.FieldByName ('ID').AsInteger := iLastID + iScripts;
             table1.FieldByName ('REV').AsInteger := iLastID + iScripts;
