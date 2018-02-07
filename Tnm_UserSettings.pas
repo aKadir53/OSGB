@@ -93,6 +93,9 @@ type
     procedure btnGrupEkleClick(Sender: TObject);
     procedure UserGroupBeforeDelete(DataSet: TDataSet);
     procedure PropertiesEditValueChanged(Sender: TObject);
+    procedure UserGroupDeleteError(DataSet: TDataSet; E: EDatabaseError;
+      var Action: TDataAction);
+    procedure UserGroupAfterDelete(DataSet: TDataSet);
 
   private
     { Private declarations }
@@ -372,6 +375,12 @@ begin
 
 
 
+procedure TfrmUsers.UserGroupAfterDelete(DataSet: TDataSet);
+begin
+  inherited;
+  CommitTrans(DATALAR.ADOConnection2);
+end;
+
 procedure TfrmUsers.UserGroupAfterPost(DataSet: TDataSet);
 begin
   IslemveMenuGorunumSetEkle(ugGroup);
@@ -383,13 +392,24 @@ var
  ado : TADOQuery;
 begin
   inherited;
-  ado := nil;
-  sql := 'delete from UserGroupSettings where kullanici = ' + QuotedStr(UserGroup.FieldByName('KODU').AsString);
-  datalar.QueryExec(ado,sql);
-  sql := 'delete from UserGroupMenuSettings where kullanici = ' + QuotedStr(UserGroup.FieldByName('KODU').AsString);
-  datalar.QueryExec(ado,sql);
+  BeginTrans(DATALAR.ADOConnection2);
+  try
+    ado := nil;
+    sql := 'delete from UserGroupSettings where kullanici = ' + QuotedStr(UserGroup.FieldByName('KODU').AsString);
+    datalar.QueryExec(ado,sql);
+    sql := 'delete from UserGroupMenuSettings where kullanici = ' + QuotedStr(UserGroup.FieldByName('KODU').AsString);
+    datalar.QueryExec(ado,sql);
+  except
+    RollBackTrans(DATALAR.ADOConnection2);
+    raise;
+  end;
+end;
 
-
+procedure TfrmUsers.UserGroupDeleteError(DataSet: TDataSet; E: EDatabaseError;
+  var Action: TDataAction);
+begin
+  inherited;
+  RollBackTrans(DATALAR.ADOConnection2);
 end;
 
 procedure TfrmUsers.UserSettingsBeforePost(DataSet: TDataSet);
