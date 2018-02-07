@@ -1705,17 +1705,6 @@ object frmLogin: TfrmLogin
     Left = 136
     Top = 8
   end
-  object ADOConnection2: TADOConnection
-    CommandTimeout = 0
-    ConnectionString = 
-      'Provider=SQLOLEDB.1;Password=1;Persist Security Info=True;User I' +
-      'D=sa;Initial Catalog=DIALIZ;Data Source=KSERVER'
-    ConnectionTimeout = 0
-    LoginPrompt = False
-    Provider = 'SQLOLEDB.1'
-    Left = 1
-    Top = 151
-  end
   object ListeAc1: TListeAc
     ListeBaslik = #350'irketler'
     TColcount = 2
