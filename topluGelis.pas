@@ -157,7 +157,7 @@ var
 begin
   //datalar.ADOConnection2.BeginTrans;
  // try
-       ado := TADOQuery.Create(nil);
+       ado := TADOQuery.Create(nil);x
        ado.Connection := datalar.ADOConnection2;
 
        Takipsor.Enabled := false;
@@ -356,7 +356,7 @@ begin
        pbar.Position := 0;
        pbar.Properties.Max := gridAktif.RowCount - 2;
 
-       ado := TADOQuery.Create(nil);
+       ado := TADOQuery.Create(nil);x
        ado.Connection := datalar.ADOConnection2;
 
        for x := 1 to gridAktif.RowCount - 2 do
@@ -497,7 +497,7 @@ var
   x : integer;
 
 begin
-       ado := TADOQuery.Create(nil);
+       ado := TADOQuery.Create(nil);x
        ado.Connection := datalar.ADOConnection2;
 
        pbar.Visible := true;
@@ -773,7 +773,7 @@ begin
 
     if acol = 16
     then begin
-            ado := TADOQuery.Create(nil);
+            ado := TADOQuery.Create(nil);x
             ado.Connection := datalar.ADOConnection2;
 
             AEditor := edComboList;

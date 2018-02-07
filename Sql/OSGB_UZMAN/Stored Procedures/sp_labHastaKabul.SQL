@@ -1,12 +1,13 @@
 BEGIN TRAN
 GO
+-- sp_labHastaKabul ALTER proc 
 ALTER PROCEDURE [dbo].[sp_labHastaKabul] @tarih varchar(30), @hasta varchar(20),@tip varchar(1) = ''
 as
 
 if @tip = ''
 Begin
 	select k.dosyaNo as DosyaNo,k.gelisNo as GelisNo,
-		   k.Icode as TestKodu,dbo.formattedTarih(k.kabulTarihi) as KabulTarihi,k.barkodNo as KabulNo,
+		   k.code as TestKodu,dbo.formattedTarih(k.kabulTarihi) as KabulTarihi,k.barkodNo as KabulNo,
 		   k.hizmetAdi as TestAdý,k.hastaAdi as HastaAdý,
 		   k.yas as yas,       
 		   k.cinsiyet as Cinsiyet,
@@ -22,7 +23,7 @@ Begin
        left join Tahsilat T on t.hareketlerSira  = k.hareketlerSira 
 	   --inner join hýzmet h on h.code = k.ýcode
 	   --inner join hastakart hk on hk.dosyaNo = k.dosyaNo
-	   left join hareketler hrk on hrk.code = k.ýcode and hrk.dosyaNo = k.dosyaNo and hrk.gelisNo = k.gelisNo 
+	   left join hareketler hrk on hrk.code = k.code and hrk.dosyaNo = k.dosyaNo and hrk.gelisNo = k.gelisNo 
        and hrk.SIRANO=k.HareketlerSira 
 	where k.kabulTarihi >= @tarih and k.dosyaNo = @hasta
 	order by k.kabulTarihi

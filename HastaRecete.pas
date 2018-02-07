@@ -757,7 +757,7 @@ begin
          ado.Connection := DATALAR.ADOConnection2;
          try
            b := False;
-           ado.Connection.BeginTrans;
+           BeginTrans (ado.Connection);
            try
              sql := 'delete ria from ReceteIlacAciklama ria inner join ReceteDetay rd on rd.id = ria.ReceteDetayID where rd.ReceteId = ' + ADO_Recete.fieldbyname('Id').AsString;
              datalar.QueryExec(ado,sql);
@@ -771,8 +771,8 @@ begin
              datalar.QueryExec(ado,sql);
              b := True;
            finally
-             if b then ado.Connection.CommitTrans
-                  else ado.Connection.RollbackTrans;
+             if b then CommitTrans (ado.Connection)
+                  else RollbackTrans (ado.Connection);
            end;
            ShowMessageSkin('Reçete Ýptal Edildi','','','info');
            ADO_Recete.Active := false;
@@ -1075,15 +1075,12 @@ begin
 end;
 
 procedure TfrmHastaRecete.ilacEkle(islem : integer);
-var
-  t : string;
 begin
   if not CheckReceteStatus (True, False, True) then Exit;
    if islem = ReceteIlacEkle
    then
    if ADO_Recete.FieldByName('ereceteNo').AsString = '0000'
    Then Begin
-     t := 'ILACLARMM';
      try
       Application.CreateForm(TfrmIlacSarf, frmIlacSarf);
       try
@@ -1091,7 +1088,7 @@ begin
     //    frmIlacSarf.GonForm('frmHastaRecete',_dosyaNo_,_gelisNo_);
         frmIlacSarf._dosyaNO_ := _dosyaNo_;
         frmIlacSarf._gelisNO_ := _gelisNo_;
-        frmIlacSarf.Tanilar('Recete',t );
+        frmIlacSarf.Tanilar (False);
         frmIlacSarf.Tag := TagfrmIlacSarf;
         frmIlacSarf.cxTab.Tabs[0].Caption := 'Ýlaçlar';
         frmIlacSarf.ShowModal;

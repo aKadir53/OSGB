@@ -258,7 +258,7 @@ procedure MenuIDRun(MenuId : integer);
 function sureKontrol: Boolean;
 function RaporGecerlimi(_dosyaNo: string): double;
 function IlacReceteAciklama(_dosyaNo, GelisNo, kod, doz: string): tstringlist;
-function IlacReceteTaniEkle(_dosyaNo, GelisNo, kod: string): String;
+function IlacReceteTaniEkle(kod: string): String;
 function IlacKoduToUnite(code, dosya, gelis: string;
   var peryot, peryotAdet: string): real;
 function SeansKontrol(s, mn, t: string; DosyaNo: string = ''): string;
@@ -385,13 +385,14 @@ function DoktorReceteMedulaGonderimTip(doktor : string) : integer;
 procedure DBUpdate;
 function SirketSubeTehlikeSinifi(Sirket,Sube : string) : string;
 function DBGridDialog (const pCaption: String; const aDataset: TDataset; aButtons : TMsgDlgButtons; aDefaultButton : TMsgDlgBtn) : TModalResult;
-procedure BeginTrans (const aQuery : TADOQuery);
-procedure RollBackTrans (const aQuery : TADOQuery);
-procedure CommitTrans (const aQuery : TADOQuery);
-function TranCount (const aQuery : TADOQuery): Integer;
+procedure BeginTrans (const aConnection : TADOConnection);
+procedure RollBackTrans (const aConnection : TADOConnection);
+procedure CommitTrans (const aConnection : TADOConnection);
+function TranCount (const aConnection : TADOConnection): Integer;
 function GetUserDoktorFilter (pFieldName : String = ''): String;
 function GetUserIGUFilter (pFieldName : String = ''): String;
 function HakikiAktifSube: String;
+procedure KademeliStoredProcCalistir (const pSPName : String; const pParameters : String);
 function SQLValue (const sValue: String): String;
 
 const
@@ -459,7 +460,7 @@ var
 implementation
 
 uses message,AnaUnit,message_y,popupForm,rapor,TedaviKart,Son6AylikTetkikSonuc,
-             HastaRecete,sifreDegis,HastaTetkikEkle,GirisUnit,SMS,LisansUzat,Update_G, DBGrids;
+             HastaRecete,sifreDegis,HastaTetkikEkle,GirisUnit,SMS,LisansUzat,Update_G, DBGrids, NThermo;
 
 procedure DBUpdate;
 begin
@@ -670,9 +671,14 @@ var
   sql : string;
 begin
   Result := TADOQuery.Create(nil);
-  Result.Connection := datalar.ADOConnection2;
-  sql := Format(_SqlSelect_,[Columns,Table,Where]);
-  datalar.QuerySelect(Result,sql);
+  try
+    Result.Connection := datalar.ADOConnection2;
+    sql := Format(_SqlSelect_,[Columns,Table,Where]);
+    datalar.QuerySelect(Result,sql);
+  except
+    FreeAndNil (Result);
+    raise;
+  end;
 end;
 
 function GridCellToString(Grid : TcxGridDBTableView; ColonName : string ; Row : integer) : Variant;
@@ -756,17 +762,14 @@ var
   ado : TADOQuery;
   sql : string;
 begin
+  ado := nil;
   try
    sql := 'update Gelisler set TakýpNo = ' + QuotedStr (GelisBilgisi.TakipNo) + ',' +
           'BHDAT = ' + QuotedStr (tarihal(GelisBilgisi.GirisTarihi)) + ',' +
-          'CIKTAR = ' + QuotedStr (tarihal(gelisBilgisi.CikisTarih)) + ',' +
           'Doktor = ' + QuotedStr (gelisBilgisi.doktor) + ',' +
           'SERVIS = ' + QuotedStr(gelisBilgisi.BransKodu) + ',' +
-          'taburcu = ' + QuotedStr(gelisBilgisi.TaburcuKodu) + ',' +
-          'basvuruNo = ' + QuotedStr(GelisBilgisi.basvuruNo) + ',' +
           'PROTOKOLNO = ' + QuotedStr(gelisBilgisi.ProtokolNo) + ',' +
-          'diyalizTedaviYontemi = ' + QuotedStr(gelisBilgisi.TedaviYontemi) + ',' +
-          'yupass = ' + QuotedStr(gelisBilgisi.Yupass) +
+          'TEDAVITURU = ' + QuotedStr(gelisBilgisi.TedaviTuru) +
           ' where dosyaNo = ' + QuotedStr (gelisBilgisi.dosyaNo) +
           ' and gelisNo = ' + gelisBilgisi.gelisNo;
    datalar.QueryExec(ado,sql);
@@ -3060,7 +3063,7 @@ begin
   end;
 end;
 
-function IlacReceteTaniEkle(_dosyaNo, GelisNo, kod: string): String;
+function IlacReceteTaniEkle(kod: string): String;
 var
   ado: TADOQuery;
   sql: string;
@@ -8448,16 +8451,16 @@ begin
   ado := TADOQuery.Create(nil);
   try
     Result := False;
-    DATALAR.ADOConnection2.BeginTrans;
+    BeginTrans (DATALAR.ADOConnection2);
     try
       datalar.QueryExec (ado, 'delete from SahaGozlemRaporu where RaporlarID = ' + IntToStr (GozlemID));
       datalar.QueryExec (ado, 'delete from SahaGozlemRaporlari where ID = ' + IntToStr (GozlemID));
       Result := True;
     finally
       if Result then
-        DATALAR.ADOConnection2.CommitTrans
+        CommitTrans (DATALAR.ADOConnection2)
        else
-        DATALAR.ADOConnection2.RollbackTrans;
+        RollbackTrans (DATALAR.ADOConnection2);
     end;
   finally
     ado.Free;
@@ -8817,60 +8820,75 @@ begin
   end;
 end;
 
-procedure BeginTrans (const aQuery : TADOQuery);
+procedure BeginTrans (const aConnection : TADOConnection);
 var
   bQuery : TADOQuery;
   iTranCountBefore, iTranCountAfter : Integer;
 begin
   bQuery := TADOQuery.Create (nil);
   try
-    iTranCountBefore := trancount (aQuery);
-    bQuery.Connection := aQuery.Connection;
+    iTranCountBefore := TranCount (aConnection);
+    bQuery.Connection := aConnection;
     bQuery.SQL.Text := 'BEGIN TRAN';
-    bQuery.ExecSQL;
-    iTranCountAfter := trancount (aQuery);
-    if iTranCountBefore + 1 <> iTranCountAfter then Abort;
+    if not bQuery.Prepared then bQuery.Prepared := True;
+    try
+      bQuery.ExecSQL;
+    except
+      iTranCountAfter := TranCount (aConnection);
+      if iTranCountBefore + 1 <> iTranCountAfter then Raise;
+    end;
   finally
     bQuery.Free;
   end;
 end;
 
-procedure RollBackTrans (const aQuery : TADOQuery);
-var
-  bQuery : TADOQuery;
-  iTranCountAfter : Integer;
-begin
-  bQuery := TADOQuery.Create (nil);
-  try
-    bQuery.Connection := aQuery.Connection;
-    bQuery.SQL.Text := 'ROLLBACK';
-    bQuery.ExecSQL;
-    iTranCountAfter := trancount (aQuery);
-    if 0 <> iTranCountAfter then Abort;
-  finally
-    bQuery.Free;
-  end;
-end;
-
-procedure CommitTrans (const aQuery : TADOQuery);
+procedure RollBackTrans (const aConnection : TADOConnection);
 var
   bQuery : TADOQuery;
   iTranCountBefore, iTranCountAfter : Integer;
 begin
+  iTranCountBefore := TranCount (aConnection);
+  if iTranCountBefore <= 0 then Exit;
   bQuery := TADOQuery.Create (nil);
   try
-    iTranCountBefore := trancount (aQuery);
-    bQuery.Connection := aQuery.Connection;
-    bQuery.SQL.Text := 'COMMIT';
-    bQuery.ExecSQL;
-    iTranCountAfter := trancount (aQuery);
-    if iTranCountBefore - 1 <> iTranCountAfter then Abort;
+    bQuery.Connection := aConnection;
+    bQuery.SQL.Text := 'ROLLBACK';
+    if not bQuery.Prepared then bQuery.Prepared := True;
+    try
+      bQuery.ExecSQL;
+    except
+      iTranCountAfter := TranCount (aConnection);
+      if 0 <> iTranCountAfter then raise;
+    end;
   finally
     bQuery.Free;
   end;
 end;
 
-function TranCount (const aQuery : TADOQuery): Integer;
+procedure CommitTrans (const aConnection : TADOConnection);
+var
+  bQuery : TADOQuery;
+  iTranCountBefore, iTranCountAfter : Integer;
+begin
+  iTranCountBefore := TranCount (aConnection);
+  if iTranCountBefore <= 0 then Exit;
+  bQuery := TADOQuery.Create (nil);
+  try
+    bQuery.Connection := aConnection;
+    bQuery.SQL.Text := 'COMMIT';
+    if not bQuery.Prepared then bQuery.Prepared := True;
+    try
+      bQuery.ExecSQL;
+    except
+      iTranCountAfter := TranCount (aConnection);
+      if iTranCountBefore - 1 <> iTranCountAfter then Raise;
+    end;
+  finally
+    bQuery.Free;
+  end;
+end;
+
+function TranCount (const aConnection : TADOConnection): Integer;
 var
   bQuery : TADOQuery;
 begin
@@ -8878,10 +8896,15 @@ begin
   if Result < 0 then ;;;;
   bQuery := TADOQuery.Create (nil);
   try
-    bQuery.Connection := aQuery.Connection;
+    bQuery.Connection := aConnection;
     bQuery.SQL.Text := 'SELECT @@TRANCOUNT TRC';
+    if not bQuery.Prepared then bQuery.Prepared := True;
     bQuery.Open;
-    Result := bQuery.FieldByName('TRC').AsInteger;
+    try
+      Result := bQuery.FieldByName('TRC').AsInteger;
+    finally
+      bQuery.Close;
+    end;
   finally
     bQuery.Free;
   end;
@@ -8912,6 +8935,86 @@ begin
   Result := ifThen(IsNull (datalar.AktifSube),'',ifThen(pos(',',datalar.AktifSube) > 0,'',datalar.AktifSube));
 end;
 
+procedure KademeliStoredProcCalistir (const pSPName : String; const pParameters : String);
+var
+  //starring in order of appearance of Type, then appearance :)
+  bTmp, bTmpPost : Boolean;
+  aQuery, bQuery : TADOQuery;
+  iThermo : Integer;
+  sHataUyariMesaji : String;
+begin
+  if IsNull (pSPName) then Exit;
+  bTmp := False;
+  bTmpPost := False;
+  aQuery := TADOQuery.Create (nil);
+  try
+    aQuery.Connection := DATALAR.ADOConnection2;
+    bQuery := TADOQuery.Create(nil);
+    try
+      bQuery.Connection := aQuery.Connection;
+      BeginTrans (datalar.ADOConnection2);
+      try
+        aQuery.SQL.Text := 'exec '+ pSPName +' 0 ' + pParameters;
+        aQuery.Open;
+        try
+          ShowThermo(iThermo, 'Aktarým sonrasý güncellemeler yapýlýyor', 0, aQuery.RecordCount, 0, True);
+          try
+            while not aQuery.Eof do
+            begin
+              if not UpdateThermo (aQuery.RecNo - 1, iThermo, aQuery.FieldByName ('Aciklama').AsString) then Exit;
+              bQuery.SQL.Text := 'exec '+ pSPName +' ' + IntToStr (aQuery.FieldByName ('iTip').AsInteger) + ' ' + pParameters;
+              if aQuery.FieldByName ('Rowset').AsBoolean then
+              begin
+                bQuery.Open;
+                if aQuery.FieldByName ('RowsetEditInput').AsBoolean then
+                begin
+                  if bQuery.RecordCount > 0 then
+                  begin
+                    if DBGridDialog (aQuery.FieldByName ('HataMesaji').AsString, bQuery, [mbOk], mbOk) <> mrOk Then Exit;
+                  end;
+                end
+                else
+                if aQuery.FieldByName ('RowsetHata').AsBoolean then
+                  if bQuery.RecordCount > 0 then
+                  begin
+                    bTmpPost := True;
+                    sHataUyariMesaji:= aQuery.FieldByName ('HataMesaji').AsString;
+                    Exit;
+                  end;
+              end
+              else begin
+                bQuery.ExecSQL;
+              end;
+              aQuery.Next;
+            end;
+          finally
+            FreeThermo(iThermo);
+          end;
+        finally
+          aQuery.Close;
+        end;
+        bTmp := True;
+      finally
+        if bTmp then
+        begin
+          CommitTrans (datalar.ADOConnection2);
+          showmessageSkin ('Ýþlem baþarý ile tamamlandý', '', '', 'info');
+        end
+        else begin
+          RollbackTrans (datalar.ADOConnection2);
+          showmessageSkin ('Ýþlemler sýrasýnda bir hata oluþtu ve görev tamamlanamadý', '', '', 'info');
+          if bTmpPost then
+            DBGridDialog (sHataUyariMesaji, bQuery, [mbOk], mbOk);
+        end;
+      end;
+    finally
+      bQuery.Free;
+    end;
+  finally
+    aQuery.Free;
+  end;
+end;
+
 function SQLValue (const sValue: String): String;
 begin
   if IsNull (sValue) then Result := 'NULL'
@@ -8925,3 +9028,4 @@ end;
    //çaðrýldýðý yerler kontrol edilecekler:
    //SQLSelectToDataSet ListeAcCreate BuyukHarf SayisalVeri NextKontrol TurkCharKontrol FormInputZorunluKontrolPaint
 end.
+

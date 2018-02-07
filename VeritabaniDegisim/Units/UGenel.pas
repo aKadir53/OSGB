@@ -126,17 +126,17 @@ end;
 
 procedure FSBeginTrans;
 begin
-  FDefaultConnection.BeginTrans;
+  FDefaultConnection.BeginTransx;
 end;
 
 procedure FSCommit;
 begin
-  FDefaultConnection.CommitTrans;
+  FDefaultConnection.CommitTransx;
 end;
 
 procedure FSRollback;
 begin
-  FDefaultConnection.RollbackTrans;
+  FDefaultConnection.RollbackTransx;
 end;
 
 function ExistsRecord (var aQuery : TFSQuery) : Boolean;
@@ -158,7 +158,7 @@ begin
     FDefaultConnection.Connected := False;
   end;
   try
-    FDefaultConnection.ConnectionString :=
+    FDefaultConnection.ConnectionString :=   x
        'Provider=SQLOLEDB.1;Password='+pPassword+';Persist Security Info=True;User ID='+pUserName+';Initial Catalog=' + pDBName +';Data Source='+pServerName;
     FDefaultConnection.CommandTimeout := 1000;
     FDefaultConnection.Connected := True;

@@ -257,7 +257,7 @@ begin
         Application.ProcessMessages;
         txtinfo.Caption := 'Server Baðlantýsý Yapýlýyor...';
        try
-        datalar.Kaynak.ConnectionString := serverbaglan(txtDosya.Text,'mavi','');
+        datalar.Kaynak.ConnectionString := serverbaglan(txtDosya.Text,'mavi','');      x
         datalar.Kaynak.Connected := true;
         _baglanti := true;
         txtinfo.Caption := 'Baðlandý';
@@ -314,7 +314,7 @@ begin
          for x := 1 to wsdlList.Count do
          begin
                filename := 'C:\NoktaV3\' + wsdlList.Items[x-1];
-               dosya := TFileStream.Create(filename,fmCreate);
+               dosya := TFileStream.Create(filename,fmCreate);x
                HTTP1.Get('http://www.noktayazilim.net/' + wsdlList.Items[x-1],TStream(dosya));
                //ShowMessageSkin(wsdlList.Items[x-1],'','','info');
          end;
@@ -349,7 +349,7 @@ var
    servername , INS , _s_: string;
    a : array of string;
 begin
-     xx := Tregistry.Create;
+     xx := Tregistry.Create;x
      xx.OpenKey('Software\NOKTA\NOKTA',True);
      _s_ := xx.ReadString('servername');
 
@@ -392,7 +392,7 @@ begin
              DATALAR.Login;
 
 
-             ado := TADOQuery.Create(nil);
+             ado := TADOQuery.Create(nil);x
              ado.Connection := datalar.Kaynak;
 
              sql := 'select snonay from musteri where kod = ' + QuotedStr(datalar._Kurumkod);
@@ -409,7 +409,7 @@ begin
                    DosyaIsmi := 'Snet.exe';
                    CreateDir('C:\NoktaV3\SN');
                    filename := 'C:\NoktaV3\SN\' + DosyaIsmi;
-                   dosya := TFileStream.Create(filename,fmCreate);
+                   dosya := TFileStream.Create(filename,fmCreate);x
                    HTTP1.Get('http://www.noktayazilim.net/'+ DosyaIsmi ,TStream(dosya));
                    txtinfo.Caption := '';
                    //panel1.Visible := false;
@@ -445,7 +445,7 @@ begin
                    DosyaIsmi := 'GuncellemeYap.exe';
                    CreateDir('C:\NoktaV3');
                    filename := 'C:\NoktaV3\' + DosyaIsmi;
-                   dosya := TFileStream.Create(filename,fmCreate);
+                   dosya := TFileStream.Create(filename,fmCreate);x
                    HTTP1.Get('http://www.noktayazilim.net/'+ DosyaIsmi ,TStream(dosya));
                    txtinfo.Caption := '';
                    //Panel1.Visible := false;
@@ -455,7 +455,7 @@ begin
 
                CreateDir('C:\NoktaV3');
                filename := 'C:\NoktaV3\' + DosyaIsmi;
-               dosya := TFileStream.Create(filename,fmCreate);
+               dosya := TFileStream.Create(filename,fmCreate);x
                HTTP1.Get('http://www.noktayazilim.net/'+ DosyaIsmi ,TStream(dosya));
                ShowMessageSkin('Güncelleme Baþarýyla Yapýldý','Programýnýzýn Çalýþabilmesi Ýçin Guncelleme Modülünüz Kapatýlacak','Tekrar Çalýþtýrýnýz','info');
                KillTask('GuncellemeYap.exe');
@@ -486,7 +486,7 @@ begin
    then begin
 
              txtinfo.Caption := 'Local Baðlantý Saðlanýyor';
-             datalar.Hedef.ConnectionString := serverismi(datalar._database);
+             datalar.Hedef.ConnectionString := serverismi(datalar._database);  x
              //inputbox('Database','Database Adý',datalar._database));
              Application.ProcessMessages;
              datalar.Hedef.Connected := True;
@@ -578,7 +578,7 @@ begin
                     try
                          txtinfo.Caption := 'Server Baðlantýsý Yapýlýyor...';
                          Application.ProcessMessages;
-                         datalar.Kaynak.ConnectionString := serverbaglan(txtDosya.Text,'mavi','');
+                         datalar.Kaynak.ConnectionString := serverbaglan(txtDosya.Text,'mavi','');  x
                          datalar.Kaynak.Connected := true;
                          Application.ProcessMessages;
                          txtinfo.Caption := '';
@@ -611,7 +611,7 @@ begin
        btnSend.Enabled := false;
     end else btnSend.Enabled := true;
 
-    Btmap := TBitmap.Create;
+    Btmap := TBitmap.Create;x
     global_img_list4.GetBitmap(0,Btmap);
 
     Grid_Temizle(gridDetay);
@@ -659,7 +659,7 @@ var
    xx : TRegistry;
 begin
 
-        xx := Tregistry.Create;
+        xx := Tregistry.Create;x
         xx.OpenKey('Software\NOKTA\NOKTA',True);
         xx.WriteString('Tip',txtTip.Text);
 
@@ -689,7 +689,7 @@ begin
   datalar.ADO_SQL3.Close;
   datalar.ADO_SQL3.SQL.Clear;
 
-  datalar.Hedef.BeginTrans;
+  datalar.Hedef.BeginTrans;x
   _hata := 0;
 
   if ADO_SQL1.RecordCount > 0
@@ -734,10 +734,10 @@ begin
   if (ADO_SQL1.RecordCount > 0) and (_hata = 1) then
   begin
     txtLOG.Lines.Add('Güncellenemeyen Paket Var , Tüm Ýþlemler Geri Alýndý');
-    datalar.Hedef.RollbackTrans;
+    datalar.Hedef.RollbackTrans;x
   end else
   begin
-    datalar.Hedef.CommitTrans;
+    datalar.Hedef.CommitTrans;x
     txtLOG.Lines.Add('Database Güncelleme Baþarýyla Yapýldý');
         //  ExeAl;
   end;
@@ -777,7 +777,7 @@ begin
    if  datalar.Hedef.Connected = false
    then begin
              txtinfo.Caption := 'Local Baðlantý Saðlanýyor';
-             datalar.Hedef.ConnectionString := serverismi(datalar._database);
+             datalar.Hedef.ConnectionString := serverismi(datalar._database);   x
              Application.ProcessMessages;
              datalar.Hedef.Connected := True;
    end;
@@ -827,7 +827,7 @@ begin
    hedef := txtDosya.Text;
    kaynak := txtUrl.Text;
 
-   dosya := TFileStream.Create('c:\noktadiyaliz\xx.rar',fmCreate);
+   dosya := TFileStream.Create('c:\noktadiyaliz\xx.rar',fmCreate);x
 
    http2.URL.Host := 'http://www.noktayazilim.net';
    http2.URL.Username := 'mavinokta';
@@ -841,7 +841,7 @@ procedure TfrmUpdate.sBitBtn2Click(Sender: TObject);
 begin
           //Panel1.Visible := true;
 
-          dosya := TFileStream.Create('C:\NoktaDiyaliz/muh.exe',fmCreate);
+          dosya := TFileStream.Create('C:\NoktaDiyaliz/muh.exe',fmCreate);x
           HTTP1.Get('http://www.noktayazilim.net/muh.exe',TStream(dosya));
 
           dosya.Free;
@@ -854,7 +854,7 @@ var
    s : string;
 begin
 
-    xx := Tregistry.Create;
+    xx := Tregistry.Create;x
     xx.RootKey := HKEY_CURRENT_USER;
     xx.OpenKey('Software\NOKTA\NOKTA',True);
     s := xx.ReadString('Tip');

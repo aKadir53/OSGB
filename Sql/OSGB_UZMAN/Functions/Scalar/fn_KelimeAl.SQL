@@ -2,7 +2,7 @@ BEGIN TRAN
 GO
 -- fn_KelimeAl fonksiyonu, verilen string'in ilk birkaç kelimesini alýp getirir altýn tepside sunar
 ALTER -- CREATE 
-  FUNCTION [dbo].[fn_KelimeAl] (@KaynakIfade varchar (500), @KelimeSayisi int, @Ayraclar varchar (20))
+  FUNCTION [dbo].[fn_KelimeAl] (@KaynakIfade varchar (500), @KelimeSayisi int, @Ayraclar varchar (20), @Kumule bit)
 returns varchar (500)
 with schemabinding 
 as
@@ -32,7 +32,7 @@ begin
     SET @iTmpPos = CHARINDEX (' ', @KaynakIfadeTmp)
 	if @iTmpPos > 0
 	begin
-	  SET @ret = @REt + ' ' + substring (@KaynakIfadeTmp, 1, @iTmpPos - 1)
+	  SET @ret = case when @Kumule = 1 then @REt + ' ' else '' end + substring (@KaynakIfadeTmp, 1, @iTmpPos - 1)
 	  set @KaynakIfadeTmp = LTRIM (substring (@KaynakIfadeTmp, @iTmpPos + 1, len ('X' + @KaynakIfadeTmp + 'X') - 2))
 	end
 	else begin

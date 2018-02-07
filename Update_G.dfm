@@ -11885,12 +11885,4 @@ object frmUpdate: TfrmUpdate
     OnTimer = Timer1Timer
     Left = 640
   end
-  object PopupMenu2: TPopupMenu
-    Left = 424
-    Top = 208
-    object K1: TMenuItem
-      Caption = 'Kapat'
-      OnClick = K1Click
-    end
-  end
 end

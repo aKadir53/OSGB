@@ -4,7 +4,7 @@ object frmLogin: TfrmLogin
   BorderIcons = []
   BorderStyle = bsDialog
   Caption = 'l'
-  ClientHeight = 263
+  ClientHeight = 239
   ClientWidth = 309
   Color = 13750737
   Font.Charset = DEFAULT_CHARSET
@@ -297,7 +297,7 @@ object frmLogin: TfrmLogin
     Left = 0
     Top = 0
     Width = 309
-    Height = 207
+    Height = 183
     Align = alClient
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clWindowText
@@ -306,30 +306,30 @@ object frmLogin: TfrmLogin
     Font.Style = []
     ParentFont = False
     TabOrder = 0
-    Properties.ActivePage = SayfaConTest
+    Properties.ActivePage = SayfaLogin
+    OnChange = LoginSayfalarChange
     OnPageChanging = LoginSayfalarPageChanging
-    ClientRectBottom = 183
-    ClientRectLeft = 3
-    ClientRectRight = 302
-    ClientRectTop = 26
+    ExplicitHeight = 207
+    ClientRectBottom = 179
+    ClientRectLeft = 4
+    ClientRectRight = 305
+    ClientRectTop = 24
     object SayfaLogin: TcxTabSheet
       Caption = 'Kullan'#305'c'#305' Giri'#351'i   '
       ImageIndex = 17
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
+      ExplicitHeight = 179
       object dxLayoutControl1: TdxLayoutControl
         Left = 0
         Top = 0
-        Width = 299
-        Height = 174
+        Width = 301
+        Height = 155
         Align = alClient
         TabOrder = 0
         LayoutLookAndFeel = dxLayoutSkinLookAndFeel1
+        ExplicitHeight = 179
         object Image3: TImage
-          Left = 20
-          Top = 23
+          Left = 22
+          Top = 28
           Width = 53
           Height = 42
           Align = alLeft
@@ -628,8 +628,8 @@ object frmLogin: TfrmLogin
           Transparent = True
         end
         object Edit1: TcxTextEdit
-          Left = 105
-          Top = 71
+          Left = 107
+          Top = 76
           ParentFont = False
           Style.Font.Charset = DEFAULT_CHARSET
           Style.Font.Color = clWindowText
@@ -639,12 +639,11 @@ object frmLogin: TfrmLogin
           Style.HotTrack = False
           Style.IsFontAssigned = True
           TabOrder = 0
-          OnKeyPress = Edit1KeyPress
           Width = 25
         end
         object Edit2: TcxTextEdit
-          Left = 105
-          Top = 101
+          Left = 107
+          Top = 106
           ParentFont = False
           ParentShowHint = False
           Properties.EchoMode = eemPassword
@@ -661,8 +660,8 @@ object frmLogin: TfrmLogin
           Width = 121
         end
         object txtSirket: TcxButtonEditKadir
-          Left = 105
-          Top = 131
+          Left = 107
+          Top = 136
           ParentFont = False
           Properties.Buttons = <
             item
@@ -685,8 +684,8 @@ object frmLogin: TfrmLogin
         end
         object txtSube: TcxImageComboKadir
           Tag = 1
-          Left = 105
-          Top = 158
+          Left = 107
+          Top = 163
           Properties.ClearKey = 46
           Properties.Items = <>
           Properties.OnChange = txtSubePropertiesChange
@@ -760,25 +759,24 @@ object frmLogin: TfrmLogin
     object SayfaConTest: TcxTabSheet
       Caption = 'Server Test'
       ImageIndex = 1
+      ExplicitHeight = 179
       object cxGroupBox1: TcxGroupBox
         Left = 0
         Top = 0
         Align = alClient
         Caption = 'Server Bilgisi'
         TabOrder = 0
-        Height = 174
-        Width = 299
+        ExplicitHeight = 179
+        Height = 155
+        Width = 301
         object dxLayoutControl2: TdxLayoutControl
-          Left = 3
-          Top = 15
-          Width = 293
-          Height = 149
+          Left = 2
+          Top = 18
+          Width = 297
+          Height = 135
           Align = alClient
           TabOrder = 0
-          ExplicitLeft = 2
-          ExplicitTop = -2
-          ExplicitWidth = 295
-          ExplicitHeight = 174
+          ExplicitHeight = 159
           object txtServerName: TcxTextEditKadir
             Left = 104
             Top = 10
@@ -788,20 +786,20 @@ object frmLogin: TfrmLogin
             Style.BorderStyle = ebs3D
             Style.HotTrack = False
             TabOrder = 0
-            Width = 177
+            Width = 178
           end
           object btnBaglan: TcxButtonKadir
             Left = 10
             Top = 91
-            Width = 271
+            Width = 272
             Height = 25
             Caption = 'Ba'#287'lant'#305'y'#305' Test Et'
-            TabOrder = 3
+            TabOrder = 5
             OnClick = btnBaglanClick
             NewButtonVisible = False
           end
           object txtDataBase: TcxTextEdit
-            Left = 104
+            Left = 207
             Top = 64
             Properties.EchoMode = eemPassword
             Properties.PasswordChar = '*'
@@ -809,17 +807,17 @@ object frmLogin: TfrmLogin
             Style.BorderColor = clWindowFrame
             Style.BorderStyle = ebs3D
             Style.HotTrack = False
-            TabOrder = 2
-            Width = 177
+            TabOrder = 4
+            Width = 75
           end
           object txtOsgbKodu: TcxTextEdit
             Left = 104
-            Top = 37
+            Top = 64
             Style.BorderColor = clWindowFrame
             Style.BorderStyle = ebs3D
             Style.HotTrack = False
-            TabOrder = 1
-            Width = 177
+            TabOrder = 3
+            Width = 45
           end
           object Labelx: TcxLabel
             Left = 10
@@ -828,7 +826,29 @@ object frmLogin: TfrmLogin
             Caption = 'ddddd'
             Style.HotTrack = False
             Height = 17
-            Width = 271
+            Width = 272
+          end
+          object txtServerUserName: TcxTextEditKadir
+            Left = 104
+            Top = 37
+            Properties.EchoMode = eemPassword
+            Properties.PasswordChar = '*'
+            Style.BorderColor = clWindowFrame
+            Style.BorderStyle = ebs3D
+            Style.HotTrack = False
+            TabOrder = 1
+            Width = 69
+          end
+          object txtServerPassword: TcxTextEditKadir
+            Left = 205
+            Top = 37
+            Properties.EchoMode = eemPassword
+            Properties.PasswordChar = '*'
+            Style.BorderColor = clWindowFrame
+            Style.BorderStyle = ebs3D
+            Style.HotTrack = False
+            TabOrder = 2
+            Width = 77
           end
           object dxLayoutControl2Group_Root: TdxLayoutGroup
             AlignHorz = ahLeft
@@ -854,18 +874,18 @@ object frmLogin: TfrmLogin
             Index = 3
           end
           object dxLayoutControl2Item3: TdxLayoutItem
-            CaptionOptions.Text = 'DataBase             :'
-            Parent = dxLayoutControl2Group_Root
+            CaptionOptions.Text = 'DataBase'
+            Parent = dxLayoutControl2Group1
             Control = txtDataBase
             ControlOptions.ShowBorder = False
-            Index = 2
+            Index = 1
           end
           object dxLayoutControl2Item4: TdxLayoutItem
             CaptionOptions.Text = 'Firma Kodunuz'
-            Parent = dxLayoutControl2Group_Root
+            Parent = dxLayoutControl2Group1
             Control = txtOsgbKodu
             ControlOptions.ShowBorder = False
-            Index = 1
+            Index = 0
           end
           object dxLayoutControl2Item5: TdxLayoutItem
             CaptionOptions.Visible = False
@@ -874,6 +894,39 @@ object frmLogin: TfrmLogin
             ControlOptions.ShowBorder = False
             Index = 4
           end
+          object dxLayoutControl2Item6: TdxLayoutItem
+            CaptionOptions.Text = 'Server Kullan'#305'c'#305
+            Parent = dxLayoutControl2Group2
+            Control = txtServerUserName
+            ControlOptions.ShowBorder = False
+            Index = 0
+          end
+          object dxLayoutControl2Item7: TdxLayoutItem
+            CaptionOptions.Text = #350'ifre'
+            Parent = dxLayoutControl2Group2
+            Control = txtServerPassword
+            ControlOptions.ShowBorder = False
+            Index = 1
+          end
+          object dxLayoutControl2Group2: TdxLayoutGroup
+            CaptionOptions.Text = 'New Group'
+            Parent = dxLayoutControl2Group_Root
+            Visible = False
+            ButtonOptions.Buttons = <>
+            Hidden = True
+            LayoutDirection = ldHorizontal
+            ShowBorder = False
+            Index = 1
+          end
+          object dxLayoutControl2Group1: TdxLayoutGroup
+            CaptionOptions.Text = 'New Group'
+            Parent = dxLayoutControl2Group_Root
+            ButtonOptions.Buttons = <>
+            Hidden = True
+            LayoutDirection = ldHorizontal
+            ShowBorder = False
+            Index = 2
+          end
         end
       end
     end
@@ -881,10 +934,7 @@ object frmLogin: TfrmLogin
       Caption = 'cxTabSheet1'
       ImageIndex = 2
       TabVisible = False
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
+      ExplicitHeight = 179
       object Label1: TLabel
         Left = 154
         Top = 46
@@ -1566,7 +1616,7 @@ object frmLogin: TfrmLogin
   end
   object dxStatusBar1: TdxStatusBar
     Left = 0
-    Top = 243
+    Top = 219
     Width = 309
     Height = 20
     Panels = <
@@ -1591,17 +1641,17 @@ object frmLogin: TfrmLogin
     Font.Height = -11
     Font.Name = 'Tahoma'
     Font.Style = []
-    ExplicitTop = 226
+    ExplicitTop = 243
   end
   object pnlBottom: TcxGroupBox
     Left = 0
-    Top = 207
+    Top = 183
     Align = alBottom
     PanelStyle.Active = True
     ParentShowHint = False
     ShowHint = False
     TabOrder = 2
-    ExplicitTop = 190
+    ExplicitTop = 207
     Height = 36
     Width = 309
     object btnGiris: TcxButton
@@ -1612,6 +1662,7 @@ object frmLogin: TfrmLogin
       Align = alRight
       Caption = 'Giri'#351' Yap'
       Default = True
+      ModalResult = 6
       TabOrder = 0
       OnClick = Image1Click
     end
@@ -1623,8 +1674,8 @@ object frmLogin: TfrmLogin
       Align = alRight
       Cancel = True
       Caption = 'Vazge'#231
+      ModalResult = 2
       TabOrder = 1
-      OnClick = btnVazgecClick
     end
   end
   object DataSource1: TDataSource
@@ -1653,17 +1704,6 @@ object frmLogin: TfrmLogin
       'WHERE DONEM=:D')
     Left = 136
     Top = 8
-  end
-  object ADOConnection2: TADOConnection
-    CommandTimeout = 0
-    ConnectionString = 
-      'Provider=SQLOLEDB.1;Password=1;Persist Security Info=True;User I' +
-      'D=sa;Initial Catalog=DIALIZ;Data Source=KSERVER'
-    ConnectionTimeout = 0
-    LoginPrompt = False
-    Provider = 'SQLOLEDB.1'
-    Left = 1
-    Top = 151
   end
   object ListeAc1: TListeAc
     ListeBaslik = #350'irketler'

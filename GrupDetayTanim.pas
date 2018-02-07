@@ -46,7 +46,6 @@ type
     miGozetimYazdir: TMenuItem;
     DataSource2: TDataSource;
     ADO_Detay: TADOQuery;
-    tmr1: TTimer;
     miGozetimDuzenle: TMenuItem;
     miFotografYukle: TMenuItem;
     miFotografGoruntule: TMenuItem;

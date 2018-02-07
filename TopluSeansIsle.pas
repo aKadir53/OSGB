@@ -538,7 +538,7 @@ var
   st : Tstrings;
 begin
 
-   st := TStringList.Create;
+   st := TStringList.Create;x
    ItemsDoldurName('txtDamarGiris',st);
    TcxComboBoxProperties(ListeGIRISYOLU.Properties).Items.Clear;
    TcxComboBoxProperties(ListeGIRISYOLU.Properties).Items.AddStrings(st);
@@ -806,19 +806,19 @@ var
   ado0,ado1,ado2,ado3,ado4 : TADOQuery;
   x : integer;
 begin
-   ado0 := TADOQuery.Create(nil);
+   ado0 := TADOQuery.Create(nil);x
    ado0.Connection := datalar.ADOConnection2;
 
-   ado1 := TADOQuery.Create(nil);
+   ado1 := TADOQuery.Create(nil);x
    ado1.Connection := datalar.ADOConnection2;
 
-   ado2 := TADOQuery.Create(nil);
+   ado2 := TADOQuery.Create(nil);x
    ado2.Connection := datalar.ADOConnection2;
 
-   ado3 := TADOQuery.Create(nil);
+   ado3 := TADOQuery.Create(nil);x
    ado3.Connection := datalar.ADOConnection2;
 
-   ado4 := TADOQuery.Create(nil);
+   ado4 := TADOQuery.Create(nil);x
    ado4.Connection := datalar.ADOConnection2;
 
    secili := secilisatirbilgisi(gridHastalar,25,6);
@@ -1810,7 +1810,7 @@ begin
      dosyaNo := Liste.DataController.GetValue(satir,Liste.DataController.GetItemByFieldName('dosyaNo').Index);
      gelisNo := Liste.DataController.GetValue(satir,Liste.DataController.GetItemByFieldName('gelisNo').Index);
 
-     Application.CreateForm(TfrmTahlilsonucGir, frmTahlilsonucGir);
+     Application.CreateForm(TfrmTahlilsonucGir, frmTahlilsonucGir);x
      frmTahlilsonucGir.HastaSonuc(dosyaNo,gelisNo,hasta);
      frmTahlilsonucGir.ShowModal;
      frmTahlilsonucGir := nil;
@@ -1986,10 +1986,10 @@ begin
           gelisNo := gridHastalar.Cells[8,x];
           tarih :=   gridHastalar.Cells[4,x];
 
-          ado0 := TADOQuery.Create(nil);
+          ado0 := TADOQuery.Create(nil);x
           ado0.Connection := datalar.ADOConnection2;
 
-          ado1 := TADOQuery.Create(nil);
+          ado1 := TADOQuery.Create(nil);x
           ado1.Connection := datalar.ADOConnection2;
 
 
@@ -2199,10 +2199,10 @@ begin
       try
        if  durum = 1
        then begin
-          ado0 := TADOQuery.Create(nil);
+          ado0 := TADOQuery.Create(nil);x
           ado0.Connection := datalar.ADOConnection2;
 
-          ado1 := TADOQuery.Create(nil);
+          ado1 := TADOQuery.Create(nil);x
           ado1.Connection := datalar.ADOConnection2;
 
 
@@ -2560,19 +2560,19 @@ var
   ado0,ado1,ado2,ado3,ado4 : TADOQuery;
   x ,satir,durum : integer;
 begin
-   ado0 := TADOQuery.Create(nil);
+   ado0 := TADOQuery.Create(nil);x
    ado0.Connection := datalar.ADOConnection2;
 
-   ado1 := TADOQuery.Create(nil);
+   ado1 := TADOQuery.Create(nil);x
    ado1.Connection := datalar.ADOConnection2;
 
-   ado2 := TADOQuery.Create(nil);
+   ado2 := TADOQuery.Create(nil);x
    ado2.Connection := datalar.ADOConnection2;
 
-   ado3 := TADOQuery.Create(nil);
+   ado3 := TADOQuery.Create(nil);x
    ado3.Connection := datalar.ADOConnection2;
 
-   ado4 := TADOQuery.Create(nil);
+   ado4 := TADOQuery.Create(nil);x
    ado4.Connection := datalar.ADOConnection2;
 
 

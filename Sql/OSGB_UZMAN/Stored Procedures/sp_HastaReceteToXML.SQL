@@ -3,10 +3,10 @@ GO
 ALTER PROCEDURE [dbo].[sp_HastaReceteToXML](@receteId int)
 as
 BEGIN
-	declare @tesisKodu varchar(10),@receteBaslik varchar(2000),
-	@receteIlacBilgisi varchar(2000),
-	@receteTaniBilgisi varchar(1000),
-	@receteAck varchar(1000),
+	declare @tesisKodu varchar(10),@receteBaslik varchar(max),
+	@receteIlacBilgisi varchar(max),
+	@receteTaniBilgisi varchar(max),
+	@receteAck varchar(max),
 	@doktorTc varchar(20),
 	@pin varchar(10),
 	@user varchar(20),
@@ -54,10 +54,10 @@ BEGIN
 				'<adet>' + cast(rd.adet as varchar) +'</adet>'+
 				'<barkod>' +rd.ilacKodu +'</barkod>'+
 				'<ilacAdi>'+ rd.ilacAdi +'</ilacAdi>'+
-				'<kullanimDoz1>'+ cast(rd.kullanimAdet as varchar) +'</kullanimDoz1>'+
+				'<kullanimDoz1>'+ cast(rd.kullanimAdet2 as varchar) +'</kullanimDoz1>'+
 				'<kullanimPeriyotBirimi>' + kullanZamanUnit  + '</kullanimPeriyotBirimi>'+
 				'<kullanimSekli>'+ rd.kullanimYolu +'</kullanimSekli>'+
-				'<kullanimDoz2>'+ cast(rd.kullanimAdet2 as varchar) +'</kullanimDoz2>'+
+				'<kullanimDoz2>'+ cast(rd.kullanimAdet as varchar) +'</kullanimDoz2>'+
 				'<kullanimPeriyot>'+ rd.kullanimZaman +'</kullanimPeriyot>'+
                 isnull(dbo.ereceteIlacAciklamaBilgisi(rd.id),'') +
 				'</ereceteIlacBilgisi>'	
@@ -94,7 +94,7 @@ BEGIN
 
 	select 
 		'<?xml version="1.0" encoding="iso-8859-9"?>'+
-		'<ereceteBilgisi>'+-- xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">' +
+		'<ereceteBilgisi>'+
 	    @receteBaslik + @receteIlacBilgisi + @receteTaniBilgisi + isnull(@receteAck,'') +
 		'</ereceteBilgisi>'
 

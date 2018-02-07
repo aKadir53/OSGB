@@ -66,6 +66,7 @@ type
     { Public declarations }
     constructor Create (Aowver: TComponent); override;
     destructor Destroy; override;
+    function Init(Sender: TObject) : Boolean; override;
   end;
 
   Const
@@ -93,7 +94,6 @@ type
 
 var
   frmHizliKayit: TfrmHizliKayit;
-   v,sayfa : Variant;
 
 implementation
   uses AnaUnit, Math, NThermo;
@@ -478,7 +478,7 @@ begin
     iRowC := 0;
     ShowThermo(iThermo, 'Satýrlar veritabanýna yazýlýyor', 0, GridList.RowCount - 1, 0, True);
     try
-      datalar.ADOConnection2.BeginTrans;
+      BeginTrans (datalar.ADOConnection2);
       try
         for _row_ := 1 to GridList.RowCount - 1 do
         begin
@@ -575,11 +575,11 @@ begin
       finally
         if bBasarili then
         begin
-          datalar.ADOConnection2.CommitTrans;
+          CommitTrans (datalar.ADOConnection2);
           showmessageSkin (IntToStr (iCount) + ' adet kayýt baþarý ile aktarýldý', '', '', 'info');
         end
         else begin
-          datalar.ADOConnection2.rollbackTrans;
+          RollBackTrans (datalar.ADOConnection2);
           GridList.Row := iRowC + 1;
           showmessageSkin (IntToStr (iRowC + 1) + '. satýrda hata oluþtu, aktarým iþlemi tamamlanamadý.', '', '', 'info');
         end;
@@ -595,15 +595,26 @@ begin
 
 end;
 
+function TfrmHizliKayit.Init(Sender: TObject): Boolean;
+begin
+  Result := inherited Init (Sender);
+  miExcelYukle .Visible := (Tag = TagfrmHizliKayitPersonel) or (Tag = TagfrmHizliKayitDisAktarimlar);
+  miVeritabaninaYaz .Visible := Tag = TagfrmHizliKayitPersonel;
+  miAlanEslestir .Visible := Tag = TagfrmHizliKayitPersonel;
+  miSoyadAyarla .Visible := Tag = TagfrmHizliKayitPersonel;
+  miOtomatikAktarim .Visible := Tag = TagfrmHizliKayitDisAktarimlar;
+end;
+
 procedure TfrmHizliKayit.TanimliOtomatikAktarim;
 var
   aQuery, bQuery : TADOQuery;
   sAktarimSonrasiStoredProc, sItems, sTableName : String;
   aHedefAlanlar, aBasliginHedefAlani, aAramaBasliklari, aSecilenAlanlar : TStringList;
-  iInserted, iCol, iTmp, iAktarimTanimID, iThermo : Integer;
+  iInserted, iCol, iTmp, iAktarimTanimID, iThermo, iTmpRow : Integer;
   bTmpPost, bHepsiBos, bTmp, bHedefTabloyuBosalt, bHedefTabloyuBosaltSor : Boolean;
   aSecilenIndexler : TIntegerArray;
 begin
+  iTmpRow := GridList.Row;
   aQuery := TADOQuery.Create (Self);
   try
     aQuery.Connection := DATALAR.ADOConnection2;
@@ -679,7 +690,7 @@ begin
             end;
             bTmp := False;
             iInserted := 0;
-            BeginTrans (aQuery);
+            BeginTrans (datalar.ADOConnection2);
             try
               //Aktarým tanýmlarýnda tablo boþaltýlýp doldurulacak tipteyse boþalt (null ise kullanýcýya sormuþtuk)
               if bHedefTabloyuBosalt then
@@ -716,7 +727,7 @@ begin
                 try
                   for iTmp := 1 to GridList.RowCount -1 do
                   begin
-                    GridList.Row := iTmp;
+                    iTmpRow := iTmp;
                     if not UpdateThermo (iTmp - 1, iThermo, 'Satýr: '+ IntToStr (iTmp)) then Exit;
                     bTmpPost := False;
                     aQuery.Append;
@@ -788,10 +799,11 @@ begin
             finally
               if bTmp then
               begin
-                CommitTrans (aQuery);
+                CommitTrans (datalar.ADOConnection2);
               end
               else begin
-                RollbackTrans (aQuery);
+                RollbackTrans (datalar.ADOConnection2);
+                GridList.Row := iTmpRow;
                 showmessageSkin ('Aktarým iþlemi sýrasýnda bir hata oluþtu ve iþlem tamamlanamadý', '', '', 'info');
               end;
             end;
@@ -801,7 +813,7 @@ begin
             bQuery := TADOQuery.Create(Self);
             try
               bQuery.Connection := aQuery.Connection;
-              BeginTrans (aQuery);
+              BeginTrans (datalar.ADOConnection2);
               try
                 aQuery.SQL.Text := 'exec '+ sAktarimSonrasiStoredProc +' 0';
                 aQuery.Open;
@@ -846,11 +858,11 @@ begin
               finally
                 if bTmp then
                 begin
-                  CommitTrans (aQuery);
+                  CommitTrans (datalar.ADOConnection2);
                   showmessageSkin (IntToStr (iInserted) + ' adet satýr baþarý ile aktarýldý', '', '', 'info');
                 end
                 else begin
-                  RollbackTrans (aQuery);
+                  RollbackTrans (datalar.ADOConnection2);
                   showmessageSkin ('Aktarým iþlemi sýrasýnda bir hata oluþtu ve iþlem tamamlanamadý', '', '', 'info');
                   if bTmpPost then
                     DBGridDialog (sItems, bQuery, [mbOk], mbOk);

@@ -62,7 +62,7 @@ uses
 // KadirMedula3 in '..\..\medula3wsdl\KadirMedula3.pas';
 
 const
-  AppalicationVer : integer = 1039;
+  AppalicationVer : integer = 1044;
   // Versiyon info kontrol etmeyi unutma
 
 {$R *.res}
@@ -77,6 +77,7 @@ begin
   Application.CreateForm(TDATALAR, DATALAR);
   Application.CreateForm(TAnaForm, AnaForm);
 
+
   //Application.CreateForm(TfrmUpdate, frmUpdate);???
 
   // form2.show;
@@ -90,8 +91,11 @@ begin
     if FileExists('C:\OSGB\isg.exe') = False
     Then begin
       dosya := TFileStream.Create('C:\OSGB\isg.exe',fmCreate);
+      try
       datalar.HTTP1.Get('http://www.noktayazilim.net/isg.exe' ,TStream(dosya));
+      finally
       dosya.Free;
+    end;
     end;
 
   try
@@ -155,30 +159,15 @@ begin
 
   GetBuildInfo(Application.ExeName, V1, V2, V3,V4);
   ExeVersiyon:= Format('%d.%d.%d.%d', [V1, V2, V3,V4]);
- // ShowMessage(ExeVersiyon,'','','info');
-
- // form2.Label1.Caption := ExeVersiyon + ' Versiyon Kontrolü Yapýlýyor, Lütfen Bekleyiniz...';
- // Application.ProcessMessages;
- // Sleep(2000);
-
- // form2.Hide;
 
 
 
 
   Application.CreateForm(TfrmLogin, frmLogin);
-  frmLogin.ShowModal;
-  frmLogin := nil;
-
-  if datalar.loginLog = True
-  then begin
-//    Application.CreateForm(TfrmRapor, frmRapor);
-//    form2.Destroy;
-    Application.Run;
-  //  AnaForm.Show;
-  end
-  else
-  begin
-    Application.Terminate;
+  try
+    if frmLogin.ShowModal <> mrYes then Exit;
+  finally
+    FreeAndNil (frmLogin);
   end;
+    Application.Run;
 end.

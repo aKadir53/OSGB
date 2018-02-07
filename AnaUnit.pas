@@ -95,7 +95,6 @@ type
   //  function GetResourceAsString(const resname: string): TstringList;
     function GetResourceAsPNG(const resname: string): TPNGImage;
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
-    procedure FormMouseMove(Sender: TObject; Shift: TShiftState; X, Y: Integer);
     procedure FormShow(Sender: TObject);
     procedure cxRadioGroup1PropertiesChange(Sender: TObject);
     procedure cxButton1Click(Sender: TObject);
@@ -116,10 +115,12 @@ type
     procedure SubelerPropertiesChange(Sender: TObject);
     procedure cxScheduler1InitEventImages(Sender: TcxCustomScheduler;
       AEvent: TcxSchedulerControlEvent; AImages: TcxSchedulerEventImages);
+    procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
   private
     { Private declarations }
   public
     { Public declarations }
+    destructor Destroy; override;
   end;
 
    const
@@ -285,14 +286,24 @@ begin
   end;
 end;
 
+destructor TAnaForm.Destroy;
+begin
+  inherited;
+  FreeAndNil(Datalar);
+end;
+
 procedure TAnaForm.FormClose(Sender: TObject; var Action: TCloseAction);
 begin
   datalar.LoginInOut.Login := lgnOut;
   datalar.LoginInOut.Execute;
   Datalar.ADOConnection2.Connected := false;
-  DATALAR.KillTask('OSGB.exe');
- // halt;
+  Action := caFree;
+  Release;
+end;
 
+procedure TAnaForm.FormCloseQuery(Sender: TObject; var CanClose: Boolean);
+begin
+  Canclose := ShowMessageSkin ('Programdan çýkmak istiyor musunuz ?', '', '', 'conf') = mrYes;
 end;
 
 procedure TAnaForm.FormCreate(Sender: TObject);
@@ -320,14 +331,6 @@ begin
 //  cxSetResourceString(@scxEvent,'Olay');
 
 
-
-end;
-
-procedure TAnaForm.FormMouseMove(Sender: TObject; Shift: TShiftState; X,
-  Y: Integer);
-begin
-// if x > 200 then MainMenuKadir1.Gizle
-//  else MainMenuKadir1.Goster;
 
 end;
 

@@ -115,8 +115,6 @@ yanlýþ þirkete girip saha gözetimi yaptýysa ???
 iþyeri hekimi çalýþmalarý grup tablosu
 sorular grup baþlýklý
 
-muayene tipleri için tablo açýlýp tablodan getirtilebilir. zannediyorum view yapmýþtýk ama muayene türlerini gösteren yerlerde sadece eskilerinin tanýmlarý gözüküyor.
-
 eðitim, iþ kazasý, saha gözlem gibi ekranlarda tablolara þube kodu alaný eklenecek.
 
 Tablette hiç internet eriþimi olmadan kayýt girme ve sisteme gönderebilme özelliði
@@ -135,7 +133,6 @@ Oooo. Eleman güzel yerden yakaladý. Program kabiliyetlerini kullanarak kendi rek
 
 iþ güvenliði uzmaný 1 þirkete
 
-gebe muayenesi 
 ve hastaneye sevk isteniyormuþ
 
 doktor kartýndan, iþ güvenliði uzman kartýndan "Kullanýcý aç" düðmesi eklenebilir mi ?
@@ -147,34 +144,16 @@ hastalarýn mevcut saðlýk, tahlil vb bilgileri, önceden yapýlmýþ iþe giriþ muayen
 admin þifreleri deðiþtir
 formlarýn enabled disabled durumlarý kontrol edilecek
 
-Tek_osgb._-_drarzu (286675759) > MONTAJ ELEMANI- ÜRETÝM ELEMANI-PRESHANE ELEMAN-CNC OPERATÖRÜ-MAKÞNE OPERATÖRÜ-AÞÇI-MUTFAK ELEMANI
-Tek_osgb._-_drarzu (286675759) > GÝBÝ BÝR SÜRÜ ÇALIÞAN GRUPLARI EKLENMELÝ
-Tek_osgb._-_drarzu (673641668) > merhaba
-Tek_osgb._-_drarzu (673641668) > ümit bey bir ricam olucak
-Tek_osgb._-_drarzu (673641668) > benim firmalarýmda iki adet kolza biodizel var
-Tek_osgb._-_drarzu (673641668) > bunun birine B9
-Tek_osgb._-_drarzu (673641668) > diðerine B20
-Tek_osgb._-_drarzu (673641668) > ekleyebilirmisiniz
-Tek_osgb._-_drarzu (673641668) > b9 tehlikeli
-Tek_osgb._-_drarzu (673641668) > b20 çok tehlikeli olan firma
 ana menü üstündeki þirket kombosundan þirket seçildiðinde alttaki þube otomatik güncelleniyor gibi ama excel aktarýmý þube seçilmemiþ ikazý yapýyor. galiba deðeri atamýyor. birden çok þubesi olan þirketlere geçiþte hataya sebep oluyor
 kalibre osgb çift personel silinmesi
 kalibre osgb 263 þirket koduna ait sgk sicili 34 37 36 ile biten þube pasif olacak
 kalibre osgb'de geliþlerin çoklandýðý þikayeti var
-personel silerken personel falan firmaya kaydedilecek emin misiniz sorusu soruyor, sadece kaydederken olmalý
 firma kartlarýnda override kelimesi kaybolmuþ, hacý kadir ile aradaki whatsapp notlarýndan tarihine bakýlýp logdan incelenecek
-user kartý silinince usersettings usermenusettings tablolarýný silmiyor, silmesi lazým
-personel kartýnda zorunlu alan kontrolüne takýlsa bile sonraki sql komutlarý çalýþýyor
 reçete ekraný reçete þifremi deðiþtir düðmesi. form baþlýðý dþlsas asdlaiþl olmuþ
-kullanýcý kartý silerken foreign key hatasý çýkýnca ekrandan yine de siliyor
 kullanýcý yetkileri gibi gridli ekranlarda dataset post olmadan çýkma problemi var
 müþteri tablosundaki 4 haneli kodlarýn vergi kimlik numarasý gibi bir þey 
 personel eklerken user doktorsa yeni deðil aktif default olabilir.
-isg katip exceline þube açýklamasý ve firma ünvaný birleþtirme ve ayýrmaya yarayan sütunlar eklenecek
-þirket birleþtir þube ayýr menüsü eklenebilir.
 userGroups gridinden grup silerken beforeDelete'de usergroupsettings ve usergroupmenusettings tablolarýndan data siliyor, fakat users'ta o grupta bir kullanýcý varsa foreign key çakýyor. yetki tanýmlarý silinmiþ olarak kalýyor
-þifre minimum 6 karakter en az 1 harf gibi kontroller
-muayene eklerken view'dan almýyor türleri
 
 yapýlabilecek otomatik aktarýmlar: 
 sgk sicil numarasýndan firma ünvan ve þube açýklamalarý güncelleme
@@ -183,19 +162,18 @@ sorgulama çalýþmamasý
 
 ilaç gruplarý antibiyotik vs
 
-eðitimci için iþ güvenlik uzmaný ya da doktor seçebilmeli, veritabanýna free format isim yazabiliriz.
-ilk sekmedeki þirket kombosuna farklý, ikincisine farklý liste geliyor.
+eðitim formunda ilk sekmedeki þirket kombosuna farklý, ikincisine farklý liste geliyor.
 
 
 kullanýcý grup tanýmlarýna þifre yenileme peryodu gün cinsinden alan ekle
 kullanýcý kartýnýn son þifre deðiþiklik tarihinden o kadar günden fazla geçmiþse deðiþiklik iste
 kullanýcý kartýnda baþkasýnýn þifresini deðiþtirince ne olacak ?
 gruba baðlý olmayan kullanýcýlar için grup tablosundaki sýfýrdan farklý olan en küçük peryodu alabiliriz.
+þifre minimum 6 karakter en az 1 harf gibi kontroller
 
 data modul'deki lüzumsuz deðiþkenleri sil
 
 imes osgb dr Murat: eczacý reçetede çalýþtýðý firma ismi açýklama olarak olmalý demiþ
-sýk kullanýlanlar kalkýk gelsin istiyor ilaçlarda ayrýca
 
 disAktarimParametre gibi bir tablo ile @@spid bazýnda aktif þirket, aktif kullanýcý, aktif þube, aktif doktor gibi bilgileri yaz oku sil yapabiliriz. 
 otomatik excel aktarimi sp'lerinde bu tabloya join ile data alabiliriz. 
@@ -208,5 +186,15 @@ ilgili dýþ aktarýmýn tablosuna ilk kayýt yazarken disAktarimParametre tablosu il
 dýþ aktarým sp'sinde, ara tablodan data alýp kullanýrken þirket kodu, user vs bilgiler için gidip kendisindeki aktarim parametre id'sindeki parametre kaydýna gidilip data kullanýlabilir.
 iþte bu kadar basit.
 
-uygulamanýn mevcut kopyalarýný kapatmasýný ve halt komutlarýný, application.terminate'leri kaldýrmak lazým
-hizlikayit formunu iki ayrý menüye koyalým...
+þube kartlarýna aktif / pasif ayarý eklenecek
+isg katip aktarýmýnda nace kodlarý firma kartýna güncelleniyor, þube kartýna da güncellemek lazým
+
+
+
+taný dataseti lokalde açýk tutabilir miyiz ?
+adoconnection2 kapat aç yapabilir miyiz ?
+
+
+çekmeköy'e restore olacak olan master veritabanýný uzak sunucuya baþka isimle tekrar koy. master veritabaný deðiþikliklerini takip et
+
+dozlar ters gidiyor þikayeti var

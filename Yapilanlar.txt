@@ -133,3 +133,31 @@ personel kartlarýný excel'den aktarýmda resetli alan eþleþtirmede grid sütun baþ
 update formunda sql güncelleme açýklamasýný thermo'da kutuda açýklama olarak gösterdik
 sunucuya son update'i güncellemesek bile önceden bekleyen update varsa hepsini alýyordu. mesela sunucu 1026, yayýnlanmamýþ update 1046, o veritabaný 1026 ise update çalýþtýrmýyor, doðru. fakat o veritabaný 1022'de kalmýþsa 4 update var diye pencereyi açýyor fakat tümünü güncelliyordu. düzeltildi.
 
+eðitimci için iþ güvenlik uzmaný ya da doktor seçebilmeli, veritabanýna free format isim yazabiliriz notu kapsamýnda view yapýlarak doktor ve iþ güvenlik uzmaný isimlerinin toplamý liste olarak seçtirildi ve kodu yerine adý yazdýrýlacak hâle getirildi.
+hizlikayit formunu iki ayrý menüye koyduk. personel kartlarýný excel'den aktar iþleminin düðmeleri ile isg katip aktarýmý ve benzer aktarýmlarýn düðmeleri birbirlerine karýþýyordu. form tagý bazýnda düðme gösterip gizleme ile karýþýklýk izale edildi
+
+isg katip exceline þube açýklamasý ve firma ünvaný birleþtirme ve ayýrmaya yarayan sütunlar eklenmiþti
+ilgili yapýlacaklar notu:
+muayene tipleri için tablo açýlýp tablodan getirtilebilir. zannediyorum view yapmýþtýk ama muayene türlerini gösteren yerlerde sadece eskilerinin tanýmlarý gözüküyor.
+muayene eklerken türleri view'dan almýyordu. önce view'dan alýr hâle getirdik. sonra tablo yapýp foreign key ekledik. view'ý kaldýrmayýp tablodan getirir hale getirdik
+gebe muayenesi tanýmý view'a eklenmiþti, bugün muayene türleri tablosuna da taþýdýk
+ilave olarak seçilecek bilgi tanýmlama ekranýnda muayene türleri tanýmlanabilmesi için gerekli tanýmlar eklendi.
+
+firma kartlarýna þirket birleþtir þube ayýr iþlemleri için þube kaydýrma düðmesi eklendi.
+
+
+þifre boþsa clipboard'da sekme karakterli string arayýp otomatik giriþ vs.. enter karakteri varsa ilk satýr için kendi giriþ yapýp ikinci program kopyasýný açabilme özelliði ekledim kendim için
+
+firma kartlarýnda zorunlu alan kontrolüne takýlsa bile firmalogo insert olmaya çalýþýyor. silerken de silmiyor problemine karþý altyapý müdahalesi
+ilaç dataseti lokalde bir dataset oluþturup ona baðladýk. sýk kullanýlan ayarýný da bellekte tuttuk. programda sadece reçeteden ilk açýlýrken ilaçlarý yükleyecek. sýk kullanýlan tiki deðiþtikçe tazeleyecek. onun dýþýnda bellekten çalýþacak.
+imes osgb murat bey sýk kullanýlanlar kalkýk gelsin istiyordu ilaçlarda. bu düzenleme ile o da hallolmuþ oldu
+
+intran, begintran commit rollback'ler aranýp try finally kontrolleri eklendi, ado transaction yönetiminden sql transaction yönetimine geçirildi
+uygulamanýn mevcut kopyalarýný kapatmasýný ve halt komutlarýný, application.terminate'leri kill ve killtask'larý kaldýrýp programýn düzgün kapanmasý saðlandý
+
+kullanýcý kartý silerken foreign key hatasý çýkýnca ekrandan yine de siliyor hatasý düzeltildi
+personel kartýnda zorunlu alan kontrolüne takýlsa bile sonraki sql komutlarý çalýþýyor hatasý düzeltildi
+user kartý silinince usersettings usermenusettings tablolarýný silmiyor hatasý düzeltildi
+personel silerken personel falan firmaya kaydedilecek emin misiniz sorusu soruyor, sadece kaydederken olacak þekilde düzeltildi
+muayene protokol no düzeltme imkaný için muayene düzenle iþleminin hatalarý giderildi
+þifremi deðiþtir ekranýnda yýldýzlama yoktu, eklendi

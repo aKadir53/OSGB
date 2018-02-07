@@ -83,7 +83,7 @@ var
   ado,ado0,ado1,ado2,ado3,ado4,ado5,ado6,ado7,ado8,ado9,ado10,ado11,ado12 : TADOQuery;
   topluset : TDataSetKadir;
 begin
-    ado := TADOQuery.Create(nil);
+    ado := TADOQuery.Create(nil);x
     sql := 'select * from hastakart where dosyaNo = ' + QuotedStr(_dosyaNo_);
     datalar.QuerySelect(ado,sql);
     topluset.Dataset0 := ado;
@@ -118,7 +118,7 @@ var
   ado : TADOQuery;
 begin
    marker := 'H';
-   ado := TADOQuery.Create(nil);
+   ado := TADOQuery.Create(nil);x
    ado.Connection := datalar.ADOConnection2;
    sql := 'select SLX from parametreler where SLK = ''30'' and SLB = ''03''';
    datalar.QuerySelect(ado,sql);

@@ -72,33 +72,31 @@ var
    sql : string;
    ado : TADOQuery;
 begin
-
-      datalar.ADO_SQL3.Close;
-      datalar.ADO_SQL3.SQL.Clear;
-      sql := 'exec sp_LabSonucYazdir ' +  #39 + frmLabaratuvarKabul.bilgi.dosyaNo + #39 + ',' +
-             frmLabaratuvarKabul.bilgi.gelisNo + ',' + frmLabaratuvarKabul.bilgi.detayNo;
-      datalar.QuerySelect(datalar.ADO_SQL3,sql);
-
-
-//      frmRapor.topluset.Dataset1 := datalar.ADO_SQL3;
+  datalar.ADO_SQL3.Close;
+  datalar.ADO_SQL3.SQL.Clear;
+  sql := 'exec sp_LabSonucYazdir ' +  #39 + frmLabaratuvarKabul.bilgi.dosyaNo + #39 + ',' +
+         frmLabaratuvarKabul.bilgi.gelisNo + ',' + frmLabaratuvarKabul.bilgi.detayNo;
+  datalar.QuerySelect(datalar.ADO_SQL3,sql);
 
 
-      frmRapor.raporData(datalar.ADO_SQL3,'010','\LabSonuc','');
-      frmRapor.ShowModal;
+  //frmRapor.topluset.Dataset1 := datalar.ADO_SQL3;
 
 
-      sql := 'update LaboratuvarKabul set sec = 0,yazdirildi = 1  ' +
-             'where dosyaNo = ' + QuotedStr(frmLabaratuvarKabul.bilgi.dosyaNo) +
-             ' and sec = 1';
-      ado := TADOQuery.Create(nil);
-      ado.Connection := datalar.ADOConnection2;
-      datalar.QueryExec(ado,sql);
-
-      ado.Free;
-
-//      cxGridDBTableView4DblClick(nil);
+  frmRapor.raporData(datalar.ADO_SQL3,'010','\LabSonuc','');
+  frmRapor.ShowModal;
 
 
+  sql := 'update LaboratuvarKabul set sec = 0,yazdirildi = 1  ' +
+         'where dosyaNo = ' + QuotedStr(frmLabaratuvarKabul.bilgi.dosyaNo) +
+         ' and sec = 1';
+  ado := TADOQuery.Create(nil);
+  try
+    ado.Connection := datalar.ADOConnection2;
+    datalar.QueryExec(ado,sql);
+  finally
+    ado.Free;
+  end;
+  //cxGridDBTableView4DblClick(nil);
 end;
 
 procedure TfrmLabSonucGir.sonucGirEditKeyDown(

@@ -93,6 +93,9 @@ type
     procedure btnGrupEkleClick(Sender: TObject);
     procedure UserGroupBeforeDelete(DataSet: TDataSet);
     procedure PropertiesEditValueChanged(Sender: TObject);
+    procedure UserGroupDeleteError(DataSet: TDataSet; E: EDatabaseError;
+      var Action: TDataAction);
+    procedure UserGroupAfterDelete(DataSet: TDataSet);
 
   private
     { Private declarations }
@@ -372,6 +375,12 @@ begin
 
 
 
+procedure TfrmUsers.UserGroupAfterDelete(DataSet: TDataSet);
+begin
+  inherited;
+  CommitTrans(DATALAR.ADOConnection2);
+end;
+
 procedure TfrmUsers.UserGroupAfterPost(DataSet: TDataSet);
 begin
   IslemveMenuGorunumSetEkle(ugGroup);
@@ -383,13 +392,24 @@ var
  ado : TADOQuery;
 begin
   inherited;
-  ado := nil;
-  sql := 'delete from UserGroupSettings where kullanici = ' + QuotedStr(UserGroup.FieldByName('KODU').AsString);
-  datalar.QueryExec(ado,sql);
-  sql := 'delete from UserGroupMenuSettings where kullanici = ' + QuotedStr(UserGroup.FieldByName('KODU').AsString);
-  datalar.QueryExec(ado,sql);
+  BeginTrans(DATALAR.ADOConnection2);
+  try
+    ado := nil;
+    sql := 'delete from UserGroupSettings where kullanici = ' + QuotedStr(UserGroup.FieldByName('KODU').AsString);
+    datalar.QueryExec(ado,sql);
+    sql := 'delete from UserGroupMenuSettings where kullanici = ' + QuotedStr(UserGroup.FieldByName('KODU').AsString);
+    datalar.QueryExec(ado,sql);
+  except
+    RollBackTrans(DATALAR.ADOConnection2);
+    raise;
+  end;
+end;
 
-
+procedure TfrmUsers.UserGroupDeleteError(DataSet: TDataSet; E: EDatabaseError;
+  var Action: TDataAction);
+begin
+  inherited;
+  RollBackTrans(DATALAR.ADOConnection2);
 end;
 
 procedure TfrmUsers.UserSettingsBeforePost(DataSet: TDataSet);
@@ -441,7 +461,7 @@ begin
 
   if iTip <= 0 then Exit;
   bBasari := False;
-  DATALAR.ADOConnection2.BeginTrans;
+  BeginTrans (DATALAR.ADOConnection2);
   try
     xQuery := TADOQuery.Create (Self);
     try
@@ -464,11 +484,11 @@ begin
   finally
     if bBasari then
     begin
-      DATALAR.ADOConnection2.CommitTrans;
+      CommitTrans(DATALAR.ADOConnection2);
       ShowMessageSkin('Ýþlem Tamamlandý', '', '', 'info');
     end
     else begin
-      DATALAR.ADOConnection2.RollbackTrans;
+      RollbackTrans(DATALAR.ADOConnection2);
       ShowMessageSkin('Hata Oluþtu', '', '', 'info');
     end;
   end;
@@ -544,16 +564,32 @@ begin
      ShowMessageSkin('Þifre Tekrarý Hatalý','','','info');
      exit;
     end;
-  inherited;
-  case TcxButton(sender).Tag  of
-    2 : begin
-           IslemveMenuGorunumSetEkle(ugUser);
-
-        end;
-    1 : begin
-         // post;
-         //ShowMessage('Ýptal');
+  BeginTrans (DATALAR.ADOConnection2);
+  try
+    if TcxButton(sender).Tag = 1
+    then
+    begin
+      DATALAR.QueryExec('delete from UserMenuSettings where Kullanici = ' + QuotedStr(TcxButtonEditKadir (FindComponent('Kullanici')).Text));
+      DATALAR.QueryExec('delete from UserSettings where Kullanici = ' + QuotedStr(TcxButtonEditKadir (FindComponent('Kullanici')).Text));
     end;
+    inherited;
+    if not cxKaydetResult then Exit;
+
+    case TcxButton(sender).Tag  of
+      2 : begin
+             IslemveMenuGorunumSetEkle(ugUser);
+
+          end;
+      1 : begin
+           // post;
+           //ShowMessage('Ýptal');
+      end;
+    end;
+  finally
+    if cxKaydetResult then
+      CommitTrans (DATALAR.ADOConnection2)
+     else
+      RollbackTrans (DATALAR.ADOConnection2);
   end;
 end;
 

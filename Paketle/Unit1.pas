@@ -120,18 +120,14 @@ begin
    Then Begin
     // ShowMessageSkin(s+' '+db,u,p ,'info');
      servername :=
-     'Provider=SQLOLEDB.1;Password=' + p + ';Persist Security Info=False;User ID=' + u + ';Initial Catalog=' + db + ';Data Source=' + s;
+     'Provider=SQLOLEDB.1;Password=' + p +
+     ';Persist Security Info=False;User ID=' + u +
+     ';Initial Catalog=' + db + ';Data Source=' + s +
+     ';Application Name=Mavi Nokta E-Reçete Veritabaný Günc.Paket Masaüstü Uyg.';
      datalar.Hedef.ConnectionString := servername;
      datalar.Hedef.Connected := True;
    End;
 end;
-
-
-
-
-
-
-
 
 procedure TfrmPaket.table1NewRecord(DataSet: TDataSet);
 begin
@@ -257,7 +253,7 @@ begin
           while (aSL2.Count > 0) and (TRim (aSL2 [aSL2.Count - 1]) = '') do aSL2.Delete (aSL2.Count - 1);
           if Trim (aSL2.Text) <> '' then
           begin
-            iScripts := iScripts + 1;
+            iScripts := iScripts + 2;
             table1.Append;
             table1.FieldByName ('ID').AsInteger := iLastID + iScripts;
             table1.FieldByName ('REV').AsInteger := iLastID + iScripts;
