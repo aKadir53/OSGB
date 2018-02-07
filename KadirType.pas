@@ -549,6 +549,7 @@ Const
   TagfrmLabSonucGir = 710;
   TagfrmAnamnez = 720;
   TagfrmTetkikIstemSablon = 730;
+  TagfrmDokumanYonetim = 750;
 
   ExceleGonder = 9997;
   SeansTarihiUpdate = 0;

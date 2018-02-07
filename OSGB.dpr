@@ -56,12 +56,13 @@ uses
   LabSonucGir in 'LabSonucGir.pas' {frmLabSonucGir},
   HastaListe in 'HastaListe.pas' {frmHastaListe},
   GrupDetayTanim in 'GrupDetayTanim.pas' {frmGrupDetayTanim},
-  MESSAGE_y in 'MESSAGE_y.PAS' {frmMessage_y};
+  MESSAGE_y in 'MESSAGE_y.PAS' {frmMessage_y},
+  DokumanYukle in 'DokumanYukle.pas' {frmDokumanYonetim};
 
 // KadirMedula3 in '..\..\medula3wsdl\KadirMedula3.pas';
 
 const
-  AppalicationVer : integer = 1036;
+  AppalicationVer : integer = 1039;
   // Versiyon info kontrol etmeyi unutma
 
 {$R *.res}
