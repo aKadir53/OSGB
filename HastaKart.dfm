@@ -938,8 +938,8 @@ object frmHastaKart: TfrmHastaKart
     SiralamaKolonu = 'tani'
     Grup = False
     GrupCol = 0
-    Left = 376
-    Top = 141
+    Left = 384
+    Top = 117
   end
   object PopupMenu2: TPopupMenu
     Left = 344

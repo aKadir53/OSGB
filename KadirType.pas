@@ -187,14 +187,19 @@ type
 
 type
     TGelisDuzenle = record
-      TedaviTuru : string;
+      TedaviYontemi : string;
       GirisTarihi : Tdate;
+      CikisTarih : TDate;
       dosyaNo : string;
       gelisNo : string;
       TakipNo : string;
+      basvuruNo : string;
       BransKodu : string;
+      TaburcuKodu : string;
       doktor : string;
       ProtokolNo : string;
+      Yupass : string;
+      IdealKilo : string;
     end;
 
 
@@ -518,7 +523,7 @@ Const
   TagfrmMakinaBakim = 460;
   TagfrmTestAyarlari = 470;
   TagfrmKiloOrder = 480;
-  TagfrmHizliKayitPersonel = 490;
+  TagfrmHizliKayit = 490;
   TagfrmTedaviListP = 500;
   TagfrmHemsiraTakip = 510;
   TagfrmIlaclar = 520;
@@ -545,6 +550,7 @@ Const
   TagfrmAnamnez = 720;
   TagfrmTetkikIstemSablon = 730;
   TagfrmHizliKayitDisAktarimlar = 740;
+  TagfrmDokumanYonetim = 750;
 
   ExceleGonder = 9997;
   SeansTarihiUpdate = 0;

@@ -56,7 +56,8 @@ uses
   LabSonucGir in 'LabSonucGir.pas' {frmLabSonucGir},
   HastaListe in 'HastaListe.pas' {frmHastaListe},
   GrupDetayTanim in 'GrupDetayTanim.pas' {frmGrupDetayTanim},
-  MESSAGE_y in 'MESSAGE_y.PAS' {frmMessage_y};
+  MESSAGE_y in 'MESSAGE_y.PAS' {frmMessage_y},
+  DokumanYukle in 'DokumanYukle.pas' {frmDokumanYonetim};
 
 // KadirMedula3 in '..\..\medula3wsdl\KadirMedula3.pas';
 
@@ -91,34 +92,34 @@ begin
     Then begin
       dosya := TFileStream.Create('C:\OSGB\isg.exe',fmCreate);
       try
-        datalar.HTTP1.Get('http://www.noktayazilim.net/isg.exe' ,TStream(dosya));
+      datalar.HTTP1.Get('http://www.noktayazilim.net/isg.exe' ,TStream(dosya));
       finally
-        dosya.Free;
-      end;
+      dosya.Free;
+    end;
     end;
 
+  try
+    versiyon := (datalar.HTTP1.Get('http://www.noktayazilim.net/OSGBVersiyon.txt'));
+  except
+    versiyon := inttostr(AppalicationVer);
+  end;
+
+  if versiyon = '' then versiyon := inttostr(AppalicationVer);
+
+  if (strtoint(versiyon) > AppalicationVer)
+  Then Begin
     try
-      versiyon := (datalar.HTTP1.Get('http://www.noktayazilim.net/OSGBVersiyon.txt'));
-    except
-      versiyon := inttostr(AppalicationVer);
-    end;
-
-    if versiyon = '' then versiyon := inttostr(AppalicationVer);
-
-    if (strtoint(versiyon) > AppalicationVer)
-    Then Begin
-      try
-       _exe :=  PAnsiChar(AnsiString('C:\OSGB\isg.exe'));
-       WinExec(_exe,SW_SHOW);
-      // datalar.KillTask('Diyaliz.exe');
-      except on e : exception do
-        begin
-          ShowMessageSkin(e.Message,'','','info');
-        end;
+     _exe :=  PAnsiChar(AnsiString('C:\OSGB\isg.exe'));
+     WinExec(_exe,SW_SHOW);
+    // datalar.KillTask('Diyaliz.exe');
+    except on e : exception do
+      begin
+        ShowMessageSkin(e.Message,'','','info');
       end;
-    End;
+    end;
+  End;
 
-   (*
+ (*
     if FileExists('C:\OSGB\AlpemixCMX.exe') = False
     Then begin
       dosya := TFileStream.Create('C:\OSGB\AlpemixCMX.exe',fmCreate);
@@ -168,5 +169,5 @@ begin
   finally
     FreeAndNil (frmLogin);
   end;
-  Application.Run;
+    Application.Run;
 end.
