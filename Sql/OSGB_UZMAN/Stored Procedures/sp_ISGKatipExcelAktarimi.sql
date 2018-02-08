@@ -263,7 +263,7 @@ begin
     -- select *
     from dbo.ISGKatipExcelAktarim pa
     inner join dbo.SIRKETLER_TNM srk on srk.tanimi = substring (LTRIM (RTRIM (ISNULL (pa.HizmetAlanKurumUnvan, pa.HizmetAlanKurum))), 1, 100)
-    where not exists (Select 1 from dbo.SIRKET_SUBE_TNM dt where dt.sirketKod = srk.SirketKod and dt.subeSiciNo = pa.HizmetAlanKurumSGKSicilNo)
+    where not exists (Select 1 from dbo.SIRKET_SUBE_TNM dt where dt.subeSiciNo = pa.HizmetAlanKurumSGKSicilNo)
     group by srk.SirketKod, substring (LTRIM (RTRIM (ISNULL (pa.HizmetAlanKurumUnvan, pa.HizmetAlanKurum))), 1, 100), IsNull (HizmetAlanKurumSubeTanimi, Replace (HizmetAlanKurumSGKSicilNo, ' ', '')), HizmetAlanKurumSGKSicilNo
     order by srk.SirketKod, IsNull (HizmetAlanKurumSubeTanimi, Replace (HizmetAlanKurumSGKSicilNo, ' ', '')), HizmetAlanKurumSGKSicilNo
   end
