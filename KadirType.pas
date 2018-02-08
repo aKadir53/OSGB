@@ -188,6 +188,7 @@ type
 type
     TGelisDuzenle = record
       TedaviYontemi : string;
+      TedaviTuru : string;    // pulldan sonra hata verdi ekledim.
       GirisTarihi : Tdate;
       CikisTarih : TDate;
       dosyaNo : string;
@@ -524,6 +525,7 @@ Const
   TagfrmTestAyarlari = 470;
   TagfrmKiloOrder = 480;
   TagfrmHizliKayit = 490;
+  TagfrmHizliKayitPersonel = 490; // pulldan sonra hata verdi ekledim.
   TagfrmTedaviListP = 500;
   TagfrmHemsiraTakip = 510;
   TagfrmIlaclar = 520;
