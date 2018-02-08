@@ -545,6 +545,7 @@ Const
   TagfrmAnamnez = 720;
   TagfrmTetkikIstemSablon = 730;
   TagfrmHizliKayitDisAktarimlar = 740;
+  TagfrmDokumanYonetim = 750;
 
   ExceleGonder = 9997;
   SeansTarihiUpdate = 0;
