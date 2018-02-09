@@ -2,7 +2,7 @@ object AnaForm: TAnaForm
   Left = 0
   Top = 0
   Caption = 'AnaForm'
-  ClientHeight = 375
+  ClientHeight = 376
   ClientWidth = 448
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
@@ -15,19 +15,17 @@ object AnaForm: TAnaForm
   OnCreate = FormCreate
   DesignSize = (
     448
-    375)
+    376)
   PixelsPerInch = 96
   TextHeight = 13
   object btnIslemYap: TSpeedButton
-    Left = 353
-    Top = 345
+    Left = 359
+    Top = 217
     Width = 81
     Height = 22
-    Anchors = [akRight, akBottom]
+    Anchors = [akTop, akRight]
     Caption = #304#351'lem Yap...'
     OnClick = btnIslemYapClick
-    ExplicitLeft = 432
-    ExplicitTop = 212
   end
   object lblServerName: TLabel
     Left = 8
@@ -227,12 +225,14 @@ object AnaForm: TAnaForm
   end
   object memo1: TMemo
     Left = 0
-    Top = 245
+    Top = 246
     Width = 448
     Height = 130
     Align = alBottom
     ScrollBars = ssBoth
     TabOrder = 16
+    ExplicitLeft = 8
+    ExplicitTop = 237
   end
   object aTimer: TTimer
     OnTimer = aTimerTimer
