@@ -161,3 +161,6 @@ user kartý silinince usersettings usermenusettings tablolarýný silmiyor hatasý d
 personel silerken personel falan firmaya kaydedilecek emin misiniz sorusu soruyor, sadece kaydederken olacak þekilde düzeltildi
 muayene protokol no düzeltme imkaný için muayene düzenle iþleminin hatalarý giderildi
 þifremi deðiþtir ekranýnda yýldýzlama yoktu, eklendi
+dozlar ters gidiyor þikayeti vardý (imes osgb dr. murat ve tek osgb dr. arzu) xml'de alan yerleri deðiþtirildi
+personel eklerken user kartýnýn sahibi ayný zamanda doktorsa "yeni" deðil "aktif" default hale getirildi.
+userGroups gridinden grup silerken beforeDelete'de usergroupsettings ve usergroupmenusettings tablolarýndan data siliyor, fakat users'ta o grupta bir kullanýcý varsa foreign key çakýyor. yetki tanýmlarý silinmiþ olarak kalýyordu. before delete'de transaction baþlatma, afterdelete'de commit, ondeleteerror'da rollback yapmasý eklendi
