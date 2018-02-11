@@ -11,6 +11,7 @@ type
     sPassword : String;
     sDefaultDBName : String;
     sLocalExportFolder : String;
+    sApplicationName : String;
   end;
 
   TServerConnectionParameters = array of TServerConnectionParameterRec;
@@ -39,16 +40,16 @@ procedure FSBeginTrans;
 procedure FSCommit;
 procedure FSRollback;
 function ExistsRecord (var aQuery : TFSQuery) : Boolean;
-function CreateNewConnection (const pServerName, pUserName, pPassword, pDBName : String): Boolean;overload;
+function CreateNewConnection (const pServerName, pUserName, pPassword, pDBName, pApplicationName : String): Boolean;overload;
 function CreateNewConnection (const aParamRec: TServerConnectionParameterRec): Boolean;overload;
-function ServerConnectionParameterRec (const pServerName, pUserName, pPassword, pDBName, pLocalExportFolder : String): TServerConnectionParameterRec;
+function ServerConnectionParameterRec (const pServerName, pUserName, pPassword, pDBName, pLocalExportFolder, pApplicationName : String): TServerConnectionParameterRec;
 function ServerConnectionParameterIndex (const aList: TServerConnectionParameters; const aRec: TServerConnectionParameterRec): Integer;
 function ServerConnectionParameterAdd (var aList: TServerConnectionParameters; const aRec: TServerConnectionParameterRec): Integer;
 function ConnectionReference: TADOConnection;
 
 implementation
 
-uses SysUtils, Dialogs;
+uses SysUtils, Dialogs, UmitTrans;
 
 var
   FDefaultConnection : TADOConnection;
@@ -126,17 +127,17 @@ end;
 
 procedure FSBeginTrans;
 begin
-  FDefaultConnection.BeginTransx;
+  BeginTrans (FDefaultConnection);;
 end;
 
 procedure FSCommit;
 begin
-  FDefaultConnection.CommitTransx;
+  CommitTrans (FDefaultConnection);
 end;
 
 procedure FSRollback;
 begin
-  FDefaultConnection.RollbackTransx;
+  RollbackTrans (FDefaultConnection);
 end;
 
 function ExistsRecord (var aQuery : TFSQuery) : Boolean;
@@ -144,7 +145,7 @@ begin
   Result := aQuery.RecordCount > 0;
 end;
 
-function CreateNewConnection (const pServerName, pUserName, pPassword, pDBName : String): Boolean;
+function CreateNewConnection (const pServerName, pUserName, pPassword, pDBName, pApplicationName : String): Boolean;
 var
   bCreated: Boolean;
 begin
@@ -158,8 +159,8 @@ begin
     FDefaultConnection.Connected := False;
   end;
   try
-    FDefaultConnection.ConnectionString :=   x
-       'Provider=SQLOLEDB.1;Password='+pPassword+';Persist Security Info=True;User ID='+pUserName+';Initial Catalog=' + pDBName +';Data Source='+pServerName;
+    FDefaultConnection.ConnectionString :=
+       'Provider=SQLOLEDB.1;Password='+pPassword+';Persist Security Info=True;User ID='+pUserName+';Initial Catalog=' + pDBName +';Data Source='+pServerName+';Application Name='+pApplicationName;
     FDefaultConnection.CommandTimeout := 1000;
     FDefaultConnection.Connected := True;
     Result := True;
@@ -171,16 +172,17 @@ end;
 
 function CreateNewConnection (const aParamRec: TServerConnectionParameterRec): Boolean;overload;
 begin
-  Result := CreateNewConnection(aParamRec.sServerName, aParamRec.sUserName, aParamRec.sPassword, aParamRec.sDefaultDBName);
+  Result := CreateNewConnection(aParamRec.sServerName, aParamRec.sUserName, aParamRec.sPassword, aParamRec.sDefaultDBName, aParamRec.sApplicationName);
 end;
 
-function ServerConnectionParameterRec (const pServerName, pUserName, pPassword, pDBName, pLocalExportFolder : String): TServerConnectionParameterRec;
+function ServerConnectionParameterRec (const pServerName, pUserName, pPassword, pDBName, pLocalExportFolder, pApplicationName : String): TServerConnectionParameterRec;
 begin
   Result.sServerName := pServerName;
   Result.sUserName := pUserName;
   Result.sPassword := pPassword;
   Result.sDefaultDBName := pDBName;
   Result.sLocalExportFolder := pLocalExportFolder;
+  Result.sApplicationName := pApplicationName;
 end;
 
 function ServerConnectionParameterIndex (const aList: TServerConnectionParameters; const aRec: TServerConnectionParameterRec): Integer;
@@ -207,6 +209,7 @@ begin
   aList [High (aList)].sPassword := aRec.sPassword;
   aList [High (aList)].sDefaultDBName := aRec.sDefaultDBName;
   aList [High (aList)].sLocalExportFolder := aRec.sLocalExportFolder;
+  aList [High (aList)].sApplicationName := aRec.sApplicationName;
   Result := High (aList);
 end;
 
