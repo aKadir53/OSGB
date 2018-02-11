@@ -458,7 +458,7 @@ begin
                dosya := TFileStream.Create(filename,fmCreate);x
                HTTP1.Get('http://www.noktayazilim.net/'+ DosyaIsmi ,TStream(dosya));
                ShowMessageSkin('Güncelleme Baþarýyla Yapýldý','Programýnýzýn Çalýþabilmesi Ýçin Guncelleme Modülünüz Kapatýlacak','Tekrar Çalýþtýrýnýz','info');
-               KillTask('GuncellemeYap.exe');
+               KillTask('GuncellemeYap.exe');  x
                txtinfo.Caption := '';
               // Panel1.Visible := false;
          end;
@@ -816,7 +816,7 @@ end;
 
 procedure TfrmUpdate.K1Click(Sender: TObject);
 begin
-   Halt;
+   Halt;x
 end;
 
 procedure TfrmUpdate.SpeedButton1Click(Sender: TObject);
@@ -941,7 +941,7 @@ var
  h : HWND;
  l : word;
 begin
-    KillTask('Diyaliz.exe');
+    KillTask('Diyaliz.exe');     x
     Sleep(2000);
   //  _button := TsBitBtn(Sender).Tag;
      ExeAl;
