@@ -25,7 +25,7 @@ type
       AWorkCount: Int64);
     procedure HTTP1WorkEnd(ASender: TObject; AWorkMode: TWorkMode);
     procedure Timer1Timer(Sender: TObject);
-    function KillTask(Dosyadi: string): integer;
+    function KillTaskt(Dosyadi: string): integer;
     function DesktopPath : string;
   private
     { Private declarations }
@@ -88,7 +88,7 @@ end;
 
 
 
-function TfrmYv.KillTask(Dosyadi: string): integer;
+function TfrmYv.KillTaskt(Dosyadi: string): integer;
 const
    PROCESS_TERMINATE = $0001;
 var
@@ -119,7 +119,7 @@ var
 
 begin
 
- KillTask('OSGB.exe');
+ KillTask('OSGB.exe');  z
 
  if ForceDirectories ('C:\OSGB') then
   begin
@@ -186,7 +186,7 @@ begin
     p := DesktopPath;
     CreateLink('C:\OSGB\OSGB.exe','','', p+'\OSGB.lnk');
 
-    halt;
+    halt;x
   end
 end;
 
