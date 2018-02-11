@@ -117,7 +117,7 @@ procedure EnabledEdit(_form : TForm);
 function Kurumadi(_kurum : string) : string;
 function CariAd(_cariKod : string) : string;
 procedure ilComboDoldur (combo : TComboBox);
-function KillTask(Dosyadi: string): integer;
+function KillTaskc(Dosyadi: string): integer;
 
 
 const
@@ -172,7 +172,7 @@ uses message,Tlhelp32;
 
 
 
-function KillTask(Dosyadi: string): integer;
+function KillTaskc(Dosyadi: string): integer;
 const
    PROCESS_TERMINATE=$0001;
 var
