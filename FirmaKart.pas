@@ -114,7 +114,7 @@ var
   kart : sqlType;
 
 implementation
-    uses AnaUnit,SMS;
+    uses AnaUnit,SMS, UmitTrans;
 {$R *.dfm}
 
 procedure TfrmFirmaKart.ButtonClick(Sender: TObject);

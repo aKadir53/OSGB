@@ -96,7 +96,7 @@ var
   frmHizliKayit: TfrmHizliKayit;
 
 implementation
-  uses AnaUnit, Math, NThermo;
+  uses AnaUnit, Math, NThermo, UmitTrans;
 {$R *.dfm}
 const
   colTCKimlikNo = 1;

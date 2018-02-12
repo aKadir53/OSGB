@@ -99,7 +99,7 @@ var
 
 
 implementation
-uses data_modul, Math, NThermo;
+uses data_modul, Math, NThermo, UmitTrans;
 {$R *.dfm}
 
 procedure TfrmUpdate.UpdateTip (const bAutomatic: Boolean);
