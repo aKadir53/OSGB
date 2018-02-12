@@ -462,7 +462,7 @@ var
 begin
   try
     if showmessageskin (
-        'Ekrana yüklenen "' + FFileName + '" dosyasý içeriði "' + DATALAR.AktifSirketAdi + '" þirketine aktarýlacak'#13#10#13#10+
+        'Ekrana yüklenen "' + FFileName + '" dosyasý içeriði '+#13#10+'"' + DATALAR.AktifSirketAdi + '" þirketine aktarýlacak'#13#10#13#10+
         'Onaylýyor musunuz ?', '', '', 'conf') <> mrYes then Exit;
 
     if IsNull (HakikiAktifSube) then
@@ -473,6 +473,27 @@ begin
     if not FAlanEslestirmeYapildi then
       FAlanEslestirmeYapildi := GridAlanEslestirme (FInitialColumnHeaders, FAcceptedColumnHeaders, FAssignedColumnIndexes, False, False);
     if not FAlanEslestirmeYapildi then Exit;
+    cins := '';
+    medeni := '';
+    for _row_ := 1 to GridList.RowCount - 1 do
+    begin
+      if IsNull (GridAtanmisSutunDegerAyarlaGetir(GridList,colTCKimlikNo,_row_))
+        and IsNull (GridAtanmisSutunDegerAyarlaGetir(GridList,colAdi,_row_))
+        and IsNull (GridAtanmisSutunDegerAyarlaGetir(GridList,colSoyadi,_row_)) then Continue;
+      if not TCKontrol(GridAtanmisSutunDegerAyarlaGetir(GridList,colTCKimlikNo,_row_)) then
+      begin
+        cins := cins + IntToStr(_row_) + ', ';
+        Medeni := Medeni + GridAtanmisSutunDegerAyarlaGetir(GridList,colTCKimlikNo,_row_) + ', ';
+      end;
+    end;
+    if not IsNull (Cins) then
+    begin
+      Delete(cins, length (cins) - 1, 2);
+      Delete(Medeni, length (Medeni) - 1, 2);
+      Showmessageskin (cins + ' numaralý satýrlardaki TC Kimlik Numaralarý Hatalý olduðu için iþlem devam etmiyor'#13#10#13#10 + Medeni, '', '', 'info');
+      if StrToIntDef (cins, -1) > 0 then GridList.Row := StrToIntDef (cins, -1);
+      Exit;
+    end;
     bBasarili := False;
     iCount := 0;
     iRowC := 0;
