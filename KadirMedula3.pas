@@ -151,7 +151,7 @@ var
 
 implementation
 
-uses DB,takipOkuBilgisi, UmitTrans;// , EtkinMaddeSUTKurali;
+uses DB,takipOkuBilgisi, TransUtils;// , EtkinMaddeSUTKurali;
 
 procedure IslemNumaralariniAl(TakipNo : string);
 var

@@ -236,7 +236,8 @@ var
   db : string;
 
 implementation
-      uses Data_Modul,AnaUnit,Rapor,receteSablonlari,IlacSarfListesi, UmitTrans;
+
+uses Data_Modul,AnaUnit,Rapor,receteSablonlari,IlacSarfListesi, TransUtils;
 {$R *.dfm}
 
 function TfrmHastaRecete.findMethod(dllHandle: Cardinal;  methodName: string): FARPROC;

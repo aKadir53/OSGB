@@ -49,7 +49,7 @@ function ConnectionReference: TADOConnection;
 
 implementation
 
-uses SysUtils, Dialogs, UmitTrans;
+uses SysUtils, Dialogs, TransUtils;
 
 var
   FDefaultConnection : TADOConnection;

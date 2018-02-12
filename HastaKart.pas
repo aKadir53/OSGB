@@ -174,7 +174,7 @@ var
   kart : sqlType;
 
 implementation
-    uses AnaUnit, HastaAsiKArti,SMS,Anamnez, UmitTrans;
+uses AnaUnit, HastaAsiKArti,SMS,Anamnez, TransUtils;
 {$R *.dfm}
 
 

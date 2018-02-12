@@ -117,7 +117,7 @@ var
 
 
 implementation
-    uses StrUtils, AnaUnit, UmitTrans;
+    uses StrUtils, AnaUnit, TransUtils;
 {$R *.dfm}
 
 procedure TfrmUsers.PropertiesEditValueChanged(Sender: TObject);
