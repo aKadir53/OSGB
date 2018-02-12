@@ -88,3 +88,5 @@ __recovery/
 /Win32/Debug/Thumbs.db
 /Win32/Debug/Ortam_olcumleri_tespit_formu.docx
 /Win32/Debug/cc.wsdl
+/NoktaDLL.dll
+/SmsApi.dll
