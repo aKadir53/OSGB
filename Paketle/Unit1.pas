@@ -259,7 +259,9 @@ begin
             table1.FieldByName ('REV').AsInteger := iLastID + iScripts;
             table1.FieldByName ('SQL_CMD').AsString := aSL2.Text;
             if Copy (Trim (aSL2 [0]), 1, 2) = '--' then
-              table1.FieldByName('ACIKLAMA').AsString := Trim (Copy (Trim (aSL2 [0]), 3, Length (Trim (aSL2 [0])) - 2));
+              table1.FieldByName('ACIKLAMA').AsString := Trim (Copy (Trim (aSL2 [0]), 3, Length (Trim (aSL2 [0])) - 2))
+             else
+              table1.FieldByName('ACIKLAMA').AsString := Trim (Copy (Trim (aSL2 [0]), 1, 100));
             table1.Post;
             aSL2.Clear;
           end;
