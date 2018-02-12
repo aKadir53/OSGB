@@ -152,8 +152,6 @@ firma kartlarýnda override kelimesi kaybolmuþ, hacý kadir ile aradaki whatsapp n
 reçete ekraný reçete þifremi deðiþtir düðmesi. form baþlýðý dþlsas asdlaiþl olmuþ
 kullanýcý yetkileri gibi gridli ekranlarda dataset post olmadan çýkma problemi var
 müþteri tablosundaki 4 haneli kodlarýn vergi kimlik numarasý gibi bir þey 
-personel eklerken user doktorsa yeni deðil aktif default olabilir.
-userGroups gridinden grup silerken beforeDelete'de usergroupsettings ve usergroupmenusettings tablolarýndan data siliyor, fakat users'ta o grupta bir kullanýcý varsa foreign key çakýyor. yetki tanýmlarý silinmiþ olarak kalýyor
 
 yapýlabilecek otomatik aktarýmlar: 
 sgk sicil numarasýndan firma ünvan ve þube açýklamalarý güncelleme
@@ -189,12 +187,10 @@ iþte bu kadar basit.
 þube kartlarýna aktif / pasif ayarý eklenecek
 isg katip aktarýmýnda nace kodlarý firma kartýna güncelleniyor, þube kartýna da güncellemek lazým
 
-
-
 taný dataseti lokalde açýk tutabilir miyiz ?
 adoconnection2 kapat aç yapabilir miyiz ?
 
-
 çekmeköy'e restore olacak olan master veritabanýný uzak sunucuya baþka isimle tekrar koy. master veritabaný deðiþikliklerini takip et
 
-dozlar ters gidiyor þikayeti var
+isg katip excel aktarimina sgk sicil il deðerinden tesis kodu ayarlamasý eklenebilir.
+personel kategori þeysi gibi özel ilgi isteyen string alanlar için foreign key baðlantýlý deðerler tablosu oluþturup, çevrim deðer deðeri ekleyip, bu deðer üzerinden çalýþtýrabiliriz. Örnek: iþyeri hekimi, iþ yeri hekimi hepsinin çevrim tipi 1 olur. a sýnýfý iþ güvenliði uzmaný 2, b sýnýfý 3... gibi...
