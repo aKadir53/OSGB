@@ -57,7 +57,7 @@ type
     R1: TMenuItem;
     R2: TMenuItem;
     N1: TMenuItem;
-    txtSP_name: TcxImageComboKadir;
+    txtSP_name_: TcxImageComboKadir;
     txtRaporAdi: TcxTextEdit;
     txtRaporKodu: TcxTextEdit;
     btnSorgulamalarKaydet: TcxButton;
@@ -69,6 +69,7 @@ type
     N2: TMenuItem;
     E3: TMenuItem;
     btnSQLRun: TcxButton;
+    txtSP_name: TcxComboBox;
     procedure Raporlar;
     procedure O1Click(Sender: TObject);
     procedure btnSorgulamalarKaydetClick(Sender: TObject);
@@ -97,7 +98,7 @@ implementation
 function TfrmSorgulamalar.Init(Sender : TObject) : Boolean;
 begin
   Result := False;
-  if not inherited Init(Sender) then exit;
+//  if not inherited Init(Sender) then exit;
   Raporlar;
   Result := True;
 end;
@@ -200,11 +201,14 @@ procedure TfrmSorgulamalar.btnYeniSorguClick(Sender: TObject);
 var
    sql : string;
 begin
-
+   (*
     txtSP_name.TableName := 'VW_Spler';
     txtSP_name.ValueField := 'id';
     txtSP_name.DisplayField := 'name';
     txtSP_name.Filter := '';
+     *)
+    ComboDoldurName('select name from VW_Spler',txtSP_name);
+
 
 
     case TsBitBtn(sender).Tag of

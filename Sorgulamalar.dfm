@@ -33,10 +33,6 @@ object frmSorgulamalar: TfrmSorgulamalar
     object cxTabSheet6: TcxTabSheet
       Caption = 'Sorgular'
       ImageIndex = 0
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object Panel5: TPanel
         Left = 0
         Top = 0
@@ -103,9 +99,9 @@ object frmSorgulamalar: TfrmSorgulamalar
             Height = 177
             Width = 211
           end
-          object txtSP_name: TcxImageComboKadir
-            Left = 16
-            Top = 118
+          object txtSP_name_: TcxImageComboKadir
+            Left = 6
+            Top = 422
             Properties.ClearKey = 46
             Properties.Items = <>
             TabOrder = 1
@@ -142,6 +138,13 @@ object frmSorgulamalar: TfrmSorgulamalar
             Caption = 'Kapat'
             TabOrder = 5
             OnClick = btnSorgulamalarKapatClick
+          end
+          object txtSP_name: TcxComboBox
+            Left = 16
+            Top = 118
+            TabOrder = 6
+            Text = 'txtSP_name'
+            Width = 201
           end
         end
         object gridRaporlar: TDBGridEh
@@ -2439,10 +2442,6 @@ object frmSorgulamalar: TfrmSorgulamalar
     object cxTabSheet7: TcxTabSheet
       Caption = 'Sonu'#231
       ImageIndex = 1
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object cxGrid3: TcxGrid
         Left = 0
         Top = 0
@@ -2458,7 +2457,6 @@ object frmSorgulamalar: TfrmSorgulamalar
         TabOrder = 0
         LevelTabs.ImageBorder = 2
         LevelTabs.Style = 1
-        ExplicitHeight = 569
         object cxGrid3DBBandedTableView1: TcxGridDBBandedTableView
           PopupMenu = PopupMenu1
           DataController.DataSource = DataSource1
@@ -2492,10 +2490,6 @@ object frmSorgulamalar: TfrmSorgulamalar
     object cxTabSheet8: TcxTabSheet
       Caption = 'SQL'
       ImageIndex = 2
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object SQL_text: TMemo
         Left = 0
         Top = 30
@@ -2575,7 +2569,7 @@ object frmSorgulamalar: TfrmSorgulamalar
     Parameters = <>
     SQL.Strings = (
       'select * from raporlar1')
-    Left = 600
+    Left = 576
     Top = 206
   end
   object DataSource3: TDataSource

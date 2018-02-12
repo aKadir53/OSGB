@@ -52,6 +52,7 @@ implementation
 function TfrmRaporCalistir.Init(Sender : TObject) : Boolean;
 begin
  sp_params(_sp_,_kod_);
+ result := True;
 end;
 
 procedure TfrmRaporCalistir.sp_params(_sp_ , _kod_ : string);
