@@ -194,3 +194,4 @@ adoconnection2 kapat aç yapabilir miyiz ?
 
 isg katip excel aktarimina sgk sicil il deðerinden tesis kodu ayarlamasý eklenebilir.
 personel kategori þeysi gibi özel ilgi isteyen string alanlar için foreign key baðlantýlý deðerler tablosu oluþturup, çevrim deðer deðeri ekleyip, bu deðer üzerinden çalýþtýrabiliriz. Örnek: iþyeri hekimi, iþ yeri hekimi hepsinin çevrim tipi 1 olur. a sýnýfý iþ güvenliði uzmaný 2, b sýnýfý 3... gibi...
+peryodik muayene seçildiðinde diðer adýmdan yap ikazý
