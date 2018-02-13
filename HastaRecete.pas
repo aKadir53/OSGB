@@ -1063,6 +1063,8 @@ begin
          ADO_receteAcikla.FieldByName('aciklamaTip').AsString := datalar.ReceteAciklama.ackKod;
          ADO_receteAcikla.FieldByName('aciklama').AsString := datalar.ReceteAciklama.ack;
          ADO_receteAcikla.Post;
+         ADO_receteAcikla.close;
+         ADO_receteAcikla.Open;
        end;
 
        if islem in [ReceteIlacAckEkle,ReceteIlacAckDuzenle]
@@ -1364,6 +1366,7 @@ procedure TfrmHastaRecete.cxGridReceteAciklamaDblClick(Sender: TObject);
 begin
   inherited;
   if ADO_receteAcikla.RecordCount <= 0 then Exit;
+  if not CheckReceteStatus (True, False, True) then Exit;
   datalar.ReceteAciklama.ackKod := ADO_receteAcikla.FieldByName('aciklamaTip').AsString;
   datalar.ReceteAciklama.ack := ADO_receteAcikla.FieldByName('aciklama').AsString;
   AckEkle(ReceteAckDuzenle);
@@ -1403,6 +1406,7 @@ procedure TfrmHastaRecete.cxGridReceteIlacAciklamaDblClick(Sender: TObject);
 begin
   inherited;
   if ADO_ReceteIlacAciklama.RecordCount <= 0 then Exit;
+  if not CheckReceteStatus (True, False, True) then Exit;
   datalar.ReceteAciklama.ackKod := ADO_receteIlacAciklama.FieldByName('aciklamaTip').AsString;
   datalar.ReceteAciklama.ack := ADO_receteIlacAciklama.FieldByName('aciklama').AsString;
   AckEkle(ReceteIlacAckDuzenle);
