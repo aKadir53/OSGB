@@ -9,7 +9,8 @@ ALTER PROCEDURE [dbo].[sp_GelisKaydet]
 @TEDAVITURU varchar(1),
 @Kullanici varchar(20),
 @sirketKod varchar(6),
-@PN varchar(10) = ''
+@PN varchar(10) = '',
+@tetkikler varchar(500) = ''
 
 AS
 begin
@@ -34,6 +35,17 @@ begin
 
       --  exec sp_hastaLabIsle @dosyaNo,@gelisno,@BHDAT,'',@htip
 
+  if @@error = 0
+  --if @@rowcount > 0
+ begin
+      if @tetkikler <> ''
+      begin      
+          insert into Hareketler (dosyaNo,gelisNo,code,name1,adet,TARIH,tip)
+          select @dosyaNo,@gelisNo, S.kod,S.tanimi,1,@BHDAT,h.TANIM from dbo.StrToTable(@tetkikler,',') tet
+          join TetkikIstemSablonItem S on S.id = tet.datavalue
+          join HIZMET h on h.code = S.kod
+      end
+  end
 
   select @@error as error , @GelisNo as Gelis
 
