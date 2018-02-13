@@ -8935,4 +8935,3 @@ end;
    //çaðrýldýðý yerler kontrol edilecekler:
    //SQLSelectToDataSet ListeAcCreate BuyukHarf SayisalVeri NextKontrol TurkCharKontrol FormInputZorunluKontrolPaint
 end.
-
