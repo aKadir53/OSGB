@@ -429,14 +429,19 @@ begin
    txtServerPassword.EditValue := Decode64(regOku('OSGB_serverPassWord'));
    if Trim (txtServerName.EditValue) = '' then
    begin
-     txtServerName.Text := '213.159.30.6';
-     txtOsgbKodu.Text := '1001';
-     Edit1.Text := 'demo';
-     {if RegOku('OSGB_servername') = ''
-     Then
-      LoginSayfalar.ActivePageIndex := 1
-     Else
-      LoginSayfalar.ActivePageIndex := 0;{}
+     if ShowMessageSkin (
+       'Mavi Nokta Bilgi Teknolojileri e-Reçete yazýlýmý'#13#10+
+       'Demo sürümüne girmek üzeresiniz'#13#10#13#10+
+       'Kayýtlý kullanýcý iseniz [Hayýr] seçip firma kodunuzu girerek devam ediniz', '', '', 'conf') = mrYes then
+     begin
+       txtServerName.Text := '213.159.30.6';
+       txtOsgbKodu.Text := '1001';
+       Edit1.Text := 'demo';
+     end
+     else begin
+       LoginSayfalar.ActivePageIndex := 1;
+       txtOsgbKodu.SetFocus;
+     end;
 
    end;
    if Trim (txtServerName.EditValue) = '213.159.30.6' then
@@ -447,7 +452,7 @@ begin
 
    txtDataBase.EditValue := Decode64(regOku('OSGB_db_name'));
    Labelx.Caption := regOku('OSGB_description');
-   Edit2.SetFocus;
+   if LoginSayfalar.ActivePageIndex = 0 then Edit2.SetFocus;
 end;
 
 end.
