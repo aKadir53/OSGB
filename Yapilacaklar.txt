@@ -197,3 +197,4 @@ personel kategori þeysi gibi özel ilgi isteyen string alanlar için foreign key b
 peryodik muayene seçildiðinde diðer adýmdan yap ikazý
 muayene düzenle'de girilen protokol numarasý, þube kartýna yazýlabilir mi ? onay sorusu ile olabilir.
 program bir bilgisayarda ilk kez çalýþtýrýldýðýnda demo bilgilerinin dolu olmasý onay sorusuna baðlanabilir.
+reçete imzala gönder yaparken reçete doktoru ile user doktoru farklý ise uyarý ver
