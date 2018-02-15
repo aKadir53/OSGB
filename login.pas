@@ -195,29 +195,31 @@ var
 begin
   bloginLog := False;
   try
-    aSL1 := TStringList.Create;
-    try
-      aSL1.Text := Clipboard.AsText;
-      if not IsNull (aSL1.Text)  then
-      begin
-        sTmp := aSL1 [0];
-        if pos (#9, sTmp) > 0 then
+    if IsNull (Edit2.Text) then
+    begin
+      aSL1 := TStringList.Create;
+      try
+        aSL1.Text := Clipboard.AsText;
+        if not IsNull (aSL1.Text)  then
         begin
-          txtOsgbKodu.EditingText := Copy (sTmp, 1, pos (#9, sTmp) - 1);
-          Edit2.EditingText := Copy (sTmp, pos (#9, sTmp) + 1, Length (sTmp));
-          btnBaglanClick(btnBaglan);
-          aSL1.Delete (0);
-          Clipboard.AsText := aSL1.Text;
-          Left := aSL1.Count * 3;
-          Top := aSL1.Count * 3;
-          if not IsNull (aSL1.Text) then
-            WinExec(PAnsiChar (AnsiString (ParamStr (0))),SW_SHOW);
+          sTmp := aSL1 [0];
+          if pos (#9, sTmp) > 0 then
+          begin
+            txtOsgbKodu.EditingText := Copy (sTmp, 1, pos (#9, sTmp) - 1);
+            Edit2.EditingText := Copy (sTmp, pos (#9, sTmp) + 1, Length (sTmp));
+            btnBaglanClick(btnBaglan);
+            aSL1.Delete (0);
+            Clipboard.AsText := aSL1.Text;
+            Left := aSL1.Count * 3;
+            Top := aSL1.Count * 3;
+            if not IsNull (aSL1.Text) then
+              WinExec(PAnsiChar (AnsiString (ParamStr (0))),SW_SHOW);
+          end;
         end;
+      finally
+        aSL1.Free;
       end;
-    finally
-      aSL1.Free;
     end;
-
     try
       try
         Datalar.ADOConnection2.Connected := false;
