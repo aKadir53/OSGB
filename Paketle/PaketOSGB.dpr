@@ -5,7 +5,8 @@ uses
   Unit1 in 'Unit1.pas' {frmPaket},
   DosyadanpaketOlustur in 'DosyadanpaketOlustur.pas' {frmDosyadanPaket},
   kadir in 'kadir.pas',
-  data_model1 in 'data_model1.pas' {DATALAR: TDataModule};
+  data_model1 in 'data_model1.pas' {DATALAR: TDataModule},
+  NThermo in '..\NThermo.pas' {NThermoDlgFrm};
 
 {$R *.res}
 
