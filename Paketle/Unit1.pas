@@ -16,7 +16,7 @@ uses
   dxSkinOffice2010Blue, dxSkinOffice2010Silver, dxSkinPumpkin, dxSkinSeven,
   dxSkinSharp, dxSkinSilver, dxSkinSpringTime, dxSkinStardust, dxSkinSummer2008,
   dxSkinsDefaultPainters, dxSkinValentine, dxSkinXmas2008Blue,
-  dxSkinscxPCPainter, cxPCdxBarPopupMenu, cxPC ;
+  dxSkinscxPCPainter, cxPCdxBarPopupMenu, cxPC, Vcl.Samples.Spin ;
 
 type
   TfrmPaket = class(TForm)
@@ -49,6 +49,8 @@ type
     ado_sql: TADOQuery;
     Kaynak: TADOConnection;
     btPanodanYapistir: TSpeedButton;
+    SpinEdit1: TSpinEdit;
+    label111: TLabel;
     procedure SpeedButton2Click(Sender: TObject);
     procedure SpeedButton1Click(Sender: TObject);
     Function  DosyaKopyala(sSrc : string;sDest : string) : integer;
@@ -253,7 +255,7 @@ begin
           while (aSL2.Count > 0) and (TRim (aSL2 [aSL2.Count - 1]) = '') do aSL2.Delete (aSL2.Count - 1);
           if Trim (aSL2.Text) <> '' then
           begin
-            iScripts := iScripts + 2;
+            iScripts := iScripts + SpinEdit1.Value;
             table1.Append;
             table1.FieldByName ('ID').AsInteger := iLastID + iScripts;
             table1.FieldByName ('REV').AsInteger := iLastID + iScripts;
@@ -364,3 +366,4 @@ begin
 end;
 
 end.
+
