@@ -203,6 +203,14 @@ object frmPaket: TfrmPaket
       Enabled = False
       OnClick = btPanodanYapistirClick
     end
+    object label111: TLabel
+      Left = 528
+      Top = 32
+      Width = 67
+      Height = 13
+      Caption = 'ID Art'#305#351' miktar'#305
+      FocusControl = SpinEdit1
+    end
     object ComboBox1: TComboBox
       Left = 380
       Top = 4
@@ -234,6 +242,19 @@ object frmPaket: TfrmPaket
       Lines.Strings = (
         '')
       TabOrder = 2
+    end
+    object SpinEdit1: TSpinEdit
+      Left = 608
+      Top = 28
+      Width = 46
+      Height = 22
+      Hint = 'araya script sokmak laz'#305'm gelirse atlamas'#305' i'#231#252'n'
+      MaxValue = 3
+      MinValue = 1
+      ParentShowHint = False
+      ShowHint = True
+      TabOrder = 3
+      Value = 2
     end
   end
   object DataSource1: TDataSource
