@@ -82,7 +82,7 @@ var
   frmPaket: TfrmPaket;
 
 implementation
- uses DosyadanpaketOlustur, clipbrd, NThermo;
+ uses DosyadanpaketOlustur, clipbrd, NThermo, TransUtils;
 
 {$R *.dfm}
 
@@ -246,7 +246,7 @@ begin
       iScripts := 0;
       if not sametext (Trim (aSL1 [aSL1.Count - 1]), 'go') then aSL1.Add('GO');
       bTamam := False;
-      table1.Connection.BeginTrans;
+      BeginTrans (table1.Connection);
       try
         ShowThermo (iThermo, 'Scriptler yazýlýyor', 0, aSL1.Count, 0, True);
         try
@@ -288,9 +288,9 @@ begin
           FreeThermo(iThermo);
         end;
       finally
-        if bTamam then table1.Connection.CommitTrans
+        if bTamam then CommitTrans (table1.Connection)
         else begin
-          table1.Connection.RollbackTrans;
+          RollbackTrans (table1.Connection);
           table1.Close;
           table1.Open;
           table1.Last;
