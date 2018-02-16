@@ -429,12 +429,12 @@ begin
    txtServerPassword.EditValue := Decode64(regOku('OSGB_serverPassWord'));
    if Trim (txtServerName.EditValue) = '' then
    begin
+     txtServerName.Text := '213.159.30.6';
      if ShowMessageSkin (
        'Mavi Nokta Bilgi Teknolojileri e-Reçete yazýlýmý'#13#10+
        'Demo sürümüne girmek üzeresiniz'#13#10#13#10+
        'Kayýtlý kullanýcý iseniz [Hayýr] seçip firma kodunuzu girerek devam ediniz', '', '', 'conf') = mrYes then
      begin
-       txtServerName.Text := '213.159.30.6';
        txtOsgbKodu.Text := '1001';
        Edit1.Text := 'demo';
      end
