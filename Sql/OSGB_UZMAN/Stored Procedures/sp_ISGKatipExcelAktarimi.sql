@@ -98,7 +98,8 @@ begin
   begin
     update ss set HizmetAlanKurum = 'sil', HizmetAlanKurumSGKSicilNo = TCKimlikNo
     from ISGKatipExcelAktarim ss
-    where GorevTuru = 'Ýçe Grv.'
+    inner join DisAktarim_IsgKatipExcel_GorevTuru ssgt on ssgt.GorevTuru = ss.GorevTuru
+    where ssgt.GorevTuruSinifi = 2
       and LTRIM (RTRIM (IsNull (HizmetAlanKurumSGKSicilNo, ''))) = ''
       and LTRIM (RTRIM (IsNull (HizmetalanKurum, ''))) = ''
   end
@@ -109,7 +110,8 @@ begin
   begin
     delete d
     from ISGKatipExcelAktarim d
-    where CalismaDurumu = 'Ayrýldý'
+    inner join DisAktarim_ISGKatipExcel_CalismaDurumu dcd on dcd.CalismaDurumu = d.CalismaDurumu
+    where dcd.CalismaDurumuSinifi = 1
   end
 
   set @iTipInt = @iTipInt + 1
@@ -148,19 +150,30 @@ begin
   if @iTip = @iTipInt or @iTip is Null
   begin
     insert into dbo.doktorlarT (kod, tanimi, tescilNo, tcKimlikNo, bransKodu, calismaTipi, durum, sertifika, receteBrans, TDisID, uzman, eReceteKullanici, eReceteSifre, pin, pazartesi, sali, carsamba, persembe, cuma, cumartesi, TesisKodu, GSM, EPosta, cardType)
-    select substring (cast (10000 + IsNull ((select max (cast (kod as int)) from doktorlarT where IsNumeric (Kod) = 1), 0) + row_number () over (order by AdiSoyadi) as varchar (5)), 2, 4) Kod, AdiSoyadi tanimi, null tescilNo, TCKimlikNo tcKimlikNo, null bransKodu, 
-      max (case when CalismaSekli = 'Kýsmi Süreli' then 1 else null end) calismaTipi, 
-      case when IsNull (CalismaDurumu, 'Devam Ediyor') = 'Devam Ediyor' then 'Aktif' else null end durum, 
+    select substring (cast (10000 + IsNull ((select max (cast (kod as int)) from doktorlarT where IsNumeric (Kod) = 1), 0) + row_number () over (order by AdiSoyadi) as varchar (5)), 2, 4) Kod, 
+      AdiSoyadi tanimi, null tescilNo, pa.TCKimlikNo tcKimlikNo, null bransKodu, 
+      max (case when pcs.CalismaSekliSinifi = 1 then 1 else null end) calismaTipi, 
+      'Aktif' durum, 
       MAX (case when LTRIM (RTRIM (SertifikaNo)) = '' then NULL else SertifikaNo end) sertifika, 
-      null receteBrans, null TDisID, null uzman, TCKimlikNo eReceteKullanici, null eReceteSifre, null pin, 
+      null receteBrans, null TDisID, null uzman, pa.TCKimlikNo eReceteKullanici, null eReceteSifre, null pin, 
       null pazartesi, null sali, null carsamba, null persembe, null cuma, null cumartesi, 
-      '11349903' TesisKodu, 
+      IsNull (tk.Ilkodu, '11349903') TesisKodu, 
       null GSM, null EPosta, null cardType
     from dbo.ISGKatipExcelAktarim pa
-    where PersonelKategoriAdi = 'Ýþyeri Hekimi'
+    inner join DisAktarim_IsgKatipExcel_PersonelKategoriAdi pka on pka.PersonelKategoriAdi = pa.PersonelKategoriAdi
+    inner join DisAktarim_ISGKatipExcel_CalismaSekli pcs on pcs.CalismaSekli = pa.CalismaSekli
+    left outer join 
+      (select TCKimlikNo, '11' +substring (cast (100 + max (IlKodu) as varchar (10)), 2, 3) + '9903' Ilkodu
+       from
+        (select TCKimlikNo, IlKodu, count (*) sayi, max (count (*)) over (partition by TcKimlikNo) d
+         from ISGKatipExcelAktarim
+         where not IlKodu is null
+         group by TCKimlikNo, Ilkodu) w
+       where sayi = d
+       group by TCKimlikNo) tk on tk.TCKimlikNo = pa.TCKimlikNo
+    where pka.KategoriSinifi = 1
       and not exists (Select 1 from dbo.DoktorlarT dt where dt.tcKimlikNo = pa.TCKimlikNo)
-    group by AdiSoyadi, TCKimlikNo,
-      case when IsNull (CalismaDurumu, 'Devam Ediyor') = 'Devam Ediyor' then 'Aktif' else null end
+    group by AdiSoyadi, pa.TCKimlikNo, IsNull (tk.Ilkodu, '11349903')
     order by AdiSoyadi
   end
   
@@ -178,15 +191,27 @@ begin
     insert into dbo.IGU (kod, tanimi, tcKimlikNo, calismaTipi, durum, sertifika, pin, TesisKodu, GSM, EPosta, cardType, Sinifi)
     select substring (cast (10000 + IsNull ((select max (cast (kod as int)) from IGU where IsNumeric (Kod) = 1), 0) + row_number () over (order by AdiSoyadi) as varchar (5)), 2, 4) kod, 
       AdiSoyadi tanimi, TCKimlikNo tcKimlikNo, 
-      max (case when CalismaSekli = 'Kýsmi Süreli' then 1 else null end) calismaTipi, 
-      case when IsNull (CalismaDurumu, 'Devam Ediyor') = 'Devam Ediyor' then 'Aktif' else null end durum, 
-      MAX (case when LTRIM (RTRIM (SertifikaNo)) = '' then NULL else SertifikaNo end) sertifika, null pin, null TesisKodu, null GSM, null EPosta, null cardType, substring (PersonelKategoriAdi, 1, 1) Sinifi
+      max (case when pcs.CalismaSekliSinifi = 1 then 1 else null end) calismaTipi, 
+      'Aktif' durum, 
+      MAX (case when LTRIM (RTRIM (SertifikaNo)) = '' then NULL else SertifikaNo end) sertifika, null pin, null TesisKodu, null GSM, null EPosta, null cardType, 
+      case
+        when pka.KategoriSinifi = 2 then 'A'
+        when pka.KategoriSinifi = 3 then 'B'
+        when pka.KategoriSinifi = 4 then 'C'
+        else null
+      end Sinifi
     from dbo.ISGKatipExcelAktarim pa
-    where PersonelKategoriAdi like '_ Sýnýfý Ýþ Güvenliði Uzmaný'
+    inner join DisAktarim_IsgKatipExcel_PersonelKategoriAdi pka on pka.PersonelKategoriAdi = pa.PersonelKategoriAdi
+    inner join DisAktarim_ISGKatipExcel_CalismaSekli pcs on pcs.CalismaSekli = pa.CalismaSekli
+    where pka.KategoriSinifi in (2, 3, 4)
       and not exists (Select 1 from dbo.IGU dt where dt.tcKimlikNo = pa.TCKimlikNo)
     group by AdiSoyadi, TCKimlikNo,
-      case when IsNull (CalismaDurumu, 'Devam Ediyor') = 'Devam Ediyor' then 'Aktif' else null end,
-      substring (PersonelKategoriAdi, 1, 1)
+      case
+        when pka.KategoriSinifi = 2 then 'A'
+        when pka.KategoriSinifi = 3 then 'B'
+        when pka.KategoriSinifi = 4 then 'C'
+        else null
+      end
     order by AdiSoyadi
   end
 
@@ -196,7 +221,8 @@ begin
   begin  
     delete ss
     from ISGKatipExcelAktarim ss
-    where GorevTuru = 'Ýçe Grv.'
+    inner join DisAktarim_IsgKatipExcel_GorevTuru ssgt on ssgt.GorevTuru = ss.GorevTuru
+    where ssgt.GorevTuruSinifi = 2
       and LTRIM (RTRIM (IsNull (HizmetalanKurum, ''))) = 'sil'
       and LTRIM (RTRIM (IsNull (HizmetAlanKurumSGKSicilNo, ''))) = TCKimlikNo
   end

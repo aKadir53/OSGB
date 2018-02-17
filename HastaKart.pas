@@ -174,7 +174,7 @@ var
   kart : sqlType;
 
 implementation
-    uses AnaUnit, HastaAsiKArti,SMS,Anamnez;
+uses AnaUnit, HastaAsiKArti,SMS,Anamnez, TransUtils;
 {$R *.dfm}
 
 
@@ -1300,8 +1300,8 @@ begin
 
   setDataStringKontrol(self,txtSeansSikayet , 'GELHAST','Kronik Hast/Baðým',sayfa3_Kolon1,'',300);
 
-  setDataStringCurr(self,'idealKilo','Kilo',sayfa3_Kolon1,'kilo',50,'0.00');
-  setDataStringCurr(self,'boy','Boy',sayfa3_Kolon1,'_boy_',50,'0');
+  setDataStringCurr(self,'idealKilo','Kilo',sayfa3_Kolon1,'kilo',50,'0.00', 1);
+  setDataStringCurr(self,'boy','Boy',sayfa3_Kolon1,'_boy_',50,'0', 1);
   setDataStringC(self,'HbsAg','HbsAg',sayfa3_Kolon1,'hbs',40,'-,+');
   setDataStringC(self,'AntiHbs','AntiHbs',sayfa3_Kolon1,'hbs',40,'-,+');
   setDataStringC(self,'AntiHCV','AntiHCV',sayfa3_Kolon1,'_hbs_',40,'-,+');

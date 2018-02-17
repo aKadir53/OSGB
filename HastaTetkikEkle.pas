@@ -132,7 +132,7 @@ var
 
 
 implementation
-      uses Data_Modul,AnaUnit,LAbsonucGir;
+      uses Data_Modul,AnaUnit,LAbsonucGir, TransUtils;
 {$R *.dfm}
 
 procedure TfrmHastaTetkikEkle.SubItemClick(Sender: TObject);
