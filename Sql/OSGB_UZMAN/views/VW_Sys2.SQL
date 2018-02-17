@@ -11,6 +11,7 @@ select so.name TableName, sc.name FieldName, sc.colid, sc.length, sc.prec, sc.sc
     when st.name in ('float') then st.name + ' (' + cast (sc.prec as varchar) + ')'
     else st.name
   end + 
+  case when sc.status & 128 = 0 then '' else ' IDENTITY (1, 1)' end +
   case when sc.isNullable = 0 then ' NOT NULL' else '' END /*+
   CASE WHEN sc.CollationId <> 0 and not sc.collation is null then ' COLLATE ' + sc.collation ELSE '' end */ FieldString--, sc.*
 from sysobjects so

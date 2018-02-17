@@ -195,29 +195,31 @@ var
 begin
   bloginLog := False;
   try
-    aSL1 := TStringList.Create;
-    try
-      aSL1.Text := Clipboard.AsText;
-      if not IsNull (aSL1.Text)  then
-      begin
-        sTmp := aSL1 [0];
-        if pos (#9, sTmp) > 0 then
+    if IsNull (Edit2.Text) then
+    begin
+      aSL1 := TStringList.Create;
+      try
+        aSL1.Text := Clipboard.AsText;
+        if not IsNull (aSL1.Text)  then
         begin
-          txtOsgbKodu.EditingText := Copy (sTmp, 1, pos (#9, sTmp) - 1);
-          Edit2.EditingText := Copy (sTmp, pos (#9, sTmp) + 1, Length (sTmp));
-          btnBaglanClick(btnBaglan);
-          aSL1.Delete (0);
-          Clipboard.AsText := aSL1.Text;
-          Left := aSL1.Count * 3;
-          Top := aSL1.Count * 3;
-          if not IsNull (aSL1.Text) then
-            WinExec(PAnsiChar (AnsiString (ParamStr (0))),SW_SHOW);
+          sTmp := aSL1 [0];
+          if pos (#9, sTmp) > 0 then
+          begin
+            txtOsgbKodu.EditingText := Copy (sTmp, 1, pos (#9, sTmp) - 1);
+            Edit2.EditingText := Copy (sTmp, pos (#9, sTmp) + 1, Length (sTmp));
+            btnBaglanClick(btnBaglan);
+            aSL1.Delete (0);
+            Clipboard.AsText := aSL1.Text;
+            Left := aSL1.Count * 3;
+            Top := aSL1.Count * 3;
+            if not IsNull (aSL1.Text) then
+              WinExec(PAnsiChar (AnsiString (ParamStr (0))),SW_SHOW);
+          end;
         end;
+      finally
+        aSL1.Free;
       end;
-    finally
-      aSL1.Free;
     end;
-
     try
       try
         Datalar.ADOConnection2.Connected := false;
@@ -428,13 +430,18 @@ begin
    if Trim (txtServerName.EditValue) = '' then
    begin
      txtServerName.Text := '213.159.30.6';
-     txtOsgbKodu.Text := '1001';
-     Edit1.Text := 'demo';
-     {if RegOku('OSGB_servername') = ''
-     Then
-      LoginSayfalar.ActivePageIndex := 1
-     Else
-      LoginSayfalar.ActivePageIndex := 0;{}
+     if ShowMessageSkin (
+       'Mavi Nokta Bilgi Teknolojileri e-Reçete yazýlýmý'#13#10+
+       'Demo sürümüne girmek üzeresiniz'#13#10#13#10+
+       'Kayýtlý kullanýcý iseniz [Hayýr] seçip firma kodunuzu girerek devam ediniz', '', '', 'conf') = mrYes then
+     begin
+       txtOsgbKodu.Text := '1001';
+       Edit1.Text := 'demo';
+     end
+     else begin
+       LoginSayfalar.ActivePageIndex := 1;
+       txtOsgbKodu.SetFocus;
+     end;
 
    end;
    if Trim (txtServerName.EditValue) = '213.159.30.6' then
@@ -445,7 +452,7 @@ begin
 
    txtDataBase.EditValue := Decode64(regOku('OSGB_db_name'));
    Labelx.Caption := regOku('OSGB_description');
-   Edit2.SetFocus;
+   if LoginSayfalar.ActivePageIndex = 0 then Edit2.SetFocus;
 end;
 
 end.

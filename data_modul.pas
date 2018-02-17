@@ -474,7 +474,7 @@ type
     { Private declarations }
   public
    servername,username, usersifre , _username , _sifre , _donemuser , _donemsifre ,
-   _tesisKodu , _labusername , _labsifre , doktor ,doktorKodu,sirketKodu,
+   _tesisKodu , _labusername , _labsifre , doktor ,doktorKodu, SonReceteDoktorKodu,SonImzaDoktorKodu,sirketKodu,
    IGU, _dosyaNo_,_gelisNo_,kontrolKod,
    _labkurumkod , _labkurumkodText, _laburl , _labfirma ,  _SKRS , _saglikNetUser ,
    _saglikNetPass , _firmaSKRS , _usermernis , _passmernis, UserGroup : string;

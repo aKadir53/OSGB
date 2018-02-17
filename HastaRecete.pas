@@ -172,7 +172,8 @@ type
     FReg : TRegistry;
     function findMethod(dllHandle: Cardinal; methodName: string): FARPROC;
   protected
-    function CheckReceteStatus (const pCheckExists, pCheckSent, pCheckUnSent : Boolean; pMsg : Boolean = True) : Boolean;
+    function CheckReceteStatus (const pCheckExists, pCheckSent, pCheckUnSent,
+      pCheckDr, pAllowDiffDr : Boolean; pMsg : Boolean = True) : Boolean;
   public
     function Init(Sender: TObject) : Boolean; override;
     { Public declarations }
@@ -255,7 +256,7 @@ var
   sql : string;
 begin
   url := (datalar.receteURL);
-  if not CheckReceteStatus (True, False, True) then Exit;
+  if not CheckReceteStatus (True, False, True, True, True) then Exit;
   sql := 'sp_HastaReceteToXML ' + ADO_Recete.FieldByName('id').AsString;
   QuerySelect(sql);
 
@@ -297,7 +298,7 @@ var
   sql : string;
 begin
   url := (datalar.receteURL);
-  if not CheckReceteStatus (True, False, True) then Exit;
+  if not CheckReceteStatus (True, False, True, True, True) then Exit;
   sql := 'sp_HastaReceteToXML_Imzasiz ' + ADO_Recete.FieldByName('id').AsString;
   QuerySelect(sql);
 
@@ -336,7 +337,7 @@ var
   sql : string;
 begin
   url := datalar.receteURL;
-  if not CheckReceteStatus (True, True, False) then Exit;
+  if not CheckReceteStatus (True, True, False, True, True) then Exit;
   sql := 'sp_HastaReceteSilToXML ' + ADO_Recete.FieldByName('id').AsString;
   QuerySelect(sql);
 
@@ -381,7 +382,7 @@ var
   sql : string;
 begin
   url := datalar.receteURL;
-  if not CheckReceteStatus (True, True, False) then Exit;
+  if not CheckReceteStatus (True, True, False, True, True) then Exit;
   sql := 'sp_HastaReceteSil_Imzasiz ' + ADO_Recete.FieldByName('id').AsString;
   QuerySelect(sql);
 
@@ -598,7 +599,7 @@ procedure TfrmHastaRecete.EreceteNoSmsSend;
 var
  tel,msj : string;
 begin
-  if not CheckReceteStatus (True, True, False) then Exit;
+  if not CheckReceteStatus (True, True, False, False, False) then Exit;
 
   if mrYes = ShowMessageSkin('E-Reçete Numaranýz SMS ile Bildirilecek','','','msg')
   then begin
@@ -667,7 +668,7 @@ begin
   FReg.OpenKey('SOFTWARE\NOKTA\Eimza',True);
   Oku.Enabled := true;
   db := Decode64(RegOku('OSGB_db_name'));
-  if not CheckReceteStatus (True, False, False) then Exit;
+  if not CheckReceteStatus (True, False, False, True, True) then Exit;
   _dn_ := ADO_Recete.FieldByName('dosyaNo').AsString;
   _gn_ := ADO_Recete.FieldByName('gelisNo').AsString;
   _id_ := ADO_Recete.FieldByName('id').AsString;
@@ -676,7 +677,7 @@ begin
 
   case islem of
    ReceteMedulaKaydet :  begin
-                           if not CheckReceteStatus (True, False, True) then Exit;
+                           if not CheckReceteStatus (True, False, True, True, True) then Exit;
                            if LisansKontrol(fark) = True
                            Then Begin
                               case DoktorReceteMedulaGonderimTip(_d_) of
@@ -708,7 +709,7 @@ begin
 
      // _exe :=  PAnsiChar(AnsiString('C:\NoktaV3\E-imza\imza.exe ' + 'I' + ' '+ _dn_ + ' ' + _gn_ + ' ' + _id_ + ' ' + _d_  + ' ' + datalar.AktifSirket));
    ReceteMedulaSil : begin
-                           if not CheckReceteStatus (True, True, False) then Exit;
+                           if not CheckReceteStatus (True, True, False, True, True) then Exit;
                             DurumGoster(True,False,'Reçete Siliniyor...Lütfen Bekleyiniz...',1);
                             try
                                 case DoktorReceteMedulaGonderimTip(_d_) of
@@ -746,7 +747,7 @@ var
   ado : TADOQuery;
   b: Boolean;
 begin
-  if not CheckReceteStatus (True, False, True) then Exit;
+  if not CheckReceteStatus (True, False, True, True, True) then Exit;
    if (ADO_Recete.FieldByName('ereceteNo').AsString = '') or
       (ADO_Recete.FieldByName('ereceteNo').AsString = '0000') Then
    Begin
@@ -948,7 +949,7 @@ var
   ado,ado1,ado2,ado3 : TADOQuery;
   TopluDataset : TDataSetKadir;
 begin
-  if not CheckReceteStatus (True, False, False) then Exit;
+  if not CheckReceteStatus (True, False, False, False, False) then Exit;
    id := ADO_Recete.fieldbyname('id').AsString;
    ado := TADOQuery.Create(nil);
    try
@@ -1062,6 +1063,8 @@ begin
          ADO_receteAcikla.FieldByName('aciklamaTip').AsString := datalar.ReceteAciklama.ackKod;
          ADO_receteAcikla.FieldByName('aciklama').AsString := datalar.ReceteAciklama.ack;
          ADO_receteAcikla.Post;
+         ADO_receteAcikla.close;
+         ADO_receteAcikla.Open;
        end;
 
        if islem in [ReceteIlacAckEkle,ReceteIlacAckDuzenle]
@@ -1076,7 +1079,7 @@ end;
 
 procedure TfrmHastaRecete.ilacEkle(islem : integer);
 begin
-  if not CheckReceteStatus (True, False, True) then Exit;
+  if not CheckReceteStatus (True, False, True, True, True) then Exit;
    if islem = ReceteIlacEkle
    then
    if ADO_Recete.FieldByName('ereceteNo').AsString = '0000'
@@ -1158,7 +1161,7 @@ end;
 procedure TfrmHastaRecete.btnIlacEkleClick(Sender: TObject);
 begin
   inherited;
-  if not CheckReceteStatus (True, False, True) then Exit;
+  if not CheckReceteStatus (True, False, True, True, True) then Exit;
   ilacEkle(ReceteIlacEkle);
 end;
 
@@ -1168,7 +1171,7 @@ var
   sql : string;
 begin
   inherited;
-  if not CheckReceteStatus (True, False, True) then Exit;
+  if not CheckReceteStatus (True, False, True, True, True) then Exit;
    if (ADO_Recete.FieldByName('ereceteNo').AsString = '0000') or
       (ADO_Recete.FieldByName('ereceteNo').AsString = '')
    Then
@@ -1188,7 +1191,9 @@ begin
  end;
 
 function TfrmHastaRecete.CheckReceteStatus(const pCheckExists, pCheckSent,
-  pCheckUnSent: Boolean; pMsg: Boolean): Boolean;
+  pCheckUnSent, pCheckDr, pAllowDiffDr : Boolean; pMsg: Boolean): Boolean;
+var
+  bazDoktor : String;
 begin
   Result := True;
   if pCheckExists or pCheckSent or pCheckUnSent then
@@ -1214,6 +1219,23 @@ begin
   begin
     if pMsg then ShowMessageSkin ('Bu Reçete Medula Sistemine Gönderilmiþ.', '', '', 'info');
     Exit;
+  end;
+  if IsNull (DATALAR.SonReceteDoktorKodu) then bazDoktor := DATALAR.doktorKodu else bazDoktor := DATALAR.SonReceteDoktorKodu;
+  if pCheckDr then
+    Result := Result
+      and SameText (ADO_Recete.FieldByName('doktor').AsString, bazDoktor);
+  if not result then
+  begin
+    if not pAllowDiffDr then
+    begin
+      if pMsg then ShowMessageSkin ('Ýþlem yapmak istediðiniz reçete baþka doktora ait', '', '', 'info');
+      Exit;
+    end
+    else begin
+      Result := ShowMessageSkin ('Ýþlem yapmak istediðiniz reçete baþka doktora ait, devam etmek istiyor musunuz ?', '', '', 'conf') = mrYes;
+      if not Result then Exit;
+      DATALAR.SonReceteDoktorKodu := ADO_Recete.FieldByName('doktor').AsString;
+    end;
   end;
 end;
 
@@ -1284,7 +1306,7 @@ begin
        end;
 
  -40 : begin
-          if not CheckReceteStatus (True, True, False) then Exit;
+          if not CheckReceteStatus (True, True, False, False, False) then Exit;
           ReceteIlacAckTaniEkleMedula(ReceteIlacAckEkleMedula,
                                       ADO_Recete.FieldByName('dosyaNo').AsString,
                                       ADO_Recete.FieldByName('gelisNo').AsString,
@@ -1295,7 +1317,7 @@ begin
                                       ADO_ReceteIlacAciklama.FieldByName('id').AsString);
        end;
  -50 :begin
-         if not CheckReceteStatus (True, True, False) then Exit;
+         if not CheckReceteStatus (True, True, False, False, False) then Exit;
          ReceteIlacAckTaniEkleMedula(ReceteTaniEkleMedula,
                               ADO_Recete.FieldByName('dosyaNo').AsString,
                               ADO_Recete.FieldByName('gelisNo').AsString,
@@ -1320,35 +1342,35 @@ end;
 procedure TfrmHastaRecete.cxButtonKadirAckEkleClick(Sender: TObject);
 begin
   inherited;
-  if not CheckReceteStatus (True, False, True) then Exit;
+  if not CheckReceteStatus (True, False, True, True, True) then Exit;
   AckEkle(ReceteAckEkle);
 end;
 
 procedure TfrmHastaRecete.cxButtonKadirAckSilClick(Sender: TObject);
 begin
   inherited;
-  if not CheckReceteStatus (True, False, True) then Exit;
+  if not CheckReceteStatus (True, False, True, True, True) then Exit;
   ADO_receteAcikla.Delete;
 end;
 
 procedure TfrmHastaRecete.cxButtonKadirIlacAckEkleClick(Sender: TObject);
 begin
   inherited;
-  if not CheckReceteStatus (True, False, True) then Exit;
+  if not CheckReceteStatus (True, False, True, True, True) then Exit;
   AckEkle(ReceteIlacAckEkle);
 end;
 
 procedure TfrmHastaRecete.cxButtonKadirIlacAckSilClick(Sender: TObject);
 begin
   inherited;
-  if not CheckReceteStatus (True, False, True) then Exit;
+  if not CheckReceteStatus (True, False, True, True, True) then Exit;
   ADO_ReceteIlacAciklama.Delete;
 end;
 
 procedure TfrmHastaRecete.cxButtonKadirTaniEkleClick(Sender: TObject);
 begin
   inherited;
-  if not CheckReceteStatus (True, False, True) then Exit;
+  if not CheckReceteStatus (True, False, True, True, True) then Exit;
   case TcxButtonKadir(Sender).Tag of
    0 : TaniEkle;
    1 : ADO_receteTani.Delete;
@@ -1363,6 +1385,7 @@ procedure TfrmHastaRecete.cxGridReceteAciklamaDblClick(Sender: TObject);
 begin
   inherited;
   if ADO_receteAcikla.RecordCount <= 0 then Exit;
+  if not CheckReceteStatus (True, False, True, True, True) then Exit;
   datalar.ReceteAciklama.ackKod := ADO_receteAcikla.FieldByName('aciklamaTip').AsString;
   datalar.ReceteAciklama.ack := ADO_receteAcikla.FieldByName('aciklama').AsString;
   AckEkle(ReceteAckDuzenle);
@@ -1373,7 +1396,7 @@ var
  B : TBookmark;
 begin
   inherited;
-  if not CheckReceteStatus (True, False, True) then Exit;
+  if not CheckReceteStatus (True, False, True, True, True) then Exit;
   datalar.YeniRecete.doktor := copy(ADO_Recete.FieldByName('doktor').AsString,1,4);
   datalar.YeniRecete.doktorAdi := copy(ADO_Recete.FieldByName('doktor').AsString,6,100);
   datalar.YeniRecete.protokolNo := ADO_Recete.FieldByName('ProtokolNo').AsString;
@@ -1402,6 +1425,7 @@ procedure TfrmHastaRecete.cxGridReceteIlacAciklamaDblClick(Sender: TObject);
 begin
   inherited;
   if ADO_ReceteIlacAciklama.RecordCount <= 0 then Exit;
+  if not CheckReceteStatus (True, False, True, True, True) then Exit;
   datalar.ReceteAciklama.ackKod := ADO_receteIlacAciklama.FieldByName('aciklamaTip').AsString;
   datalar.ReceteAciklama.ack := ADO_receteIlacAciklama.FieldByName('aciklama').AsString;
   AckEkle(ReceteIlacAckDuzenle);
@@ -1437,7 +1461,7 @@ begin
          end;
 
    -23 : begin
-           if not CheckReceteStatus (True, False, True) then Exit;
+           if not CheckReceteStatus (True, False, True, True, True) then Exit;
 
            if (ADO_Recete.FieldByName('ereceteNo').AsString = '0000') or
               (ADO_Recete.FieldByName('ereceteNo').AsString = '')

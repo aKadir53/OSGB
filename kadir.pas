@@ -8893,7 +8893,7 @@ begin
     iTranCountBefore := TranCount (aConnection);
     bQuery.Connection := aConnection;
     bQuery.SQL.Text := 'BEGIN TRAN';
-    if not bQuery.Prepared then bQuery.Prepared := True;
+    //if not bQuery.Prepared then bQuery.Prepared := True;
     try
       bQuery.ExecSQL;
     except
@@ -8916,7 +8916,7 @@ begin
   try
     bQuery.Connection := aConnection;
     bQuery.SQL.Text := 'ROLLBACK';
-    if not bQuery.Prepared then bQuery.Prepared := True;
+    //if not bQuery.Prepared then bQuery.Prepared := True;
     try
       bQuery.ExecSQL;
     except
@@ -8939,7 +8939,7 @@ begin
   try
     bQuery.Connection := aConnection;
     bQuery.SQL.Text := 'COMMIT';
-    if not bQuery.Prepared then bQuery.Prepared := True;
+    //if not bQuery.Prepared then bQuery.Prepared := True;
     try
       bQuery.ExecSQL;
     except
@@ -8961,7 +8961,7 @@ begin
   try
     bQuery.Connection := aConnection;
     bQuery.SQL.Text := 'SELECT @@TRANCOUNT TRC';
-    if not bQuery.Prepared then bQuery.Prepared := True;
+    //if not bQuery.Prepared then bQuery.Prepared := True;
     bQuery.Open;
     try
       Result := bQuery.FieldByName('TRC').AsInteger;
@@ -9091,4 +9091,3 @@ end;
    //çaðrýldýðý yerler kontrol edilecekler:
    //SQLSelectToDataSet ListeAcCreate BuyukHarf SayisalVeri NextKontrol TurkCharKontrol FormInputZorunluKontrolPaint
 end.
-

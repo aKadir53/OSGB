@@ -16,7 +16,7 @@ uses
   dxSkinOffice2010Blue, dxSkinOffice2010Silver, dxSkinPumpkin, dxSkinSeven,
   dxSkinSharp, dxSkinSilver, dxSkinSpringTime, dxSkinStardust, dxSkinSummer2008,
   dxSkinsDefaultPainters, dxSkinValentine, dxSkinXmas2008Blue,
-  dxSkinscxPCPainter, cxPCdxBarPopupMenu, cxPC ;
+  dxSkinscxPCPainter, cxPCdxBarPopupMenu, cxPC, Vcl.Samples.Spin ;
 
 type
   TfrmPaket = class(TForm)
@@ -49,6 +49,8 @@ type
     ado_sql: TADOQuery;
     Kaynak: TADOConnection;
     btPanodanYapistir: TSpeedButton;
+    SpinEdit1: TSpinEdit;
+    label111: TLabel;
     procedure SpeedButton2Click(Sender: TObject);
     procedure SpeedButton1Click(Sender: TObject);
     Function  DosyaKopyala(sSrc : string;sDest : string) : integer;
@@ -80,7 +82,7 @@ var
   frmPaket: TfrmPaket;
 
 implementation
- uses DosyadanpaketOlustur, clipbrd;
+ uses DosyadanpaketOlustur, clipbrd, NThermo;
 
 {$R *.dfm}
 
@@ -226,7 +228,8 @@ end;
 procedure TfrmPaket.btPanodanYapistirClick(Sender: TObject);
 var
   aSL1, aSL2 : TStringList;
-  i, iLastID, iScripts : Integer;
+  i, iThermo, iLastID, iScripts : Integer;
+  bTamam : Boolean;
 begin
   aSL1 := TStringList.Create;
   try
@@ -242,30 +245,54 @@ begin
       iLastID := table1.FieldByName('ID').AsInteger;
       iScripts := 0;
       if not sametext (Trim (aSL1 [aSL1.Count - 1]), 'go') then aSL1.Add('GO');
-      for i := 0 to aSL1.Count -1 do
-      begin
-        //go'ya rastladým.
-        if AnsiSameText (Trim (aSL1 [i]), 'go') then
-        begin
-          //biriken scriptin baþýndaki boþ satýrlarý sil.
-          while (aSL2.Count > 0) and (TRim (aSL2 [0]) = '') do aSL2.Delete (0);
-          //biriken scriptin sonundaki boþ satýrlarý sil.
-          while (aSL2.Count > 0) and (TRim (aSL2 [aSL2.Count - 1]) = '') do aSL2.Delete (aSL2.Count - 1);
-          if Trim (aSL2.Text) <> '' then
+      bTamam := False;
+      table1.Connection.BeginTrans;
+      try
+        ShowThermo (iThermo, 'Scriptler yazýlýyor', 0, aSL1.Count, 0, True);
+        try
+          for i := 0 to aSL1.Count -1 do
           begin
-            iScripts := iScripts + 2;
-            table1.Append;
-            table1.FieldByName ('ID').AsInteger := iLastID + iScripts;
-            table1.FieldByName ('REV').AsInteger := iLastID + iScripts;
-            table1.FieldByName ('SQL_CMD').AsString := aSL2.Text;
-            if Copy (Trim (aSL2 [0]), 1, 2) = '--' then
-              table1.FieldByName('ACIKLAMA').AsString := Trim (Copy (Trim (aSL2 [0]), 3, Length (Trim (aSL2 [0])) - 2));
-            table1.Post;
-            aSL2.Clear;
+            if not UpdateThermo (i, iThermo, IntToStr (i)) then Exit;
+            //go'ya rastladým.
+            if AnsiSameText (Trim (aSL1 [i]), 'go') then
+            begin
+              //biriken scriptin baþýndaki boþ satýrlarý sil.
+              while (aSL2.Count > 0) and (TRim (aSL2 [0]) = '') do aSL2.Delete (0);
+              //biriken scriptin sonundaki boþ satýrlarý sil.
+              while (aSL2.Count > 0) and (TRim (aSL2 [aSL2.Count - 1]) = '') do aSL2.Delete (aSL2.Count - 1);
+              if Trim (aSL2.Text) <> '' then
+              begin
+                iScripts := iScripts + SpinEdit1.Value;
+                table1.Append;
+                try
+                  table1.FieldByName ('ID').AsInteger := iLastID + iScripts;
+                  table1.FieldByName ('REV').AsInteger := iLastID + iScripts;
+                  table1.FieldByName ('SQL_CMD').AsString := aSL2.Text;
+                  if Copy (Trim (aSL2 [0]), 1, 2) = '--' then
+                    table1.FieldByName('ACIKLAMA').AsString := Trim (Copy (Trim (aSL2 [0]), 3, Length (Trim (aSL2 [0])) - 2));
+                  table1.Post;
+                  aSL2.Clear;
+                except
+                  table1.Cancel;
+                  raise;
+                end;
+              end;
+              Continue;
+            end;
+            aSL2.Add (aSL1 [i]);
           end;
-          Continue;
+          bTamam := True;
+        finally
+          FreeThermo(iThermo);
         end;
-        aSL2.Add (aSL1 [i]);
+      finally
+        if bTamam then table1.Connection.CommitTrans
+        else begin
+          table1.Connection.RollbackTrans;
+          table1.Close;
+          table1.Open;
+          table1.Last;
+        end;
       end;
       Clipboard.Clear;
     finally
@@ -364,3 +391,4 @@ begin
 end;
 
 end.
+

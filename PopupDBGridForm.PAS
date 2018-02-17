@@ -117,20 +117,17 @@ begin
 end;
 
 function TfrmPopupDBGridForm.Init(Sender: TObject) : Boolean;
-var
-  ado : TADOQuery;
-  sql : string;
 begin
   inherited;
-
+  Result := False;
   case abs(Tag) of
-     TagfrmBolum,TagfrmBirim :
-  begin
+    TagfrmBolum,TagfrmBirim :
+    begin
       txtTable.Visible := True;
       txtTable.Conn := Datalar.ADOConnection2;
       txtTable.TableName := 'PopupDBGridFormTabloTanim';
       txtTable.ValueField := 'id';
-      txtTable.DisplayField := 'tableName';
+      txtTable.DisplayField := 'tanimi';
       txtTable.Filter := '';
       txtTable.BosOlamaz := True;
       OrtakEventAta(txtTable);
@@ -152,7 +149,7 @@ begin
 
       end;
       Result := True;
-  end;
+    end;
 
     TagfrmSube :
     begin
@@ -228,8 +225,6 @@ procedure TfrmPopupDBGridForm.SetGrid;
 var
  i : integer;
  Columns,Baslik,Tips,Edits : TstringList;
- ColName : string;
- Col : TcxGridDBColumn;
  FItem : TcxImageComboBoxItem;
 begin
   Columns := TStringList.Create;
@@ -241,7 +236,10 @@ begin
         Edits := TStringList.Create;
         try
           Split(',',_fields_,Columns);
-          Split(',',_fieldBaslik_,Baslik);
+          Split(',',StringReplace (_fieldBaslik_, ' ', '<bozluk>', [rfReplaceAll]),Baslik);
+          for i := 0 to Baslik.Count -1 do
+            Baslik [i] := StringReplace (Baslik [i], '<bozluk>', ' ', [rfReplaceAll]);
+
           Split(',',_fieldTips_,Tips);
           Split(',',_fieldsEdit_,Edits);
 
@@ -351,6 +349,7 @@ procedure TfrmPopupDBGridForm.Yukle;
 begin
   inherited;
   DBGrid.DataController.DataSource.DataSet := sqlRun;
+  DBGrid.DataController.GridView.ClearItems;
   DBGrid.DataController.CreateAllItems(True);
   SetGrid;
 end;
@@ -403,10 +402,8 @@ begin
 end;
 
 procedure TfrmPopupDBGridForm.FormShow(Sender: TObject);
-var
-  ilacList,kulYolList,Doktorlar : TlisteAc;
 begin
-inherited;
+  inherited;
   btnYes.Visible := True;
   btnYes.Caption := '&Tamam';
   btnIptal.Visible := True;
