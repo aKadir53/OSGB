@@ -560,6 +560,9 @@ begin
     125 : begin
            DBUpdate;
           end;
+    135 : begin
+           PersonelTetkikIstemleri('','');
+          end;
       6 : begin
            tc := InputBox('Personel Ara','Tc Kimlik No','');
            if IsNull (TC) then Exit;
