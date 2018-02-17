@@ -207,27 +207,33 @@ var
 begin
 
   if MrYes = MessageDlg(
-      'Dokuman Eklenecek , Eminmisiniz?',
+      'Dokuman Eklenecek , Emin misiniz?',
     mtConfirmation, [mbYes, mbNo], 0, mbYes)
   then begin
-
     dosya := TOpenDialog.Create(nil);
-    dosya.Execute;
-    dosyaTip := ExtractFileExt(dosya.FileName);
-    dosyaTip := StringReplace(dosyaTip,'.','',[rfReplaceAll]);
+    try
+      if not dosya.Execute then Exit;
+      dosyaTip := ExtractFileExt(dosya.FileName);
+      dosyaTip := StringReplace(dosyaTip,'.','',[rfReplaceAll]);
 
-    DokumList.Dataset.Edit;
-  //  DokumList.Dataset.FieldByName('SirketKod').AsString := txtSirket.EditingValue;
-    DokumList.Dataset.FieldByName('DosyaTip').AsString := dosyaTip;
-//    DokumList.Dataset.FieldByName('DokumanGrup').AsString := txtDokumanGrup.EditingValue;
-    DokumList.Dataset.FieldByName('YukleyenUser').AsString := datalar.username;
-    Blob := TADOBlobStream.Create(TBlobField(DokumList.Dataset.FieldByName('Dokuman')),bmwrite);
-    Blob.LoadFromFile(dosya.FileName);
-    Blob.Position := 0;
-    TBlobField(DokumList.Dataset.FieldByName('Dokuman')).LoadFromStream(Blob);
-    DokumList.Dataset.Post;
+      DokumList.Dataset.Edit;
+    //  DokumList.Dataset.FieldByName('SirketKod').AsString := txtSirket.EditingValue;
+      DokumList.Dataset.FieldByName('DosyaTip').AsString := dosyaTip;
+  //    DokumList.Dataset.FieldByName('DokumanGrup').AsString := txtDokumanGrup.EditingValue;
+      DokumList.Dataset.FieldByName('YukleyenUser').AsString := datalar.username;
+      Blob := TADOBlobStream.Create(TBlobField(DokumList.Dataset.FieldByName('Dokuman')),bmwrite);
+      try
+        Blob.LoadFromFile(dosya.FileName);
+        Blob.Position := 0;
+        TBlobField(DokumList.Dataset.FieldByName('Dokuman')).LoadFromStream(Blob);
+        DokumList.Dataset.Post;
+      finally
+        Blob.Free;
+      end;
+    finally
+      dosya.Free;
+    end;
   end;
-  dosya.Free;
 
 end;
 
@@ -244,13 +250,19 @@ var
   filename : string;
 begin
   Cursor := crSQLWait;
-  filename := DokumList.Dataset.FieldByName('DokumanTanimi').AsString + '.' + DokumList.Dataset.FieldByName('DosyaTip').AsString;
-  Blob := TADOBlobStream.Create((DokumList.Dataset.FieldByName('Dokuman') as TBlobField), bmRead);
-  Blob.SaveToFile(filename);
-  Blob.Free;
-  sleep(1000);
-  ShellExecute(0, 'open', PChar(filename), nil, nil, SW_SHOWNORMAL);
-  Cursor := crDefault;
+  try
+    filename := DokumList.Dataset.FieldByName('DokumanTanimi').AsString + '.' + DokumList.Dataset.FieldByName('DosyaTip').AsString;
+    Blob := TADOBlobStream.Create((DokumList.Dataset.FieldByName('Dokuman') as TBlobField), bmRead);
+    try
+      Blob.SaveToFile(filename);
+    finally
+      Blob.Free;
+    end;
+    sleep(1000);
+    ShellExecute(0, 'open', PChar(filename), nil, nil, SW_SHOWNORMAL);
+  finally
+    Cursor := crDefault;
+  end;
 end;
 
 procedure TfrmDokumanYonetim.FormCreate(Sender: TObject);
