@@ -999,7 +999,8 @@ var
   BASLANGIC : TcxDateEditKadir;
   EV_SEHIR ,EV_ILCE ,EV_BUCAK , EV_KOY,EV_MAHALLE : TcxImageComboKadir;
   DEV_KURUM,Kurum,EGITIM : TcxImageComboKadir;
-  askerlik,ozur,bolum,birim,risk,muayenePeryot,Subeler,sirketlerx,SirketKodNew: TcxImageComboKadir;
+  askerlik,ozur,bolum,birim,risk,muayenePeryot,tetkikIstemGrupSablon,
+  Subeler,sirketlerx,SirketKodNew: TcxImageComboKadir;
   where,sube : string;
   bolumEkle,birimEkle : TcxButtonKadir;
 begin
@@ -1218,6 +1219,17 @@ begin
   muayenePeryot.BosOlamaz := True;
   setDataStringKontrol(self,muayenePeryot,'MuayenePeryot','',kolon4,'',110);
   OrtakEventAta(muayenePeryot);
+
+
+  setDataStringBLabel(self,'tetkikIstemGrupSablonBaslik',Kolon4,'',110,'Tetkik Grubu');
+  tetkikIstemGrupSablon := TcxImageComboKadir.Create(self);
+  tetkikIstemGrupSablon.Conn := datalar.ADOConnection2;
+  tetkikIstemGrupSablon.TableName := 'tetkikIstemGrupSablon';
+  tetkikIstemGrupSablon.ValueField := 'kod';
+  tetkikIstemGrupSablon.DisplayField := 'tanimi';
+  tetkikIstemGrupSablon.Filter := '';
+  setDataStringKontrol(self,tetkikIstemGrupSablon,'tetkikIstemGrupSablon','',kolon4,'',110);
+  OrtakEventAta(tetkikIstemGrupSablon);
 
 
   BASLANGIC := TcxDateEditKadir.Create(self);

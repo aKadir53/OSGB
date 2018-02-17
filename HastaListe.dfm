@@ -38,12 +38,13 @@ object frmHastaListe: TfrmHastaListe
       Font.Name = 'Tahoma'
       Font.Style = []
       ParentFont = False
+      PopupMenu = PopupMenu1
       TabOrder = 0
       LevelTabs.ImageBorder = 2
       LevelTabs.Style = 1
       ExceleGonder = False
       object Liste: TcxGridDBTableView
-        PopupMenu = popupYil
+        PopupMenu = PopupMenu1
         OnDblClick = ListeDblClick
         Navigator.Buttons.First.Visible = True
         Navigator.Buttons.PriorPage.Visible = True
@@ -92,6 +93,7 @@ object frmHastaListe: TfrmHastaListe
         OptionsData.Deleting = False
         OptionsData.Editing = False
         OptionsData.Inserting = False
+        OptionsSelection.MultiSelect = True
         OptionsView.NavigatorOffset = 20
         OptionsView.NoDataToDisplayInfoText = 'Kay'#305't Yok'
         OptionsView.CellAutoHeight = True
@@ -338,6 +340,18 @@ object frmHastaListe: TfrmHastaListe
           HeaderAlignmentHorz = taCenter
           HeaderAlignmentVert = vaCenter
         end
+        object ListeColumn12: TcxGridDBColumn
+          Caption = 'Grup'
+          DataBinding.FieldName = 'tetkikIstemGrupSablon'
+        end
+        object ListeColumn17: TcxGridDBColumn
+          DataBinding.FieldName = 'sirketKod'
+          Visible = False
+        end
+        object ListeColumn18: TcxGridDBColumn
+          DataBinding.FieldName = 'sube'
+          Visible = False
+        end
       end
       object cxGridLevel1: TcxGridLevel
         Caption = 'Hastalar'
@@ -537,8 +551,8 @@ object frmHastaListe: TfrmHastaListe
   end
   object PopupMenu1: TPopupMenu
     Images = DATALAR.imag24png
-    Left = 496
-    Top = 86
+    Left = 320
+    Top = 222
     object Recete: TMenuItemModul
       Tag = -7
       Caption = 'Re'#231'ete'
@@ -549,69 +563,21 @@ object frmHastaListe: TfrmHastaListe
       Islem = 'Recete'
       FormId = 0
     end
-    object edaviKart1: TMenuItemModul
-      Tag = -1
-      Caption = #304'la'#231' Tedavi Kart'#305
-      ImageIndex = 63
-      Visible = False
-      OnClick = cxButtonCClick
-      Modul = 'TEDAVI KARTI'
-      Islem = #304'la'#231' Tedavi'
-      FormId = 0
+    object Muayene: TMenuItem
+      Caption = 'Peryodik Muayene Olu'#351'tur'
+      ImageIndex = 102
+      OnClick = MuayeneClick
     end
-    object SeansKart1: TMenuItemModul
-      Tag = -2
-      Caption = 'Seans Kart'#305
-      ImageIndex = 80
-      Visible = False
-      OnClick = cxButtonCClick
-      FormId = 0
-    end
-    object Epikriz1: TMenuItemModul
-      Caption = #304#351'e Giri'#351' Muayene Formu'
-      ImageIndex = 89
-      Visible = False
-      FormId = 0
-    end
-    object e1: TMenuItemModul
-      Caption = 'Tetkik Takip Formlar'#305
-      ImageIndex = 28
-      Visible = False
-      FormId = 0
-      object He1: TMenuItemModul
-        Caption = 'Hepatitler Dahil'
-        OnClick = H1Click
-        FormId = 0
-      end
-      object He2: TMenuItemModul
-        Caption = 'Hepatitler Hari'#231
-        OnClick = H1Click
-        FormId = 0
-      end
-      object He3: TMenuItemModul
-        Caption = 'Hepatit / Tele'
-        OnClick = H1Click
-        FormId = 0
-      end
-    end
-    object A1: TMenuItem
-      Tag = 9020
-      Caption = 'A'#351#305' Kart'#305
-      ImageIndex = 60
-      Visible = False
-      OnClick = cxButtonCClick
-    end
-    object T1: TMenuItem
-      Tag = 330
-      Caption = 'Tan'#305' Kart'#305
-      ImageIndex = 74
-      Visible = False
-      OnClick = cxButtonCClick
+    object PeryodikMuayeneOlutur1: TMenuItem
+      Caption = 'Peryodik Muayene Olu'#351'tur (Toplu)'
+      ImageIndex = 17
+      OnClick = PeryodikMuayeneOlutur1Click
     end
   end
   object popupYil: TPopupMenu
-    Left = 392
-    Top = 88
+    OnPopup = popupYilPopup
+    Left = 384
+    Top = 216
     object N1: TMenuItem
       Caption = 'T'#252'm Gruplar'#305' A'#231
       OnClick = N1Click
