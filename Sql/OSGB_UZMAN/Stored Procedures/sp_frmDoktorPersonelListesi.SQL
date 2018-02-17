@@ -7,7 +7,7 @@ begin
   select @sube = @sube + ',' + subeKod from SIRKET_SUBE_TNM where sirketKod = @firma
 end
 select h.Sube,  h.*,(case when isnull(diger,'') = '' then '0' else '1' end) ozeldurum , 
-(case when (Substring (h.GELHAST, 5, 1) = '1' OR SUBSTRING (h.GELHAST, 7, 1) = '1') THEN '1' ELSE '' END) Diabet,
+(case when (Substring (h.GELHAST, 6, 1) = '1' OR SUBSTRING (h.GELHAST, 8, 1) = '1') THEN '1' ELSE '' END) Diabet,
 (case when isnull(AntiHbs,'') = '' THEN '0' ELSE AntiHbs END) 'AntiHbs',
 IK.ADI il,ILCK.ADI ilce,MK.ADI mahalle,dbo.fn_yasTarih(h.doGUMTARIHI,getdate()) yas, 
 
