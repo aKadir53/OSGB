@@ -2058,13 +2058,13 @@ begin
             sqlRun.FieldByName(_Obje_.Name).AsVariant := null;
         End
         else
-         if (TcxTextEditKadir(_obje_).BosOlamaz = True) and (TcxTextEditKadir(_obje_).Text = '')
-          Then begin
+       //  if (TcxTextEditKadir(_obje_).BosOlamaz = True) and (TcxTextEditKadir(_obje_).Text = '')
+       //   Then begin
             // self.ActiveControl := TcxTextEditKadir(_obje_);
             // ShowMessageSkin(TcxTextEditKadir(_obje_).Name,'Zorunlu Alan','','info');
             // exit;
-          end
-         else
+       //   end
+      //   else
          begin
            sqlRun.FieldByName(_Obje_.Name).AsVariant := _Obje_.EditingValue;
            if (sqlRun.FieldByName(_Obje_.Name) is TStringField)

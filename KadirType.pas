@@ -3,7 +3,7 @@ unit KadirType;
 
 interface
 
-uses HizmetKayitIslemleriWS,DB,sysUtils,XSBuiltIns;
+uses HizmetKayitIslemleriWS,DB,sysUtils,XSBuiltIns,Classes;
 
 type TprintTip = (pTYazdir,pTOnIzle,pTDizayn,pTNone);
 type sqlType = (sql_Select,sql_Exec,sql_sp,sql_fn,sql_new,sql_edit,sql_delete,sql_none);
@@ -195,6 +195,7 @@ type
       BransKodu : string;
       doktor : string;
       ProtokolNo : string;
+      Tetkikler : string;
     end;
 
 
@@ -373,6 +374,14 @@ type
     durumKodu: string;
     durum: string;
   end;
+
+type
+  TTarihAralik = record
+    ilkTarih: TDate;
+    sonTarih : TDate;
+  end;
+
+
 
 type
   TSeansOlusturPrm = record
@@ -577,6 +586,8 @@ Const
   ClckListele = 21;
   gdgelisDuzenle = 22;
   gdgelisAc = 23;
+  gdPeryodikgelisAc = 30;
+  ptPersonelTetkikleri = 31;
   yeniGozlem = 24;
   gozlemSil = 25;
   GozlemDuzenle = 26;

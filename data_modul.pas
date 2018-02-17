@@ -488,6 +488,7 @@ type
    LisansBitis,LisansBasla,LisansTarih : string;
    LisansLimit : integer;
    Bilgi : THastaKabul;
+   TarihAralik : TTarihAralik;
    GelisDuzenleRecord : TGelisDuzenle;
    SeansBilgi : TDigerIslemTalep;
    ReceteSatir : TReceteSatir;
