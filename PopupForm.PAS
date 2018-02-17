@@ -5,7 +5,7 @@ interface
 uses
   Windows, Messages, SysUtils, Classes, Graphics, Controls, Forms, Dialogs,
   StdCtrls, Buttons, ExtCtrls, ComCtrls, jpeg, kadir,kadirType,kadirLabel,
-  dxGDIPlusClasses, cxGraphics, cxControls,GirisUnit,GetFormClass,
+  dxGDIPlusClasses, cxGraphics, cxControls,GirisUnit,GetFormClass,StrUtils,
   cxLookAndFeels, cxLookAndFeelPainters, cxContainer, cxEdit, dxSkinsCore,
   Menus, cxButtons, cxGroupBox, dxSkinBlack, dxSkinBlue, dxSkinCaramel,
   dxSkinCoffee, dxSkinDarkRoom, dxSkinDarkSide, dxSkinFoggy, dxSkinGlassOceans,
@@ -20,7 +20,7 @@ uses
   DB, cxDBData, cxCurrencyEdit, cxGridLevel, cxGridBandedTableView,
   cxGridDBBandedTableView, cxGridCustomTableView, cxGridTableView,
   cxGridDBTableView, cxClasses, cxGridCustomView, cxGrid, cxLabel, cxCheckBox,
-  cxImageComboBox, cxMemo,Variants;
+  cxImageComboBox, cxMemo,Variants, cxCheckGroup;
 
 type
   TfrmPopup = class(TGirisForm)
@@ -65,6 +65,7 @@ type
   public
     _islem_ :integer;
     _caption_ : string;
+    _value_ : string;
     FGirisForm : TGirisForm;
     { Public declarations }
   end;
@@ -183,6 +184,19 @@ begin
               Then
                datalar.doktorKodu := TcxImageComboKadir(FindComponent('Doktor')).EditValue;
             end;
+gdPeryodikgelisAc :
+            begin
+              datalar.GelisDuzenleRecord.GirisTarihi := TcxTextEdit(FindComponent('GirisTarihi')).EditValue;
+              datalar.GelisDuzenleRecord.TedaviTuru := TcxImageComboKadir(FindComponent('TEDAVITURU')).EditValue;
+
+              if Assigned(FindComponent('Doktor'))
+              Then
+               datalar.doktorKodu := TcxImageComboKadir(FindComponent('Doktor')).EditValue;
+
+               datalar.GelisDuzenleRecord.Tetkikler := TcxCheckGroupKadir(FindComponent('tetkikIstemGrupSablon')).getItemCheckString;
+
+            end;
+
        PrgSifre :
            begin
              if TcxTextEdit(FindComponent('MevcutSifre')).EditValue <> DATALAR.usersifre then
@@ -209,6 +223,11 @@ begin
              TGirisForm(FGirisForm)._SahaDenetimVeri_ := xSahaDenetimVeri;
            //  (Application.FindComponent(FGirisForm.name) as TGirisForm)._SahaDenetimVeri_ := xSahaDenetimVeri;
            end;
+ptPersonelTetkikleri :
+           begin
+             datalar.TarihAralik.ilkTarih := TcxTextEdit(FindComponent('ilkTarih')).EditValue;
+             datalar.TarihAralik.sonTarih := TcxTextEdit(FindComponent('sonTarih')).EditValue;
+           end;
 
   end;
 end;
@@ -230,6 +249,7 @@ procedure TfrmPopup.FormShow(Sender: TObject);
 var
   ilacList : TlisteAc;
   Doktorlar,kulYolList : TcxImageComboKadir;
+  txtTetkikIstem : TcxCheckGroupKadir;
   TabCaption : string;
 begin
 inherited;
@@ -454,7 +474,7 @@ inherited;
 
        end;
 
-    gdgelisAc :
+    gdgelisAc,gdPeryodikgelisAc :
        begin
           cxTab.Tabs[0].ImageIndex := 21;
           //Olustur(self,'','',21,'');
@@ -482,6 +502,27 @@ inherited;
             Doktorlar.Filter := '';
             setDataStringKontrol(self,Doktorlar,'Doktor','Doktor',kolon1,'',120);
           end;
+
+          if frmPopup._islem_ = gdPeryodikgelisAc
+          then begin
+            cxTab.Tabs[0].Caption := _caption_;
+            cxTab.Tabs[0].ImageIndex := 39;
+            ClientHeight := 320;
+            Doktorlar.EditValue := 2;
+            txtTetkikIstem := TcxCheckGroupKadir.Create(self);
+            txtTetkikIstem.Properties.EditValueFormat := cvfStatesString;
+            txtTetkikIstem.Properties.Columns := 2;
+            txtTetkikIstem.Alignment := alCenterCenter;
+            txtTetkikIstem.Conn := Datalar.ADOConnection2;
+            txtTetkikIstem.TableName := 'TetkikIstemSablonItem';
+            txtTetkikIstem.ValueField := 'id';
+            txtTetkikIstem.DisplayField := 'tanimi';
+            txtTetkikIstem.Filter := ' SablonGrupKod = ' + ifThen(_value_ = '','0',_value_);
+            setDataStringKontrol(self,txtTetkikIstem,'tetkikIstemGrupSablon','Tetkikler',kolon1,'',180,80);
+            txtTetkikIstem.Caption := '';
+
+          end;
+
        end;
 
    PrgSifre :
@@ -557,6 +598,24 @@ inherited;
          textEdit.Properties.ReadOnly := False;
          setDataStringKontrol(self,textEdit, 'DenetimDefterNo','Denetim Defter No.',Kolon1,'',60);
          TcxTextEdit(FindComponent('DenetimDefterNo')).EditValue := _SahaDenetimVeri_.DenetimDefterNo;
+       end;
+
+ptPersonelTetkikleri :
+       begin
+          ClientHeight := 200;
+          ClientWidth := 300;
+
+          mevcutTarih_ := TcxDateEditKadir.Create(self);
+          mevcutTarih_.Name := 'GirisTarihi';
+          setDataStringKontrol(self,mevcutTarih_, 'ilkTarih','Ýlk Tarih',Kolon1,'',100);
+          TcxTextEdit(FindComponent('ilkTarih')).EditValue := date;
+
+          _Tarih_ := TcxDateEditKadir.Create(self);
+          _Tarih_.Name := 'DenetimTarihi';
+          setDataStringKontrol(self,_Tarih_, 'SonTarih','Son Tarih',Kolon1,'',100);
+          TcxTextEdit(FindComponent('SonTarih')).EditValue := date;
+
+
        end;
 
   end;

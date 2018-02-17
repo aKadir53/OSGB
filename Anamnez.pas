@@ -36,7 +36,7 @@ type
 
 const _TableName_ = 'Gelisler';
       formGenislik = 700;
-      formYukseklik = 530;
+      formYukseklik = 550;
 
 var
   frmAnamnez: TfrmAnamnez;
@@ -51,7 +51,7 @@ function TfrmAnamnez.Init(Sender: TObject) : Boolean;
   index,i,_left_ : integer;
   Ts,Ts1 : TStringList;
   List,List1,List3 : TListeAc;
-  bransKodu,calismaTipi,cardType,sirket,medulaGonderimTipi : TcxImageComboKadir;
+  bransKodu,calismaTipi,cardType,sirket,medulaGonderimTipi,servisler : TcxImageComboKadir;
 begin
   Result := False;
 
@@ -77,11 +77,25 @@ case self.Tag of
         setDataStringMemo(self,'MUAYENESONUC','',Kolon1,'sonuc',550,80);
         addButton(self,nil,'btnMuayeneSouc','','Sonuç Seç',Kolon1,'',120,ButtonClick,4);
 
+        setDataStringCurr(self,'ISTIRAHATGUN','ÝstirahatGün',Kolon1,'sevk',40,'0',1);
+
+        servisler := TcxImageComboKadir.Create(self);
+        servisler.Conn := Datalar.ADOConnection2;
+        servisler.TableName := 'SERVIS_TNM';
+        servisler.ValueField := 'kod';
+        servisler.DisplayField := 'tanimi';
+        servisler.BosOlamaz := True;
+        servisler.Filter := '';
+        OrtakEventAta(servisler);
+        setDataStringKontrol(self,servisler,'SEVKBRANS','Sevk Edilen Branþ',kolon1,'sevk',150);
+
 
         SayfaCaption('Muayene Bilgileri','','','','');
         _fields_ := '*';
         yukle;
         sqlRunLoad;
+
+       // tableColumnDescCreate;
 
         Result := True;
   end;

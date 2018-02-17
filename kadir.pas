@@ -68,7 +68,7 @@ function FormattedTarihYYMMGG(t, s: string): string;
 function numTOtxt_M(d: extended; p: integer): string;
 function ShowMessage(msg1, msg2, msg3: string; t: string): word;
 function ShowMessageSkin(msg1, msg2, msg3: string; t: string): word;
-function ShowPopupForm(Caption : string ; Tag : integer): word; overload;
+function ShowPopupForm(Caption : string ; Tag : integer ; value : string = ''): word; overload;
 function ShowPopupForm(Caption : string ; Tag : integer ; Form : TForm): word;overload;
 function tarihyap(t: string): Tdate;
 function tarihal(t: Tdate): string;
@@ -390,6 +390,8 @@ function GetUserIGUFilter (pFieldName : String = ''): String;
 function HakikiAktifSube: String;
 procedure KademeliStoredProcCalistir (const pSPName : String; const pParameters : String);
 function SQLValue (const sValue: String): String;
+function PersonelPeriyodikTetkikIstemleri(grup : string) : string;
+procedure PersonelTetkikIstemleri(tarih,tarih2 : string);
 
 const
   _YTL_ = 'YTL';
@@ -467,6 +469,66 @@ begin
    finally
      FreeAndNil (frmUpdate);
    end;
+end;
+
+procedure PersonelTetkikIstemleri(tarih,tarih2 : string);
+var
+  sql : string;
+  ado : TADOQuery;
+  Dataset : TDataSetKadir;
+begin
+  if mrYes = ShowPopupForm('Personel Tetkik Ýstemler',ptPersonelTetkikleri,'')
+  Then Begin
+    try
+      ado := TADOQuery.Create(nil);
+      ado.Connection := datalar.ADOConnection2;
+      sql :=
+            'select p.*,h.code,h.name1,h.TARIH,p.sirketKod,t.tanimi from hareketler h  ' +
+            ' join personelKart p on p.dosyaNo = h.dosyaNo ' +
+            ' join SIRKETLER_TNM t on p.sirketKod = t.sirketKod ' +
+            ' where h.TARIH >= ' + QuotedStr(tarihal(datalar.TarihAralik.ilkTarih)) +
+            ' and h.TARIH <= ' + QuotedStr(tarihal(datalar.TarihAralik.sonTarih)) +
+            ' and h.Tip in (''02'',''03'') ' +
+            ' order by p.sirketKod,dosyaNo,h.tip,TARIH ';
+
+      datalar.QuerySelect(ado,sql);
+      Dataset.Dataset0 := ado;
+
+      PrintYap('051','\Personel Ýstemleri',inttoStr(TagfrmPopup) ,Dataset,pTNone);
+
+    finally
+      ado.Free;
+    end;
+
+
+  End;
+
+end;
+
+
+function PersonelPeriyodikTetkikIstemleri(grup : string) : string;
+var
+  txtTetkikIstem : TcxCheckGroupKadir;
+  tetkikler : string;
+begin
+  try
+    PersonelPeriyodikTetkikIstemleri := '';
+    txtTetkikIstem := TcxCheckGroupKadir.Create(nil);
+    txtTetkikIstem.Properties.EditValueFormat := cvfStatesString;
+    txtTetkikIstem.Alignment := alCenterCenter;
+    txtTetkikIstem.Conn := Datalar.ADOConnection2;
+    txtTetkikIstem.TableName := 'TetkikIstemSablonItem';
+    txtTetkikIstem.ValueField := 'id';
+    txtTetkikIstem.DisplayField := 'tanimi';
+    txtTetkikIstem.Filter := ' SablonGrupKod = ' + grup;
+
+    tetkikler := txtTetkikIstem.getItemCheckString;
+
+    PersonelPeriyodikTetkikIstemleri := tetkikler;
+
+  finally
+   txtTetkikIstem.Free;
+  end;
 end;
 
 function DoktorReceteMedulaGonderimTip(doktor : string) : integer;
@@ -7592,12 +7654,13 @@ begin
   end;
 end;
 
-function ShowPopupForm(Caption : string; Tag : integer): word;
+function ShowPopupForm(Caption : string; Tag : integer ; value : string): word;
 begin
   Application.CreateForm(TfrmPopup, frmPopup);
   try
     frmPopup._islem_ := Tag;
     frmPopup._caption_ := Caption;
+    frmPopup._value_ := value;
     frmPopup.ShowModal;
     Result := frmPopup.ModalResult;
   finally

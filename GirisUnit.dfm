@@ -1405,7 +1405,6 @@ object GirisForm: TGirisForm
       TabOrder = 0
       ExplicitLeft = 3
       ExplicitTop = 3
-      ExplicitHeight = 58
       Height = 60
       Width = 65
     end
@@ -1431,8 +1430,6 @@ object GirisForm: TGirisForm
       TabOrder = 1
       ExplicitLeft = 68
       ExplicitTop = 3
-      ExplicitWidth = 430
-      ExplicitHeight = 58
       Height = 60
       Width = 432
       object pBar: TcxProgressBar
@@ -1441,7 +1438,6 @@ object GirisForm: TGirisForm
         Align = alBottom
         TabOrder = 0
         Visible = False
-        ExplicitWidth = 426
         Width = 428
       end
     end
@@ -1584,6 +1580,7 @@ object GirisForm: TGirisForm
       ParentFont = False
       Properties.Alignment.Horz = taCenter
       Properties.Alignment.Vert = taVCenter
+      Properties.ClearKey = 46
       Properties.Items = <
         item
           Description = 'SysTakipNo Olmayanlar'
@@ -1617,6 +1614,7 @@ object GirisForm: TGirisForm
       ParentFont = False
       Properties.Alignment.Horz = taCenter
       Properties.Alignment.Vert = taVCenter
+      Properties.ClearKey = 46
       Properties.Items = <
         item
           Description = 'Hasta Kay'#305't'
@@ -1653,6 +1651,7 @@ object GirisForm: TGirisForm
       ParentFont = False
       Properties.Alignment.Horz = taCenter
       Properties.Alignment.Vert = taVCenter
+      Properties.ClearKey = 46
       Properties.Items = <
         item
           Description = 'Aktif'
@@ -1690,6 +1689,7 @@ object GirisForm: TGirisForm
       ParentFont = False
       Properties.Alignment.Horz = taCenter
       Properties.Alignment.Vert = taVCenter
+      Properties.ClearKey = 46
       Properties.Items = <
         item
           Description = 'Hemodiyaliz'
@@ -1752,6 +1752,7 @@ object GirisForm: TGirisForm
       ParentFont = False
       Properties.Alignment.Horz = taCenter
       Properties.Alignment.Vert = taVCenter
+      Properties.ClearKey = 46
       Properties.Items = <
         item
           Description = 'Aktif '#350'irket'
