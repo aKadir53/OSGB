@@ -208,3 +208,5 @@ eðitim sertifika baskýsý için taslak gönderecek
 
 kullanýcý kartlarýna kullanýcý adýmý deðiþtir düðmesi eklenebilir.
 diðer veritabanýna güncellenmesi gereken tablolara (formcaption, menuIslem, modulIslem vs) trigger eklenip güncelleme paketi programýna atýlacak sql scriptleri ürettirilebilir. güncelleme pakedine atarken ilgili trigger kapatýlýp atýlýr ve gittiði yerde trigger tetiklenmez. baþka veritabanlarýndan yapýlan müdahaleler de görülmüþ olur.
+
+personel hasta listesinde diyabet baþlýklý sütunun adýný kronik hastalýk yapýp sp'deki mantýðýný da alanýn içinde tek bir tane bile 1 varsa dolu getirecek þekilde deðiþtireceðiz
