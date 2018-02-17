@@ -6,7 +6,8 @@ uses
   DosyadanpaketOlustur in 'DosyadanpaketOlustur.pas' {frmDosyadanPaket},
   kadir in 'kadir.pas',
   data_model1 in 'data_model1.pas' {DATALAR: TDataModule},
-  NThermo in '..\NThermo.pas' {NThermoDlgFrm};
+  NThermo in '..\NThermo.pas' {NThermoDlgFrm},
+  TransUtils in '..\TransUtils.pas';
 
 {$R *.res}
 

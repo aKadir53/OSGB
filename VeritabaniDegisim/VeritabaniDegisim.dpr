@@ -4,7 +4,8 @@ uses
   Vcl.Forms,
   UAnaForm in 'Units\UAnaForm.pas' {AnaForm},
   UGenel in 'Units\UGenel.pas',
-  NThermo in '..\NThermo.pas' {NThermoDlgFrm};
+  NThermo in '..\NThermo.pas' {NThermoDlgFrm},
+  TransUtils in '..\TransUtils.pas';
 
 {$R *.res}
 

@@ -194,3 +194,19 @@ adoconnection2 kapat aç yapabilir miyiz ?
 
 isg katip excel aktarimina sgk sicil il deðerinden tesis kodu ayarlamasý eklenebilir.
 personel kategori þeysi gibi özel ilgi isteyen string alanlar için foreign key baðlantýlý deðerler tablosu oluþturup, çevrim deðer deðeri ekleyip, bu deðer üzerinden çalýþtýrabiliriz. Örnek: iþyeri hekimi, iþ yeri hekimi hepsinin çevrim tipi 1 olur. a sýnýfý iþ güvenliði uzmaný 2, b sýnýfý 3... gibi...
+peryodik muayene seçildiðinde diðer adýmdan yap ikazý
+muayene düzenle'de girilen protokol numarasý, þube kartýna yazýlabilir mi ? onay sorusu ile olabilir.
+program bir bilgisayarda ilk kez çalýþtýrýldýðýnda demo bilgilerinin dolu olmasý onay sorusuna baðlanabilir.
+reçete imzala gönder yaparken reçete doktoru ile user doktoru farklý ise uyarý ver
+
+uzmanlar osgb hülya haným:
+aþý kartlarýna aþý planý ekledik bir personele ileri tarihli aþý girdik, tarih yaklaþýnca uyarý verecek mi, durum alaný ne iþe yarýyor, uygulama tarihi aþýnýn yapýldýðý tarih sanýrým
+kalp, þeker hastasý gibi risk grubu yüksek hastalarýn belirgin gözükmesi.
+peryodik muayene, aþý vb iþlemlerin liste ilaveten programa giriþte alarm þeklinde gözükmesi
+çok tehlikelilerde yýlda 1, tehlikelilerde 2 yýlda 1 az tehlikelilerde 3 yýlda bir verilmesi gereken eðitimlerin de alarm ile bildirilmesi.
+eðitim sertifika baskýsý için taslak gönderecek
+
+kullanýcý kartlarýna kullanýcý adýmý deðiþtir düðmesi eklenebilir.
+diðer veritabanýna güncellenmesi gereken tablolara (formcaption, menuIslem, modulIslem vs) trigger eklenip güncelleme paketi programýna atýlacak sql scriptleri ürettirilebilir. güncelleme pakedine atarken ilgili trigger kapatýlýp atýlýr ve gittiði yerde trigger tetiklenmez. baþka veritabanlarýndan yapýlan müdahaleler de görülmüþ olur.
+
+personel hasta listesinde diyabet baþlýklý sütunun adýný kronik hastalýk yapýp sp'deki mantýðýný da alanýn içinde tek bir tane bile 1 varsa dolu getirecek þekilde deðiþtireceðiz
