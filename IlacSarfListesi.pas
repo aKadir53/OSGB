@@ -224,9 +224,9 @@ begin
                 sql := 'IF EXISTS (SELECT * FROM ilacListesi WHERE barkod = ' + QuotedStr(Eklenenler.fieldbyname('ETKENMADDE').AsString) + ')' +
                         ' BEGIN ' +
                         '  UPDATE ilacListesi ' +
-                        '  SET kulYol = ' + QuotedStr(Eklenenler.fieldbyname('Kyolu').AsString) + ',' +
-                        '  ICD = ' + QuotedStr(Eklenenler.fieldbyname('tani').AsString) +
-                        '  where barkod = ' + QuotedStr(Eklenenler.fieldbyname('ETKENMADDE').AsString) +
+                        '  SET kulYol = ' + SQLValue(Eklenenler.fieldbyname('Kyolu').AsString) + ',' +
+                        '  ICD = ' + SQLValue(Eklenenler.fieldbyname('tani').AsString) +
+                        '  where barkod = ' + SQLValue (Eklenenler.fieldbyname('ETKENMADDE').AsString) +
                         ' END';
                 datalar.QueryExec(ado,sql);
 
