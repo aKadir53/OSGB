@@ -300,7 +300,7 @@ var
 begin
   url := (datalar.receteURL);
   if not CheckReceteStatus (True, False, True, True, True) then Exit;
-  sql := 'sp_HastaReceteToXML_Imzasiz ' + ADO_Recete.FieldByName('id').AsString;
+  sql := 'exec sp_HastaReceteToXML_Imzasiz ' + ADO_Recete.FieldByName('id').AsString;
   QuerySelect(sql);
 
 
