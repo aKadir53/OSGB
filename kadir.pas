@@ -1014,8 +1014,8 @@ begin
   try
     ado := TADOQuery.Create(nil);
     try
-      sql := 'update ilacListesi set ICD = ' + QuotedStr(TaniKodu) +
-             ',kulYol = ' + kulYol +
+      sql := 'update ilacListesi set ICD = ' + SQLValue(TaniKodu) +
+             ',kulYol = ' + SQLValue(kulYol) +
              ',doz = ' +  doz +
              ',adet = ' + adet +
              ' where barkod = ' + QuotedStr(barkod);
