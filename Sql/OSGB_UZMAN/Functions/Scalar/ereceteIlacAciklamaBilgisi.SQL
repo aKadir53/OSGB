@@ -9,8 +9,8 @@ declare @ilacAck varchar(500)
 
 	select @ilacAck = @ilacAck +				  
 	'<ereceteIlacAciklamaBilgisi>'+
-	'<aciklama>'+ ia.aciklama + '</aciklama>'+
-	'<aciklamaTuru>'+ ia.aciklamaTip +'</aciklamaTuru>'+
+	'<aciklama>'+ dbo.PrepareXMLValue (ia.aciklama) + '</aciklama>'+
+	'<aciklamaTuru>'+ dbo.PrepareXMLValue (ia.aciklamaTip) +'</aciklamaTuru>'+
 	'</ereceteIlacAciklamaBilgisi>'				  
 	from ReceteIlacAciklama ia			  
 	where ia.receteDetayId = @receteDetayId

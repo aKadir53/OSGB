@@ -21,20 +21,20 @@ BEGIN
 
 	select 
 	        @receteBaslik = 
-			'<protokolNo>'+ isnull(r.protokolNo,'0') +'</protokolNo>'+
+			'<protokolNo>'+ dbo.PrepareXMLValue (isnull(r.protokolNo,'0')) +'</protokolNo>'+
 			'<provizyonTipi>'+'1'+'</provizyonTipi>'+
-			'<receteAltTuru>'+ r.receteAltTur +'</receteAltTuru>'+
+			'<receteAltTuru>'+ dbo.PrepareXMLValue (r.receteAltTur) +'</receteAltTuru>'+
 			'<receteTarihi>'+ dbo.fn_FormattedTarih('DD.MM.YYYY',r.tarih) +'</receteTarihi>'+
-			'<receteTuru>'+ r.receteTur +'</receteTuru>'+
-			 case when isnull(g.TakýpNo,'') = '' then '<takipNo/>' else '<takipNo>'+ isnull(g.TakýpNo,'') +'</takipNo>' end +
-			'<tcKimlikNo>'+ h.TCKIMLIKNO +'</tcKimlikNo>'+
-			'<tesisKodu>'+ d.Tesiskodu +'</tesisKodu>'+
+			'<receteTuru>'+ dbo.PrepareXMLValue (r.receteTur) +'</receteTuru>'+
+			 case when isnull(g.TakýpNo,'') = '' then '<takipNo/>' else '<takipNo>'+ dbo.PrepareXMLValue (isnull(g.TakýpNo,'')) +'</takipNo>' end +
+			'<tcKimlikNo>'+ dbo.PrepareXMLValue (h.TCKIMLIKNO) +'</tcKimlikNo>'+
+			'<tesisKodu>'+ dbo.PrepareXMLValue (d.Tesiskodu) +'</tesisKodu>'+
 			'<seriNo>'+'1'+'</seriNo>'+
-			'<doktorBransKodu>'+ d.bransKodu +'</doktorBransKodu>'+
-			'<doktorSertifikaKodu>'+ isnull(d.sertifika,'0') +'</doktorSertifikaKodu>' +
+			'<doktorBransKodu>'+ dbo.PrepareXMLValue (d.bransKodu) +'</doktorBransKodu>'+
+			'<doktorSertifikaKodu>0</doktorSertifikaKodu>' +
 		--	'<doktorAdi/>'+
 		--	'<doktorSoyadi/>'+
-			'<doktorTcKimlikNo>'+ d.tcKimlikNo + '</doktorTcKimlikNo>',
+			'<doktorTcKimlikNo>'+ dbo.PrepareXMLValue (d.tcKimlikNo) + '</doktorTcKimlikNo>',
 			@doktorTc = d.tcKimlikNo,
 			@user = d.eReceteKullanici,
 			@sifre = d.eReceteSifre,
@@ -52,13 +52,13 @@ BEGIN
 	        @receteIlacBilgisi = @receteIlacBilgisi +
 				'<ereceteIlacBilgisi>'+
 				'<adet>' + cast(rd.adet as varchar) +'</adet>'+
-				'<barkod>' +rd.ilacKodu +'</barkod>'+
-				'<ilacAdi>'+ rd.ilacAdi +'</ilacAdi>'+
+				'<barkod>' +dbo.PrepareXMLValue (rd.ilacKodu) +'</barkod>'+
+				'<ilacAdi>'+ dbo.PrepareXMLValue (rd.ilacAdi) +'</ilacAdi>'+
 				'<kullanimDoz1>'+ cast(rd.kullanimAdet2 as varchar) +'</kullanimDoz1>'+
-				'<kullanimPeriyotBirimi>' + kullanZamanUnit  + '</kullanimPeriyotBirimi>'+
-				'<kullanimSekli>'+ rd.kullanimYolu +'</kullanimSekli>'+
+				'<kullanimPeriyotBirimi>' + dbo.PrepareXMLValue (kullanZamanUnit)  + '</kullanimPeriyotBirimi>'+
+				'<kullanimSekli>'+ dbo.PrepareXMLValue (rd.kullanimYolu) +'</kullanimSekli>'+
 				'<kullanimDoz2>'+ cast(rd.kullanimAdet as varchar) +'</kullanimDoz2>'+
-				'<kullanimPeriyot>'+ rd.kullanimZaman +'</kullanimPeriyot>'+
+				'<kullanimPeriyot>'+ dbo.PrepareXMLValue (rd.kullanimZaman) +'</kullanimPeriyot>'+
                 isnull(dbo.ereceteIlacAciklamaBilgisi(rd.id),'') +
 				'</ereceteIlacBilgisi>'	
 	from recete r
@@ -71,8 +71,8 @@ BEGIN
 	select 
 	        @receteTaniBilgisi = @receteTaniBilgisi +
 			'<ereceteTaniBilgisi>'+
-			'<taniAdi>'+ rd.tani +'</taniAdi>'+
-			'<taniKodu>'+ rd.taniKodu +'</taniKodu>'+
+			'<taniAdi>'+ dbo.PrepareXMLValue (rd.tani) +'</taniAdi>'+
+			'<taniKodu>'+ dbo.PrepareXMLValue (rd.taniKodu) +'</taniKodu>'+
 			'</ereceteTaniBilgisi>'
 	
 	from recete r
@@ -84,8 +84,8 @@ BEGIN
 	select 
 	        @receteAck = @receteAck +
 				'<ereceteAciklamaBilgisi>'+
-				'<aciklama>'+ rd.aciklama +'</aciklama>'+
-				'<aciklamaTuru>'+ rd.aciklamaTip +'</aciklamaTuru>'+
+				'<aciklama>'+ dbo.PrepareXMLValue (rd.aciklama) +'</aciklama>'+
+				'<aciklamaTuru>'+ dbo.PrepareXMLValue (rd.aciklamaTip) +'</aciklamaTuru>'+
 				'</ereceteAciklamaBilgisi>'	
 	from recete r
 	left JOIN ReceteAciklama rd ON rd.ReceteID = r.id	
