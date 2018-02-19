@@ -1243,13 +1243,13 @@ begin
       begin
         Application.ProcessMessages;
          sql := 'insert into ilacListesi (barkod,ilacAdi,sgkilacKodu,ambalajMiktar,tekDozMiktar,aktif,ReceteTip) ' +
-                 ' values(' + QuotedStr(inttostr(IlacCvp.ilacListesi[x].barkod)) + ',' +
-                              QuotedStr(IlacCvp.ilacListesi[x].ilacAdi) + ',' +
+                 ' values(' + SQLValue(inttostr(IlacCvp.ilacListesi[x].barkod)) + ',' +
+                              SQLValue(IlacCvp.ilacListesi[x].ilacAdi) + ',' +
                               inttostr(IlacCvp.ilacListesi[x].sgkIlacKodu) + ',' +
                               floattostr(IlacCvp.ilacListesi[x].ambalajMiktari) + ',' +
                               FloatToStr(IlacCvp.ilacListesi[x].tekDozMiktari) + ',' +
                               ifThen(aktif = 'P','0','1') + ',' +
-                              QuotedStr(Tip) + ')';
+                              SQLValue(Tip) + ')';
          datalar.QueryExec(ado,sql);
          pr.Position := pr.Position + 1;
       end; // for end;
