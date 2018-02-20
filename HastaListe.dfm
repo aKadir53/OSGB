@@ -194,7 +194,8 @@ object frmHastaListe: TfrmHastaListe
           Width = 38
         end
         object ListeColumn7: TcxGridDBColumn
-          DataBinding.FieldName = 'Diabet'
+          Caption = 'Kronik Hastal'#305'k'
+          DataBinding.FieldName = 'KronikHastalik'
           PropertiesClassName = 'TcxImageComboBoxProperties'
           Properties.Images = DATALAR.imag24png
           Properties.Items = <
