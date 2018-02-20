@@ -11,7 +11,7 @@ end
 
 if @sube <> ''
 begin
-    select h.dosyaNo, h.SirketKod, h.CINSIYETI, h.MEDENI, h.HASTAADI, h.HASTASOYADI, h.TCKIMLIKNO, h.BASLANGIC, 
+    select h.dosyaNo, h.SirketKod, h.CINSIYETI, h.MEDENI, h.HASTAADI, h.HASTASOYADI, h.TCKIMLIKNO, h.BASLANGIC, h.Birim Birim_1, h.Bolum Bolum_1, h.Sube Sube_1, h.EV_TEL1, 
     h.MuayenePeryot, 
     (case when isnull(diger,'') = '' then '0' else '1' end) ozeldurum , 
     (case when (Substring (h.GELHAST, 6, 1) = '1' OR SUBSTRING (h.GELHAST, 8, 1) = '1') THEN '1' ELSE '' END) Diabet,
@@ -45,7 +45,7 @@ end
 
 if (@sube = '') or (@firma = '')
 begin
-    select h.dosyaNo, h.SirketKod, h.CINSIYETI, h.MEDENI, h.HASTAADI, h.HASTASOYADI, h.TCKIMLIKNO, h.BASLANGIC, 
+    select h.dosyaNo, h.SirketKod, h.CINSIYETI, h.MEDENI, h.HASTAADI, h.HASTASOYADI, h.TCKIMLIKNO, h.BASLANGIC, h.Birim Birim_1, h.Bolum Bolum_1, h.Sube Sube_1, h.EV_TEL1, 
     h.MuayenePeryot, 
     (case when isnull(diger,'') = '' then '0' else '1' end) ozeldurum , 
     (case when (Substring (h.GELHAST, 6, 1) = '1' OR SUBSTRING (h.GELHAST, 8, 1) = '1') THEN '1' ELSE '' END) Diabet,
