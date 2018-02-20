@@ -2,32 +2,29 @@ BEGIN TRAN
 GO
 ALTER PROCEDURE [dbo].[sp_frmDoktorPersonelListesi] @firma varchar(10) = '',@ap int = 1,@doktor varchar(4),@sube varchar(500) = ''
 AS
-if @sube = ''
-begin
-  select @sube = @sube + ',' + subeKod from SIRKET_SUBE_TNM where sirketKod = @firma
-end
-select h.Sube,  h.*,(case when isnull(diger,'') = '' then '0' else '1' end) ozeldurum , 
-(case when (Substring (h.GELHAST, 6, 1) = '1' OR SUBSTRING (h.GELHAST, 8, 1) = '1') THEN '1' ELSE '' END) Diabet,
-(case when isnull(AntiHbs,'') = '' THEN '0' ELSE AntiHbs END) 'AntiHbs',
-IK.ADI il,ILCK.ADI ilce,MK.ADI mahalle,dbo.fn_yasTarih(h.doGUMTARIHI,getdate()) yas, 
-
-(select max(cast(BHDAT as datetime)) from gelisler where dosyaNo = h.dosyaNo and TEDAVITURU = '2') EnsonkiPeryodikMuayeneTarihi,
-isnull(h.MuayenePeryot,0) + (select max(cast(BHDAT as datetime)) from gelisler where dosyaNo = h.dosyaNo and TEDAVITURU = '2') SonrakiPeryodikMuayeneTarihi,
-isnull(h.MuayenePeryot,0) - 
-isnull(DATEDIFF(D,(select max(cast(BHDAT as datetime)) from gelisler where dosyaNo = h.dosyaNo and TEDAVITURU = '2'),getdate()),0) MuayeneKalanGun,
-h.HASTAADI+ ' '+h.HASTASOYADI ADI , s.tanimi,BASLANGICdt iseBaslama,h.sube Sube,sb.subeTanim subeTanim
-from Personelkart h
-left join SIRKETLER_TNM s on s.SirketKod = h.SirketKod
-left join SIRKET_SUBE_TNM sb on sb.sirketKod = h.SirketKod and sb.subeKod = h.sube
- left join Kurumlar k on k.kurum = h.kurum
- left join SKRS_IL_KODLARI IK on Ik.KODU = h.EV_SEHIR
- left join SKRS_ILCE_KODLARI ILCK on ILCK.KODU = H.EV_ILCE
- left join SKRS_MAHALLE_KODLARI MK on MK.KODU = H.EV_MAHALLE
-where h.aktif = cast (@ap as varchar (1)) 
-  and h.sirketKod like  '%' + @firma + '%' 
-  and sb.subeKod in (select datavalue from dbo.strtotable(@sube,',')) 
-  and sb.subeDoktor = @doktor
-order by h.SirketKod,sb.subeKod,h.HASTAADI,h.HASTASOYADI
+  if @sube = ''
+  begin
+    select @sube = @sube + ',' + subeKod from SIRKET_SUBE_TNM where sirketKod = @firma
+  end
+  select 
+    h.dosyaNo, h.SirketKod, h.CINSIYETI, h.MEDENI, h.HASTAADI, h.HASTASOYADI, h.TCKIMLIKNO, h.BASLANGIC, h.Birim Birim_1, h.Bolum Bolum_1, h.Sube Sube_1, h.EV_TEL1, 
+    h.MuayenePeryot, 
+    h.ozeldurum , 
+    h.Diabet,
+	h.KronikHastalik,
+    h.AntiHbs,
+    h.il,h.ilce,h.mahalle,h.yas, 
+    h.DTARIHI ,
+    h.EnsonkiPeryodikMuayeneTarihi,
+    h.SonrakiPeryodikMuayeneTarihi,
+    h.MuayeneKalanGun,
+    h.ADI , h.tanimi,h.iseBaslama,h.sube Sube,h.subeTanim,h.doktorKod,h.doktor,h.birim,h.bolum,h.tetkikIstemGrupSablon, h.Kilo
+  from dbo.PersonelKartListeView h
+  where h.aktif = cast (@ap as varchar (1)) 
+    and h.sirketKod like  '%' + @firma + '%' 
+    and h.sube in (select datavalue from dbo.strtotable(@sube,',')) 
+    and h.DoktorKod= @doktor
+  order by h.SirketKod,h.sube,h.HASTAADI,h.HASTASOYADI
 GO
 exec sp_vw_sys_upd 'P ', 'dbo', 'sp_frmDoktorPersonelListesi'
 GO
