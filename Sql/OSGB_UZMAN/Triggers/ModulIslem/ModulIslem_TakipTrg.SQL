@@ -22,9 +22,8 @@ BEGIN
   select 
     @TableName, @KeyFields, dbo.fn_SQLStrValueForString (Modul, 0) + ',' + dbo.fn_SQLStrValueForString (Islem, 0), 'I',
     'IF NOT EXISTS (SELECT 1 from dbo.ModulIslem where Modul' + dbo.fn_SQLStrValueForString (Modul, 1) + ' and Islem' + dbo.fn_SQLStrValueForString (Islem, 1) +')'+char (13) + char (10) + 
-    'insert into dbo.ModulIslem (KAYITID, Modul, Islem, Kapsam)'+char (13) + char (10) + 
-    'Select '+ dbo.fn_SQLIntValueForString (KAYITID, 0) +', ' + 
-    dbo.fn_SQLStrValueForString (Modul, 0) +', ' + 
+    'insert into dbo.ModulIslem (Modul, Islem, Kapsam)'+char (13) + char (10) + 
+    'Select '+ dbo.fn_SQLStrValueForString (Modul, 0) +', ' + 
     dbo.fn_SQLStrValueForString (Islem, 0) +', ' + 
     dbo.fn_SQLStrValueForString (Kapsam, 0)
   from inserted i
@@ -33,22 +32,21 @@ BEGIN
   Insert into dbo.GuncellemeTakipScript (TableName, KeyFields, KeyValues, Mode, Script)
   select @TableName, @KeyFields, dbo.fn_SQLStrValueForString (i.Modul, 0) + ',' + dbo.fn_SQLStrValueForString (i.Islem, 0), 'U',
     'Update ModulIslem'+char (13) + char (10) +'  SET '+char (13) + char (10) + '    ' +
-    REVERSE (SUBSTRING (REvERSE (case when dbo.fn_SQLIntValueForString (d.KAYITID, 0) <> dbo.fn_SQLIntValueForString (i.KAYITID, 0) then 'KAYITID = ' + dbo.fn_SQLIntValueForString (i.KAYITID, 0) + ',' else '' end +
-    case when dbo.fn_SQLStrValueForString (d.Kapsam, 0) <> dbo.fn_SQLStrValueForString (i.Kapsam, 0) then 'Kapsam = ' + dbo.fn_SQLStrValueForString (i.Kapsam, 0) + ',' else '' end), 2, 8000)) +
+    REVERSE (SUBSTRING (REvERSE (case when dbo.fn_SQLStrValueForString (d.Kapsam, 0) <> dbo.fn_SQLStrValueForString (i.Kapsam, 0) then 'Kapsam = ' + dbo.fn_SQLStrValueForString (i.Kapsam, 0) + ',' else '' end), 2, 8000)) +
     char (13) + char (10) + 'WHERE Modul' + dbo.fn_SQLStrValueForString (i.Modul, 1) + ' and Islem' + dbo.fn_SQLStrValueForString (i.Islem, 1) 
   from inserted i
   inner join deleted d on d.Modul = i.Modul and d.Islem = i.Islem
   inner join 
     (SELECT Modul,Islem
      FROM
-     (select KAYITID, Modul, Islem, Kapsam
+     (select Modul, Islem, Kapsam
       from
-      (select -1 x, KAYITID, Modul, Islem, Kapsam
+      (select -1 x, Modul, Islem, Kapsam
        from deleted
        union all
-       select 1 x, KAYITID, Modul, Islem, Kapsam
+       select 1 x, Modul, Islem, Kapsam
        from inserted) U
-      group by KAYITID, Modul, Islem, Kapsam
+      group by Modul, Islem, Kapsam
       having sum (x) <> 0)w
      group by Modul,Islem) u on u.Modul = i.Modul and u.Islem = i.Islem
   set nocount off
