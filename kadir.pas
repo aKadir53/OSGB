@@ -396,6 +396,8 @@ procedure KademeliStoredProcCalistir (const pSPName : String; const pParameters 
 function SQLValue (const sValue: String): String;
 function PersonelPeriyodikTetkikIstemleri(grup : string) : string;
 procedure PersonelTetkikIstemleri(tarih,tarih2 : string);
+procedure YeniRecete(islem: Integer ; _dosyaNo_,_gelisNo_,_MuayeneProtokolNo_ : string);
+
 
 const
   _YTL_ = 'YTL';
@@ -507,6 +509,62 @@ begin
   End;
 
 end;
+
+
+procedure YeniRecete(islem: Integer ; _dosyaNo_,_gelisNo_,_MuayeneProtokolNo_ : string);
+var
+    sql : string;
+    ado , adoD : TADOQuery;
+    receteNo , songel : string;
+    ack : TStringList;
+    j : integer;
+begin
+    datalar.YeniRecete.doktor := datalar.doktorKodu;
+    datalar.YeniRecete.doktorAdi := doktorAdi(datalar.doktorKodu);
+    datalar.YeniRecete.protokolNo := _MuayeneProtokolNo_; //EnsonSeansProtokolNo(_firmaKod_,_sube_);
+    datalar.YeniRecete.Tarih := datetostr(date);
+    datalar.YeniRecete.ReceteTuru := '1';
+    datalar.YeniRecete.ReceteAltTuru := '1';
+
+    if mrYes = ShowPopupForm('Yeni Reçete',islem)
+    then begin
+       if islem = ReceteYeni
+       then begin
+         datalar.ADOConnection2.BeginTrans;
+         ado := TADOQuery.Create(nil);
+         ado.Connection := datalar.ADOConnection2;
+         try
+           sql := 'insert into Recete (dosyaNo,gelisNo,tarih,ReceteTur,ReceteAltTur,doktor,ProtokolNo,ereceteNo,WanIP) ' +
+                  ' values ( ' + QuotedStr(_dosyaNo_) + ',' +
+                                 _gelisNo_ + ',' +
+                                 QuotedStr(NoktasizTarih(datalar.YeniRecete.Tarih)) + ',' +
+                                 QuotedStr(datalar.YeniRecete.ReceteTuru) + ',' +
+                                 QuotedStr(datalar.YeniRecete.ReceteAltTuru) + ',' +
+                                 QuotedStr(datalar.YeniRecete.doktor) + ',' +
+                                 QuotedStr(datalar.YeniRecete.protokolNo) + ',' +
+                                 QuotedStr('0000') + ',' +
+                                 QuotedStr(datalar.WanIp) + ') select @@IDENTITY id';
+           datalar.QuerySelect(ado,sql);
+
+           sql := 'insert into ReceteTani (receteId,TaniKodu,Tani) ' +
+                  'select '+ ado.Fields[0].AsString +' ,ICD_KODU,ICD_NAME from anamnez_ICD where dosyaNO = ' + QuotedStr(_dosyaNo_) + ' and gelisNo = ' + _gelisNo_;
+           datalar.QueryExec(sql);
+           datalar.ADOConnection2.CommitTrans;
+           ado.free;
+         except on e : Exception do
+           begin
+            datalar.ADOConnection2.RollbackTrans;
+            ado.free;
+            ShowMessageSkin(e.Message,'','','info');
+           end;
+         end;
+
+
+
+       end;
+    end;
+end;
+
 
 
 function PersonelPeriyodikTetkikIstemleri(grup : string) : string;

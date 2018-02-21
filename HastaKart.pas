@@ -1568,8 +1568,16 @@ begin
  -51 : begin
             GirisFormRecord.F_dosyaNO_ := dosyaNO.Text;
             GirisFormRecord.F_gelisNO_ := ADO_Gelisler.FieldByName('gelisNo').AsString;
-            F := FormINIT(TagfrmAnamnez,GirisFormRecord,ikEvet,'');
+
+            case ADO_Gelisler.FieldByName('TEDAVITURUX').AsInteger of
+               3 : F := FormINIT(TagfrmAnamnez,GirisFormRecord,ikEvet,'');
+           1,2,5 : F := FormINIT(TagfrmIseGiris,GirisFormRecord,ikHayir,'');
+            end;
+
+
             if F <> nil then F.ShowModal;
+
+
        end;
 
  130 : begin

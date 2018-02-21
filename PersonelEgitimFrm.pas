@@ -42,6 +42,7 @@ type
        var AllowChange: Boolean);
     procedure SayfalarChange(Sender: TObject);
     procedure cxButtonCClick(Sender: TObject);
+    procedure PropertiesEditValueChanged(Sender: TObject);
   private
     { Private declarations }
   protected
@@ -65,6 +66,14 @@ implementation
 uses StrUtils;
 
 {$R *.dfm}
+
+procedure TfrmPersonelEgitim.PropertiesEditValueChanged(Sender: TObject);
+begin
+  TcxCheckGroupKadir(FindComponent('Egitimkod')).Clear;
+  TcxCheckGroupKadir(FindComponent('Egitimkod')).Filter :=
+  ' grup = ' + vartoStr(TcxImageComboKadir(FindComponent('EgitimTuru')).EditValue);
+end;
+
 procedure TfrmPersonelEgitim.ButtonClick(Sender: TObject);
 var
   i : Integer;
@@ -191,8 +200,9 @@ end;
 procedure TfrmPersonelEgitim.FormCreate(Sender: TObject);
 var
   List : TListeAc;
-  kombo ,sirketlerx ,sirketlerxx: TcxImageComboKadir;
+  kombo , kombo1 ,sirketlerx ,sirketlerxx: TcxImageComboKadir;
   dateEdit: TcxDateEditKadir;
+  Egitimler : TcxCheckGroupKadir;
 begin
   Tag := TagfrmPersonelEgitim;
   ClientHeight := formYukseklik;
@@ -205,8 +215,8 @@ begin
   List := TListeAc.Create(nil);
 
   List.Table :=
-    '(Select e.id, e.EgitimKod, e.BaslamaTarihi, et.tanimi, s.Tanimi SirketTanimi '+
-    'from Egitimler e inner join Egitim_Tnm et on et.Kod = e.EgitimKod '+
+    '(Select e.id, e.EgitimKod, e.BaslamaTarihi, e.EgitimTuru tanimi, s.Tanimi SirketTanimi  '+
+    'from Egitimler e ' + //e inner join Egitim_Tnm et on et.Kod = e.EgitimKod '+
     'left outer join SIRKETLER_TNM s on s.SirketKod = e.SirketKod) Egitimler';
 
   List.kolonlar.Add('id');// := Ts;
@@ -242,6 +252,7 @@ begin
   sirketlerx.Filter := SirketComboFilter;
   setDataStringKontrol(self,sirketlerx,'SirketKod','Þirket',Kolon1,'',250,0,alNone,'');
 
+  (*
   //þube kodu ekle
   kombo := TcxImageComboKadir.Create(self);
   kombo.Conn := Datalar.ADOConnection2;
@@ -252,6 +263,8 @@ begin
   kombo.Filter := '';
   OrtakEventAta(kombo);
   setDataStringKontrol(self,kombo,'Egitimkod','Eðitim',kolon1,'',145);
+    *)
+
 
   dateEdit := TcxDateEditKadir.Create(self);
   dateEdit.ValueTip := tvDate;
@@ -273,13 +286,32 @@ begin
   OrtakEventAta(kombo);
   setDataStringKontrol(self,kombo,'Egitimci','Eðitimci',kolon1,'',200);{}
   //setDataString(self,'Egitimci','Eðitimci',Kolon1,'',100);
-  kombo := TcxImageComboKadir.Create(self);
-  kombo.Conn := nil;
-  kombo.BosOlamaz := True;
-  kombo.ItemList := '0;Ýç Eðitim,1;Dýþ Eðitim';
-  kombo.Filter := '';
-  OrtakEventAta(kombo);
-  setDataStringKontrol(self,kombo,'EgitimTuru','Eðitim Türü',kolon1,'',120);
+
+  kombo1 := TcxImageComboKadir.Create(self);
+  kombo1.Conn := datalar.ADOConnection2;
+  kombo1.TableName := 'egitimGrup_tnm';
+  kombo1.DisplayField := 'tanimi';
+  kombo1.ValueField := 'kod';
+  kombo1.BosOlamaz := True;
+  kombo1.Filter := '';
+  OrtakEventAta(kombo1);
+  setDataStringKontrol(self,kombo1,'EgitimTuru','Eðitim Türü',kolon1,'',120);
+  TcxImageComboKadir(FindComponent('EgitimTuru')).Properties.OnEditValueChanged := PropertiesEditValueChanged;
+
+  Egitimler := TcxCheckGroupKadir.Create(self);
+  Egitimler.Properties.EditValueFormat := cvfIndices;//  cvfStatesString;
+  Egitimler.Properties.Columns := 6;
+  Egitimler.Alignment := alCenterCenter;
+  Egitimler.Conn := Datalar.ADOConnection2;
+  Egitimler.TableName := 'egitim_tnm';
+  Egitimler.ValueField := 'kod';
+  Egitimler.DisplayField := 'tanimi';
+  Egitimler.tumuSecili := False;
+  Egitimler.Filter := '';// grup = ' + ifThen(_value_ = '','0',_value_);
+  setDataStringKontrol(self,Egitimler,'Egitimkod','Eðitimler',kolon1,'',400,80);
+  Egitimler.Caption := '';
+
+
   //setDataStringC(self,'EgitimTuru','Eðitim Türü',Kolon1,'',100, 'Ýç Eðitim,Dýþ Eðitim,Diðer');
   setDataString(self,'EgitimYeri','Eðitim Yeri',Kolon1,'',100);
   setDataString(self,'SertifikaNo','Sertifika No.',Kolon1,'',100);

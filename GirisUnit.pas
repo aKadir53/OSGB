@@ -140,7 +140,7 @@ type
     procedure cxPanelButtonEnabled(yeni,kaydet,sil : boolean);
     procedure cxPanelButtonVisible(yeni,kaydet,sil : boolean);
     procedure Image2Click(Sender: TObject);
-    procedure PropertiesEditValueChanged(Sender: TObject);
+    procedure PropertiesEditValueChanged(Sender: TObject);virtual;
     procedure SayfaCaption(s1,s2,s3,s4,s5 : string;ActivePage : integer = 0);
     procedure FormResize(Sender: TObject);
     procedure SetFormID(const Value : integer);
@@ -807,7 +807,8 @@ begin
        (_obje_.ClassName = 'TcxDateEditKadir') or
        (_obje_.ClassName = 'TcxCheckGroup') or
        (_obje_.ClassName = 'TcxButton') or
-       (_obje_.ClassName = 'TcxGrid')
+       (_obje_.ClassName = 'TcxGrid') or
+       (_obje_.ClassName = 'TcxCheckGroupKadir')
       Then
         TControl(_obje_).Enabled := True;
 
@@ -846,7 +847,8 @@ begin
        (_obje_.ClassName = 'TcxDateEditKadir') or
        (_obje_.ClassName = 'TcxCheckGroup') or
        (_obje_.ClassName = 'TcxButton') or
-       (_obje_.ClassName = 'TcxGrid')
+       (_obje_.ClassName = 'TcxGrid') or
+       (_obje_.ClassName = 'TcxCheckGroupKadir')
       Then
         TControl(_obje_).Enabled := False;
   end;
@@ -1921,7 +1923,10 @@ begin
        (self.Components[i].ClassName = 'TcxCurrencyEdit') or
        (self.Components[i].ClassName = 'TcxDateEdit') or
        (self.Components[i].ClassName = 'TcxDateEditKadir') or
-       (self.Components[i].ClassName = 'TcxCheckGroup'))
+       (self.Components[i].ClassName = 'TcxCheckGroup') or
+       (self.Components[i].ClassName = 'TcxCheckGroupKadir')
+
+       )
        and (TcxTextEdit(self.Components[i]).Properties.ReadOnly = False)
     then begin
      if TcxCustomEdit(self.Components[i]).Tag = -100 then Continue;
@@ -1982,7 +1987,9 @@ begin
          (self.Components[i].ClassName = 'TcxCurrencyEdit') or
          (self.Components[i].ClassName = 'TcxDateEdit') or
          (self.Components[i].ClassName = 'TcxDateEditKadir') or
-         (self.Components[i].ClassName = 'TcxCheckGroup')
+         (self.Components[i].ClassName = 'TcxCheckGroup') or
+         (self.Components[i].ClassName = 'TcxCheckGroupKadir')
+
       then begin
         //_obje_ := nil;
         if TcxCustomEdit(self.Components[i]).Name = 'txtSifreTekrar' then Continue;

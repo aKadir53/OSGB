@@ -181,7 +181,7 @@ begin
    TagfrmSorgulamalar : Result := TfrmSorgulamalar;
    TagfrmSorguCalistir : Result := TfrmRaporCalistir;
    TagfrmIsKazasi : Result := TfrmIsKazasi;
-   TagfrmAnamnez : Result := TfrmAnamnez;
+   TagfrmAnamnez,TagfrmIseGiris : Result := TfrmAnamnez;
    TagfrmTetkikIstemSablon : Result := TfrmGrupDetayTanim;
    TagfrmDokumanYonetim : Result := TfrmDokumanYonetim;
 
@@ -226,7 +226,7 @@ begin
    TagfrmSorguCalistir : Result := frmRaporCalistir;
    TagfrmIsKazasi : Result := frmIsKazasi;
    TagfrmTedaviBilgisi : Result := frmTedaviBilgisi;
-   TagfrmAnamnez : Result := frmAnamnez;
+   TagfrmAnamnez,TagfrmIseGiris : Result := frmAnamnez;
    TagfrmHastaRecete : Result := frmHastaRecete;
    TagfrmHastaListe,TagfrmDoktorHastaListe : Result := frmHastaListe;
    TagfrmTetkikIstemSablon : Result := frmGrupDetayTanim;
@@ -290,7 +290,7 @@ begin
 
       TagfrmLabParametreleri : frmLabParams:= TfrmLabParams.Create(Tab);
       TagfrmLabKabul : frmLabaratuvarKabul := TfrmLabaratuvarKabul.Create(Tab);
-      TagfrmAnamnez : frmAnamnez := TfrmAnamnez.Create(Tab);
+      TagfrmAnamnez,TagfrmIseGiris : frmAnamnez := TfrmAnamnez.Create(Tab);
       TagfrmTetkikIstemSablon : frmGrupDetayTanim := TfrmGrupDetayTanim.Create(Tab);
       TagfrmDokumanYonetim : frmDokumanYonetim := TfrmDokumanYonetim.Create(Tab);
      else
@@ -374,7 +374,7 @@ begin
       TagfrmHizliKayitPersonel, TagfrmHizliKayitDisAktarimlar : frmHizliKayit := TfrmHizliKayit.Create(Tab);
       TagfrmSorgulamalar : frmSorgulamalar := TfrmSorgulamalar.Create(Tab);
       TagfrmSorguCalistir : frmRaporCalistir := TfrmRaporCalistir.Create(Tab);
-      TagfrmAnamnez : frmAnamnez := TfrmAnamnez.Create(Tab);
+      TagfrmAnamnez,TagfrmIseGiris : frmAnamnez := TfrmAnamnez.Create(Tab);
 
       TagfrmHastaListe,TagfrmDoktorHastaListe : frmHastaListe := TfrmHastaListe.Create(Tab);
       TagfrmPopupDBVerticalGridForm : frmPopupDBVerticalGridForm := TfrmPopupDBVerticalGridForm.Create(Tab);
@@ -447,7 +447,7 @@ begin
     TagfrmUpdate :  Application.CreateForm(TfrmUpdate ,frmUpdate );
     TagfrmSorgulamalar : Application.CreateForm(TfrmSorgulamalar, frmSorgulamalar);
     TagfrmSorguCalistir : Application.CreateForm(TfrmRaporCalistir, frmRaporCalistir);
-    TagfrmAnamnez : Application.CreateForm(TfrmAnamnez, frmAnamnez);
+    TagfrmAnamnez,TagfrmIseGiris : Application.CreateForm(TfrmAnamnez, frmAnamnez);
     TagfrmTedaviBilgisi : Application.CreateForm(TfrmTedaviBilgisi,frmTedaviBilgisi);
     TagfrmIsKazasi : Application.CreateForm(TfrmIsKazasi,frmIsKazasi);
     TagfrmTetkikIstemSablon : Application.CreateForm(TfrmGrupDetayTanim, frmGrupDetayTanim);
