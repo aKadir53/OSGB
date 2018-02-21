@@ -61,10 +61,10 @@ BEGIN
      FROM
      (select barkod, ilacAdi, sgkilacKodu, ambalajMiktar, tekDozMiktar, aktif, Sikkullan, ReceteTip, ICD, doz, adet, kulYol, Aciklama
       from
-      (select -1 x, barkod, ilacAdi, sgkilacKodu, ambalajMiktar, tekDozMiktar, aktif, Sikkullan, ReceteTip, ICD, doz, adet, kulYol, Aciklama
+      (select -1 x, barkod, ilacAdi, sgkilacKodu, ambalajMiktar, tekDozMiktar, aktif, Sikkullan, ReceteTip, IsNull (ICD, '') ICD, doz, adet, kulYol, Aciklama
        from deleted
        union all
-       select 1 x, barkod, ilacAdi, sgkilacKodu, ambalajMiktar, tekDozMiktar, aktif, Sikkullan, ReceteTip, ICD, doz, adet, kulYol, Aciklama
+       select 1 x, barkod, ilacAdi, sgkilacKodu, ambalajMiktar, tekDozMiktar, aktif, Sikkullan, ReceteTip, IsNull (ICD, '') ICD, doz, adet, kulYol, Aciklama
        from inserted) U
       group by barkod, ilacAdi, sgkilacKodu, ambalajMiktar, tekDozMiktar, aktif, Sikkullan, ReceteTip, ICD, doz, adet, kulYol, Aciklama
       having sum (x) <> 0)w
