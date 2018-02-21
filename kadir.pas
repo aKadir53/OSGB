@@ -6247,8 +6247,8 @@ begin
 
   sql := 'if not exists(select 1 from ModulIslem where Modul = ' + QuotedStr(pModul) +
           ' and Islem = ' + QuotedStr(pIslem) + ')' +
-         ' insert into ModulIslem(KAYITID,Modul,Islem) ' +
-         ' SELECT ISNULL ((SELECT MAX (KAYITID) FROM ModulIslem), 0) + 1,' +
+         ' insert into ModulIslem(Modul,Islem) ' +
+         ' SELECT ' +
                       QuotedStr(pModul) + ',' +
                       QuotedStr(pIslem);
   datalar.QueryExec(ado,sql);
