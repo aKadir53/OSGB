@@ -11,9 +11,10 @@ begin
     left (convert (varchar, E.BaslamaTarihi, 108),5) BaslamaSaati,
     st.Adres Adresi, st.Tel1, st.Tel2, st.Fax, st.yetkilimail EPosta, e.EgitimTuru, 
 	cast ('' as varchar (10)) SOZ, e.Sure SureSaat, et.tanimi EgitimAdi, e.BaslamaTarihi BaslamaZamani, pk.SirketKod, pk.dosyaNo,
-    pe.EgitimId
+    pe.EgitimId,EgitimKod,et.tanimi EgitimTuruAdi,
+	dbo.egitimCheckStateToTanim(EgitimKod,EgitimTuru) egitimTanimlari
   from dbo.Egitimler E
-  inner join dbo.Egitim_Tnm et on et.Kod = e.EgitimKod
+  inner join dbo.EgitimGrup_Tnm et on et.kod = e.EgitimTuru
   inner join dbo.Personel_Egitim pe on pe.EgitimID = e.id
   left join dbo.PersonelKart pk on pk.DosyaNo = pE.personelDosyaNo
   inner join dbo.SIRKETLER_TNM st on st.SirketKod = pk.SirketKod

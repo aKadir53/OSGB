@@ -65,6 +65,7 @@ object frmTedaviBilgisi: TfrmTedaviBilgisi
               'Salon 5')
             Properties.OnChange = cxSalonBilgisiPropertiesChange
             TabOrder = 0
+            ExplicitHeight = 21
             Width = 227
           end
         end
@@ -75,8 +76,6 @@ object frmTedaviBilgisi: TfrmTedaviBilgisi
           Height = 408
           Align = alClient
           TabOrder = 1
-          ExplicitLeft = 120
-          ExplicitTop = 54
           object cxGridHastaListesi: TcxGridDBTableView
             OnDblClick = cxGridHastaListesiDblClick
             OnFocusedRecordChanged = cxGridHastaListesiFocusedRecordChanged
@@ -137,6 +136,10 @@ object frmTedaviBilgisi: TfrmTedaviBilgisi
             Height = 434
             Align = alClient
             TabOrder = 0
+            ExplicitLeft = 2
+            ExplicitTop = -2
+            ExplicitWidth = 229
+            ExplicitHeight = 459
             object cxGridHastaGelis: TcxGridDBTableView
               OnFocusedRecordChanged = cxGridHastaGelisFocusedRecordChanged
               DataController.DataModeController.GridMode = True

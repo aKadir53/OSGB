@@ -555,6 +555,7 @@ Const
   TagfrmTetkikIstemSablon = 730;
   TagfrmHizliKayitDisAktarimlar = 740;
   TagfrmDokumanYonetim = 750;
+  TagfrmIseGiris = 760;
 
   ExceleGonder = 9997;
   SeansTarihiUpdate = 0;
