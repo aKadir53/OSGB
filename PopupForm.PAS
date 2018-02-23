@@ -581,7 +581,6 @@ inherited;
          TcxTextEdit(FindComponent('GozlemGrup')).EditValue := _SahaDenetimVeri_.GozlemGrubu;
 
 
-
          textEdit := TcxTextEdit.Create(self);
          textEdit.Name := 'Kullanici';
          textEdit.Properties.ReadOnly := True;
