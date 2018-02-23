@@ -78,7 +78,7 @@ var
 
   sql : String;
 implementation
-      uses Data_Modul,AnaUnit,HastaListe,HastaRecete,HastaTetkikEkle;
+      uses Data_Modul,AnaUnit,HastaListe,HastaRecete,HastaTetkikEkle,Anamnez;
 
 {$R *.dfm}
 
@@ -94,6 +94,7 @@ procedure TfrmTedaviBilgisi.cxGridHastaGelisFocusedRecordChanged(
   AFocusedRecord: TcxCustomGridRecord; ANewItemRecordFocusingChanged: Boolean);
 var
   dosyaNo,gelisNo,Tarih : string;
+  _tag_ : integer;
 begin
   inherited;
  // if ANewItemRecordFocusingChanged  then
@@ -106,13 +107,21 @@ begin
       self._provizyonTarihi_ := AdoHastaGelis.FieldByName('Tarih').AsString;
       self._MuayeneProtokolNo_ := AdoHastaGelis.FieldByName('PROTOKOLNO').AsString;
 
+      case AdoHastaGelis.FieldByName('TEDAVITURU').AsInteger of
+       3 : _tag_ := TagfrmAnamnez;
+   1,2,5 : _tag_ := TagfrmIseGiris;
+      end;
+
       case TfrmTedaviBilgisi(self).Tag of
         TagfrmHastaRecete :     begin
+                                  if Assigned(frmHastaRecete) then
+                                  begin
                                    frmHastaRecete._dosyaNO_ := self._dosyaNO_;
                                    frmHastaRecete._gelisNO_ := self._gelisNO_;
                                    frmHastaRecete._MuayeneProtokolNo_ := self._MuayeneProtokolNo_;
                                    frmHastaRecete.ReceteGetir(self._dosyaNO_,self._gelisNO_);
                                    frmHastaRecete._provizyonTarihi_ := self._provizyonTarihi_;
+                                  end;
                                 end;
 
         TagfrmHastaTetkikEkle : begin
@@ -122,19 +131,48 @@ begin
                                    frmHastaTetkikEkle.Sonuclar;
                                 end;
 
-        TagfrmAnamnez :         begin
-                                    Kolon2.Visible := False;
-                                    Kolon3.Visible := False;
-                                    Kolon4.Visible := False;
+ TagfrmAnamnez,TagfrmIseGiris : begin
 
-                                    ClientWidth := 850;
-                                    ClientHeight := 560;
-                                    cxPanel.Visible := True;
-                                    cxYeni.Visible := False;
-                                    cxIptal.Visible := False;
-                                    indexFieldName := 'dosyaNo = ' + _dosyaNO_ + ' and  gelisNo = ' + _gelisNo_ ;
-                                    yukle;
-                                    sqlRunLoad;
+                                  case _tag_ of
+                                     TagfrmAnamnez : begin
+                                                        frmAnamnez._dosyaNO_ := self._dosyaNO_;
+                                                        frmAnamnez._gelisNO_ := self._gelisNO_;
+                                                        frmAnamnez.Tag := TagfrmAnamnez;
+                                                        frmAnamnez.IseGirisMuayene.Visible := False;
+                                                        Kolon2.Visible := False;
+                                                        Kolon3.Visible := False;
+                                                        Kolon4.Visible := False;
+
+                                                        ClientWidth := 850;
+                                                        ClientHeight := 560;
+                                                        cxPanel.Visible := True;
+                                                        cxYeni.Visible := False;
+                                                        cxIptal.Visible := False;
+                                                        indexFieldName := 'dosyaNo = ' + _dosyaNO_ + ' and  gelisNo = ' + _gelisNo_ ;
+                                                        yukle;
+                                                        sqlRunLoad;
+                                                     end;
+                                     TagfrmIseGiris : begin
+                                                        frmAnamnez._dosyaNO_ := self._dosyaNO_;
+                                                        frmAnamnez._gelisNO_ := self._gelisNO_;
+                                                        frmAnamnez.Tag := TagfrmIseGiris;
+                                                        frmAnamnez.IseGirisMuayene.Dataset.Connection := datalar.ADOConnection2;
+                                                        frmAnamnez.IseGirisMuayene.Dataset.SQL.Text := 'sp_frmPersonelIseGirisMuayene ' + QuotedStr(_dosyaNO_)+ ',' +
+                                                                                                                           _gelisNO_ + ',' + QuotedStr('0');
+                                                        frmAnamnez.IseGirisMuayene.Dataset.Open;
+                                                        frmAnamnez.IseGirisMuayene.Dataset.AfterScroll := frmAnamnez.ADO_WebServisErisimAfterScroll;
+                                                        frmAnamnez.GridList.ViewData.Expand(true);
+                                                        frmAnamnez.IseGirisMuayene.Visible := True;
+                                                        frmAnamnez.IseGirisMuayene.Align := alClient;
+                                                        frmAnamnez.IseGirisMuayene.BringToFront;
+                                                        cxPanel.Visible := False;
+                                                        cxYeni.Visible := False;
+                                                        cxIptal.Visible := False;
+                                                      end;
+
+                                  end;
+
+
                                 end;
 
 

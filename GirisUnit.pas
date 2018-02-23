@@ -140,7 +140,7 @@ type
     procedure cxPanelButtonEnabled(yeni,kaydet,sil : boolean);
     procedure cxPanelButtonVisible(yeni,kaydet,sil : boolean);
     procedure Image2Click(Sender: TObject);
-    procedure PropertiesEditValueChanged(Sender: TObject);
+    procedure PropertiesEditValueChanged(Sender: TObject);virtual;
     procedure SayfaCaption(s1,s2,s3,s4,s5 : string;ActivePage : integer = 0);
     procedure FormResize(Sender: TObject);
     procedure SetFormID(const Value : integer);
@@ -195,7 +195,7 @@ type
     { Private declarations }
   public
     indexFieldName,TableName,_SqlInsert_,_SqlUpdate_,_SqlDelete_ : string;
-    _fieldsEdit_,_fields_ ,_fieldBaslik_,_fieldTips_,_fieldFormats_,_spSQL_ : string;
+    _fieldsEdit_,_fields_ ,_fieldBaslik_,_fieldTips_,_fieldFormats_,_spSQL_,_ICParams_ : string;
     indexFieldValue : string;
     sqlTip : sqlType;
    // _dosyaNo_,_gelisNo_,TakipNo,BasvuruNo : string;
@@ -807,7 +807,8 @@ begin
        (_obje_.ClassName = 'TcxDateEditKadir') or
        (_obje_.ClassName = 'TcxCheckGroup') or
        (_obje_.ClassName = 'TcxButton') or
-       (_obje_.ClassName = 'TcxGrid')
+       (_obje_.ClassName = 'TcxGrid') or
+       (_obje_.ClassName = 'TcxCheckGroupKadir')
       Then
         TControl(_obje_).Enabled := True;
 
@@ -846,7 +847,8 @@ begin
        (_obje_.ClassName = 'TcxDateEditKadir') or
        (_obje_.ClassName = 'TcxCheckGroup') or
        (_obje_.ClassName = 'TcxButton') or
-       (_obje_.ClassName = 'TcxGrid')
+       (_obje_.ClassName = 'TcxGrid') or
+       (_obje_.ClassName = 'TcxCheckGroupKadir')
       Then
         TControl(_obje_).Enabled := False;
   end;
@@ -881,7 +883,8 @@ begin
        (form.Components[i].ClassName = 'TcxCurrencyEdit') or
        (form.Components[i].ClassName = 'TcxDateEdit') or
        (form.Components[i].ClassName = 'TcxDateEditKadir') or
-       (form.Components[i].ClassName = 'TcxCheckGroup')
+       (form.Components[i].ClassName = 'TcxCheckGroup') or
+       (form.Components[i].ClassName = 'TcxCheckGroupKadir')
     then Begin
         _obje_ := TcxCustomEdit(form.Components[i]);
 
@@ -967,6 +970,7 @@ begin
        (self.Components[i].ClassName = 'TcxDateEdit') or
        (self.Components[i].ClassName = 'TcxDateEditKadir') or
        (self.Components[i].ClassName = 'TcxCheckGroup') or
+       (self.Components[i].ClassName = 'TcxCheckGroupKadir') or
        ((self.Components[i].ClassName = 'TcxLabel') and (TcxLabel(self.Components[i]).Tag = -200))
     then begin
         //ÜÖ 20171215 görünmeyen bileþenin doldurulmasýnda sakýnca yok, þirket kodu bazý yerlerde görünmediði halde yazýlýp okunmasý gerekiyor. istenmeyen bileþen için Tag atanabilir.
@@ -977,6 +981,11 @@ begin
       _obje_ := TcxCustomEdit(self.Components[i]);
       try
 
+       if (self.Components[i].ClassName = 'TcxCheckGroupKadir')
+       then begin
+         TcxCheckGroupKadir(_obje_).setItemStringCheck(sqlRun.FieldByName(_Obje_.Name).AsVariant);
+       end
+       else
        if (self.Components[i].ClassName = 'TcxLabel') and
            (TcxLabel(self.Components[i]).Tag = -200)
        Then begin
@@ -1921,7 +1930,10 @@ begin
        (self.Components[i].ClassName = 'TcxCurrencyEdit') or
        (self.Components[i].ClassName = 'TcxDateEdit') or
        (self.Components[i].ClassName = 'TcxDateEditKadir') or
-       (self.Components[i].ClassName = 'TcxCheckGroup'))
+       (self.Components[i].ClassName = 'TcxCheckGroup') or
+       (self.Components[i].ClassName = 'TcxCheckGroupKadir')
+
+       )
        and (TcxTextEdit(self.Components[i]).Properties.ReadOnly = False)
     then begin
      if TcxCustomEdit(self.Components[i]).Tag = -100 then Continue;
@@ -1982,7 +1994,9 @@ begin
          (self.Components[i].ClassName = 'TcxCurrencyEdit') or
          (self.Components[i].ClassName = 'TcxDateEdit') or
          (self.Components[i].ClassName = 'TcxDateEditKadir') or
-         (self.Components[i].ClassName = 'TcxCheckGroup')
+         (self.Components[i].ClassName = 'TcxCheckGroup') or
+         (self.Components[i].ClassName = 'TcxCheckGroupKadir')
+
       then begin
         //_obje_ := nil;
         if TcxCustomEdit(self.Components[i]).Name = 'txtSifreTekrar' then Continue;
@@ -1992,6 +2006,11 @@ begin
         _obje_ := TcxCustomEdit(self.Components[i]);
 
 
+        if (self.Components[i].ClassName = 'TcxCheckGroupKadir')
+        then begin
+          sqlRun.FieldByName(_Obje_.Name).AsVariant := TcxCheckGroupKadir(_Obje_).getItemCheckString;
+        end
+        else
         if ((self.Components[i].ClassName = 'TcxImageComboKadir') or
            (self.Components[i].ClassName = 'TcxImageComboBox'))
            and (TcxImageComboBox(_obje_).Text = '')
