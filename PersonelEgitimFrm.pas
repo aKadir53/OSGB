@@ -54,7 +54,7 @@ type
   end;
 
 const _TableName_ = 'Egitimler';
-      formGenislik = 500;
+      formGenislik = 600;
       formYukseklik = 500;
 
 var
@@ -132,7 +132,7 @@ end;
 
 procedure TfrmPersonelEgitim.cxButtonCClick(Sender: TObject);
 var
-  Ado : TADOQuery;
+  Ado,ado1 : TADOQuery;
   sql : string;
   TopluDataset : TDataSetKadir;
 begin
@@ -143,8 +143,10 @@ begin
     Exit;
   end;
   ado := TADOQuery.Create(nil);
+  ado1 := TADOQuery.Create(nil);
   try
     ado.Connection := datalar.ADOConnection2;
+    ado1.Connection := datalar.ADOConnection2;
     sql := 'sp_frmPersonelEgitim ' + TcxButtonEditKadir(FindComponent('id')).Text;
     if TMenuItem (Sender).Tag = -20 then sql := sql + ', ' + QuotedStr (EgitimPersonel.Dataset.FieldByName('PersonelDosyaNo').AsString);
 
@@ -152,12 +154,20 @@ begin
     TopluDataset.Dataset0 := ado;
     TopluDataset.Dataset0.Name := 'PersonelEgitimleri';
 
+
+    sql := 'declare @ek varchar(max),@et int ' +
+           ' select @ek = EgitimKod,@et = EgitimTuru from egitimler where id = ' + TcxButtonEditKadir(FindComponent('id')).Text +
+           ' select datavalue Egitimler from dbo.strtotable(dbo.egitimCheckStateToTanim(@ek,@et),'','') where datavalue <> ''''';
+    datalar.QuerySelect(ado1, sql);
+    TopluDataset.Dataset1 := ado1;
+
     if TMenuItem (Sender).Tag = -30 then
       PrintYap('004','Eðitime Katýlan Personel Listesi','',TopluDataset,pTNone)
      else
       PrintYap('005','Personel Eðitimi Sertifikasý','',TopluDataset,pTNone);
   finally
     ado.free;
+    ado1.free;
   end;
 end;
 
@@ -215,24 +225,24 @@ begin
   List := TListeAc.Create(nil);
 
   List.Table :=
-    '(Select e.id, e.EgitimKod, e.BaslamaTarihi, e.EgitimTuru tanimi, s.Tanimi SirketTanimi  '+
-    'from Egitimler e ' + //e inner join Egitim_Tnm et on et.Kod = e.EgitimKod '+
+    '(Select e.id, e.EgitimKod, e.BaslamaTarihi, et.tanimi tanimi, s.Tanimi SirketTanimi , '+
+    ' dbo.egitimCheckStateToTanim(e.EgitimKod,e.EgitimTuru) EgitimBilgi ' +
+    'from Egitimler e  inner join egitimGrup_tnm et on et.Kod = e.EgitimTuru '+
     'left outer join SIRKETLER_TNM s on s.SirketKod = e.SirketKod) Egitimler';
 
   List.kolonlar.Add('id');// := Ts;
-  List.kolonlar.Add('EgitimKod');// := Ts;
   List.kolonlar.Add('Tanimi');// := Ts;
   List.kolonlar.Add('BaslamaTarihi'); // := Ts;
   List.kolonlar.Add('SirketTanimi'); // := Ts;
-
+  List.kolonlar.Add('EgitimBilgi');// := Ts;
 
   List.KolonBasliklari.Add('ID');// := Ts1;
-  List.KolonBasliklari.Add('Eðitim Kodu');// := Ts1;
   List.KolonBasliklari.Add('Tanýmý');// := Ts1;
   List.KolonBasliklari.Add('Baþlama Tarihi');// := Ts1;
   List.KolonBasliklari.Add('Þirket'); // := Ts;
+  List.KolonBasliklari.Add('Eðitimler');// := Ts1;
   List.TColcount := 5;
-  List.TColsW := '10,10,140,70,200';
+  List.TColsW := '10,80,70,200,400';
   List.ListeBaslik := 'Kayýtlý Eðitimler';
   List.Name := 'id';
   List.Conn := Datalar.ADOConnection2;
@@ -299,15 +309,16 @@ begin
   TcxImageComboKadir(FindComponent('EgitimTuru')).Properties.OnEditValueChanged := PropertiesEditValueChanged;
 
   Egitimler := TcxCheckGroupKadir.Create(self);
-  Egitimler.Properties.EditValueFormat := cvfIndices;//  cvfStatesString;
-  Egitimler.Properties.Columns := 6;
+  Egitimler.Properties.EditValueFormat := cvfStatesString;
+  Egitimler.Properties.Columns := 3;
   Egitimler.Alignment := alCenterCenter;
   Egitimler.Conn := Datalar.ADOConnection2;
   Egitimler.TableName := 'egitim_tnm';
   Egitimler.ValueField := 'kod';
   Egitimler.DisplayField := 'tanimi';
   Egitimler.tumuSecili := False;
-  Egitimler.Filter := '';// grup = ' + ifThen(_value_ = '','0',_value_);
+  Egitimler.OrderField := value;
+  Egitimler.Filter := ' grup = -1';// grup = ' + ifThen(_value_ = '','0',_value_);
   setDataStringKontrol(self,Egitimler,'Egitimkod','Eðitimler',kolon1,'',400,80);
   Egitimler.Caption := '';
 
@@ -315,7 +326,7 @@ begin
   //setDataStringC(self,'EgitimTuru','Eðitim Türü',Kolon1,'',100, 'Ýç Eðitim,Dýþ Eðitim,Diðer');
   setDataString(self,'EgitimYeri','Eðitim Yeri',Kolon1,'',100);
   setDataString(self,'SertifikaNo','Sertifika No.',Kolon1,'',100);
-  setDataStringMemo(self,'EgitimIcerigi','Eðitim Ýçeriði',Kolon1,'',300, 65);
+  setDataStringMemo(self,'EgitimIcerigi','Eðitim Açýklama',Kolon1,'',400, 60);
   setDataString(self,'EgitimUcreti','Eðitim Ücreti',Kolon1,'',100);
   setDataString(self,'EgitimUcretParaBirimi','Para Birimi',Kolon1,'',100);
 
