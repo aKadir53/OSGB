@@ -1,6 +1,6 @@
 BEGIN TRAN
 GO
-ALTER procedure dbo.sp_CreateGuncellemeTakipScriptTrigger @TableName varchar (200), @KeyFieldList varchar (200), @Create bit
+ALTER procedure dbo.sp_CreateGuncellemeTakipScriptTrigger @TableName varchar (200), @KeyFieldList varchar (200), @Create bit, @Apply bit
 as
 begin
   declare 
@@ -20,7 +20,9 @@ begin
     @UpdateFieldList varchar (max) = '',
     @FuncType varchar (10),
     @IsIdentity bit,
-    @IsNullable bit
+    @IsNullable bit,
+	@CastedFieldName varchar (300),
+	@FuncParam varchar (20)
 
   declare abc cursor for
   select FieldName, FieldType, IsIdentity, isNullable
@@ -42,10 +44,16 @@ begin
         when @FieldType in ('decimal', 'float', 'money', 'numeric') then 'Dec'
         else ''
       end
+    set @FuncParam = 
+      case 
+        when @FieldType in ('datetime') then ', 1'
+        else ''
+      end
+--text, ntext, or image
     if not @IsIdentity = 1
     begin
       SET @AllFieldsListI = @allFieldsListI + @FieldName + ', '
-      set @AllFieldsValuesList = @AllFieldsValuesList + 'dbo.fn_SQL' + @FuncType + 'ValueForString ('+@FieldName+', 0) +' + Char (39) + ', ' + Char (39) + ' + ' + char (13) + char (10) + '    '
+      set @AllFieldsValuesList = @AllFieldsValuesList + 'dbo.fn_SQL' + @FuncType + 'ValueForString ('+@FieldName+', 0' + @FuncParam + ') +' + Char (39) + ', ' + Char (39) + ' + ' + char (13) + char (10) + '    '
     end
     if not @IsIdentity = 1 or exists (select 1 from dbo.StrToTable (@KeyFieldList, ',') where DataValue = @FieldName)
     begin
@@ -53,9 +61,9 @@ begin
     end
     if exists (select 1 from dbo.StrToTable (@KeyFieldList, ',') where DataValue = @FieldName)
     begin
-      set @CompareKeyFields = @CompareKeyFields + @FieldName + '' + Char (39) + ' + dbo.fn_SQL' + @FuncType + 'ValueForString ($$$'+@FieldName+', 1) + ' + Char (39) + ' and '
+      set @CompareKeyFields = @CompareKeyFields + @FieldName + '' + Char (39) + ' + dbo.fn_SQL' + @FuncType + 'ValueForString ($$$'+@FieldName+', 1' + @FuncParam + ') + ' + Char (39) + ' and '
       set @OrderedKeyFields = @OrderedKeyFields + @FieldName + ','
-      set @KeyValuesList = @KeyValuesList + 'dbo.fn_SQL' + @FuncType + 'ValueForString ($$$'+@FieldName+', 0) + ' + Char (39) + ',' + Char (39) + ' + '
+      set @KeyValuesList = @KeyValuesList + 'dbo.fn_SQL' + @FuncType + 'ValueForString ($$$'+@FieldName+', 0' + @FuncParam + ') + ' + Char (39) + ',' + Char (39) + ' + '
       set @JoinKeyFieldsdi = 
         @JoinKeyFieldsdi + 
           case when @IsNullable = 1 then 'ISNULL (' else '' end + 
@@ -69,7 +77,7 @@ begin
     else begin
       if not @IsIdentity = 1
       begin
-        SET @UpdateFieldList = @UpdateFieldList + 'case when dbo.fn_SQL' + @FuncType + 'ValueForString (d.'+@FieldName+', 0) <> dbo.fn_SQL' + @FuncType + 'ValueForString (i.'+@FieldName+', 0) then ' + Char (39) + ''+@FieldName+' = ' + Char (39) + ' + dbo.fn_SQL' + @FuncType + 'ValueForString (i.'+@FieldName+', 0) + ' + Char (39) + ',' + Char (39) + ' else ' + Char (39) + '' + Char (39) + ' end +' + char (13) + char (10) + '    '
+        SET @UpdateFieldList = @UpdateFieldList + 'case when dbo.fn_SQL' + @FuncType + 'ValueForString (d.'+@FieldName+', 0' + @FuncParam + ') <> dbo.fn_SQL' + @FuncType + 'ValueForString (i.'+@FieldName+', 0' + @FuncParam + ') then ' + Char (39) + ''+@FieldName+' = ' + Char (39) + ' + dbo.fn_SQL' + @FuncType + 'ValueForString (i.'+@FieldName+', 0' + @FuncParam + ') + ' + Char (39) + ',' + Char (39) + ' else ' + Char (39) + '' + Char (39) + ' end +' + char (13) + char (10) + '    '
       end
     end
     fetch abc into @fieldName, @FieldType, @IsIdentity, @IsNullable
@@ -165,7 +173,10 @@ begin
     '     group by ' + @OrderedKeyFields +') u on ' + @JoinKeyFieldsui + char (13) + char (10) +
     '  set nocount off' + char (13) + char (10) +
     'END'
-  EXEC (@sql)
+  if IsNull (@Apply, 0) = 1
+    EXEC (@sql)
+  else
+    PRINT @sql
 end
 GO
 exec sp_vw_sys_upd 'P ', 'dbo', 'sp_CreateGuncellemeTakipScriptTrigger'
