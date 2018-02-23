@@ -10,7 +10,10 @@ uses
   GirisUnit,Data_Modul, dxSkinsCore, dxSkinBlue, dxSkinCaramel, dxSkinCoffee,
   dxSkiniMaginary, dxSkinLilian, dxSkinLiquidSky, dxSkinLondonLiquidSky,cxMemo,
   dxSkinMcSkin, dxSkinMoneyTwins, dxSkinsDefaultPainters, cxCheckBox, cxLabel,
-  TedaviKart,GetFormClass;
+  TedaviKart,GetFormClass, cxStyles, dxSkinscxPCPainter, cxCustomData, cxFilter,
+  cxData, cxDataStorage, cxDBData, cxDropDownEdit, cxGridLevel,cxRadioGroup,
+  cxGridCustomTableView, cxGridTableView, cxGridBandedTableView,
+  cxGridDBBandedTableView, cxClasses, cxGridCustomView, cxGrid;
 
 
 
@@ -18,15 +21,32 @@ type
   TfrmAnamnez = class(TfrmTedaviBilgisi)
     PopupMenu1: TPopupMenu;
     T1: TMenuItem;
-    R1: TMenuItem;
     T2: TMenuItem;
+    IseGirisMuayene: TcxGridKadir;
+    GridList: TcxGridDBBandedTableView;
+    GridListMuayeneSoru: TcxGridDBBandedColumn;
+    GridListGrupKod: TcxGridDBBandedColumn;
+    GridListaltGrupKod: TcxGridDBBandedColumn;
+    GridListGrupTanimi: TcxGridDBBandedColumn;
+    GridListaltGrupTanimi: TcxGridDBBandedColumn;
+    GridListvalue: TcxGridDBBandedColumn;
+    GridListtarih: TcxGridDBBandedColumn;
+    GridListvalueObjevalues: TcxGridDBBandedColumn;
+    GridListvalueTip: TcxGridDBBandedColumn;
+    GridListDesc: TcxGridDBBandedColumn;
+    IseGirisMuayeneLevel1: TcxGridLevel;
+    M1: TMenuItem;
+    R2: TMenuItem;
+    Y1: TMenuItem;
+    R3: TMenuItem;
     procedure cxKaydetClick(Sender: TObject);
     procedure cxTextEditKeyDown(Sender: TObject; var Key: Word;
       Shift: TShiftState);
     procedure cxEditEnter(Sender: TObject);
     procedure cxEditExit(Sender: TObject);
     procedure ButtonClick(Sender: TObject);
-   procedure cxButtonCClick(Sender: TObject);
+    procedure cxButtonCClick(Sender: TObject);
+    procedure ADO_WebServisErisimAfterScroll(DataSet: TDataSet);
   private
     { Private declarations }
   public
@@ -35,8 +55,8 @@ type
   end;
 
 const _TableName_ = 'Gelisler';
-      formGenislik = 700;
-      formYukseklik = 550;
+      formGenislik = 850;
+      formYukseklik = 600;
 
 var
   frmAnamnez: TfrmAnamnez;
@@ -45,6 +65,81 @@ var
 implementation
       uses AnamnezListe;
 {$R *.dfm}
+
+procedure TfrmAnamnez.ADO_WebServisErisimAfterScroll(DataSet: TDataSet);
+var
+  ValueCombo,ValueObjeValues : String;
+  ValuesCombo : TStringList;
+  item : TcxRadioGroupItem;
+begin
+
+  if IseGirisMuayene.Dataset.FieldByName('ValueTip').AsString = 'R'
+  then begin
+    ValuesCombo := TStringList.Create;
+    try
+      ValueObjeValues := IseGirisMuayene.Dataset.FieldByName('ValueObjeValues').AsString;
+      GridListValue.PropertiesClassName := 'TcxRadioGroupProperties';
+      TcxRadioGroupProperties(GridListValue.Properties).Items.Clear;
+      ExtractStrings([','], [], PChar(ValueObjeValues),ValuesCombo);
+      for ValueCombo in  ValuesCombo  do
+      begin
+        item := TcxRadioGroupProperties(GridListValue.Properties).Items.Add;
+        item.Caption := ValueCombo;
+        item.Value := ValueCombo;
+      end;
+    finally
+      ValuesCombo.Free;
+    end;
+  end
+  else
+  if IseGirisMuayene.Dataset.FieldByName('ValueTip').AsString = 'B'
+  then begin
+       GridListValue.PropertiesClassName := 'TcxCheckBoxProperties';
+       TcxCheckBoxProperties(GridListValue.Properties).ValueChecked := '1';
+       TcxCheckBoxProperties(GridListValue.Properties).ValueUnchecked := '0';
+       TcxCheckBoxProperties(GridListValue.Properties).ValueGrayed := '';
+  end
+  Else
+  if IseGirisMuayene.Dataset.FieldByName('ValueTip').AsString = 'C'
+  then begin
+    if length(IseGirisMuayene.Dataset.FieldByName('ValueTip').AsString) = 2
+    then begin
+      ValuesCombo := TStringList.Create;
+      try
+        ValueObjeValues := IseGirisMuayene.Dataset.FieldByName('defaultValue').AsString;
+        GridListDesc.Options.Editing := True;
+        GridListDesc.PropertiesClassName := 'TcxComboBoxProperties';
+        TcxComboBoxProperties(GridListDesc.Properties).Items.Clear;
+        ExtractStrings([','], [], PChar(ValueObjeValues),ValuesCombo);
+        for ValueCombo in  ValuesCombo  do
+        begin
+         TcxComboBoxProperties(GridListDesc.Properties).Items.Add(ValueCombo);
+        end;
+      finally
+        ValuesCombo.Free;
+      end;
+    end;
+    GridListDesc.Options.Editing:= True;
+    ValuesCombo := TStringList.Create;
+    try
+      ValueObjeValues := IseGirisMuayene.Dataset.FieldByName('ValueObjeValues').AsString;
+      GridListValue.PropertiesClassName := 'TcxComboBoxProperties';
+      TcxComboBoxProperties(GridListValue.Properties).Items.Clear;
+      ExtractStrings([','], [], PChar(ValueObjeValues),ValuesCombo);
+      for ValueCombo in  ValuesCombo  do
+      begin
+       TcxComboBoxProperties(GridListValue.Properties).Items.Add(ValueCombo);
+      end;
+    finally
+      ValuesCombo.Free;
+    end;
+  end
+  else
+  begin
+    GridListValue.PropertiesClassName := 'TcxTextEditProperties';
+    GridListDesc.Options.Editing:= True;
+  end;
+end;
 
 function TfrmAnamnez.Init(Sender: TObject) : Boolean;
  var
@@ -56,11 +151,12 @@ begin
   Result := False;
 
 case self.Tag of
- TagfrmAnamnez
+ TagfrmAnamnez ,TagfrmIseGiris
   : begin
         Tag := TagfrmAnamnez;
         ClientHeight := formYukseklik;
         ClientWidth := formGenislik;
+        IseGirisMuayene.Visible := False;
 
         indexFieldName := 'dosyaNo = ' + _dosyaNO_ + ' and  gelisNo = ' + _gelisNo_ ;
         TableName := _TableName_;
@@ -98,7 +194,27 @@ case self.Tag of
        // tableColumnDescCreate;
 
         Result := True;
+
+
+       if self.Tag = TagfrmIseGiris then
+        begin
+            Tag := TagfrmIseGiris;
+            IseGirisMuayene.Visible := True;
+            IseGirisMuayene.Align := alClient;
+
+            IseGirisMuayene.Dataset.Connection := datalar.ADOConnection2;
+            IseGirisMuayene.Dataset.SQL.Text := 'sp_frmPersonelIseGirisMuayene ' + QuotedStr(_dosyaNO_)+ ',' +
+                                                                               _gelisNO_ + ',' + QuotedStr('0');
+            IseGirisMuayene.Dataset.Open;
+            IseGirisMuayene.Dataset.AfterScroll := ADO_WebServisErisimAfterScroll;
+            GridList.ViewData.Expand(true);
+            Result := True;
+        end;
+
+
   end;
+
+
 end;
 end;
 
@@ -125,9 +241,15 @@ begin
              if F <> nil then F.ShowModal;
       end;
       -2 : begin
+             YeniRecete(ReceteYeni,_dosyaNo_,_gelisNo_,'');
              F := FormINIT(TagfrmHastaRecete,GirisFormRecord,ikEvet,'');
              if F <> nil then F.ShowModal;
            end;
+      -26 : begin
+             F := FormINIT(TagfrmHastaRecete,GirisFormRecord,ikEvet,'');
+             if F <> nil then F.ShowModal;
+            end;
+
       -3 : begin
              F := FormINIT(TagfrmHastaTetkikEkle,GirisFormRecord);
              if F <> nil then F.ShowModal;
@@ -143,12 +265,28 @@ procedure TfrmAnamnez.ButtonClick(Sender: TObject);
 var
   tip : string;
 begin
-     Application.CreateForm(TfrmAnamnezListe, frmAnamnezListe);
-     frmAnamnezListe.compIndex(TcxButton(Sender).tag);
-     frmAnamnezListe.Tanilar(inttostr(TcxButton(Sender).tag),'',datalar.doktorkodu);
-     frmAnamnezListe.ShowModal;
-     frmAnamnezListe.Release;
-     frmAnamnezListe := nil;
+
+  case TControl(sender).Tag  of
+  1,2,4 : begin
+           Application.CreateForm(TfrmAnamnezListe, frmAnamnezListe);
+           frmAnamnezListe.compIndex(TcxButton(Sender).tag);
+           frmAnamnezListe.Tanilar(inttostr(TcxButton(Sender).tag),'',datalar.doktorkodu);
+           frmAnamnezListe.ShowModal;
+           frmAnamnezListe.Release;
+           frmAnamnezListe := nil;
+          end;
+     -26 : begin
+             case self.tag  of
+               TagfrmIseGiris : EpikrizYaz(_dosyaNo_,_gelisNo_,false,IseGirisMuayene.Dataset);
+             end;
+
+
+
+           end;
+  end;
+
+
+
 end;
 
 procedure TfrmAnamnez.cxEditEnter(Sender: TObject);
