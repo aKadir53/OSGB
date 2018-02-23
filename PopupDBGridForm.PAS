@@ -75,7 +75,7 @@ type
   end;
 
 const
-      formGenislik = 300;
+      formGenislik = 400;
       formYukseklik = 580;
 
 var
@@ -128,7 +128,7 @@ begin
       txtTable.TableName := 'PopupDBGridFormTabloTanim';
       txtTable.ValueField := 'id';
       txtTable.DisplayField := 'tanimi';
-      txtTable.Filter := '';
+      txtTable.Filter := ' aktif = 1';
       txtTable.BosOlamaz := True;
       OrtakEventAta(txtTable);
       indexFieldName := '1=1';
@@ -224,14 +224,18 @@ end;
 procedure TfrmPopupDBGridForm.SetGrid;
 var
  i : integer;
- Columns,Baslik,Tips,Edits : TstringList;
+ Columns,Baslik,Tips,Edits,IC_Params,IC_Param : TstringList;
  FItem : TcxImageComboBoxItem;
+ ado : TADOQuery;
+ field1,field2,table : string;
 begin
   Columns := TStringList.Create;
   try
     Baslik := TStringList.Create;
     try
       Tips := TStringList.Create;
+      IC_Params := TStringList.Create;
+      IC_Param := TStringList.Create;
       try
         Edits := TStringList.Create;
         try
@@ -242,6 +246,8 @@ begin
 
           Split(',',_fieldTips_,Tips);
           Split(',',_fieldsEdit_,Edits);
+          ExtractStrings([';'],[],PChar(_ICParams_),IC_Params);
+
 
           for i := 0 to Columns.Count - 1 do
           begin
@@ -276,6 +282,37 @@ begin
               DBgrid.Columns[i].PropertiesClassName := 'TcxButtonEditProperties';
               TcxButtonEditProperties(DBgrid.Columns[i].Properties).OnButtonClick := NaceKodPropertiesButtonClick;
              end;
+
+
+            if Tips[i] = 'IC'
+            then begin
+                DBgrid.Columns[i].PropertiesClassName := 'TcxImageComboBoxProperties';
+                TcxImageComboBoxProperties(DBgrid.Columns[i].Properties).Items.Clear;
+                DBgrid.Columns[i].Properties.Alignment.Horz := taLeftJustify;
+                ado := TADOQuery.Create(nil);
+                ado.Connection := datalar.ADOConnection2;
+                try
+                   Split(',',IC_Params[i],IC_Param);
+                   if IC_Params.Count > 0 then
+                   begin
+                     table := IC_Param[0];
+                     field1 := IC_Param[1];
+                     field2 := IC_Param[2];
+                     datalar.QuerySelect(ado,'select * from ' + table);
+                     ado.First;
+                     while not ado.Eof do
+                     begin
+                       FItem := TcxImageComboBoxProperties(DBgrid.Columns[i].Properties).Items.add;
+                       FItem.Value := ado.FieldByName(field1).AsString;
+                       FItem.Description := ado.FieldByName(field2).AsString;
+                       ado.Next;
+                     end;
+                   end;
+                finally
+                  ado.free;
+                end;
+            end;
+
 
 
             if Tips[i] = 'ImageDoktorCombo' then
@@ -326,16 +363,19 @@ begin
                   datalar.ADO_TehlikeSiniflari.Next;
                 end;
               end;
+
              end;
 
             DBgrid.Columns[i].Width := 70;
           end;
-          DBGrid.Columns[0].Visible := false;
+         // DBGrid.Columns[0].Visible := false;
         finally
           Edits.Free;
         end;
       finally
         Tips.Free;
+        IC_Params.Free;
+        IC_Param.Free;
       end;
     finally
       Baslik.Free;
@@ -385,16 +425,18 @@ var
   sql : string;
 begin
   inherited;
-  ado := TADOQuery.Create(nil);
+   ado := TADOQuery.Create(nil);
   try
     ado.Connection := datalar.ADOConnection2;
-    sql := 'select * from PopupDBGridFormTabloTanim where id = ' + varToStr(txtTable.EditingValue);
+    sql := 'select * from PopupDBGridFormTabloTanim where id = ' + varToStr(txtTable.EditingValue) +
+           ' and aktif = 1';
     datalar.QuerySelect(ado,sql);
 
     TableName := ado.FieldByName('tableName').AsString;
     _fields_ := ado.FieldByName('_fields_').AsString;
     _fieldBaslik_ := ado.FieldByName('_fieldBaslik_').AsString;
     _fieldTips_ := ado.FieldByName('_fieldTips_').AsString;
+    _ICParams_ :=  ado.FieldByName('IC_Params').AsString;
     Yukle;
   finally
     ado.Free;
