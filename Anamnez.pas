@@ -57,7 +57,7 @@ type
 const _TableName_ = 'Gelisler';
       formGenislik = 850;
       formYukseklik = 600;
-araþtýr
+
 var
   frmAnamnez: TfrmAnamnez;
 
@@ -194,8 +194,6 @@ case self.Tag of
        // tableColumnDescCreate;
 
         Result := True;
-
-
        if self.Tag = TagfrmIseGiris then
         begin
             Tag := TagfrmIseGiris;
@@ -210,11 +208,7 @@ case self.Tag of
             GridList.ViewData.Expand(true);
             Result := True;
         end;
-
-
   end;
-
-
 end;
 end;
 
@@ -254,10 +248,7 @@ begin
              F := FormINIT(TagfrmHastaTetkikEkle,GirisFormRecord);
              if F <> nil then F.ShowModal;
            end;
-
     end;
-
-
 end;
 
 
@@ -265,28 +256,23 @@ procedure TfrmAnamnez.ButtonClick(Sender: TObject);
 var
   tip : string;
 begin
-
   case TControl(sender).Tag  of
   1,2,4 : begin
            Application.CreateForm(TfrmAnamnezListe, frmAnamnezListe);
-           frmAnamnezListe.compIndex(TcxButton(Sender).tag);
-           frmAnamnezListe.Tanilar(inttostr(TcxButton(Sender).tag),'',datalar.doktorkodu);
-           frmAnamnezListe.ShowModal;
-           frmAnamnezListe.Release;
-           frmAnamnezListe := nil;
+           try
+             frmAnamnezListe.compIndex(TcxButton(Sender).tag);
+             frmAnamnezListe.Tanilar(inttostr(TcxButton(Sender).tag),'',datalar.doktorkodu);
+             frmAnamnezListe.ShowModal;
+           finally
+             FreeAndNil (frmAnamnezListe);
+           end;
           end;
      -26 : begin
              case self.tag  of
                TagfrmIseGiris : EpikrizYaz(_dosyaNo_,_gelisNo_,false,IseGirisMuayene.Dataset);
              end;
-
-
-
            end;
   end;
-
-
-
 end;
 
 procedure TfrmAnamnez.cxEditEnter(Sender: TObject);
