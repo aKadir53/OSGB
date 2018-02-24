@@ -57,7 +57,7 @@ type
 const _TableName_ = 'Gelisler';
       formGenislik = 850;
       formYukseklik = 600;
-
+araþtýr
 var
   frmAnamnez: TfrmAnamnez;
 
