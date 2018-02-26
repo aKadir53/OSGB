@@ -55,7 +55,7 @@ type
 
 const _TableName_ = 'Egitimler';
       formGenislik = 600;
-      formYukseklik = 500;
+      formYukseklik = 600;
 
 var
   frmPersonelEgitim: TfrmPersonelEgitim;
@@ -68,10 +68,15 @@ uses StrUtils;
 {$R *.dfm}
 
 procedure TfrmPersonelEgitim.PropertiesEditValueChanged(Sender: TObject);
+var
+  xDeger : String;
 begin
   TcxCheckGroupKadir(FindComponent('Egitimkod')).Clear;
-  TcxCheckGroupKadir(FindComponent('Egitimkod')).Filter :=
-  ' grup = ' + vartoStr(TcxImageComboKadir(FindComponent('EgitimTuru')).EditValue);
+  xDeger := vartoStr(TcxImageComboKadir(FindComponent('EgitimTuru')).EditValue);
+  if not IsNull (xDeger) then
+    TcxCheckGroupKadir(FindComponent('Egitimkod')).Filter := ' grup = ' + xDeger
+   else
+    TcxCheckGroupKadir(FindComponent('Egitimkod')).Filter := '';
 end;
 
 procedure TfrmPersonelEgitim.ButtonClick(Sender: TObject);
@@ -319,7 +324,7 @@ begin
   Egitimler.tumuSecili := False;
   Egitimler.OrderField := value;
   Egitimler.Filter := ' grup = -1';// grup = ' + ifThen(_value_ = '','0',_value_);
-  setDataStringKontrol(self,Egitimler,'Egitimkod','Eðitimler',kolon1,'',400,80);
+  setDataStringKontrol(self,Egitimler,'Egitimkod','Eðitimler',kolon1,'',400,120);
   Egitimler.Caption := '';
 
 
