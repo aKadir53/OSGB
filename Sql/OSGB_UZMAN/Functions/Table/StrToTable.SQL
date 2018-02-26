@@ -5,7 +5,7 @@ ALTER FUNCTION [dbo].[StrToTable]
 	@Delimiter 	CHAR(1)
 )
 RETURNS @SplitTable Table
-(	DataValue	VARCHAR(50),
+(	DataValue	VARCHAR(200),
 	ValueAt		Numeric(9,0) IDENTITY(1,1)
 )
 AS
