@@ -227,7 +227,7 @@ begin
   List.Table :=
     '(Select e.id, e.EgitimKod, e.BaslamaTarihi, et.tanimi tanimi, s.Tanimi SirketTanimi , '+
     ' dbo.egitimCheckStateToTanim(e.EgitimKod,e.EgitimTuru) EgitimBilgi ' +
-    'from Egitimler e  inner join egitimGrup_tnm et on et.Kod = e.EgitimTuru '+
+    'from Egitimler e  left join egitimGrup_tnm et on et.Kod = e.EgitimTuru '+
     'left outer join SIRKETLER_TNM s on s.SirketKod = e.SirketKod) Egitimler';
 
   List.kolonlar.Add('id');// := Ts;
