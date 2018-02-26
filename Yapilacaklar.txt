@@ -1,3 +1,4 @@
+
 yapılacaklar
 ---------------------------------
 osgb master tabloya lisans sayısı bilgisi eklenecek.
