@@ -219,3 +219,5 @@ bölüm (tanýmýna u.index koy)
 birim (tanýmýna u.index koy)
 
 reçete þablonu kaydederken sapýtmasý
+
+önemli tablolara log konulmasý lazým
