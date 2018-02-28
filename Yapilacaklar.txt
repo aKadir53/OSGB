@@ -1,4 +1,3 @@
-
 yapýlacaklar
 ---------------------------------
 osgb master tabloya lisans sayýsý bilgisi eklenecek.
@@ -206,17 +205,10 @@ eðitim sertifika baskýsý için taslak gönderecek
 
 kullanýcý kartlarýna kullanýcý adýmý deðiþtir düðmesi eklenebilir.
 
-personel hasta listesinde diyabet baþlýklý sütunun adýný kronik hastalýk yapýp sp'deki mantýðýný da alanýn içinde tek bir tane bile 1 varsa dolu getirecek þekilde deðiþtireceðiz
-
 admin gibi kullanýcýlar bir reçete ya da muayene yazýp doktor olarak girmiþ gibi olunca þirket seçemez hale geliyorlar.
 
 foreign key tablolarý 
-valueobjectvalues
-personelisegirismuayene
-isegirismuayenesorulari
 tanýlar anamnez_ICD
-bölüm (tanýmýna u.index koy)
-birim (tanýmýna u.index koy)
 
 reçete þablonu kaydederken sapýtmasý
 
