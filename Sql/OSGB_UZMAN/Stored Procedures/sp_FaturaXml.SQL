@@ -13,6 +13,7 @@ declare @faturaNo varchar(20),@guid varchar(50),@faturaTarihi varchar(10),@fatur
 		@aliciTel varchar(50),@aliciFax varchar(50),@aliciEmail varchar(50),
 		@faturaTutar varchar(10),@faturaKdvTutar varchar(10),@faturaGenelTutar varchar(10),
 		@faturaHareket varchar(max),@fatura varchar(max)
+		
 
 set @faturaSatir = '1'
 set @faturaHareket = ''
@@ -38,11 +39,14 @@ select @faturaNo = 'GIB' + substring(dbo.fn_formattedTarih('YYYYMMDD',faturaTari
 	   @faturaTutar = cast(faturaTutar as varchar),
 	   @faturaKdvTutar = cast(kdv as varchar),
 	   @faturaGenelTutar = cast(faturaGenelTutar as varchar)
+	   
 from Faturalar f
 join SIRKETLER_TNM s on s.sirketKod = f.sirketKod 
 join SKRS_IL_KODLARI IK on IK.KODU = s.SEHIR
 join SKRS_ILCE_KODLARI ILK on ILK.KODU = s.ILCE
 where f.sira = @faturaId
+
+select @faturaSatir = count(*) from FaturaHareket where faturaId = @faturaId
 
 --select @faturaNo,@guid,@faturaTarihi,@faturaSaati,@aliciVergiNo,@aliciAdi,@aliciVergiDairesi,@faturaTutar,@faturaKdvTutar,@faturaGenelTutar,
 --@saticiUrl,@saticiVergiNo,@saticiAdi,@saticiAdres,@saticiKapiNo,@saticiILCE,@saticiIL,@saticiPostaKodu,@saticiVergiDairesi,@saticiTel,@saticiFax,@saticiEmail,
@@ -50,191 +54,111 @@ where f.sira = @faturaId
 
 select
 @fatura = 
-'<Invoice xmlns="urn:oasis:names:specification:ubl:schema:xsd:Invoice-2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:cac="urn:oasis:names:specification:ubl:schema:xsd:CommonAggregateComponents-2" xmlns:ext="urn:oasis:names:specification:ubl:schema:xsd:CommonExtensionComponents-2" xmlns:ds="http://www.w3.org/2000/09/xmldsig#" xmlns:xades="http://uri.etsi.org/01903/v1.3.2#" xmlns:cbc="urn:oasis:names:specification:ubl:schema:xsd:CommonBasicComponents-2" xsi:schemaLocation="urn:oasis:names:specification:ubl:schema:xsd:Invoice-2 ..\xsdrt\maindoc\UBL-Invoice-2.1.xsd" xmlns:n4="http://www.altova.com/samplexml/other-namespace" >'+
-	'<ext:UBLExtensions>'+
-		'<ext:UBLExtension>'+
-			'<ext:ExtensionContent>'+
-				'<n4:auto-generated_for_wildcard/>'+
-			'</ext:ExtensionContent>'+
-		'</ext:UBLExtension>'+
-	'</ext:UBLExtensions>'+
-	'<cbc:UBLVersionID>2.1</cbc:UBLVersionID>'+
-	'<cbc:CustomizationID>TR1.2</cbc:CustomizationID>'+
-	'<cbc:ProfileID>TICARIFATURA</cbc:ProfileID>'+
-	'<cbc:ID>'+@faturaNo+'</cbc:ID>'+
-	'<cbc:CopyIndicator>false</cbc:CopyIndicator>'+
-	'<cbc:UUID>'+@guid+'</cbc:UUID>'+
-	'<cbc:IssueDate>'+@faturaTarihi+'</cbc:IssueDate>'+
-	'<cbc:IssueTime>'+@faturaSaati+'</cbc:IssueTime>'+
-	'<cbc:InvoiceTypeCode>SATIS</cbc:InvoiceTypeCode>'+
-	'<cbc:DocumentCurrencyCode>TRY</cbc:DocumentCurrencyCode>'+
-	'<cbc:LineCountNumeric>'+@faturaSatir+'</cbc:LineCountNumeric>'+
-	--'<cac:DespatchDocumentReference>'+
-	--	<cbc:ID>180921</cbc:ID>
-	--	<cbc:IssueDate>2009-01-02</cbc:IssueDate>
-	'<cac:DespatchDocumentReference/>'+
-	--'<cac:Signature>'+
-	--	'<cbc:ID schemeID="VKN_TCKN">'+@saticiVergiNo+'</cbc:ID>'+
-	--	'<cac:SignatoryParty>'+
-	--		'<cac:PartyIdentification>'+
-	--			'<cbc:ID schemeID="VKN">'+@saticiVergiNo+'</cbc:ID>'+
-	--		'</cac:PartyIdentification>'+
-	--		'<cac:PostalAddress>'+
-	--			'<cbc:StreetName>'+@saticiAdres+'</cbc:StreetName>'+
-	--			'<cbc:BuildingNumber>'+@saticiKapiNo+'</cbc:BuildingNumber>'+
-	--			'<cbc:CitySubdivisionName>'+@saticiILCE+'</cbc:CitySubdivisionName>'+
-	--			'<cbc:CityName>'+@saticiIL+'</cbc:CityName>'+
-	--			'<cbc:PostalZone>'+@saticiPostaKodu+'</cbc:PostalZone>'+
-	--			'<cac:Country>'+
-	--				'<cbc:Name>Türkiye</cbc:Name>'+
-	--			'</cac:Country>'+
-	--		'</cac:PostalAddress>'+
-	--	'</cac:SignatoryParty>'+
-	--	'<cac:DigitalSignatureAttachment>'+
-	--		'<cac:ExternalReference>'+
-	--			'<cbc:URI>#Signature</cbc:URI>'+
-	--		'</cac:ExternalReference>'+
-	--	'</cac:DigitalSignatureAttachment>'+
-	'<cac:Signature/>'+
- 	'<cac:AccountingSupplierParty>'+
-		'<cac:Party>'+
-			isnull('<cbc:WebsiteURI>'+@saticiUrl+'</cbc:WebsiteURI>','')+
-			'<cac:PartyIdentification>'+
-				isnull('<cbc:ID schemeID="VKN">'+@saticiVergiNo+'</cbc:ID>','')+
-			'</cac:PartyIdentification>'+
-			'<cac:PartyName>'+
-				isnull('<cbc:Name>'+@saticiAdi+'</cbc:Name>','')+
-			'</cac:PartyName>'+
-			'<cac:PostalAddress>'+
-				'<cbc:ID>1234567890</cbc:ID>'+
-				isnull('<cbc:StreetName>'+@saticiAdres+'</cbc:StreetName>','')+
-				isnull('<cbc:BuildingNumber>'+@saticiKapiNo+'</cbc:BuildingNumber>','')+
-				isnull('<cbc:CitySubdivisionName>'+@saticiILCE+'</cbc:CitySubdivisionName>','')+
-				isnull('<cbc:CityName>'+@saticiIL+'</cbc:CityName>','')+
-				isnull('<cbc:PostalZone>'+@saticiPostaKodu+'</cbc:PostalZone>','')+
-				'<cac:Country>'+
-					'<cbc:Name>Türkiye</cbc:Name>'+
-				'</cac:Country>'+
-			'</cac:PostalAddress>'+
-			'<cac:PartyTaxScheme>'+
-				'<cac:TaxScheme>'+
-					isnull('<cbc:Name>'+@saticiVergiDairesi+'</cbc:Name>','')+
-				'</cac:TaxScheme>'+
-			'</cac:PartyTaxScheme>'+
-			'<cac:Contact>'+
-				isnull('<cbc:Telephone>'+@saticiTel+'</cbc:Telephone>','')+
-				isnull('<cbc:Telefax>'+@saticiFax+'</cbc:Telefax>','')+
-				isnull('<cbc:ElectronicMail>'+@saticiEmail+'</cbc:ElectronicMail>','')+
-			'</cac:Contact>'+
-		'</cac:Party>'+
-	'</cac:AccountingSupplierParty>'+
-	'<cac:AccountingCustomerParty>'+
-		'<cac:Party>'+
-			isnull('<cbc:WebsiteURI>'+@aliciUrl+'</cbc:WebsiteURI>','')+
-			'<cac:PartyIdentification>'+
-				isnull('<cbc:ID schemeID="VKN">'+ @aliciVergiNo +'</cbc:ID>','')+
-			'</cac:PartyIdentification>'+
-			'<cac:PartyName>'+
-				isnull('<cbc:Name>'+ @aliciAdi + '</cbc:Name>','')+
-			'</cac:PartyName>'+
-			'<cac:PostalAddress>'+
-				'<cbc:ID>1234567890</cbc:ID>'+
-				isnull('<cbc:StreetName>'+@aliciAdres +'</cbc:StreetName>','')+
-				isnull('<cbc:BuildingNumber>'+@aliciKapiNo +'</cbc:BuildingNumber>','')+
-				isnull('<cbc:CitySubdivisionName>'+@aliciILCE +'</cbc:CitySubdivisionName>','')+
-				isnull('<cbc:CityName>'+@aliciIL +'</cbc:CityName>','')+
-				'<cbc:PostalZone>'+@aliciPostaKodu+'</cbc:PostalZone>'+
-				'<cac:Country>'+
-					'<cbc:Name>Türkiye</cbc:Name>'+
-				'</cac:Country>'+
-			'</cac:PostalAddress>'+
-			'<cac:PartyTaxScheme>'+
-				'<cac:TaxScheme>'+
-					isnull('<cbc:Name>'+@aliciVergiDairesi+'</cbc:Name>','')+
-				'</cac:TaxScheme>'+
-			'</cac:PartyTaxScheme>'+
-			'<cac:Contact>'+
-				isnull('<cbc:Telephone>' + @aliciTel +'</cbc:Telephone>','')+
-				isnull('<cbc:Telefax>'+@aliciFax+'</cbc:Telefax>','')+
-				isnull('<cbc:ElectronicMail>' +@aliciEmail +'</cbc:ElectronicMail>','')+
-			'</cac:Contact>'+
-		'</cac:Party>'+
-	'</cac:AccountingCustomerParty>'+
-	--'<cac:PaymentMeans>'+
-	--	<cbc:PaymentMeansCode>1</cbc:PaymentMeansCode>
-	--	<cac:PayeeFinancialAccount>
-	--		<cbc:ID>5652214414</cbc:ID>
-	--		<cbc:CurrencyCode>TRY</cbc:CurrencyCode>
-	--		<cbc:PaymentNote>RRR Bankasý Beþiktaþ Þubesi TL Hesabý</cbc:PaymentNote>
-	--	</cac:PayeeFinancialAccount>
-	'<cac:PaymentMeans/>'+
-	--'<cac:PaymentTerms>'+
-	--	<cbc:Note>Fatura düzenlenme tarihinden itibaren 20 gün içerisinde ödenecektir.</cbc:Note>
-	--	<cbc:PaymentDueDate>2008-11-25</cbc:PaymentDueDate>
-	'<cac:PaymentTerms/>'+
-	'<cac:TaxTotal>'+
-		'<cbc:TaxAmount currencyID="TRY">'+ @faturaKdvTutar + '</cbc:TaxAmount>'+
-		'<cac:TaxSubtotal>'+
-			'<cbc:TaxableAmount currencyID="TRY">'+@faturaTutar+'</cbc:TaxableAmount>'+
-			'<cbc:TaxAmount currencyID="TRY">'+@faturaKdvTutar+'</cbc:TaxAmount>'+
-			'<cbc:CalculationSequenceNumeric>1.0</cbc:CalculationSequenceNumeric>'+
-			'<cbc:Percent>18</cbc:Percent>'+
-			'<cac:TaxCategory>'+
-				'<cac:TaxScheme>'+
-					'<cbc:Name>Katma Deðer Vergisi</cbc:Name>'+
-					'<cbc:TaxTypeCode>0015</cbc:TaxTypeCode>'+
-				'</cac:TaxScheme>'+
-			'</cac:TaxCategory>'+
-		'</cac:TaxSubtotal>'+
-	'</cac:TaxTotal>'+
-	'<cac:LegalMonetaryTotal>'+
-		'<cbc:LineExtensionAmount currencyID="TRY">'+@faturaTutar +'</cbc:LineExtensionAmount>'+
-		'<cbc:TaxExclusiveAmount currencyID="TRY">'+ @faturaTutar +'</cbc:TaxExclusiveAmount>'+
-		'<cbc:TaxInclusiveAmount currencyID="TRY">'+@faturaGenelTutar+'</cbc:TaxInclusiveAmount>'+
-	--	<cbc:AllowanceTotalAmount currencyID="TRY">786.90 </cbc:AllowanceTotalAmount>
-		'<cbc:PayableAmount currencyID="TRY">'+@faturaGenelTutar+'</cbc:PayableAmount>'+
-	'</cac:LegalMonetaryTotal>'
+--'<Invoice xmlns="urn:oasis:names:specification:ubl:schema:xsd:Invoice-2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:cac="urn:oasis:names:specification:ubl:schema:xsd:CommonAggregateComponents-2" xmlns:ext="urn:oasis:names:specification:ubl:schema:xsd:CommonExtensionComponents-2" xmlns:ds="http://www.w3.org/2000/09/xmldsig#" xmlns:xades="http://uri.etsi.org/01903/v1.3.2#" xmlns:cbc="urn:oasis:names:specification:ubl:schema:xsd:CommonBasicComponents-2" xsi:schemaLocation="urn:oasis:names:specification:ubl:schema:xsd:Invoice-2 ..\xsdrt\maindoc\UBL-Invoice-2.1.xsd" xmlns:n4="http://www.altova.com/samplexml/other-namespace" >'+
+--	'<ext:UBLExtensions>'+
+--		'<ext:UBLExtension>'+
+--			'<ext:ExtensionContent>'+
+--				'<n4:auto-generated_for_wildcard/>'+
+--			'</ext:ExtensionContent>'+
+--		'</ext:UBLExtension>'+
+--	'</ext:UBLExtensions>'+
+	--'<UBLVersionID>2.1</UBLVersionID>'+
+	--'<CustomizationID>TR1.2</CustomizationID>'+
+	--'<ProfileID>TICARIFATURA</ProfileID>'+
+	'<Fatura>'+
+	'<faturaId>'+cast(@faturaId as varchar)+'</faturaId>'+
+	'<faturaNo>'+@faturaNo+'</faturaNo>'+
+	'<CopyIndicator>false</CopyIndicator>'+
+	'<UUID>'+@guid+'</UUID>'+
+	'<faturaTarihi>'+@faturaTarihi+'</faturaTarihi>'+
+	'<faturaSaati>'+@faturaSaati+'</faturaSaati>'+
+	'<faturaTip>SATIS</faturaTip>'+
+	'<paraBirimi>TRY</paraBirimi>'+
+	'<faturaKalemSayisi>'+@faturaSatir+'</faturaKalemSayisi>'+
+ 	'<saticiBilgisi>'+
+			'<url>'+@saticiUrl+'</url>'+
+			'<vergiNo>'+@saticiVergiNo+'</vergiNo>'+
+			'<saticiAdi>'+@saticiAdi+'</saticiAdi>'+
+			'<adres>'+@saticiAdres+'</adres>'+
+			'<kapiNo>'+@saticiKapiNo+'</kapiNo>'+
+			'<Ilce>'+@saticiILCE+'</Ilce>'+
+			'<Il>'+@saticiIL+'</Il>'+
+			'<PostaKodu>'+@saticiPostaKodu+'</PostaKodu>'+
+			'<Ulke>Türkiye</Ulke>'+
+			'<vergiDairesi>'+@saticiVergiDairesi+'</vergiDairesi>'+
+			'<Tel>'+@saticiTel+'</Tel>'+
+			'<fax>'+@saticiFax+'</fax>'+
+			'<EMail>'+@saticiEmail+'</EMail>'+
+	'</saticiBilgisi>'+
+ 	'<aliciBilgisi>'+
+			'<url>'+@aliciUrl+'</url>'+
+			'<vergiNo>'+@aliciVergiNo+'</vergiNo>'+
+			'<saticiAdi>'+@aliciAdi+'</saticiAdi>'+
+			'<adres>'+@aliciAdres+'</adres>'+
+			'<kapiNo>'+@aliciKapiNo+'</kapiNo>'+
+			'<Ilce>'+@aliciILCE+'</Ilce>'+
+			'<Il>'+@aliciIL+'</Il>'+
+			'<PostaKodu>'+@aliciPostaKodu+'</PostaKodu>'+
+			'<Ulke>Türkiye</Ulke>'+
+			'<vergiDairesi>'+@aliciVergiDairesi+'</vergiDairesi>'+
+			'<Tel>'+@aliciTel+'</Tel>'+
+			'<fax>'+@aliciFax+'</fax>'+
+			'<EMail>'+@aliciEmail+'</EMail>'+
+	'</aliciBilgisi>'+
+	'<Vergiler>'+
+		'<kdvTutar>'+ @faturaKdvTutar + '</kdvTutar>'+
+		'<faturaTutar>'+@faturaTutar+'</faturaTutar>'+
+		'<CalculationSequenceNumeric>1.0</CalculationSequenceNumeric>'+
+		'<kdvOran>18</kdvOran>'+
+		'<vergiTanimi>Katma Deðer Vergisi</vergiTanimi>'+
+		'<vergiKodu>0015</vergiKodu>'+
+	'</Vergiler>'+
+
+	'<faturaToplamlari>'+
+		'<faturaTutar>'+@faturaTutar +'</faturaTutar>'+
+--		'<TaxExclusiveAmount currencyID="TRY">'+ @faturaTutar +'</TaxExclusiveAmount>'+
+		'<faturaGeneTutar>'+@faturaGenelTutar+'</faturaGeneTutar>'+
+		'<indirimToplam>0</indirimToplam>'+
+	--	'<PayableAmount currencyID="TRY">'+@faturaGenelTutar+'</PayableAmount>'+
+	'</faturaToplamlari>'
 
 
 select 
     @faturaHareket = @faturaHareket + 
-    '<cac:InvoiceLine>'+
-        '<cbc:ID>'+ cast(ROW_NUMBER() OVER(ORDER BY faturaId,sira) as varchar)  + '</cbc:ID>'+
-        '<cbc:InvoicedQuantity unitCode="NIU">' + cast(adet as varchar) + '</cbc:InvoicedQuantity>'+
-        '<cbc:LineExtensionAmount currencyID="TRY">' + cast(tutar as varchar) + '</cbc:LineExtensionAmount>'+
-        --'<cac:AllowanceCharge>'+
-       --     '<cbc:ChargeIndicator>false</cbc:ChargeIndicator>'+
-        --    <cbc:MultiplierFactorNumeric>0.05</cbc:MultiplierFactorNumeric>
-        --    <cbc:Amount currencyID="TRY">495.3</cbc:Amount>
-        --    <cbc:BaseAmount currencyID="TRY">9906</cbc:BaseAmount>
-        '<cac:AllowanceCharge/>'+
-        --'<cac:TaxTotal>'+
-        --    <cbc:TaxAmount currencyID="TRY">1693.93</cbc:TaxAmount>
-        --    <cac:TaxSubtotal>
-        --        <cbc:TaxableAmount currencyID="TRY">9410.7</cbc:TaxableAmount>
-        --        <cbc:TaxAmount currencyID="TRY">1693.93</cbc:TaxAmount>
-        --        <cbc:Percent>18</cbc:Percent>
-        --        <cac:TaxCategory>
-        --            <cac:TaxScheme>
-        --                <cbc:Name>KDV</cbc:Name>
-        --                <cbc:TaxTypeCode>0015</cbc:TaxTypeCode>
-        --            </cac:TaxScheme>
-        --        </cac:TaxCategory>
-        --    </cac:TaxSubtotal>
-        '<cac:TaxTotal/>'+
-        '<cac:Item>'+
-            '<cbc:Name>'+ isnull(hizmetAdi,'') +'</cbc:Name>'+
-        '</cac:Item>'+
-        '<cac:Price>'+
-            '<cbc:PriceAmount currencyID="TRY">'+cast(fiyat as varchar)+'</cbc:PriceAmount>'+
-        '</cac:Price>'+
-    '</cac:InvoiceLine>'
+    '<Satirlar>'+
+        '<sira>'+ cast(ROW_NUMBER() OVER(ORDER BY faturaId,sira) as varchar)  + '</sira>'+
+        '<adet>' + cast(adet as varchar) + '</adet>'+
+        '<tutar>' + cast(tutar as varchar) + '</tutar>'+
+        --'<AllowanceCharge>'+
+       --     '<ChargeIndicator>false</ChargeIndicator>'+
+        --    <MultiplierFactorNumeric>0.05</MultiplierFactorNumeric>
+        --    <Amount currencyID="TRY">495.3</Amount>
+        --    <BaseAmount currencyID="TRY">9906</BaseAmount>
+        --'<AllowanceCharge/>'+
+        --'<TaxTotal>'+
+        --    <TaxAmount currencyID="TRY">1693.93</TaxAmount>
+        --    <TaxSubtotal>
+        --        <TaxableAmount currencyID="TRY">9410.7</TaxableAmount>
+        --        <TaxAmount currencyID="TRY">1693.93</TaxAmount>
+        --        <Percent>18</Percent>
+        --        <TaxCategory>
+        --            <TaxScheme>
+        --                <Name>KDV</Name>
+        --                <TaxTypeCode>0015</TaxTypeCode>
+        --            </TaxScheme>
+        --        </TaxCategory>
+        --    </TaxSubtotal>
+        --'<TaxTotal/>'+
+
+            '<Tanim>'+ isnull(hizmetAdi,'') +'</Tanim>'+
+            '<fiyat>'+cast(fiyat as varchar)+'</fiyat>'+
+    '</Satirlar>'
 
 	from FaturaHareket fh
 
-	--select @fatura + @faturaHareket + '</Invoice>'
+	--select @fatura + @faturaHareket + '</Fatura>'faturaXML
 
-	select cast(@fatura + @faturaHareket+'</Invoice>' as xml) faturaXML
+	select cast(@fatura + @faturaHareket + '</Fatura>' as xml) faturaXML
 end
 GO
 exec sp_vw_sys_upd 'P ', 'dbo', 'sp_FaturaXml'
