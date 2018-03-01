@@ -225,6 +225,68 @@ begin
           Enabled;
         end;
     end;
+  TagfrmDigerSaglikPers : begin
+        Tag := TagfrmDigerSaglikPers;
+        ClientHeight := formYukseklik;
+        ClientWidth := formGenislik;
+
+        indexFieldName := 'kod';
+        TableName := 'DigerSaglikPersonel';
+     //   Olustur(self,_TableName_,'Doktor Taným',22);
+
+
+        List := TListeAc.Create(nil);
+        List.Table := 'DigerSaglikPersonel';
+        List.kolonlar.Add('kod');// := Ts;
+        List.kolonlar.Add('tanimi'); // := Ts;
+
+
+        List.KolonBasliklari.Add('Uzman Kodu');// := Ts1;
+        List.KolonBasliklari.Add('Uzman Adi');// := Ts1;
+        List.TColcount := 2;
+        List.TColsW := '50,200';
+        List.ListeBaslik := 'Ýþ Güvenlik Uzmanlarý';
+        List.Name := 'kod';
+        List.Conn := Datalar.ADOConnection2;
+        list.Where := GetUserDSPFilter;//login olan kullanýcý admin grubunda deðilse onun doktor kodu;
+        List.SkinName := 'coffee';//AnaForm.dxSkinController1.SkinName;
+
+        setDataStringB(self,'kod','Uzman Kodu',Kolon1,'',70,List,True,nil);
+
+        setDataString(self,'tanimi','Adý Soyadý',Kolon1,'',200,True);
+        setDataString(self,'tcKimlikNo','TC Kimlik No',Kolon1,'',150,True);
+
+        setDataString(self,'Sinifi','Sýnýfý',Kolon1,'', 20, True);
+
+        setDataString(self,'pin','Ýmza Token Pin',Kolon1,'',50);
+
+        cardType := TcxImageComboKadir.Create(self);
+        cardType.Conn := Datalar.ADOConnection2;
+        cardType.TableName := 'cardTypes';
+        cardType.ValueField := 'cardType';
+        cardType.DisplayField := 'tanimi';
+        cardType.BosOlamaz := True;
+        cardType.Filter := '';
+        OrtakEventAta(cardType);
+        setDataStringKontrol(self,cardType,'cardType','Card Type',kolon1,'',150);
+
+      //  setDataString(self,'TesisKodu','Tesis Kodu',Kolon1,'',100);
+        setDataString(self,'GSM','GSM',Kolon1,'',100);
+        setDataString(self,'EPosta','E-Posta',Kolon1,'',200);
+        setDataString(self,'sertifika','Sertifika',Kolon1,'',80);
+
+     //   setDataStringC(self,'uzman','Uzman mý?',Kolon1,'',80,'Evet,Hayýr');
+        setDataStringC(self,'durum','Durum',Kolon1,'',80,'Aktif,Pasif');
+
+        SayfaCaption('Taným Bilgileri','','','','');
+        Result := True;
+        Disabled(self,True);
+        if not IsNull (datalar.DSPers) then
+        begin
+          indexKaydiBul(datalar.DSPers);
+          Enabled;
+        end;
+    end;
   end;
 
 end;
