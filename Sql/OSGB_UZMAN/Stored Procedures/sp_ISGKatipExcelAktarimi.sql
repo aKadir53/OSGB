@@ -41,6 +41,8 @@ begin
     insert into #t (RowsetHata, Rowset, Aciklama, HataMesaji) 
     Select 0 RowsetHata, 0 Rowset, 'Ýþ Güvenlik Uzmaný tanýmlarý oluþturuluyor' Aciklama, null HataMesaji
     insert into #t (RowsetHata, Rowset, Aciklama, HataMesaji) 
+    Select 0 RowsetHata, 0 Rowset, 'Diðer Saðlýk Personeli tanýmlarý oluþturuluyor' Aciklama, null HataMesaji
+    insert into #t (RowsetHata, Rowset, Aciklama, HataMesaji) 
     Select 0 RowsetHata, 0 Rowset, 'Ýç görev satýrlarý ayýklanýyor' Aciklama, null HataMesaji
     insert into #t (RowsetHata, Rowset, Aciklama, HataMesaji) 
     Select 0 RowsetHata, 0 Rowset, 'Hizmet alan kurum ünvan alaný için ilk kelimelerden seçim yap' Aciklama, null HataMesaji
@@ -60,6 +62,8 @@ begin
     Select 0 RowsetHata, 0 Rowset, 'Þube Kartlarýna doktor ve aylýk çalýþma dakika bilgileri güncelleniyor' Aciklama, null HataMesaji
     insert into #t (RowsetHata, Rowset, Aciklama, HataMesaji) 
     Select 0 RowsetHata, 0 Rowset, 'Þube Kartlarýna Ýþ Güvenliði Uzmaný ve aylýk çalýþma dakika bilgileri güncelleniyor' Aciklama, null HataMesaji
+    insert into #t (RowsetHata, Rowset, Aciklama, HataMesaji) 
+    Select 0 RowsetHata, 0 Rowset, 'Þube Kartlarýna Diðer Saðlýk Personeli ve aylýk çalýþma dakika bilgileri güncelleniyor' Aciklama, null HataMesaji
     insert into #t (RowsetHata, Rowset, Aciklama, HataMesaji) 
     Select 0 RowsetHata, 0 Rowset, 'Kullanýcý kartlarýna oluþturulacak doktor tanýmlarý hazýrlanýyor' Aciklama, null HataMesaji
     insert into #t (RowsetHata, Rowset, Aciklama, HataMesaji) 
@@ -81,6 +85,16 @@ begin
     insert into #t (RowsetHata, Rowset, Aciklama, HataMesaji) 
     Select 0 RowsetHata, 0 Rowset, 'Geçici tablo kaldýrýlýyor' Aciklama, null HataMesaji
     insert into #t (RowsetHata, Rowset, Aciklama, HataMesaji) 
+    Select 0 RowsetHata, 0 Rowset, 'Kullanýcý kartlarýna oluþturulacak diðer saðlýk personeli tanýmlarý hazýrlanýyor' Aciklama, null HataMesaji
+    insert into #t (RowsetHata, Rowset, Aciklama, HataMesaji) 
+    Select 0 RowsetHata, 0 Rowset, 'Çift Kullanýcý isimleri eleniyor' Aciklama, null HataMesaji
+    insert into #t (RowsetHata, Rowset, Aciklama, HataMesaji, RowsetEditInput) 
+    Select 0 RowsetHata, 1 Rowset, 'Kullanýcý kartlarýna oluþturulacak diðer saðlýk personeli tanýmlarý girdiriliyor' Aciklama, 'Ýþ Güvenlik Uzmaný Kullanýcý Kartý Onayý' HataMesaji, 1 RowsetEditInput
+    insert into #t (RowsetHata, Rowset, Aciklama, HataMesaji) 
+    Select 0 RowsetHata, 0 Rowset, 'Kullanýcý kartlarýna diðer saðlýk personeli tanýmlarýndan diðer saðlýk personeli kullanýcýlarý oluþturuluyor' Aciklama, null HataMesaji
+    insert into #t (RowsetHata, Rowset, Aciklama, HataMesaji) 
+    Select 0 RowsetHata, 0 Rowset, 'Geçici tablo kaldýrýlýyor' Aciklama, null HataMesaji
+    insert into #t (RowsetHata, Rowset, Aciklama, HataMesaji) 
     Select 0 RowsetHata, 0 Rowset, 'Firma kartlarýna SGK sicil numaralarýndan hesaplanan nace kodlarý yazýlýyor' Aciklama, null HataMesaji
 
     set nocount off
@@ -98,7 +112,8 @@ begin
   begin
     update ss set HizmetAlanKurum = 'sil', HizmetAlanKurumSGKSicilNo = TCKimlikNo
     from ISGKatipExcelAktarim ss
-    where GorevTuru = 'Ýçe Grv.'
+    inner join DisAktarim_IsgKatipExcel_GorevTuru ssgt on ssgt.GorevTuru = ss.GorevTuru
+    where ssgt.GorevTuruSinifi = 2
       and LTRIM (RTRIM (IsNull (HizmetAlanKurumSGKSicilNo, ''))) = ''
       and LTRIM (RTRIM (IsNull (HizmetalanKurum, ''))) = ''
   end
@@ -109,7 +124,8 @@ begin
   begin
     delete d
     from ISGKatipExcelAktarim d
-    where CalismaDurumu = 'Ayrýldý'
+    inner join DisAktarim_ISGKatipExcel_CalismaDurumu dcd on dcd.CalismaDurumu = d.CalismaDurumu
+    where dcd.CalismaDurumuSinifi = 1
   end
 
   set @iTipInt = @iTipInt + 1
@@ -148,19 +164,30 @@ begin
   if @iTip = @iTipInt or @iTip is Null
   begin
     insert into dbo.doktorlarT (kod, tanimi, tescilNo, tcKimlikNo, bransKodu, calismaTipi, durum, sertifika, receteBrans, TDisID, uzman, eReceteKullanici, eReceteSifre, pin, pazartesi, sali, carsamba, persembe, cuma, cumartesi, TesisKodu, GSM, EPosta, cardType)
-    select substring (cast (10000 + IsNull ((select max (cast (kod as int)) from doktorlarT where IsNumeric (Kod) = 1), 0) + row_number () over (order by AdiSoyadi) as varchar (5)), 2, 4) Kod, AdiSoyadi tanimi, null tescilNo, TCKimlikNo tcKimlikNo, null bransKodu, 
-      max (case when CalismaSekli = 'Kýsmi Süreli' then 1 else null end) calismaTipi, 
-      case when IsNull (CalismaDurumu, 'Devam Ediyor') = 'Devam Ediyor' then 'Aktif' else null end durum, 
+    select substring (cast (10000 + IsNull ((select max (cast (kod as int)) from doktorlarT where IsNumeric (Kod) = 1), 0) + row_number () over (order by AdiSoyadi) as varchar (5)), 2, 4) Kod, 
+      AdiSoyadi tanimi, null tescilNo, pa.TCKimlikNo tcKimlikNo, null bransKodu, 
+      max (case when pcs.CalismaSekliSinifi = 1 then 1 else null end) calismaTipi, 
+      'Aktif' durum, 
       MAX (case when LTRIM (RTRIM (SertifikaNo)) = '' then NULL else SertifikaNo end) sertifika, 
-      null receteBrans, null TDisID, null uzman, TCKimlikNo eReceteKullanici, null eReceteSifre, null pin, 
+      null receteBrans, null TDisID, null uzman, pa.TCKimlikNo eReceteKullanici, null eReceteSifre, null pin, 
       null pazartesi, null sali, null carsamba, null persembe, null cuma, null cumartesi, 
-      '11349903' TesisKodu, 
+      IsNull (tk.Ilkodu, '11349903') TesisKodu, 
       null GSM, null EPosta, null cardType
     from dbo.ISGKatipExcelAktarim pa
-    where PersonelKategoriAdi = 'Ýþyeri Hekimi'
+    inner join DisAktarim_IsgKatipExcel_PersonelKategoriAdi pka on pka.PersonelKategoriAdi = pa.PersonelKategoriAdi
+    inner join DisAktarim_ISGKatipExcel_CalismaSekli pcs on pcs.CalismaSekli = pa.CalismaSekli
+    left outer join 
+      (select TCKimlikNo, '11' +substring (cast (100 + max (IlKodu) as varchar (10)), 2, 3) + '9903' Ilkodu
+       from
+        (select TCKimlikNo, IlKodu, count (*) sayi, max (count (*)) over (partition by TcKimlikNo) d
+         from ISGKatipExcelAktarim
+         where not IlKodu is null
+         group by TCKimlikNo, Ilkodu) w
+       where sayi = d
+       group by TCKimlikNo) tk on tk.TCKimlikNo = pa.TCKimlikNo
+    where pka.KategoriSinifi = 1
       and not exists (Select 1 from dbo.DoktorlarT dt where dt.tcKimlikNo = pa.TCKimlikNo)
-    group by AdiSoyadi, TCKimlikNo,
-      case when IsNull (CalismaDurumu, 'Devam Ediyor') = 'Devam Ediyor' then 'Aktif' else null end
+    group by AdiSoyadi, pa.TCKimlikNo, IsNull (tk.Ilkodu, '11349903')
     order by AdiSoyadi
   end
   
@@ -178,15 +205,46 @@ begin
     insert into dbo.IGU (kod, tanimi, tcKimlikNo, calismaTipi, durum, sertifika, pin, TesisKodu, GSM, EPosta, cardType, Sinifi)
     select substring (cast (10000 + IsNull ((select max (cast (kod as int)) from IGU where IsNumeric (Kod) = 1), 0) + row_number () over (order by AdiSoyadi) as varchar (5)), 2, 4) kod, 
       AdiSoyadi tanimi, TCKimlikNo tcKimlikNo, 
-      max (case when CalismaSekli = 'Kýsmi Süreli' then 1 else null end) calismaTipi, 
-      case when IsNull (CalismaDurumu, 'Devam Ediyor') = 'Devam Ediyor' then 'Aktif' else null end durum, 
-      MAX (case when LTRIM (RTRIM (SertifikaNo)) = '' then NULL else SertifikaNo end) sertifika, null pin, null TesisKodu, null GSM, null EPosta, null cardType, substring (PersonelKategoriAdi, 1, 1) Sinifi
+      max (case when pcs.CalismaSekliSinifi = 1 then 1 else null end) calismaTipi, 
+      'Aktif' durum, 
+      MAX (case when LTRIM (RTRIM (SertifikaNo)) = '' then NULL else SertifikaNo end) sertifika, null pin, null TesisKodu, null GSM, null EPosta, null cardType, 
+      case
+        when pka.KategoriSinifi = 2 then 'A'
+        when pka.KategoriSinifi = 3 then 'B'
+        when pka.KategoriSinifi = 4 then 'C'
+        else null
+      end Sinifi
     from dbo.ISGKatipExcelAktarim pa
-    where PersonelKategoriAdi like '_ Sýnýfý Ýþ Güvenliði Uzmaný'
+    inner join DisAktarim_IsgKatipExcel_PersonelKategoriAdi pka on pka.PersonelKategoriAdi = pa.PersonelKategoriAdi
+    inner join DisAktarim_ISGKatipExcel_CalismaSekli pcs on pcs.CalismaSekli = pa.CalismaSekli
+    where pka.KategoriSinifi in (2, 3, 4)
       and not exists (Select 1 from dbo.IGU dt where dt.tcKimlikNo = pa.TCKimlikNo)
     group by AdiSoyadi, TCKimlikNo,
-      case when IsNull (CalismaDurumu, 'Devam Ediyor') = 'Devam Ediyor' then 'Aktif' else null end,
-      substring (PersonelKategoriAdi, 1, 1)
+      case
+        when pka.KategoriSinifi = 2 then 'A'
+        when pka.KategoriSinifi = 3 then 'B'
+        when pka.KategoriSinifi = 4 then 'C'
+        else null
+      end
+    order by AdiSoyadi
+  end
+
+  set @iTipInt = @iTipInt + 1
+
+  if @iTip = @iTipInt or @iTip is Null
+  begin
+    insert into dbo.DigerSaglikPersonel (kod, tanimi, tcKimlikNo, calismaTipi, durum, sertifika, pin, TesisKodu, GSM, EPosta, cardType)
+    select substring (cast (10000 + IsNull ((select max (cast (kod as int)) from DigerSaglikPersonel where IsNumeric (Kod) = 1), 0) + row_number () over (order by AdiSoyadi) as varchar (5)), 2, 4) kod, 
+      AdiSoyadi tanimi, TCKimlikNo tcKimlikNo, 
+      max (case when pcs.CalismaSekliSinifi = 1 then 1 else null end) calismaTipi, 
+      'Aktif' durum, 
+      MAX (case when LTRIM (RTRIM (SertifikaNo)) = '' then NULL else SertifikaNo end) sertifika, null pin, null TesisKodu, null GSM, null EPosta, null cardType
+    from dbo.ISGKatipExcelAktarim pa
+    inner join DisAktarim_IsgKatipExcel_PersonelKategoriAdi pka on pka.PersonelKategoriAdi = pa.PersonelKategoriAdi
+    inner join DisAktarim_ISGKatipExcel_CalismaSekli pcs on pcs.CalismaSekli = pa.CalismaSekli
+    where pka.KategoriSinifi in (5)
+      and not exists (Select 1 from dbo.DigerSaglikPersonel dt where dt.tcKimlikNo = pa.TCKimlikNo)
+    group by AdiSoyadi, TCKimlikNo
     order by AdiSoyadi
   end
 
@@ -196,7 +254,8 @@ begin
   begin  
     delete ss
     from ISGKatipExcelAktarim ss
-    where GorevTuru = 'Ýçe Grv.'
+    inner join DisAktarim_IsgKatipExcel_GorevTuru ssgt on ssgt.GorevTuru = ss.GorevTuru
+    where ssgt.GorevTuruSinifi = 2
       and LTRIM (RTRIM (IsNull (HizmetalanKurum, ''))) = 'sil'
       and LTRIM (RTRIM (IsNull (HizmetAlanKurumSGKSicilNo, ''))) = TCKimlikNo
   end
@@ -253,13 +312,13 @@ begin
   
   if @iTip = @iTipInt or @iTip is Null
   begin
-    insert into dbo.SIRKET_SUBE_TNM (sirketKod, subeKod, subeTanim, subeSiciNo, subeDoktor, BolgeMudurlukSicilNo, MuayeneProtokolNo, IGU)
+    insert into dbo.SIRKET_SUBE_TNM (sirketKod, subeKod, subeTanim, subeSiciNo, subeDoktor, BolgeMudurlukSicilNo, MuayeneProtokolNo, IGU, DigerSaglikPers)
     select srk.SirketKod SirketKod, 
       substring (
         cast (100 + 
               IsNull ((select max (cast (SubeKod as int)) from SIRKET_SUBE_TNM sb where sb.SirketKod = srk.SirketKod and IsNumeric (SubeKod) = 1), -1) + 
               row_number () over (Partition by srk.SirketKod order by HizmetAlanKurumSGKSicilNo) as varchar (3)), 2, 2) subeKod, 
-      IsNull (HizmetAlanKurumSubeTanimi, Replace (HizmetAlanKurumSGKSicilNo, ' ', '')) subeTanim, HizmetAlanKurumSGKSicilNo subeSiciNo, null subeDoktor, null BolgeMudurlukSicilNo, null MuayeneProtokolNo, null IGU
+      IsNull (HizmetAlanKurumSubeTanimi, Replace (HizmetAlanKurumSGKSicilNo, ' ', '')) subeTanim, HizmetAlanKurumSGKSicilNo subeSiciNo, null subeDoktor, null BolgeMudurlukSicilNo, null MuayeneProtokolNo, null IGU, null DigerSaglikPers
     -- select *
     from dbo.ISGKatipExcelAktarim pa
     inner join dbo.SIRKETLER_TNM srk on srk.tanimi = substring (LTRIM (RTRIM (ISNULL (pa.HizmetAlanKurumUnvan, pa.HizmetAlanKurum))), 1, 100)
@@ -317,6 +376,21 @@ begin
   
   if @iTip = @iTipInt or @iTip is Null
   begin  
+    -- Ýþ güvenliði uzmaný aylýk çalýþma dakika bilgisi güncelleniyor
+    update ssb set DigerSaglikPers = dt.kod, DigerSaglikPersCalismaDakika = AylikCalismaDakika
+    from dbo.ISGKatipExcelAktarim pa
+    inner join dbo.DigerSaglikPersonel dt on dt.TCKimlikNo = pa.TCKimlikNo
+    inner join SIRKETLER_TNM srk on srk.Tanimi = substring (LTRIM (RTRIM (ISNULL (pa.HizmetAlanKurumUnvan, pa.HizmetAlanKurum))), 1, 100)
+    inner join SIRKET_SUBE_TNM ssb on ssb.sirketKod = srk.sirketKod
+      and ssb.subeSiciNo = pa.HizmetAlanKurumSGKSicilNo
+    where IsNull (DigerSaglikPers, '') <> IsNull (dt.kod, '')
+      or IsNull (DigerSaglikPersCalismaDakika, 0) <> IsNull (AylikCalismaDakika, 0)
+  end
+
+  set @iTipInt = @iTipInt + 1
+  
+  if @iTip = @iTipInt or @iTip is Null
+  begin  
     select IDENTITY (int, 1, 1) ID, 'dr' + dbo.TurkCharToEng (case when CHARINDEX (' ', tanimi) <= 0 then Tanimi else substring (tanimi, 1, CHARINDEX (' ', tanimi)-1) end) kullanici, 
       Tanimi ADISOYADI, kod doktor
     into dbo.tmpUsr
@@ -356,9 +430,9 @@ begin
   
   if @iTip = @iTipInt or @iTip is Null
   begin  
-    insert into dbo.Users (kullanici, password, [default], donem, parametreler, yet1, yet2, ADISOYADI, doktor, grup, Saat, userSkin, email, ustUser, sirketKodu, IGU)
+    insert into dbo.Users (kullanici, password, [default], donem, parametreler, yet1, yet2, ADISOYADI, doktor, grup, Saat, userSkin, email, ustUser, sirketKodu, IGU, DigerSaglikPers)
     select uuu.kullanici kullanici, 
-      tcKimlikNo password, 0 [default], null donem, null parametreler, null yet1, null yet2, Tanimi ADISOYADI, kod doktor, 2 grup, getdate () Saat, 'iMaginary' userSkin, null email, null ustUser, null sirketKodu, null IGU
+      tcKimlikNo password, 0 [default], null donem, null parametreler, null yet1, null yet2, Tanimi ADISOYADI, kod doktor, 2 grup, getdate () Saat, 'iMaginary' userSkin, null email, null ustUser, null sirketKodu, null IGU, null DigerSaglikPers
     -- select *
     from dbo.DoktorlarT dt
     inner join dbo.tmpUsr uuu on uuu.Doktor = dt.Kod
@@ -415,13 +489,72 @@ begin
   
   if @iTip = @iTipInt or @iTip is Null
   begin  
-    insert into dbo.Users (kullanici, password, [default], donem, parametreler, yet1, yet2, ADISOYADI, doktor, grup, Saat, userSkin, email, ustUser, sirketKodu, IGU)
+    insert into dbo.Users (kullanici, password, [default], donem, parametreler, yet1, yet2, ADISOYADI, doktor, grup, Saat, userSkin, email, ustUser, sirketKodu, IGU, DigerSaglikPers)
     select uuu.Kullanici kullanici, 
-      tcKimlikNo password, 0 [default], null donem, null parametreler, null yet1, null yet2, Tanimi ADISOYADI, null doktor, 11 grup, getdate () Saat, 'iMaginary' userSkin, null email, null ustUser, null sirketKodu, kod IGU
+      tcKimlikNo password, 0 [default], null donem, null parametreler, null yet1, null yet2, Tanimi ADISOYADI, null doktor, 11 grup, getdate () Saat, 'iMaginary' userSkin, null email, null ustUser, null sirketKodu, kod IGU, null DigerSaglikPers
     -- select *
     from dbo.IGU dt
     inner join dbo.tmpUsr uuu on uuu.IsGuvUzm = dt.Kod
     where not Exists (Select 1 from dbo.Users U where U.IGU = dt.kod)
+  end
+
+  set @iTipInt = @iTipInt + 1
+  
+  if @iTip = @iTipInt or @iTip is Null
+  begin  
+    drop table dbo.tmpUsr
+  end
+
+  set @iTipInt = @iTipInt + 1
+  
+  if @iTip = @iTipInt or @iTip is Null
+  begin  
+    select IDENTITY (int, 1, 1) ID, 'sp' + dbo.TurkCharToEng (case when CHARINDEX (' ', tanimi) <= 0 then Tanimi else substring (tanimi, 1, CHARINDEX (' ', tanimi)-1) end) kullanici, 
+      Tanimi ADISOYADI, kod DigerSglPers
+    into dbo.tmpUsr
+    from dbo.DigerSaglikPersonel dt
+    where not Exists (Select 1 from dbo.Users U where U.DigerSaglikPers = dt.kod)
+    order by dt.Tanimi
+  end
+
+  set @iTipInt = @iTipInt + 1
+  
+  if @iTip = @iTipInt or @iTip is Null
+  begin  
+    while exists (select Kullanici, count (*) Sayi from dbo.tmpUsr group by Kullanici having count (*) > 1)
+    begin
+      update tu2 set tu2.Kullanici = tw.YK
+      from dbo.tmpUsr tu2
+      inner join
+      (
+      Select tu.Kullanici + cast (row_Number () over (partition by tu.kullanici order by tu.ID) as varchar (10)) YK, tu.ID
+      from dbo.tmpUsr tu
+      inner join
+        (select Kullanici, count (*) Sayi from dbo.tmpUsr group by Kullanici having count (*) > 1) w on w.Kullanici = tu.Kullanici
+      ) tw on tw.ID = tu2.ID
+    end
+  end
+
+  set @iTipInt = @iTipInt + 1
+  
+  if @iTip = @iTipInt or @iTip is Null
+  begin  
+    select ID, kullanici, cast (DigerSglPers as varchar (4)) as [Dið.Sað.Pers. Kodu], cast (ADISOYADI as varchar (50)) [ADI SOYADI]
+    from dbo.tmpUsr
+    order by ID
+  end
+
+  set @iTipInt = @iTipInt + 1
+  
+  if @iTip = @iTipInt or @iTip is Null
+  begin  
+    insert into dbo.Users (kullanici, password, [default], donem, parametreler, yet1, yet2, ADISOYADI, doktor, grup, Saat, userSkin, email, ustUser, sirketKodu, IGU, DigerSaglikPers)
+    select uuu.Kullanici kullanici, 
+      tcKimlikNo password, 0 [default], null donem, null parametreler, null yet1, null yet2, Tanimi ADISOYADI, null doktor, 11 grup, getdate () Saat, 'iMaginary' userSkin, null email, null ustUser, null sirketKodu, null IGU, kod DigerSaglikPers
+    -- select *
+    from dbo.DigerSaglikPersonel dt
+    inner join dbo.tmpUsr uuu on uuu.DigerSglPers = dt.Kod
+    where not Exists (Select 1 from dbo.Users U where U.DigerSaglikPers = dt.kod)
   end
 
   set @iTipInt = @iTipInt + 1
