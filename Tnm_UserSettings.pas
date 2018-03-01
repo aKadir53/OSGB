@@ -106,19 +106,20 @@ type
      function Init(Sender: TObject) : Boolean; override;
   end;
 
+var
+  frmUsers: TfrmUsers;
+
+
+implementation
+uses StrUtils, AnaUnit, TransUtils;
+{$R *.dfm}
 const _TableName_ = 'Users';
       formGenislik = 780;
       formYukseklik = 500;
       dr = 1;
       ig = 2;
       sirket = 3;
-var
-  frmUsers: TfrmUsers;
-
-
-implementation
-    uses StrUtils, AnaUnit, TransUtils;
-{$R *.dfm}
+      dsp = 4;
 
 procedure TfrmUsers.PropertiesEditValueChanged(Sender: TObject);
 begin
@@ -128,6 +129,7 @@ begin
             Then begin
              TcxImageComboKadir(FindComponent('SirketKodu')).EditValue := null;
              TcxImageComboKadir(FindComponent('IGU')).EditValue := null;
+             TcxImageComboKadir(FindComponent('DigerSaglikPers')).EditValue := null;
             end;
           end;
      ig : begin
@@ -135,6 +137,15 @@ begin
             Then begin
              TcxImageComboKadir(FindComponent('SirketKodu')).EditValue := null;
              TcxImageComboKadir(FindComponent('doktor')).EditValue := null;
+             TcxImageComboKadir(FindComponent('DigerSaglikPers')).EditValue := null;
+            end;
+          end;
+     dsp : begin
+            if TcxImageComboKadir(FindComponent('DigerSaglikPers')).EditingText <> ''
+            Then begin
+             TcxImageComboKadir(FindComponent('SirketKodu')).EditValue := null;
+             TcxImageComboKadir(FindComponent('doktor')).EditValue := null;
+             TcxImageComboKadir(FindComponent('IGU')).EditValue := null;
             end;
           end;
      sirket : begin
@@ -142,6 +153,7 @@ begin
             Then begin
              TcxImageComboKadir(FindComponent('doktor')).EditValue := null;
              TcxImageComboKadir(FindComponent('IGU')).EditValue := null;
+             TcxImageComboKadir(FindComponent('DigerSaglikPers')).EditValue := null;
             end;
           end;
 
@@ -269,7 +281,7 @@ end;
 procedure TfrmUsers.FormCreate(Sender: TObject);
 var
   List : TListeAc;
-  Grup,ustUser,doktor,sirketler,IGU : TcxImageComboKadir;
+  Grup,ustUser,doktor,sirketler,IGU, DSPers : TcxImageComboKadir;
 begin
 
 
@@ -348,6 +360,18 @@ begin
   setDataStringKontrol(self,IGU,'IGU','Ýþ Güvenlik Uzman',kolon1,'',120);
   OrtakEventAta(IGU);
   IGU.Properties.OnChange := PropertiesEditValueChanged;
+
+  DSPers := TcxImageComboKadir.Create(self);
+  DSPers.Conn := Datalar.ADOConnection2;
+  DSPers.Tag := dsp;
+  DSPers.TableName := 'DigerSaglikPersonel';
+  DSPers.ValueField := 'KOD';
+  DSPers.DisplayField := 'Tanimi';
+  DSPers.BosOlamaz := False;
+  DSPers.Filter := '';
+  setDataStringKontrol(self,DSPers,'DigerSaglikPers','Diðer Saðlýk Personeli',kolon1,'',120);
+  OrtakEventAta(DSPers);
+  DSPers.Properties.OnChange := PropertiesEditValueChanged;
 
   setDataString(self,'email','e-mail',Kolon1,'',250);
 
