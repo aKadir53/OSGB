@@ -223,12 +223,15 @@ var
   sube : string;
 begin
 
-  if (datalar.doktorKodu <> '')
+  if not IsNull (datalar.doktorKodu)
   then
      sube := ' and subeDoktor = ' + QuotedStr(datalar.doktorKodu)
   else
-  if (datalar.IGU <> '') then
+  if not IsNull (datalar.IGU) then
      sube := ' and IGU = ' + QuotedStr(datalar.IGU)
+  else
+  if not IsNull (datalar.DSPers) then
+     sube := ' and DigerSaglikPers = ' + QuotedStr(datalar.DSPers)
   else
     sube := '';
 
