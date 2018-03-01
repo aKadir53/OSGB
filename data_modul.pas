@@ -311,6 +311,8 @@ type
     IGU_DataSource: TDataSource;
     TehlikeSiniflari_DataSource: TDataSource;
     ADO_TehlikeSiniflari: TADOQuery;
+    Ado_DSP: TADOQuery;
+    DSP_DataSource: TDataSource;
     procedure pcarihareketlerAfterScroll(DataSet: TDataSet);
     procedure TempConnectionAfterConnect(Sender: TObject);
     procedure TakipHTTPWebNode1BeforePost(const HTTPReqResp: THTTPReqResp;
@@ -475,7 +477,7 @@ type
   public
    servername,username, usersifre , _username , _sifre , _donemuser , _donemsifre ,
    _tesisKodu , _labusername , _labsifre , doktor ,doktorKodu, SonReceteDoktorKodu,SonImzaDoktorKodu,sirketKodu,
-   IGU, _dosyaNo_,_gelisNo_,kontrolKod,
+   IGU, DSPers, _dosyaNo_,_gelisNo_,kontrolKod,
    _labkurumkod , _labkurumkodText, _laburl , _labfirma ,  _SKRS , _saglikNetUser ,
    _saglikNetPass , _firmaSKRS , _usermernis , _passmernis, UserGroup : string;
    _doktorReceteUser,_doktorRecetePas,_KurumSKRS_, _userSaglikNet_ , _passSaglikNet_ , _userSaglikNet2_ , _passSaglikNet2_ , itsGLN , itsUser , itsPass: string;

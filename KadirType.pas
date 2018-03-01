@@ -556,6 +556,7 @@ Const
   TagfrmHizliKayitDisAktarimlar = 740;
   TagfrmDokumanYonetim = 750;
   TagfrmIseGiris = 760;
+  TagfrmDigerSaglikPers = 790;
 
   ExceleGonder = 9997;
   SeansTarihiUpdate = 0;
