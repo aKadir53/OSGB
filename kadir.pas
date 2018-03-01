@@ -387,6 +387,7 @@ function SirketSubeTehlikeSinifi(Sirket,Sube : string) : string;
 function DBGridDialog (const pCaption: String; const aDataset: TDataset; aButtons : TMsgDlgButtons; aDefaultButton : TMsgDlgBtn) : TModalResult;
 function GetUserDoktorFilter (pFieldName : String = ''): String;
 function GetUserIGUFilter (pFieldName : String = ''): String;
+function GetUserDSPFilter (pFieldName : String = ''): String;
 function HakikiAktifSube: String;
 procedure KademeliStoredProcCalistir (const pSPName : String; const pParameters : String);
 function SQLValue (const sValue: String): String;
@@ -8956,6 +8957,16 @@ begin
     Result := ''
    else
     Result := pFieldName + ' = '+ QuotedStr(DATALAR.IGU);
+end;
+
+function GetUserDSPFilter (pFieldName : String = ''): String;
+begin
+  //yönetici ise ya da datalar.DSPers boþ ise filtre koyma. yönetici deðil ama iþ güv. uz. ise koy
+  if IsNull (pFieldName) then pFieldName := 'Kod';
+  if (datalar.UserGroup = '1') or IsNull (DATALAR.DSPers) then
+    Result := ''
+   else
+    Result := pFieldName + ' = '+ QuotedStr(DATALAR.DSPers);
 end;
 
 function HakikiAktifSube: String;

@@ -156,15 +156,15 @@ begin
         ClientHeight := 300;
         ClientWidth := 700;
         TableName := 'SIRKET_SUBE_TNM';
-        _fields_ := 'sirketKod,subeKod,subeTanim,subeSiciNo,subeDoktor,IGU,BolgeMudurlukSicilNo,MuayeneProtokolNo,DoktorCalismaDakika,IGUCalismaDakika,NaceKod,tehlikeSinifi';
-        _fieldBaslik_ := ',ÞubeKodu,ÞubeTanimi,ÝþYeriSicilNo,Doktor,ÝþGüvenlikUzmaný,BölgeMdSicilNo,MuayeneProtokolNo,DoktorCalismaDakika,IGUCalismaDakika,NaceKodu,TehlikeSinifi';
-        _fieldTips_ := 'string,string,string,string,ImageDoktorCombo,ImageDoktorCombo,string,string,string,stringi,ButtonEdit,ImageDoktorCombo';
+        _fields_ := 'sirketKod,subeKod,subeTanim,subeSiciNo,subeDoktor,IGU,DigerSaglikPers,BolgeMudurlukSicilNo,MuayeneProtokolNo,DoktorCalismaDakika,IGUCalismaDakika,DigerSaglikPersCalismaDakika,NaceKod,tehlikeSinifi';
+        _fieldBaslik_ := ',ÞubeKodu,ÞubeTanimi,ÝþYeriSicilNo,Doktor,ÝþGüvenlikUzmaný,DiðerSaðlýkPers,BölgeMdSicilNo,MuayeneProtokolNo,DoktorCalismaDakika,IGUCalismaDakika,DiðerSaðPersÇDakika,NaceKodu,TehlikeSinifi';
+        _fieldTips_ := 'string,string,string,string,ImageDoktorCombo,ImageDoktorCombo,ImageDoktorCombo,string,string,string,string,string,ButtonEdit,ImageDoktorCombo';
         indexFieldName := 'sirketKod = ' + QuotedStr(_firmaKod_);
         cxPanel.Visible := false;
         cxGroupDoktorlar.Caption := 'Þube Bilgileri';
         cxGrid3.Dataset.BeforePost := ADOBeforePost;
         cxGrid3.Dataset.Connection := datalar.ADOConnection2;
-        cxGrid3.Dataset.SQL.Text := 'Select sirketKod,subeKod,subeTanim,subeSiciNo,subeDoktor,IGU,BolgeMudurlukSicilNo,MuayeneProtokolNo,DoktorCalismaDakika,IGUCalismaDakika,NaceKod,tehlikeSinifi ' +
+        cxGrid3.Dataset.SQL.Text := 'Select sirketKod,subeKod,subeTanim,subeSiciNo,subeDoktor,IGU,DigerSaglikPers,BolgeMudurlukSicilNo,MuayeneProtokolNo,DoktorCalismaDakika,IGUCalismaDakika,DigerSaglikPersCalismaDakika,NaceKod,tehlikeSinifi ' +
                                     ' from SIRKET_SUBE_TNM where sirketKod = ' + QuotedStr(_firmaKod_);
         cxGrid3.Dataset.Open;
         DBGrid.ClearItems;
@@ -346,6 +346,22 @@ begin
                   FItem.Value := datalar.Ado_IGU.FieldByName('kod').AsString;
                   FItem.Description := datalar.Ado_IGU.FieldByName('tanimi').AsString;
                   datalar.Ado_IGU.Next;
+                end;
+              end;
+
+              if Columns[i] = 'DigerSaglikPers' then
+              begin
+                DBgrid.Columns[i].PropertiesClassName := 'TcxImageComboBoxProperties';
+                TcxImageComboBoxProperties(DBgrid.Columns[i].Properties).ClearKey := 46;
+                TcxImageComboBoxProperties(DBgrid.Columns[i].Properties).Items.Clear;
+
+                datalar.Ado_DSP.First;
+                while not datalar.Ado_DSP.Eof do
+                begin
+                  FItem := TcxImageComboBoxProperties(DBgrid.Columns[i].Properties).Items.add;
+                  FItem.Value := datalar.Ado_DSP.FieldByName('kod').AsString;
+                  FItem.Description := datalar.Ado_DSP.FieldByName('tanimi').AsString;
+                  datalar.Ado_DSP.Next;
                 end;
               end;
 

@@ -260,13 +260,14 @@ begin
       datalar.doktorKodu := login.FieldByName('doktor').AsString;
       datalar.sirketKodu := login.FieldByName('SirketKodu').AsString;
       datalar.IGU := login.FieldByName('IGU').AsString;
+      datalar.DSPers := login.FieldByName('DigerSaglikPers').AsString;
       datalar.UserGroup := login.FieldByName('Grup').AsString;
 
       AnaForm.dxSkinController1.SkinName := login.FieldByName('userSkin').AsString;
       FormatSettings.DateSeparator := '.';
       LoginSayfalar.ActivePageIndex := 2;
       Application.ProcessMessages;
-      ShowThermo (iThermo, 'Giriþ Ýþlemleri Yapýlýyor', 0, 7, 0);
+      ShowThermo (iThermo, 'Giriþ Ýþlemleri Yapýlýyor', 0, 8, 0);
       try
         if not UpdateThermo (0, iThermo, 'Ýç Ýþlemler Yükleniyor') then Exit;
         datalar.login;
@@ -276,15 +277,17 @@ begin
         datalar.Ado_Doktorlar.Active := True;
         if not UpdateThermo (3, iThermo, 'Ýþ Güvenlik Uzmaný Tanýmlarý Yükleniyor') then Exit;
         datalar.Ado_IGU.Active := True;
-        if not UpdateThermo (4, iThermo, 'Tehlike Sýnýfý Tanýmlarý Yükleniyor') then Exit;
+        if not UpdateThermo (4, iThermo, 'Diðer Saðlýk Personeli Tanýmlarý Yükleniyor') then Exit;
+        datalar.Ado_DSP.Active := True;
+        if not UpdateThermo (5, iThermo, 'Tehlike Sýnýfý Tanýmlarý Yükleniyor') then Exit;
         datalar.ADO_TehlikeSiniflari.Active := True;
-        if not UpdateThermo (5, iThermo, 'Giriþi Zorunlu alan tanýmlarý yükleniyor') then Exit;
+        if not UpdateThermo (6, iThermo, 'Giriþi Zorunlu alan tanýmlarý yükleniyor') then Exit;
         datalar.KontrolZorunlu.Active := True;
 
         WanIp(datalar.WanIPURL);
         datalar.LoginInOut.Kullanici := datalar.username;
         datalar.LoginInOut.Login := lgnIn;
-        if not UpdateThermo (6, iThermo, 'Log kaydý yazýlýyor') then Exit;
+        if not UpdateThermo (7, iThermo, 'Log kaydý yazýlýyor') then Exit;
         datalar.LoginInOut.Execute;
       finally
         FreeThermo (iThermo);
