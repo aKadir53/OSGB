@@ -11,19 +11,20 @@ BEGIN
     @TableName varchar (200) = 'PopupDBGridFormTabloTanim',
     @KeyFields varchar (200) = 'id'
 
-  Insert into dbo.GuncellemeTakipScript (TableName, KeyFields, KeyValues, Mode, Script)
+  Insert into dbo.GuncellemeTakipScript (TableName, KeyFields, KeyValues, Mode, IdentityInsert, Script)
   select 
-    @TableName, @KeyFields, dbo.fn_SQLIntValueForString (id, 0), 'D', 
+    @TableName, @KeyFields, dbo.fn_SQLIntValueForString (id, 0), 'D', 0,
     'DELETE FROM dbo.PopupDBGridFormTabloTanim where id' + dbo.fn_SQLIntValueForString (id, 1) 
   from deleted d
   where not exists (select 1 from inserted i where d.id = i.id)
 
-  Insert into dbo.GuncellemeTakipScript (TableName, KeyFields, KeyValues, Mode, Script)
+  Insert into dbo.GuncellemeTakipScript (TableName, KeyFields, KeyValues, Mode, IdentityInsert, Script)
   select 
-    @TableName, @KeyFields, dbo.fn_SQLIntValueForString (id, 0), 'I',
+    @TableName, @KeyFields, dbo.fn_SQLIntValueForString (id, 0), 'I', 1,
     'IF NOT EXISTS (SELECT 1 from dbo.PopupDBGridFormTabloTanim where id' + dbo.fn_SQLIntValueForString (id, 1) +')'+char (13) + char (10) + 
-    'insert into dbo.PopupDBGridFormTabloTanim (tableName, _fields_, _fieldBaslik_, _fieldTips_, tanimi, aktif, IC_Params)'+char (13) + char (10) + 
-    'Select '+ dbo.fn_SQLStrValueForString (tableName, 0) +', ' + 
+    'insert into dbo.PopupDBGridFormTabloTanim (id, tableName, _fields_, _fieldBaslik_, _fieldTips_, tanimi, aktif, IC_Params)'+char (13) + char (10) + 
+    'Select '+ dbo.fn_SQLIntValueForString (id, 0) +', ' + 
+    dbo.fn_SQLStrValueForString (tableName, 0) +', ' + 
     dbo.fn_SQLStrValueForString (_fields_, 0) +', ' + 
     dbo.fn_SQLStrValueForString (_fieldBaslik_, 0) +', ' + 
     dbo.fn_SQLStrValueForString (_fieldTips_, 0) +', ' + 
@@ -33,8 +34,8 @@ BEGIN
   from inserted i
   where not exists (select 1 from deleted d where d.id = i.id)
 
-  Insert into dbo.GuncellemeTakipScript (TableName, KeyFields, KeyValues, Mode, Script)
-  select @TableName, @KeyFields, dbo.fn_SQLIntValueForString (i.id, 0), 'U',
+  Insert into dbo.GuncellemeTakipScript (TableName, KeyFields, KeyValues, Mode, IdentityInsert, Script)
+  select @TableName, @KeyFields, dbo.fn_SQLIntValueForString (i.id, 0), 'U', 0,
     'Update PopupDBGridFormTabloTanim'+char (13) + char (10) +'  SET '+char (13) + char (10) + '    ' +
     REVERSE (SUBSTRING (REvERSE (case when dbo.fn_SQLStrValueForString (d.tableName, 0) <> dbo.fn_SQLStrValueForString (i.tableName, 0) then 'tableName = ' + dbo.fn_SQLStrValueForString (i.tableName, 0) + ',' else '' end +
     case when dbo.fn_SQLStrValueForString (d._fields_, 0) <> dbo.fn_SQLStrValueForString (i._fields_, 0) then '_fields_ = ' + dbo.fn_SQLStrValueForString (i._fields_, 0) + ',' else '' end +
