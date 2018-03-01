@@ -6,6 +6,13 @@ AS
 BEGIN
 declare @durum varchar(20),@t VARCHAR(10),@s VARCHAR(10)
 
+IF @format = 'YYYY-MM-DD'
+BEGIN
+  set @t = REPLACE(CONVERT(varchar,@tarih,111),'/','-')
+  --SET @s =  CONVERT(VARCHAR,@tarih,108)
+  set @durum = @t     
+end 
+
 IF @format = 'DD.MM.YYYY'
 BEGIN
   set @t = CONVERT(varchar,@tarih,104)
@@ -26,6 +33,13 @@ BEGIN
   SET @s =  SUBSTRING(REPLACE(CONVERT(VARCHAR,@tarih,108),':',''),1,4)	
   set @durum = @t    
 end               
+
+IF @format = 'HHMMSS'
+BEGIN
+  --set @t = CONVERT(VARCHAR,@tarih,112)
+  SET @s =  CONVERT(VARCHAR,@tarih,108)
+  set @durum = @s    
+end 
 
 IF @format = 'HHMM'
 BEGIN
