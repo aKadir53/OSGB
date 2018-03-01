@@ -20,6 +20,7 @@ begin
     @UpdateFieldList varchar (max) = '',
     @FuncType varchar (10),
     @IsIdentity bit,
+    @IsIdentityInsert bit = 0,
     @IsNullable bit,
 	@CastedFieldName varchar (300),
 	@FuncParam varchar (20)
@@ -50,13 +51,11 @@ begin
         else ''
       end
 --text, ntext, or image
-    if not @IsIdentity = 1
-    begin
-      SET @AllFieldsListI = @allFieldsListI + @FieldName + ', '
-      set @AllFieldsValuesList = @AllFieldsValuesList + 'dbo.fn_SQL' + @FuncType + 'ValueForString ('+@FieldName+', 0' + @FuncParam + ') +' + Char (39) + ', ' + Char (39) + ' + ' + char (13) + char (10) + '    '
-    end
     if not @IsIdentity = 1 or exists (select 1 from dbo.StrToTable (@KeyFieldList, ',') where DataValue = @FieldName)
     begin
+      if @IsIdentity = 1 SET @IsIdentityInsert = 1
+      SET @AllFieldsListI = @allFieldsListI + @FieldName + ', '
+      set @AllFieldsValuesList = @AllFieldsValuesList + 'dbo.fn_SQL' + @FuncType + 'ValueForString ('+@FieldName+', 0' + @FuncParam + ') +' + Char (39) + ', ' + Char (39) + ' + ' + char (13) + char (10) + '    '
       SET @AllFieldsListC = @allFieldsListC + @FieldName + ', '
     end
     if exists (select 1 from dbo.StrToTable (@KeyFieldList, ',') where DataValue = @FieldName)
@@ -135,24 +134,24 @@ begin
     '    @TableName varchar (200) = ' + Char (39) + ''+ @TableName +'' + Char (39) + ',' + char (13) + char (10) +
     '    @KeyFields varchar (200) = ' + Char (39) + '' + @OrderedKeyFields +'' + Char (39) + '' + char (13) + char (10) +
     char (13) + char (10) +
-    '  Insert into dbo.GuncellemeTakipScript (TableName, KeyFields, KeyValues, Mode, Script)' + char (13) + char (10) +
+    '  Insert into dbo.GuncellemeTakipScript (TableName, KeyFields, KeyValues, Mode, IdentityInsert, Script)' + char (13) + char (10) +
     '  select ' + char (13) + char (10) +
-    '    @TableName, @KeyFields, '+ @KeyValuesList +', ' + Char (39) + 'D' + Char (39) + ', ' + char (13) + char (10) +
+    '    @TableName, @KeyFields, '+ @KeyValuesList +', ' + Char (39) + 'D' + Char (39) + ', 0,' + char (13) + char (10) +
     '    ' + Char (39) + 'DELETE FROM dbo.'+ @TableName +' where '+ @CompareKeyFields + char (13) + char (10) +
     '  from deleted d' + char (13) + char (10) +
     '  where not exists (select 1 from inserted i where ' + @JoinKeyFieldsdi +')' + char (13) + char (10) +
     char (13) + char (10) +
-    '  Insert into dbo.GuncellemeTakipScript (TableName, KeyFields, KeyValues, Mode, Script)' + char (13) + char (10) +
+    '  Insert into dbo.GuncellemeTakipScript (TableName, KeyFields, KeyValues, Mode, IdentityInsert, Script)' + char (13) + char (10) +
     '  select ' + char (13) + char (10) +
-    '    @TableName, @KeyFields, '+ @KeyValuesList +', ' + Char (39) + 'I' + Char (39) + ',' + char (13) + char (10) +
+    '    @TableName, @KeyFields, '+ @KeyValuesList +', ' + Char (39) + 'I' + Char (39) + ', ' + case when IsNull (@IsIdentityInsert, 0) = 1 then '1' else '0' end + ',' + char (13) + char (10) +
     '    ' + Char (39) + 'IF NOT EXISTS (SELECT 1 from dbo.'+ @TableName +' where '+ @CompareKeyFields +'+' + Char (39) + ')' + Char (39) + '+char (13) + char (10) + ' + char (13) + char (10) +
     '    ' + Char (39) + 'insert into dbo.'+ @TableName +' ('+ @AllFieldsListI +')' + Char (39) + '+char (13) + char (10) + ' + char (13) + char (10) +
     '    ' + Char (39) + 'Select ' + Char (39) + '+ ' + @AllFieldsValuesList + char (13) + char (10) +
     '  from inserted i' + char (13) + char (10) +
     '  where not exists (select 1 from deleted d where ' + @JoinKeyFieldsdi +')' + char (13) + char (10) +
     char (13) + char (10) +
-    '  Insert into dbo.GuncellemeTakipScript (TableName, KeyFields, KeyValues, Mode, Script)' + char (13) + char (10) +
-    '  select @TableName, @KeyFields, '+ @KeyValuesListi +', ' + Char (39) + 'U' + Char (39) + ',' + char (13) + char (10) +
+    '  Insert into dbo.GuncellemeTakipScript (TableName, KeyFields, KeyValues, Mode, IdentityInsert, Script)' + char (13) + char (10) +
+    '  select @TableName, @KeyFields, '+ @KeyValuesListi +', ' + Char (39) + 'U' + Char (39) + ', 0,' + char (13) + char (10) +
     '    ' + Char (39) + 'Update '+ @TableName +'' + Char (39) + '+char (13) + char (10) +' + Char (39) + '  SET ' + Char (39) + '+char (13) + char (10) + ' + Char (39) + '    ' + Char (39) + ' +' + char (13) + char (10) +
     '    REVERSE (SUBSTRING (REvERSE (' + @UpdateFieldList + '), 2, 8000)) +' + char (13) + char (10) +
     '    char (13) + char (10) + ' + Char (39) + 'WHERE '+ @CompareKeyFieldsi + char (13) + char (10) +

@@ -1,7 +1,7 @@
 BEGIN TRAN
 GO
 ALTER -- CREATE 
-  PROCEDURE [dbo].sp_ReceteIstatistik @OSGB bit, @Sirket bit = 1, @Sube bit = 1, @Doktor bit = 1, @Yil bit = 1, @Ay bit = 1, @gun bit = 0
+  PROCEDURE [dbo].sp_ReceteIlacIstatistik @OSGB bit, @Sirket bit = 1, @Sube bit = 1, @Doktor bit = 1, @Ilac bit = 1, @Yil bit = 1, @Ay bit = 1, @gun bit = 0
 as
 begin
   select 
@@ -10,15 +10,17 @@ begin
     case when IsNull (@Sirket, 0) = 1 or IsNull (@Sube, 0) = 1 then Sirket else NULL end Sirket, 
     case when IsNull (@Sube, 0) = 1 then Sube else NULL end Sube, 
     case when IsNull (@Doktor, 0) = 1 then Doktor else NULL end Doktor, 
+    case when IsNull (@Ilac, 0) = 1 then ilacKodu else NULL end IlacKodu, 
+    case when IsNull (@Ilac, 0) = 1 then ilacAdi else NULL end IlacAdi, 
     case when IsNull (@yil, 0) = 1 or (@yil is null and (IsNull (@Ay, 0) = 1 or IsNull (@gun, 0) = 1)) then year (ReceteTarih) else NULL end Yil, 
     case when IsNull (@Ay, 0) = 1 or (@Ay is null and (IsNull (@gun, 0) = 1)) then Month (ReceteTarih) else NULL end Ay, 
     case when IsNull (@Gun, 0) = 1 then day (ReceteTarih) else NULL end Gun, 
     SUM (case when IsNull (Medula, 0) = 0 then 0 else sayi end) [Med(+)],
     SUM (case when IsNull (Medula, 0) = 1 then 0 else sayi end) [Med(-)],
-    Sum (Sayi) Sayi, 
+    Sum (Sayi) IlacSayi, 
     min (InsertDatetime) InsertDatetime1, 
     max (InsertDatetime) InsertDatetime2
-  from dbo.ReceteIstatistik
+  from dbo.ReceteIlacIstatistik
   group by
     case when IsNull (@OSGB, 0) = 1 then merkezkodu else NULL end, 
     case when IsNull (@OSGB, 0) = 1 then MerkezAdi else NULL end, 
@@ -27,13 +29,15 @@ begin
     case when IsNull (@Doktor, 0) = 1 then Doktor else NULL end,
     case when IsNull (@Ay, 0) = 1 or (@Ay is null and (IsNull (@gun, 0) = 1)) then Month (ReceteTarih) else NULL end,
     case when IsNull (@yil, 0) = 1 or (@yil is null and (IsNull (@Ay, 0) = 1 or IsNull (@gun, 0) = 1)) then year (ReceteTarih) else NULL end,
-    case when IsNull (@Gun, 0) = 1 then day (ReceteTarih) else NULL end
-  order by Sayi desc
+    case when IsNull (@Gun, 0) = 1 then day (ReceteTarih) else NULL end, 
+    case when IsNull (@Ilac, 0) = 1 then ilacKodu else NULL end, 
+    case when IsNull (@Ilac, 0) = 1 then ilacAdi else NULL end
+  order by IlacSayi desc
 end
 GO
-exec sp_vw_sys_upd 'P ', 'dbo', 'sp_ReceteIstatistik'
+exec sp_vw_sys_upd 'P ', 'dbo', 'sp_ReceteIlacIstatistik'
 GO
-exec sp_ReceteIstatistik 0, 0, 0, 0, 1, 1, 0
+exec sp_ReceteIlacIstatistik 0, 0, 0, 1, 1, 0, 0, 0
 go
 COMMIT
 GO
