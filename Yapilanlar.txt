@@ -168,3 +168,10 @@ diðer veritabanýna güncellenmesi gereken tablolara (formcaption, menuIslem, modu
 program bir bilgisayarda ilk kez çalýþtýrýldýðýnda demo bilgilerinin dolu olmasý onay sorusuna baðlandý. kayýtlý kullanýcýlarýn firma kodunu girmeyi unutup uzman veritabanýna baðlanmalarý sebebiyle firma kodu kutusuna yönlendirmek için yaptýk.
 isg katip excel aktarimina sgk sicil il deðerinden tesis kodu ayarlamasý eklendi. her doktor için o doktorun en fazla sayýda olan ilinin kodundan alýyor. eþit sayýda olanlarýn plaka kodu en yüksek olaný
 personel kategori þeysi gibi özel ilgi isteyen string alanlar için foreign key baðlantýlý deðerler tablosu oluþturup, çevrim deðer deðeri ekleyip, bu deðer üzerinden çalýþtýrma saðlandý. Örnek: iþyeri hekimi, iþ yeri hekimi hepsinin çevrim tipi 1 olup. a sýnýfý iþ güvenliði uzmaný 2, b sýnýfý 3... gibi... ÝSG katip aktarýmý da bu þekilde çalýþmak üzere düzenlendi
+
+foreign key tablolarý valueobjectvalues, personelisegirismuayene, isegirismuayenesorulari tablolarýnda son bir kontrol yapýlarak muayene sorularý ile valueobjectvalues arasýnda foreign key konuldu
+
+bölüm ve birim tablolarýnýn tanýmý alanýna unique index konularak ayný isimde bölüm veya birim açýlmasý engellendi. bunun öncesinde tekrarlayan bölüm veya birim isimlerini teke indirerek personel kartlarýnda kullanýlmýþ olanlarý mevcut olanlarýn en küçük ID'si ile güncelleyip tekrarlayanlarý sildik. ilave olarak personel kartý ile araya foreign keyler ekledik. böylece bölüm ve birim kayýtlarýnýn silinmesini engelledik.
+
+personel hasta listesinde diyabet baþlýklý sütunun adýný kronik hastalýk olarak deðiþtirdik
+sp_frmdoktorpersonellistesi ve sp_frmpersonellistesi sp'lerindeki mantýðýný da, önce bunu view'a taþýyýp, alanýn içinde tek bir tane bile 1 varsa dolu getirecek þekilde deðiþtirdik
