@@ -42,7 +42,7 @@ uses message,Data_Modul,AnaUnit,message_y,popupForm,rapor,TedaviKart,Son6AylikTe
              HastaKart,FirmaKart,hizliKayit,receteSablonlari,
              HastaListe,IsKazasi,Anamnez,GrupDetayTanim,
              Tnm_UserSettings,HastaAsiKarti,HastaTaniKart,
-             KurumLogin,Update_G, labaratuvarKabul,
+             KurumLogin,Update_G, labaratuvarKabul,Faturalar,
              MedulaKurumSifreDegis,labParametreleri,
              Tnm_Doktor,LabTestAyarlari,SahaSaglikGozetim,
              PopupDBGridForm,PopupDBVerticalGridForm,
@@ -208,6 +208,7 @@ begin
    TagfrmIlaclar,TagfrmIlacAnaGrup,TagfrmIlacEtkenMadde : Result := TfrmIlaclar;
    TagfrmSon6AylikTetkikSonuc : Result := TfrmSon6AylikTetkikSonuc;
    TagfrmReceteler : Result := TfrmReceteler;
+   TagfrmFaturalar : Result := TfrmFaturalar;
 
    TagfrmSahaSaglikGozetim : Result := TfrmSahaSaglikGozetim;
   end;
@@ -249,6 +250,7 @@ begin
    TagfrmReceteler : Result := frmReceteler;
    TagfrmSahaSaglikGozetim : Result := frmSahaSaglikGozetim;
    TagfrmUpdate : Result := frmUpdate;
+   TagfrmFaturalar : Result := frmFaturalar;
 
    TagfrmLabParametreleri : Result := frmLabParams;
    TagfrmLabKabul : Result := frmLabaratuvarKabul;
@@ -293,6 +295,8 @@ begin
       TagfrmAnamnez,TagfrmIseGiris : frmAnamnez := TfrmAnamnez.Create(Tab);
       TagfrmTetkikIstemSablon : frmGrupDetayTanim := TfrmGrupDetayTanim.Create(Tab);
       TagfrmDokumanYonetim : frmDokumanYonetim := TfrmDokumanYonetim.Create(Tab);
+       TagfrmFaturalar : frmFaturalar := TfrmFaturalar.Create(Tab);
+
      else
       result := nil;
    end;
@@ -387,6 +391,7 @@ begin
       TagfrmLabKabul : frmLabaratuvarKabul := TfrmLabaratuvarKabul.Create(Tab);
       TagfrmTetkikIstemSablon : frmGrupDetayTanim := TfrmGrupDetayTanim.Create(Tab);
       TagfrmDokumanYonetim : frmDokumanYonetim := TfrmDokumanYonetim.Create(Tab);
+       TagfrmFaturalar : frmFaturalar := TfrmFaturalar.Create(Tab);
      else
       result := nil;
    end;
@@ -467,6 +472,7 @@ begin
     TagfrmIlaclar,TagfrmIlacAnaGrup,TagfrmIlacEtkenMadde : Application.CreateForm(TfrmIlaclar , frmIlaclar);
     TagfrmSon6AylikTetkikSonuc : Application.CreateForm(TfrmSon6AylikTetkikSonuc , frmSon6AylikTetkikSonuc);
     TagfrmSahaSaglikGozetim : Application.CreateForm(TfrmSahaSaglikGozetim, frmSahaSaglikGozetim);
+    TagfrmFaturalar : Application.CreateForm(TfrmFaturalar, frmFaturalar);
 
     else
       result := nil;

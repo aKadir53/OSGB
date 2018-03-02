@@ -393,6 +393,13 @@ begin
              sql := 'exec sp_TedaviListesiPivot ' + txtTopPanelTarih1.GetSQLValue + ',' +
                                                     txtTopPanelTarih2.GetSQLValue;
            end;
+       TagfrmFaturalar :
+           begin
+             sql := 'exec sp_Faturalar '+ txtTopPanelTarih1.GetSQLValue + ',' +
+                                          txtTopPanelTarih2.GetSQLValue;
+
+           end;
+
 
      end;
      datalar.QuerySelect(ADO,sql);
