@@ -215,10 +215,6 @@ reçete şablonu kaydederken sapıtması
 önemli tablolara log konulması lazım
 
 
-Saliha > HEMŞİLER İÇİN  KULLANICI ATAN MASI
 Saliha > ŞUBELERİN PASİFE ALINMASI
-Saliha > HEMŞİRELERİN FİRMALARIN HEPSİNİ GÖRMESİNİ ENGELLEM
-Saliha > DİPER SAĞLIK PERSONLEİ KAKRTI ÜZERİNDEN İŞLEMLER
-Saliha > YAPILAAK ŞEKİDE
 Saliha > bide eczaneden firma adı çıkması için acil çalışılması lazım tanı ekranında aramada çıkmayan
 Saliha > diyabet hiper tansiyon

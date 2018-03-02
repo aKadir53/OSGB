@@ -175,3 +175,18 @@ bölüm ve birim tablolarýnýn tanýmý alanýna unique index konularak ayný isimde bö
 
 personel hasta listesinde diyabet baþlýklý sütunun adýný kronik hastalýk olarak deðiþtirdik
 sp_frmdoktorpersonellistesi ve sp_frmpersonellistesi sp'lerindeki mantýðýný da, önce bunu view'a taþýyýp, alanýn içinde tek bir tane bile 1 varsa dolu getirecek þekilde deðiþtirdik
+
+02.03.2018 
+SOYYILMAZ OSGB ve ÝÞ TIP OSGB'nin talepleri üzerine, 
+1-) ÝSG Kâtip görevlendirme excel'inde geçen diðer saðlýk personeli için tablo açýlýp (doktor ve iþ güvenliði uzmaný gibi) içine kart eklenebilmesi saðlandý
+2-) ÝSG katip excel aktarýmýnda bunlarýn da otomatik aktarýmý, kullanýcý hesaplarýnýn oluþturulmasý, firma þubelerine baðlanmasý ve dakika bilgilerinin güncellenmesi saðlandý
+3-) programa giriþ ve þirket / þube seçimi yapýlabilen yerlerde giren kullanýcý diðer saðlýk personeli kartlarýndan biri ile iliþkili ise sadece kendi görevli olduðu firmalarý görebilmesi saðlandý
+4-) isg katip excel aktarýmý baðlantý tablolarýndan personel kategori adý tablosuna, o kategorinin hangi kullanýcý grubu altýna kaydedileceðinin ve kullanýcý prefix'inin ne olacaðýnýn seçilebileceði alanlar eklendi
+5-) isg katip excel aktarýmýnda baðlantý tablolarýnýn bilgisi kullanýlacak þekilde düzenleme yapýldý.
+saliha haným'ýn 1 mart 2018 itibari ile gönderdiði alpemix mesajlarýnýn ilgili bölümü aþaðýda
+
+Saliha > HEMÞÝLER ÝÇÝN  KULLANICI ATAN MASI
+Saliha > HEMÞÝRELERÝN FÝRMALARIN HEPSÝNÝ GÖRMESÝNÝ ENGELLEM
+Saliha > DÝPER SAÐLIK PERSONLEÝ KAKRTI ÜZERÝNDEN ÝÞLEMLER
+Saliha > YAPILAAK ÞEKÝDE
+---------
