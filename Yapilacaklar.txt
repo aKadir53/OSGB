@@ -218,3 +218,5 @@ reçete þablonu kaydederken sapýtmasý
 Saliha > ÞUBELERÝN PASÝFE ALINMASI
 Saliha > bide eczaneden firma adý çýkmasý için acil çalýþýlmasý lazým taný ekranýnda aramada çýkmayan
 Saliha > diyabet hiper tansiyon
+
+þube taþý birleþtir iþleminde maalesef numaratör bir atlýyor
