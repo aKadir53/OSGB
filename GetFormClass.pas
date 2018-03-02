@@ -197,7 +197,7 @@ begin
    TagfrmKurumBilgi : Result := TfrmKurumBilgi;
    TagKurumSifreDegisForm : Result := TKurumSifreDegisForm;
 
-   TagfrmDoktorlar,TagfrmIGU : Result := TfrmDoktorlar;
+   TagfrmDoktorlar,TagfrmIGU,TagfrmDigerSaglikPers : Result := TfrmDoktorlar;
    TagfrmAbout : Result := TfrmAbout;
    TagfrmPersonelEgitim : Result := TfrmPersonelEgitim;
    TagfrmTestAyarlari : Result := TfrmTestAyarlari;
@@ -240,7 +240,7 @@ begin
    TagfrmKurumBilgi : Result := frmKurumBilgi;
    TagKurumSifreDegisForm : Result := KurumSifreDegisForm;
 
-   TagfrmDoktorlar,TagfrmIGU : Result := frmDoktorlar;
+   TagfrmDoktorlar,TagfrmIGU,TagfrmDigerSaglikPers : Result := frmDoktorlar;
    TagfrmAbout : Result := frmAbout;
    TagfrmPersonelEgitim : Result := frmPersonelEgitim;
    TagfrmTestAyarlari : Result := frmTestAyarlari;
@@ -442,7 +442,7 @@ begin
   case abs(FormTag) of
     TagfrmFirmaKart : Application.CreateForm(TfrmFirmaKart,frmFirmaKart);
     TagfrmPopupDBGridForm,TagfrmBolum,TagfrmBirim,TagfrmSube,TagFirmaCalismalari: Application.CreateForm(TfrmPopupDBGridForm , frmPopupDBGridForm);
-    TagfrmDoktorlar,TagfrmIGU :  Application.CreateForm(TfrmDoktorlar, frmDoktorlar);
+    TagfrmDoktorlar,TagfrmIGU,TagfrmDigerSaglikPers :  Application.CreateForm(TfrmDoktorlar, frmDoktorlar);
     TagfrmAbout :  Application.CreateForm(TfrmAbout, frmAbout);
     TagfrmPersonelEgitim :  Application.CreateForm(TfrmPersonelEgitim, frmPersonelEgitim);
     TagfrmKurumBilgi : Application.CreateForm(TfrmKurumBilgi, frmKurumBilgi);

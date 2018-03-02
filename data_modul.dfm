@@ -53030,6 +53030,21 @@ object DATALAR: TDATALAR
     Left = 531
     Top = 402
   end
+  object Ado_DSP: TADOQuery
+    Connection = ADOConnection2
+    CursorType = ctStatic
+    Parameters = <>
+    SQL.Strings = (
+      'select * from DigerSaglikPersonel'
+      'where durum = '#39'Aktif'#39)
+    Left = 575
+    Top = 399
+  end
+  object DSP_DataSource: TDataSource
+    DataSet = Ado_DSP
+    Left = 532
+    Top = 402
+  end
   object TehlikeSiniflari_DataSource: TDataSource
     DataSet = ADO_TehlikeSiniflari
     Left = 619

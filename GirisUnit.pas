@@ -328,6 +328,12 @@ begin
     sube := ' IGU = ' + QuotedStr(datalar.IGU);
   end
   else
+  if datalar.DSPers <> '' then
+  begin
+    where := '';
+    sube := ' DigerSaglikPers = ' + QuotedStr(datalar.DSPers);
+  end
+  else
   if datalar.sirketKodu <> ''
   Then begin
     Where := 'SirketKod = ' + QuotedStr(datalar.sirketKodu);

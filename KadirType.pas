@@ -557,6 +557,7 @@ Const
   TagfrmDokumanYonetim = 750;
   TagfrmIseGiris = 760;
   TagfrmFaturalar = 780;
+  TagfrmDigerSaglikPers = 790;
 
 
   ExceleGonder = 9997;
