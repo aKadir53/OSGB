@@ -459,6 +459,7 @@ type
     F_kod_ : string;
     F_sube_ : string;
     F_MuayeneProtokolNo_ : string;
+    F_FaturaNO_ : string;
   End;
 
   TSifreDegistir = record
@@ -556,7 +557,10 @@ Const
   TagfrmHizliKayitDisAktarimlar = 740;
   TagfrmDokumanYonetim = 750;
   TagfrmIseGiris = 760;
+  TagfrmFaturalar = 780;
   TagfrmDigerSaglikPers = 790;
+  TagfrmSirketSozlesme = 800;
+
 
   ExceleGonder = 9997;
   SeansTarihiUpdate = 0;
@@ -595,6 +599,11 @@ Const
   GozlemDuzenle = 26;
   Imzali = 0;
   Imzasiz = 1;
+  yeniFatura = 1;
+  faturaDuzenle = 2;
+  faturaSil = 3;
+  faturaYazdir = 4;
+  faturaE_Arsiv = 5;
 
 
   sp_HastaGelis = 'exec sp_HastaGelisleri ';
