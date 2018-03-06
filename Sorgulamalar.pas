@@ -90,7 +90,7 @@ type
 
 var
   frmSorgulamalar: TfrmSorgulamalar;
-     sp : string;
+     sp,cap : string;
 implementation
    uses data_modul, sorguRaporCalistir;
 {$R *.dfm}
@@ -100,6 +100,7 @@ begin
   Result := False;
 //  if not inherited Init(Sender) then exit;
   Raporlar;
+  cap := cxTab.Tabs[0].Caption;
   Result := True;
 end;
 
@@ -109,17 +110,20 @@ var
   F : TGirisForm;
   GirisRecord : TGirisFormRecord;
 begin
+  cxTab.Tabs[0].Caption := '';
+  cxTab.Tabs[0].Caption := cap + ' - ' + ADO_SQL1.fieldbyname('raporAdi').AsString;
+
   sp := ADO_SQL1.fieldbyname('sp').AsString;
   kod := ADO_SQL1.fieldbyname('raporKodu').AsString;
-  //gridRaporlar.Cells[2,gridRaporlar.Row];
- // Application.CreateForm(TfrmRaporCalistir, frmRaporCalistir);
-  //GorselAyar(frmRaporCalistir,DATALAR.global_img_list4);
+
   GirisRecord.F_sp_ := sp;
   GirisRecord.F_kod_ := kod;
   F := FormINIT(TagfrmSorguCalistir,GirisRecord,ikHayir,'');
   if F <> nil then F.ShowModal;
 
- // frmRaporCalistir.sp_params(sp,kod);
+
+
+
 
 end;
 

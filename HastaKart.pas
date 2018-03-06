@@ -110,6 +110,8 @@ type
     GridEgitimColumn3: TcxGridDBBandedColumn;
     GridEgitimColumn4: TcxGridDBBandedColumn;
     GridEgitimColumn5: TcxGridDBBandedColumn;
+    Meslekler: TListeAc;
+    MESLEK: TcxButtonEditKadir;
     procedure FormCreate(Sender: TObject);
     procedure cxKaydetClick(Sender: TObject);
     procedure cxButtonCClick(Sender: TObject);
@@ -176,6 +178,8 @@ var
 implementation
 uses AnaUnit, HastaAsiKArti,SMS,Anamnez, TransUtils;
 {$R *.dfm}
+
+
 
 
 
@@ -744,7 +748,17 @@ procedure TfrmHastaKart.cxButtonEditPropertiesButtonClick(Sender: TObject;
   AButtonIndex: Integer);
 var
  g : TGraphic;
+  List : ArrayListeSecimler;
 begin
+
+  if TcxButtonEditKadir(sender).name = 'MESLEK'
+  then begin
+    List := Meslekler.ListeGetir;
+    TcxTextEditKadir(FindComponent('MESLEK')).EditValue := List[0].kolon1;
+    TcxTextEditKadir(FindComponent('MESLEKADI')).EditValue := List[0].kolon2;
+    exit;
+  end;
+
   TListeAc(FindComponent('ListdosyaNo')).Where := ' SirketKod = ' + QuotedStr(datalar.AktifSirket) +
                                                    ' and Sube in (select datavalue from dbo.strtotable(' + QuotedStr(datalar.AktifSube) + ','',''))';
   inherited;
@@ -998,7 +1012,7 @@ end;
 procedure TfrmHastaKart.FormCreate(Sender: TObject);
 var
   List,
-  UYRUK : TListeAc;
+  UYRUK ,meslekler : TListeAc;
   BASLANGIC : TcxDateEditKadir;
   EV_SEHIR ,EV_ILCE ,EV_BUCAK , EV_KOY,EV_MAHALLE : TcxImageComboKadir;
   DEV_KURUM,Kurum,EGITIM : TcxImageComboKadir;
@@ -1006,6 +1020,7 @@ var
   Subeler,sirketlerx,SirketKodNew: TcxImageComboKadir;
   where,sube : string;
   bolumEkle,birimEkle : TcxButtonKadir;
+
 begin
   USER_ID.Tag := 0;
   //sirketKod.Tag := 0;
@@ -1080,6 +1095,17 @@ begin
   EGITIM.Filter := '';
   OrtakEventAta(EGITIM);
   setDataStringKontrol(self,EGITIM,'EGITIM_DURUMU','Eðitim Durumu',kolon1,'',130);
+(*
+  bolum := TcxImageComboKadir.Create(self);
+  bolum.Conn := Datalar.ADOConnection2;
+  bolum.TableName := 'MeslekKodlari';
+  bolum.ValueField := 'kod';
+  bolum.DisplayField := 'tanimi';
+  bolum.Filter := '';
+  bolum.BosOlamaz := True;
+  setDataStringKontrol(self,bolum,'MESLEK','Meslek',kolon1,'',130);
+ *)
+
 
   (*
   Kurum := TcxImageComboKadir.Create(self);
@@ -1284,9 +1310,13 @@ begin
   setDataStringKontrol(self,birim,'birim','Birimi',kolon3,'birimGrp',120);
   OrtakEventAta(birim);
   addButton(self,nil,'btnBirim','','Ekle',Kolon3,'birimGrp',50,ButtonClick,TagfrmBirim*-1);
+  setDataString(self,'yaptigiIsinTanimi','Ýþ Tanýmý',Kolon3,'',250,True);
 
+// meslekler := ListeAcCreate('MeslekKodlari','kod,tanimi','Meslekler','100,300','Kodu','Meslek Tanýmý','',2);
 
-
+  setDataStringKontrol(self,MESLEK, 'MESLEK','Meslek Kodu  ',Kolon3,'',80);
+  setDataString(self,'MESLEKADI','Meslek Tanimi',Kolon3,'',200,false,'',True);
+//  OrtakEventAta(meslekKod);
 
   setDataStringBLabel(self,'bosSatir2',Kolon3,'',350);
 
