@@ -42,8 +42,8 @@ uses message,Data_Modul,AnaUnit,message_y,popupForm,rapor,TedaviKart,Son6AylikTe
              HastaKart,FirmaKart,hizliKayit,receteSablonlari,
              HastaListe,IsKazasi,Anamnez,GrupDetayTanim,
              Tnm_UserSettings,HastaAsiKarti,HastaTaniKart,
-             KurumLogin,Update_G, labaratuvarKabul,
-             MedulaKurumSifreDegis,labParametreleri,
+             KurumLogin,Update_G, labaratuvarKabul,Faturalar,FaturaDetay,
+             MedulaKurumSifreDegis,labParametreleri,SirketSozlesme,
              Tnm_Doktor,LabTestAyarlari,SahaSaglikGozetim,
              PopupDBGridForm,PopupDBVerticalGridForm,
              Tnm_Ilaclar, PersonelEgitimFrm, About_Frm;
@@ -208,6 +208,9 @@ begin
    TagfrmIlaclar,TagfrmIlacAnaGrup,TagfrmIlacEtkenMadde : Result := TfrmIlaclar;
    TagfrmSon6AylikTetkikSonuc : Result := TfrmSon6AylikTetkikSonuc;
    TagfrmReceteler : Result := TfrmReceteler;
+   TagfrmFaturalar : Result := TfrmFaturalar;
+   TagfrmFatura : Result := TfrmFaturaDetay;
+   TagfrmSirketSozlesme : Result := TfrmSirketSozlesme;
 
    TagfrmSahaSaglikGozetim : Result := TfrmSahaSaglikGozetim;
   end;
@@ -249,6 +252,10 @@ begin
    TagfrmReceteler : Result := frmReceteler;
    TagfrmSahaSaglikGozetim : Result := frmSahaSaglikGozetim;
    TagfrmUpdate : Result := frmUpdate;þ
+   TagfrmFaturalar : Result := frmFaturalar;
+   TagfrmFatura : Result := frmFaturaDetay;
+   TagfrmSirketSozlesme : Result := frmSirketSozlesme;
+
 
    TagfrmLabParametreleri : Result := frmLabParams;
    TagfrmLabKabul : Result := frmLabaratuvarKabul;
@@ -293,6 +300,9 @@ begin
       TagfrmAnamnez,TagfrmIseGiris : frmAnamnez := TfrmAnamnez.Create(Tab);
       TagfrmTetkikIstemSablon : frmGrupDetayTanim := TfrmGrupDetayTanim.Create(Tab);
       TagfrmDokumanYonetim : frmDokumanYonetim := TfrmDokumanYonetim.Create(Tab);
+      TagfrmFaturalar : frmFaturalar := TfrmFaturalar.Create(Tab);
+      TagfrmFatura : frmFaturaDetay := TfrmFaturaDetay.Create(Tab);
+      TagfrmSirketSozlesme : frmSirketSozlesme := TfrmSirketSozlesme.Create(Tab);
      else
       result := nil;
    end;
@@ -338,7 +348,7 @@ begin
    TGirisForm(Form)._sube_ := Values.F_Sube_;
    TGirisForm(Form)._firmaKod_ := Values.F_firmaKod_;
    TGirisForm(Form)._MuayeneProtokolNo_ := Values.F_MuayeneProtokolNo_;
-
+   TGirisForm(Form)._FaturaNo_ := Values.F_FaturaNO_;
    TGirisForm(Form).Tag := FormTag;
    TgirisForm(Form).Parent := Tab;
    TGirisForm(Form).BringToFront;
@@ -387,6 +397,10 @@ begin
       TagfrmLabKabul : frmLabaratuvarKabul := TfrmLabaratuvarKabul.Create(Tab);
       TagfrmTetkikIstemSablon : frmGrupDetayTanim := TfrmGrupDetayTanim.Create(Tab);
       TagfrmDokumanYonetim : frmDokumanYonetim := TfrmDokumanYonetim.Create(Tab);
+      TagfrmFaturalar : frmFaturalar := TfrmFaturalar.Create(Tab);
+      TagfrmFatura : frmFaturaDetay := TfrmFaturaDetay.Create(Tab);
+      TagfrmSirketSozlesme : frmSirketSozlesme := TfrmSirketSozlesme.Create(Tab);
+
      else
       result := nil;
    end;
@@ -467,6 +481,9 @@ begin
     TagfrmIlaclar,TagfrmIlacAnaGrup,TagfrmIlacEtkenMadde : Application.CreateForm(TfrmIlaclar , frmIlaclar);
     TagfrmSon6AylikTetkikSonuc : Application.CreateForm(TfrmSon6AylikTetkikSonuc , frmSon6AylikTetkikSonuc);
     TagfrmSahaSaglikGozetim : Application.CreateForm(TfrmSahaSaglikGozetim, frmSahaSaglikGozetim);
+    TagfrmFaturalar : Application.CreateForm(TfrmFaturalar, frmFaturalar);
+    TagfrmFatura : Application.CreateForm(TfrmFaturaDetay, frmFaturaDetay);
+    TagfrmSirketSozlesme : Application.CreateForm(TfrmSirketSozlesme , frmSirketSozlesme);
 
     else
       result := nil;
@@ -503,6 +520,7 @@ begin
   TGirisForm(Form)._kod_ := Value.F_kod_;
   TGirisForm(Form)._sube_ := Value.F_sube_;
   TGirisForm(Form)._MuayeneProtokolNo_ := Value.F_MuayeneProtokolNo_;
+  TGirisForm(Form)._FaturaNo_ := Value.F_FaturaNO_;
 
   TgirisForm(Form).Caption := FormCaption(abs(FormTag)) + ' - ' + FormAltCaption(abs(FormTag));
   if ik = ikEvet

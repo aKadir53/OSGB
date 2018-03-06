@@ -1,0 +1,76 @@
+<Fatura>
+  <faturaId>7</faturaId>
+  <faturaNo>GIB2018000000014</faturaNo>
+  <CopyIndicator>false</CopyIndicator>
+  <UUID>C0593BD0-D0C4-46EB-B03B-E9F30EFF4919</UUID>
+  <faturaTarihi>2018-03-02</faturaTarihi>
+  <faturaSaati>00:00:00</faturaSaati>
+  <faturaTip>SATIS</faturaTip>
+  <paraBirimi>TRY</paraBirimi>
+  <faturaKalemSayisi>3</faturaKalemSayisi>
+  <Not>HESAP IBAN : TR23434234342342</Not>
+  <saticiBilgisi>
+    <url />
+    <vergiNo>9000068418</vergiNo>
+    <saticiAdi>UZMAN OSGB</saticiAdi>
+    <adres>TÜRKMENBAŞI BLV.HUZUREVLERİ MH.128 SK.AKGÜL SİT C/BLOK NO:3 ÇUKUROAVA/ADANA</adres>
+    <kapiNo />
+    <Ilce>ÇUKUROVA</Ilce>
+    <Il>Adana</Il>
+    <PostaKodu>01360</PostaKodu>
+    <Ulke>Türkiye</Ulke>
+    <vergiDairesi>Adana</vergiDairesi>
+    <Tel>03222480240</Tel>
+    <fax>03222480450</fax>
+    <EMail>tibet.canpolat@rts.com.tr</EMail>
+  </saticiBilgisi>
+  <aliciBilgisi>
+    <url />
+    <vergiNo>6130798493</vergiNo>
+    <saticiAdi>MAVİ NOKTA BİLGİ TEKNOLOJİLERİ LTD.ŞTİ.</saticiAdi>
+    <adres>Reşitpaşa Cad.No:11/2</adres>
+    <kapiNo />
+    <Ilce>ÜMRANİYE</Ilce>
+    <Il>İSTANBUL</Il>
+    <PostaKodu />
+    <Ulke>Türkiye</Ulke>
+    <vergiDairesi>Alemdağ</vergiDairesi>
+    <Tel>2163169631</Tel>
+    <fax>2163168798</fax>
+    <EMail>a_kadir53@hotmail.com</EMail>
+  </aliciBilgisi>
+  <Vergiler>
+    <kdvTutar>90</kdvTutar>
+    <faturaTutar>500</faturaTutar>
+    <CalculationSequenceNumeric>1.0</CalculationSequenceNumeric>
+    <kdvOran>18</kdvOran>
+    <vergiTanimi>Katma Değer Vergisi</vergiTanimi>
+    <vergiKodu>0015</vergiKodu>
+  </Vergiler>
+  <faturaToplamlari>
+    <faturaTutar>500</faturaTutar>
+    <faturaGeneTutar>590</faturaGeneTutar>
+    <indirimToplam>0</indirimToplam>
+  </faturaToplamlari>
+  <Satirlar>
+    <sira>1</sira>
+    <adet>1</adet>
+    <tutar>100</tutar>
+    <Tanim>İŞYERİ HEKİMLİĞİ</Tanim>
+    <fiyat>100</fiyat>
+  </Satirlar>
+  <Satirlar>
+    <sira>2</sira>
+    <adet>1</adet>
+    <tutar>200</tutar>
+    <Tanim>İŞYERİ GÜVENLİĞİ</Tanim>
+    <fiyat>200</fiyat>
+  </Satirlar>
+  <Satirlar>
+    <sira>3</sira>
+    <adet>10</adet>
+    <tutar>200</tutar>
+    <Tanim>PERYODİK MUAYENE</Tanim>
+    <fiyat>20</fiyat>
+  </Satirlar>
+</Fatura>

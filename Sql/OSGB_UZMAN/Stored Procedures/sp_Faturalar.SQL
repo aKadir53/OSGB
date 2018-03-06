@@ -10,10 +10,11 @@ AS
   end
    
     select f.sira,f.SirketKod,c.tanimi Ad,f.faturaNo,f.faturaTip,f.FaturaTarihi,f.faturaTutar,f.kdv,f.indirim, 
-    faturaGenelTutar,f.olusturma,f.kullanici,f.degistirme ,ozelKod,fo.tanimi FaturOzelKod, Aciklama,dkullanici 
+    faturaGenelTutar,f.olusturma,f.kullanici,f.degistirme ,ozelKod,fo.tanimi FaturOzelKod, Aciklama,dkullanici,
+	eArsivNo,[Guid] UUID
     from Faturalar f 
      join SIRKETLER_TNM c on c.SirketKod = f.sirketKod
-     left join faturaOzelKodlar fo on fo.kod = f.ozelKod
+     left join faturaOzelKodlari fo on fo.kod = f.ozelKod
     where Faturatarihi between @tarih1  and @tarih2
 GO
 exec sp_vw_sys_upd 'P ', 'dbo', 'sp_Faturalar'
