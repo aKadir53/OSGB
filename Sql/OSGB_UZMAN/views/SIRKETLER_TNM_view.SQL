@@ -9,7 +9,9 @@ from dbo.SIRKETLER_TNM ST
 left outer join 
   (select SirketKod, SubeDoktor, IGU, DigerSaglikPers
    from dbo.SIRKET_SUBE_TNM
-   where not SubeDoktor is Null
+   where (not SubeDoktor is Null
+     or not IGU is NULL
+	 or not DigerSaglikPers is NULL)
    group by sirketKod, subeDoktor, IGU, DigerSaglikPers) SBB on SBB.sirketKod = st.SirketKod
 GO
 exec sp_vw_sys_upd 'V ', 'dbo', 'SIRKETLER_TNM_view'

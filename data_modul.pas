@@ -486,6 +486,7 @@ type
    TakipDevam : boolean;
    AktifSirketAdi,AktifSirket ,AktifSube ,AktifSubeAdi,_donemSonlandir_ ,TenayMNTRequest , TenayBIORequest , DyobRequest , _database , _Tip : string;
    CentroResponse ,SMSHesapFrom,SMSHesapUser,SMSHesapSifre , AlpemixRun,AlpemixGrupAdi,AlpemixGrupParola : string;
+   SMTPSunucu,SMTPUserName,SMTPPassword,SMTPPort : string;
    _kurumKod  , _donemgoster : integer;
    LisansBitis,LisansBasla,LisansTarih : string;
    LisansLimit : integer;
@@ -745,6 +746,14 @@ begin
           AlpemixGrupAdi := 'DIYALIZLER';
           AlpemixGrupParola := 'Diyaliz123';
         end;
+
+        if not UpdateThermo (20, iThermo, 'SMTP Suncu') then Exit;
+        SMTPSunucu := WebErisimBilgi('EML','01');
+        if not UpdateThermo (21, iThermo, 'SMTP User') then Exit;
+        SMTPUserName := WebErisimBilgi('EML','02');
+        if not UpdateThermo (22, iThermo, 'SMTP Password') then Exit;
+        SMTPPassword := WebErisimBilgi('EML','03');
+        //SMTPPort
       finally
         ado.Free;
       end;
