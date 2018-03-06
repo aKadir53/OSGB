@@ -35,8 +35,10 @@ end
 
 if @grup = 'PK'
 begin
-  select * from PersonelKart P
+  select P.*,S.*,br.tanimi birimAdi,b.tanimi bolumAdi from PersonelKart P
   join SIRKETLER_TNM S on S.sirketKod = P.sirketKod
+  left join Bolumler b on b.kod = P.Bolum
+  left join Birimler br on br.kod = P.Birim
   where dosyano = @dosyaNo 
 end
 
