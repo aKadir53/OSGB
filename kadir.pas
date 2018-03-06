@@ -398,6 +398,7 @@ function SQLValue (const sValue: String): String;
 function PersonelPeriyodikTetkikIstemleri(grup : string) : string;
 procedure PersonelTetkikIstemleri(tarih,tarih2 : string);
 procedure YeniRecete(islem: Integer ; _dosyaNo_,_gelisNo_,_MuayeneProtokolNo_ : string);
+function FirmaBilgileri(sirketKodu : string) : string;
 
 
 const
@@ -466,6 +467,25 @@ implementation
 
 uses message,AnaUnit,message_y,popupForm,rapor,TedaviKart,Son6AylikTetkikSonuc,
              HastaRecete,sifreDegis,HastaTetkikEkle,GirisUnit,SMS,LisansUzat,Update_G, DBGrids, NThermo;
+
+
+function FirmaBilgileri(sirketKodu : string) : string;
+var
+  sql: string;
+  ado: TADOQuery;
+begin
+  FirmaBilgileri := '';
+  ado := TADOQuery.Create(nil);
+  try
+    ado.Connection := datalar.ADOConnection2;
+    sql :=
+      'select yetkilimail from SIRKETLER_TNM where SirketKod = ' + QuotedStr(sirketKodu);
+    datalar.QuerySelect(ado, sql);
+    FirmaBilgileri := ado.Fields[0].AsString;
+  finally
+    ado.Free;
+  end;
+end;
 
 procedure DBUpdate;
 begin

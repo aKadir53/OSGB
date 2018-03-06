@@ -766,6 +766,21 @@ object frmHastaKart: TfrmHastaKart
       GridView = GridEgitim
     end
   end
+  object MESLEK: TcxButtonEditKadir
+    Left = 520
+    Top = 160
+    Properties.Buttons = <
+      item
+        Default = True
+        Kind = bkEllipsis
+      end>
+    Properties.OnButtonClick = cxButtonEditPropertiesButtonClick
+    TabOrder = 14
+    ListeAc = Meslekler
+    indexField = False
+    ListeAcTus = 0
+    Width = 121
+  end
   object PopupMenu1: TPopupMenu
     Images = DATALAR.imag24png
     Left = 72
@@ -956,5 +971,28 @@ object frmHastaKart: TfrmHastaKart
       Font.Style = [fsBold]
       TextColor = 4194432
     end
+  end
+  object Meslekler: TListeAc
+    TColcount = 2
+    TColsW = '80,250'
+    Table = 'MeslekKodlari'
+    Conn = DATALAR.ADOConnection2
+    Filtercol = 1
+    BaslikRenk = clBlack
+    DipRenk = clBlack
+    Kolonlar.Strings = (
+      'kod'
+      'tanimi')
+    KolonBasliklari.Strings = (
+      'Meslek Kodu'
+      'Meslek Tan'#305'm'#305)
+    Calistir = fgEvet
+    BiriktirmeliSecim = False
+    SiralamaKolonu = 'tanimi'
+    SkinName = 'lilian'
+    Grup = False
+    GrupCol = 0
+    Left = 448
+    Top = 120
   end
 end
