@@ -298,9 +298,11 @@ begin
           end;
     -23 : begin
            alici := FirmaBilgileri(GridCellToString(GridFaturalar,'sirketKod',0));
-           mailserver := 'webmail.noktayazilim.net';
-           username := '';
-           password := '';
+           mailserver := datalar.SMTPSunucu;
+           username := datalar.SMTPUserName;
+           password := datalar.SMTPPassword;
+           konu := 'Dönem Faturasý';
+           msj := 'Dönem Faturanýz ektedir. Ýyi Çalýþmalar';
           end;
     end;
 
@@ -316,8 +318,12 @@ begin
 
     if sonuc[0] = '0000' then
     begin
-       ShellExecute(0, 'open', PChar(sonuc[1]), nil, nil, SW_SHOWNORMAL);
-    end;
+     if _tag_ = -22 then ShellExecute(0, 'open', PChar(sonuc[1]), nil, nil, SW_SHOWNORMAL);
+     //if _tag_ = -23 then ShowMessageSkin('Fatura Gönderildi','','','info');
+    end
+    else
+      ShowMessageSkin(Sonuc[0],Sonuc[1],'','info');
+
 
     if not Assigned(fatura) then
       raise Exception.Create(LIB_DLL + ' içersinde EArsivFaturaSavePDF bulunamadý!');
@@ -339,11 +345,18 @@ end;
 
 procedure TfrmFaturalar.Fatura(islem: Integer);
 var
-  F : TForm;
+  F : TGirisForm;
+  GirisRecord : TGirisFormRecord;
   bBasarili: Boolean;
-
+  fID : string;
 begin
-  //
+  if islem = faturaDuzenle then
+   begin
+      fID := GridCellToString(GridFaturalar,'sira',0);
+      GirisRecord.F_FaturaNO_ := fID;
+   end;
+  F := FormINIT(TagfrmFatura,GirisRecord,ikEvet,'');
+  if F <> nil then F.ShowModal;
 end;
 
 procedure TfrmFaturalar.cxButtonCClick(Sender: TObject);
@@ -353,7 +366,6 @@ var
   guid : string;
 begin
   inherited;
-
 
   case Tcontrol(sender).Tag of
   -9 : begin

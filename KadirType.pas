@@ -459,6 +459,7 @@ type
     F_kod_ : string;
     F_sube_ : string;
     F_MuayeneProtokolNo_ : string;
+    F_FaturaNO_ : string;
   End;
 
   TSifreDegistir = record
@@ -558,6 +559,7 @@ Const
   TagfrmIseGiris = 760;
   TagfrmFaturalar = 780;
   TagfrmDigerSaglikPers = 790;
+  TagfrmSirketSozlesme = 800;
 
 
   ExceleGonder = 9997;

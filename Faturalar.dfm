@@ -26,14 +26,12 @@ object frmFaturalar: TfrmFaturalar
     Properties.TabPosition = tpBottom
     LookAndFeel.NativeStyle = False
     LookAndFeel.SkinName = 'McSkin'
-    ExplicitWidth = 761
     ClientRectBottom = 572
     ClientRectLeft = 4
     ClientRectRight = 823
     ClientRectTop = 5
     object cxTabSheet1: TcxTabSheet
       ImageIndex = 0
-      ExplicitWidth = 753
       object cxGrid1: TcxGridKadir
         Left = 0
         Top = 0
@@ -53,7 +51,6 @@ object frmFaturalar: TfrmFaturalar
         LookAndFeel.NativeStyle = False
         LookAndFeel.SkinName = 'UserSkin'
         ExceleGonder = False
-        ExplicitWidth = 753
         object GridFaturalar: TcxGridDBTableView
           Navigator.Buttons.First.Visible = True
           Navigator.Buttons.PriorPage.Visible = True
@@ -75,7 +72,6 @@ object frmFaturalar: TfrmFaturalar
           DataController.DataModeController.DetailInSQLMode = True
           DataController.DataModeController.SyncMode = False
           DataController.DataSource = DataSource1
-          DataController.DetailKeyFieldNames = 'takipNo'
           DataController.Filter.Active = True
           DataController.Filter.TranslateBetween = True
           DataController.Filter.TranslateLike = True
@@ -452,5 +448,6 @@ object frmFaturalar: TfrmFaturalar
   object tmr1: TTimer
     Enabled = False
     Interval = 100
+    Top = 56
   end
 end

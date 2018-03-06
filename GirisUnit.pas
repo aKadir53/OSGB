@@ -218,7 +218,7 @@ type
     procedure setDataStringC(sender : Tform ; fieldName,caption : string;
      parent : TdxLayoutGroup;grup : string ;uzunluk : integer;List : string); overload;
     procedure setDataString(sender : Tform ; fieldName ,caption: string ;
-          parent : TdxLayoutGroup; grup : string;uzunluk : integer;Zorunlu : Boolean = False; ObjectName : String = '');
+          parent : TdxLayoutGroup; grup : string;uzunluk : integer;Zorunlu : Boolean = False; ObjectName : String = '';ReadOnly : Boolean = False);
     procedure setDataStringMemo(sender : Tform ; fieldName ,caption: string ;
           parent : TdxLayoutGroup; grup : string;uzunluk,yukseklik : integer);
     procedure setDataStringB(sender : Tform; fieldName ,caption: string ;
@@ -246,7 +246,7 @@ type
     procedure DiyalizTedavi_UF_KontrolleriniFormaEkle(Grp : TdxLayoutGroup);
     function SirketComboFilter : string;
     function  Init(Sender: TObject) : Boolean; virtual;
-    procedure OrtakEventAta(Sender : TcxImageComboKadir);
+    procedure OrtakEventAta(Sender : TcxCustomEdit);
     procedure QuerySelect(sql:string);
     procedure DurumGoster(Visible : Boolean = True; pBarVisible : Boolean = False ;
                                  msj : string = 'Ýþleminiz Yapýlýyor , lütfen bekleyiniz...';
@@ -488,7 +488,7 @@ begin
    end;
 end;
 
-procedure TGirisForm.OrtakEventAta(Sender : TcxImageComboKadir);
+procedure TGirisForm.OrtakEventAta(Sender : TcxCustomEdit);
 begin
   TcxImageComboKadir (sender).OnEnter := cxEditEnter;
   TcxImageComboKadir(sender).OnExit := cxEditExit;
@@ -1448,7 +1448,8 @@ begin
 end;
 
 procedure TGirisForm.setDataString(sender : Tform ; fieldName ,caption: string;
-                  parent : TdxLayoutGroup; grup : string;uzunluk : integer ; Zorunlu : Boolean = False; ObjectName : String = '');
+                  parent : TdxLayoutGroup; grup : string;uzunluk : integer ;
+                  Zorunlu : Boolean = False; ObjectName : String = '';ReadOnly : Boolean = False);
 var
   cxEdit : TcxTextEditKadir;
   dxLa : TdxLayoutItem;
@@ -1458,6 +1459,7 @@ begin
 
   cxEdit.Name := ifthen (Trim(ObjectName) = '', fieldName, Trim (ObjectName));
   cxEdit.Text := '';
+  cxEdit.Properties.ReadOnly := ReadOnly;
   cxEdit.Properties.ValidateOnEnter := True;
   cxEdit.BosOlamaz := Zorunlu;//KontrolZorunlumu(TForm(sender).Tag,fieldName); //Zorunlu;
   dxLa := TdxLayoutGroup(parent).CreateItemForControl(cxEdit);
@@ -2110,6 +2112,17 @@ begin
     for i := 0 to sqlRun.FieldCount - 1 do
       if sqlRun.Fields [i] is TAutoIncField then
         F_IDENTITY := sqlRun.Fields [i].AsInteger;
+
+    // TcxButtonEditKadir class nesnesi Identity true ise F_IDENTITY deðeri nesneye atanýyor
+    for i := 0 to self.ComponentCount - 1 do
+    begin
+      _obje_ := TcxCustomEdit(self.Components[i]);
+       if (self.Components[i].ClassName = 'TcxButtonEditKadir')
+       then
+         if TcxButtonEditKadir(_obje_).Identity = True
+         then TcxButtonEditKadir(_obje_).EditValue := F_IDENTITY;
+    end;
+
     Result := True;
   except on e : Exception do
     begin
@@ -2230,6 +2243,8 @@ procedure TGirisForm.cxKaydetClick(Sender: TObject);
 var
   dosyaNo : string;
   sonuc : Boolean;
+  i : integer;
+ _Obje_ : TcxCustomEdit;
 begin
   F_cxKaydetResult := False;
   if KontrolUsers(inttostr(self.Tag),inttostr(TControl(sender).Tag),datalar.username) = False
@@ -2310,6 +2325,17 @@ begin
            F_IDENTITY := -1;
            cxPanelButtonEnabled(false,true,false);
            newButonVisible(true);
+
+           // Identity Buttonedit kutusu boþaltýlýyor
+           for i := 0 to self.ComponentCount - 1 do
+           begin
+              _obje_ := TcxCustomEdit(self.Components[i]);
+               if (self.Components[i].ClassName = 'TcxButtonEditKadir')
+               then
+                 if TcxButtonEditKadir(_obje_).Identity = True
+                 then TcxButtonEditKadir(_obje_).Clear;
+           end;
+
            //sirketKod.Text := datalar.AktifSirket;
            F_cxKaydetResult := True;
         end;
