@@ -193,7 +193,7 @@ end
 
 if @grup = 'KS'
 begin
-select count (*) over (PARTITION BY MS.AltGrupKod) CalcCalc,
+select count (*) over (PARTITION BY MS.AltGrupKod) CalcCalc, ROW_NUMBER() over (order BY MS.AltGrupKod,MS.id) sira, 
     MS.PersonelKodu,
 	s.Tanimi MuayeneSoru,
     case when count (*) over (PARTITION BY MS.AltGrupKod) = 1 and s.Tanimi = 'Sonuç' then MAG.tanimi else s.tanimi end MuayeneSoruCalc,
