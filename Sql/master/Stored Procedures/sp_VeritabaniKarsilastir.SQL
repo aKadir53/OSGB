@@ -1,7 +1,7 @@
 BEGIN TRAN
 GO
 ALTER -- create
-  procedure dbo.sp_VeritabaniKarsilastir @Veritabani1 varchar (20), @veritabani2 varchar (20), @ignoreColid bit
+  procedure dbo.sp_VeritabaniKarsilastir @Veritabani1 varchar (50), @veritabani2 varchar (50), @ignoreColid bit
 as
 begin
   declare @sql varchar (max)
