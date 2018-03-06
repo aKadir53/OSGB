@@ -164,3 +164,29 @@ muayene protokol no düzeltme imkaný için muayene düzenle iþleminin hatalarý gide
 dozlar ters gidiyor þikayeti vardý (imes osgb dr. murat ve tek osgb dr. arzu) xml'de alan yerleri deðiþtirildi
 personel eklerken user kartýnýn sahibi ayný zamanda doktorsa "yeni" deðil "aktif" default hale getirildi.
 userGroups gridinden grup silerken beforeDelete'de usergroupsettings ve usergroupmenusettings tablolarýndan data siliyor, fakat users'ta o grupta bir kullanýcý varsa foreign key çakýyor. yetki tanýmlarý silinmiþ olarak kalýyordu. before delete'de transaction baþlatma, afterdelete'de commit, ondeleteerror'da rollback yapmasý eklendi
+diðer veritabanýna güncellenmesi gereken tablolara (formcaption, menuIslem, modulIslem vs) trigger eklenip güncelleme paketi programýna atýlacak sql scriptleri ürettirilmesi saðlandý. güncelleme pakedine atarken ilgili trigger kapatýlýp atýlýr ve gittiði yerde trigger tetiklenmez ise baþka veritabanlarýndan yapýlan müdahaleler de update ile gelenler ile karýþmadan görülmüþ olur.
+program bir bilgisayarda ilk kez çalýþtýrýldýðýnda demo bilgilerinin dolu olmasý onay sorusuna baðlandý. kayýtlý kullanýcýlarýn firma kodunu girmeyi unutup uzman veritabanýna baðlanmalarý sebebiyle firma kodu kutusuna yönlendirmek için yaptýk.
+isg katip excel aktarimina sgk sicil il deðerinden tesis kodu ayarlamasý eklendi. her doktor için o doktorun en fazla sayýda olan ilinin kodundan alýyor. eþit sayýda olanlarýn plaka kodu en yüksek olaný
+personel kategori þeysi gibi özel ilgi isteyen string alanlar için foreign key baðlantýlý deðerler tablosu oluþturup, çevrim deðer deðeri ekleyip, bu deðer üzerinden çalýþtýrma saðlandý. Örnek: iþyeri hekimi, iþ yeri hekimi hepsinin çevrim tipi 1 olup. a sýnýfý iþ güvenliði uzmaný 2, b sýnýfý 3... gibi... ÝSG katip aktarýmý da bu þekilde çalýþmak üzere düzenlendi
+
+foreign key tablolarý valueobjectvalues, personelisegirismuayene, isegirismuayenesorulari tablolarýnda son bir kontrol yapýlarak muayene sorularý ile valueobjectvalues arasýnda foreign key konuldu
+
+bölüm ve birim tablolarýnýn tanýmý alanýna unique index konularak ayný isimde bölüm veya birim açýlmasý engellendi. bunun öncesinde tekrarlayan bölüm veya birim isimlerini teke indirerek personel kartlarýnda kullanýlmýþ olanlarý mevcut olanlarýn en küçük ID'si ile güncelleyip tekrarlayanlarý sildik. ilave olarak personel kartý ile araya foreign keyler ekledik. böylece bölüm ve birim kayýtlarýnýn silinmesini engelledik.
+
+personel hasta listesinde diyabet baþlýklý sütunun adýný kronik hastalýk olarak deðiþtirdik
+sp_frmdoktorpersonellistesi ve sp_frmpersonellistesi sp'lerindeki mantýðýný da, önce bunu view'a taþýyýp, alanýn içinde tek bir tane bile 1 varsa dolu getirecek þekilde deðiþtirdik
+
+02.03.2018 
+SOYYILMAZ OSGB ve ÝÞ TIP OSGB'nin talepleri üzerine, 
+1-) ÝSG Kâtip görevlendirme excel'inde geçen diðer saðlýk personeli için tablo açýlýp (doktor ve iþ güvenliði uzmaný gibi) içine kart eklenebilmesi saðlandý
+2-) ÝSG katip excel aktarýmýnda bunlarýn da otomatik aktarýmý, kullanýcý hesaplarýnýn oluþturulmasý, firma þubelerine baðlanmasý ve dakika bilgilerinin güncellenmesi saðlandý
+3-) programa giriþ ve þirket / þube seçimi yapýlabilen yerlerde giren kullanýcý diðer saðlýk personeli kartlarýndan biri ile iliþkili ise sadece kendi görevli olduðu firmalarý görebilmesi saðlandý
+4-) isg katip excel aktarýmý baðlantý tablolarýndan personel kategori adý tablosuna, o kategorinin hangi kullanýcý grubu altýna kaydedileceðinin ve kullanýcý prefix'inin ne olacaðýnýn seçilebileceði alanlar eklendi
+5-) isg katip excel aktarýmýnda baðlantý tablolarýnýn bilgisi kullanýlacak þekilde düzenleme yapýldý.
+saliha haným'ýn 1 mart 2018 itibari ile gönderdiði alpemix mesajlarýnýn ilgili bölümü aþaðýda
+
+Saliha > HEMÞÝLER ÝÇÝN  KULLANICI ATAN MASI
+Saliha > HEMÞÝRELERÝN FÝRMALARIN HEPSÝNÝ GÖRMESÝNÝ ENGELLEM
+Saliha > DÝPER SAÐLIK PERSONLEÝ KAKRTI ÜZERÝNDEN ÝÞLEMLER
+Saliha > YAPILAAK ÞEKÝDE
+---------
