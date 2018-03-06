@@ -5,50 +5,60 @@ ALTER TRIGGER [dbo].[FaturaEkle]
    AFTER UPDATE,INSERT,Delete
 AS 
 BEGIN
-declare @faturaTip int ,@faturaGenelTutar float
+declare @faturaTip int ,@faturaGenelTutar float,@sirketKod varchar(10)
 
 if exists(select * from deleted) 
 begin
-  select @faturaTip = faturaTip,@faturaGenelTutar = faturaGenelTutar from deleted  
   
-  delete from carihareketler where evrakId = (select sira from deleted)
+    delete from carihareketler where evrakId = (select sira from deleted)
   
-  if @faturaTip = 1
-  begin 
-   update SIRKETLER_TNM
-   set toplamBorc = toplamBorc - @faturaGenelTutar
-   where sirketKod in (select sirketKod from deleted) and toplamBorc > 0
-  end
-  else
-  begin
-   update SIRKETLER_TNM
-   set toplamAlacak = toplamAlacak - @faturaGenelTutar
-   where sirketKod in (select sirketKod from deleted) and toplamAlacak > 0
-  end
+	declare x cursor for
+	select sirketKod,faturaGenelTutar,faturaTip from deleted
+	open x
+	fetch next from x
+	INTO @sirketKod,@faturaGenelTutar,@faturaTip
+
+	while @@fetch_status = 0
+	begin
+		update SIRKETLER_TNM
+		set toplamBorc = (select sum(borc) from cariHareketler where cariKod = @sirketKod),
+			toplamAlacak = (select sum(Alacak) from cariHareketler where cariKod = @sirketKod)
+		where sirketKod = @sirketKod
+		fetch next from x
+		INTO @sirketKod,@faturaGenelTutar,@faturaTip 
+	end
+	close x
+	DEALLOCATE x
 
 end
 
 if exists(select * from inserted) 
 begin
-  select @faturaTip = faturaTip,@faturaGenelTutar = faturaGenelTutar from inserted
     
-  insert into cariHareketler(carikod,tarih,borc,alacak,evrakNo,evrakId,evrakTipi,hareketTipi)
-  select sirketKod,convert(varchar,faturatarihi,112),faturageneltutar,0,faturaNo,sira,faturatip,ozelKod from inserted 
+    insert into cariHareketler(carikod,tarih,borc,alacak,evrakNo,evrakId,evrakTipi,hareketTipi)
+    select sirketKod,convert(varchar,faturatarihi,112),faturageneltutar,0,faturaNo,sira,faturatip,ozelKod from inserted 
 
-  if @faturaTip = 1
-  begin 
-   update SIRKETLER_TNM
-   set toplamBorc = toplamBorc + @faturaGenelTutar
-   where sirketKod in (select sirketKod from inserted)
-  end
-  else
-  begin
-   update SIRKETLER_TNM
-   set toplamAlacak = toplamAlacak + @faturaGenelTutar
-   where sirketKod in (select sirketKod from inserted)
-  end
- 
+	declare x cursor for
+	select sirketKod,faturaGenelTutar,faturaTip from inserted
+	open x
+	fetch next from x
+	INTO @sirketKod,@faturaGenelTutar,@faturaTip
+
+	while @@fetch_status = 0
+	begin
+		update SIRKETLER_TNM
+		set toplamBorc = (select sum(borc) from cariHareketler where cariKod = @sirketKod),
+			toplamAlacak = (select sum(Alacak) from cariHareketler where cariKod = @sirketKod)
+		where sirketKod = @sirketKod
+		fetch next from x
+		INTO @sirketKod,@faturaGenelTutar,@faturaTip 
+	end
+	close x
+	DEALLOCATE x
+
 end
+
+
 
 
 
