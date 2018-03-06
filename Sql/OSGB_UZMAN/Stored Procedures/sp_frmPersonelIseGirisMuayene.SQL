@@ -35,8 +35,10 @@ end
 
 if @grup = 'PK'
 begin
-  select * from PersonelKart P
+  select P.*,S.*,br.tanimi birimAdi,b.tanimi bolumAdi from PersonelKart P
   join SIRKETLER_TNM S on S.sirketKod = P.sirketKod
+  left join Bolumler b on b.kod = P.Bolum
+  left join Birimler br on br.kod = P.Birim
   where dosyano = @dosyaNo 
 end
 
@@ -191,7 +193,7 @@ end
 
 if @grup = 'KS'
 begin
-select count (*) over (PARTITION BY MS.AltGrupKod) CalcCalc,
+select count (*) over (PARTITION BY MS.AltGrupKod) CalcCalc, ROW_NUMBER() over (order BY MS.AltGrupKod,MS.id) sira, 
     MS.PersonelKodu,
 	s.Tanimi MuayeneSoru,
     case when count (*) over (PARTITION BY MS.AltGrupKod) = 1 and s.Tanimi = 'Sonuç' then MAG.tanimi else s.tanimi end MuayeneSoruCalc,
