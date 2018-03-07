@@ -94,6 +94,7 @@ type
       out AStyle: TcxStyle);
     procedure MuayeneClick(Sender: TObject);
     procedure PeryodikMuayeneOlutur1Click(Sender: TObject);
+    procedure TopPanelButonClick(Sender: TObject);
 
   private
     { Private declarations }
@@ -470,6 +471,12 @@ begin
      popupYil.Items.Insert(popupYil.Items.Count  , item);
    End;
   end;
+end;
+
+procedure TfrmHastaListe.TopPanelButonClick(Sender: TObject);
+begin
+  inherited;
+  Liste.ViewData.Expand(true);
 end;
 
 procedure TfrmHastaListe.TopPanelPropertiesChange(Sender: TObject);
