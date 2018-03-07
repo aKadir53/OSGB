@@ -89,7 +89,7 @@ begin
     insert into #t (RowsetHata, Rowset, Aciklama, HataMesaji) 
     Select 0 RowsetHata, 0 Rowset, 'Çift Kullanýcý isimleri eleniyor' Aciklama, null HataMesaji
     insert into #t (RowsetHata, Rowset, Aciklama, HataMesaji, RowsetEditInput) 
-    Select 0 RowsetHata, 1 Rowset, 'Kullanýcý kartlarýna oluþturulacak diðer saðlýk personeli tanýmlarý girdiriliyor' Aciklama, 'Ýþ Güvenlik Uzmaný Kullanýcý Kartý Onayý' HataMesaji, 1 RowsetEditInput
+    Select 0 RowsetHata, 1 Rowset, 'Kullanýcý kartlarýna oluþturulacak diðer saðlýk personeli tanýmlarý girdiriliyor' Aciklama, 'Diðer Saðlýk Personeli Kullanýcý Kartý Onayý' HataMesaji, 1 RowsetEditInput
     insert into #t (RowsetHata, Rowset, Aciklama, HataMesaji) 
     Select 0 RowsetHata, 0 Rowset, 'Kullanýcý kartlarýna diðer saðlýk personeli tanýmlarýndan diðer saðlýk personeli kullanýcýlarý oluþturuluyor' Aciklama, null HataMesaji
     insert into #t (RowsetHata, Rowset, Aciklama, HataMesaji) 
@@ -391,10 +391,16 @@ begin
   
   if @iTip = @iTipInt or @iTip is Null
   begin  
-    select IDENTITY (int, 1, 1) ID, 'dr' + dbo.TurkCharToEng (case when CHARINDEX (' ', tanimi) <= 0 then Tanimi else substring (tanimi, 1, CHARINDEX (' ', tanimi)-1) end) kullanici, 
+    select IDENTITY (int, 1, 1) ID, IsNull (pkx.UserPrefix, 'dr') + dbo.TurkCharToEng (case when CHARINDEX (' ', tanimi) <= 0 then Tanimi else substring (tanimi, 1, CHARINDEX (' ', tanimi)-1) end) kullanici, 
       Tanimi ADISOYADI, kod doktor
     into dbo.tmpUsr
     from dbo.DoktorlarT dt
+    left outer join
+      ((select TCKimlikNo, PersonelKategoriAdi
+        FROM dbo.ISGKatipExcelaktarim
+        GROup by TCKimlikNo, PersonelKategoriAdi) igk
+       inner join DisAktarim_ISGKatipExcel_PersonelKategoriAdi pkx on pkx.PersonelKategoriAdi = igk.PersonelKategoriAdi) 
+       on igk.TCKimlikNo = dt.tcKimlikNo
     where not Exists (Select 1 from dbo.Users U where U.doktor = dt.kod)
     order by dt.Tanimi
   end
@@ -432,9 +438,15 @@ begin
   begin  
     insert into dbo.Users (kullanici, password, [default], donem, parametreler, yet1, yet2, ADISOYADI, doktor, grup, Saat, userSkin, email, ustUser, sirketKodu, IGU, DigerSaglikPers)
     select uuu.kullanici kullanici, 
-      tcKimlikNo password, 0 [default], null donem, null parametreler, null yet1, null yet2, Tanimi ADISOYADI, kod doktor, 2 grup, getdate () Saat, 'iMaginary' userSkin, null email, null ustUser, null sirketKodu, null IGU, null DigerSaglikPers
+      dt.tcKimlikNo password, 0 [default], null donem, null parametreler, null yet1, null yet2, Tanimi ADISOYADI, kod doktor, IsNull (pkx.UserGroup, 2) grup, getdate () Saat, 'iMaginary' userSkin, null email, null ustUser, null sirketKodu, null IGU, null DigerSaglikPers
     -- select *
     from dbo.DoktorlarT dt
+    left outer join
+      ((select TCKimlikNo, PersonelKategoriAdi
+        FROM dbo.ISGKatipExcelaktarim
+        GROup by TCKimlikNo, PersonelKategoriAdi) igk
+       inner join DisAktarim_ISGKatipExcel_PersonelKategoriAdi pkx on pkx.PersonelKategoriAdi = igk.PersonelKategoriAdi) 
+       on igk.TCKimlikNo = dt.tcKimlikNo
     inner join dbo.tmpUsr uuu on uuu.Doktor = dt.Kod
     where not Exists (Select 1 from dbo.Users U where U.doktor = dt.kod)
   end
@@ -450,10 +462,16 @@ begin
   
   if @iTip = @iTipInt or @iTip is Null
   begin  
-    select IDENTITY (int, 1, 1) ID, 'isg' + dbo.TurkCharToEng (case when CHARINDEX (' ', tanimi) <= 0 then Tanimi else substring (tanimi, 1, CHARINDEX (' ', tanimi)-1) end) kullanici, 
+    select IDENTITY (int, 1, 1) ID, ISNULL (pkx.UserPrefix, 'isg') + dbo.TurkCharToEng (case when CHARINDEX (' ', tanimi) <= 0 then Tanimi else substring (tanimi, 1, CHARINDEX (' ', tanimi)-1) end) kullanici, 
       Tanimi ADISOYADI, kod IsGuvUzm
     into dbo.tmpUsr
     from dbo.IGU dt
+    left outer join
+      ((select TCKimlikNo, PersonelKategoriAdi
+        FROM dbo.ISGKatipExcelaktarim
+        GROup by TCKimlikNo, PersonelKategoriAdi) igk
+       inner join DisAktarim_ISGKatipExcel_PersonelKategoriAdi pkx on pkx.PersonelKategoriAdi = igk.PersonelKategoriAdi) 
+       on igk.TCKimlikNo = dt.tcKimlikNo
     where not Exists (Select 1 from dbo.Users U where U.IGU = dt.kod)
     order by dt.Tanimi
   end
@@ -491,9 +509,15 @@ begin
   begin  
     insert into dbo.Users (kullanici, password, [default], donem, parametreler, yet1, yet2, ADISOYADI, doktor, grup, Saat, userSkin, email, ustUser, sirketKodu, IGU, DigerSaglikPers)
     select uuu.Kullanici kullanici, 
-      tcKimlikNo password, 0 [default], null donem, null parametreler, null yet1, null yet2, Tanimi ADISOYADI, null doktor, 11 grup, getdate () Saat, 'iMaginary' userSkin, null email, null ustUser, null sirketKodu, kod IGU, null DigerSaglikPers
+      dt.tcKimlikNo password, 0 [default], null donem, null parametreler, null yet1, null yet2, Tanimi ADISOYADI, null doktor, IsNull (pkx.UserGroup, 11) grup, getdate () Saat, 'iMaginary' userSkin, null email, null ustUser, null sirketKodu, kod IGU, null DigerSaglikPers
     -- select *
     from dbo.IGU dt
+    left outer join
+      ((select TCKimlikNo, PersonelKategoriAdi
+        FROM dbo.ISGKatipExcelaktarim
+        GROup by TCKimlikNo, PersonelKategoriAdi) igk
+       inner join DisAktarim_ISGKatipExcel_PersonelKategoriAdi pkx on pkx.PersonelKategoriAdi = igk.PersonelKategoriAdi) 
+       on igk.TCKimlikNo = dt.tcKimlikNo
     inner join dbo.tmpUsr uuu on uuu.IsGuvUzm = dt.Kod
     where not Exists (Select 1 from dbo.Users U where U.IGU = dt.kod)
   end
@@ -509,10 +533,16 @@ begin
   
   if @iTip = @iTipInt or @iTip is Null
   begin  
-    select IDENTITY (int, 1, 1) ID, 'sp' + dbo.TurkCharToEng (case when CHARINDEX (' ', tanimi) <= 0 then Tanimi else substring (tanimi, 1, CHARINDEX (' ', tanimi)-1) end) kullanici, 
+    select IDENTITY (int, 1, 1) ID, ISNULL (pkx.UserPrefix, 'sp') + dbo.TurkCharToEng (case when CHARINDEX (' ', tanimi) <= 0 then Tanimi else substring (tanimi, 1, CHARINDEX (' ', tanimi)-1) end) kullanici, 
       Tanimi ADISOYADI, kod DigerSglPers
     into dbo.tmpUsr
-    from dbo.DigerSaglikPersonel dt
+    from dbo.DigerSaglikPersonel dt 
+    left outer join
+      ((select TCKimlikNo, PersonelKategoriAdi
+        FROM dbo.ISGKatipExcelaktarim
+        GROup by TCKimlikNo, PersonelKategoriAdi) igk
+       inner join DisAktarim_ISGKatipExcel_PersonelKategoriAdi pkx on pkx.PersonelKategoriAdi = igk.PersonelKategoriAdi) 
+       on igk.TCKimlikNo = dt.tcKimlikNo
     where not Exists (Select 1 from dbo.Users U where U.DigerSaglikPers = dt.kod)
     order by dt.Tanimi
   end
@@ -550,9 +580,15 @@ begin
   begin  
     insert into dbo.Users (kullanici, password, [default], donem, parametreler, yet1, yet2, ADISOYADI, doktor, grup, Saat, userSkin, email, ustUser, sirketKodu, IGU, DigerSaglikPers)
     select uuu.Kullanici kullanici, 
-      tcKimlikNo password, 0 [default], null donem, null parametreler, null yet1, null yet2, Tanimi ADISOYADI, null doktor, 11 grup, getdate () Saat, 'iMaginary' userSkin, null email, null ustUser, null sirketKodu, null IGU, kod DigerSaglikPers
+      dt.tcKimlikNo password, 0 [default], null donem, null parametreler, null yet1, null yet2, Tanimi ADISOYADI, null doktor, IsNull (pkx.UserGroup, 3) grup, getdate () Saat, 'iMaginary' userSkin, null email, null ustUser, null sirketKodu, null IGU, kod DigerSaglikPers
     -- select *
     from dbo.DigerSaglikPersonel dt
+    left outer join
+      ((select TCKimlikNo, PersonelKategoriAdi
+        FROM dbo.ISGKatipExcelaktarim
+        GROup by TCKimlikNo, PersonelKategoriAdi) igk
+       inner join DisAktarim_ISGKatipExcel_PersonelKategoriAdi pkx on pkx.PersonelKategoriAdi = igk.PersonelKategoriAdi) 
+       on igk.TCKimlikNo = dt.tcKimlikNo
     inner join dbo.tmpUsr uuu on uuu.DigerSglPers = dt.Kod
     where not Exists (Select 1 from dbo.Users U where U.DigerSaglikPers = dt.kod)
   end
@@ -665,15 +701,15 @@ exec dbo.sp_ISGKatipExcelAktarimi 19
 go
 exec dbo.sp_ISGKatipExcelAktarimi 20
 go
-update #tempUser set Kullanici = Kullanici + 'XX' where ID in (1, 2)
-go
-update #tempUser set Kullanici = 'XX' where ID in (1, 2)
-go
-update #tempUser set Kullanici = 'YY' where ID in (3, 4)
-go
 exec dbo.sp_ISGKatipExcelAktarimi 21
 go
 exec dbo.sp_ISGKatipExcelAktarimi 22
+go
+--update #tempUser set Kullanici = Kullanici + 'XX' where ID in (1, 2)
+go
+--update #tempUser set Kullanici = 'XX' where ID in (1, 2)
+go
+--update #tempUser set Kullanici = 'YY' where ID in (3, 4)
 go
 exec dbo.sp_ISGKatipExcelAktarimi 23
 go
@@ -686,6 +722,20 @@ go
 exec dbo.sp_ISGKatipExcelAktarimi 27
 go
 exec dbo.sp_ISGKatipExcelAktarimi 28
+go
+exec dbo.sp_ISGKatipExcelAktarimi 29
+go
+exec dbo.sp_ISGKatipExcelAktarimi 30
+go
+exec dbo.sp_ISGKatipExcelAktarimi 31
+go
+exec dbo.sp_ISGKatipExcelAktarimi 32
+go
+exec dbo.sp_ISGKatipExcelAktarimi 33
+go
+exec dbo.sp_ISGKatipExcelAktarimi 34
+go
+exec dbo.sp_ISGKatipExcelAktarimi 35
 go
 select * from Users
 go
