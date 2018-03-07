@@ -1,4 +1,3 @@
-
 yapýlacaklar
 ---------------------------------
 osgb master tabloya lisans sayýsý bilgisi eklenecek.
@@ -193,11 +192,8 @@ adoconnection2 kapat aç yapabilir miyiz ?
 
 çekmeköy'e restore olacak olan master veritabanýný uzak sunucuya baþka isimle tekrar koy. master veritabaný deðiþikliklerini takip et
 
-isg katip excel aktarimina sgk sicil il deðerinden tesis kodu ayarlamasý eklenebilir.
-personel kategori þeysi gibi özel ilgi isteyen string alanlar için foreign key baðlantýlý deðerler tablosu oluþturup, çevrim deðer deðeri ekleyip, bu deðer üzerinden çalýþtýrabiliriz. Örnek: iþyeri hekimi, iþ yeri hekimi hepsinin çevrim tipi 1 olur. a sýnýfý iþ güvenliði uzmaný 2, b sýnýfý 3... gibi...
 peryodik muayene seçildiðinde diðer adýmdan yap ikazý
 muayene düzenle'de girilen protokol numarasý, þube kartýna yazýlabilir mi ? onay sorusu ile olabilir.
-program bir bilgisayarda ilk kez çalýþtýrýldýðýnda demo bilgilerinin dolu olmasý onay sorusuna baðlanabilir.
 reçete imzala gönder yaparken reçete doktoru ile user doktoru farklý ise uyarý ver
 
 uzmanlar osgb hülya haným:
@@ -208,6 +204,34 @@ peryodik muayene, aþý vb iþlemlerin liste ilaveten programa giriþte alarm þeklin
 eðitim sertifika baskýsý için taslak gönderecek
 
 kullanýcý kartlarýna kullanýcý adýmý deðiþtir düðmesi eklenebilir.
-diðer veritabanýna güncellenmesi gereken tablolara (formcaption, menuIslem, modulIslem vs) trigger eklenip güncelleme paketi programýna atýlacak sql scriptleri ürettirilebilir. güncelleme pakedine atarken ilgili trigger kapatýlýp atýlýr ve gittiði yerde trigger tetiklenmez. baþka veritabanlarýndan yapýlan müdahaleler de görülmüþ olur.
 
-personel hasta listesinde diyabet baþlýklý sütunun adýný kronik hastalýk yapýp sp'deki mantýðýný da alanýn içinde tek bir tane bile 1 varsa dolu getirecek þekilde deðiþtireceðiz
+admin gibi kullanýcýlar bir reçete ya da muayene yazýp doktor olarak girmiþ gibi olunca þirket seçemez hale geliyorlar.
+
+foreign key tablolarý 
+tanýlar anamnez_ICD
+
+reçete þablonu kaydederken sapýtmasý
+
+önemli tablolara log konulmasý lazým
+
+
+Saliha > ÞUBELERÝN PASÝFE ALINMASI
+Saliha > bide eczaneden firma adý çýkmasý için acil çalýþýlmasý lazým taný ekranýnda aramada çýkmayan
+Saliha > diyabet hiper tansiyon
+
+þube taþý birleþtir iþleminde maalesef numaratör bir atlýyor
+
+iþe giriþ m. sorularý tansiyon vs
+
+Ýþ güv. uzm., doktor ve diðer saðlýk personeli gibi kiþiler ve üzerine atanmýþ firmalar raporu
+
+hasta listesindeki otomatik açýk listelenme özelliðini, listele butonuna da eklemek lazým
+
+erhan erkan:
+1-) anamnez ekranýndan yeni reçete eklerken muayene protokol numarasýný reçeteye atmýyor. boþ kalýyor.
+2-) yeni muayene ekranýnda protokol numarasý gözükmüyor
+3-) yeni muayene iþleminde þube kartý protokol numarasý alanýný güncelleyebiliriz.
+4-) Personel kartýndaki risk grubu kombosundaki dereceler artan mý azalan mý ? mesela yanýklar 1, 2, 3, þiddeti artarken kalitede azalýyor.
+
+
+personel þlirketten þirkete taþýma baðlý tablolardaki þirket kodu alanlarýnýn düzeltilmesi için lazým (bence trigger ile yapabiliriz)
