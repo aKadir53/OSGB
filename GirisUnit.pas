@@ -996,7 +996,7 @@ begin
 
        if (self.Components[i].ClassName = 'TcxCheckGroupKadir')
        then begin
-         TcxCheckGroupKadir(_obje_).setItemStringCheck(sqlRun.FieldByName(_Obje_.Name).AsVariant);
+         TcxCheckGroupKadir(_obje_).setItemStringCheck(vartostr(sqlRun.FieldByName(_Obje_.Name).AsVariant));
        end
        else
        if (self.Components[i].ClassName = 'TcxLabel') and
