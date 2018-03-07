@@ -232,3 +232,6 @@ erhan erkan:
 2-) yeni muayene ekranýnda protokol numarasý gözükmüyor
 3-) yeni muayene iþleminde þube kartý protokol numarasý alanýný güncelleyebiliriz.
 4-) Personel kartýndaki risk grubu kombosundaki dereceler artan mý azalan mý ? mesela yanýklar 1, 2, 3, þiddeti artarken kalitede azalýyor.
+
+
+personel þlirketten þirkete taþýma baðlý tablolardaki þirket kodu alanlarýnýn düzeltilmesi için lazým (bence trigger ile yapabiliriz)
