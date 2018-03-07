@@ -25,8 +25,8 @@ select @saticiVergiNo = isnull(vergiNo,'') , @saticiAdres = isnull(Adres,'') , @
 	   @saticiTel = isnull(Telefon,''),@saticiFax = isnull(Fax,''),@saticiEMail = isnull(e_mail,'')
 from MerkezBilgisi
 
-select @faturaNo = 'GIB' + substring(dbo.fn_formattedTarih('YYYYMMDD',faturaTarihi),1,4) + REPLICATE('0',9 - LEN(sira))+CAST(sira as varchar) ,
-       @guid = Guid,
+select @faturaNo = 'GIB' + substring(dbo.fn_formattedTarih('YYYYMMDD',faturaTarihi),1,4) + REPLICATE('0',9 - LEN(faturaNo))+faturaNo ,
+       @guid = newid(),
 	   @faturaTarihi = dbo.fn_formattedTarih('YYYY-MM-DD',faturaTarihi),
 	   @faturaSaati = dbo.fn_formattedTarih('HHMMSS',faturaTarihi),
 	   @aliciVergiNo = isnull(s.VN,''),@aliciVergiDairesi = isnull(s.VD,''),
@@ -75,6 +75,7 @@ select
 	'<faturaTip>SATIS</faturaTip>'+
 	'<paraBirimi>TRY</paraBirimi>'+
 	'<faturaKalemSayisi>'+@faturaSatir+'</faturaKalemSayisi>'+
+	'<Not>HESAP IBAN : TR23434234342342</Not>' +
  	'<saticiBilgisi>'+
 			'<url>'+@saticiUrl+'</url>'+
 			'<vergiNo>'+@saticiVergiNo+'</vergiNo>'+
@@ -155,6 +156,7 @@ select
     '</Satirlar>'
 
 	from FaturaHareket fh
+	 where faturaId = @faturaId
 
 	--select @fatura + @faturaHareket + '</Fatura>'faturaXML
 
