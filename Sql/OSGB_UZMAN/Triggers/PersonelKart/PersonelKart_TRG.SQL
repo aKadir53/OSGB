@@ -65,6 +65,15 @@ BEGIN
         and i.DosyaNo = pk.DosyaNo
 	  where PK.BASLANGIC IS NULL
   end
+  -- personelin þirketi deðiþmiþse geliþler tablosundaki kayýtlarýndaki þirket kodunu da güncelle.
+  update g 
+    Set g.SirketKod = i.SirketKod
+  from inserted i
+  inner join deleted d on d.dosyaNo = i.DosyaNo
+  inner join Gelisler g on g.DosyaNo = i.DosyaNo
+  where i.SirketKod <> d.SirketKod
+    and IsNull (g.SirketKod, '') <> IsNull (i.SirketKod, '')
+
   set nocount off
 END
 GO
