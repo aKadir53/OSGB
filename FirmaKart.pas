@@ -541,7 +541,7 @@ begin
     aQuery.SQL.Text := 'Select IsNull ((select max (cast (SubeKod as int)) from SIRKET_SUBE_TNM sb where sb.SirketKod = ' + SQLValue (sHedefSirketKod) + ' and IsNumeric (SubeKod) = 1), -1) + 1 XX';
     aQuery.Open;
     iMaxSubeNo := aQuery.FieldByName('XX').AsInteger;
-    sHedefSubeKod := FormatFloat('00', iMaxSubeNo + 1);
+    sHedefSubeKod := FormatFloat('00', iMaxSubeNo);
     KademeliStoredProcCalistir('sp_SubeSirketiniDegistir', ', ' + SQLValue(sKaynakSirketKod) + ', ' + SQLValue(sKaynakSubeKod) + ', ' + SQLValue(sHedefSirketKod) + ', ' + SQLValue(sHedefSubeKod));
   finally
     aQuery.Free;
