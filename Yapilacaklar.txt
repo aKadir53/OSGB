@@ -219,13 +219,7 @@ Saliha > ÞUBELERÝN PASÝFE ALINMASI
 Saliha > bide eczaneden firma adý çýkmasý için acil çalýþýlmasý lazým taný ekranýnda aramada çýkmayan
 Saliha > diyabet hiper tansiyon
 
-þube taþý birleþtir iþleminde maalesef numaratör bir atlýyor
-
-iþe giriþ m. sorularý tansiyon vs
-
 Ýþ güv. uzm., doktor ve diðer saðlýk personeli gibi kiþiler ve üzerine atanmýþ firmalar raporu
-
-hasta listesindeki otomatik açýk listelenme özelliðini, listele butonuna da eklemek lazým
 
 erhan erkan:
 1-) anamnez ekranýndan yeni reçete eklerken muayene protokol numarasýný reçeteye atmýyor. boþ kalýyor.
@@ -234,4 +228,3 @@ erhan erkan:
 4-) Personel kartýndaki risk grubu kombosundaki dereceler artan mý azalan mý ? mesela yanýklar 1, 2, 3, þiddeti artarken kalitede azalýyor.
 
 
-personel þlirketten þirkete taþýma baðlý tablolardaki þirket kodu alanlarýnýn düzeltilmesi için lazým (bence trigger ile yapabiliriz)
