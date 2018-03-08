@@ -1,13 +1,13 @@
 <Fatura>
-  <faturaId>7</faturaId>
-  <faturaNo>GIB2018000000014</faturaNo>
+  <faturaId>8</faturaId>
+  <faturaNo>GIB2018000000017</faturaNo>
   <CopyIndicator>false</CopyIndicator>
-  <UUID>C0593BD0-D0C4-46EB-B03B-E9F30EFF4919</UUID>
-  <faturaTarihi>2018-03-02</faturaTarihi>
+  <UUID>FBDF8451-CFBB-4B56-9091-ECF0413F1EC6</UUID>
+  <faturaTarihi>2018-03-03</faturaTarihi>
   <faturaSaati>00:00:00</faturaSaati>
   <faturaTip>SATIS</faturaTip>
   <paraBirimi>TRY</paraBirimi>
-  <faturaKalemSayisi>3</faturaKalemSayisi>
+  <faturaKalemSayisi>1</faturaKalemSayisi>
   <Not>HESAP IBAN : TR23434234342342</Not>
   <saticiBilgisi>
     <url />
@@ -26,51 +26,37 @@
   </saticiBilgisi>
   <aliciBilgisi>
     <url />
-    <vergiNo>6130798493</vergiNo>
-    <saticiAdi>MAVİ NOKTA BİLGİ TEKNOLOJİLERİ LTD.ŞTİ.</saticiAdi>
-    <adres>Reşitpaşa Cad.No:11/2</adres>
+    <vergiNo>1111111111</vergiNo>
+    <saticiAdi>ARMOYA YÜKSEK TEKNOLOJİ</saticiAdi>
+    <adres>deneme</adres>
     <kapiNo />
-    <Ilce>ÜMRANİYE</Ilce>
-    <Il>İSTANBUL</Il>
+    <Ilce>CEYHAN</Ilce>
+    <Il>ADANA</Il>
     <PostaKodu />
     <Ulke>Türkiye</Ulke>
-    <vergiDairesi>Alemdağ</vergiDairesi>
-    <Tel>2163169631</Tel>
-    <fax>2163168798</fax>
+    <vergiDairesi>xx</vergiDairesi>
+    <Tel>23123</Tel>
+    <fax>23123</fax>
     <EMail>a_kadir53@hotmail.com</EMail>
   </aliciBilgisi>
   <Vergiler>
-    <kdvTutar>90</kdvTutar>
-    <faturaTutar>500</faturaTutar>
+    <kdvTutar>18</kdvTutar>
+    <faturaTutar>100</faturaTutar>
     <CalculationSequenceNumeric>1.0</CalculationSequenceNumeric>
     <kdvOran>18</kdvOran>
-    <vergiTanimi>Katma Değer Vergisi</vergiTanimi>
+    <vergiTanimi>Katma Deger Vergisi</vergiTanimi>
     <vergiKodu>0015</vergiKodu>
   </Vergiler>
   <faturaToplamlari>
-    <faturaTutar>500</faturaTutar>
-    <faturaGeneTutar>590</faturaGeneTutar>
+    <faturaTutar>100</faturaTutar>
+    <faturaGeneTutar>118</faturaGeneTutar>
     <indirimToplam>0</indirimToplam>
   </faturaToplamlari>
   <Satirlar>
     <sira>1</sira>
-    <adet>1</adet>
-    <tutar>100</tutar>
-    <Tanim>İŞYERİ HEKİMLİĞİ</Tanim>
-    <fiyat>100</fiyat>
-  </Satirlar>
-  <Satirlar>
-    <sira>2</sira>
-    <adet>1</adet>
-    <tutar>200</tutar>
-    <Tanim>İŞYERİ GÜVENLİĞİ</Tanim>
-    <fiyat>200</fiyat>
-  </Satirlar>
-  <Satirlar>
-    <sira>3</sira>
-    <adet>10</adet>
-    <tutar>200</tutar>
-    <Tanim>PERYODİK MUAYENE</Tanim>
-    <fiyat>20</fiyat>
+    <adet>1.00</adet>
+    <tutar>100.0000</tutar>
+    <Tanim>test</Tanim>
+    <fiyat>100.00</fiyat>
   </Satirlar>
 </Fatura>

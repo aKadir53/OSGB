@@ -65,13 +65,14 @@ type
     cxGridLevel2: TcxGridLevel;
     N1: TMenuItem;
     E1: TMenuItem;
-    GridFaturalarColumn2: TcxGridDBColumn;
     GridFaturalarColumn3: TcxGridDBColumn;
     E2: TMenuItem;
     E3: TMenuItem;
     E4: TMenuItem;
     K1: TMenuItem;
     A1: TMenuItem;
+    S1: TMenuItem;
+    GridFaturalarColumn4: TcxGridDBColumn;
     procedure Fatura(islem: Integer);
     procedure cxButtonCClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
@@ -81,6 +82,7 @@ type
     function EArsivGonder(FaturaId : string) : string;
     function EArsivIptal(FaturaGuid : string) : string;
     function EArsivPDF(FaturaGuid : string ; _tag_ : integer) : string;
+    function EArsivDurumSorgula(FaturaGuid : string) : string;
     procedure Gonder;
 
   private
@@ -121,6 +123,11 @@ type
                       msj : PWideChar
                       ); stdcall;
 
+  TFaturaDurum = procedure(FaturaGuid : PWideChar;
+                      kullaniciAdi : PWideChar;
+                      sifre : PWideChar;
+                      var sonuc : PWideChar;
+                      url : PWideChar); stdcall;
 
 const
 //LIB_DLL = 'NoktaDLL.dll';
@@ -169,8 +176,9 @@ begin
 
             if Sonuc[0]= '0000' then
             begin
-              sql := 'update faturalar set eArsivNo = 1,' +
+              sql := 'update faturalar set ' +
                      'Guid = ' + QuotedStr(Sonuc[1]) +
+                     ',GIBFaturaNo = ' + QuotedStr(Sonuc[2]) +
                      ' where sira = ' + faturaId;
               datalar.QueryExec(sql);
             end
@@ -224,6 +232,55 @@ begin
 end;
 
 
+function TfrmFaturalar.EArsivDurumSorgula(FaturaGuid : string) : string;
+var
+  fatura : TFaturaDurum;
+  dllHandle: Cardinal;
+  TesisKodu: integer;
+  faturaXML,doktorKullanici,doktorsifre,pin,url,cardType: string;
+  doktorTc : string;
+  ss : PWideChar;
+  sql,sonucStr : string;
+  Sonuc : TstringList;
+begin
+  try
+
+    DurumGoster(True,True,'E-Arþiv Fatura Sorgulanýyor , ' + FaturaGuid);
+    Application.ProcessMessages;
+
+    ss := '';
+    dllHandle := LoadLibrary(LIB_DLL);
+    if dllHandle = 0 then
+      exit;
+
+    @fatura := findMethod(dllHandle, 'EArsivFaturaDurum');
+    if addr(fatura) <> nil then
+    fatura(PWideChar(FaturaGuid),PWideChar('Uyumsoft'),PWideChar('Uyumsoft'),ss,PWideChar(test));
+
+    EArsivDurumSorgula := ss;
+
+
+
+    sonucStr := ss;
+    Sonuc := TStringList.Create;
+   // Split('|',sonucStr,Sonuc);
+    ExtractStrings(['|'],[],PWideChar(sonucStr),Sonuc);
+
+    if Sonuc[0] = '0000' then
+    begin
+      sql := 'update faturalar set eArsivDurum = ' + QuotedStr(Sonuc[2]) +
+             ' where Guid = ' + QuotedStr(FaturaGuid);
+      datalar.QueryExec(sql);
+    end;
+
+    if not Assigned(fatura) then
+      raise Exception.Create(LIB_DLL + ' içersinde EArsivFaturaDurum bulunamadý!');
+  finally
+    FreeLibrary(dllHandle);
+    DurumGoster(False,False,'');
+    Sonuc.Free;
+  end;
+end;
 
 function TfrmFaturalar.EArsivIptal(FaturaGuid : string) : string;
 var
@@ -350,6 +407,8 @@ var
   bBasarili: Boolean;
   fID : string;
 begin
+
+  GirisRecord.F_FaturaNO_ := '';
   if islem = faturaDuzenle then
    begin
       fID := GridCellToString(GridFaturalar,'sira',0);
@@ -362,6 +421,7 @@ end;
 procedure TfrmFaturalar.cxButtonCClick(Sender: TObject);
 var
   GirisRecord : TGirisFormRecord;
+  F : TGirisForm;
   aModalResult : TModalResult;
   guid : string;
 begin
@@ -374,6 +434,10 @@ begin
   -11 : begin
          Fatura(faturaDuzenle);
        end;
+  -12 : begin
+          F := FormINIT(TagfrmSirketSozlesmeler,GirisRecord,ikEvet,'');
+          if F <> nil then F.ShowModal;
+       end;
   -20 : begin
          Gonder;
         end;
@@ -381,12 +445,16 @@ begin
        guid := GridCellToString(GridFaturalar,'UUID',0);
        EArsivIptal(guid);
   end;
-  -22,-23:begin
-            guid := GridCellToString(GridFaturalar,'UUID',0);
-            EArsivPDF(guid,Tcontrol(sender).Tag);
+  -22,-23 : begin
+              guid := GridCellToString(GridFaturalar,'UUID',0);
+              EArsivPDF(guid,Tcontrol(sender).Tag);
           end;
   -24:begin
 
+  end;
+  -25:begin
+            guid := GridCellToString(GridFaturalar,'UUID',0);
+            EArsivDurumSorgula(guid);
   end;
   -27 : begin
 
