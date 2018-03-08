@@ -1307,9 +1307,12 @@ function HastaGelisSelect(dosyaNo : string ; var ado : TADOQuery) : integer;
 var
   sql : string;
 begin
-   sql := 'select top 24 dosyaNo,gelisNo,cast(BHDAT as Datetime) Tarih,TakýpNo TakIpNo,TEDAVITURU,PROTOKOLNO from gelisler where dosyaNo = ' + QuotedStr(dosyaNo) + ' order by BHDAT desc';
+   sql := 'select top 24 g.dosyaNo,g.gelisNo,cast(g.BHDAT as Datetime) Tarih,g.TakýpNo TakIpNo,g.TEDAVITURU,g.PROTOKOLNO, mt.AnemnezEkranTipi, mt.Tanimi TEDAVITURUAck '+
+   'from gelisler g '+
+   'inner join MuayeneTipleri mt on mt.Kod = g.TEDAVITURU ' +
+   'where g.dosyaNo = ' + QuotedStr(dosyaNo) + ' order by BHDAT desc, g.GelisNo desc';
    datalar.QuerySelect(ado,sql);
-   HastaGelisSelect := ado.RecordCount;
+   Result := ado.RecordCount;
 end;
 
 (*
