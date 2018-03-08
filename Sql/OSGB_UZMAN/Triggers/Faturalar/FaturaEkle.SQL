@@ -1,7 +1,7 @@
 BEGIN TRAN
 GO
 ALTER TRIGGER [dbo].[FaturaEkle]
-   ON  [dbo].[Faturalar]
+   ON  dbo.Faturalar
    AFTER UPDATE,INSERT,Delete
 AS 
 BEGIN
