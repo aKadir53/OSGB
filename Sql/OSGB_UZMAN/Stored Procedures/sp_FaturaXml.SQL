@@ -25,7 +25,12 @@ select @saticiVergiNo = isnull(vergiNo,'') , @saticiAdres = isnull(Adres,'') , @
 	   @saticiTel = isnull(Telefon,''),@saticiFax = isnull(Fax,''),@saticiEMail = isnull(e_mail,'')
 from MerkezBilgisi
 
-select @faturaNo = 'GIB' + substring(dbo.fn_formattedTarih('YYYYMMDD',faturaTarihi),1,4) + REPLICATE('0',9 - LEN(faturaNo))+faturaNo ,
+
+exec sp_faturaNoUret @faturaId,@faturaNo output
+
+
+
+select @faturaNo = 'GIB' + substring(dbo.fn_formattedTarih('YYYYMMDD',faturaTarihi),1,4) + REPLICATE('0',9 - LEN(@faturaNo))+@faturaNo ,
        @guid = newid(),
 	   @faturaTarihi = dbo.fn_formattedTarih('YYYY-MM-DD',faturaTarihi),
 	   @faturaSaati = dbo.fn_formattedTarih('HHMMSS',faturaTarihi),
@@ -111,7 +116,7 @@ select
 		'<faturaTutar>'+@faturaTutar+'</faturaTutar>'+
 		'<CalculationSequenceNumeric>1.0</CalculationSequenceNumeric>'+
 		'<kdvOran>18</kdvOran>'+
-		'<vergiTanimi>Katma Deðer Vergisi</vergiTanimi>'+
+		'<vergiTanimi>Katma Deger Vergisi</vergiTanimi>'+
 		'<vergiKodu>0015</vergiKodu>'+
 	'</Vergiler>'+
 
