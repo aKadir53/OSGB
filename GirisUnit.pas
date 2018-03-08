@@ -218,7 +218,8 @@ type
     procedure setDataStringC(sender : Tform ; fieldName,caption : string;
      parent : TdxLayoutGroup;grup : string ;uzunluk : integer;List : string); overload;
     procedure setDataString(sender : Tform ; fieldName ,caption: string ;
-          parent : TdxLayoutGroup; grup : string;uzunluk : integer;Zorunlu : Boolean = False; ObjectName : String = '';ReadOnly : Boolean = False);
+          parent : TdxLayoutGroup; grup : string;uzunluk : integer;Zorunlu : Boolean = False;
+          ObjectName : String = '';ReadOnly : Boolean = False;_Tag_ : integer = 0;DefaultText : string = '');
     procedure setDataStringMemo(sender : Tform ; fieldName ,caption: string ;
           parent : TdxLayoutGroup; grup : string;uzunluk,yukseklik : integer);
     procedure setDataStringB(sender : Tform; fieldName ,caption: string ;
@@ -406,6 +407,11 @@ begin
 
            end;
 
+       TagfrmSirketSozlesmeler :
+           begin
+             sql := 'exec sp_SirketAktifSozlesmeler ' + txtTopPanelTarih1.GetSQLValue('YYYY-MM-DD');
+
+           end;
 
      end;
      datalar.QuerySelect(ADO,sql);
@@ -996,7 +1002,7 @@ begin
 
        if (self.Components[i].ClassName = 'TcxCheckGroupKadir')
        then begin
-         TcxCheckGroupKadir(_obje_).setItemStringCheck(sqlRun.FieldByName(_Obje_.Name).AsVariant);
+         TcxCheckGroupKadir(_obje_).setItemStringCheck(vartostr(sqlRun.FieldByName(_Obje_.Name).AsVariant));
        end
        else
        if (self.Components[i].ClassName = 'TcxLabel') and
@@ -1449,7 +1455,8 @@ end;
 
 procedure TGirisForm.setDataString(sender : Tform ; fieldName ,caption: string;
                   parent : TdxLayoutGroup; grup : string;uzunluk : integer ;
-                  Zorunlu : Boolean = False; ObjectName : String = '';ReadOnly : Boolean = False);
+                  Zorunlu : Boolean = False;
+                  ObjectName : String = '';ReadOnly : Boolean = False;_Tag_ : integer = 0 ; DefaultText : string = '');
 var
   cxEdit : TcxTextEditKadir;
   dxLa : TdxLayoutItem;
@@ -1458,7 +1465,8 @@ begin
   cxEdit := TcxTextEditKadir.Create(self);
 
   cxEdit.Name := ifthen (Trim(ObjectName) = '', fieldName, Trim (ObjectName));
-  cxEdit.Text := '';
+  cxEdit.Text := DefaultText;
+  cxEdit.Tag := _Tag_;
   cxEdit.Properties.ReadOnly := ReadOnly;
   cxEdit.Properties.ValidateOnEnter := True;
   cxEdit.BosOlamaz := Zorunlu;//KontrolZorunlumu(TForm(sender).Tag,fieldName); //Zorunlu;

@@ -560,6 +560,7 @@ Const
   TagfrmFaturalar = 780;
   TagfrmDigerSaglikPers = 790;
   TagfrmSirketSozlesme = 800;
+  TagfrmSirketSozlesmeler = 810;
 
 
   ExceleGonder = 9997;
@@ -604,6 +605,7 @@ Const
   faturaSil = 3;
   faturaYazdir = 4;
   faturaE_Arsiv = 5;
+  sozlesmedenFatura = 6;
 
 
   sp_HastaGelis = 'exec sp_HastaGelisleri ';

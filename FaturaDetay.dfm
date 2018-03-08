@@ -270,21 +270,6 @@ object frmFaturaDetay: TfrmFaturaDetay
     Images = DATALAR.imag24png
     Left = 32
     Top = 248
-    object miYeniGozetim: TMenuItem
-      Tag = -9
-      Caption = 'Yeni Fatura'
-      ImageIndex = 30
-      OnClick = cxButtonCClick
-    end
-    object miGozetimDuzenle: TMenuItem
-      Tag = -11
-      Caption = 'Fatura D'#252'zenle'
-      ImageIndex = 31
-      OnClick = cxButtonCClick
-    end
-    object N1: TMenuItem
-      Caption = '-'
-    end
     object E1: TMenuItem
       Tag = -20
       Caption = 'E-Ar'#351'iv G'#246'nder'
