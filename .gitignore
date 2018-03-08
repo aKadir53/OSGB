@@ -90,3 +90,9 @@ __recovery/
 /Win32/Debug/cc.wsdl
 /NoktaDLL.dll
 /SmsApi.dll
+/Win32/Debug/EArsivFatura.xml
+/Win32/Debug/EArsivFaturaCvp.xml
+/Win32/Debug/EArsivFaturaGiris.xml
+/Win32/Debug/Yeni Bit Eşlem Resmi.bmp
+/Win32/Debug/*.pdf
+/Win32/Debug/PDF.png
