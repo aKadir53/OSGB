@@ -108,8 +108,9 @@ begin
       self._MuayeneProtokolNo_ := AdoHastaGelis.FieldByName('PROTOKOLNO').AsString;
 
       case AdoHastaGelis.FieldByName('TEDAVITURU').AsInteger of
-       3 : _tag_ := TagfrmAnamnez;
    1,2,5 : _tag_ := TagfrmIseGiris;
+      else
+        _tag_ := TagfrmAnamnez;
       end;
 
       case TfrmTedaviBilgisi(self).Tag of
