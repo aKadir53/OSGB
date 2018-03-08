@@ -107,10 +107,9 @@ begin
       self._provizyonTarihi_ := AdoHastaGelis.FieldByName('Tarih').AsString;
       self._MuayeneProtokolNo_ := AdoHastaGelis.FieldByName('PROTOKOLNO').AsString;
 
-      case AdoHastaGelis.FieldByName('TEDAVITURU').AsInteger of
-   1,2,5 : _tag_ := TagfrmIseGiris;
-      else
-        _tag_ := TagfrmAnamnez;
+      case AdoHastaGelis.FieldByName('AnemnezEkranTipi').AsInteger of
+        1 : _tag_ := TagfrmIseGiris;
+        2 : _tag_ := TagfrmAnamnez;
       end;
 
       case TfrmTedaviBilgisi(self).Tag of
@@ -267,3 +266,4 @@ begin
 end;
 
 end.
+

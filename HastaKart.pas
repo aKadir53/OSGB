@@ -1602,10 +1602,9 @@ begin
             GirisFormRecord.F_dosyaNO_ := dosyaNO.Text;
             GirisFormRecord.F_gelisNO_ := ADO_Gelisler.FieldByName('gelisNo').AsString;
 
-            case ADO_Gelisler.FieldByName('TEDAVITURUX').AsInteger of
-           1,2,5 : F := FormINIT(TagfrmIseGiris,GirisFormRecord,ikHayir,'');
-             else
-               F := FormINIT(TagfrmAnamnez,GirisFormRecord,ikEvet,'');
+            case ADO_Gelisler.FieldByName('AnemnezEkranTipi').AsInteger of
+              1 : F := FormINIT(TagfrmIseGiris,GirisFormRecord,ikHayir,'');
+              2 : F := FormINIT(TagfrmAnamnez,GirisFormRecord,ikEvet,'');
             end;
 
 
