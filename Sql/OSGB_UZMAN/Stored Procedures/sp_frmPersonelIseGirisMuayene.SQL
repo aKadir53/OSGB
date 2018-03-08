@@ -10,7 +10,8 @@ begin
   from IseGirisMuayeneSorulari ms
   inner join Gelisler g on g.dosyaNo = @dosyaNo
     and g.gelisNo = @gelisNo
-	and g.TEDAVITURU in (1, 2)
+  inner join MuayeneTipleri mt on mt.Kod = g.TEDAVITURU
+	and mt.AnemnezEkranTipi = 1
 end
 
 
@@ -26,7 +27,7 @@ join IseGirisMuayeneSorulari S on S.id = MS.SoruId
 join IseGirisMuayeneGruplari MG on MG.kod = MS.grupKod
 join IseGirisMuayeneAltGruplari MAG on MS.altGrupKod = MAG.Kod and MS.grupKod = MAG.grupKod
 left join valueObjeValues V on V.kod = S.valueObjevalues
-join gelisler g on g.dosyaNo = @dosyaNo and g.TEDAVITURU in (1, 2) and g.gelisNo = ms.GelisNo
+join gelisler g on g.dosyaNo = @dosyaNo and g.gelisNo = ms.GelisNo
 join DoktorlarT d on d.kod = g.doktor
 where PersonelKodu = @dosyaNo and MS.gelisNo = @gelisNo and MS.grupKod = 1 and MS.altGrupKod in (1,2)
 
@@ -62,7 +63,7 @@ select
   join IseGirisMuayeneGruplari MG on MG.kod = MS.grupKod
   join IseGirisMuayeneAltGruplari MAG on MS.altGrupKod = MAG.Kod and MS.grupKod = MAG.grupKod
   left join valueObjeValues V on V.kod = S.valueObjevalues
-  join gelisler g on g.dosyaNo = @dosyaNo and g.TEDAVITURU in (1, 2) and g.gelisNo = ms.GelisNo
+  join gelisler g on g.dosyaNo = @dosyaNo and g.gelisNo = ms.GelisNo
   join DoktorlarT d on d.kod = g.doktor
   where PersonelKodu = @dosyaNo and MS.gelisNo = @gelisNo and MS.grupKod = 1 and MS.altGrupKod in (3,4,5,6,7,8)
   order by MS.GrupKod,MS.altGrupKod
@@ -87,7 +88,7 @@ join IseGirisMuayeneSorulari S on S.id = MS.SoruId
 join IseGirisMuayeneGruplari MG on MG.kod = MS.grupKod
 join IseGirisMuayeneAltGruplari MAG on MS.altGrupKod = MAG.Kod and MS.grupKod = MAG.grupKod
 left join valueObjeValues V on V.kod = S.valueObjevalues
-join gelisler g on g.dosyaNo = @DosyaNo and g.TEDAVITURU in (1, 2) and g.gelisNo = ms.GelisNo
+join gelisler g on g.dosyaNo = @DosyaNo and g.gelisNo = ms.GelisNo
 join DoktorlarT d on d.kod = g.doktor
 where PersonelKodu = @DosyaNo and MS.gelisNo = @gelisNo and MS.grupKod = 1 and MS.altGrupKod in (9) and S.tanimi = 'Cevap'
 order by MS.GrupKod,MS.altGrupKod
@@ -112,7 +113,7 @@ join IseGirisMuayeneSorulari S on S.id = MS.SoruId
 join IseGirisMuayeneGruplari MG on MG.kod = MS.grupKod
 join IseGirisMuayeneAltGruplari MAG on MS.altGrupKod = MAG.Kod and MS.grupKod = MAG.grupKod
 left join valueObjeValues V on V.kod = S.valueObjevalues
-join gelisler g on g.dosyaNo = @dosyaNo and g.TEDAVITURU in (1, 2) and g.gelisNo = ms.GelisNo
+join gelisler g on g.dosyaNo = @dosyaNo and g.gelisNo = ms.GelisNo
 join DoktorlarT d on d.kod = g.doktor
 where PersonelKodu = @dosyaNo and MS.gelisNo = @gelisNo and MS.grupKod = 1 and MS.altGrupKod in (10) and S.tanimi = 'Cevap'
 order by MS.GrupKod,MS.altGrupKod
@@ -134,7 +135,7 @@ join IseGirisMuayeneSorulari S on S.id = MS.SoruId
 join IseGirisMuayeneGruplari MG on MG.kod = MS.grupKod
 join IseGirisMuayeneAltGruplari MAG on MS.altGrupKod = MAG.Kod and MS.grupKod = MAG.grupKod
 left join valueObjeValues V on V.kod = S.valueObjevalues
-join gelisler g on g.dosyaNo = @dosyaNo and g.TEDAVITURU in (1, 2) and g.gelisNo = ms.GelisNo
+join gelisler g on g.dosyaNo = @dosyaNo and g.gelisNo = ms.GelisNo
 join DoktorlarT d on d.kod = g.doktor
 where PersonelKodu = @dosyaNo and MS.gelisNo = @gelisNo and MS.grupKod = 2 and not MS.altGrupKod in (9)
 
@@ -161,7 +162,7 @@ join IseGirisMuayeneSorulari S on S.id = MS.SoruId
 join IseGirisMuayeneGruplari MG on MG.kod = MS.grupKod
 join IseGirisMuayeneAltGruplari MAG on MS.altGrupKod = MAG.Kod and MS.grupKod = MAG.grupKod
 left join valueObjeValues V on V.kod = S.valueObjevalues
-join gelisler g on g.dosyaNo = @DosyaNo and g.TEDAVITURU in (1, 2) and g.gelisNo = ms.GelisNo
+join gelisler g on g.dosyaNo = @DosyaNo and g.gelisNo = ms.GelisNo
 join DoktorlarT d on d.kod = g.doktor
 where PersonelKodu = @DosyaNo and MS.gelisNo = @gelisNo and MS.grupKod = 2 and MS.altGrupKod in (9) and s.id = 74
 order by MS.GrupKod,MS.altGrupKod
@@ -184,7 +185,7 @@ join IseGirisMuayeneSorulari S on S.id = MS.SoruId
 join IseGirisMuayeneGruplari MG on MG.kod = MS.grupKod
 join IseGirisMuayeneAltGruplari MAG on MS.altGrupKod = MAG.Kod and MS.grupKod = MAG.grupKod
 left join valueObjeValues V on V.kod = S.valueObjevalues
-join gelisler g on g.dosyaNo = @dosyaNo and g.TEDAVITURU in (1, 2) and g.gelisNo = ms.GelisNo
+join gelisler g on g.dosyaNo = @dosyaNo and g.gelisNo = ms.GelisNo
 join DoktorlarT d on d.kod = g.doktor
 where PersonelKodu = @dosyaNo and MS.gelisNo = @gelisNo and MS.grupKod = 3 --and not MS.altGrupKod in (9)
 
@@ -208,7 +209,7 @@ join IseGirisMuayeneSorulari S on S.id = MS.SoruId
 join IseGirisMuayeneGruplari MG on MG.kod = MS.grupKod
 join IseGirisMuayeneAltGruplari MAG on MS.altGrupKod = MAG.Kod and MS.grupKod = MAG.grupKod
 left join valueObjeValues V on V.kod = S.valueObjevalues
-join gelisler g on g.dosyaNo = @dosyaNo and g.TEDAVITURU in (1, 2) and g.gelisNo = ms.GelisNo
+join gelisler g on g.dosyaNo = @dosyaNo and g.gelisNo = ms.GelisNo
 join DoktorlarT d on d.kod = g.doktor
 where PersonelKodu = @dosyaNo and MS.gelisNo = @gelisNo and MS.grupKod = 4 --and not MS.altGrupKod in (9)
 
@@ -227,7 +228,7 @@ join IseGirisMuayeneSorulari S on S.id = MS.SoruId
 join IseGirisMuayeneGruplari MG on MG.kod = MS.grupKod
 join IseGirisMuayeneAltGruplari MAG on MS.altGrupKod = MAG.Kod and MS.grupKod = MAG.grupKod
 left join valueObjeValues V on V.kod = S.valueObjevalues
-join gelisler g on g.dosyaNo = @dosyaNo and g.TEDAVITURU in (1, 2) and g.gelisNo = ms.GelisNo
+join gelisler g on g.dosyaNo = @dosyaNo and g.gelisNo = ms.GelisNo
 left join DoktorlarT d on d.kod = g.doktor
 where PersonelKodu = @dosyaNo and ms.gelisNo = @gelisNo
 order by MS.GrupKod,MS.altGrupKod

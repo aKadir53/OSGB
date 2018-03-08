@@ -841,7 +841,7 @@ object frmHastaKart: TfrmHastaKart
     end
     object A1: TMenuItem
       Tag = -51
-      Caption = 'Anamnez'
+      Caption = 'Anamnez / Muayene Detay'#305
       ImageIndex = 56
       OnClick = cxButtonCClick
     end

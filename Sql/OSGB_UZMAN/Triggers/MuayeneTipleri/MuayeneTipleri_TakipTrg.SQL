@@ -22,30 +22,32 @@ BEGIN
   select 
     @TableName, @KeyFields, dbo.fn_SQLIntValueForString (Kod, 0), 'I', 1,
     'IF NOT EXISTS (SELECT 1 from dbo.MuayeneTipleri where Kod' + dbo.fn_SQLIntValueForString (Kod, 1) +')'+char (13) + char (10) + 
-    'insert into dbo.MuayeneTipleri (Kod, Tanimi)'+char (13) + char (10) + 
+    'insert into dbo.MuayeneTipleri (Kod, Tanimi, AnemnezEkranTipi)'+char (13) + char (10) + 
     'Select '+ dbo.fn_SQLIntValueForString (Kod, 0) +', ' + 
-    dbo.fn_SQLStrValueForString (Tanimi, 0)
+    dbo.fn_SQLStrValueForString (Tanimi, 0) +', ' + 
+    dbo.fn_SQLIntValueForString (AnemnezEkranTipi, 0)
   from inserted i
   where not exists (select 1 from deleted d where d.Kod = i.Kod)
 
   Insert into dbo.GuncellemeTakipScript (TableName, KeyFields, KeyValues, Mode, IdentityInsert, Script)
   select @TableName, @KeyFields, dbo.fn_SQLIntValueForString (i.Kod, 0), 'U', 0,
     'Update MuayeneTipleri'+char (13) + char (10) +'  SET '+char (13) + char (10) + '    ' +
-    REVERSE (SUBSTRING (REvERSE (case when dbo.fn_SQLStrValueForString (d.Tanimi, 0) <> dbo.fn_SQLStrValueForString (i.Tanimi, 0) then 'Tanimi = ' + dbo.fn_SQLStrValueForString (i.Tanimi, 0) + ',' else '' end), 2, 8000)) +
+    REVERSE (SUBSTRING (REvERSE (case when dbo.fn_SQLStrValueForString (d.Tanimi, 0) <> dbo.fn_SQLStrValueForString (i.Tanimi, 0) then 'Tanimi = ' + dbo.fn_SQLStrValueForString (i.Tanimi, 0) + ',' else '' end +
+    case when dbo.fn_SQLIntValueForString (d.AnemnezEkranTipi, 0) <> dbo.fn_SQLIntValueForString (i.AnemnezEkranTipi, 0) then 'AnemnezEkranTipi = ' + dbo.fn_SQLIntValueForString (i.AnemnezEkranTipi, 0) + ',' else '' end), 2, 8000)) +
     char (13) + char (10) + 'WHERE Kod' + dbo.fn_SQLIntValueForString (i.Kod, 1) 
   from inserted i
   inner join deleted d on d.Kod = i.Kod
   inner join 
     (SELECT Kod
      FROM
-     (select Kod, Tanimi
+     (select Kod, Tanimi, AnemnezEkranTipi
       from
-      (select -1 x, Kod, Tanimi
+      (select -1 x, Kod, Tanimi, AnemnezEkranTipi
        from deleted
        union all
-       select 1 x, Kod, Tanimi
+       select 1 x, Kod, Tanimi, AnemnezEkranTipi
        from inserted) U
-      group by Kod, Tanimi
+      group by Kod, Tanimi, AnemnezEkranTipi
       having sum (x) <> 0)w
      group by Kod) u on u.Kod = i.Kod
   set nocount off
