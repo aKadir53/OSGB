@@ -1350,7 +1350,7 @@ begin
  // tableColumnDescCreate;
   cxpnlHastaGelisler.Align := alBottom;
 
-  SayfaCaption('Kimlik Bilgileri','Eðitim Bilgileri','Öz Geçmiþ','Ýþe Giriþ Muayene','');
+  SayfaCaption('Kimlik Bilgileri','Eðitim Bilgileri','Öz Geçmiþ','','');
 
   Disabled(self,True);
 
@@ -1602,9 +1602,9 @@ begin
             GirisFormRecord.F_dosyaNO_ := dosyaNO.Text;
             GirisFormRecord.F_gelisNO_ := ADO_Gelisler.FieldByName('gelisNo').AsString;
 
-            case ADO_Gelisler.FieldByName('TEDAVITURUX').AsInteger of
-               3 : F := FormINIT(TagfrmAnamnez,GirisFormRecord,ikEvet,'');
-           1,2,5 : F := FormINIT(TagfrmIseGiris,GirisFormRecord,ikHayir,'');
+            case ADO_Gelisler.FieldByName('AnemnezEkranTipi').AsInteger of
+              1 : F := FormINIT(TagfrmIseGiris,GirisFormRecord,ikHayir,'');
+              2 : F := FormINIT(TagfrmAnamnez,GirisFormRecord,ikEvet,'');
             end;
 
 
