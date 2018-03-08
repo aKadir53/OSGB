@@ -15,7 +15,7 @@ AS
     from Faturalar f 
      join SIRKETLER_TNM c on c.SirketKod = f.sirketKod
      left join faturaOzelKodlari fo on fo.kod = f.ozelKod
-    where Faturatarihi between @tarih1  and @tarih2
+    where convert(varchar,Faturatarihi,112)  between @tarih1  and @tarih2
 GO
 exec sp_vw_sys_upd 'P ', 'dbo', 'sp_Faturalar'
 GO

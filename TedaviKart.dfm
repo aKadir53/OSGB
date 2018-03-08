@@ -169,22 +169,8 @@ object frmTedaviBilgisi: TfrmTedaviBilgisi
               end
               object TakIpNo: TcxGridDBColumn
                 Caption = #304#351'lem Turu'
-                DataBinding.FieldName = 'TEDAVITURU'
-                PropertiesClassName = 'TcxImageComboBoxProperties'
-                Properties.Items = <
-                  item
-                    Description = 'Peryodik'
-                    ImageIndex = 0
-                    Value = '2'
-                  end
-                  item
-                    Description = 'Normal'
-                    Value = '3'
-                  end
-                  item
-                    Description = #304#351'e Giri'#351
-                    Value = '1'
-                  end>
+                DataBinding.FieldName = 'TEDAVITURUAck'
+                PropertiesClassName = 'TcxTextEditProperties'
                 HeaderAlignmentHorz = taCenter
                 Width = 77
               end
