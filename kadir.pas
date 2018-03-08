@@ -822,9 +822,9 @@ end;
 function GridCellToString(Grid : TcxGridDBTableView; ColonName : string ; Row : integer) : Variant;
 begin
   GridCellToString := '';
-    GridCellToString := Grid.DataController.GetValue(
+    GridCellToString := vartoStr(Grid.DataController.GetValue(
       Grid.Controller.SelectedRows[Row].RecordIndex,
-        Grid.DataController.GetItemByFieldName(ColonName).Index);
+        Grid.DataController.GetItemByFieldName(ColonName).Index));
 end;
 procedure GridCellSetValue(Grid : TcxGridDBTableView; ColonName : string ; Row : integer ; Value : Variant);
 begin
