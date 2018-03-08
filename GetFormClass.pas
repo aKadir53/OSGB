@@ -40,7 +40,7 @@ uses message,Data_Modul,AnaUnit,message_y,popupForm,rapor,TedaviKart,Son6AylikTe
              HastaRecete,sifreDegis,HastaTetkikEkle,DokumanYukle,
              Receteler,Sorgulamalar,sorguRaporCalistir,
              HastaKart,FirmaKart,hizliKayit,receteSablonlari,
-             HastaListe,IsKazasi,Anamnez,GrupDetayTanim,
+             HastaListe,IsKazasi,Anamnez,GrupDetayTanim,Sozlesmeler,
              Tnm_UserSettings,HastaAsiKarti,HastaTaniKart,
              KurumLogin,Update_G, labaratuvarKabul,Faturalar,FaturaDetay,
              MedulaKurumSifreDegis,labParametreleri,SirketSozlesme,
@@ -211,6 +211,7 @@ begin
    TagfrmFaturalar : Result := TfrmFaturalar;
    TagfrmFatura : Result := TfrmFaturaDetay;
    TagfrmSirketSozlesme : Result := TfrmSirketSozlesme;
+   TagfrmSirketSozlesmeler : Result := TfrmSozlesmeler;
 
    TagfrmSahaSaglikGozetim : Result := TfrmSahaSaglikGozetim;
   end;
@@ -255,6 +256,8 @@ begin
    TagfrmFaturalar : Result := frmFaturalar;
    TagfrmFatura : Result := frmFaturaDetay;
    TagfrmSirketSozlesme : Result := frmSirketSozlesme;
+   TagfrmSirketSozlesmeler : Result := frmSozlesmeler;
+
 
 
    TagfrmLabParametreleri : Result := frmLabParams;
@@ -303,6 +306,8 @@ begin
       TagfrmFaturalar : frmFaturalar := TfrmFaturalar.Create(Tab);
       TagfrmFatura : frmFaturaDetay := TfrmFaturaDetay.Create(Tab);
       TagfrmSirketSozlesme : frmSirketSozlesme := TfrmSirketSozlesme.Create(Tab);
+      TagfrmSirketSozlesmeler : frmSozlesmeler := TfrmSozlesmeler.Create(Tab);
+
      else
       result := nil;
    end;
@@ -400,7 +405,7 @@ begin
       TagfrmFaturalar : frmFaturalar := TfrmFaturalar.Create(Tab);
       TagfrmFatura : frmFaturaDetay := TfrmFaturaDetay.Create(Tab);
       TagfrmSirketSozlesme : frmSirketSozlesme := TfrmSirketSozlesme.Create(Tab);
-
+      TagfrmSirketSozlesmeler : frmSozlesmeler := TfrmSozlesmeler.Create(Tab);
      else
       result := nil;
    end;
@@ -484,6 +489,7 @@ begin
     TagfrmFaturalar : Application.CreateForm(TfrmFaturalar, frmFaturalar);
     TagfrmFatura : Application.CreateForm(TfrmFaturaDetay, frmFaturaDetay);
     TagfrmSirketSozlesme : Application.CreateForm(TfrmSirketSozlesme , frmSirketSozlesme);
+    TagfrmSirketSozlesmeler : Application.CreateForm(TfrmSozlesmeler , frmSozlesmeler);
 
     else
       result := nil;
