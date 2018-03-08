@@ -1,15 +1,18 @@
 BEGIN TRAN
 GO
 ALTER -- CREATE
-  PROCEDURE [dbo].[sp_SirketAktifSozlesmedenFaturaUret] @SozlesmeId int
+  PROCEDURE [dbo].[sp_SirketAktifSozlesmedenFaturaUret] @SozlesmeId int,@ft datetime = null
 AS
 
 BEGIN TRY  
 	BEGIN TRANSACTION
-	declare @id int
-	insert into Faturalar(sirketKod,sirketTanimi,faturaNo,FaturaTarihi,faturaTip,faturaTutar,kdv,faturaGenelTutar)
+	declare @id int,@faturaTarihi datetime
+	set @faturaTarihi = isnull(@ft,getdate())
 
-	select S.sirketKod,SRKT.tanimi,0,getdate(),1,0,0,0
+	insert into Faturalar(sirketKod,sirketTanimi,faturaNo,FaturaTarihi,faturaTip,ozelKod,faturaTutar,kdv,faturaGenelTutar)
+
+	select S.sirketKod,SRKT.tanimi,0,@faturaTarihi,
+	1,1,0,0,0
 	from SirketSozlesme S
 	join SirketSozlesmeDetay SD on S.id = SD.SirketSozlesmeID
 	join SIRKETLER_TNM SRKT on SRKT.sirketKod = S.sirketKod
