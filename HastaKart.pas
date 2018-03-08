@@ -1350,7 +1350,7 @@ begin
  // tableColumnDescCreate;
   cxpnlHastaGelisler.Align := alBottom;
 
-  SayfaCaption('Kimlik Bilgileri','Eðitim Bilgileri','Öz Geçmiþ','Ýþe Giriþ Muayene','');
+  SayfaCaption('Kimlik Bilgileri','Eðitim Bilgileri','Öz Geçmiþ','','');
 
   Disabled(self,True);
 
