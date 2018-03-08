@@ -190,6 +190,7 @@ object frmFaturalar: TfrmFaturalar
             PropertiesClassName = 'TcxCurrencyEditProperties'
             Properties.Alignment.Horz = taRightJustify
             Properties.Alignment.Vert = taVCenter
+            Properties.DisplayFormat = ',0.00'
             HeaderAlignmentHorz = taCenter
             HeaderAlignmentVert = vaCenter
             Width = 45
@@ -214,21 +215,6 @@ object frmFaturalar: TfrmFaturalar
             HeaderAlignmentHorz = taCenter
             HeaderAlignmentVert = vaCenter
           end
-          object GridFaturalarColumn2: TcxGridDBColumn
-            Caption = 'E-Ar'#351'iv'
-            DataBinding.FieldName = 'eArsivNo'
-            PropertiesClassName = 'TcxImageComboBoxProperties'
-            Properties.Alignment.Vert = taVCenter
-            Properties.Items = <
-              item
-                Description = 'Evet'
-                ImageIndex = 0
-                Value = True
-              end>
-            HeaderAlignmentHorz = taCenter
-            HeaderAlignmentVert = vaCenter
-            Width = 46
-          end
           object GridFaturalarColumn3: TcxGridDBColumn
             DataBinding.FieldName = 'UUID'
             PropertiesClassName = 'TcxTextEditProperties'
@@ -237,6 +223,14 @@ object frmFaturalar: TfrmFaturalar
             HeaderAlignmentHorz = taCenter
             HeaderAlignmentVert = vaCenter
             Width = 152
+          end
+          object GridFaturalarColumn4: TcxGridDBColumn
+            DataBinding.FieldName = 'eArsivDurum'
+            PropertiesClassName = 'TcxTextEditProperties'
+            Properties.Alignment.Horz = taCenter
+            Properties.Alignment.Vert = taVCenter
+            HeaderAlignmentHorz = taCenter
+            Width = 80
           end
           object cxGridDBColumn11: TcxGridDBColumn
             Caption = 'Olusturma'
@@ -402,8 +396,14 @@ object frmFaturalar: TfrmFaturalar
     end
     object miGozetimDuzenle: TMenuItem
       Tag = -11
-      Caption = 'Fatura D'#252'zenle'
+      Caption = 'Faturay'#305' A'#231
       ImageIndex = 31
+      OnClick = cxButtonCClick
+    end
+    object S1: TMenuItem
+      Tag = -12
+      Caption = 'S'#246'zle'#351'melerden Fatura Olu'#351'tur'
+      ImageIndex = 98
       OnClick = cxButtonCClick
     end
     object N1: TMenuItem
@@ -442,6 +442,7 @@ object frmFaturalar: TfrmFaturalar
     object E4: TMenuItem
       Tag = -25
       Caption = 'E-Ar'#351'iv Fatura Durum Sorgula'
+      ImageIndex = 35
       OnClick = cxButtonCClick
     end
   end

@@ -1,4 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
 <InvoiceIdentitiesResponse xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" IsSucceded="true">
-  <Value Id="C0593BD0-D0C4-46EB-B03B-E9F30EFF4919" Number="GIB2018000000014" InvoiceScenario="eArchive" xmlns="http://tempuri.org/" />
+  <Value Id="FBDF8451-CFBB-4B56-9091-ECF0413F1EC6" Number="GIB2018000000017" InvoiceScenario="eArchive" xmlns="http://tempuri.org/" />
 </InvoiceIdentitiesResponse>

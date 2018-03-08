@@ -39,11 +39,8 @@ type
     cxStyle2: TcxStyle;
     cxStyle7: TcxStyle;
     PopupMenu1: TPopupMenu;
-    miYeniGozetim: TMenuItem;
     cxStyle8: TcxStyle;
     tmr1: TTimer;
-    miGozetimDuzenle: TMenuItem;
-    N1: TMenuItem;
     E1: TMenuItem;
     E2: TMenuItem;
     E3: TMenuItem;
@@ -179,10 +176,15 @@ begin
 
   case TControl(sender).Tag  of
     0 : begin
-
-    end;
+         FaturaGrid.Enabled := True;
+        end;
     2 : begin
-         FaturaDetay;
+          TcxTextEditKadir(FindComponent('faturaNo')).text := '0';
+          TcxImageComboKadir(FindComponent('FaturaTip')).EditValue := 1;
+          TcxImageComboKadir(FindComponent('ozelKod')).EditValue := 1;
+          TcxDateEditKadir(FindComponent('FaturaTarihi')).EditValue := date;
+          FaturaGrid.Enabled := False;
+          FaturaDetay;
         end;
   end;
 end;
@@ -211,11 +213,14 @@ function TfrmFaturaDetay.Init(Sender : TObject) : Boolean;
 var
   _obje_ : TcxCustomEdit;
 begin
+ if _FaturaNo_ <> ''
+ then begin
   _obje_ := TcxButtonEditKadir(FindComponent('sira'));
   TcxButtonEditKadir(FindComponent('sira')).EditValue := _FaturaNo_;
   indexKaydiBul(TcxButtonEditKadir(_obje_).EditValue ,TcxButtonEditKadir(_obje_).name);
   FaturaDetay;
   Enabled;
+ end;
   Result := True;
 end;
 
@@ -299,10 +304,13 @@ begin
                        'ID,Þirket,FaturaTip,FaturaTarihi',
                        '50,250,50,80','Sira','Faturalar','',5,True);
 
-  setDataStringB(self,'sira','FaturaID',Kolon1,'FaturaID',100,Faturalar,True,nil,'','',True,True,-100);
+  setDataStringB(self,'sira','FaturaID',Kolon1,'FaturaID',70,Faturalar,True,nil,'','',True,True,-100);
   TcxButtonEditKadir(FindComponent('sira')).Identity := True;
 
-  setDataString(self,'FaturaNo','Fatura No',Kolon1,'FaturaID',100,True);
+  setDataString(self,'FaturaNo','Fatura Ref.No',Kolon1,'FaturaID',50,True,'',false,0,'0');
+
+  setDataString(self,'GIBFaturaNo','Fatura GIB No',Kolon1,'FaturaID',100,False,'',True);
+  setDataString(self,'Guid','Fatura Guid',Kolon1,'FaturaID',250,False,'',True);
 
 
   List := ListeAcCreate('SIRKETLER_TNM','sirketKod,tanimi,Aktif',
@@ -341,6 +349,7 @@ begin
   FaturaTarihi := TcxDateEditKadir.Create(Self);
   FaturaTarihi.ValueTip := tvDate;
   setDataStringKontrol(self,FaturaTarihi,'FaturaTarihi','Fatura Tarihi',Kolon1,'FT',100);
+
 
   setDataStringBLabel(self,'bosSatir',kolon1,'',750,'Fatura Mal ve Hizmetleri');
   setDataStringKontrol(self,FaturaGrid,'FaturaGrid','',Kolon1,'',750,300);
