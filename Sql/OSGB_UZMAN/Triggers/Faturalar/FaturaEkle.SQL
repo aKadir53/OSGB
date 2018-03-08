@@ -34,7 +34,7 @@ declare @faturaTip int ,@faturaGenelTutar float,@sirketKod varchar(10)
 
   if exists(select * from inserted) 
   begin
-    
+
     insert into cariHareketler(carikod,tarih,borc,alacak,evrakNo,evrakId,evrakTipi,hareketTipi)
     select sirketKod,convert(varchar,faturatarihi,112),faturageneltutar,0,faturaNo,sira,faturatip,ozelKod from inserted 
 
