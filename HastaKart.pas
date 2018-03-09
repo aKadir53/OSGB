@@ -446,11 +446,15 @@ begin
 
    if dosyaNo.Text = ''
    then begin
+     ShowMessageSkin('Ekranda görüntülenen bir personel kartý yokken muayene kartý açamazsýnýz !', '', '', 'info');
      exit;
    end;
 
-   if TcxCustomEdit(FindComponent('Aktif')).EditValue = '0'
-   then exit;
+   if TcxCustomEdit(FindComponent('Aktif')).EditValue = '0' then
+   begin
+     ShowMessageSkin('Pasif durumdaki personele muayene kartý açamazsýnýz !', '', '', 'info');
+     exit;
+   end;
 
 
    if UserRight('Muayene Ýþlemleri', 'Yeni Muayene') = False
