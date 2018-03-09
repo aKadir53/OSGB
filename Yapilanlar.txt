@@ -190,3 +190,9 @@ Saliha > HEMÞÝRELERÝN FÝRMALARIN HEPSÝNÝ GÖRMESÝNÝ ENGELLEM
 Saliha > DÝPER SAÐLIK PERSONLEÝ KAKRTI ÜZERÝNDEN ÝÞLEMLER
 Saliha > YAPILAAK ÞEKÝDE
 ---------
+þube taþý birleþtir iþleminde numaratör bir atlýyordu düzelttik
+
+iþe giriþ m. sorularý tansiyon vs
+
+personel þlirketten þirkete taþýma baðlý tablolardaki þirket kodu alanlarýnýn düzeltilmesi için lazým (bence trigger ile yapabiliriz - trigger ile yaptýk)
+hasta listesindeki otomatik açýk listelenme özelliðini, listele butonuna da ekledik
