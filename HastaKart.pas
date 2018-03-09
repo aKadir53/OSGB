@@ -446,11 +446,15 @@ begin
 
    if dosyaNo.Text = ''
    then begin
+     ShowMessageSkin('Ekranda görüntülenen bir personel kartý yokken muayene kartý açamazsýnýz !', '', '', 'info');
      exit;
    end;
 
-   if TcxCustomEdit(FindComponent('Aktif')).EditValue = '0'
-   then exit;
+   if TcxCustomEdit(FindComponent('Aktif')).EditValue = '0' then
+   begin
+     ShowMessageSkin('Pasif durumdaki personele muayene kartý açamazsýnýz !', '', '', 'info');
+     exit;
+   end;
 
 
    if UserRight('Muayene Ýþlemleri', 'Yeni Muayene') = False
@@ -461,6 +465,10 @@ begin
 
 
 
+   protokolNo := EnsonSeansProtokolNo(vartostr(TcxImageComboKadir(FindComponent('SirketKod')).EditValue),
+                                      vartostr(TcxImageComboKadir(FindComponent('Sube')).EditValue));
+   datalar.GelisDuzenleRecord.ProtokolNo := protokolNo;
+   datalar.GelisDuzenleRecord.ProtokolNoGuncelle := False;
     if mrYes = ShowPopupForm('Geliþ Aç',gdgelisAc)
     Then Begin
         _Tarih_ := datalar.GelisDuzenleRecord.GirisTarihi;
@@ -470,19 +478,18 @@ begin
     else
      exit;
 
-
- (*
-   try
-    _tarih_ := strtodate(Tarih);
-   except
-     ShowMessageSkin('Tarih Bilgisi Hatalý','','','info');
-     exit;
+   if (protokolNo <> datalar.GelisDuzenleRecord.ProtokolNo)
+     and (datalar.GelisDuzenleRecord.ProtokolNoGuncelle)
+     and (not IsNull (datalar.GelisDuzenleRecord.ProtokolNo)) then
+   begin
+     sql := 'Update sIrket_Sube_TNM '+
+     'SET MuayeneProtokolNo = ' + SQLValue (datalar.GelisDuzenleRecord.ProtokolNo) + ' '+
+     'where sirketKod = ' + QuotedStr(TcxImageComboKadir(FindComponent('SirketKod')).EditValue) + ''+
+     ' and SubeKod = ' + QuotedStr(TcxImageComboKadir(FindComponent('Sube')).EditValue);
+     datalar.QueryExec(sql);
+     protokolNo := datalar.GelisDuzenleRecord.ProtokolNo;
    end;
-   *)
 
-
-   protokolNo := EnsonSeansProtokolNo(vartostr(TcxImageComboKadir(FindComponent('SirketKod')).EditValue),
-                                      vartostr(TcxImageComboKadir(FindComponent('Sube')).EditValue));
 
    sql := 'exec sp_GelisKaydet ' +
           '@dosyaNo = ' + #39 + dosyaNo.Text + #39 + ',' +
