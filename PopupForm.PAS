@@ -179,12 +179,13 @@ begin
             begin
               datalar.GelisDuzenleRecord.GirisTarihi := TcxTextEdit(FindComponent('GirisTarihi')).EditValue;
               datalar.GelisDuzenleRecord.TedaviTuru := TcxImageComboKadir(FindComponent('TEDAVITURU')).EditValue;
-
+              datalar.GelisDuzenleRecord.ProtokolNo := TcxTextEdit(FindComponent('protokolNo')).EditValue;
+              datalar.GelisDuzenleRecord.ProtokolNoGuncelle := TcxCheckBox(FindComponent('ProtokolNoGuncelle')).EditValue;
               if Assigned(FindComponent('Doktor'))
               Then
                datalar.doktorKodu := TcxImageComboKadir(FindComponent('Doktor')).EditValue;
             end;
-gdPeryodikgelisAc :
+       gdPeryodikgelisAc :
             begin
               datalar.GelisDuzenleRecord.GirisTarihi := TcxTextEdit(FindComponent('GirisTarihi')).EditValue;
               datalar.GelisDuzenleRecord.TedaviTuru := TcxImageComboKadir(FindComponent('TEDAVITURU')).EditValue;
@@ -521,6 +522,16 @@ inherited;
             setDataStringKontrol(self,txtTetkikIstem,'tetkikIstemGrupSablon','Tetkikler',kolon1,'',180,80);
             txtTetkikIstem.Caption := '';
 
+          end
+          else begin
+            textEdit := TcxTextEdit.Create(self);
+            textEdit.Name := 'protokolNo';
+            setDataStringKontrol(self,textEdit, 'protokolNo','Muayene Protokol No',Kolon1,'',100);
+            TcxTextEdit(FindComponent('protokolNo')).EditValue := datalar.GelisDuzenleRecord.ProtokolNo;
+
+            setDataStringChk (Self, 'ProtokolNoGuncelle', 'Protokol Numarasýný Buradan Devam Ettir', Kolon1, '', 220);
+            TcxCheckBox(FindComponent('ProtokolNoGuncelle')).Properties.Alignment := taRightJustify;
+            ClientHeight := 250;
           end;
 
        end;
