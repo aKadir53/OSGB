@@ -235,7 +235,7 @@ begin
              if F <> nil then F.ShowModal;
       end;
       -2 : begin
-             YeniRecete(ReceteYeni,_dosyaNo_,_gelisNo_,'');
+             YeniRecete(ReceteYeni,_dosyaNo_,_gelisNo_,_MuayeneProtokolNo_);
              F := FormINIT(TagfrmHastaRecete,GirisFormRecord,ikEvet,'');
              if F <> nil then F.ShowModal;
            end;
