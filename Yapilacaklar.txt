@@ -222,9 +222,31 @@ Saliha > diyabet hiper tansiyon
 Ýþ güv. uzm., doktor ve diðer saðlýk personeli gibi kiþiler ve üzerine atanmýþ firmalar raporu
 
 erhan erkan:
-1-) anamnez ekranýndan yeni reçete eklerken muayene protokol numarasýný reçeteye atmýyor. boþ kalýyor.
-2-) yeni muayene ekranýnda protokol numarasý gözükmüyor
-3-) yeni muayene iþleminde þube kartý protokol numarasý alanýný güncelleyebiliriz.
 4-) Personel kartýndaki risk grubu kombosundaki dereceler artan mý azalan mý ? mesela yanýklar 1, 2, 3, þiddeti artarken kalitede azalýyor.
 
 
+imes osgb mehmet:
+doktor branþýna göre ilaç kriteri ekleme konusu araþtýrýlacak.
+
+yenihayat osgb emre :
+tablet uygulamasýnda kaydýrma
+
+iþe giriþ möuayenesi
+
+dr.Uz programý
+
+e-imza takýlý mý deðil mi gösteriyormuþ.
+
+medula durumunu gösteriyormuþ
+
+türkçe karakter
+
+
+merkez bilgisi tablosuna þahýs / osgb / Þirket
+merkez bilgisi tablosu için ekran
+ana form''daki merkez bilgisinin solundaki sabit OSGB yazýsýný bu duruma göre göster (OSGB dýþýndaki boþ olabilir.)
+loglama için bakýlacak
+
+get form class form init'te formcaption usergroup bilgisini alýp user'ýn group bilgisi ile karþýlaþtýrarak geçirmeme özelliði eklenecek
+
+eðitimci dýþarýdan eklenebilir olacak

@@ -196,3 +196,7 @@ iþe giriþ m. sorularý tansiyon vs
 
 personel þlirketten þirkete taþýma baðlý tablolardaki þirket kodu alanlarýnýn düzeltilmesi için lazým (bence trigger ile yapabiliriz - trigger ile yaptýk)
 hasta listesindeki otomatik açýk listelenme özelliðini, listele butonuna da ekledik
+erhan erkan:
+1-) anamnez ekranýndan yeni reçete eklerken muayene protokol numarasýný reçeteye atmýyor. boþ kalýyor (düzelttik)
+2-) yeni muayene aç ekranýnda protokol numarasý gözükmüyor (protokol numarasý kutusunu ekledik)
+3-) yeni muayene iþleminde þube kartý protokol numarasý alanýný güncelleyebiliriz (protokol numarasý kutusunun altýna bu numaradan devam et seçeneði ekledik).
