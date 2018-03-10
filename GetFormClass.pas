@@ -29,8 +29,8 @@ function FormINITTForm(FormTag : Integer) : TForm;
 //function FormINIT(FormTag : Integer; Hasta : THasta ; Dialog : showDialog = OFShowModal) : Boolean;overload;
 
 function FormClassType(formId : integer) : TComponent;
-function FormCaption(formId : integer) : String;
-function FormAltCaption(formId : integer) : String;
+function GetFormCaptionInfo(const formId : integer; var pFormCaption, pFormAltCaption, pUserGroup, pUserGroupDesc : String; pMsg: boolean = True) : Boolean;
+
 function FormTabImageIndex(formId : integer) : integer;
 function PopupFormCaption(islemTag : integer ; var TabCaption : string) : String;
 
@@ -133,39 +133,46 @@ begin
 
 end;
 
-function FormCaption(formId : integer) : String;
+function GetFormCaptionInfo(const formId : integer; var pFormCaption, pFormAltCaption, pUserGroup, pUserGroupDesc : String; pMsg: boolean = True) : Boolean;
 var
   sql : string;
   ado : TADOQuery;
 begin
-  sql := 'select formCaption from FormCaption where formTag = ' + inttostr(abs(formId));
+  Result := False;
+  sql := 'select fc.formCaption, fc.formAltCaption, fc.UserGroup, ug.ADI UserGroupDesc '+
+         'from FormCaption fc '+
+         'left outer join UserGroups ug on ug.KODU = fc.UserGroup '+
+         'where fc.formTag = ' + inttostr(abs(formId));
   ado := TADOQuery.Create(nil);
   try
     datalar.QuerySelect(ado,sql);
-    if not ado.Eof then
-      FormCaption := ado.Fields[0].AsString
+    if ado.Eof then
+    begin
+      pFormCaption := '';
+      pFormAltCaption := '';
+      pUserGroup := '';
+      pUserGroupDesc := '';
+      if pMsg then ShowMessageSkin('Form Baþlýk Bilgisi Tanýmlanmamýþ : "FormCaption" ('+IntToStr (formID)+')', '', '', 'info');
+      Exit;
+    end;
+    pFormCaption := ado.Fields[0].AsString;
+    pFormAltCaption := ado.Fields[1].AsString;
+    if ado.Fields[2].IsNull then
+      pUserGroup := ''
      else
-      raise Exception.Create('Form Baþlýk Bilgisi Tanýmlanmamýþ : "FormCaption" ('+IntToStr (formID)+')');
+      pUserGroup := IntToStr (ado.Fields[2].AsInteger);
+    pUserGroupDesc := ado.Fields[3].AsString;
+    if not IsNull (pUserGroup) then
+    begin
+      if pUserGroup <> DATALAR.UserGroup then
+      begin
+        if pMsg then ShowMessageSkin('Bu form "' + pUserGroupDesc + '" kullanýcý grubuna özeldir', '', '', 'info');
+        Exit;
+      end;
+    end;
+    Result := True;
   finally
     ado.Free;
-  end;
-end;
-
-function FormAltCaption(formId : integer) : String;
-var
-  sql : string;
-  ado : TADOQuery;
-begin
-  sql := 'select formAltCaption from FormCaption where formTag = ' + inttostr(abs(formId));
-  ado := TADOQuery.Create(nil);
-  try
-    datalar.QuerySelect(ado,sql);
-    if not ado.Eof then
-      FormAltCaption := ado.Fields[0].AsString
-     else
-      raise Exception.Create('Form Baþlýk Bilgisi Tanýmlanmamýþ : "FormCaption" ('+IntToStr (formID)+')');
-  finally
-    ado.free;
   end;
 end;
 
@@ -273,14 +280,17 @@ function FormINIT(FormTag : Integer;MidiForm : TForm;
                   izinPrm : string = '') : TGirisForm;
 var
   Form : TGirisForm;
+  sFormCaption, sFormAltCaption, sFormUserGroup, sFormUserGroupDesc: String;
 begin
-   izinPrm := ifThen(izinPrm = '',FormAltCaption(abs(FormTag)),izinPrm);
+   if not GetFormCaptionInfo (abs(FormTag), sFormCaption, sFormAltCaption, sFormUserGroup, sFormUserGroupDesc) then
+     Exit;
+   izinPrm := ifThen(izinPrm = '',sFormAltCaption,izinPrm);
    if ik = ikEvet
    then
-   if UserRight(FormCaption(abs(FormTag)), izinPrm) = False
+   if UserRight(sFormCaption, izinPrm) = False
    then begin
-       UserRightInsert(FormCaption(abs(FormTag)),izinPrm,datalar.username);
-       ShowMessageSkin(FormCaption(abs(FormTag)),izinPrm + ' Ýþlemi Ýçin Yetkiniz Bulunmamaktadýr !','','info');
+       UserRightInsert(sFormCaption,izinPrm,datalar.username);
+       ShowMessageSkin(sFormCaption,izinPrm + ' Ýþlemi Ýçin Yetkiniz Bulunmamaktadýr !','','info');
        Tab.Free;
        result := nil;
        exit;
@@ -322,7 +332,7 @@ begin
    end;
 
    Form := TGirisForm(FormClassType(abs(FormTag)));
-   Tab.Caption := FormAltCaption(abs(FormTag));
+   Tab.Caption := sFormAltCaption;
    TGirisForm(Form).cxTab.Tabs[0].Caption := Tab.Caption;
    TGirisForm(Form).cxTab.Tabs[0].ImageIndex := FormTabImageIndex(abs(FormTag));
    if Tab = nil
@@ -370,14 +380,20 @@ function FormINIT(FormTag : Integer;MidiForm : TForm;Value : String = '';
                    izinPrm : string = '';tc : string = '') : TGirisForm;
 var
   Form : TGirisForm;
+  sFormCaption1, sFormAltCaption1, sFormUserGroup1, sFormUserGroupDesc1: String;
+  sFormCaption2, sFormAltCaption2, sFormUserGroup2, sFormUserGroupDesc2: String;
 begin
-   izinPrm := ifThen(izinPrm = '',FormAltCaption(abs(FormTag)),izinPrm);
+   if not GetFormCaptionInfo (abs(FormTag), sFormCaption1, sFormAltCaption1, sFormUserGroup1, sFormUserGroupDesc1) then
+     Exit;
+   if not GetFormCaptionInfo (FormTag, sFormCaption2, sFormAltCaption2, sFormUserGroup2, sFormUserGroupDesc2) then
+     Exit;
+   izinPrm := ifThen(izinPrm = '',sFormAltCaption1,izinPrm);
    if ik = ikEvet
    then
-   if UserRight(FormCaption(abs(FormTag)), izinPrm) = False
+   if UserRight(sFormCaption1, izinPrm) = False
    then begin
-       UserRightInsert(FormCaption(FormTag),izinPrm,datalar.username);
-       ShowMessageSkin(FormCaption(FormTag),izinPrm + ' Ýþlemi Ýçin Yetkiniz Bulunmamaktadýr !','','info');
+       UserRightInsert(sFormCaption2,izinPrm,datalar.username);
+       ShowMessageSkin(sFormCaption2,izinPrm + ' Ýþlemi Ýçin Yetkiniz Bulunmamaktadýr !','','info');
        Tab.Free;
        result := nil;
        exit;
@@ -412,7 +428,7 @@ begin
 
 
    Form := TGirisForm(FormClassType(abs(FormTag)));
-   Tab.Caption := FormAltCaption(abs(FormTag));
+   Tab.Caption := sFormAltCaption1;
    TGirisForm(Form).cxTab.Tabs[0].Caption := Tab.Caption;
    TGirisForm(Form).cxTab.Tabs[0].ImageIndex := FormTabImageIndex(abs(FormTag));
    if Tab = nil
@@ -441,14 +457,17 @@ end;
 function FormINIT(FormTag : Integer; Value : TGirisFormRecord;ik : izinKontrol = ikHayir;izinPrm : string = '') : TGirisForm;
 var
   Form : TGirisForm;
+  sFormCaption, sFormAltCaption, sFormUserGroup, sFormUserGroupDesc: String;
 begin
-   izinPrm := ifThen(izinPrm = '',FormAltCaption(abs(FormTag)),izinPrm);
+   if not GetFormCaptionInfo (abs(FormTag), sFormCaption, sFormAltCaption, sFormUserGroup, sFormUserGroupDesc) then
+     Exit;
+   izinPrm := ifThen(izinPrm = '',sFormAltCaption,izinPrm);
    if ik = ikEvet
    then
-   if UserRight(FormCaption(abs(FormTag)), izinPrm) = False
+   if UserRight(sFormCaption, izinPrm) = False
    then begin
-       UserRightInsert(FormCaption(abs(FormTag)),izinPrm,datalar.username);
-       ShowMessageSkin(FormCaption(abs(FormTag)),izinPrm + ' Ýþlemi Ýçin Yetkiniz Bulunmamaktadýr !','','info');
+       UserRightInsert(sFormCaption,izinPrm,datalar.username);
+       ShowMessageSkin(sFormCaption,izinPrm + ' Ýþlemi Ýçin Yetkiniz Bulunmamaktadýr !','','info');
        result := nil;
        exit;
    end;
@@ -528,7 +547,7 @@ begin
   TGirisForm(Form)._MuayeneProtokolNo_ := Value.F_MuayeneProtokolNo_;
   TGirisForm(Form)._FaturaNo_ := Value.F_FaturaNO_;
 
-  TgirisForm(Form).Caption := FormCaption(abs(FormTag)) + ' - ' + FormAltCaption(abs(FormTag));
+  TgirisForm(Form).Caption := sFormCaption + ' - ' + sFormAltCaption;
   if ik = ikEvet
    then
     TGirisForm(Form).cxTab.Tabs[0].Caption := izinPrm
@@ -554,13 +573,13 @@ end;
 function FormINIT(MenuID : Integer) : Boolean;overload;
 begin
   MenuIDRun(MenuID);
+  Result := True;
 end;
 
 
 function FormINITTForm(FormTag : Integer) : TForm;
 var
   Form : TComponent;
-  FormC : TComponentClass;
 begin
   Form := FormClassType(abs(FormTag));
   Application.CreateForm(FormClass(abs(FormTag)), Form);
