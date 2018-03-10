@@ -241,7 +241,7 @@ begin
 
   TcxImageComboKadir(FindComponent('Sube')).TableName := 'SIRKET_SUBE_TNM';
   TcxImageComboKadir(FindComponent('Sube')).Filter := ' SirketKod = ' +
-  QuotedStr(varToStr(TcxImageComboKadir(FindComponent('SirketKod')).EditValue)) + sube;
+  QuotedStr(varToStr(TcxImageComboKadir(FindComponent('SirketKod')).EditValue)) + sube;// + ' and (Pasif = 0 or Pasif is Null)';
 
 
   if (TcxImageComboKadir(Sender).name = 'SirketKod') or
