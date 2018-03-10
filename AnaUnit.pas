@@ -798,7 +798,7 @@ begin
   Subeler.TableName := 'SIRKET_SUBE_TNM';
   Subeler.ValueField := 'subeKod';
   Subeler.DisplayField := 'subeTanim';
-  Subeler.Filter := ' SirketKod = ' + QuotedStr(datalar.AktifSirket) + sube;
+  Subeler.Filter := ' SirketKod = ' + QuotedStr(datalar.AktifSirket) + sube + ' and (Pasif = 0 or Pasif is Null)';
 
   datalar.AktifSube := Subeler.getItemString;
 
