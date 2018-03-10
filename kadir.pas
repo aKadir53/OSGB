@@ -983,25 +983,29 @@ begin
 end;
 
 function NewTab(Page : TcxPageControl;Name : string) : TcxTabSheet;
-var
-  Tab : TcxTabSheet;
 begin
-  Tab := TcxTabSheet.Create(Page);
-  if Name <> '' Then Tab.Name := Name;
-  Tab.Parent := Page;
-  Page.ActivePage := Tab;
-  NewTab := Tab;
+  Result := TcxTabSheet.Create(Page);
+  try
+    if Name <> '' Then Result.Name := Name;
+    Result.Parent := Page;
+    Page.ActivePage := Result;
+  except
+    FreeAndNil(Result);
+    raise;
+  end;
 end;
 
 function NewTab(Page : TcxPageControl;Tag : integer) : TcxTabSheet;
-var
-  Tab : TcxTabSheet;
 begin
-  Tab := TcxTabSheet.Create(Page);
-  if Tag <> 0 Then Tab.Tag := Tag;
-  Tab.Parent := Page;
-  Page.ActivePage := Tab;
-  NewTab := Tab;
+  Result := TcxTabSheet.Create(Page);
+  try
+    if Tag <> 0 Then Result.Tag := Tag;
+    Result.Parent := Page;
+    Page.ActivePage := Result;
+  except
+    FreeAndNil (Result);
+    raise;
+  end;
 end;
 
 

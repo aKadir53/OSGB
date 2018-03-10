@@ -549,6 +549,8 @@ var
   GirisRecord : TGirisFormRecord;
   F : TGirisForm;
   tc : string;
+  aTabSheet : TcxTabSheet;
+  bTamam : Boolean;
 begin
 // MenuItem cliklendiðinde menu satiri form açýlma þekli ile form açar yada sadece method çalýþtýrýr.
 //FormID > 0 form açýlacak
@@ -580,8 +582,15 @@ begin
              TGirisForm(FormClassType(TagfrmHastaKart)).Init(F);
            end
            Else begin
-            F := FormINIT(TagfrmHastaKart,self,'',NewTab(AnaForm.sayfalar,TagfrmHastaKart),ikEvet,'',tc);
-            if F <> nil then F.show;
+            bTamam := False;
+            aTabSheet := NewTab(AnaForm.sayfalar,TagfrmHastaKart);
+            try
+              F := FormINIT(TagfrmHastaKart,self,'',aTabSheet,ikEvet,'',tc);
+              bTamam := F <> nil;
+              if bTamam then F.show;
+            finally
+              if not bTamam then FreeAndNil(aTabSheet);
+            end;
           end;
           end
      else
@@ -590,8 +599,15 @@ begin
           if ShowTip  =  0
           then begin
               if FindTab(sayfalar,FormID) Then Exit;
-              F := FormINIT(FormID,self,'',NewTab(sayfalar,FormID),ikEvet,'');
-              if F <> nil then F.show;
+              bTamam := False;
+              aTabSheet := NewTab(sayfalar,FormID);
+              try
+                F := FormINIT(FormID,self,'',aTabSheet,ikEvet,'');
+                bTamam := F <> nil;
+                if bTamam then F.show;
+              finally
+                if not bTamam then FreeAndNil(aTabSheet);
+              end;
           end
           else
           begin
