@@ -407,7 +407,7 @@ begin
                 txtSube.TableName := 'SIRKET_SUBE_TNM';
                 txtSube.ValueField := 'subeKod';
                 txtSube.DisplayField := 'subeTanim';
-                txtSube.Filter := ' SirketKod = ' + QuotedStr(txtDonemler.Text) + sube;
+                txtSube.Filter := ' SirketKod = ' + QuotedStr(txtDonemler.Text) + sube + ' and (Pasif = 0 or Pasif is Null)';
 
                 datalar.AktifSube := txtSube.getItemString;
           end;
