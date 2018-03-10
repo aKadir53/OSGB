@@ -576,7 +576,7 @@ inherited;
          Doktorlar.BosOlamaz := True;
          setDataStringKontrol(self,Doktorlar,'SubeKod','Þube',Kolon1,'',150);
          Doktorlar.EditValue := _SahaDenetimVeri_.SubeKod;
-         Doktorlar.Filter := ' SirketKod = ' + QuotedStr(_SahaDenetimVeri_.FirmaKod);
+         Doktorlar.Filter := ' SirketKod = ' + QuotedStr(_SahaDenetimVeri_.FirmaKod) + ' and (Pasif = 0 or Pasif is Null)';
 
 
          doktorlar := TcxImageComboKadir.Create(self);
