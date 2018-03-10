@@ -239,3 +239,14 @@ e-imza takýlý mý deðil mi gösteriyormuþ.
 
 medula durumunu gösteriyormuþ
 
+türkçe karakter
+
+
+merkez bilgisi tablosuna þahýs / osgb / Þirket
+merkez bilgisi tablosu için ekran
+ana form''daki merkez bilgisinin solundaki sabit OSGB yazýsýný bu duruma göre göster (OSGB dýþýndaki boþ olabilir.)
+loglama için bakýlacak
+
+get form class form init'te formcaption usergroup bilgisini alýp user'ýn group bilgisi ile karþýlaþtýrarak geçirmeme özelliði eklenecek
+
+eðitimci dýþarýdan eklenebilir olacak
