@@ -502,8 +502,8 @@ var
 begin
   if mrYes = ShowPopupForm('Personel Tetkik Ýstemler',ptPersonelTetkikleri,'')
   Then Begin
+    ado := TADOQuery.Create(nil);
     try
-      ado := TADOQuery.Create(nil);
       ado.Connection := datalar.ADOConnection2;
       sql :=
             'select p.*,h.code,h.name1,h.TARIH,p.sirketKod,t.tanimi from hareketler h  ' +
@@ -536,51 +536,48 @@ var
     receteNo , songel : string;
     ack : TStringList;
     j : integer;
+    bBasari : Boolean;
 begin
-    datalar.YeniRecete.doktor := datalar.doktorKodu;
-    datalar.YeniRecete.doktorAdi := doktorAdi(datalar.doktorKodu);
-    datalar.YeniRecete.protokolNo := _MuayeneProtokolNo_; //EnsonSeansProtokolNo(_firmaKod_,_sube_);
-    datalar.YeniRecete.Tarih := datetostr(date);
-    datalar.YeniRecete.ReceteTuru := '1';
-    datalar.YeniRecete.ReceteAltTuru := '1';
+  datalar.YeniRecete.doktor := datalar.doktorKodu;
+  datalar.YeniRecete.doktorAdi := doktorAdi(datalar.doktorKodu);
+  datalar.YeniRecete.protokolNo := _MuayeneProtokolNo_; //EnsonSeansProtokolNo(_firmaKod_,_sube_);
+  datalar.YeniRecete.Tarih := datetostr(date);
+  datalar.YeniRecete.ReceteTuru := '1';
+  datalar.YeniRecete.ReceteAltTuru := '1';
 
-    if mrYes = ShowPopupForm('Yeni Reçete',islem)
-    then begin
-       if islem = ReceteYeni
-       then begin
-         datalar.ADOConnection2.BeginTrans;
-         ado := TADOQuery.Create(nil);
-         ado.Connection := datalar.ADOConnection2;
-         try
-           sql := 'insert into Recete (dosyaNo,gelisNo,tarih,ReceteTur,ReceteAltTur,doktor,ProtokolNo,ereceteNo,WanIP) ' +
-                  ' values ( ' + QuotedStr(_dosyaNo_) + ',' +
-                                 _gelisNo_ + ',' +
-                                 QuotedStr(NoktasizTarih(datalar.YeniRecete.Tarih)) + ',' +
-                                 QuotedStr(datalar.YeniRecete.ReceteTuru) + ',' +
-                                 QuotedStr(datalar.YeniRecete.ReceteAltTuru) + ',' +
-                                 QuotedStr(datalar.YeniRecete.doktor) + ',' +
-                                 QuotedStr(datalar.YeniRecete.protokolNo) + ',' +
-                                 QuotedStr('0000') + ',' +
-                                 QuotedStr(datalar.WanIp) + ') select @@IDENTITY id';
-           datalar.QuerySelect(ado,sql);
+  if mrYes <> ShowPopupForm('Yeni Reçete',islem) then Exit;
+  if islem <> ReceteYeni then Exit;
+  bBasari := False;
+  BeginTrans (datalar.ADOConnection2);
+  try
+    ado := TADOQuery.Create(nil);
+    try
+      ado.Connection := datalar.ADOConnection2;
+      sql := 'insert into Recete (dosyaNo,gelisNo,tarih,ReceteTur,ReceteAltTur,doktor,ProtokolNo,ereceteNo,WanIP) ' +
+             ' values ( ' + QuotedStr(_dosyaNo_) + ',' +
+                            _gelisNo_ + ',' +
+                            QuotedStr(NoktasizTarih(datalar.YeniRecete.Tarih)) + ',' +
+                            QuotedStr(datalar.YeniRecete.ReceteTuru) + ',' +
+                            QuotedStr(datalar.YeniRecete.ReceteAltTuru) + ',' +
+                            QuotedStr(datalar.YeniRecete.doktor) + ',' +
+                            QuotedStr(datalar.YeniRecete.protokolNo) + ',' +
+                            QuotedStr('0000') + ',' +
+                            QuotedStr(datalar.WanIp) + ') select @@IDENTITY id';
+      datalar.QuerySelect(ado,sql);
 
-           sql := 'insert into ReceteTani (receteId,TaniKodu,Tani) ' +
-                  'select '+ ado.Fields[0].AsString +' ,ICD_KODU,ICD_NAME from anamnez_ICD where dosyaNO = ' + QuotedStr(_dosyaNo_) + ' and gelisNo = ' + _gelisNo_;
-           datalar.QueryExec(sql);
-           datalar.ADOConnection2.CommitTrans;
-           ado.free;
-         except on e : Exception do
-           begin
-            datalar.ADOConnection2.RollbackTrans;
-            ado.free;
-            ShowMessageSkin(e.Message,'','','info');
-           end;
-         end;
-
-
-
-       end;
+      sql := 'insert into ReceteTani (receteId,TaniKodu,Tani) ' +
+             'select '+ ado.Fields[0].AsString +' ,ICD_KODU,ICD_NAME from anamnez_ICD where dosyaNO = ' + QuotedStr(_dosyaNo_) + ' and gelisNo = ' + _gelisNo_;
+      datalar.QueryExec(sql);
+      bBasari := True;
+    finally
+      ado.free;
     end;
+  finally
+    if bBasari then
+      CommitTrans (datalar.ADOConnection2)
+     else
+      RollbackTrans (datalar.ADOConnection2);
+  end;
 end;
 
 
@@ -590,9 +587,9 @@ var
   txtTetkikIstem : TcxCheckGroupKadir;
   tetkikler : string;
 begin
+  txtTetkikIstem := TcxCheckGroupKadir.Create(nil);
   try
     PersonelPeriyodikTetkikIstemleri := '';
-    txtTetkikIstem := TcxCheckGroupKadir.Create(nil);
     txtTetkikIstem.Properties.EditValueFormat := cvfStatesString;
     txtTetkikIstem.Alignment := alCenterCenter;
     txtTetkikIstem.Conn := Datalar.ADOConnection2;
@@ -1551,22 +1548,27 @@ begin
   lst := TStringList.Create;
   try
     Result := TListeAc.Create(Owner);
-    Result.Table := TableName;
-    Result.ListeBaslik := baslik;
-    Result.Kolonlar.Create;
-    Split(',',kolonlar,lst);
-    for I := 0 to lst.Count - 1 do Result.Kolonlar.Add(lst[I]);
-    Result.Kolonlar.Create;
-    lst.Clear;
-    Split(',',kolonBasliklar,lst);
-    for I := 0 to lst.Count - 1 do Result.KolonBasliklari.Add(lst[I]);
-    Result.TColsW := kolonGenislik;
-    Result.Name := name;
-    Result.Where := where;
-    Result.TColcount := colcount;
-    Result.SkinName := AnaForm.dxSkinController1.SkinName;
-    Result.Conn := datalar.ADOConnection2;
-    Result.Filtercol := 1;
+    try
+      Result.Table := TableName;
+      Result.ListeBaslik := baslik;
+      Result.Kolonlar.Create;
+      Split(',',kolonlar,lst);
+      for I := 0 to lst.Count - 1 do Result.Kolonlar.Add(lst[I]);
+      Result.Kolonlar.Create;
+      lst.Clear;
+      Split(',',kolonBasliklar,lst);
+      for I := 0 to lst.Count - 1 do Result.KolonBasliklari.Add(lst[I]);
+      Result.TColsW := kolonGenislik;
+      Result.Name := name;
+      Result.Where := where;
+      Result.TColcount := colcount;
+      Result.SkinName := AnaForm.dxSkinController1.SkinName;
+      Result.Conn := datalar.ADOConnection2;
+      Result.Filtercol := 1;
+    except
+      FreeAndNil (Result);
+      raise;
+    end;
   finally
     lst.Free;
   end;
@@ -4653,9 +4655,14 @@ var
   sql: string;
 begin
   Result := TADOQuery.Create(nil);
-  TADOQuery (Result).Connection := datalar.ADOConnection2;
-  sql := 'select * from merkezBilgisi';
-  datalar.QuerySelect(TADOQuery (Result), sql);
+  try
+    TADOQuery (Result).Connection := datalar.ADOConnection2;
+    sql := 'select * from merkezBilgisi';
+    datalar.QuerySelect(TADOQuery (Result), sql);
+  except
+    FreeAndNil (Result);
+    raise;
+  end;
 end;
 
 function InternetVarmi: Boolean;
