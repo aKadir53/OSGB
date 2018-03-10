@@ -232,6 +232,8 @@ end;
 procedure TfrmHastaListe.ListeDblClick(Sender: TObject);
 var
  Form : TGirisForm;
+ aTabSheet : TcxTabSheet;
+ bTamam : Boolean;
 begin
  // datalar.Bilgi.dosyaNo := ado_BransKodlari.FieldByName('dosyaNo').AsString;
 //  FormINIT(TagfrmHastaKart,AnaForm,ado_BransKodlari.FieldByName('dosyaNo').AsString);
@@ -243,8 +245,15 @@ begin
    TGirisForm(FormClassType(TagfrmHastaKart)).Init(Form);
  end
  Else begin
-  Form := FormINIT(TagfrmHastaKart,self,_Dataset.FieldByName('dosyaNo').AsString,NewTab(AnaForm.sayfalar,TagfrmHastaKart),ikEvet,'','');
-  if Form <> nil then Form.show;
+  bTamam := False;
+  aTabSheet := NewTab(AnaForm.sayfalar,TagfrmHastaKart);
+  try
+    Form := FormINIT(TagfrmHastaKart,self,_Dataset.FieldByName('dosyaNo').AsString,aTabSheet,ikEvet,'','');
+    bTamam := Form <> nil;
+    if bTamam then Form.show;
+  finally
+    if not bTamam then FreeAndNil (aTabSheet);
+  end;
  end;
   (*
 
