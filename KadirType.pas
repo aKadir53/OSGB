@@ -196,6 +196,7 @@ type
       doktor : string;
       ProtokolNo : string;
       Tetkikler : string;
+      ProtokolNoGuncelle : boolean;
     end;
 
 

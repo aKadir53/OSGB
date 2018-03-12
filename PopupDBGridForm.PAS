@@ -156,15 +156,15 @@ begin
         ClientHeight := 300;
         ClientWidth := 700;
         TableName := 'SIRKET_SUBE_TNM';
-        _fields_ := 'sirketKod,subeKod,subeTanim,subeSiciNo,subeDoktor,IGU,DigerSaglikPers,BolgeMudurlukSicilNo,MuayeneProtokolNo,DoktorCalismaDakika,IGUCalismaDakika,DigerSaglikPersCalismaDakika,NaceKod,tehlikeSinifi';
-        _fieldBaslik_ := ',ÞubeKodu,ÞubeTanimi,ÝþYeriSicilNo,Doktor,ÝþGüvenlikUzmaný,DiðerSaðlýkPers,BölgeMdSicilNo,MuayeneProtokolNo,DoktorCalismaDakika,IGUCalismaDakika,DiðerSaðPersÇDakika,NaceKodu,TehlikeSinifi';
-        _fieldTips_ := 'string,string,string,string,ImageDoktorCombo,ImageDoktorCombo,ImageDoktorCombo,string,string,string,string,string,ButtonEdit,ImageDoktorCombo';
+        _fields_ := 'sirketKod,subeKod,subeTanim,subeSiciNo,subeDoktor,IGU,DigerSaglikPers,BolgeMudurlukSicilNo,MuayeneProtokolNo,DoktorCalismaDakika,IGUCalismaDakika,DigerSaglikPersCalismaDakika,NaceKod,tehlikeSinifi,Pasif';
+        _fieldBaslik_ := ',ÞubeKodu,ÞubeTanimi,ÝþYeriSicilNo,Doktor,ÝþGüvenlikUzmaný,DiðerSaðlýkPers,BölgeMdSicilNo,MuayeneProtokolNo,DoktorCalismaDakika,IGUCalismaDakika,DiðerSaðPersÇDakika,NaceKodu,TehlikeSinifi,Pasif';
+        _fieldTips_ := 'string,string,string,string,ImageDoktorCombo,ImageDoktorCombo,ImageDoktorCombo,string,string,string,string,string,ButtonEdit,ImageDoktorCombo,Check';
         indexFieldName := 'sirketKod = ' + QuotedStr(_firmaKod_);
         cxPanel.Visible := false;
         cxGroupDoktorlar.Caption := 'Þube Bilgileri';
         cxGrid3.Dataset.BeforePost := ADOBeforePost;
         cxGrid3.Dataset.Connection := datalar.ADOConnection2;
-        cxGrid3.Dataset.SQL.Text := 'Select sirketKod,subeKod,subeTanim,subeSiciNo,subeDoktor,IGU,DigerSaglikPers,BolgeMudurlukSicilNo,MuayeneProtokolNo,DoktorCalismaDakika,IGUCalismaDakika,DigerSaglikPersCalismaDakika,NaceKod,tehlikeSinifi ' +
+        cxGrid3.Dataset.SQL.Text := 'Select sirketKod,subeKod,subeTanim,subeSiciNo,subeDoktor,IGU,DigerSaglikPers,BolgeMudurlukSicilNo,MuayeneProtokolNo,DoktorCalismaDakika,IGUCalismaDakika,DigerSaglikPersCalismaDakika,NaceKod,tehlikeSinifi,Pasif ' +
                                     ' from SIRKET_SUBE_TNM where sirketKod = ' + QuotedStr(_firmaKod_);
         cxGrid3.Dataset.Open;
         DBGrid.ClearItems;
@@ -254,37 +254,37 @@ begin
             DBGrid.Columns[i].Caption := Baslik[i];
          //   DBgrid.Columns[i].Properties.ReadOnly := StrToBool(ifThen(Edits[i]='1','True','False'));
             DBgrid.Columns[i].HeaderAlignmentHorz := taCenter;
-            if Tips[i] = 'int' then
+            if SameText (Tips[i], 'int') then
              begin
               DBgrid.Columns[i].PropertiesClassName := 'TcxCurrencyEditProperties';
               DBgrid.Columns[i].Properties.Alignment.Horz := taRightJustify;
               TcxCurrencyEditProperties(DBgrid.Columns[i].Properties).DisplayFormat := '#,###.##';
              end;
-            if Tips[i] = 'string' then
+            if SameText (Tips[i], 'string') then
              begin
               DBgrid.Columns[i].PropertiesClassName := 'TcxTextEditProperties';
              end;
 
-            if Tips[i] = 'Check' then
+            if SameText (Tips[i], 'Check') then
              begin
               DBgrid.Columns[i].PropertiesClassName := 'TcxCheckBoxProperties';
               TcxCheckBoxProperties(DBgrid.Columns[i].Properties).ValueChecked := 1;
               TcxCheckBoxProperties(DBgrid.Columns[i].Properties).ValueUnchecked := 0;
              end;
 
-            if Tips[i] = 'saat' then
+            if SameText (Tips[i], 'saat') then
              begin
               DBgrid.Columns[i].PropertiesClassName := 'TcxDateEditProperties';
              end;
 
-            if Tips[i] = 'ButtonEdit' then
+            if SameText (Tips[i], 'ButtonEdit') then
              begin
               DBgrid.Columns[i].PropertiesClassName := 'TcxButtonEditProperties';
               TcxButtonEditProperties(DBgrid.Columns[i].Properties).OnButtonClick := NaceKodPropertiesButtonClick;
              end;
 
 
-            if Tips[i] = 'IC'
+            if SameText (Tips[i], 'IC')
             then begin
                 DBgrid.Columns[i].PropertiesClassName := 'TcxImageComboBoxProperties';
                 TcxImageComboBoxProperties(DBgrid.Columns[i].Properties).Items.Clear;
@@ -315,9 +315,9 @@ begin
 
 
 
-            if Tips[i] = 'ImageDoktorCombo' then
+            if SameText (Tips[i], 'ImageDoktorCombo') then
              begin
-              if Columns[i] = 'subeDoktor' then
+              if SameText (Columns[i], 'subeDoktor') then
               begin
                 DBgrid.Columns[i].PropertiesClassName := 'TcxImageComboBoxProperties';
                 TcxImageComboBoxProperties(DBgrid.Columns[i].Properties).ClearKey := 46;
@@ -333,7 +333,7 @@ begin
                 end;
               end;
 
-              if Columns[i] = 'IGU' then
+              if SameText (Columns[i], 'IGU') then
               begin
                 DBgrid.Columns[i].PropertiesClassName := 'TcxImageComboBoxProperties';
                 TcxImageComboBoxProperties(DBgrid.Columns[i].Properties).ClearKey := 46;
@@ -349,7 +349,7 @@ begin
                 end;
               end;
 
-              if Columns[i] = 'DigerSaglikPers' then
+              if SameText (Columns[i], 'DigerSaglikPers') then
               begin
                 DBgrid.Columns[i].PropertiesClassName := 'TcxImageComboBoxProperties';
                 TcxImageComboBoxProperties(DBgrid.Columns[i].Properties).ClearKey := 46;
@@ -365,7 +365,7 @@ begin
                 end;
               end;
 
-              if Columns[i] = 'tehlikeSinifi' then
+              if SameText (Columns[i], 'tehlikeSinifi') then
               begin
                 DBgrid.Columns[i].PropertiesClassName := 'TcxImageComboBoxProperties';
                 TcxImageComboBoxProperties(DBgrid.Columns[i].Properties).Items.Clear;
