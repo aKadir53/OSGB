@@ -559,6 +559,10 @@ begin
     83 : begin
       SifreDegistir;
     end;
+    121 : begin
+            DestekTalep;
+          end;
+
     122 : begin
             OnlineDestekOpen;
           end;

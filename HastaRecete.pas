@@ -136,6 +136,7 @@ type
     btnIlacSil: TcxButtonKadir;
     btnIlacEkle: TcxButtonKadir;
     procedure FormCreate(Sender: TObject);
+    procedure Yukle;override;
     procedure ReceteGetir(_dosyaNo , gelisNo : string);
     procedure E1Click(Sender: TObject);
     procedure ilacEkle(islem : integer);
@@ -1135,10 +1136,41 @@ begin
 
 end;
 
+
+procedure TfrmHastaRecete.Yukle;
+begin
+ _fields_ := '* ';
+ indexFieldName := ' dosyaNo = ' + QuotedStr(_dosyaNo_) + ' and gelisNo = ' + _gelisNo_;
+
+ inherited;
+
+ if (_dosyaNo_ <> '') and (_gelisNo_ <> '')
+ then begin
+    sql := 'select *,d.tanimi ADI from Recete r' +
+           ' left join doktorlarT d on d.kod = substring(r.doktor,1,4) ' +
+           ' where r.dosyaNo = ' + QuotedStr(_dosyaNo_) +
+           ' and r.gelisNo = ' + _gelisNo_ +
+           ' order by r.tarih desc';
+    datalar.QuerySelect(ADO_Recete,sql);
+    Ado_Recete.last;
+    Ado_Recete.First;
+    ADO_RECETE_DETAY.Open;
+    ADO_receteTani.Open;
+    ADO_receteAcikla.Open;
+    ADO_ReceteIlacAciklama.Open;
+ end;
+
+end;
+
+
 procedure TfrmHastaRecete.ReceteGetir(_dosyaNo , gelisNo : string);
 var
   sql : string;
 begin
+ yukle;
+ _fields_ := '* ';
+ indexFieldName := ' dosyaNo = ' + QuotedStr(_dosyaNo) + ' and gelisNo = ' + gelisNo;
+
  if (_dosyaNo <> '') and (gelisNo <> '')
  then begin
 
@@ -1501,7 +1533,7 @@ begin
   ClientHeight := formYukseklik;
   ClientWidth := formGenislik;
 
-  indexFieldName := 'id';
+  indexFieldName := '1 = 1';
   TableName := _TableName_;
   cxPanel.Visible := false;
   cxTab.Width := 200;
