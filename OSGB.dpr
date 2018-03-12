@@ -57,7 +57,8 @@ uses
   HastaListe in 'HastaListe.pas' {frmHastaListe},
   GrupDetayTanim in 'GrupDetayTanim.pas' {frmGrupDetayTanim},
   MESSAGE_y in 'MESSAGE_y.PAS' {frmMessage_y},
-  DokumanYukle in 'DokumanYukle.pas' {frmDokumanYonetim};
+  DokumanYukle in 'DokumanYukle.pas' {frmDokumanYonetim},
+  DestekSorunBildir in 'DestekSorunBildir.pas' {frmDestekSorunBildir};
 
 // KadirMedula3 in '..\..\medula3wsdl\KadirMedula3.pas';
 
@@ -76,7 +77,6 @@ begin
   Application.MainFormOnTaskbar := True;
   Application.CreateForm(TDATALAR, DATALAR);
   Application.CreateForm(TAnaForm, AnaForm);
-
 
   //Application.CreateForm(TfrmUpdate, frmUpdate);???
 

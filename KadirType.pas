@@ -491,6 +491,7 @@ Const
   TagfrmDoktorlar = 80;
   TagfrmTedaviBilgisi = 70;
   TagfrmGridListeForm = 120;
+  TagfrmDestekTalep = 121;
   TagfrmHastaRecete = 130;
   TagfrmHastaIlacTedavi = 140;
   TagfrmTeleEkg = 150;
