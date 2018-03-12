@@ -281,46 +281,70 @@ function FormINIT(FormTag : Integer;MidiForm : TForm;
 var
   Form : TGirisForm;
   sFormCaption, sFormAltCaption, sFormUserGroup, sFormUserGroupDesc: String;
+  bTamam : Boolean;
 begin
-   if not GetFormCaptionInfo (abs(FormTag), sFormCaption, sFormAltCaption, sFormUserGroup, sFormUserGroupDesc) then
-     Exit;
-   izinPrm := ifThen(izinPrm = '',sFormAltCaption,izinPrm);
-   if ik = ikEvet
-   then
-   if UserRight(sFormCaption, izinPrm) = False
-   then begin
-       UserRightInsert(sFormCaption,izinPrm,datalar.username);
-       ShowMessageSkin(sFormCaption,izinPrm + ' Ýþlemi Ýçin Yetkiniz Bulunmamaktadýr !','','info');
-       Tab.Free;
-       result := nil;
-       exit;
-   end;
-
-   case abs(FormTag) of
-      TagfrmHastaKart : frmHastaKart := TfrmHastaKart.Create(Tab);
-      TagfrmFirmaKart : frmFirmaKart := TfrmFirmaKart.Create(Tab);
-      TagfrmHizliKayitPersonel, TagfrmHizliKayitDisAktarimlar : frmHizliKayit := TfrmHizliKayit.Create(Tab);
-      TagfrmPopupDBVerticalGridForm : frmPopupDBVerticalGridForm := TfrmPopupDBVerticalGridForm.Create(Tab);
-
-      TagfrmHastaListe,TagfrmDoktorHastaListe : frmHastaListe := TfrmHastaListe.Create(Tab);
-      TagfrmSorguCalistir : frmRaporCalistir := TfrmRaporCalistir.Create(Tab);
-      TagfrmSon6AylikTetkikSonuc : frmSon6AylikTetkikSonuc := TfrmSon6AylikTetkikSonuc.Create(Tab);
-      TagfrmReceteler : frmReceteler := TfrmReceteler.Create(Tab);
-      TagfrmSahaSaglikGozetim : frmSahaSaglikGozetim := TfrmSahaSaglikGozetim.Create(Tab);
-
-      TagfrmLabParametreleri : frmLabParams:= TfrmLabParams.Create(Tab);
-      TagfrmLabKabul : frmLabaratuvarKabul := TfrmLabaratuvarKabul.Create(Tab);
-      TagfrmAnamnez,TagfrmIseGiris : frmAnamnez := TfrmAnamnez.Create(Tab);
-      TagfrmTetkikIstemSablon : frmGrupDetayTanim := TfrmGrupDetayTanim.Create(Tab);
-      TagfrmDokumanYonetim : frmDokumanYonetim := TfrmDokumanYonetim.Create(Tab);
-      TagfrmFaturalar : frmFaturalar := TfrmFaturalar.Create(Tab);
-      TagfrmFatura : frmFaturaDetay := TfrmFaturaDetay.Create(Tab);
-      TagfrmSirketSozlesme : frmSirketSozlesme := TfrmSirketSozlesme.Create(Tab);
-      TagfrmSirketSozlesmeler : frmSozlesmeler := TfrmSozlesmeler.Create(Tab);
-
-     else
+  if not GetFormCaptionInfo (abs(FormTag), sFormCaption, sFormAltCaption, sFormUserGroup, sFormUserGroupDesc) then
+    Exit;
+  izinPrm := ifThen(izinPrm = '',sFormAltCaption,izinPrm);
+  if ik = ikEvet
+  then
+  if UserRight(sFormCaption, izinPrm) = False
+  then begin
+      UserRightInsert(sFormCaption,izinPrm,datalar.username);
+      ShowMessageSkin(sFormCaption,izinPrm + ' Ýþlemi Ýçin Yetkiniz Bulunmamaktadýr !','','info');
       result := nil;
-   end;
+      exit;
+  end;
+  bTamam := False;
+  case abs(FormTag) of
+     TagfrmHastaKart : frmHastaKart := TfrmHastaKart.Create(Tab);
+     TagfrmFirmaKart : frmFirmaKart := TfrmFirmaKart.Create(Tab);
+     TagfrmHizliKayitPersonel, TagfrmHizliKayitDisAktarimlar : frmHizliKayit := TfrmHizliKayit.Create(Tab);
+     TagfrmPopupDBVerticalGridForm : frmPopupDBVerticalGridForm := TfrmPopupDBVerticalGridForm.Create(Tab);
+
+     TagfrmHastaListe,TagfrmDoktorHastaListe : frmHastaListe := TfrmHastaListe.Create(Tab);
+     TagfrmSorguCalistir : frmRaporCalistir := TfrmRaporCalistir.Create(Tab);
+     TagfrmSon6AylikTetkikSonuc : frmSon6AylikTetkikSonuc := TfrmSon6AylikTetkikSonuc.Create(Tab);
+     TagfrmReceteler : frmReceteler := TfrmReceteler.Create(Tab);
+     TagfrmSahaSaglikGozetim : frmSahaSaglikGozetim := TfrmSahaSaglikGozetim.Create(Tab);
+
+     TagfrmLabParametreleri : frmLabParams:= TfrmLabParams.Create(Tab);
+     TagfrmLabKabul : frmLabaratuvarKabul := TfrmLabaratuvarKabul.Create(Tab);
+     TagfrmAnamnez,TagfrmIseGiris : frmAnamnez := TfrmAnamnez.Create(Tab);
+     TagfrmTetkikIstemSablon : frmGrupDetayTanim := TfrmGrupDetayTanim.Create(Tab);
+     TagfrmDokumanYonetim : frmDokumanYonetim := TfrmDokumanYonetim.Create(Tab);
+     TagfrmFaturalar : frmFaturalar := TfrmFaturalar.Create(Tab);
+     TagfrmFatura : frmFaturaDetay := TfrmFaturaDetay.Create(Tab);
+     TagfrmSirketSozlesme : frmSirketSozlesme := TfrmSirketSozlesme.Create(Tab);
+     TagfrmSirketSozlesmeler : frmSozlesmeler := TfrmSozlesmeler.Create(Tab);
+
+    else
+     result := nil;
+  end;
+  try
+    if not (Form is TGirisForm) then
+    begin
+      Form.BorderStyle := bsToolWindow;
+      Form.Align := alNone;
+      Form.Tag := abs(FormTag);
+      Result := Form;
+      Exit;
+    end;
+
+    Form := TGirisForm(FormClassType(abs(FormTag)));
+    Tab.Caption := sFormAltCaption;
+    TGirisForm(Form).cxTab.Tabs[0].Caption := Tab.Caption;
+    TGirisForm(Form).cxTab.Tabs[0].ImageIndex := FormTabImageIndex(abs(FormTag));
+    if Tab = nil
+    then begin
+     TgirisForm(Form).BorderStyle := bsToolWindow;
+     TgirisForm(Form).Align := alNone;
+    end
+    else
+    begin
+     TgirisForm(Form).BorderStyle := bsNone;
+     TgirisForm(Form).Align := alClient;
+    end;
 
    if not (Form is TGirisForm) then þ
    begin
@@ -382,82 +406,87 @@ var
   Form : TGirisForm;
   sFormCaption1, sFormAltCaption1, sFormUserGroup1, sFormUserGroupDesc1: String;
   sFormCaption2, sFormAltCaption2, sFormUserGroup2, sFormUserGroupDesc2: String;
+  bTamam : Boolean;
 begin
-   if not GetFormCaptionInfo (abs(FormTag), sFormCaption1, sFormAltCaption1, sFormUserGroup1, sFormUserGroupDesc1) then
-     Exit;
-   if not GetFormCaptionInfo (FormTag, sFormCaption2, sFormAltCaption2, sFormUserGroup2, sFormUserGroupDesc2) then
-     Exit;
-   izinPrm := ifThen(izinPrm = '',sFormAltCaption1,izinPrm);
-   if ik = ikEvet
-   then
-   if UserRight(sFormCaption1, izinPrm) = False
-   then begin
-       UserRightInsert(sFormCaption2,izinPrm,datalar.username);
-       ShowMessageSkin(sFormCaption2,izinPrm + ' Ýþlemi Ýçin Yetkiniz Bulunmamaktadýr !','','info');
-       Tab.Free;
-       result := nil;
-       exit;
-   end;
-
-   case abs(FormTag) of
-      TagfrmHastaKart : frmHastaKart := TfrmHastaKart.Create(Tab);
-      TagfrmFirmaKart : frmFirmaKart := TfrmFirmaKart.Create(Tab);
-      TagfrmHizliKayitPersonel, TagfrmHizliKayitDisAktarimlar : frmHizliKayit := TfrmHizliKayit.Create(Tab);
-      TagfrmSorgulamalar : frmSorgulamalar := TfrmSorgulamalar.Create(Tab);
-      TagfrmSorguCalistir : frmRaporCalistir := TfrmRaporCalistir.Create(Tab);
-      TagfrmAnamnez,TagfrmIseGiris : frmAnamnez := TfrmAnamnez.Create(Tab);
-
-      TagfrmHastaListe,TagfrmDoktorHastaListe : frmHastaListe := TfrmHastaListe.Create(Tab);
-      TagfrmPopupDBVerticalGridForm : frmPopupDBVerticalGridForm := TfrmPopupDBVerticalGridForm.Create(Tab);
-
-      TagfrmSon6AylikTetkikSonuc : frmSon6AylikTetkikSonuc := TfrmSon6AylikTetkikSonuc.Create(Tab);
-      TagfrmReceteler : frmReceteler := TfrmReceteler.Create(Tab);
-      TagfrmSahaSaglikGozetim : frmSahaSaglikGozetim := TfrmSahaSaglikGozetim.Create(Tab);
-
-      TagfrmLabParametreleri : frmLabParams := TfrmLabParams.Create(Tab);
-      TagfrmLabKabul : frmLabaratuvarKabul := TfrmLabaratuvarKabul.Create(Tab);
-      TagfrmTetkikIstemSablon : frmGrupDetayTanim := TfrmGrupDetayTanim.Create(Tab);
-      TagfrmDokumanYonetim : frmDokumanYonetim := TfrmDokumanYonetim.Create(Tab);
-      TagfrmFaturalar : frmFaturalar := TfrmFaturalar.Create(Tab);
-      TagfrmFatura : frmFaturaDetay := TfrmFaturaDetay.Create(Tab);
-      TagfrmSirketSozlesme : frmSirketSozlesme := TfrmSirketSozlesme.Create(Tab);
-      TagfrmSirketSozlesmeler : frmSozlesmeler := TfrmSozlesmeler.Create(Tab);
-     else
+  if not GetFormCaptionInfo (abs(FormTag), sFormCaption1, sFormAltCaption1, sFormUserGroup1, sFormUserGroupDesc1) then
+    Exit;
+  if not GetFormCaptionInfo (FormTag, sFormCaption2, sFormAltCaption2, sFormUserGroup2, sFormUserGroupDesc2) then
+    Exit;
+  izinPrm := ifThen(izinPrm = '',sFormAltCaption1,izinPrm);
+  if ik = ikEvet
+  then
+  if UserRight(sFormCaption1, izinPrm) = False
+  then begin
+      UserRightInsert(sFormCaption2,izinPrm,datalar.username);
+      ShowMessageSkin(sFormCaption2,izinPrm + ' Ýþlemi Ýçin Yetkiniz Bulunmamaktadýr !','','info');
       result := nil;
-   end;
+      exit;
+  end;
+  bTamam := False;
+  case abs(FormTag) of
+     TagfrmHastaKart : frmHastaKart := TfrmHastaKart.Create(Tab);
+     TagfrmFirmaKart : frmFirmaKart := TfrmFirmaKart.Create(Tab);
+     TagfrmHizliKayitPersonel, TagfrmHizliKayitDisAktarimlar : frmHizliKayit := TfrmHizliKayit.Create(Tab);
+     TagfrmSorgulamalar : frmSorgulamalar := TfrmSorgulamalar.Create(Tab);
+     TagfrmSorguCalistir : frmRaporCalistir := TfrmRaporCalistir.Create(Tab);
+     TagfrmAnamnez,TagfrmIseGiris : frmAnamnez := TfrmAnamnez.Create(Tab);
 
+     TagfrmHastaListe,TagfrmDoktorHastaListe : frmHastaListe := TfrmHastaListe.Create(Tab);
+     TagfrmPopupDBVerticalGridForm : frmPopupDBVerticalGridForm := TfrmPopupDBVerticalGridForm.Create(Tab);
 
-   Form := TGirisForm(FormClassType(abs(FormTag)));
-   Tab.Caption := sFormAltCaption1;
-   TGirisForm(Form).cxTab.Tabs[0].Caption := Tab.Caption;
-   TGirisForm(Form).cxTab.Tabs[0].ImageIndex := FormTabImageIndex(abs(FormTag));
-   if Tab = nil
-   then begin
-    TgirisForm(Form).BorderStyle := bsToolWindow;
-    TgirisForm(Form).Align := alNone;
-   end
-   else
-   begin
-    TgirisForm(Form).BorderStyle := bsNone;
-    TgirisForm(Form).Align := alClient;
-   end;
+     TagfrmSon6AylikTetkikSonuc : frmSon6AylikTetkikSonuc := TfrmSon6AylikTetkikSonuc.Create(Tab);
+     TagfrmReceteler : frmReceteler := TfrmReceteler.Create(Tab);
+     TagfrmSahaSaglikGozetim : frmSahaSaglikGozetim := TfrmSahaSaglikGozetim.Create(Tab);
 
-   TGirisForm(Form)._dosyaNO_ := Value;
-   TGirisForm(Form)._TC_ := tc;
-   TGirisForm(Form).Tag := FormTag;
-   TgirisForm(Form).Parent := Tab;
-   TGirisForm(Form).BringToFront;
-   if TGirisForm(Form).Init(Form) = True
-   Then
-    result := TGirisForm(Form)
-   Else
-    result := nil;
+     TagfrmLabParametreleri : frmLabParams := TfrmLabParams.Create(Tab);
+     TagfrmLabKabul : frmLabaratuvarKabul := TfrmLabaratuvarKabul.Create(Tab);
+     TagfrmTetkikIstemSablon : frmGrupDetayTanim := TfrmGrupDetayTanim.Create(Tab);
+     TagfrmDokumanYonetim : frmDokumanYonetim := TfrmDokumanYonetim.Create(Tab);
+     TagfrmFaturalar : frmFaturalar := TfrmFaturalar.Create(Tab);
+     TagfrmFatura : frmFaturaDetay := TfrmFaturaDetay.Create(Tab);
+     TagfrmSirketSozlesme : frmSirketSozlesme := TfrmSirketSozlesme.Create(Tab);
+     TagfrmSirketSozlesmeler : frmSozlesmeler := TfrmSozlesmeler.Create(Tab);
+    else
+     result := nil;
+  end;
+  try
+    Form := TGirisForm(FormClassType(abs(FormTag)));
+    Tab.Caption := sFormAltCaption1;
+    TGirisForm(Form).cxTab.Tabs[0].Caption := Tab.Caption;
+    TGirisForm(Form).cxTab.Tabs[0].ImageIndex := FormTabImageIndex(abs(FormTag));
+    if Tab = nil
+    then begin
+     TgirisForm(Form).BorderStyle := bsToolWindow;
+     TgirisForm(Form).Align := alNone;
+    end
+    else
+    begin
+     TgirisForm(Form).BorderStyle := bsNone;
+     TgirisForm(Form).Align := alClient;
+    end;
+
+    TGirisForm(Form)._dosyaNO_ := Value;
+    TGirisForm(Form)._TC_ := tc;
+    TGirisForm(Form).Tag := FormTag;
+    TgirisForm(Form).Parent := Tab;
+    TGirisForm(Form).BringToFront;
+    if TGirisForm(Form).Init(Form) Then
+    begin
+      result := TGirisForm(Form);
+      bTamam := True;
+    end
+    Else
+     result := nil;
+  finally
+    if not bTamam and Assigned (Form) then FreeAndNil(Form);
+  end;
 end;
 
 function FormINIT(FormTag : Integer; Value : TGirisFormRecord;ik : izinKontrol = ikHayir;izinPrm : string = '') : TGirisForm;
 var
   Form : TGirisForm;
   sFormCaption, sFormAltCaption, sFormUserGroup, sFormUserGroupDesc: String;
+  bTamam : Boolean;
 begin
    if not GetFormCaptionInfo (abs(FormTag), sFormCaption, sFormAltCaption, sFormUserGroup, sFormUserGroupDesc) then
      Exit;
@@ -471,7 +500,7 @@ begin
        result := nil;
        exit;
    end;
-
+  bTamam := False;
   case abs(FormTag) of
     TagfrmFirmaKart : Application.CreateForm(TfrmFirmaKart,frmFirmaKart);
     TagfrmPopupDBGridForm,TagfrmBolum,TagfrmBirim,TagfrmSube,TagFirmaCalismalari: Application.CreateForm(TfrmPopupDBGridForm , frmPopupDBGridForm);
@@ -513,8 +542,17 @@ begin
     else
       result := nil;
    end;
+  try
+    Form := TGirisForm(FormClassType(abs(FormTag)));
 
-  Form := TGirisForm(FormClassType(abs(FormTag)));
+    if not (Form is TGirisForm) then
+    begin
+      Form.BorderStyle := bsToolWindow;
+      Form.Align := alNone;
+      Form.Tag := abs(FormTag);
+      Result := Form;
+      Exit;
+    end;
 
   if not (Form is TGirisForm) then þ
   begin
@@ -525,48 +563,30 @@ begin
     Exit;
   end;
 
-  TGirisForm(Form)._dosyaNO_ := Value.F_dosyaNO_;//datalar.Bilgi.dosyaNo;
-  TGirisForm(Form)._gelisNO_ := Value.F_gelisNO_;//datalar.Bilgi.gelisNo;
-  TGirisForm(Form)._provizyonTarihi_ := Value.F_provizyonTarihi_;
-  TGirisForm(Form)._HastaAdSoyad_ := Value.F_HastaAdSoyad_;
-  TGirisForm(Form)._TakipNo_ := Value.F_TakipNo_;
-  TGirisForm(Form)._BasvuruNo_ := Value.F_BasvuruNo_;
-  TGirisForm(Form)._Doktor_ := Value.F_Doktor_;
-  TGirisForm(Form)._Makina_ := Value.F_Makina_;
-  TGirisForm(Form)._Seans_ := Value.F_Seans_;
-  TGirisForm(Form)._TC_ := Value.F_TC_;
-  TGirisForm(Form)._Yupass_ := Value.F_Yupass_;
-  TGirisForm(Form)._DevKurum_ := Value.F_DevKurum_;
-  TGirisForm(Form)._SigortaliTur_ := Value.F_SigortaliTur_;
-  TGirisForm(Form)._SeansSira_ := Value.F_SeansSira_;
-  TGirisForm(Form)._firmaKod_ := Value.F_FirmaKod_;
-  TGirisForm(Form)._mobilTel_ := Value.F_mobilTel_;
-  TGirisForm(Form)._sp_ := Value.F_sp_;
-  TGirisForm(Form)._kod_ := Value.F_kod_;
-  TGirisForm(Form)._sube_ := Value.F_sube_;
-  TGirisForm(Form)._MuayeneProtokolNo_ := Value.F_MuayeneProtokolNo_;
-  TGirisForm(Form)._FaturaNo_ := Value.F_FaturaNO_;
+    TgirisForm(Form).Caption := sFormCaption + ' - ' + sFormAltCaption;
+    if ik = ikEvet
+     then
+      TGirisForm(Form).cxTab.Tabs[0].Caption := izinPrm
+     else begin
+      if Value.F_HastaAdSoyad_ <> '' then
+        TGirisForm(Form).cxTab.Tabs[0].Caption := Value.F_HastaAdSoyad_
+      else
+        TGirisForm(Form).cxTab.Tabs[0].Caption := izinPrm;
 
-  TgirisForm(Form).Caption := sFormCaption + ' - ' + sFormAltCaption;
-  if ik = ikEvet
-   then
-    TGirisForm(Form).cxTab.Tabs[0].Caption := izinPrm
-   else begin
-    if Value.F_HastaAdSoyad_ <> '' then
-      TGirisForm(Form).cxTab.Tabs[0].Caption := Value.F_HastaAdSoyad_
-    else
-      TGirisForm(Form).cxTab.Tabs[0].Caption := izinPrm;
+     end;
+    TGirisForm(Form).cxTab.Tabs[0].ImageIndex := FormTabImageIndex(abs(FormTag));
 
-   end;
-  TGirisForm(Form).cxTab.Tabs[0].ImageIndex := FormTabImageIndex(abs(FormTag));
-
-  TGirisForm(Form).Tag := FormTag;
-   if TGirisForm(Form).Init(Form) = True
-   Then
-    result := TGirisForm(Form)
-   Else
-    result := nil;
-
+    TGirisForm(Form).Tag := FormTag;
+    if TGirisForm(Form).Init(Form) = True Then
+    begin
+      result := TGirisForm(Form);
+      bTamam := True;
+    end
+    Else
+     result := nil
+  finally
+    if not bTamam and Assigned (Form) then FreeAndNil(Form);
+  end;
 end;
 
 

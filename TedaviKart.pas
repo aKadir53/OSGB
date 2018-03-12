@@ -119,7 +119,8 @@ begin
                                    frmHastaRecete._dosyaNO_ := self._dosyaNO_;
                                    frmHastaRecete._gelisNO_ := self._gelisNO_;
                                    frmHastaRecete._MuayeneProtokolNo_ := self._MuayeneProtokolNo_;
-                                   frmHastaRecete.ReceteGetir(self._dosyaNO_,self._gelisNO_);
+                                   yukle;
+                                   //frmHastaRecete.ReceteGetir(self._dosyaNO_,self._gelisNO_);
                                    frmHastaRecete._provizyonTarihi_ := self._provizyonTarihi_;
                                   end;
                                 end;
