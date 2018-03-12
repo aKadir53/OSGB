@@ -372,6 +372,7 @@ procedure GridCellSetValue(Grid : TcxGridDBTableView; ColonName : string ; Row :
 function SQLSelectToDataSet(Columns,Table,Where : string) : TADOQuery;
 procedure ExceldenPersonelYukle;
 procedure OnlineDestekOpen;
+procedure DestekTalep;
 function IsNull (const s: String): Boolean;
 procedure LisansUzat;
 function SahaSaglikGozlemSil(const GozlemID: integer): Boolean;
@@ -395,9 +396,25 @@ function PersonelPeriyodikTetkikIstemleri(grup : string) : string;
 procedure PersonelTetkikIstemleri(tarih,tarih2 : string);
 procedure YeniRecete(islem: Integer ; _dosyaNo_,_gelisNo_,_MuayeneProtokolNo_ : string);
 function FirmaBilgileri(sirketKodu : string) : string;
+function mailGonder (alici , konu , mesaj : string): string;
+
+function findMethod(dllHandle: Cardinal;  methodName: string): FARPROC;
+
+type
+  TEmailSend = procedure(var sonuc : PWideChar;
+                          smtpClientHost : PWideChar;
+                          Username : PWideChar;
+                          Password : PWideChar;
+                          alici : PWideChar;
+                          konu : PWideChar;
+                          msj : PWideChar;
+                          filename : PWideChar
+                          ); stdcall;
+
 
 
 const
+  LIB_DLL = 'D:\Projeler\VS\c#\EFatura\EFaturaDLL\ClassLibrary1\bin\Debug\EFaturaDLL.dll';
   _YTL_ = 'YTL';
   _OTL_ = 'TRL';
   harfler = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGGHIJKLMNOPQRSTUVWXYZXW';
@@ -461,9 +478,65 @@ var
 
 implementation
 
-uses message,AnaUnit,message_y,popupForm,rapor,TedaviKart,Son6AylikTetkikSonuc,
+uses message,AnaUnit,message_y,popupForm,rapor,TedaviKart,Son6AylikTetkikSonuc,DestekSorunBildir,
   HastaRecete,sifreDegis,HastaTetkikEkle,GirisUnit,SMS,LisansUzat,Update_G, DBGrids, NThermo,
   TransUtils;
+
+
+function findMethod(dllHandle: Cardinal;  methodName: string): FARPROC;
+begin
+  Result := GetProcAddress(dllHandle, pchar(methodName));
+end;
+
+function mailGonder (alici , konu , mesaj : string): string;
+var
+  Mail : TEmailSend;
+  dllHandle: Cardinal;
+  TesisKodu: integer;
+  faturaXML,doktorKullanici,doktorsifre,pin,url,cardType : string;
+  username,password,mailserver : string;
+  doktorTc : string;
+  ss : PWideChar;
+  sql,sonucStr : string;
+  Sonuc : TStringList;
+begin
+  try
+
+    mailserver := datalar.SMTPSunucu;
+    username := datalar.SMTPUserName;
+    password := datalar.SMTPPassword;
+
+    ss := '';
+    dllHandle := LoadLibrary(LIB_DLL);
+    if dllHandle = 0 then
+      exit;
+
+    @Mail := findMethod(dllHandle, 'EMailSend');
+    if addr(Mail) <> nil then
+
+    Mail(ss,PWideChar(mailserver),PWideChar(username),PWideChar(password),PWideChar(alici),PWideChar(konu),PWideChar(mesaj),PWideChar(''));
+
+    mailGonder := ss;
+
+    sonucStr := ss;
+    Sonuc := TStringList.Create;
+    ExtractStrings(['|'],[],PWideChar(sonucStr),Sonuc);
+
+    if sonuc[0] = '0000' then
+    begin
+      mailGonder := '0000';
+    end
+    else
+      ShowMessageSkin(Sonuc[0],'','','info');
+
+
+    if not Assigned(Mail) then
+      raise Exception.Create(LIB_DLL + ' içersinde EMailSend bulunamadý!');
+  finally
+    FreeLibrary(dllHandle);
+    sonuc.Free;
+  end;
+end;
 
 
 function FirmaBilgileri(sirketKodu : string) : string;
@@ -683,6 +756,13 @@ begin
   par :=  'Mavinoktabilgitek ' + datalar.AlpemixGrupAdi + ' ' + datalar.AlpemixGrupParola  + ' ' +  StringReplace((copy(merkezAdi(''),1,15) + ' - ' + datalar.username),' ','_',[rfReplaceAll]);
   ShellExecute(Handle,'open', pwidechar(filename),
                 pwidechar(par), nil, SW_SHOWNORMAL);
+end;
+
+procedure DestekTalep;
+begin
+  Application.CreateForm(TfrmDestekSorunBildir, frmDestekSorunBildir);
+  frmDestekSorunBildir.ShowModal;
+  frmDestekSorunBildir := nil;
 end;
 
 procedure ExceldenPersonelYukle;
