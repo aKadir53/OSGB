@@ -411,6 +411,7 @@ var
   xTExtObj : TcxTextEditKadir;
   xComboObj : TcxImageComboKadir;
   sSQL : String;
+  xEvt1, xEvt2 : TNotifyEvent;
 begin
   BeginTrans (DATALAR.ADOConnection2);
   try
@@ -434,8 +435,17 @@ begin
           sSQL := xComboObj.Filter;
           xComboObj.Filter := '(1 = 1)';
           xComboObj.Filter := sSQL;
-          xComboObj.EditValue := VarToStr (xTExtObj.EditValue);
-          xTExtObj.EditValue := '';
+          xEvt1 := xComboObj.Properties.OnEditValueChanged;
+          xEvt2 := xTExtObj.Properties.OnEditValueChanged;
+          xComboObj.Properties.OnEditValueChanged := nil;
+          xTExtObj.Properties.OnEditValueChanged := nil;
+          try
+            xComboObj.EditValue := VarToStr (xTExtObj.EditValue);
+            xTExtObj.EditValue := '';
+          finally
+            xComboObj.Properties.OnEditValueChanged := xEvt1;
+            xTExtObj.Properties.OnEditValueChanged := xEvt2;
+          end;
         end;
       end;
       2 : begin
