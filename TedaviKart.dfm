@@ -65,7 +65,10 @@ object frmTedaviBilgisi: TfrmTedaviBilgisi
               'Salon 5')
             Properties.OnChange = cxSalonBilgisiPropertiesChange
             TabOrder = 0
-            ExplicitHeight = 21
+            ExplicitLeft = 2
+            ExplicitTop = -2
+            ExplicitWidth = 229
+            ExplicitHeight = 51
             Width = 227
           end
         end

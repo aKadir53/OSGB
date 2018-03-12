@@ -121,6 +121,7 @@ const _TableName_ = 'Users';
       sirket = 3;
       dsp = 4;
 
+
 procedure TfrmUsers.PropertiesEditValueChanged(Sender: TObject);
 begin
    case TcxImageComboKadir(Sender).tag of
@@ -294,7 +295,7 @@ begin
 
   setDataStringB(self,'kullanici','Kullanici Adý',Kolon1,'',150,List,True,cxKullaniciAdi,'');
   setDataString(self,'ADISOYADI','Kullanýcý Tanýmý',Kolon1,'',250);
-  setDataString(self,'password','Þifre',Kolon1,'',150);
+  setDataString(self,'password','Þifre',Kolon1,'pass',150);
   TcxTextEditKadir (FindComponent ('password')).Properties.EchoMode := eemPassword;
   TcxTextEditKadir (FindComponent ('password')).Properties.PasswordChar := '*';
   setDataStringKontrol(self,txtSifreTekrar, 'txtSifreTekrar','Þifre Tekrarý',Kolon1,'',150);
@@ -384,6 +385,7 @@ begin
 
   addButton(self,nil,'btnYetkileriSil','','Yetkileri Sil',Kolon1,'gr1',120,YetkiAyarButtonsClick);
   addButton(self,nil,'btnYetkileriGruptanAl','','Yetkileri Gruptan Getir',Kolon1,'gr1',120,YetkiAyarButtonsClick);
+  addButton(self,nil,'btnSifreOlustur','','Þifreyi e-mail Gönder ',Kolon1,'pass',120,cxKaydetClick,9);
 
   UserSettings.Filtered := True;
   User_Menu_Settings.Filtered := True;
@@ -580,7 +582,28 @@ begin
 end;
 
 procedure TfrmUsers.cxKaydetClick(Sender: TObject);
+var
+  sql , p ,b: string;
+  c : char;
 begin
+
+  if TcxButton(sender).Tag = 9
+  then begin
+     c := chr(Random(65)+20);
+     if c in ['A'..'Z'] then b := c else b := '1';
+
+     p := b + inttostr(Random(15000));
+     sql := 'update Users set password = ' + QuotedStr(p) +
+                       ' where kullanici = ' + QuotedStr(TcxTextEditKadir(FindComponent('kullanici')).Text);
+     datalar.QueryExec(sql);
+
+     if mailGonder ('destek@noktayazilim.net' , 'Þifre Onaylama' , 'Þifreniz : ' + p)
+        = '0000'
+      then ShowMessageSkin('Þifreniz Mail adresinize Gönderildi','','','info')
+      else ShowMessageSkin('Gönderilemedi','','','info');
+    exit;
+  end;
+
   if TcxButton(sender).Tag = 0
   then
    if TcxButtonEditKadir(FindComponent('password')).Text <> txtSifreTekrar.Text
@@ -596,7 +619,9 @@ begin
       DATALAR.QueryExec('delete from UserMenuSettings where Kullanici = ' + QuotedStr(TcxButtonEditKadir (FindComponent('Kullanici')).Text));
       DATALAR.QueryExec('delete from UserSettings where Kullanici = ' + QuotedStr(TcxButtonEditKadir (FindComponent('Kullanici')).Text));
     end;
+
     inherited;
+
     if not cxKaydetResult then Exit;
 
     case TcxButton(sender).Tag  of
@@ -605,9 +630,11 @@ begin
 
           end;
       1 : begin
+
            // post;
            //ShowMessage('Ýptal');
-      end;
+          end;
+
     end;
   finally
     if cxKaydetResult then
