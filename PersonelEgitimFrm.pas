@@ -300,7 +300,7 @@ begin
   kombo.Filter := '';
   OrtakEventAta(kombo);
   setDataStringKontrol(self,kombo,'Egitimci','Eðitimci',kolon1,'',200);{}
-  //setDataString(self,'Egitimci','Eðitimci',Kolon1,'',100);
+  setDataString(self,'EgitimciX','Listede Olmayan Eðitimci',Kolon1,'',150, False, '', False, -100);
 
   kombo1 := TcxImageComboKadir.Create(self);
   kombo1.Conn := datalar.ADOConnection2;
@@ -408,24 +408,47 @@ end;
 procedure TfrmPersonelEgitim.cxKaydetClick(Sender: TObject);
 var
   xObj : TcxButtonEditKadir;
+  xTExtObj : TcxTextEditKadir;
+  xComboObj : TcxImageComboKadir;
+  sSQL : String;
 begin
-  //SirketKodx.Text := datalar.AktifSirket; giriþ formuna eklendi.
-  inherited;
-  //post ettikten sonra veritabanýndan Identity deðeri alýp edit kutusuna yazmasý için....
-  case TControl(sender).Tag  of
-    0 : begin
-      xObj := TcxButtonEditKadir (FindComponent('id'));
-      if IsNull (xObj.EditingValue) then
-      begin
-        xObj.Text := IntToStr (F_IDENTITY);
+  BeginTrans (DATALAR.ADOConnection2);
+  try
+    //SirketKodx.Text := datalar.AktifSirket; giriþ formuna eklendi.
+    inherited;
+    //post ettikten sonra veritabanýndan Identity deðeri alýp edit kutusuna yazmasý için....
+    case TControl(sender).Tag  of
+      0 : begin
+        xObj := TcxButtonEditKadir (FindComponent('id'));
+        if IsNull (xObj.EditingValue) then
+        begin
+          xObj.Text := IntToStr (F_IDENTITY);
+          ResetDetayDataset;
+        end;
+        xTExtObj := TcxTextEditKadir (FindComponent('EgitimciX'));
+        xComboObj := TcxImageComboKadir (FindComponent ('Egitimci'));
+        if not IsNull (VarToStr (xTExtObj.EditValue)) then
+        begin
+          sSQL := 'Update Egitimler SET Egitimci = ' + SQLValue (VarToStr (xTExtObj.EditValue)) + ' where id = ' + VarToStr (xObj.EditingValue) + '';
+          DATALAR.QueryExec(sSQL);
+          sSQL := xComboObj.Filter;
+          xComboObj.Filter := '(1 = 1)';
+          xComboObj.Filter := sSQL;
+          xComboObj.EditValue := VarToStr (xTExtObj.EditValue);
+          xTExtObj.EditValue := '';
+        end;
+      end;
+      2 : begin
+        xObj := TcxButtonEditKadir (FindComponent('id'));
+        xObj.Text := '';
         ResetDetayDataset;
       end;
     end;
-    2 : begin
-      xObj := TcxButtonEditKadir (FindComponent('id'));
-      xObj.Text := '';
-      ResetDetayDataset;
-    end;
+  finally
+    if cxKaydetResult then
+      CommitTrans (DATALAR.ADOConnection2)
+     else
+      RollbackTrans (DATALAR.ADOConnection2);
   end;
 end;
 
