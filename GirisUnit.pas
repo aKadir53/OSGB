@@ -129,7 +129,7 @@ type
       AButtonIndex: Integer);
     procedure KontrolEditValueClear;
     procedure sqlRunLoad;
-    procedure Yukle;
+    procedure Yukle;virtual;
     procedure Disabled(_form: TForm ; indexField : Boolean);
     procedure Enabled;
     procedure newButonVisible(durum : boolean);
@@ -302,6 +302,8 @@ const
                           ' where st.name = %s' +
                           'and isnull(sep.value,'''') <> ''''';
 
+  insertrecordViewLog = 'insert into recordViewLog (recordField,recordFieldValue,recordTable,vUser) ' +
+                        ' values(%s,%s,%s,%s)';
 var
   GirisForm: TGirisForm;
   _SQLRUN_ : string;
@@ -764,6 +766,8 @@ begin
      else
        sqlRun.SQL.Text := Format(SQL,[tablename,Fieldname+'='+#39+kod+#39]);
        sqlRun.Open;
+       sql := Format(insertrecordViewLog,[QuotedStr(Fieldname),QuotedStr(kod),QuotedStr(tablename),QuotedStr(datalar.username)]);
+       datalar.QueryExec(sql);
     end
     else begin
      sqlRun.SQL.Text := Format(SQL,[tablename,Fieldname+'='+#39+kod+#39]);
@@ -876,9 +880,13 @@ end;
 
 
 procedure TGirisForm.Yukle;
+var
+  sql : string;
 begin
-  sqlRun.SQL.Text := Format(_SqlSelect_,[_fields_,Tablename,indexFieldName]);
+  sqlRun.SQL.Text := Format(_SqlSelect_,[ifThen(_fields_='','*',_fields_),Tablename,indexFieldName]);
   sqlRun.Open;
+  sql := Format(insertrecordViewLog,[QuotedStr(indexFieldName),QuotedStr(_fields_),QuotedStr(Tablename),QuotedStr(datalar.username)]);
+  datalar.QueryExec(sql);
 end;
 
 
