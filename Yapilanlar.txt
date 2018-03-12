@@ -200,3 +200,9 @@ erhan erkan:
 1-) anamnez ekranýndan yeni reçete eklerken muayene protokol numarasýný reçeteye atmýyor. boþ kalýyor (düzelttik)
 2-) yeni muayene aç ekranýnda protokol numarasý gözükmüyor (protokol numarasý kutusunu ekledik)
 3-) yeni muayene iþleminde þube kartý protokol numarasý alanýný güncelleyebiliriz (protokol numarasý kutusunun altýna bu numaradan devam et seçeneði ekledik).
+
+merkez bilgisi tablosuna þahýs / osgb / Þirket alaný eklendi, deðer tablosu açýlýp foreign key eklendi
+
+get form class form init'te formcaption usergroup bilgisini alýp user'ýn group bilgisi ile karþýlaþtýrarak geçirmeme özelliði eklendi
+
+eðitimci dýþarýdan eklenebilir hale getirildi. hile yaptýk. Listede olmayan eðitimci diye kutu ekledik. Kayýt yapýlýnca listeye ekleniyor.
