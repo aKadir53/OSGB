@@ -283,6 +283,7 @@ var
   sFormCaption, sFormAltCaption, sFormUserGroup, sFormUserGroupDesc: String;
   bTamam : Boolean;
 begin
+  Result := nil;
   if not GetFormCaptionInfo (abs(FormTag), sFormCaption, sFormAltCaption, sFormUserGroup, sFormUserGroupDesc) then
     Exit;
   izinPrm := ifThen(izinPrm = '',sFormAltCaption,izinPrm);
@@ -292,7 +293,6 @@ begin
   then begin
       UserRightInsert(sFormCaption,izinPrm,datalar.username);
       ShowMessageSkin(sFormCaption,izinPrm + ' Ýþlemi Ýçin Yetkiniz Bulunmamaktadýr !','','info');
-      result := nil;
       exit;
   end;
   bTamam := False;
@@ -317,9 +317,6 @@ begin
      TagfrmFatura : frmFaturaDetay := TfrmFaturaDetay.Create(Tab);
      TagfrmSirketSozlesme : frmSirketSozlesme := TfrmSirketSozlesme.Create(Tab);
      TagfrmSirketSozlesmeler : frmSozlesmeler := TfrmSozlesmeler.Create(Tab);
-
-    else
-     result := nil;
   end;
   try
     if not (Form is TGirisForm) then
@@ -391,11 +388,11 @@ begin
    TGirisForm(Form).Tag := FormTag;
    TgirisForm(Form).Parent := Tab;
    TGirisForm(Form).BringToFront;
-   if TGirisForm(Form).Init(Form) = True
-   Then
-    result := TGirisForm(Form)
-   Else
-    result := nil;
+    if TGirisForm(Form).Init(Form) Then
+    begin
+     result := TGirisForm(Form);
+     bTamam := True;
+    end;
 end;
 
 
@@ -408,6 +405,7 @@ var
   sFormCaption2, sFormAltCaption2, sFormUserGroup2, sFormUserGroupDesc2: String;
   bTamam : Boolean;
 begin
+  result := nil;
   if not GetFormCaptionInfo (abs(FormTag), sFormCaption1, sFormAltCaption1, sFormUserGroup1, sFormUserGroupDesc1) then
     Exit;
   if not GetFormCaptionInfo (FormTag, sFormCaption2, sFormAltCaption2, sFormUserGroup2, sFormUserGroupDesc2) then
@@ -419,7 +417,6 @@ begin
   then begin
       UserRightInsert(sFormCaption2,izinPrm,datalar.username);
       ShowMessageSkin(sFormCaption2,izinPrm + ' Ýþlemi Ýçin Yetkiniz Bulunmamaktadýr !','','info');
-      result := nil;
       exit;
   end;
   bTamam := False;
@@ -446,8 +443,6 @@ begin
      TagfrmFatura : frmFaturaDetay := TfrmFaturaDetay.Create(Tab);
      TagfrmSirketSozlesme : frmSirketSozlesme := TfrmSirketSozlesme.Create(Tab);
      TagfrmSirketSozlesmeler : frmSozlesmeler := TfrmSozlesmeler.Create(Tab);
-    else
-     result := nil;
   end;
   try
     Form := TGirisForm(FormClassType(abs(FormTag)));
@@ -474,9 +469,7 @@ begin
     begin
       result := TGirisForm(Form);
       bTamam := True;
-    end
-    Else
-     result := nil;
+    end;
   finally
     if not bTamam and Assigned (Form) then FreeAndNil(Form);
   end;
@@ -488,6 +481,7 @@ var
   sFormCaption, sFormAltCaption, sFormUserGroup, sFormUserGroupDesc: String;
   bTamam : Boolean;
 begin
+   result := nil;
    if not GetFormCaptionInfo (abs(FormTag), sFormCaption, sFormAltCaption, sFormUserGroup, sFormUserGroupDesc) then
      Exit;
    izinPrm := ifThen(izinPrm = '',sFormAltCaption,izinPrm);
@@ -497,7 +491,6 @@ begin
    then begin
        UserRightInsert(sFormCaption,izinPrm,datalar.username);
        ShowMessageSkin(sFormCaption,izinPrm + ' Ýþlemi Ýçin Yetkiniz Bulunmamaktadýr !','','info');
-       result := nil;
        exit;
    end;
   bTamam := False;
@@ -538,9 +531,6 @@ begin
     TagfrmFatura : Application.CreateForm(TfrmFaturaDetay, frmFaturaDetay);
     TagfrmSirketSozlesme : Application.CreateForm(TfrmSirketSozlesme , frmSirketSozlesme);
     TagfrmSirketSozlesmeler : Application.CreateForm(TfrmSozlesmeler , frmSozlesmeler);
-
-    else
-      result := nil;
    end;
   try
     Form := TGirisForm(FormClassType(abs(FormTag)));
@@ -581,9 +571,7 @@ begin
     begin
       result := TGirisForm(Form);
       bTamam := True;
-    end
-    Else
-     result := nil
+    end;
   finally
     if not bTamam and Assigned (Form) then FreeAndNil(Form);
   end;
