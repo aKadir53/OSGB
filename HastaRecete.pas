@@ -816,24 +816,24 @@ begin
        if islem = ReceteYeni
        then begin
          ADO_Recete.Append;
-         ADO_Recete.FieldByName('dosyaNo').AsString := _dosyaNO_;
-         ADO_Recete.FieldByName('gelisNo').AsString := _gelisNo_;
-         ADO_Recete.FieldByName('gelisNo').AsString := AdoHastaGelis.FieldByName('gelisNo').AsString;
-         ADO_Recete.FieldByName('tarih').AsString := datalar.YeniRecete.Tarih;
-         ADO_Recete.FieldByName('ReceteTur').AsString := datalar.YeniRecete.ReceteTuru;
-         ADO_Recete.FieldByName('ReceteAltTur').AsString := datalar.YeniRecete.ReceteAltTuru;
-         ADO_Recete.FieldByName('doktor').AsString := datalar.YeniRecete.doktor;//+'-'+datalar.YeniRecete.doktorAdi;
-         ADO_Recete.FieldByName('ProtokolNo').AsString := datalar.YeniRecete.protokolNo;
-         ADO_Recete.FieldByName('ereceteNo').AsString := '0000';
-         ADO_Recete.FieldByName('WanIP').AsString := datalar.WanIp;
-         ADO_Recete.Post;
-
-
-
-      //   ADO_receteTani.Append;
-       //  ADO_ReceteTani.FieldByName('taniKodu').AsString := 'N18';
-      //   ADO_Recetetani.FieldByName('tani').AsString := 'Kronik Böbrek Yetmezliði';
-       //  ADO_receteTani.Post;
+         try
+           ADO_Recete.FieldByName('dosyaNo').AsString := _dosyaNO_;
+           ADO_Recete.FieldByName('gelisNo').AsString := _gelisNo_;
+           ADO_Recete.FieldByName('gelisNo').AsString := AdoHastaGelis.FieldByName('gelisNo').AsString;
+           ADO_Recete.FieldByName('tarih').AsString := datalar.YeniRecete.Tarih;
+           ADO_Recete.FieldByName('ReceteTur').AsString := datalar.YeniRecete.ReceteTuru;
+           ADO_Recete.FieldByName('ReceteAltTur').AsString := datalar.YeniRecete.ReceteAltTuru;
+           ADO_Recete.FieldByName('doktor').AsString := datalar.YeniRecete.doktor;//+'-'+datalar.YeniRecete.doktorAdi;
+           ADO_Recete.FieldByName('ProtokolNo').AsString := datalar.YeniRecete.protokolNo;
+           ADO_Recete.FieldByName('ereceteNo').AsString := '0000';
+           ADO_Recete.FieldByName('WanIP').AsString := datalar.WanIp;
+           ADO_Recete.Post;
+         except
+           ADO_Recete.Cancel;
+           raise;
+         end;
+         ADO_receteAcikla.Close;
+         ADO_receteAcikla.Open;
        end;
     end;
 
