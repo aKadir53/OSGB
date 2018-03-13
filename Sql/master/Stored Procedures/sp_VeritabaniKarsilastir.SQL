@@ -7,7 +7,7 @@ begin
   declare @sql varchar (max)
   set @sql = 
     'set nocount on' + char (13) + char (10) +
-    'select identity (int, 1, 1) id, min (DBName) DBName, TableName, FieldName, '+case when IsNull (@ignoreColid, 0) = 1 then '' else 'colid, ' end +'fieldtype, sum (x) x, FieldString, IsIdentity, IsComputed' + char (13) + char (10) +
+    'select identity (int, 1, 1) id, min (DBName) DBName, TableName, FieldName, '+case when IsNull (@ignoreColid, 0) = 1 then '' else 'colid, ' end +'fieldtype, sum (x) x, FieldString, Formula, IsIdentity, IsComputed' + char (13) + char (10) +
     'into #t ' + char (13) + char (10) +
     'from ' + char (13) + char (10) +
     '(' + char (13) + char (10) +
@@ -17,7 +17,7 @@ begin
     'select 1 x, ''' + @Veritabani2 +''' DBName, * ' + char (13) + char (10) +
     'from ' + @Veritabani2 +'.dbo.vw_sys2' + char (13) + char (10) +
     ') w' + char (13) + char (10) +
-    'group by TableName, FieldName, '+case when IsNull (@ignoreColid, 0) = 1 then '' else 'colid, ' end +'fieldtype, FieldString, IsIdentity, IsComputed' + char (13) + char (10) +
+    'group by TableName, FieldName, '+case when IsNull (@ignoreColid, 0) = 1 then '' else 'colid, ' end +'fieldtype, FieldString, Formula, IsIdentity, IsComputed' + char (13) + char (10) +
     'having sum (x) <> 0' + char (13) + char (10) +
     'order by TableName, FieldName, '+case when IsNull (@ignoreColid, 0) = 1 then '' else 'colid, ' end +'x' + char (13) + char (10) +
     'set nocount off' + char (13) + char (10) +
