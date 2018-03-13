@@ -14,7 +14,7 @@ union all
 SELECT tanimi Tanimi1, Tanimi + ' (sp)' Tanimi2
 from dbo.DigerSaglikPersonel
 union all
-Select Egitimci, Egitimci
+Select Egitimci Tanimi1, Egitimci + ' (Dýþ E.)' Tanimi2
 from dbo.Egitimler ee
 where not exists (Select 1 from dbo.DoktorlarT tt where tt.tanimi = ee.Egitimci)
   and not exists (Select 1 from dbo.IGU tt where tt.tanimi = ee.Egitimci)

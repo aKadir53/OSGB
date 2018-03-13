@@ -13,11 +13,14 @@ select so.name TableName, sc.name FieldName, sc.colid, sc.length, sc.prec, sc.sc
   end + 
   case when sc.status & 128 = 0 then '' else ' IDENTITY (1, 1)' end +
   case when sc.isNullable = 0 then ' NOT NULL' else '' END /*+
-  CASE WHEN sc.CollationId <> 0 and not sc.collation is null then ' COLLATE ' + sc.collation ELSE '' end */ FieldString--, sc.*
+  CASE WHEN sc.CollationId <> 0 and not sc.collation is null then ' COLLATE ' + sc.collation ELSE '' end */ FieldString,
+  scc.Text Formula
 from sysobjects so
 inner join syscolumns sc on sc.id = so.id 
   and so.xtype = 'U'
 inner join systypes st on st.xusertype = sc.xusertype
+left join syscomments scc on scc.id = sc.id 
+  and scc.number = sc.colid
 GO
 exec sp_vw_sys_upd 'V ', 'dbo', 'VW_Sys2'
 GO
