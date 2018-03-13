@@ -430,8 +430,14 @@ begin
         xComboObj := TcxImageComboKadir (FindComponent ('Egitimci'));
         if not IsNull (VarToStr (xTExtObj.EditValue)) then
         begin
-          sSQL := 'Update Egitimler SET Egitimci = ' + SQLValue (VarToStr (xTExtObj.EditValue)) + ' where id = ' + VarToStr (xObj.EditingValue) + '';
-          DATALAR.QueryExec(sSQL);
+          sqlRun.Edit;
+          try
+            sqlRun.FieldByName('Egitimci').AsString := VarToStr (xTExtObj.EditValue);
+            sqlRun.Post;
+          except
+            sqlRun.Cancel;
+            raise;
+          end;
           sSQL := xComboObj.Filter;
           xComboObj.Filter := '(1 = 1)';
           xComboObj.Filter := sSQL;
