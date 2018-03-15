@@ -260,12 +260,25 @@ begin
   end;
 end;
 
-
-
-
 procedure TAnaForm.btRefreshClick(Sender: TObject);
+var
+  sTmp : String;
 begin
-  sdfsdf
+  sTmp := Sirketler.Filter;
+  Sirketler.Filter := '(2 = 3)';
+  Sirketler.Filter := sTmp;
+  datalar.ReceteKullanimYollari.active := False;
+  datalar.Ado_Doktorlar.Active := False;
+  datalar.Ado_IGU.Active := False;
+  datalar.Ado_DSP.Active := False;
+  datalar.ADO_TehlikeSiniflari.Active := False;
+  datalar.KontrolZorunlu.Active := False;
+  datalar.ReceteKullanimYollari.active := True;
+  datalar.Ado_Doktorlar.Active := True;
+  datalar.Ado_IGU.Active := True;
+  datalar.Ado_DSP.Active := True;
+  datalar.ADO_TehlikeSiniflari.Active := True;
+  datalar.KontrolZorunlu.Active := True;
 end;
 
 procedure TAnaForm.cxButton1Click(Sender: TObject);
@@ -284,8 +297,8 @@ end;
 
 procedure TAnaForm.cxScheduler1InitEventImages(Sender: TcxCustomScheduler;
   AEvent: TcxSchedulerControlEvent; AImages: TcxSchedulerEventImages);
-var
-  intValue  : Integer;
+//var
+//  intValue  : Integer;
 begin
   case integer(AEvent.TaskStatus) of
    0 : AImages.Add(77);
@@ -315,8 +328,8 @@ begin
 end;
 
 procedure TAnaForm.FormCreate(Sender: TObject);
-var
- sube ,where : string;
+//var
+// sube ,where : string;
 //  i,j : integer;
 begin
  // Res Dosya okuma
