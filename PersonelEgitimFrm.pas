@@ -63,7 +63,7 @@ var
 
 implementation
 
-uses StrUtils;
+uses StrUtils, TransUtils;
 
 {$R *.dfm}
 
