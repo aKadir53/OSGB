@@ -83,6 +83,8 @@ type
     Sirketler: TcxImageComboKadir;
     Subeler: TcxImageComboKadir;
     cxSchedulerDBStorage2: TcxSchedulerDBStorage;
+    xTmpPanel: TPanel;
+    btRefresh: TcxButtonKadir;
     procedure FormCreate(Sender: TObject);
     procedure ToolButton1Click(Sender: TObject);
     procedure FormResize(Sender: TObject);
@@ -116,6 +118,7 @@ type
     procedure cxScheduler1InitEventImages(Sender: TcxCustomScheduler;
       AEvent: TcxSchedulerControlEvent; AImages: TcxSchedulerEventImages);
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
+    procedure btRefreshClick(Sender: TObject);
   private
     { Private declarations }
   public
@@ -259,6 +262,11 @@ end;
 
 
 
+
+procedure TAnaForm.btRefreshClick(Sender: TObject);
+begin
+  sdfsdf
+end;
 
 procedure TAnaForm.cxButton1Click(Sender: TObject);
 begin
@@ -836,3 +844,4 @@ begin
 end;
 
 end.
+
