@@ -40,6 +40,7 @@ uses
   MedulaKurumSifreDegis in 'MedulaKurumSifreDegis.pas' {KurumSifreDegisForm},
   hizliKayit in 'hizliKayit.pas' {frmHizliKayit},
   FirmaKart in 'FirmaKart.pas' {frmFirmaKart},
+  MerkezBilgisi in 'MerkezBilgisi.pas' {frmMerkezBilgisi},
   Receteler in 'Receteler.pas' {frmReceteler},
   receteSablonlari in 'receteSablonlari.pas' {frmReceteSablon},
   Update_G in 'Update_G.pas' {frmUpdate},
