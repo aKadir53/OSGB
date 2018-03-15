@@ -63,7 +63,7 @@ var
 
 implementation
 
-uses StrUtils;
+uses StrUtils, TransUtils;
 
 {$R *.dfm}
 
@@ -284,11 +284,11 @@ begin
   dateEdit := TcxDateEditKadir.Create(self);
   dateEdit.ValueTip := tvDate;
   dateEdit.Properties.Kind := ckdatetime;
-  setDataStringKontrol(self,dateEdit, 'BaslamaTarihi','Baþlama Zamaný',Kolon1,'',145);
+  setDataStringKontrol(self,dateEdit, 'BaslamaTarihi','Baþlama Zamaný',Kolon1,'tar',145);
 
   dateEdit := TcxDateEditKadir.Create(self);
   dateEdit.ValueTip := tvDate;
-  setDataStringKontrol(self,dateEdit, 'BitisTarihi','Bitiþ Tarihi',Kolon1,'',100);
+  setDataStringKontrol(self,dateEdit, 'BitisTarihi','Bitiþ Tarihi',Kolon1,'tar',100);
 
   setDataString(self,'Sure','Süre (Saat)',Kolon1,'',100);
   kombo := TcxImageComboKadir.Create(self);
@@ -300,7 +300,7 @@ begin
   kombo.Filter := '';
   OrtakEventAta(kombo);
   setDataStringKontrol(self,kombo,'Egitimci','Eðitimci',kolon1,'',200);{}
-  setDataString(self,'EgitimciX','Listede Olmayan Eðitimci',Kolon1,'',150, False, '', False, -100);
+  setDataString(self,'EgitimciX','Listede Olmayan Eðitimci',Kolon1,'',200, False, '', False, -100);
 
   kombo1 := TcxImageComboKadir.Create(self);
   kombo1.Conn := datalar.ADOConnection2;
@@ -332,8 +332,8 @@ begin
   setDataString(self,'EgitimYeri','Eðitim Yeri',Kolon1,'',100);
   setDataString(self,'SertifikaNo','Sertifika No.',Kolon1,'',100);
   setDataStringMemo(self,'EgitimIcerigi','Eðitim Açýklama',Kolon1,'',400, 60);
-  setDataString(self,'EgitimUcreti','Eðitim Ücreti',Kolon1,'',100);
-  setDataString(self,'EgitimUcretParaBirimi','Para Birimi',Kolon1,'',100);
+  setDataString(self,'EgitimUcreti','Eðitim Ücreti',Kolon1,'ecr',100);
+  setDataString(self,'EgitimUcretParaBirimi','Para Birimi',Kolon1,'ecr',50);
 
   kombo := TcxImageComboKadir.Create(self);
   kombo.Conn := nil;
@@ -341,7 +341,7 @@ begin
   kombo.ItemList := '0;Hayýr,1;Evet';
   kombo.Filter := '';
   OrtakEventAta(kombo);
-  setDataStringKontrol(self,kombo,'EgitimUcretiOdendi','Ödendi mi?',kolon1,'',120);
+  setDataStringKontrol(self,kombo,'EgitimUcretiOdendi','Ödendi mi?',kolon1,'ecr',100);
 
   sirketlerxx := TcxImageComboKadir.Create(self);
   sirketlerxx.Conn := Datalar.ADOConnection2;

@@ -246,3 +246,4 @@ merkez bilgisi tablosu için ekran
 ana form''daki merkez bilgisinin solundaki sabit OSGB yazýsýný bu duruma göre göster (OSGB dýþýndaki boþ olabilir.)
 loglama için bakýlacak
 
+ana ünite þirket kombosu yanýna refresh düðmesi koyalým.
