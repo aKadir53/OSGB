@@ -19,6 +19,13 @@ from dbo.Egitimler ee
 where not exists (Select 1 from dbo.DoktorlarT tt where tt.tanimi = ee.Egitimci)
   and not exists (Select 1 from dbo.IGU tt where tt.tanimi = ee.Egitimci)
   and not exists (Select 1 from dbo.DigerSaglikPersonel tt where tt.tanimi = ee.Egitimci)
+union all
+Select Egitimci2 Tanimi1, Egitimci2 + ' (Dýþ E.)' Tanimi2
+from dbo.Egitimler ee
+where not exists (Select 1 from dbo.DoktorlarT tt where tt.tanimi = ee.Egitimci)
+  and not exists (Select 1 from dbo.IGU tt where tt.tanimi = ee.Egitimci)
+  and not exists (Select 1 from dbo.DigerSaglikPersonel tt where tt.tanimi = ee.Egitimci)
+  and not exists (Select 1 from dbo.Egitimler tt where tt.Egitimci = ee.Egitimci2)
 GO
 -- deðiþiklik takip sistemi güncellemesi
 exec sp_vw_sys_upd 'V ', 'dbo', 'Egitimci_view'
