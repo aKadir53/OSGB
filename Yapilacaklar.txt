@@ -246,4 +246,9 @@ merkez bilgisi tablosu için ekran
 ana form''daki merkez bilgisinin solundaki sabit OSGB yazýsýný bu duruma göre göster (OSGB dýþýndaki boþ olabilir.)
 loglama için bakýlacak
 
-ana ünite þirket kombosu yanýna refresh düðmesi koyalým.
+ana ünite þirket kombosu yanýna refresh düðmesi koyalým. datalar.doktorkodu bilgisini de tazeleyelim
+tetkik ekle sýrasýnda galiba, KSATISFxx alan hatasý çýktý
+mobil uygulamada log tablolarýnda hep SRV yazýyor ve sunucu IP'si var. loginlog'da kayýt yok
+eðitimden sonra ölçme deðerlendirme formu, sýnav sonuçlarý giriþ ekraný
+eðitim formuna eðitimci 2 alaný
+yangýn tüpü, asansör, kompresör gibi peryodik bakým gerektiren cihazlarýn muayene takipleri
