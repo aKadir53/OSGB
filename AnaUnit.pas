@@ -263,6 +263,7 @@ end;
 procedure TAnaForm.btRefreshClick(Sender: TObject);
 var
   sTmp : String;
+  ado : TADOQuery;
 begin
   sTmp := Sirketler.Filter;
   Sirketler.Filter := '(2 = 3)';
@@ -279,6 +280,22 @@ begin
   datalar.Ado_DSP.Active := True;
   datalar.ADO_TehlikeSiniflari.Active := True;
   datalar.KontrolZorunlu.Active := True;
+  ado := TADOQuery.Create (Self);
+  try
+    ado.Connection := DATALAR.ADOConnection2;
+    ado.SQL.Text := 'Select Doktor from Users where Kullanici = ' + SQLValue(DATALAR.username);
+    ado.Open;
+    try
+      if not ado.Eof then
+        DATALAR.doktorKodu := ado.FieldByName('doktor').AsString
+       else
+        DATALAR.doktorKodu := '';
+    finally
+      ado.Close;
+    end;
+  finally
+    ado.Free;
+  end;
 end;
 
 procedure TAnaForm.cxButton1Click(Sender: TObject);
