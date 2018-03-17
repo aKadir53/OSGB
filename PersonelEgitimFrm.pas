@@ -299,8 +299,19 @@ begin
   kombo.BosOlamaz := True;
   kombo.Filter := '';
   OrtakEventAta(kombo);
-  setDataStringKontrol(self,kombo,'Egitimci','Eðitimci',kolon1,'',200);{}
-  setDataString(self,'EgitimciX','Listede Olmayan Eðitimci',Kolon1,'',200, False, '', False, -100);
+  setDataStringKontrol(self,kombo,'Egitimci','Eðitimci 1',kolon1,'eg1',180);{}
+  setDataString(self,'EgitimciX','Listede Olmayan Eðitimci',Kolon1,'eg1',140, False, '', False, -100);
+
+  kombo := TcxImageComboKadir.Create(self);
+  kombo.Conn := Datalar.ADOConnection2;
+  kombo.TableName := 'Egitimci_view';
+  kombo.ValueField := 'tanimi1';
+  kombo.DisplayField := 'tanimi2';
+  kombo.BosOlamaz := True;
+  kombo.Filter := '';
+  OrtakEventAta(kombo);
+  setDataStringKontrol(self,kombo,'Egitimci2','Eðitimci 2',kolon1,'eg2',180);{}
+  setDataString(self,'Egitimci2X','Listede Olmayan Eðitimci',Kolon1,'eg2',140, False, '', False, -100);
 
   kombo1 := TcxImageComboKadir.Create(self);
   kombo1.Conn := datalar.ADOConnection2;
@@ -408,10 +419,10 @@ end;
 procedure TfrmPersonelEgitim.cxKaydetClick(Sender: TObject);
 var
   xObj : TcxButtonEditKadir;
-  xTExtObj : TcxTextEditKadir;
-  xComboObj : TcxImageComboKadir;
+  xTExtObj1, xTExtObj2 : TcxTextEditKadir;
+  xComboObj1, xComboObj2 : TcxImageComboKadir;
   sSQL : String;
-  xEvt1, xEvt2 : TNotifyEvent;
+  xEvt11, xEvt12, xEvt21, xEvt22 : TNotifyEvent;
 begin
   BeginTrans (DATALAR.ADOConnection2);
   try
@@ -426,31 +437,47 @@ begin
           xObj.Text := IntToStr (F_IDENTITY);
           ResetDetayDataset;
         end;
-        xTExtObj := TcxTextEditKadir (FindComponent('EgitimciX'));
-        xComboObj := TcxImageComboKadir (FindComponent ('Egitimci'));
-        if not IsNull (VarToStr (xTExtObj.EditValue)) then
+        xTExtObj1 := TcxTextEditKadir (FindComponent('EgitimciX'));
+        xComboObj1 := TcxImageComboKadir (FindComponent ('Egitimci'));
+        xTExtObj2 := TcxTextEditKadir (FindComponent('Egitimci2X'));
+        xComboObj2 := TcxImageComboKadir (FindComponent ('Egitimci2'));
+        if (not IsNull (VarToStr (xTExtObj1.EditValue))) or (not IsNull (VarToStr (xTExtObj2.EditValue))) then
         begin
           sqlRun.Edit;
           try
-            sqlRun.FieldByName('Egitimci').AsString := VarToStr (xTExtObj.EditValue);
+            if not IsNull (VarToStr (xTExtObj1.EditValue)) then
+              sqlRun.FieldByName('Egitimci').AsString := VarToStr (xTExtObj1.EditValue);
+            if not IsNull (VarToStr (xTExtObj2.EditValue)) then
+              sqlRun.FieldByName('Egitimci2').AsString := VarToStr (xTExtObj2.EditValue);
             sqlRun.Post;
           except
             sqlRun.Cancel;
             raise;
           end;
-          sSQL := xComboObj.Filter;
-          xComboObj.Filter := '(1 = 1)';
-          xComboObj.Filter := sSQL;
-          xEvt1 := xComboObj.Properties.OnEditValueChanged;
-          xEvt2 := xTExtObj.Properties.OnEditValueChanged;
-          xComboObj.Properties.OnEditValueChanged := nil;
-          xTExtObj.Properties.OnEditValueChanged := nil;
+          sSQL := xComboObj1.Filter;
+          xComboObj1.Filter := '(1 = 2)';
+          xComboObj1.Filter := sSQL;
+          sSQL := xComboObj2.Filter;
+          xComboObj2.Filter := '(1 = 2)';
+          xComboObj2.Filter := sSQL;
+          xEvt11 := xComboObj1.Properties.OnEditValueChanged;
+          xEvt21 := xTExtObj1.Properties.OnEditValueChanged;
+          xEvt12 := xComboObj2.Properties.OnEditValueChanged;
+          xEvt22 := xTExtObj2.Properties.OnEditValueChanged;
+          xComboObj1.Properties.OnEditValueChanged := nil;
+          xTExtObj1.Properties.OnEditValueChanged := nil;
+          xComboObj2.Properties.OnEditValueChanged := nil;
+          xTExtObj2.Properties.OnEditValueChanged := nil;
           try
-            xComboObj.EditValue := VarToStr (xTExtObj.EditValue);
-            xTExtObj.EditValue := '';
+            xComboObj1.EditValue := VarToStr (xTExtObj1.EditValue);
+            xComboObj2.EditValue := VarToStr (xTExtObj2.EditValue);
+            xTExtObj1.EditValue := '';
+            xTExtObj2.EditValue := '';
           finally
-            xComboObj.Properties.OnEditValueChanged := xEvt1;
-            xTExtObj.Properties.OnEditValueChanged := xEvt2;
+            xComboObj1.Properties.OnEditValueChanged := xEvt11;
+            xTExtObj1.Properties.OnEditValueChanged := xEvt21;
+            xComboObj2.Properties.OnEditValueChanged := xEvt12;
+            xTExtObj2.Properties.OnEditValueChanged := xEvt22;
           end;
         end;
       end;
