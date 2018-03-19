@@ -285,6 +285,7 @@ function FormINIT(FormTag : Integer;MidiForm : TForm;
 var
   Form : TGirisForm;
   sFormCaption, sFormAltCaption, sFormUserGroup, sFormUserGroupDesc: String;
+  bTamam : Boolean;
 begin
    if not GetFormCaptionInfo (abs(FormTag), sFormCaption, sFormAltCaption, sFormUserGroup, sFormUserGroupDesc) then
      Exit;
@@ -295,11 +296,10 @@ begin
    then begin
        UserRightInsert(sFormCaption,izinPrm,datalar.username);
        ShowMessageSkin(sFormCaption,izinPrm + ' Ýþlemi Ýçin Yetkiniz Bulunmamaktadýr !','','info');
-       Tab.Free;
        result := nil;
        exit;
    end;
-
+  bTamam := False;
    case abs(FormTag) of
       TagfrmHastaKart : frmHastaKart := TfrmHastaKart.Create(Tab);
       TagfrmFirmaKart : frmFirmaKart := TfrmFirmaKart.Create(Tab);
@@ -328,7 +328,7 @@ begin
      else
       result := nil;
    end;
-
+  try
    if not (Form is TGirisForm) then
    begin
      Form.BorderStyle := bsToolWindow;
@@ -374,11 +374,16 @@ begin
    TGirisForm(Form).Tag := FormTag;
    TgirisForm(Form).Parent := Tab;
    TGirisForm(Form).BringToFront;
-   if TGirisForm(Form).Init(Form) = True
-   Then
-    result := TGirisForm(Form)
+    if TGirisForm(Form).Init(Form) Then
+    begin
+     result := TGirisForm(Form);
+     bTamam := True;
+    end
    Else
     result := nil;
+  finally
+    if not bTamam and Assigned (Form) then FreeAndNil(Form);
+end;
 end;
 
 
@@ -389,6 +394,7 @@ var
   Form : TGirisForm;
   sFormCaption1, sFormAltCaption1, sFormUserGroup1, sFormUserGroupDesc1: String;
   sFormCaption2, sFormAltCaption2, sFormUserGroup2, sFormUserGroupDesc2: String;
+  bTamam : Boolean;
 begin
    if not GetFormCaptionInfo (abs(FormTag), sFormCaption1, sFormAltCaption1, sFormUserGroup1, sFormUserGroupDesc1) then
      begin
@@ -408,11 +414,10 @@ begin
    then begin
        UserRightInsert(sFormCaption2,izinPrm,datalar.username);
        ShowMessageSkin(sFormCaption2,izinPrm + ' Ýþlemi Ýçin Yetkiniz Bulunmamaktadýr !','','info');
-       Tab.Free;
        result := nil;
        exit;
    end;
-
+  bTamam := False;
    case abs(FormTag) of
       TagfrmHastaKart : frmHastaKart := TfrmHastaKart.Create(Tab);
       TagfrmFirmaKart : frmFirmaKart := TfrmFirmaKart.Create(Tab);
@@ -442,8 +447,7 @@ begin
      else
       result := nil;
    end;
-
-
+  try
    Form := TGirisForm(FormClassType(abs(FormTag)));
    Tab.Caption := sFormAltCaption1;
    TGirisForm(Form).cxTab.Tabs[0].Caption := Tab.Caption;
@@ -464,17 +468,23 @@ begin
    TGirisForm(Form).Tag := FormTag;
    TgirisForm(Form).Parent := Tab;
    TGirisForm(Form).BringToFront;
-   if TGirisForm(Form).Init(Form) = True
-   Then
-    result := TGirisForm(Form)
+    if TGirisForm(Form).Init(Form) Then
+    begin
+      result := TGirisForm(Form);
+      bTamam := True;
+    end
    Else
     result := nil;
+  finally
+    if not bTamam and Assigned (Form) then FreeAndNil(Form);
+end;
 end;
 
 function FormINIT(FormTag : Integer; Value : TGirisFormRecord;ik : izinKontrol = ikHayir;izinPrm : string = '') : TGirisForm;
 var
   Form : TGirisForm;
   sFormCaption, sFormAltCaption, sFormUserGroup, sFormUserGroupDesc: String;
+  bTamam : Boolean;
 begin
    if not GetFormCaptionInfo (abs(FormTag), sFormCaption, sFormAltCaption, sFormUserGroup, sFormUserGroupDesc) then
      begin
@@ -491,7 +501,7 @@ begin
        result := nil;
        exit;
    end;
-
+  bTamam := False;
   case abs(FormTag) of
     TagfrmFirmaKart : Application.CreateForm(TfrmFirmaKart,frmFirmaKart);
     TagfrmPopupDBGridForm,TagfrmBolum,TagfrmBirim,TagfrmSube,TagFirmaCalismalari: Application.CreateForm(TfrmPopupDBGridForm , frmPopupDBGridForm);
@@ -536,7 +546,7 @@ begin
     else
       result := nil;
    end;
-
+  try
   Form := TGirisForm(FormClassType(abs(FormTag)));
 
   if not (Form is TGirisForm) then
@@ -584,12 +594,16 @@ begin
   TGirisForm(Form).cxTab.Tabs[0].ImageIndex := FormTabImageIndex(abs(FormTag));
 
   TGirisForm(Form).Tag := FormTag;
-   if TGirisForm(Form).Init(Form) = True
-   Then
-    result := TGirisForm(Form)
+    if TGirisForm(Form).Init(Form) = True Then
+    begin
+      result := TGirisForm(Form);
+      bTamam := True;
+    end
    Else
-    result := nil;
-
+     result := nil
+  finally
+    if not bTamam and Assigned (Form) then FreeAndNil(Form);
+end;
 end;
 
 
