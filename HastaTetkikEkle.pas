@@ -288,17 +288,25 @@ begin
    if length(List) > 0 then
    begin
      ADO_Tetkikler.Append;
-     ADO_Tetkikler.FieldByName('dosyaNo').AsString := _dosyaNO_;
-     ADO_Tetkikler.FieldByName('gelisNo').AsString := _gelisNO_;
-     ADO_Tetkikler.FieldByName('TARIH').AsString := NoktasizTarih(_provizyonTarihi_);
-     ADO_Tetkikler.FieldByName('isteyenDoktor').AsString := _Doktor_;
-     ADO_Tetkikler.FieldByName('adet').AsInteger := 1;
-     ADO_Tetkikler.FieldByName('code').AsString := List[0].kolon1;
-     ADO_Tetkikler.FieldByName('name1').AsString := List[0].kolon2;
-     ADO_Tetkikler.FieldByName('tip').AsString := List[0].kolon3;
-     ADO_Tetkikler.FieldByName('SATISF').AsString := List[0].kolon4;
+     try
+       ADO_Tetkikler.FieldByName('dosyaNo').AsString := _dosyaNO_;
+       ADO_Tetkikler.FieldByName('gelisNo').AsString := _gelisNO_;
+       ADO_Tetkikler.FieldByName('TARIH').AsString := NoktasizTarih(_provizyonTarihi_);
+       if IsNull (_Doktor_) then
+         ADO_Tetkikler.FieldByName('isteyenDoktor').Clear
+        else
+         ADO_Tetkikler.FieldByName('isteyenDoktor').AsString := _Doktor_;
+       ADO_Tetkikler.FieldByName('adet').AsInteger := 1;
+       ADO_Tetkikler.FieldByName('code').AsString := List[0].kolon1;
+       ADO_Tetkikler.FieldByName('name1').AsString := List[0].kolon2;
+       ADO_Tetkikler.FieldByName('tip').AsString := List[0].kolon3;
+       ADO_Tetkikler.FieldByName('SATISF').AsString := List[0].kolon4;
 
-     ADO_Tetkikler.Post;
+       ADO_Tetkikler.Post;
+     except
+       ADO_Tetkikler.Cancel;
+       raise;
+     end;
    end;
 end;
 

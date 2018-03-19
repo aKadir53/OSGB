@@ -497,6 +497,7 @@ type
    ReceteSatir : TReceteSatir;
    ReceteAciklama : TAck;
    YeniRecete : TYeniRecete;
+   Risk : TRiskRecord;
    SeansOlusturPrm : TSeansOlusturPrm;
    TeleEkg : TTeleEKG;
    yardimciIslemMethod: string;
@@ -522,6 +523,12 @@ type
    DonemSonlandir :string;
    ButtonEditSecimlist : ArrayListeSecimler;
    aSahaDenetimVeri : TSahaDenetimler;
+   eFaturaUrl : string;
+   portalUrl : string;
+   efaturaUsername : string;
+   efaturaSifre : string;
+   portalUser : string;
+   portalSifre : string;
 
    function QuerySelect (Q: TADOQuery; sql:string) : Boolean;overload;
   // function QuerySelect (sql:string;Q: TADOQuery = nil) : Boolean;overload;
@@ -673,6 +680,24 @@ begin
         begin
           receteURL := WebErisimBilgi('MDL','15');
         end;
+
+        if WebErisimBilgi('EF','00') = 'Gerçek'
+        Then begin
+          efaturaURL := WebErisimBilgi('EF','02');
+          efaturaUsername := WebErisimBilgi('EF','03');
+          efaturaSifre := WebErisimBilgi('EF','04');
+        end
+        Else
+        begin
+          efaturaURL := WebErisimBilgi('EF','05');
+          efaturaUsername := WebErisimBilgi('EF','06');
+          efaturaSifre := WebErisimBilgi('EF','07');
+        end;
+        portalURL := WebErisimBilgi('EF','08');
+        portalUSer := WebErisimBilgi('EF','09');
+        portalSifre := WebErisimBilgi('EF','10');
+
+
         if not UpdateThermo (3, iThermo, 'Kurum Tesis Kodu') then Exit;
         _tesisKodu := WebErisimBilgi('99','00');
         _Kurumkod := strtoint(_tesisKodu);
