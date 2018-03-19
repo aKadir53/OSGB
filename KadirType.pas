@@ -463,6 +463,31 @@ type
     F_FaturaNO_ : string;
   End;
 
+type
+  TRiskRecord = Record
+    SirketRiskID : string;
+    Bolum : Variant;
+    TehlikeKaynagi : Variant;
+    Tehlike : Variant;
+    Risk_tanim : Variant;
+    Onlemler : string;
+    Olasilik : Variant;
+    Frekans : Variant;
+    Siddet : Variant;
+    Risk : Variant;
+    RDS : Variant;
+    MevcutOnlem : string;
+    Sorumlu : string;
+    Termin : string;
+    Gerceklesme : Variant;
+    Olasilik_2 : Variant;
+    Frekans_2 : Variant;
+    Siddet_2 : Variant;
+    Risk_2 : Variant;
+    RDS_2 : Variant;
+    yasalDayanak : string;
+  End;
+
   TSifreDegistir = record
     KullaniciAdi : String;
     Sifre : String;
@@ -563,7 +588,9 @@ Const
   TagfrmDigerSaglikPers = 790;
   TagfrmSirketSozlesme = 800;
   TagfrmSirketSozlesmeler = 810;
-
+  TagfrmCariHareketGiris = 820;
+  TagfrmCariHesapEkstre = 830;
+  TagfrmRDS = 840;
 
   ExceleGonder = 9997;
   SeansTarihiUpdate = 0;
@@ -608,6 +635,8 @@ Const
   faturaYazdir = 4;
   faturaE_Arsiv = 5;
   sozlesmedenFatura = 6;
+  yeniRisk = 27;
+  riskDuzenle = 28;
 
 
   sp_HastaGelis = 'exec sp_HastaGelisleri ';
