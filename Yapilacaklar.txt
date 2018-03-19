@@ -252,3 +252,5 @@ mobil uygulamada log tablolarýnda hep SRV yazýyor ve sunucu IP'si var. loginlog'
 eðitimden sonra ölçme deðerlendirme formu, sýnav sonuçlarý giriþ ekraný
 eðitim formuna eðitimci 2 alaný
 yangýn tüpü, asansör, kompresör gibi peryodik bakým gerektiren cihazlarýn muayene takipleri
+
+þube tablosuna sanayi sitesi veya semt ismi giriþi için alan açýlmasý 

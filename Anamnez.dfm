@@ -15,7 +15,7 @@ object frmAnamnez: TfrmAnamnez
   TextHeight = 13
   object IseGirisMuayene: TcxGridKadir
     Left = 48
-    Top = 166
+    Top = 142
     Width = 513
     Height = 109
     Font.Charset = DEFAULT_CHARSET

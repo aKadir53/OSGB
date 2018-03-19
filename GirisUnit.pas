@@ -415,6 +415,16 @@ begin
 
            end;
 
+       TagfrmCariHesapEkstre :
+           begin
+             sql := 'exec sp_CariHesapExtresi ' + QuotedStr(vartostr(KurumTipTopPanel.EditValue)) + ',' +
+                                                  txtTopPanelTarih1.GetSQLValue + ',' +
+                                                  txtTopPanelTarih2.GetSQLValue;
+
+
+           end;
+
+
      end;
      datalar.QuerySelect(ADO,sql);
      ResultDataset := ADO;

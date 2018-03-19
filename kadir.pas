@@ -397,6 +397,9 @@ procedure PersonelTetkikIstemleri(tarih,tarih2 : string);
 procedure YeniRecete(islem: Integer ; _dosyaNo_,_gelisNo_,_MuayeneProtokolNo_ : string);
 function FirmaBilgileri(sirketKodu : string) : string;
 function mailGonder (alici , konu , mesaj : string): string;
+procedure UyumSoftPortalGit(user,pasword,url : string);
+function FaturaSilIptal(FID : string) : Boolean;
+
 
 function findMethod(dllHandle: Cardinal;  methodName: string): FARPROC;
 
@@ -479,14 +482,39 @@ var
 implementation
 
 uses message,AnaUnit,message_y,popupForm,rapor,TedaviKart,Son6AylikTetkikSonuc,DestekSorunBildir,
-  HastaRecete,sifreDegis,HastaTetkikEkle,GirisUnit,SMS,LisansUzat,Update_G, DBGrids, NThermo,
-  TransUtils;
+             HastaRecete,sifreDegis,HastaTetkikEkle,GirisUnit,SMS,LisansUzat,Update_G, DBGrids, 
+             UyumSoftPortal,NThermo, TransUtils;
 
 
 function findMethod(dllHandle: Cardinal;  methodName: string): FARPROC;
 begin
   Result := GetProcAddress(dllHandle, pchar(methodName));
 end;
+
+
+function FaturaSilIptal(FID : string) : Boolean;
+var
+  sql : string;
+begin
+  datalar.ADOConnection2.BeginTrans;
+  try
+   sql := 'delete from faturaHareket where faturaId = ' + FID;
+   datalar.QueryExec(sql);
+   sql := 'delete from faturalar where sira = ' + FID;
+   datalar.QueryExec(sql);
+   datalar.ADOConnection2.CommitTrans;
+   ShowMessageSkin('Fatura Silindi','','','info');
+   FaturaSilIptal := True;
+  except on e : Exception do
+   begin
+    ShowMessageSkin(E.Message,'','','info');
+    datalar.ADOConnection2.RollbackTrans;
+    FaturaSilIptal := False;
+   end;
+  end;
+end;
+
+
 
 function mailGonder (alici , konu , mesaj : string): string;
 var
@@ -1351,6 +1379,17 @@ begin
     frmMedEczane.ShowModal;
   finally
     freeandNil(frmMedEczane);
+  end;
+end;
+
+procedure UyumSoftPortalGit(user,pasword,url : string);
+begin
+  Application.CreateForm(TfrmPortal, frmPortal);
+  try
+    frmPortal.yukle(user,pasword,url);
+    frmPortal.ShowModal;
+  finally
+    freeandNil(frmPortal);
   end;
 end;
 
@@ -7816,6 +7855,17 @@ function ShowPopupForm(Caption : string ; Tag : integer ; Form : TForm): word;
 begin
   Application.CreateForm(TfrmPopup, frmPopup);
   try
+    case Tag of
+      gdgelisAc,gdPeryodikgelisAc,gdgelisDuzenle,ReceteYeni,
+      ReceteDuzenle,ReceteIlacEkle,ReceteIlacDuzenle :
+         begin
+            if datalar.UserGroup <> '2'
+            then begin
+               ShowMessageSkin('Bu Ýþlem Doktor kullanýcý grubuna özeldir', '', '', 'info');
+               exit;
+            end;
+         end;
+    end;
     frmPopup._islem_ := Tag;
     frmPopup._caption_ := Caption;
     frmPopup.FGirisForm := TGirisForm(Form);//Application.FindComponent(Form.name) as TGirisForm;
@@ -7831,6 +7881,19 @@ function ShowPopupForm(Caption : string; Tag : integer ; value : string): word;
 begin
   Application.CreateForm(TfrmPopup, frmPopup);
   try
+
+    case Tag of
+      gdgelisAc,gdPeryodikgelisAc,gdgelisDuzenle,ReceteYeni,
+      ReceteDuzenle,ReceteIlacEkle,ReceteIlacDuzenle :
+         begin
+            if datalar.UserGroup <> '2'
+            then begin
+               ShowMessageSkin('Bu Ýþlem Doktor kullanýcý grubuna özeldir', '', '', 'info');
+               exit;
+            end;
+         end;
+    end;
+
     frmPopup._islem_ := Tag;
     frmPopup._caption_ := Caption;
     frmPopup._value_ := value;

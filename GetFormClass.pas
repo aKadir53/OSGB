@@ -38,8 +38,8 @@ implementation
 
 uses message,Data_Modul,AnaUnit,message_y,popupForm,rapor,TedaviKart,Son6AylikTetkikSonuc,
              HastaRecete,sifreDegis,HastaTetkikEkle,DokumanYukle,
-             Receteler,Sorgulamalar,sorguRaporCalistir,
-             HastaKart,FirmaKart,hizliKayit,receteSablonlari,
+             Receteler,Sorgulamalar,sorguRaporCalistir,CariHareketGiris,CariHesapExtresi,
+             HastaKart,FirmaKart,hizliKayit,receteSablonlari,RDS,
              HastaListe,IsKazasi,Anamnez,GrupDetayTanim,Sozlesmeler,
              Tnm_UserSettings,HastaAsiKarti,HastaTaniKart,
              KurumLogin,Update_G, labaratuvarKabul,Faturalar,FaturaDetay,
@@ -221,8 +221,10 @@ begin
    TagfrmFatura : Result := TfrmFaturaDetay;
    TagfrmSirketSozlesme : Result := TfrmSirketSozlesme;
    TagfrmSirketSozlesmeler : Result := TfrmSozlesmeler;
-
+   TagfrmCariHareketGiris : Result := TfrmCariHareket;
+   TagfrmCariHesapEkstre : Result := TfrmCariHesapEkstre;
    TagfrmSahaSaglikGozetim : Result := TfrmSahaSaglikGozetim;
+   TagfrmRDS : Result := TfrmRDS;
   end;
 end;
 
@@ -268,7 +270,9 @@ begin
    TagfrmSirketSozlesme : Result := frmSirketSozlesme;
    TagfrmSirketSozlesmeler : Result := frmSozlesmeler;
 
-
+   TagfrmCariHareketGiris : Result := frmCariHareket;
+   TagfrmCariHesapEkstre : Result := frmCariHesapEkstre;
+   TagfrmRDS : Result := frmRDS;
 
    TagfrmLabParametreleri : Result := frmLabParams;
    TagfrmLabKabul : Result := frmLabaratuvarKabul;
@@ -321,6 +325,9 @@ begin
      TagfrmFatura : frmFaturaDetay := TfrmFaturaDetay.Create(Tab);
      TagfrmSirketSozlesme : frmSirketSozlesme := TfrmSirketSozlesme.Create(Tab);
      TagfrmSirketSozlesmeler : frmSozlesmeler := TfrmSozlesmeler.Create(Tab);
+     TagfrmCariHareketGiris : frmCariHareket := TfrmCariHareket.Create(Tab);
+     TagfrmCariHesapEkstre : frmCariHesapEkstre := TfrmCariHesapEkstre.Create(Tab);
+     TagfrmRDS: frmRDS := TfrmRDS.Create(Tab);
   end;
   try
     if not (Form is TGirisForm) then
@@ -427,6 +434,9 @@ begin
      TagfrmFatura : frmFaturaDetay := TfrmFaturaDetay.Create(Tab);
      TagfrmSirketSozlesme : frmSirketSozlesme := TfrmSirketSozlesme.Create(Tab);
      TagfrmSirketSozlesmeler : frmSozlesmeler := TfrmSozlesmeler.Create(Tab);
+     TagfrmCariHareketGiris : frmCariHareket := TfrmCariHareket.Create(Tab);
+     TagfrmCariHesapEkstre : frmCariHesapEkstre := TfrmCariHesapEkstre.Create(Tab);
+     TagfrmRDS : frmRDS := TfrmRDS.Create(Tab);
   end;
   try
     Form := TGirisForm(FormClassType(abs(FormTag)));
@@ -516,7 +526,10 @@ begin
     TagfrmFatura : Application.CreateForm(TfrmFaturaDetay, frmFaturaDetay);
     TagfrmSirketSozlesme : Application.CreateForm(TfrmSirketSozlesme , frmSirketSozlesme);
     TagfrmSirketSozlesmeler : Application.CreateForm(TfrmSozlesmeler , frmSozlesmeler);
-   end;
+    TagfrmCariHareketGiris : Application.CreateForm(TfrmCariHareket, frmCariHareket);
+    TagfrmCariHesapEkstre : Application.CreateForm(TfrmCariHesapEkstre, frmCariHesapEkstre);
+    TagfrmRDS : Application.CreateForm(TfrmRDS, frmRDS);
+  end;
   try
     Form := TGirisForm(FormClassType(abs(FormTag)));
 
