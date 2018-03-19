@@ -753,10 +753,6 @@ object GirisForm: TGirisForm
     object sayfa2: TcxTabSheet
       Caption = 'sayfa2'
       ImageIndex = 1
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object sayfa2_dxLayoutControl3: TdxLayoutControl
         Left = 0
         Top = 0
@@ -810,10 +806,6 @@ object GirisForm: TGirisForm
     object sayfa3: TcxTabSheet
       Caption = 'sayfa3'
       ImageIndex = 2
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object sayfa3_dxLayoutControl2: TdxLayoutControl
         Left = 0
         Top = 0
@@ -866,10 +858,6 @@ object GirisForm: TGirisForm
     object sayfa4: TcxTabSheet
       Caption = 'sayfa4'
       ImageIndex = 3
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object dxLayoutControl1: TdxLayoutControl
         Left = 0
         Top = 0
@@ -922,19 +910,11 @@ object GirisForm: TGirisForm
     object sayfa5: TcxTabSheet
       Caption = 'sayfa5'
       ImageIndex = 2
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
     end
     object sayfaList: TcxTabSheet
       Caption = 'sayfaList'
       ImageIndex = 3
       TabVisible = False
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object cxGridGiris: TcxGrid
         Left = 2
         Top = 5
