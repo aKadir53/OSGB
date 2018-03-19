@@ -83,6 +83,7 @@ type
     Sirketler: TcxImageComboKadir;
     Subeler: TcxImageComboKadir;
     cxSchedulerDBStorage2: TcxSchedulerDBStorage;
+    btnYazdir: TcxButtonKadir;
     procedure FormCreate(Sender: TObject);
     procedure ToolButton1Click(Sender: TObject);
     procedure FormResize(Sender: TObject);
@@ -116,6 +117,7 @@ type
     procedure cxScheduler1InitEventImages(Sender: TcxCustomScheduler;
       AEvent: TcxSchedulerControlEvent; AImages: TcxSchedulerEventImages);
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
+    procedure btnYazdirClick(Sender: TObject);
   private
     { Private declarations }
   public
@@ -263,6 +265,19 @@ end;
 procedure TAnaForm.cxButton1Click(Sender: TObject);
 begin
   pnl_Ajanda.Visible := false;
+end;
+
+procedure TAnaForm.btnYazdirClick(Sender: TObject);
+var
+  uu,sql : string;
+    TopluDataset : TDataSetKadir;
+begin
+   uu :=  cxScheduler1.SelResource.ResourceID;
+   sql := 'exec sp_ajanda ' + QuotedStr(uu);
+  // datalar.QuerySelect(sql);
+   TopluDataset.Dataset0 := datalar.QuerySelect(sql);
+   PrintYap('AJP','\Ajanda Yazdýr',inttoStr(Tag) ,TopluDataset,KadirType.pTNone);
+
 end;
 
 procedure TAnaForm.cxRadioGroup1PropertiesChange(Sender: TObject);
