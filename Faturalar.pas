@@ -73,6 +73,10 @@ type
     A1: TMenuItem;
     S1: TMenuItem;
     GridFaturalarColumn4: TcxGridDBColumn;
+    P1: TMenuItem;
+    cxTabSheet2: TcxTabSheet;
+    txtLog: TcxMemo;
+    S2: TMenuItem;
     procedure Fatura(islem: Integer);
     procedure cxButtonCClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
@@ -132,10 +136,12 @@ type
 const
 //LIB_DLL = 'NoktaDLL.dll';
   LIB_DLL = 'D:\Projeler\VS\c#\EFatura\EFaturaDLL\ClassLibrary1\bin\Debug\EFaturaDLL.dll';
-  test = 'https://efatura-test.uyumsoft.com.tr/Services/Integration';
-  gercek = 'https://efatura.uyumsoft.com.tr/Services/Integration';
+
+//  test = 'https://efatura-test.uyumsoft.com.tr/Services/Integration';
+//  gercek = 'https://efatura.uyumsoft.com.tr/Services/Integration';
 var
   frmFaturalar: TfrmFaturalar;
+  test,gercek : string;
 
 implementation
 
@@ -173,7 +179,7 @@ begin
             Sonuc := TStringList.Create;
            // Split('|',sonucStr,Sonuc);
             ExtractStrings(['|'],[],PWideChar(sonucStr),Sonuc);
-
+            txtLog.Lines.Add('Fatura ID : ' + faturaId + ' Sonuc : ' + SonucStr);
             if Sonuc[0]= '0000' then
             begin
               sql := 'update faturalar set ' +
@@ -181,9 +187,8 @@ begin
                      ',GIBFaturaNo = ' + QuotedStr(Sonuc[2]) +
                      ' where sira = ' + faturaId;
               datalar.QueryExec(sql);
-            end
-            else
-             exit;
+            end;
+
          end;
          ShowMessageSkin('Fatura Gönderim Ýþlemi Tamamlandý','','','info');
        finally
@@ -220,7 +225,7 @@ begin
 
     @fatura := findMethod(dllHandle, 'EArsivFaturaGonder');
     if addr(fatura) <> nil then
-    fatura(PWideChar(faturaXML),PWideChar('Uyumsoft'),PWideChar('Uyumsoft'),ss,PWideChar(test));
+    fatura(PWideChar(faturaXML),PWideChar(datalar.efaturaUsername),PWideChar(datalar.efaturaSifre),ss,PWideChar(datalar.eFaturaUrl));
   //  ShowMessage(ss,'','','info');
     EArsivGonder := ss;
 
@@ -255,7 +260,7 @@ begin
 
     @fatura := findMethod(dllHandle, 'EArsivFaturaDurum');
     if addr(fatura) <> nil then
-    fatura(PWideChar(FaturaGuid),PWideChar('Uyumsoft'),PWideChar('Uyumsoft'),ss,PWideChar(test));
+    fatura(PWideChar(FaturaGuid),PWideChar(datalar.efaturaUsername),PWideChar(datalar.efaturaSifre),ss,PWideChar(datalar.eFaturaUrl));
 
     EArsivDurumSorgula := ss;
 
@@ -300,7 +305,7 @@ begin
 
     @fatura := findMethod(dllHandle, 'EArsivFaturaIptal');
     if addr(fatura) <> nil then
-    fatura(PWideChar(FaturaGuid),PWideChar('Uyumsoft'),PWideChar('Uyumsoft'),ss,PWideChar(test));
+    fatura(PWideChar(FaturaGuid),PWideChar(datalar.efaturaUsername),PWideChar(datalar.efaturaSifre),ss,PWideChar(datalar.eFaturaUrl));
 
     EArsivIptal := ss;
 
@@ -363,8 +368,7 @@ begin
           end;
     end;
 
-
-    fatura(PWideChar(FaturaGuid),PWideChar('Uyumsoft'),PWideChar('Uyumsoft'),ss,PWideChar(test),
+    fatura(PWideChar(FaturaGuid),PWideChar(datalar.efaturaUsername),PWideChar(datalar.efaturaSifre),ss,PWideChar(datalar.eFaturaUrl),
            PWideChar(mailserver),PWideChar(username),PWideChar(password),PWideChar(alici),PWideChar(konu),PWideChar(msj));
 
     EArsivPDF := ss;
@@ -408,14 +412,33 @@ var
   fID : string;
 begin
 
-  GirisRecord.F_FaturaNO_ := '';
-  if islem = faturaDuzenle then
-   begin
-      fID := GridCellToString(GridFaturalar,'sira',0);
-      GirisRecord.F_FaturaNO_ := fID;
-   end;
+
+   case islem of
+   faturaDuzenle :
+                   begin
+                      fID := GridCellToString(GridFaturalar,'sira',0);
+                      GirisRecord.F_FaturaNO_ := fID;
+                   end;
+   yeniFatura :
+                   begin
+                       GirisRecord.F_FaturaNO_ := '';
+                   end;
+   faturaSil  :
+                   begin
+                     fID := GridCellToString(GridFaturalar,'sira',0);
+                     if FaturaSilIptal(fID) = True
+                     then begin
+                       DataSource.DataSet.Active := false;
+                       DataSource.DataSet.Active := True;
+                     end;
+                     exit;
+                   end;
+
+  end;
+
   F := FormINIT(TagfrmFatura,GirisRecord,ikEvet,'');
   if F <> nil then F.ShowModal;
+
 end;
 
 procedure TfrmFaturalar.cxButtonCClick(Sender: TObject);
@@ -456,10 +479,16 @@ begin
             guid := GridCellToString(GridFaturalar,'UUID',0);
             EArsivDurumSorgula(guid);
   end;
-  -27 : begin
-
+  -26 : begin
+           UyumSoftPortalGit(datalar.portalUser,datalar.portalSifre,datalar.portalUrl);
         end;
+  -27 : begin
+          Fatura(faturaSil);
+        end;
+
+
   end;
+
 end;
 
 procedure TfrmFaturalar.FormCreate(Sender: TObject);
