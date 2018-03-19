@@ -31,6 +31,7 @@ object frmFaturalar: TfrmFaturalar
     ClientRectRight = 823
     ClientRectTop = 5
     object cxTabSheet1: TcxTabSheet
+      Caption = 'Faturalar'
       ImageIndex = 0
       object cxGrid1: TcxGridKadir
         Left = 0
@@ -286,6 +287,20 @@ object frmFaturalar: TfrmFaturalar
         end
       end
     end
+    object cxTabSheet2: TcxTabSheet
+      Caption = 'Log'
+      ImageIndex = 1
+      object txtLog: TcxMemo
+        Left = 0
+        Top = 0
+        Align = alClient
+        Lines.Strings = (
+          'txtLog')
+        TabOrder = 0
+        Height = 567
+        Width = 819
+      end
+    end
   end
   object DataSource1: TDataSource
     DataSet = ADO_Faturalar
@@ -400,6 +415,12 @@ object frmFaturalar: TfrmFaturalar
       ImageIndex = 31
       OnClick = cxButtonCClick
     end
+    object S2: TMenuItem
+      Tag = -27
+      Caption = 'Sil'
+      ImageIndex = 42
+      OnClick = cxButtonCClick
+    end
     object S1: TMenuItem
       Tag = -12
       Caption = 'S'#246'zle'#351'melerden Fatura Olu'#351'tur'
@@ -443,6 +464,12 @@ object frmFaturalar: TfrmFaturalar
       Tag = -25
       Caption = 'E-Ar'#351'iv Fatura Durum Sorgula'
       ImageIndex = 35
+      OnClick = cxButtonCClick
+    end
+    object P1: TMenuItem
+      Tag = -26
+      Caption = 'Portal'#39'a Git'
+      ImageIndex = 9
       OnClick = cxButtonCClick
     end
   end
