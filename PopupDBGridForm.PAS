@@ -154,17 +154,17 @@ begin
     TagfrmSube :
     begin
         ClientHeight := 300;
-        ClientWidth := 700;
+        ClientWidth := 800;
         TableName := 'SIRKET_SUBE_TNM';
-        _fields_ := 'sirketKod,subeKod,subeTanim,subeSiciNo,subeDoktor,IGU,DigerSaglikPers,BolgeMudurlukSicilNo,MuayeneProtokolNo,DoktorCalismaDakika,IGUCalismaDakika,DigerSaglikPersCalismaDakika,NaceKod,tehlikeSinifi,Pasif';
-        _fieldBaslik_ := ',ÞubeKodu,ÞubeTanimi,ÝþYeriSicilNo,Doktor,ÝþGüvenlikUzmaný,DiðerSaðlýkPers,BölgeMdSicilNo,MuayeneProtokolNo,DoktorCalismaDakika,IGUCalismaDakika,DiðerSaðPersÇDakika,NaceKodu,TehlikeSinifi,Pasif';
-        _fieldTips_ := 'string,string,string,string,ImageDoktorCombo,ImageDoktorCombo,ImageDoktorCombo,string,string,string,string,string,ButtonEdit,ImageDoktorCombo,Check';
+        _fields_ := 'sirketKod,subeKod,subeTanim,subeSiciNo,subeDoktor,IGU,DigerSaglikPers,BolgeMudurlukSicilNo,MuayeneProtokolNo,DoktorCalismaDakika,IGUCalismaDakika,DigerSaglikPersCalismaDakika,NaceKod,tehlikeSinifi,Pasif,Semt/Lokasyon';
+        _fieldBaslik_ := ',ÞubeKodu,ÞubeTanimi,ÝþYeriSicilNo,Doktor,ÝþGüvenlikUzmaný,DiðerSaðlýkPers,BölgeMdSicilNo,MuayeneProtokolNo,DoktorCalismaDakika,IGUCalismaDakika,DiðerSaðPersÇDakika,NaceKodu,TehlikeSinifi,Pasif,SemtLokasyon';
+        _fieldTips_ := 'string,string,string,string,ImageDoktorCombo,ImageDoktorCombo,ImageDoktorCombo,string,string,string,string,string,ButtonEdit,ImageDoktorCombo,Check,string';
         indexFieldName := 'sirketKod = ' + QuotedStr(_firmaKod_);
         cxPanel.Visible := false;
         cxGroupDoktorlar.Caption := 'Þube Bilgileri';
         cxGrid3.Dataset.BeforePost := ADOBeforePost;
         cxGrid3.Dataset.Connection := datalar.ADOConnection2;
-        cxGrid3.Dataset.SQL.Text := 'Select sirketKod,subeKod,subeTanim,subeSiciNo,subeDoktor,IGU,DigerSaglikPers,BolgeMudurlukSicilNo,MuayeneProtokolNo,DoktorCalismaDakika,IGUCalismaDakika,DigerSaglikPersCalismaDakika,NaceKod,tehlikeSinifi,Pasif ' +
+        cxGrid3.Dataset.SQL.Text := 'Select sirketKod,subeKod,subeTanim,subeSiciNo,subeDoktor,IGU,DigerSaglikPers,BolgeMudurlukSicilNo,MuayeneProtokolNo,DoktorCalismaDakika,IGUCalismaDakika,DigerSaglikPersCalismaDakika,NaceKod,tehlikeSinifi,Pasif,SemtLokasyon ' +
                                     ' from SIRKET_SUBE_TNM where sirketKod = ' + QuotedStr(_firmaKod_);
         cxGrid3.Dataset.Open;
         DBGrid.ClearItems;

@@ -99,7 +99,7 @@ var
 
 
 implementation
-uses data_modul, Math, NThermo;
+uses StrUtils, data_modul, Math, NThermo;
 {$R *.dfm}
 
 procedure TfrmUpdate.UpdateTip (const bAutomatic: Boolean);
@@ -315,7 +315,7 @@ begin
     try
       for i := 1 to gridDetay.RowCount - 2 do
       begin
-        if not UpdateThermo (i - 1, iThermo, IntToStr (i) + ' - ' + gridDetay.Cells[1,i]) then Exit;
+        if not UpdateThermo (i - 1, iThermo, IfThen (bHataOldu, 'Hata Var, ', '') + IntToStr (i) + ' - ' + gridDetay.Cells[1,i]) then Exit;
 
         if gridDetay.Cells[25,i] = 'T' then
         begin

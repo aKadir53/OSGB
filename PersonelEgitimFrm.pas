@@ -284,11 +284,11 @@ begin
   dateEdit := TcxDateEditKadir.Create(self);
   dateEdit.ValueTip := tvDate;
   dateEdit.Properties.Kind := ckdatetime;
-  setDataStringKontrol(self,dateEdit, 'BaslamaTarihi','Baþlama Zamaný',Kolon1,'',145);
+  setDataStringKontrol(self,dateEdit, 'BaslamaTarihi','Baþlama Zamaný',Kolon1,'tar',145);
 
   dateEdit := TcxDateEditKadir.Create(self);
   dateEdit.ValueTip := tvDate;
-  setDataStringKontrol(self,dateEdit, 'BitisTarihi','Bitiþ Tarihi',Kolon1,'',100);
+  setDataStringKontrol(self,dateEdit, 'BitisTarihi','Bitiþ Tarihi',Kolon1,'tar',100);
 
   setDataString(self,'Sure','Süre (Saat)',Kolon1,'',100);
   kombo := TcxImageComboKadir.Create(self);
@@ -299,8 +299,19 @@ begin
   kombo.BosOlamaz := True;
   kombo.Filter := '';
   OrtakEventAta(kombo);
-  setDataStringKontrol(self,kombo,'Egitimci','Eðitimci',kolon1,'',200);{}
-  //setDataString(self,'Egitimci','Eðitimci',Kolon1,'',100);
+  setDataStringKontrol(self,kombo,'Egitimci','Eðitimci 1',kolon1,'eg1',180);{}
+  setDataString(self,'EgitimciX','Listede Olmayan Eðitimci',Kolon1,'eg1',140, False, '', False, -100);
+
+  kombo := TcxImageComboKadir.Create(self);
+  kombo.Conn := Datalar.ADOConnection2;
+  kombo.TableName := 'Egitimci_view';
+  kombo.ValueField := 'tanimi1';
+  kombo.DisplayField := 'tanimi2';
+  kombo.BosOlamaz := True;
+  kombo.Filter := '';
+  OrtakEventAta(kombo);
+  setDataStringKontrol(self,kombo,'Egitimci2','Eðitimci 2',kolon1,'eg2',180);{}
+  setDataString(self,'Egitimci2X','Listede Olmayan Eðitimci',Kolon1,'eg2',140, False, '', False, -100);
 
   kombo1 := TcxImageComboKadir.Create(self);
   kombo1.Conn := datalar.ADOConnection2;
@@ -332,8 +343,8 @@ begin
   setDataString(self,'EgitimYeri','Eðitim Yeri',Kolon1,'',100);
   setDataString(self,'SertifikaNo','Sertifika No.',Kolon1,'',100);
   setDataStringMemo(self,'EgitimIcerigi','Eðitim Açýklama',Kolon1,'',400, 60);
-  setDataString(self,'EgitimUcreti','Eðitim Ücreti',Kolon1,'',100);
-  setDataString(self,'EgitimUcretParaBirimi','Para Birimi',Kolon1,'',100);
+  setDataString(self,'EgitimUcreti','Eðitim Ücreti',Kolon1,'ecr',100);
+  setDataString(self,'EgitimUcretParaBirimi','Para Birimi',Kolon1,'ecr',50);
 
   kombo := TcxImageComboKadir.Create(self);
   kombo.Conn := nil;
@@ -341,7 +352,7 @@ begin
   kombo.ItemList := '0;Hayýr,1;Evet';
   kombo.Filter := '';
   OrtakEventAta(kombo);
-  setDataStringKontrol(self,kombo,'EgitimUcretiOdendi','Ödendi mi?',kolon1,'',120);
+  setDataStringKontrol(self,kombo,'EgitimUcretiOdendi','Ödendi mi?',kolon1,'ecr',100);
 
   sirketlerxx := TcxImageComboKadir.Create(self);
   sirketlerxx.Conn := Datalar.ADOConnection2;
@@ -408,24 +419,79 @@ end;
 procedure TfrmPersonelEgitim.cxKaydetClick(Sender: TObject);
 var
   xObj : TcxButtonEditKadir;
+  xTExtObj1, xTExtObj2 : TcxTextEditKadir;
+  xComboObj1, xComboObj2 : TcxImageComboKadir;
+  sSQL : String;
+  xEvt11, xEvt12, xEvt21, xEvt22 : TNotifyEvent;
 begin
-  //SirketKodx.Text := datalar.AktifSirket; giriþ formuna eklendi.
-  inherited;
-  //post ettikten sonra veritabanýndan Identity deðeri alýp edit kutusuna yazmasý için....
-  case TControl(sender).Tag  of
-    0 : begin
-      xObj := TcxButtonEditKadir (FindComponent('id'));
-      if IsNull (xObj.EditingValue) then
-      begin
-        xObj.Text := IntToStr (F_IDENTITY);
+  BeginTrans (DATALAR.ADOConnection2);
+  try
+    //SirketKodx.Text := datalar.AktifSirket; giriþ formuna eklendi.
+    inherited;
+    //post ettikten sonra veritabanýndan Identity deðeri alýp edit kutusuna yazmasý için....
+    case TControl(sender).Tag  of
+      0 : begin
+        xObj := TcxButtonEditKadir (FindComponent('id'));
+        if IsNull (xObj.EditingValue) then
+        begin
+          xObj.Text := IntToStr (F_IDENTITY);
+          ResetDetayDataset;
+        end;
+        xTExtObj1 := TcxTextEditKadir (FindComponent('EgitimciX'));
+        xComboObj1 := TcxImageComboKadir (FindComponent ('Egitimci'));
+        xTExtObj2 := TcxTextEditKadir (FindComponent('Egitimci2X'));
+        xComboObj2 := TcxImageComboKadir (FindComponent ('Egitimci2'));
+        if (not IsNull (VarToStr (xTExtObj1.EditValue))) or (not IsNull (VarToStr (xTExtObj2.EditValue))) then
+        begin
+          sqlRun.Edit;
+          try
+            if not IsNull (VarToStr (xTExtObj1.EditValue)) then
+              sqlRun.FieldByName('Egitimci').AsString := VarToStr (xTExtObj1.EditValue);
+            if not IsNull (VarToStr (xTExtObj2.EditValue)) then
+              sqlRun.FieldByName('Egitimci2').AsString := VarToStr (xTExtObj2.EditValue);
+            sqlRun.Post;
+          except
+            sqlRun.Cancel;
+            raise;
+          end;
+          sSQL := xComboObj1.Filter;
+          xComboObj1.Filter := '(1 = 2)';
+          xComboObj1.Filter := sSQL;
+          sSQL := xComboObj2.Filter;
+          xComboObj2.Filter := '(1 = 2)';
+          xComboObj2.Filter := sSQL;
+          xEvt11 := xComboObj1.Properties.OnEditValueChanged;
+          xEvt21 := xTExtObj1.Properties.OnEditValueChanged;
+          xEvt12 := xComboObj2.Properties.OnEditValueChanged;
+          xEvt22 := xTExtObj2.Properties.OnEditValueChanged;
+          xComboObj1.Properties.OnEditValueChanged := nil;
+          xTExtObj1.Properties.OnEditValueChanged := nil;
+          xComboObj2.Properties.OnEditValueChanged := nil;
+          xTExtObj2.Properties.OnEditValueChanged := nil;
+          try
+            xComboObj1.EditValue := VarToStr (xTExtObj1.EditValue);
+            xComboObj2.EditValue := VarToStr (xTExtObj2.EditValue);
+            xTExtObj1.EditValue := '';
+            xTExtObj2.EditValue := '';
+          finally
+            xComboObj1.Properties.OnEditValueChanged := xEvt11;
+            xTExtObj1.Properties.OnEditValueChanged := xEvt21;
+            xComboObj2.Properties.OnEditValueChanged := xEvt12;
+            xTExtObj2.Properties.OnEditValueChanged := xEvt22;
+          end;
+        end;
+      end;
+      2 : begin
+        xObj := TcxButtonEditKadir (FindComponent('id'));
+        xObj.Text := '';
         ResetDetayDataset;
       end;
     end;
-    2 : begin
-      xObj := TcxButtonEditKadir (FindComponent('id'));
-      xObj.Text := '';
-      ResetDetayDataset;
-    end;
+  finally
+    if cxKaydetResult then
+      CommitTrans (DATALAR.ADOConnection2)
+     else
+      RollbackTrans (DATALAR.ADOConnection2);
   end;
 end;
 
