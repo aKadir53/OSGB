@@ -1,6 +1,5 @@
 BEGIN TRAN
 GO
---ALTER -- 
 ALTER
   PROCEDURE [dbo].[sp_AjandaUserSureToplam] @userID varchar(20) = ''
 AS
