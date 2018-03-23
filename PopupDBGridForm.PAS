@@ -158,7 +158,7 @@ begin
         TableName := 'SIRKET_SUBE_TNM';
         _fields_ := 'sirketKod,subeKod,subeTanim,subeSiciNo,subeDoktor,IGU,DigerSaglikPers,BolgeMudurlukSicilNo,MuayeneProtokolNo,DoktorCalismaDakika,IGUCalismaDakika,DigerSaglikPersCalismaDakika,NaceKod,tehlikeSinifi,Pasif,Semt/Lokasyon';
         _fieldBaslik_ := ',ÞubeKodu,ÞubeTanimi,ÝþYeriSicilNo,Doktor,ÝþGüvenlikUzmaný,DiðerSaðlýkPers,BölgeMdSicilNo,MuayeneProtokolNo,DoktorCalismaDakika,IGUCalismaDakika,DiðerSaðPersÇDakika,NaceKodu,TehlikeSinifi,Pasif,SemtLokasyon';
-        _fieldTips_ := 'string,string,string,string,ImageDoktorCombo,ImageDoktorCombo,ImageDoktorCombo,string,string,string,string,string,ButtonEdit,ImageDoktorCombo,Check,string';
+        _fieldTips_ := 'string,string,string,string,ImageDoktorCombo,ImageDoktorCombo,ImageDoktorCombo,string,string,string,string,string,ButtonEdit,ImageDoktorCombo,CheckBit,string';
         indexFieldName := 'sirketKod = ' + QuotedStr(_firmaKod_);
         cxPanel.Visible := false;
         cxGroupDoktorlar.Caption := 'Þube Bilgileri';
@@ -270,6 +270,13 @@ begin
               DBgrid.Columns[i].PropertiesClassName := 'TcxCheckBoxProperties';
               TcxCheckBoxProperties(DBgrid.Columns[i].Properties).ValueChecked := 1;
               TcxCheckBoxProperties(DBgrid.Columns[i].Properties).ValueUnchecked := 0;
+             end;
+
+            if SameText (Tips[i], 'CheckBit') then
+             begin
+              DBgrid.Columns[i].PropertiesClassName := 'TcxCheckBoxProperties';
+              TcxCheckBoxProperties(DBgrid.Columns[i].Properties).ValueChecked := 'True';
+              TcxCheckBoxProperties(DBgrid.Columns[i].Properties).ValueUnchecked := 'False';
              end;
 
             if SameText (Tips[i], 'saat') then
