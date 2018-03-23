@@ -50,13 +50,13 @@ type
     function Init(Sender: TObject) : Boolean; override;
   end;
 
-const _TableName_ = 'HizmetKart';
+const _TableName_ = 'HIZMET';
       formGenislik = 750;
       formYukseklik = 580;
       sqlInsert = 'exec sp_YeniHastaKarti ';//,%s,%s,%s,%s,%s,%s';
       sqlUpdate = 'exec sp_GuncelHastaKarti ';
-      sqlDelete = 'delete from HizmetKart where MerkezKodu = %s';
-      FotoTable = 'select * from FirmaLogo where MerkezKodu = %s';
+      sqlDelete = 'delete from HIZMET where CODE = %s';
+      FotoTable = 'select * from FirmaLogo where CODE = %s';
 
 var
   frmHizmetKart: TfrmHizmetKart;
@@ -87,24 +87,24 @@ begin
   Result := False;
   if not inherited Init(Sender) then exit;
   key := 13;
-  if TcxButtonEditKadir(FindComponent('MerkezKodu')).EditingValue  <> ''
+  if TcxButtonEditKadir(FindComponent('CODE')).EditingValue  <> ''
   then
-   TcxButtonEditKadir(FindComponent('MerkezKodu')).OnKeyDown(TcxButtonEditKadir(FindComponent('MerkezKodu')),key,[]);
+   TcxButtonEditKadir(FindComponent('CODE')).OnKeyDown(TcxButtonEditKadir(FindComponent('CODE')),key,[]);
   Result := True;
 end;
 
 procedure TfrmHizmetKart.FormCreate(Sender: TObject);
 var
   List : TListeAc;
-  MerkezTip: TcxImageComboKadir;
+  HizmetGrup: TcxImageComboKadir;
 begin
-  // Burdaki User_ID ve MerkezKodu base formda dolduruluyor. Visible false (true set etmeyin)
+  // Burdaki User_ID ve CODE base formda dolduruluyor. Visible false (true set etmeyin)
   // Eðer kayýt eklediðiniz tabloda bu alanlar varsa ve bunlarý otomatik set etmek isterseniz
   //tag deðerini burda 0 set edin default -100 dür -100 obje kayýt iþlemize girmez.
   USER_ID.Tag := -100;
-  //MerkezKodu.Tag := 1;
-//  MerkezKodu.Visible := True;
- // MerkezKodu.Properties.OnButtonClick := cxButtonEditPropertiesButtonClick;
+  //CODE.Tag := 1;
+//  CODE.Visible := True;
+ // CODE.Properties.OnButtonClick := cxButtonEditPropertiesButtonClick;
   //
 
   Menu := PopupMenu1;
@@ -114,58 +114,72 @@ begin
   ClientWidth := formGenislik;
 
 
-  indexFieldName := 'MerkezKodu';
+  indexFieldName := 'CODE';
   TableName := _TableName_;
-  Olustur(self,_TableName_,'Merkez Taným Kartý',22,sqlInsert);
+  Olustur(self,_TableName_,'Hizmet Taným Kartý',22,sqlInsert);
 
   cxPanel.Visible := True;
 
   Sayfa3_Kolon3.Width := 0;
   Sayfa3_Kolon2.Width := 0;
 
-  List := ListeAcCreate('HizmetKart','MerkezKodu,MerkezAdi',
-                       'MerkezKodu,Merkez',
-                       '50,250','MerkezKodu','Merkez Listesi','',5,True);
+  List := ListeAcCreate('HIZMET','CODE,NAME1,TANIM',
+                       'Kodu,Hizmet Adý,Grubu',
+                       '50,250,20','CODE','Merkez Listesi','',5,True);
 
+  setDataStringB(self,'CODE','Merkez Kodu',Kolon1,'',80,List,True,nil,'','',True,True,1);
+  setDataString(self,'NAME1','Merkez Adý  ',Kolon1,'',350,True);
 
-  setDataStringB(self,'MerkezKodu','Merkez Kodu',Kolon1,'',80,List,True,nil,'','',True,True,1);
-  setDataString(self,'MerkezAdi','Merkez Adý  ',Kolon1,'',350,True);
-  setDataString(self,'Adres','Adres',Kolon1,'',350,True);
-  setDataString(self,'KapiNo','Kapý No',Kolon1,'',30,True);
-  setDataString(self,'PostaKodu','Posta Kodu',Kolon1,'',50,True);
-  setDataString(self,'Ilce','Ýlce',Kolon1,'',100,True);
-  setDataString(self,'Il','Ýl',Kolon1,'',100,True);
-  setDataString(self,'SorumluKisi1','Sorumlu Kiþi 1',Kolon1,'',150,True);
-  setDataString(self,'SorumluKisi2','Sorumlu Kiþi 2',Kolon1,'',150,True);
-  setDataString(self,'Telefon','Telefon',Kolon1,'',80,True);
-  setDataString(self,'Fax','Fax',Kolon1,'',80,True);
-  setDataString(self,'e_mail','e-Mail',Kolon1,'',100,True);
-  setDataString(self,'vergiDairesi','Vergi Dairesi',Kolon2,'',120,True);
-  setDataString(self,'vergiNo','Vergi No',Kolon2,'',100,True);
-  setDataString(self,'postaKutusu','Posta Kutusu',Kolon1,'',100,True);
-  setDataString(self,'sifre','Þifre',Kolon1,'',100,True);
-  setDataString(self,'kullaniciAdi','KullanýcýAdý',Kolon1,'',100,True);
-  setDataString(self,'webUrl','web Url',Kolon1,'',350,True);
-  setDataString(self,'SGKSicilNo','SGK Sicil No',Kolon2,'',200,True);
-  setDataString(self,'MERSISNo','MERSÝS No',Kolon2,'',120,True);
-  setDataString(self,'BankaAdi1','Banka Adý 1',Kolon2,'',120,True);
-  setDataString(self,'IBAN1','IBAN 1',Kolon2,'',150,True);
-  setDataString(self,'BankaAdi2','Banka Adý 2',Kolon2,'',120,True);
-  setDataString(self,'IBAN2','IBAN 2',Kolon2,'',150,True);
-  setDataString(self,'BankaAdi3','Banka Adý 3',Kolon2,'',120,True);
-  setDataString(self,'IBAN3','IBAN 3',Kolon2,'',150,True);
-  setDataString(self,'BankaAdi4','Banka Adý 4',Kolon2,'',120,True);
-  setDataString(self,'IBAN4','IBAN 4',Kolon2,'',150,True);
+  HizmetGrup := TcxImageComboKadir.Create(self);
+  HizmetGrup.Conn := Datalar.ADOConnection2;
+  HizmetGrup.TableName := 'Hizmet_Gruplari';
+  HizmetGrup.ValueField := 'kod';
+  HizmetGrup.DisplayField := 'Tanimi';
+  HizmetGrup.BosOlamaz := False;
+  HizmetGrup.Filter := '';
+  setDataStringKontrol(self,HizmetGrup,'TANIM','Hizmet Grubu',kolon1,'',100);
+  OrtakEventAta(HizmetGrup);
 
-  MerkezTip := TcxImageComboKadir.Create(self);
-  MerkezTip.Conn := Datalar.ADOConnection2;
-  MerkezTip.TableName := 'MerkezTipleri';
-  MerkezTip.ValueField := 'kod';
-  MerkezTip.DisplayField := 'Tanimi';
-  MerkezTip.BosOlamaz := False;
-  MerkezTip.Filter := '';
-  setDataStringKontrol(self,MerkezTip,'MerkezTipi','Merkez Tipi',kolon1,'',100);
-  OrtakEventAta(MerkezTip);
+  setDataString(self,'','TANIM',Kolon1,'',350,True);//varchar (2) NOT NULL
+  setDataString(self,'OZELKOD','OZELKOD',Kolon1,'',80,True);//varchar (10)
+  setDataStringCurr(self,'KDV','KDV',Kolon1,'',30,',0.00', 0);//float (53) NOT NULL
+  setDataString(self,'BUT','BUT',Kolon1,'',300,True);//varchar (50)
+  setDataStringCurr(self,'PARSAYI','PARSAYI',Kolon1,'',60,'#', 0);//int
+  setDataString(self,'MATERYAL','MATERYAL',Kolon1,'',120,True);//varchar (20)
+  setDataString(self,'LABTIPI','LABTIPI',Kolon1,'',20,True);//char (1)
+  setDataString(self,'GELIRGRUBU','GELIRGRUBU',Kolon1,'',60,True);//varchar (10)
+  setDataString(self,'OTOISLE','OTOISLE',Kolon1,'',20,True);//char (1)
+  setDataStringCurr(self,'DRYUZDE','DRYUZDE',Kolon1,'',60,',0.00', 0);//float (53)
+  setDataStringCurr(self,'PHYUZDE','PHYUZDE',Kolon1,'',60,',0.00', 0);//float (53)
+  setDataString(self,'HAVUZ','HAVUZ',Kolon1,'',30,True);//varchar (4)
+  setDataString(self,'KKODU','KKODU',Kolon1,'',300,True);//varchar (50)
+  setDataString(self,'PAKETLEGIRILIR','PAKETLEGIRILIR',Kolon1,'',20,True);//varchar (1)
+  setDataStringChk(self,'ListedeGorunsun','ListedeGorunsun',Kolon1,'',300);//bit
+  setDataString(self,'UyariMesaji','UyariMesaji',Kolon1,'',350,True);//varchar (550)
+  setDataStringChk(self,'SeansAcilir','SeansAcilir',Kolon1,'',300);//bit
+  setDataStringCurr(self,'SATISF00','SATISF00',Kolon1,'',60, ',0.00', 0);//float (53)
+  setDataStringCurr(self,'KSATISF00','KSATISF00',Kolon1,'',60, ',0.00', 0);//float (53)
+  setDataStringCurr(self,'SATISF01','SATISF01',Kolon1,'',60, ',0.00', 0);//float (53)
+  setDataStringCurr(self,'KSATISF01','KSATISF01',Kolon1,'',60, ',0.00', 0);//float (53)
+  setDataStringCurr(self,'SATISF02','SATISF02',Kolon1,'',60, ',0.00', 0);//float (53)
+  setDataStringCurr(self,'KSATISF02','KSATISF02',Kolon1,'',60, ',0.00', 0);//float (53)
+  setDataStringCurr(self,'SATISF03','SATISF03',Kolon1,'',60, ',0.00', 0);//float (53)
+  setDataStringCurr(self,'KSATISF03','KSATISF03',Kolon1,'',60, ',0.00', 0);//float (53)
+  setDataStringCurr(self,'SATISF04','SATISF04',Kolon1,'',60, ',0.00', 0);//float (53)
+  setDataStringCurr(self,'KSATISF04','KSATISF04',Kolon1,'',60, ',0.00', 0);//float (53)
+  setDataStringCurr(self,'SATISF05','SATISF05',Kolon1,'',60, ',0.00', 0);//float (53)
+  setDataStringCurr(self,'KSATISF05','KSATISF05',Kolon1,'',60, ',0.00', 0);//float (53)
+  setDataString(self,'cinsKontrol','cinsKontrol',Kolon1,'',20,True);//varchar (1)
+  setDataStringCurr(self,'yasKontrol','yasKontrol',Kolon1,'',60, ',0.00', 0);//int
+  setDataString(self,'faturalanamazlar','faturalanamazlar',Kolon1,'',350,True);//varchar (500)
+  setDataStringChk(self,'medulaGitsin','medulaGitsin',Kolon1,'',300);//bit
+  setDataStringChk(self,'HemenKaydet','HemenKaydet',Kolon1,'',300);//bit
+  setDataString(self,'Cihaz','Cihaz',Kolon1,'',120,True);//varchar (20)
+  setDataStringCurr(self,'AyaktanMaxAdet','AyaktanMaxAdet',Kolon1,'',60, ',0.00', 0);//int
+  setDataStringChk(self,'HizmetDisaridanAlinir','HizmetDisaridanAlinir',Kolon1,'',300);//bit
+  setDataStringCurr(self,'IstemFormSira','IstemFormSira',Kolon1,'',60, ',0.00', 0);//int
+  setDataString(self,'TUR','TUR',Kolon1,'',30,True);//varchar (5)
+  setDataString(self,'DisFirma','DisFirma',Kolon1,'',20,True);//varchar (2)
 
   tableColumnDescCreate;
 
@@ -193,8 +207,8 @@ begin
           end;
       2 : begin
               Kart := sql_new;
-              //TcxButtonEditKadir(FindComponent('MerkezKodu')).EditValue := dosyaNoYeniNumaraAl('FN');
-              //if TcxButtonEditKadir(FindComponent('MerkezKodu')).EditingValue = '0'
+              //TcxButtonEditKadir(FindComponent('CODE')).EditValue := dosyaNoYeniNumaraAl('FN');
+              //if TcxButtonEditKadir(FindComponent('CODE')).EditingValue = '0'
               //then begin
               //  ShowMessageskin('Dosya No Alýnamadý','','','info');
               //end;
