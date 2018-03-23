@@ -1,4 +1,4 @@
-unit MerkezBilgisi;
+unit HizmetKart;
 
 interface
 
@@ -30,7 +30,7 @@ uses
 
 
 type
-  TfrmMerkezBilgisi = class(TGirisForm)
+  TfrmHizmetKart = class(TGirisForm)
     PopupMenu1: TPopupMenu;
     MenucxKaydet: TMenuItem;
     cxStyleRepository1: TcxStyleRepository;
@@ -50,16 +50,16 @@ type
     function Init(Sender: TObject) : Boolean; override;
   end;
 
-const _TableName_ = 'MerkezBilgisi';
+const _TableName_ = 'HizmetKart';
       formGenislik = 750;
       formYukseklik = 580;
       sqlInsert = 'exec sp_YeniHastaKarti ';//,%s,%s,%s,%s,%s,%s';
       sqlUpdate = 'exec sp_GuncelHastaKarti ';
-      sqlDelete = 'delete from MerkezBilgisi where MerkezKodu = %s';
+      sqlDelete = 'delete from HizmetKart where MerkezKodu = %s';
       FotoTable = 'select * from FirmaLogo where MerkezKodu = %s';
 
 var
-  frmMerkezBilgisi: TfrmMerkezBilgisi;
+  frmHizmetKart: TfrmHizmetKart;
   ord : integer;
   _gez : integer;
   aktifKart : integer = 0;
@@ -71,7 +71,7 @@ implementation
 
 
 
-procedure TfrmMerkezBilgisi.cxButtonEditPropertiesButtonClick(Sender: TObject;
+procedure TfrmHizmetKart.cxButtonEditPropertiesButtonClick(Sender: TObject;
   AButtonIndex: Integer);
 begin
   inherited;
@@ -79,7 +79,7 @@ begin
     enabled;
 end;
 
-function TfrmMerkezBilgisi.Init(Sender : TObject) : Boolean;
+function TfrmHizmetKart.Init(Sender : TObject) : Boolean;
 var
   key : word;
 begin
@@ -93,7 +93,7 @@ begin
   Result := True;
 end;
 
-procedure TfrmMerkezBilgisi.FormCreate(Sender: TObject);
+procedure TfrmHizmetKart.FormCreate(Sender: TObject);
 var
   List : TListeAc;
   MerkezTip: TcxImageComboKadir;
@@ -123,7 +123,7 @@ begin
   Sayfa3_Kolon3.Width := 0;
   Sayfa3_Kolon2.Width := 0;
 
-  List := ListeAcCreate('MerkezBilgisi','MerkezKodu,MerkezAdi',
+  List := ListeAcCreate('HizmetKart','MerkezKodu,MerkezAdi',
                        'MerkezKodu,Merkez',
                        '50,250','MerkezKodu','Merkez Listesi','',5,True);
 
@@ -175,7 +175,7 @@ begin
  end;
 
 
-procedure TfrmMerkezBilgisi.cxKaydetClick(Sender: TObject);
+procedure TfrmHizmetKart.cxKaydetClick(Sender: TObject);
 begin
   datalar.KontrolUserSet := False;
   BeginTrans (DATALAR.ADOConnection2);
