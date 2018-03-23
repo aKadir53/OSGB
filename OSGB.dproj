@@ -179,6 +179,9 @@
 			<DCCReference Include="MerkezBilgisi.pas">
 				<Form>frmMerkezBilgisi</Form>
 			</DCCReference>
+			<DCCReference Include="HizmetKart.pas">
+				<Form>frmHizmetKart</Form>
+			</DCCReference>
 			<DCCReference Include="Receteler.pas">
 				<Form>frmReceteler</Form>
 			</DCCReference>
