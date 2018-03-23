@@ -41,6 +41,7 @@ uses
   hizliKayit in 'hizliKayit.pas' {frmHizliKayit},
   FirmaKart in 'FirmaKart.pas' {frmFirmaKart},
   MerkezBilgisi in 'MerkezBilgisi.pas' {frmMerkezBilgisi},
+  HizmetKart in 'HizmetKart.pas' {frmHizmetKart},
   Receteler in 'Receteler.pas' {frmReceteler},
   receteSablonlari in 'receteSablonlari.pas' {frmReceteSablon},
   Update_G in 'Update_G.pas' {frmUpdate},
