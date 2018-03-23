@@ -314,10 +314,9 @@ begin
   begin
     insert into dbo.SIRKET_SUBE_TNM (sirketKod, subeKod, subeTanim, subeSiciNo, subeDoktor, BolgeMudurlukSicilNo, MuayeneProtokolNo, IGU, DigerSaglikPers)
     select srk.SirketKod SirketKod, 
-      substring (
-        cast (100 + 
+      UPPER (right (master.dbo.fn_varbintohexstr( 
               IsNull ((select max (cast (SubeKod as int)) from SIRKET_SUBE_TNM sb where sb.SirketKod = srk.SirketKod and IsNumeric (SubeKod) = 1), -1) + 
-              row_number () over (Partition by srk.SirketKod order by HizmetAlanKurumSGKSicilNo) as varchar (3)), 2, 2) subeKod, 
+              row_number () over (Partition by srk.SirketKod order by HizmetAlanKurumSGKSicilNo) ), 2)) subeKod, 
       IsNull (HizmetAlanKurumSubeTanimi, Replace (HizmetAlanKurumSGKSicilNo, ' ', '')) subeTanim, HizmetAlanKurumSGKSicilNo subeSiciNo, null subeDoktor, null BolgeMudurlukSicilNo, null MuayeneProtokolNo, null IGU, null DigerSaglikPers
     -- select *
     from dbo.ISGKatipExcelAktarim pa
@@ -689,6 +688,18 @@ exec dbo.sp_ISGKatipExcelAktarimi 13
 go
 exec dbo.sp_ISGKatipExcelAktarimi 14
 go
+    select srk.SirketKod SirketKod, 
+      UPPER (right (master.dbo.fn_varbintohexstr( 
+              IsNull ((select max (cast (SubeKod as int)) from SIRKET_SUBE_TNM sb where sb.SirketKod = srk.SirketKod and IsNumeric (SubeKod) = 1), -1) + 
+              row_number () over (Partition by srk.SirketKod order by HizmetAlanKurumSGKSicilNo) ), 2)) subeKod, 
+      IsNull (HizmetAlanKurumSubeTanimi, Replace (HizmetAlanKurumSGKSicilNo, ' ', '')) subeTanim, HizmetAlanKurumSGKSicilNo subeSiciNo, null subeDoktor, null BolgeMudurlukSicilNo, null MuayeneProtokolNo, null IGU, null DigerSaglikPers
+    -- select *
+    from dbo.ISGKatipExcelAktarim pa
+    inner join dbo.SIRKETLER_TNM srk on srk.tanimi = substring (LTRIM (RTRIM (ISNULL (pa.HizmetAlanKurumUnvan, pa.HizmetAlanKurum))), 1, 100)
+    where not exists (Select 1 from dbo.SIRKET_SUBE_TNM dt where dt.subeSiciNo = pa.HizmetAlanKurumSGKSicilNo)
+    group by srk.SirketKod, substring (LTRIM (RTRIM (ISNULL (pa.HizmetAlanKurumUnvan, pa.HizmetAlanKurum))), 1, 100), IsNull (HizmetAlanKurumSubeTanimi, Replace (HizmetAlanKurumSGKSicilNo, ' ', '')), HizmetAlanKurumSGKSicilNo
+    order by srk.SirketKod, IsNull (HizmetAlanKurumSubeTanimi, Replace (HizmetAlanKurumSGKSicilNo, ' ', '')), HizmetAlanKurumSGKSicilNo
+go
 exec dbo.sp_ISGKatipExcelAktarimi 15
 go
 exec dbo.sp_ISGKatipExcelAktarimi 16
@@ -741,3 +752,5 @@ select * from Users
 go
 ROLLBACK -- COMMIT
 GO
+select cast (cast (65 as varbinary (1)) as varchar (2))
+
