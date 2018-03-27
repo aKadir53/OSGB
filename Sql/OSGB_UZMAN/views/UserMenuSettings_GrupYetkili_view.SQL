@@ -4,18 +4,21 @@ ALTER -- CREATE
   view dbo.UserMenuSettings_GrupYetkili_view
 with schemabinding
 as
-select Kullanici, ID, MAX (Izin) Izin
+select Grubu, Kullanici, ID, MAX (Izin) Izin
 from
 (
-select Kullanici, ID, Izin
-from dbo.usermenusettings
+select ug.ADI Grubu, us.Kullanici, ID, Izin
+from dbo.usermenusettings us
+left join dbo.Users u on u.Kullanici = us.Kullanici
+left join dbo.usergroups ug on ug.kodu = u.Grup
 union all
-select u.Kullanici, ID, Izin
+select uz.ADI Grubu, u.Kullanici, ID, Izin
 from dbo.userGroupmenusettings ug
 inner join dbo.Users u on u.grup = ug.Kullanici
+inner join dbo.UserGroups uz on uz.KODU = ug.kullanici
 )
 w
-group by Kullanici, ID
+group by Grubu, Kullanici, ID
 GO
 exec sp_vw_sys_upd 'V ', 'dbo', 'UserMenuSettings_GrupYetkili_view'
 GO
