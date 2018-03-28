@@ -139,6 +139,9 @@ select
         '<sira>'+ cast(ROW_NUMBER() OVER(ORDER BY faturaId,sira) as varchar)  + '</sira>'+
         '<adet>' + cast(adet as varchar) + '</adet>'+
         '<tutar>' + cast(tutar as varchar) + '</tutar>'+
+		'<kdvtutar>' + cast(kdvTutar as varchar) + '</kdvtutar>'+
+        '<kdv>' + cast(kdv as varchar) + '</kdv>'+
+
         --'<AllowanceCharge>'+
        --     '<ChargeIndicator>false</ChargeIndicator>'+
         --    <MultiplierFactorNumeric>0.05</MultiplierFactorNumeric>
