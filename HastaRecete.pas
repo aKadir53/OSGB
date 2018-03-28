@@ -1233,7 +1233,7 @@ begin
     Result := Result and (ADO_Recete.RecordCount > 0);
   if not result then
   begin
-    if pMsg then ShowMessageSkin ('Bu iþlemi yapabilmeniz için kayýtlý bir reçete baþlýðý olmalýdýr.', '', '', 'info');
+    if pMsg then ShowMessageSkin ('Bu iþlemi yapabilmeniz için kayýtlý bir reçete baþlýðý olmalýdýr.'#13#10'Reçete oluþturmak için Menü''den [Yeni Reçete]''yi seçiniz', '', '', 'info');
     Exit;
   end;
   if pCheckSent then
