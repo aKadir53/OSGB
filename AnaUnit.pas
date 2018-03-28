@@ -320,32 +320,62 @@ procedure TAnaForm.btRefreshClick(Sender: TObject);
 var
   sTmp : String;
   ado : TADOQuery;
+  bRetry : boolean;
 begin
-  sTmp := Sirketler.Filter;
-  Sirketler.Filter := '(2 = 3)';
-  Sirketler.Filter := sTmp;
-  datalar.ReceteKullanimYollari.active := False;
-  datalar.Ado_Doktorlar.Active := False;
-  datalar.Ado_IGU.Active := False;
-  datalar.Ado_DSP.Active := False;
-  datalar.ADO_TehlikeSiniflari.Active := False;
-  datalar.KontrolZorunlu.Active := False;
-  datalar.ReceteKullanimYollari.active := True;
-  datalar.Ado_Doktorlar.Active := True;
-  datalar.Ado_IGU.Active := True;
-  datalar.Ado_DSP.Active := True;
-  datalar.ADO_TehlikeSiniflari.Active := True;
-  datalar.KontrolZorunlu.Active := True;
   ado := TADOQuery.Create (Self);
+  bRetry := False;
   try
     ado.Connection := DATALAR.ADOConnection2;
-    ado.SQL.Text := 'Select Doktor from Users where Kullanici = ' + SQLValue(DATALAR.username);
+    try
+      ado.SQL.Text := 'select 1 x';
+      ado.Open;
+      ado.Close;
+    except
+      on e:exception do
+      begin
+        bRetry := True;
+        ShowMessageSkin('Veritabaný baðlantýsý baþarýsýz oldu, tekrar baðlanýlacak'#13#10#13#10 + e.Message, '', '', 'info');
+      end;
+    end;
+    if bRetry then
+    begin
+      DATALAR.ADOConnection2.Close;
+      Sleep (1000);
+      DATALAR.ADOConnection2.Open;
+    end;
+    sTmp := Sirketler.Filter;
+    Sirketler.Filter := '(2 = 3)';
+    Sirketler.Filter := sTmp;
+    datalar.ReceteKullanimYollari.active := False;
+    datalar.Ado_Doktorlar.Active := False;
+    datalar.Ado_IGU.Active := False;
+    datalar.Ado_DSP.Active := False;
+    datalar.ADO_TehlikeSiniflari.Active := False;
+    datalar.KontrolZorunlu.Active := False;
+    datalar.ReceteKullanimYollari.active := True;
+    datalar.Ado_Doktorlar.Active := True;
+    datalar.Ado_IGU.Active := True;
+    datalar.Ado_DSP.Active := True;
+    datalar.ADO_TehlikeSiniflari.Active := True;
+    datalar.KontrolZorunlu.Active := True;
+    ado.SQL.Text := 'Select Doktor, SirketKodu, IGU, DigerSaglikPers, Grup from Users where Kullanici = ' + SQLValue(DATALAR.username);
     ado.Open;
     try
       if not ado.Eof then
-        DATALAR.doktorKodu := ado.FieldByName('doktor').AsString
-       else
+      begin
+        DATALAR.doktorKodu := ado.FieldByName('doktor').AsString;
+        datalar.sirketKodu := ado.FieldByName('SirketKodu').AsString;
+        datalar.IGU := ado.FieldByName('IGU').AsString;
+        datalar.DSPers := ado.FieldByName('DigerSaglikPers').AsString;
+        datalar.UserGroup := ado.FieldByName('Grup').AsString;
+      end
+      else begin
         DATALAR.doktorKodu := '';
+        datalar.sirketKodu := '';
+        datalar.IGU := '';
+        datalar.DSPers := '';
+        datalar.UserGroup := '';
+      end;
     finally
       ado.Close;
     end;

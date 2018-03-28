@@ -691,6 +691,15 @@ begin
 
  // setDataString(self,'EMAIL','E-Posta',Kolon2,'',166);
 
+  tehlikeSinifi := TcxImageComboKadir.Create(self);
+  tehlikeSinifi.Conn := Datalar.ADOConnection2;
+  tehlikeSinifi.TableName := 'FaturaGonderimTipleri';
+  tehlikeSinifi.ValueField := 'kod';
+  tehlikeSinifi.DisplayField := 'tanimi';
+  tehlikeSinifi.BosOlamaz := False;
+  tehlikeSinifi.Filter := '';
+  setDataStringKontrol(self,tehlikeSinifi,'FaturaGonderimTipi','Fatura Gönderim Tipi',kolon1,'',100);
+  OrtakEventAta(tehlikeSinifi);
 
 
   setDataStringKontrol(self,cxFotoPanel , 'cxFotoPanel','',Kolon2,'',110);

@@ -523,6 +523,7 @@ Const
   TagfrmHastaKart = 90;
   TagfrmFirmaKart = 100;
   TagfrmMerkezBilgisi = 105;
+  TagfrmHizmetKart = 735;
   TagfrmUsers = 110;
   TagfrmBolum = 9010;
   TagfrmBirim = 9011;

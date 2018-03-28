@@ -12,7 +12,8 @@ declare @faturaNo varchar(20),@guid varchar(50),@faturaTarihi varchar(10),@fatur
 		@aliciPostaKodu varchar(10) ,@aliciUrl varchar(100),@aliciAdi varchar(100),@aliciVergiDairesi varchar(50),
 		@aliciTel varchar(50),@aliciFax varchar(50),@aliciEmail varchar(50),
 		@faturaTutar varchar(10),@faturaKdvTutar varchar(10),@faturaGenelTutar varchar(10),
-		@faturaHareket varchar(max),@fatura varchar(max)
+		@faturaHareket varchar(max),@fatura varchar(max),
+		@IBAN varchar(50)
 		
 
 set @faturaSatir = '1'
@@ -22,7 +23,8 @@ set @fatura = ''
 select @saticiVergiNo = isnull(vergiNo,'') , @saticiAdres = isnull(Adres,'') , @saticiKapiNo = isnull(KapiNo,'') ,
        @saticiILCE = isnull(ILCE,''),@saticiIL = isnull(Il,''),@saticiPostaKodu = isnull(PostaKodu,''),
 	   @saticiUrl = isnull(webUrl,''),@saticiAdi = isnull(MerkezAdi,''),@saticiVergiDairesi = isnull(vergiDairesi,''),
-	   @saticiTel = isnull(Telefon,''),@saticiFax = isnull(Fax,''),@saticiEMail = isnull(e_mail,'')
+	   @saticiTel = isnull(Telefon,''),@saticiFax = isnull(Fax,''),@saticiEMail = isnull(e_mail,''),
+	   @IBAN = isnull(IBAN1,'')
 from MerkezBilgisi
 
 
@@ -80,7 +82,7 @@ select
 	'<faturaTip>SATIS</faturaTip>'+
 	'<paraBirimi>TRY</paraBirimi>'+
 	'<faturaKalemSayisi>'+@faturaSatir+'</faturaKalemSayisi>'+
-	'<Not>HESAP IBAN : TR23434234342342</Not>' +
+	'<Not>HESAP IBAN :' + @IBAN + '</Not>' +
  	'<saticiBilgisi>'+
 			'<url>'+@saticiUrl+'</url>'+
 			'<vergiNo>'+@saticiVergiNo+'</vergiNo>'+

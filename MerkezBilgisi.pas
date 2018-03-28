@@ -193,11 +193,11 @@ begin
           end;
       2 : begin
               Kart := sql_new;
-              TcxButtonEditKadir(FindComponent('MerkezKodu')).EditValue := dosyaNoYeniNumaraAl('FN');
-              if TcxButtonEditKadir(FindComponent('MerkezKodu')).EditingValue = '0'
-              then begin
-                ShowMessageskin('Dosya No Alýnamadý','','','info');
-              end;
+              //TcxButtonEditKadir(FindComponent('MerkezKodu')).EditValue := dosyaNoYeniNumaraAl('FN');
+              //if TcxButtonEditKadir(FindComponent('MerkezKodu')).EditingValue = '0'
+              //then begin
+              //  ShowMessageskin('Dosya No Alýnamadý','','','info');
+              //end;
           end;
     end;
   finally
