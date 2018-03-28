@@ -1770,6 +1770,7 @@ object GirisForm: TGirisForm
         item
           Caption = 'z'
         end>
+      Properties.OnEditValueChanged = TopPanelPropertiesChange
       Style.BorderStyle = ebsOffice11
       Style.Font.Charset = DEFAULT_CHARSET
       Style.Font.Color = clWindowText

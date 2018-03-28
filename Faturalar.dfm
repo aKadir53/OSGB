@@ -37,7 +37,7 @@ object frmFaturalar: TfrmFaturalar
         Left = 0
         Top = 0
         Width = 819
-        Height = 567
+        Height = 472
         Align = alClient
         Font.Charset = TURKISH_CHARSET
         Font.Color = clWindowText
@@ -70,6 +70,7 @@ object frmFaturalar: TfrmFaturalar
           Navigator.Buttons.GotoBookmark.Visible = True
           Navigator.Buttons.Filter.Visible = True
           FilterBox.CustomizeDialog = False
+          OnFocusedRecordChanged = GridFaturalarFocusedRecordChanged
           DataController.DataModeController.DetailInSQLMode = True
           DataController.DataModeController.SyncMode = False
           DataController.DataSource = DataSource1
@@ -117,7 +118,7 @@ object frmFaturalar: TfrmFaturalar
           OptionsView.GroupByBox = False
           OptionsView.Indicator = True
           OptionsView.RowSeparatorColor = clBlack
-          object cxGridDBColumn1: TcxGridDBColumn
+          object ID: TcxGridDBColumn
             Caption = 'Id'
             DataBinding.FieldName = 'sira'
             PropertiesClassName = 'TcxTextEditProperties'
@@ -284,6 +285,93 @@ object frmFaturalar: TfrmFaturalar
           Caption = 'Hastalar'
           GridView = GridFaturalar
           Options.DetailFrameColor = clHighlight
+        end
+      end
+      object FaturaDetayGrid: TcxGridKadir
+        Left = 0
+        Top = 472
+        Width = 819
+        Height = 95
+        Align = alBottom
+        TabOrder = 1
+        ExceleGonder = False
+        object FaturaDetaySatirlar: TcxGridDBTableView
+          DataController.Summary.DefaultGroupSummaryItems = <>
+          DataController.Summary.FooterSummaryItems = <
+            item
+              Format = ',0.00'
+              Kind = skSum
+              Column = FaturaDetaySatirlarColumn4
+            end>
+          DataController.Summary.SummaryGroups = <>
+          OptionsData.Deleting = False
+          OptionsData.Editing = False
+          OptionsData.Inserting = False
+          OptionsView.NoDataToDisplayInfoText = 'Faturaya Eklenmi'#351' Sat'#305'r Yok'
+          OptionsView.Footer = True
+          OptionsView.FooterMultiSummaries = True
+          OptionsView.GroupByBox = False
+          OptionsView.GroupFooterMultiSummaries = True
+          object FaturaDetaySatirlarid: TcxGridDBColumn
+            DataBinding.FieldName = 'id'
+            Visible = False
+          end
+          object FaturaDetaySatirlarSirketSozlesmeID: TcxGridDBColumn
+            DataBinding.FieldName = 'SirketSozlesmeID'
+            Visible = False
+          end
+          object FaturaDetaySatirlarHizmetKodu: TcxGridDBColumn
+            Caption = 'Hizmet Kodu'
+            DataBinding.FieldName = 'HizmetKodu'
+            HeaderAlignmentHorz = taCenter
+            Width = 71
+          end
+          object FaturaDetaySatirlarColumn1: TcxGridDBColumn
+            Caption = 'Hizmet Adi'
+            DataBinding.FieldName = 'HizmetAdi'
+            HeaderAlignmentHorz = taCenter
+            Width = 137
+          end
+          object FaturaDetaySatirlarColumn2: TcxGridDBColumn
+            Caption = 'Adet'
+            DataBinding.FieldName = 'adet'
+            HeaderAlignmentHorz = taCenter
+          end
+          object FaturaDetaySatirlarBirimFiyat: TcxGridDBColumn
+            Caption = 'Fiyat'
+            DataBinding.FieldName = 'fiyat'
+            PropertiesClassName = 'TcxCurrencyEditProperties'
+            Properties.DisplayFormat = ',0.00'
+            HeaderAlignmentHorz = taCenter
+            Width = 70
+          end
+          object FaturaDetaySatirlarToplamFiyat: TcxGridDBColumn
+            Caption = 'Tutar'
+            DataBinding.FieldName = 'tutar'
+            PropertiesClassName = 'TcxCurrencyEditProperties'
+            Properties.DisplayFormat = ',0.00'
+            HeaderAlignmentHorz = taCenter
+            Width = 70
+          end
+          object FaturaDetaySatirlarColumn3: TcxGridDBColumn
+            Caption = 'Kdv Tutar'
+            DataBinding.FieldName = 'kdvTutar'
+            PropertiesClassName = 'TcxCurrencyEditProperties'
+            Properties.DisplayFormat = ',0.00'
+            HeaderAlignmentHorz = taCenter
+            Width = 70
+          end
+          object FaturaDetaySatirlarColumn4: TcxGridDBColumn
+            Caption = 'Sat'#305'r Tutar'
+            DataBinding.FieldName = 'satirToplam'
+            PropertiesClassName = 'TcxCurrencyEditProperties'
+            Properties.DisplayFormat = ',0.00'
+            HeaderAlignmentHorz = taCenter
+            Width = 70
+          end
+        end
+        object FaturaDetayGridLevel1: TcxGridLevel
+          GridView = FaturaDetaySatirlar
         end
       end
     end

@@ -9,7 +9,7 @@ uses Windows, Messages, SysUtils, Variants, Classes, Graphics, Vcl.Controls, Con
   ActiveX, Buttons,  WinSvc, ImgList,wininet, types, kadirType, KadirLabel,jpeg, AdvGrid,
   IdBaseComponent, IdComponent, IdTCPConnection, IdTCPClient, IdHTTP,
   cxDBLookupComboBox,winsock,  DBCtrlsEh, EncdDecd,cxStyles, cxCustomData, cxGraphics,
-  cxFilter, cxData, cxDropDownEdit,MedEczane,
+  cxFilter, cxData, cxDropDownEdit,MedEczane,JclGraphics,
   IdCoderMIME, cxDataStorage, cxEdit, cxControls, cxGridCustomView, cxGridDBTableView,
   cxCheckListBox,cxGridCustomTableView, cxGridTableView, cxGridBandedTableView, cxClasses,
   cxGroupBox, cxRadioGroup,cxGridLevel, cxGrid, cxCheckBox, cxImageComboBox, cxTextEdit, cxButtonEdit,
@@ -70,6 +70,8 @@ function ShowMessage(msg1, msg2, msg3: string; t: string): word;
 function ShowMessageSkin(msg1, msg2, msg3: string; t: string): word;
 function ShowPopupForm(Caption : string ; Tag : integer ; value : string = ''): word; overload;
 function ShowPopupForm(Caption : string ; Tag : integer ; Form : TForm): word;overload;
+function ShowPopupForm(Caption : string; Tag : integer ; value : string ; FormName : string): word ; overload;
+
 function tarihyap(t: string): Tdate;
 function tarihal(t: Tdate): string;
 function SayisalVeri(alan: Tlabelededit; var Key: Char): Boolean;
@@ -327,6 +329,8 @@ procedure GirisZamanYaz(KullaniciAdi : string);
 function ListeAcCreate(TableName,kolonlar,kolonBasliklar,kolonGenislik,name,baslik,where : string;colcount : integer ; grup : boolean = false;Owner : TComponent = nil) : TListeAc;
 procedure PopupMenuToToolBar(AOwner : TComponent; TB : TToolBar ; Menu : TPopupMenu);
 procedure PopupMenuToToolBarEnabled(AOwner : TComponent ; TB : TToolbar ; Menu : TPopupMenu);
+procedure PopupMenuEnabled(AOwner : TComponent ; Menu : TPopupMenu ; Enableded : Boolean = True);
+
 function KontrolUsers(FormTag,KontrolTag : string; kullanici : string) : Boolean;
 function dosyaNoYeniNumaraAl(tip : string) : string;
 function TakipMeduladanSil(TakipNo : string) : string;
@@ -399,10 +403,14 @@ function SQLValue (const sValue: String): String;
 function PersonelPeriyodikTetkikIstemleri(grup : string) : string;
 procedure PersonelTetkikIstemleri(tarih,tarih2 : string);
 procedure YeniRecete(islem: Integer ; _dosyaNo_,_gelisNo_,_MuayeneProtokolNo_ : string);
-function FirmaBilgileri(sirketKodu : string) : string;
-function mailGonder (alici , konu , mesaj : string): string;
+function FirmaBilgileri(sirketKodu : string) : TFirmaBilgi;
+function mailGonder (alici , konu , mesaj : string ;  filename : string = ''): string;
 procedure UyumSoftPortalGit(user,pasword,url : string);
 function FaturaSilIptal(FID : string) : Boolean;
+
+procedure StretchImage(var Image1: TImage; StretchType: Byte; NewWidth, NewHeight: Word);overload;
+procedure StretchImage(var Image1: TcxImage; StretchType: Byte; NewWidth, NewHeight: Word);overload;
+
 
 
 function findMethod(dllHandle: Cardinal;  methodName: string): FARPROC;
@@ -460,6 +468,13 @@ const
                      '@Aktif = %17:s';{}
 
 
+  // Image Stretch Tipleri
+  stAyniKalsin = 0;
+  stBuyukseKucult = 1;
+  stKucukseBuyult = 2;
+  stHerDurumdaStretch = 3;
+
+
 var
   strList: string;
   AktifRenk: tcolor = clYellow;
@@ -496,6 +511,133 @@ begin
 end;
 
 
+procedure StretchImage(var Image1: TImage; StretchType: Byte; NewWidth, NewHeight: Word);
+var
+  Jpeg1: TJpegImage;
+  CompressedImage: TImage;
+  Oran, OranW, OranH: Real;
+begin
+  if Image1.Picture.Graphic<>nil then
+  begin
+    if (Image1.Picture.Graphic.Width >300) or (Image1.Picture.Graphic.Height>300) then
+    begin
+    //    ShowMessage('Geniþlik: '+IntToStr(Image1.Picture.Graphic.Width)+'  Yükseklik: '+IntToStr(Image1.Picture.Graphic.Height));
+      CompressedImage := TImage.Create(nil);
+
+      if StretchType = stBuyukseKucult then
+      begin
+        if (Image1.Picture.Graphic.Width>newWidth) or
+           (Image1.Picture.Graphic.Height>NewHeight) then
+        begin
+          OranW:=NewWidth/Image1.Picture.Graphic.Width;
+          OranH:=NewHeight/Image1.Picture.Graphic.Height;
+          if OranW>OranH then Oran:=OranH else Oran:=OranW;
+          //\\ JCL Graphics ten dolayý iptal
+          Stretch(Round(Image1.Picture.Graphic.Width*Oran),
+                  Round(Image1.Picture.Graphic.Height*Oran),
+                  rfBell, 1, Image1.Picture.Graphic, CompressedImage.Picture.Bitmap);
+          Image1.Picture.Bitmap.Assign(CompressedImage.Picture.Bitmap);
+        end;
+      end else
+      begin
+        if StretchType=stKucukseBuyult then
+        begin
+          if (Image1.Picture.Graphic.Width<NewWidth) or
+             (Image1.Picture.Graphic.Height<NewHeight) then
+          begin
+            OranW:=NewWidth/Image1.Picture.Graphic.Width;
+            OranH:=NewHeight/Image1.Picture.Graphic.Height;
+            if OranW>OranH then Oran:=OranH else Oran:=OranW;
+            Stretch(Round(Image1.Picture.Graphic.Width*Oran),
+                    Round(Image1.Picture.Graphic.Height*Oran),
+                    rfBell, 1, Image1.Picture.Graphic, CompressedImage.Picture.Bitmap);
+            Image1.Picture.Bitmap.Assign(CompressedImage.Picture.Bitmap);
+          end;
+        end else
+        begin
+          if StretchType=stHerDurumdaStretch then
+          begin
+            OranW:=NewWidth/Image1.Picture.Graphic.Width;
+            OranH:=NewHeight/Image1.Picture.Graphic.Height;
+            if OranW>OranH then Oran:=OranH else Oran:=OranW;
+            Stretch(Round(Image1.Picture.Graphic.Width*Oran),
+                    Round(Image1.Picture.Graphic.Height*Oran),
+                    rfBell, 1, Image1.Picture.Graphic, CompressedImage.Picture.Bitmap);
+            Image1.Picture.Bitmap.Assign(CompressedImage.Picture.Bitmap);
+
+          end;
+        end;
+      end;
+      CompressedImage.Free;
+      // ShowMessage('Küçültüldü Geniþlik: '+IntToStr(Image1.Picture.Bitmap.Width)+'  Yükseklik: '+IntToStr(Image1.Picture.Bitmap.Height));
+    end;
+  end;
+end;
+
+procedure StretchImage(var Image1: TcxImage; StretchType: Byte; NewWidth, NewHeight: Word);
+var
+  Jpeg1: TJpegImage;
+  CompressedImage: TImage;
+  Oran, OranW, OranH: Real;
+begin
+  if Image1.Picture.Graphic<>nil then
+  begin
+    if (Image1.Picture.Graphic.Width >300) or (Image1.Picture.Graphic.Height>300) then
+    begin
+    //    ShowMessage('Geniþlik: '+IntToStr(Image1.Picture.Graphic.Width)+'  Yükseklik: '+IntToStr(Image1.Picture.Graphic.Height));
+      CompressedImage := TImage.Create(nil);
+
+      if StretchType = stBuyukseKucult then
+      begin
+        if (Image1.Picture.Graphic.Width>newWidth) or
+           (Image1.Picture.Graphic.Height>NewHeight) then
+        begin
+          OranW:=NewWidth/Image1.Picture.Graphic.Width;
+          OranH:=NewHeight/Image1.Picture.Graphic.Height;
+          if OranW>OranH then Oran:=OranH else Oran:=OranW;
+          //\\ JCL Graphics ten dolayý iptal
+          Stretch(Round(Image1.Picture.Graphic.Width*Oran),
+                  Round(Image1.Picture.Graphic.Height*Oran),
+                  rfBell, 1, Image1.Picture.Graphic, CompressedImage.Picture.Bitmap);
+          Image1.Picture.Bitmap.Assign(CompressedImage.Picture.Bitmap);
+        end;
+      end else
+      begin
+        if StretchType=stKucukseBuyult then
+        begin
+          if (Image1.Picture.Graphic.Width<NewWidth) or
+             (Image1.Picture.Graphic.Height<NewHeight) then
+          begin
+            OranW:=NewWidth/Image1.Picture.Graphic.Width;
+            OranH:=NewHeight/Image1.Picture.Graphic.Height;
+            if OranW>OranH then Oran:=OranH else Oran:=OranW;
+            Stretch(Round(Image1.Picture.Graphic.Width*Oran),
+                    Round(Image1.Picture.Graphic.Height*Oran),
+                    rfBell, 1, Image1.Picture.Graphic, CompressedImage.Picture.Bitmap);
+            Image1.Picture.Bitmap.Assign(CompressedImage.Picture.Bitmap);
+          end;
+        end else
+        begin
+          if StretchType=stHerDurumdaStretch then
+          begin
+            OranW:=NewWidth/Image1.Picture.Graphic.Width;
+            OranH:=NewHeight/Image1.Picture.Graphic.Height;
+            if OranW>OranH then Oran:=OranH else Oran:=OranW;
+            Stretch(Round(Image1.Picture.Graphic.Width*Oran),
+                    Round(Image1.Picture.Graphic.Height*Oran),
+                    rfBell, 1, Image1.Picture.Graphic, CompressedImage.Picture.Bitmap);
+            Image1.Picture.Bitmap.Assign(CompressedImage.Picture.Bitmap);
+
+          end;
+        end;
+      end;
+      CompressedImage.Free;
+      // ShowMessage('Küçültüldü Geniþlik: '+IntToStr(Image1.Picture.Bitmap.Width)+'  Yükseklik: '+IntToStr(Image1.Picture.Bitmap.Height));
+    end;
+  end;
+end;
+
+
 function FaturaSilIptal(FID : string) : Boolean;
 var
   sql : string;
@@ -520,7 +662,7 @@ end;
 
 
 
-function mailGonder (alici , konu , mesaj : string): string;
+function mailGonder (alici , konu , mesaj : string ; filename : string = ''): string;
 var
   Mail : TEmailSend;
   dllHandle: Cardinal;
@@ -546,7 +688,7 @@ begin
     @Mail := findMethod(dllHandle, 'EMailSend');
     if addr(Mail) <> nil then
 
-    Mail(ss,PWideChar(mailserver),PWideChar(username),PWideChar(password),PWideChar(alici),PWideChar(konu),PWideChar(mesaj),PWideChar(''));
+    Mail(ss,PWideChar(mailserver),PWideChar(username),PWideChar(password),PWideChar(alici),PWideChar(konu),PWideChar(mesaj),PWideChar(filename));
 
     mailGonder := ss;
 
@@ -571,19 +713,19 @@ begin
 end;
 
 
-function FirmaBilgileri(sirketKodu : string) : string;
+function FirmaBilgileri(sirketKodu : string) : TFirmaBilgi;
 var
   sql: string;
   ado: TADOQuery;
 begin
-  FirmaBilgileri := '';
   ado := TADOQuery.Create(nil);
   try
     ado.Connection := datalar.ADOConnection2;
     sql :=
-      'select yetkilimail from SIRKETLER_TNM where SirketKod = ' + QuotedStr(sirketKodu);
+      'select yetkilimail,yetkiliTel from SIRKETLER_TNM where SirketKod = ' + QuotedStr(sirketKodu);
     datalar.QuerySelect(ado, sql);
-    FirmaBilgileri := ado.Fields[0].AsString;
+    FirmaBilgileri.YetkiliMail := ado.Fields[0].AsString;
+    FirmaBilgileri.YetkiliMobil := ado.Fields[1].AsString;
   finally
     ado.Free;
   end;
@@ -1587,6 +1729,23 @@ begin
             end;
           end;
         end;
+    end;
+  end;
+end;
+
+
+procedure PopupMenuEnabled(AOwner : TComponent ; Menu : TPopupMenu ; Enableded : Boolean = True);
+var
+  mi : TMenuItem;
+  TBBDown : TMenuItem;
+  TBB : TToolButton;
+  i,r : integer;
+begin
+  for mi in Menu.Items do
+  begin
+    if (mi.Visible = True) then
+    begin
+       mi.Enabled := Enableded;
     end;
   end;
 end;
@@ -7870,7 +8029,7 @@ begin
             end;
          end;
     end;
-    frmPopup._islem_ := Tag;
+    frmPopup.islem_ := Tag;
     frmPopup._caption_ := Caption;
     frmPopup.FGirisForm := TGirisForm(Form);//Application.FindComponent(Form.name) as TGirisForm;
     TGirisForm(frmPopup)._SahaDenetimVeri_ := TGirisForm(Form)._SahaDenetimVeri_;
@@ -7898,7 +8057,7 @@ begin
          end;
     end;
 
-    frmPopup._islem_ := Tag;
+    frmPopup.islem_ := Tag;
     frmPopup._caption_ := Caption;
     frmPopup._value_ := value;
     frmPopup.ShowModal;
@@ -7908,6 +8067,37 @@ begin
   end;
 end;
 
+
+function ShowPopupForm(Caption : string; Tag : integer ; value : string ; FormName : string): word;
+var
+ F : TfrmPopup;
+begin
+  Application.CreateForm(TfrmPopup, F);
+  F.Name := FormName;
+
+  try
+
+    case Tag of
+      gdgelisAc,gdPeryodikgelisAc,gdgelisDuzenle,ReceteYeni,
+      ReceteDuzenle,ReceteIlacEkle,ReceteIlacDuzenle :
+         begin
+            if datalar.UserGroup <> '2'
+            then begin
+               ShowMessageSkin('Bu Ýþlem Doktor kullanýcý grubuna özeldir', '', '', 'info');
+               exit;
+            end;
+         end;
+    end;
+
+    F.islem_ := Tag;
+    F.caption_ := Caption;
+    F.value_ := value;
+    F.ShowModal;
+    Result := F.ModalResult;
+  finally
+    FreeAndNil (F);
+  end;
+end;
 
 
 

@@ -23,7 +23,7 @@ uses
   cxPCdxBarPopupMenu, cxMemo, cxPC, cxCheckBox, rxAnimate, rxGIFCtrl,
   JvExControls, JvAnimatedImage, JvGIFCtrl, cxButtons, cxCurrencyEdit,
   cxGridBandedTableView, cxGridDBBandedTableView, KadirLabel, cxImage,
-  cxImageComboBox;
+  cxImageComboBox,cxCheckGroup;
 
 type
   TfrmFaturalar = class(TGirisForm)
@@ -47,7 +47,7 @@ type
     miGozetimDuzenle: TMenuItem;
     cxGrid1: TcxGridKadir;
     GridFaturalar: TcxGridDBTableView;
-    cxGridDBColumn1: TcxGridDBColumn;
+    ID: TcxGridDBColumn;
     cxGridDBColumn2: TcxGridDBColumn;
     cxGridDBColumn3: TcxGridDBColumn;
     cxGridDBColumn4: TcxGridDBColumn;
@@ -77,6 +77,18 @@ type
     cxTabSheet2: TcxTabSheet;
     txtLog: TcxMemo;
     S2: TMenuItem;
+    FaturaDetayGrid: TcxGridKadir;
+    FaturaDetaySatirlar: TcxGridDBTableView;
+    FaturaDetaySatirlarid: TcxGridDBColumn;
+    FaturaDetaySatirlarSirketSozlesmeID: TcxGridDBColumn;
+    FaturaDetaySatirlarHizmetKodu: TcxGridDBColumn;
+    FaturaDetaySatirlarColumn1: TcxGridDBColumn;
+    FaturaDetaySatirlarColumn2: TcxGridDBColumn;
+    FaturaDetaySatirlarBirimFiyat: TcxGridDBColumn;
+    FaturaDetaySatirlarToplamFiyat: TcxGridDBColumn;
+    FaturaDetayGridLevel1: TcxGridLevel;
+    FaturaDetaySatirlarColumn3: TcxGridDBColumn;
+    FaturaDetaySatirlarColumn4: TcxGridDBColumn;
     procedure Fatura(islem: Integer);
     procedure cxButtonCClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
@@ -88,7 +100,10 @@ type
     function EArsivPDF(FaturaGuid : string ; _tag_ : integer) : string;
     function EArsivDurumSorgula(FaturaGuid : string) : string;
     procedure Gonder;
-
+    procedure GridFaturalarFocusedRecordChanged(Sender: TcxCustomGridTableView;
+      APrevFocusedRecord, AFocusedRecord: TcxCustomGridRecord;
+      ANewItemRecordFocusingChanged: Boolean);
+    procedure TopPanelPropertiesChange(Sender: TObject);
   private
     { Private declarations }
     FImages : array of TcxImage;
@@ -152,6 +167,12 @@ uses data_modul, StrUtils, Jpeg;
 function TfrmFaturalar.findMethod(dllHandle: Cardinal;  methodName: string): FARPROC;
 begin
   Result := GetProcAddress(dllHandle, pchar(methodName));
+end;
+
+procedure TfrmFaturalar.TopPanelPropertiesChange(Sender: TObject);
+begin
+  if vartostr(chkList.EditValue) = '1'
+  then FaturaDetayGrid.Visible := True else FaturaDetayGrid.Visible := false;
 end;
 
 procedure TfrmFaturalar.Gonder;
@@ -267,6 +288,7 @@ begin
 
 
     sonucStr := ss;
+    txtLog.Lines.Add('Fatura Guid : ' + FaturaGuid + ' Sonuc : ' + SonucStr);
     Sonuc := TStringList.Create;
    // Split('|',sonucStr,Sonuc);
     ExtractStrings(['|'],[],PWideChar(sonucStr),Sonuc);
@@ -313,11 +335,12 @@ begin
     Application.ProcessMessages;
 
     sonucStr := ss;
+    txtLog.Lines.Add('Fatura Guid : ' + FaturaGuid + ' Sonuc : ' + SonucStr);
 
     if sonucStr = '0000' then
     begin
-      sql := 'update faturalar set eArsivNo = 0,' +
-             'Guid = ' + QuotedStr('') +
+      sql := 'update faturalar set eArsivDurum = 1400 ' +
+          //   'Guid = ' + QuotedStr('') +
              ' where Guid = ' + QuotedStr(FaturaGuid);
       datalar.QueryExec(sql);
     end;
@@ -336,11 +359,12 @@ var
   dllHandle: Cardinal;
   TesisKodu: integer;
   faturaXML,doktorKullanici,doktorsifre,pin,url,cardType : string;
-  alici,username,password,mailserver,konu,msj : string;
+  username,password,mailserver,konu,msj : string;
   doktorTc : string;
   ss : PWideChar;
   sql,sonucStr : string;
   Sonuc : TStringList;
+  alici : TFirmaBilgi;
 begin
   try
     DurumGoster(True,True,'E-Arþiv Fatura PDF indiriliyor , ' + FaturaGuid);
@@ -356,7 +380,7 @@ begin
 
     case _tag_ of
     -22 : begin
-           alici := ''; username := ''; password := ''; mailserver := ''; konu := '' ; msj := '';
+           alici.YetkiliMail := '' ; username := ''; password := ''; mailserver := ''; konu := '' ; msj := '';
           end;
     -23 : begin
            alici := FirmaBilgileri(GridCellToString(GridFaturalar,'sirketKod',0));
@@ -369,7 +393,7 @@ begin
     end;
 
     fatura(PWideChar(FaturaGuid),PWideChar(datalar.efaturaUsername),PWideChar(datalar.efaturaSifre),ss,PWideChar(datalar.eFaturaUrl),
-           PWideChar(mailserver),PWideChar(username),PWideChar(password),PWideChar(alici),PWideChar(konu),PWideChar(msj));
+           PWideChar(mailserver),PWideChar(username),PWideChar(password),PWideChar(alici.YetkiliMail),PWideChar(konu),PWideChar(msj));
 
     EArsivPDF := ss;
 
@@ -397,7 +421,7 @@ end;
 
 function TfrmFaturalar.Init(Sender : TObject) : Boolean;
 begin
-  TapPanelElemanVisible(True,True,True,false,false,false,False,false,False,False,False,False);
+  TapPanelElemanVisible(True,True,True,false,false,false,False,false,False,False,False,False,True);
   txtTopPanelTarih1.Date := date;
   txtTopPanelTarih2.Date := date;
   Result := True;
@@ -446,7 +470,7 @@ var
   GirisRecord : TGirisFormRecord;
   F : TGirisForm;
   aModalResult : TModalResult;
-  guid : string;
+  guid,durum : string;
 begin
   inherited;
 
@@ -462,10 +486,14 @@ begin
           if F <> nil then F.ShowModal;
        end;
   -20 : begin
-         Gonder;
+            Gonder;
+            guid := GridCellToString(GridFaturalar,'UUID',0);
+            if guid = '' then exit;
+            EArsivDurumSorgula(guid);
         end;
   -21:begin
        guid := GridCellToString(GridFaturalar,'UUID',0);
+       if guid = '' then exit;
        EArsivIptal(guid);
   end;
   -22,-23 : begin
@@ -477,13 +505,25 @@ begin
   end;
   -25:begin
             guid := GridCellToString(GridFaturalar,'UUID',0);
+            if guid = '' then exit;
             EArsivDurumSorgula(guid);
   end;
   -26 : begin
            UyumSoftPortalGit(datalar.portalUser,datalar.portalSifre,datalar.portalUrl);
         end;
   -27 : begin
-          Fatura(faturaSil);
+          durum := GridCellToString(GridFaturalar,'eArsivDurum',0);
+          if (durum = 'Onaylandý') or
+             (durum = 'GÝB’e gönderildi') or
+             (durum = 'Onay Bekliyor') or
+             (durum = 'Kuyrukta') or
+             (durum = 'Ýþlemde')
+             Then
+               ShowMessageSkin('Faturanýn e-arþiv Durumu Silmeye Uygun Deðildir','','','info')
+             else
+               if mrYES = ShowMessageSkin('Fatura Silinecek Eminmisiniz ?','','','msg')
+               then
+                Fatura(faturaSil);
         end;
 
 
@@ -492,6 +532,8 @@ begin
 end;
 
 procedure TfrmFaturalar.FormCreate(Sender: TObject);
+var
+ ii : TcxCheckGroupItem;
 begin
   inherited;
   cxPanel.Visible := false;
@@ -504,7 +546,14 @@ begin
 
   TopPanel.Visible := true;
 
+  chkList.Properties.Items.Clear;
+  ii := chkList.Properties.Items.Add;
+  ii.Caption := 'Fatura Detayý Göster';
+
+
   GridFaturalar.DataController.DataSource := DataSource;
+  FaturaDetayGrid.Dataset.Connection := Datalar.ADOConnection2;
+
   SayfaCaption('','','','','');
 end;
 
@@ -527,6 +576,21 @@ begin
   finally
     ado.free;
   end;
+end;
+
+procedure TfrmFaturalar.GridFaturalarFocusedRecordChanged(
+  Sender: TcxCustomGridTableView; APrevFocusedRecord,
+  AFocusedRecord: TcxCustomGridRecord; ANewItemRecordFocusingChanged: Boolean);
+var
+  fid : string;
+begin
+ try
+   fid := GridCellToString(GridFaturalar,'sira',0);
+   FaturaDetayGrid.Dataset.Active := false;
+   FaturaDetayGrid.Dataset.SQL.Text := 'select * from FaturaHareket where faturaId = ' + fid;
+   FaturaDetayGrid.Dataset.Active := True;
+ except
+ end;
 end;
 
 procedure TfrmFaturalar.gridRaporCustomDrawGroupCell(

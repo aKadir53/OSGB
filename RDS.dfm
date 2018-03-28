@@ -16,12 +16,13 @@ object frmRDS: TfrmRDS
   PixelsPerInch = 96
   TextHeight = 13
   object RDSGrid: TcxGridKadir
-    Left = 288
-    Top = 48
-    Width = 679
+    Left = 22
+    Top = 32
+    Width = 945
     Height = 169
     TabOrder = 0
-    ExceleGonder = False
+    ExcelFileName = 'RiskDegerlendirme'
+    ExceleGonder = True
     object cxGridDBTableView1: TcxGridDBTableView
       DataController.Summary.DefaultGroupSummaryItems = <>
       DataController.Summary.FooterSummaryItems = <>
@@ -177,6 +178,7 @@ object frmRDS: TfrmRDS
         end>
     end
     object RDSSatirlar: TcxGridDBBandedTableView
+      PopupMenu = PopupMenu1
       Navigator.Buttons.OnButtonClick = RDSSatirlarNavigatorButtonsButtonClick
       Navigator.Buttons.First.Visible = False
       Navigator.Buttons.PriorPage.Visible = False
@@ -195,8 +197,11 @@ object frmRDS: TfrmRDS
       DataController.Summary.FooterSummaryItems = <>
       DataController.Summary.SummaryGroups = <>
       NewItemRow.SeparatorColor = 8454143
+      OptionsCustomize.DataRowSizing = True
       OptionsView.CellAutoHeight = True
+      OptionsView.DataRowHeight = 144
       OptionsView.GroupByBox = False
+      OptionsView.Indicator = True
       Bands = <
         item
           Caption = 'Risk Tan'#305'm Bilgisi'
@@ -296,7 +301,7 @@ object frmRDS: TfrmRDS
         Options.Editing = False
         Width = 150
         Position.BandIndex = 1
-        Position.ColIndex = 2
+        Position.ColIndex = 3
         Position.RowIndex = 0
       end
       object RDSSatirlarOlasilik: TcxGridDBBandedColumn
@@ -308,7 +313,7 @@ object frmRDS: TfrmRDS
         HeaderAlignmentHorz = taCenter
         Options.Editing = False
         Position.BandIndex = 1
-        Position.ColIndex = 3
+        Position.ColIndex = 4
         Position.RowIndex = 0
       end
       object RDSSatirlarFrekans: TcxGridDBBandedColumn
@@ -320,7 +325,7 @@ object frmRDS: TfrmRDS
         HeaderAlignmentHorz = taCenter
         Options.Editing = False
         Position.BandIndex = 1
-        Position.ColIndex = 4
+        Position.ColIndex = 5
         Position.RowIndex = 0
       end
       object RDSSatirlarSiddet: TcxGridDBBandedColumn
@@ -333,7 +338,7 @@ object frmRDS: TfrmRDS
         HeaderAlignmentHorz = taCenter
         Options.Editing = False
         Position.BandIndex = 1
-        Position.ColIndex = 5
+        Position.ColIndex = 6
         Position.RowIndex = 0
       end
       object RDSSatirlarRisk: TcxGridDBBandedColumn
@@ -345,7 +350,7 @@ object frmRDS: TfrmRDS
         HeaderAlignmentHorz = taCenter
         Options.Editing = False
         Position.BandIndex = 1
-        Position.ColIndex = 6
+        Position.ColIndex = 7
         Position.RowIndex = 0
       end
       object RDSSatirlarRDS: TcxGridDBBandedColumn
@@ -373,13 +378,12 @@ object frmRDS: TfrmRDS
             ImageIndex = 1
             Value = 5
           end>
-        OnCustomDrawCell = RDSSatirlarRDSCustomDrawCell
         HeaderAlignmentHorz = taCenter
         Options.Editing = False
         Styles.Content = cxStyle9
         Width = 30
         Position.BandIndex = 1
-        Position.ColIndex = 7
+        Position.ColIndex = 8
         Position.RowIndex = 0
       end
       object RDSSatirlarMevcutOnlem: TcxGridDBBandedColumn
@@ -390,7 +394,7 @@ object frmRDS: TfrmRDS
         Options.Editing = False
         Width = 89
         Position.BandIndex = 1
-        Position.ColIndex = 8
+        Position.ColIndex = 9
         Position.RowIndex = 0
       end
       object RDSSatirlarSorumlu: TcxGridDBBandedColumn
@@ -401,7 +405,7 @@ object frmRDS: TfrmRDS
         Options.Editing = False
         Width = 55
         Position.BandIndex = 1
-        Position.ColIndex = 9
+        Position.ColIndex = 10
         Position.RowIndex = 0
       end
       object RDSSatirlarTermin: TcxGridDBBandedColumn
@@ -412,7 +416,7 @@ object frmRDS: TfrmRDS
         Options.Editing = False
         Width = 54
         Position.BandIndex = 1
-        Position.ColIndex = 10
+        Position.ColIndex = 11
         Position.RowIndex = 0
       end
       object RDSSatirlarGerceklesme: TcxGridDBBandedColumn
@@ -423,7 +427,7 @@ object frmRDS: TfrmRDS
         Properties.Alignment.Vert = taVCenter
         Options.Editing = False
         Position.BandIndex = 1
-        Position.ColIndex = 11
+        Position.ColIndex = 12
         Position.RowIndex = 0
       end
       object RDSSatirlarOlasilik_2: TcxGridDBBandedColumn
@@ -436,7 +440,7 @@ object frmRDS: TfrmRDS
         HeaderAlignmentHorz = taCenter
         Options.Editing = False
         Position.BandIndex = 1
-        Position.ColIndex = 12
+        Position.ColIndex = 13
         Position.RowIndex = 0
       end
       object RDSSatirlarFrekans_2: TcxGridDBBandedColumn
@@ -449,7 +453,7 @@ object frmRDS: TfrmRDS
         HeaderAlignmentHorz = taCenter
         Options.Editing = False
         Position.BandIndex = 1
-        Position.ColIndex = 13
+        Position.ColIndex = 14
         Position.RowIndex = 0
       end
       object RDSSatirlarSiddet_2: TcxGridDBBandedColumn
@@ -462,7 +466,7 @@ object frmRDS: TfrmRDS
         HeaderAlignmentHorz = taCenter
         Options.Editing = False
         Position.BandIndex = 1
-        Position.ColIndex = 14
+        Position.ColIndex = 15
         Position.RowIndex = 0
       end
       object RDSSatirlarRisk_2: TcxGridDBBandedColumn
@@ -475,7 +479,7 @@ object frmRDS: TfrmRDS
         HeaderAlignmentHorz = taCenter
         Options.Editing = False
         Position.BandIndex = 1
-        Position.ColIndex = 15
+        Position.ColIndex = 16
         Position.RowIndex = 0
       end
       object RDSSatirlarRDS_2: TcxGridDBBandedColumn
@@ -484,7 +488,7 @@ object frmRDS: TfrmRDS
         HeaderAlignmentHorz = taCenter
         Options.Editing = False
         Position.BandIndex = 1
-        Position.ColIndex = 16
+        Position.ColIndex = 17
         Position.RowIndex = 0
       end
       object RDSSatirlaryasalDayanak: TcxGridDBBandedColumn
@@ -495,7 +499,19 @@ object frmRDS: TfrmRDS
         Options.Editing = False
         Width = 100
         Position.BandIndex = 1
-        Position.ColIndex = 17
+        Position.ColIndex = 18
+        Position.RowIndex = 0
+      end
+      object RDSSatirlarColumn1: TcxGridDBBandedColumn
+        Caption = 'Resim'
+        DataBinding.FieldName = 'Image'
+        PropertiesClassName = 'TcxImageProperties'
+        Properties.GraphicClassName = 'TJPEGImage'
+        Properties.Stretch = True
+        HeaderAlignmentHorz = taCenter
+        Width = 100
+        Position.BandIndex = 1
+        Position.ColIndex = 2
         Position.RowIndex = 0
       end
     end
@@ -861,7 +877,6 @@ object frmRDS: TfrmRDS
             ImageIndex = 1
             Value = 5
           end>
-        OnCustomDrawCell = RDSSatirlarRDSCustomDrawCell
         HeaderAlignmentHorz = taCenter
         Options.Editing = False
         Styles.Content = cxStyle9
@@ -1077,8 +1092,8 @@ object frmRDS: TfrmRDS
     end
   end
   object cxStyleRepository2: TcxStyleRepository
-    Left = 16
-    Top = 56
+    Left = 65520
+    Top = 112
     PixelsPerInch = 96
     object cxStyle2: TcxStyle
       AssignedValues = [svColor, svFont]
@@ -1102,29 +1117,27 @@ object frmRDS: TfrmRDS
     end
     object E3: TMenuItem
       Tag = -24
-      Caption = 'Tan'#305'mlamalar'
+      Caption = 'Raporun Risk Tan'#305'm Bilgisini Sekt'#246'rle E'#351'le'#351'tir'
       ImageIndex = 32
+    end
+    object R1: TMenuItem
+      Caption = 'Raporu Sekt'#246'r E'#351'le'#351'tirmesinden Doldur'
+      ImageIndex = 98
+    end
+    object N1: TMenuItem
+      Caption = '-'
+    end
+    object R2: TMenuItem
+      Tag = -1
+      Caption = 'Raporu Ba'#351'ka Bir Kullan'#305'c'#305' '#304'le Payla'#351
+      ImageIndex = 109
       OnClick = cxButtonCClick
-      object A1: TMenuItem
-        Tag = -1
-        Caption = 'Riskler'
-        ImageIndex = 103
-        OnClick = cxButtonCClick
-      end
-      object K1: TMenuItem
-        Tag = -2
-        Caption = 'Risk Kaynaklar'#305
-        ImageIndex = 29
-        OnClick = cxButtonCClick
-      end
-      object R1: TMenuItem
-        Tag = -3
-        Caption = 'Risk B'#246'l'#252'mleri'
-      end
-      object R2: TMenuItem
-        Tag = -4
-        Caption = 'Risk Tehlikeler'
-      end
+    end
+    object e2: TMenuItem
+      Tag = 9997
+      Caption = 'Excele G'#246'nder'
+      ImageIndex = 75
+      OnClick = cxButtonCClick
     end
   end
   object tmr1: TTimer

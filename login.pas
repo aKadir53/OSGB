@@ -256,7 +256,7 @@ begin
       DATALAR.usersifre := edit2.Text;
       regyazLastLogin;
       bloginLog := True;
-      //SUTKODU;
+      datalar.usernameAdi := login.FieldByName('ADISOYADI').AsString;
       datalar.doktorKodu := login.FieldByName('doktor').AsString;
       datalar.sirketKodu := login.FieldByName('SirketKodu').AsString;
       datalar.IGU := login.FieldByName('IGU').AsString;
