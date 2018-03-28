@@ -118,7 +118,7 @@ begin
   TableName := _TableName_;
   Olustur(self,_TableName_,'Merkez Taným Kartý',22,sqlInsert);
 
-  cxPanel.Visible := True;
+  cxPanel.Visible := False;
 
   Sayfa3_Kolon3.Width := 0;
   Sayfa3_Kolon2.Width := 0;
