@@ -13,7 +13,7 @@ declare @faturaNo varchar(20),@guid varchar(50),@faturaTarihi varchar(10),@fatur
 		@aliciTel varchar(50),@aliciFax varchar(50),@aliciEmail varchar(50),
 		@faturaTutar varchar(10),@faturaKdvTutar varchar(10),@faturaGenelTutar varchar(10),
 		@faturaHareket varchar(max),@fatura varchar(max),
-		@IBAN varchar(50)
+		@IBAN varchar(100),@faturaGonderimTip varchar(1)
 		
 
 set @faturaSatir = '1'
@@ -32,7 +32,7 @@ exec sp_faturaNoUret @faturaId,@faturaNo output
 
 
 
-select @faturaNo = 'GIB' + substring(dbo.fn_formattedTarih('YYYYMMDD',faturaTarihi),1,4) + REPLICATE('0',9 - LEN(@faturaNo))+@faturaNo ,
+select @faturaNo = 'NYA' + substring(dbo.fn_formattedTarih('YYYYMMDD',faturaTarihi),1,4) + REPLICATE('0',9 - LEN(@faturaNo))+@faturaNo ,
        @guid = newid(),
 	   @faturaTarihi = dbo.fn_formattedTarih('YYYY-MM-DD',faturaTarihi),
 	   @faturaSaati = dbo.fn_formattedTarih('HHMMSS',faturaTarihi),
@@ -45,7 +45,8 @@ select @faturaNo = 'GIB' + substring(dbo.fn_formattedTarih('YYYYMMDD',faturaTari
 
 	   @faturaTutar = cast(faturaTutar as varchar),
 	   @faturaKdvTutar = cast(kdv as varchar),
-	   @faturaGenelTutar = cast(faturaGenelTutar as varchar)
+	   @faturaGenelTutar = cast(faturaGenelTutar as varchar),
+	   @faturaGonderimTip = FaturaGonderimTipi
 	   
 from Faturalar f
 join SIRKETLER_TNM s on s.sirketKod = f.sirketKod 
@@ -75,6 +76,7 @@ select
 	'<Fatura>'+
 	'<faturaId>'+cast(@faturaId as varchar)+'</faturaId>'+
 	'<faturaNo>'+@faturaNo+'</faturaNo>'+
+	'<Senaryo>'+@faturaGonderimTip+'</Senaryo>'+
 	'<CopyIndicator>false</CopyIndicator>'+
 	'<UUID>'+@guid+'</UUID>'+
 	'<faturaTarihi>'+@faturaTarihi+'</faturaTarihi>'+
