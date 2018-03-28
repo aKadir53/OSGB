@@ -290,6 +290,10 @@ begin
   dateEdit.ValueTip := tvDate;
   setDataStringKontrol(self,dateEdit, 'BitisTarihi','Bitiþ Tarihi',Kolon1,'tar',100);
 
+  dateEdit := TcxDateEditKadir.Create(self);
+  dateEdit.ValueTip := tvDate;
+  setDataStringKontrol(self,dateEdit, 'GecerlilikTarihi','Geçerlilik Tarihi',Kolon1,'',100);
+
   setDataString(self,'Sure','Süre (Saat)',Kolon1,'',100);
   kombo := TcxImageComboKadir.Create(self);
   kombo.Conn := Datalar.ADOConnection2;

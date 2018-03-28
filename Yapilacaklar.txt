@@ -254,3 +254,10 @@ eðitim formuna eðitimci 2 alaný
 yangýn tüpü, asansör, kompresör gibi peryodik bakým gerektiren cihazlarýn muayene takipleri
 
 þube tablosuna sanayi sitesi veya semt ismi giriþi için alan açýlmasý 
+refresh'te datalar.usergrup gibi þeyleri de yeniden doldur.
+merkez bilgisi ekranýndaki alttaki paneli gizle
+eðitimler tablosuna geçerlilik tarihi ekle
+reçete ekranýnda reçete baþlýðý girilmelidir uyarýsýna nereden nasýl ekleneceði bilgisini ekle
+merkez bilgisi tablosuna log eklenecek
+eðitim konularýný detay tabloya çevirme çalýþmasý
+bu form bilmemneye özeldir mesajýnýn sonuna ilave bilgi ekle mesela kendinize ikinci bir kullanýcý açtýrabilirsiniz gibi.
