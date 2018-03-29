@@ -206,3 +206,15 @@ merkez bilgisi tablosuna þahýs / osgb / Þirket alaný eklendi, deðer tablosu açýl
 get form class form init'te formcaption usergroup bilgisini alýp user'ýn group bilgisi ile karþýlaþtýrarak geçirmeme özelliði eklendi
 
 eðitimci dýþarýdan eklenebilir hale getirildi. hile yaptýk. Listede olmayan eðitimci diye kutu ekledik. Kayýt yapýlýnca listeye ekleniyor.
+
+merkez bilgisi tablosu için ekran eklendi
+ana ünite þirket kombosu yanýna refresh düðmesi koyduk. datasetlerin bazýlarýný kapatýp açýyor. datalar.doktorkodu bilgisini tazeliyor
+tetkik ekle sýrasýnda KSATISFxx alan hatasý düzeltildi
+eðitim formuna eðitimci 2 alaný eklendi
+þube tablosuna sanayi sitesi veya semt ismi giriþi için alan açýlmasý 
+refresh'te datalar.usergrup gibi þeyleri de yeniden doldurduk. ayrýca veritabaný baðlantýsý kopmuþ ise yeniden saðladýk.
+merkez bilgisi ekranýndaki alttaki paneli gizledik
+eðitimler tablosuna geçerlilik tarihi ekledik
+reçete ekranýnda reçete baþlýðý girilmelidir uyarýsýna nereden nasýl ekleneceði bilgisini ekledik
+merkez bilgisi tablosuna log eklendi
+Hizmet tanýmý ekraný eklendi

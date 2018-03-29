@@ -612,9 +612,10 @@ begin
     ) www 
     inner join SIRKETLER_TNM ss on ss.SirketKod = www.sirketKod
     inner join naceKods nnn on nnn.nacekodu = www.NaceCalculated
-    where (ISNULL (ss.NaceKod, '') <> ISNULL (nnn.NACEKODU, ''))
-      or (ISNULL (ss.anaFaliyet, '') <> ISNULL (nnn.NACETANIMI, ''))
-      or (ISNULL (ss.tehlikeSinifi, '') <> ISNULL (nnn.TEHLIKESINIFI, ''))
+    where ISNULL (ss.NaceKod, '') = ''
+      AND ((ISNULL (ss.NaceKod, '') <> ISNULL (nnn.NACEKODU, ''))
+        or (ISNULL (ss.anaFaliyet, '') <> ISNULL (nnn.NACETANIMI, ''))
+        or (ISNULL (ss.tehlikeSinifi, '') <> ISNULL (nnn.TEHLIKESINIFI, '')))
   end
   
   /*
