@@ -141,6 +141,8 @@ select
         '<tutar>' + cast(tutar as varchar) + '</tutar>'+
 		'<kdvtutar>' + cast(kdvTutar as varchar) + '</kdvtutar>'+
         '<kdv>' + cast(kdv as varchar) + '</kdv>'+
+        '<satirtutar>' + cast(satirToplam as varchar) + '</satirtutar>'+
+
 
         --'<AllowanceCharge>'+
        --     '<ChargeIndicator>false</ChargeIndicator>'+
