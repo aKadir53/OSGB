@@ -119,7 +119,7 @@ function notsecilisatirbilgisi(Grid: TAdvStringGrid; col: integer;
   col1: integer): string;
 
 function secilisatirsayisiCx(Grid: TcxGridTableView; col: integer): integer;
-
+function seciliSatirlarColumData(Grid: TcxGridTableView; col: integer): string;
 
 procedure GorselAyar(_frm: TForm; image: TImageList);
 function KucukHarfTRK(str: string): string;
@@ -7705,8 +7705,21 @@ begin
   Result := seciliadet;
 end;
 
+function seciliSatirlarColumData(Grid: TcxGridTableView; col: integer): string;
+var
+  x, r, seciliadet: integer;
+  ss,columName : string;
+begin
+  seciliSatirlarColumData := '';
+ // columName := Grid.Columns[col].DataBinding.
+  for x := 0 to Grid.Controller.SelectedRowCount - 1 do
+  begin
+     ss := ss + ',' + vartostr(Grid.Controller.SelectedRows[x].Values[col]);
 
-
+ //    GridCellToString(Grid,'sira',Grid.Controller.SelectedRows[x]);
+  end;
+  seciliSatirlarColumData := ss;
+end;
 
 
 function sirket(donem: string): string;

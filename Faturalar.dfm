@@ -45,13 +45,15 @@ object frmFaturalar: TfrmFaturalar
         Font.Name = 'Tahoma'
         Font.Style = []
         ParentFont = False
+        PopupMenu = PopupMenu1
         TabOrder = 0
         LevelTabs.ImageBorder = 2
         LevelTabs.Style = 1
         LookAndFeel.Kind = lfOffice11
         LookAndFeel.NativeStyle = False
         LookAndFeel.SkinName = 'UserSkin'
-        ExceleGonder = False
+        ExcelFileName = 'FaturaListesi'
+        ExceleGonder = True
         object GridFaturalar: TcxGridDBTableView
           Navigator.Buttons.First.Visible = True
           Navigator.Buttons.PriorPage.Visible = True
@@ -112,6 +114,7 @@ object frmFaturalar: TfrmFaturalar
           OptionsData.DeletingConfirmation = False
           OptionsData.Editing = False
           OptionsData.Inserting = False
+          OptionsSelection.MultiSelect = True
           OptionsView.NoDataToDisplayInfoText = 'Kay'#305't Yok'
           OptionsView.CellAutoHeight = True
           OptionsView.Footer = True
@@ -378,6 +381,10 @@ object frmFaturalar: TfrmFaturalar
     object cxTabSheet2: TcxTabSheet
       Caption = 'Log'
       ImageIndex = 1
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       object txtLog: TcxMemo
         Left = 0
         Top = 0
@@ -507,6 +514,18 @@ object frmFaturalar: TfrmFaturalar
       Tag = -27
       Caption = 'Sil'
       ImageIndex = 42
+      OnClick = cxButtonCClick
+    end
+    object F1: TMenuItem
+      Tag = -30
+      Caption = 'Fatura Yazd'#305'r'
+      ImageIndex = 28
+      OnClick = cxButtonCClick
+    end
+    object E5: TMenuItem
+      Tag = 9997
+      Caption = 'Excele G'#246'nder'
+      ImageIndex = 75
       OnClick = cxButtonCClick
     end
     object S1: TMenuItem

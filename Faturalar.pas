@@ -89,6 +89,8 @@ type
     FaturaDetayGridLevel1: TcxGridLevel;
     FaturaDetaySatirlarColumn3: TcxGridDBColumn;
     FaturaDetaySatirlarColumn4: TcxGridDBColumn;
+    F1: TMenuItem;
+    E5: TMenuItem;
     procedure Fatura(islem: Integer);
     procedure cxButtonCClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
@@ -149,8 +151,8 @@ type
                       url : PWideChar); stdcall;
 
 const
-//LIB_DLL = 'NoktaDLL.dll';
-  LIB_DLL = 'D:\Projeler\VS\c#\EFatura\EFaturaDLL\ClassLibrary1\bin\Debug\EFaturaDLL.dll';
+  LIB_DLL = 'EFaturaDLL.dll';
+ // LIB_DLL = 'D:\Projeler\VS\c#\EFatura\EFaturaDLL\ClassLibrary1\bin\Debug\EFaturaDLL.dll';
 
 //  test = 'https://efatura-test.uyumsoft.com.tr/Services/Integration';
 //  gercek = 'https://efatura.uyumsoft.com.tr/Services/Integration';
@@ -470,7 +472,8 @@ var
   GirisRecord : TGirisFormRecord;
   F : TGirisForm;
   aModalResult : TModalResult;
-  guid,durum : string;
+  guid,durum,sql : string;
+  TopluDataset : TDataSetKadir;
 begin
   inherited;
 
@@ -525,6 +528,11 @@ begin
                then
                 Fatura(faturaSil);
         end;
+   -30 : begin
+            sql := 'exec sp_FaturaPrint ' + QuotedStr(seciliSatirlarColumData(GridFaturalar,0));
+            TopluDataset.Dataset0 := datalar.QuerySelect(sql);
+            PrintYap('FYZ','Fatura Print Et','',TopluDataset,pTNone)
+         end;
 
 
   end;
@@ -585,7 +593,8 @@ var
   fid : string;
 begin
  try
-   fid := GridCellToString(GridFaturalar,'sira',0);
+   fid := vartostr(AFocusedRecord.Values[0]);
+   //GridCellToString(GridFaturalar,'sira',0);
    FaturaDetayGrid.Dataset.Active := false;
    FaturaDetayGrid.Dataset.SQL.Text := 'select * from FaturaHareket where faturaId = ' + fid;
    FaturaDetayGrid.Dataset.Active := True;
