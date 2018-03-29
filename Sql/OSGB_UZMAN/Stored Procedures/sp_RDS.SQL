@@ -17,7 +17,7 @@ AS
 	join RDS_RiskBolum B on B.kod = RD.Bolum
 	join RDS_TehlikeKaynak k on k.kod = RD.TehlikeKaynagi
 	join SIRKETLER_TNM SRK on SRK.sirketKod = R.sirketKod
-	left join Users U on U.kullanici = hazirlayan
+	left join Users U on U.kullanici = R.hazirlayan
 	left join DOKTORLART D on D.kod = U.doktor
 	left join IGU I on I.kod = U.IGU
 	where Method = 1 and R.id = @id
