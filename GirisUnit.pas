@@ -190,6 +190,9 @@ type
     F_SahaDenetimVeri_ : TSahaDenetimler;
     F_MuayeneProtokolNo_ : string;
     F_cxKaydetResult : Boolean;
+    F_Tarih1_ : string;
+    F_Tarih2_ : string;
+    F_ResourceID_ : string;
   protected
     F_IDENTITY : Integer;
     { Private declarations }
@@ -219,7 +222,8 @@ type
      parent : TdxLayoutGroup;grup : string ;uzunluk : integer;List : string); overload;
     procedure setDataString(sender : Tform ; fieldName ,caption: string ;
           parent : TdxLayoutGroup; grup : string;uzunluk : integer;Zorunlu : Boolean = False;
-          ObjectName : String = '';ReadOnly : Boolean = False;_Tag_ : integer = 0;DefaultText : string = '');
+          ObjectName : String = '';ReadOnly : Boolean = False;_Tag_ : integer = 0;
+          DefaultText : string = '' ; EditCharCase : TEditCharCase = ecNormal);
     procedure setDataStringMemo(sender : Tform ; fieldName ,caption: string ;
           parent : TdxLayoutGroup; grup : string;uzunluk,yukseklik : integer);
     procedure setDataStringB(sender : Tform; fieldName ,caption: string ;
@@ -286,6 +290,10 @@ type
     property _SahaDenetimVeri_ : TSahaDenetimler read F_SahaDenetimVeri_ write F_SahaDenetimVeri_;
     property _MuayeneProtokolNo_ : string read F_MuayeneProtokolNo_ write F_MuayeneProtokolNo_;
     property cxKaydetResult : boolean read F_cxKaydetResult;
+    property _Tarih1_ : string read F_Tarih1_ write F_Tarih1_;
+    property _Tarih2_ : string read F_Tarih2_ write F_Tarih2_;
+    property _ResourceID : string read F_ResourceID_ write F_ResourceID_;
+
   end;
 
 const
@@ -1474,7 +1482,8 @@ end;
 procedure TGirisForm.setDataString(sender : Tform ; fieldName ,caption: string;
                   parent : TdxLayoutGroup; grup : string;uzunluk : integer ;
                   Zorunlu : Boolean = False;
-                  ObjectName : String = '';ReadOnly : Boolean = False;_Tag_ : integer = 0 ; DefaultText : string = '');
+                  ObjectName : String = '';ReadOnly : Boolean = False;_Tag_ : integer = 0 ;
+                  DefaultText : string = '';EditCharCase : TEditCharCase = ecNormal);
 var
   cxEdit : TcxTextEditKadir;
   dxLa : TdxLayoutItem;
@@ -1487,6 +1496,7 @@ begin
   cxEdit.Tag := _Tag_;
   cxEdit.Properties.ReadOnly := ReadOnly;
   cxEdit.Properties.ValidateOnEnter := True;
+  cxEdit.Properties.CharCase := EditCharCase;
   cxEdit.BosOlamaz := Zorunlu;//KontrolZorunlumu(TForm(sender).Tag,fieldName); //Zorunlu;
   dxLa := TdxLayoutGroup(parent).CreateItemForControl(cxEdit);
 //  dxLa.ControlOptions.ShowBorder := true;
@@ -1910,12 +1920,14 @@ begin
       TcxdateEdit(obje).Properties.MinDate := strtodate('01.01.1900');
       TcxdateEdit(obje).Properties.OnValidate := PropertiesValidate;
     end;
-    TcxCustomEdit(obje).Style.Color := clWhite;
-    TcxCustomEdit(obje).OnEnter := cxEditEnter;
-    TcxCustomEdit(obje).OnExit := cxEditExit;
-    TcxCustomEdit(obje).OnKeyDown := cxTextEditBKeyDown;
-    TcxImageComboBox(obje).Properties.OnEditValueChanged := PropertiesEditValueChanged;
-
+    if obje.ClassName <> 'TImage'
+    Then begin
+     TcxCustomEdit(obje).Style.Color := clWhite;
+     TcxCustomEdit(obje).OnEnter := cxEditEnter;
+     TcxCustomEdit(obje).OnExit := cxEditExit;
+     TcxCustomEdit(obje).OnKeyDown := cxTextEditBKeyDown;
+     TcxImageComboBox(obje).Properties.OnEditValueChanged := PropertiesEditValueChanged;
+    end;
   end;
 
 end;

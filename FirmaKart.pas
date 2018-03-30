@@ -687,6 +687,8 @@ begin
   setDataStringKontrol(self,odeme,'OdemeKimYapar','Ýþe Giriþ Ödemesini',Kolon1,'',120);
   OrtakEventAta(odeme);
 
+
+
  // setDataString(self,'EMAIL','E-Posta',Kolon2,'',166);
 
   tehlikeSinifi := TcxImageComboKadir.Create(self);
