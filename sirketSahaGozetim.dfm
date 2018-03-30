@@ -241,6 +241,54 @@ object frmSirketSahaGozetim: TfrmSirketSahaGozetim
         Position.ColIndex = 3
         Position.RowIndex = 0
       end
+      object SatirlarBolum: TcxGridDBBandedColumn
+        DataBinding.FieldName = 'Bolum'
+        Position.BandIndex = 0
+        Position.ColIndex = 4
+        Position.RowIndex = 0
+      end
+      object SatirlarYapilacakFaliyetTuru: TcxGridDBBandedColumn
+        DataBinding.FieldName = 'YapilacakFaliyetTuru'
+        Position.BandIndex = 0
+        Position.ColIndex = 5
+        Position.RowIndex = 0
+      end
+      object SatirlarKokNeden: TcxGridDBBandedColumn
+        DataBinding.FieldName = 'KokNeden'
+        Position.BandIndex = 0
+        Position.ColIndex = 6
+        Position.RowIndex = 0
+      end
+      object SatirlarFaliyetPlan: TcxGridDBBandedColumn
+        DataBinding.FieldName = 'FaliyetPlan'
+        Position.BandIndex = 0
+        Position.ColIndex = 7
+        Position.RowIndex = 0
+      end
+      object SatirlarUygulanacakFaliyetTarihi: TcxGridDBBandedColumn
+        DataBinding.FieldName = 'UygulanacakFaliyetTarihi'
+        Position.BandIndex = 0
+        Position.ColIndex = 8
+        Position.RowIndex = 0
+      end
+      object SatirlarBolumYetkilisi: TcxGridDBBandedColumn
+        DataBinding.FieldName = 'BolumYetkilisi'
+        Position.BandIndex = 0
+        Position.ColIndex = 9
+        Position.RowIndex = 0
+      end
+      object SatirlarSonuc: TcxGridDBBandedColumn
+        DataBinding.FieldName = 'Sonuc'
+        Position.BandIndex = 0
+        Position.ColIndex = 10
+        Position.RowIndex = 0
+      end
+      object SatirlarYapilanFaliyet: TcxGridDBBandedColumn
+        DataBinding.FieldName = 'YapilanFaliyet'
+        Position.BandIndex = 0
+        Position.ColIndex = 11
+        Position.RowIndex = 0
+      end
     end
     object SahaGozetimGridLevel1: TcxGridLevel
       GridView = Satirlar

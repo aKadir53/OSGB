@@ -77,6 +77,14 @@ type
     Satirlarid: TcxGridDBBandedColumn;
     SatirlarTespitler: TcxGridDBBandedColumn;
     SatirlarImage: TcxGridDBBandedColumn;
+    SatirlarBolum: TcxGridDBBandedColumn;
+    SatirlarYapilacakFaliyetTuru: TcxGridDBBandedColumn;
+    SatirlarKokNeden: TcxGridDBBandedColumn;
+    SatirlarFaliyetPlan: TcxGridDBBandedColumn;
+    SatirlarUygulanacakFaliyetTarihi: TcxGridDBBandedColumn;
+    SatirlarBolumYetkilisi: TcxGridDBBandedColumn;
+    SatirlarSonuc: TcxGridDBBandedColumn;
+    SatirlarYapilanFaliyet: TcxGridDBBandedColumn;
     procedure Fatura(islem: Integer);
     procedure cxButtonCClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
