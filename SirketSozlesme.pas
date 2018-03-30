@@ -42,14 +42,6 @@ type
     miYeniGozetim: TMenuItem;
     cxStyle8: TcxStyle;
     tmr1: TTimer;
-    miGozetimDuzenle: TMenuItem;
-    N1: TMenuItem;
-    E1: TMenuItem;
-    E2: TMenuItem;
-    E3: TMenuItem;
-    E4: TMenuItem;
-    K1: TMenuItem;
-    A1: TMenuItem;
     SozlesmeSatirlar: TcxGridDBTableView;
     SozlesmeGridLevel1: TcxGridLevel;
     SozlesmeGrid: TcxGridKadir;
@@ -58,6 +50,10 @@ type
     SozlesmeSatirlarHizmetKodu: TcxGridDBColumn;
     SozlesmeSatirlarBirimFiyat: TcxGridDBColumn;
     SozlesmeSatirlarToplamFiyat: TcxGridDBColumn;
+    List: TListeAc;
+    SozlesmeSatirlarColumn1: TcxGridDBColumn;
+    SozlesmeSatirlarColumn2: TcxGridDBColumn;
+    SozlesmeSatirlarTip: TcxGridDBColumn;
     procedure Fatura(islem: Integer);
     procedure cxButtonCClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
@@ -90,29 +86,6 @@ type
     function Init(Sender: TObject) : Boolean; override;
   end;
 
-  TFaturaGonder = procedure(FaturaXML : PWideChar;
-                      kullaniciAdi : PWideChar;
-                      sifre : PWideChar;
-                      var sonuc : PWideChar;
-                      url : PWideChar); stdcall;
-
-  TFaturaIptal = procedure(FaturaGuid : PWideChar;
-                      kullaniciAdi : PWideChar;
-                      sifre : PWideChar;
-                      var sonuc : PWideChar;
-                      url : PWideChar); stdcall;
-  TFaturaPDF = procedure(FaturaGuid : PWideChar;
-                      kullaniciAdi : PWideChar;
-                      sifre : PWideChar;
-                      var sonuc : PWideChar;
-                      url : PWideChar;
-                      smtpClientHost : PWideChar;
-                      Username : PWideChar;
-                      Password : PWideChar;
-                      alici : PWideChar;
-                      konu : PWideChar;
-                      msj : PWideChar
-                      ); stdcall;
 
 
 const
@@ -214,44 +187,30 @@ var
   GirisRecord : TGirisFormRecord;
   aModalResult : TModalResult;
   guid : string;
+  L : ArrayListeSecimler;
 begin
   inherited;
 
-
   case Tcontrol(sender).Tag of
   -9 : begin
-         Fatura(yeniFatura);
+         L := List.ListeGetir;
+         SozlesmeSatirlar.DataController.DataSet.Append;
+         SozlesmeSatirlar.DataController.DataSet.FieldByName('HizmetKodu').AsString := L[0].kolon1;
+         SozlesmeSatirlar.DataController.DataSet.FieldByName('HizmetAdi').AsString := L[0].kolon2;
+         SozlesmeSatirlar.DataController.DataSet.Post;
        end;
-  -11 : begin
-         Fatura(faturaDuzenle);
-       end;
-  -20 : begin
-         //Gonder;
-        end;
-  -21:begin
-      // guid := GridCellToString(GridFaturalar,'UUID',0);
-      // EArsivIptal(guid);
-  end;
-  -22,-23:begin
-         //   guid := GridCellToString(GridFaturalar,'UUID',0);
-         //   EArsivPDF(guid,Tcontrol(sender).Tag);
-          end;
-  -24:begin
 
-  end;
-  -27 : begin
-
-        end;
   end;
 end;
 
 procedure TfrmSirketSozlesme.FormCreate(Sender: TObject);
 var
-  List : TListeAc;
+ // List : TListeAc;
   FaturaOzelKodlari : TcxImageComboKadir;
   FaturaKesimAyGunu : TcxSpinEdit;
   SozlesmeTarihi : TcxDateEditKadir;
   SirketAdi : TcxTextEditKadir;
+  Onay ,Tip : TcxImageComboKadir;
 begin
   inherited;
 
@@ -262,6 +221,8 @@ begin
   TableName := 'SirketSozlesme';
  // TopPanel.Visible := true;
 
+  List.Table := 'select code,NAME1,Tanimi grupTanim from HIZMET h join Hizmet_Gruplari hg on hg.kod = h.taným';
+
 
   Sozlesmeler := ListeAcCreate('SirketSozlesme','id,Baslangic,Bitis,SozlesmeTanimi',
                        'ID,Baþlangýç,Bitiþ,Sözleþme Tanýmý',
@@ -271,15 +232,15 @@ begin
   setDataStringB(self,'id','SözleþmeID',Kolon1,'',60,Sozlesmeler,True,nil,'','',True,True,-100);
   TcxButtonEditKadir(FindComponent('id')).Identity := True;
 
-  setDataString(self,'SozlesmeTanimi','Sözleþme Tanýmý',Kolon1,'',100,True);
+  setDataString(self,'SozlesmeTanimi','Sözleþme Tanýmý',Kolon1,'',200,True);
 
   SozlesmeTarihi := TcxDateEditKadir.Create(Self);
   SozlesmeTarihi.ValueTip := tvDate;
-  setDataStringKontrol(self,SozlesmeTarihi,'Baslangic','Baþlangýç Tarihi',Kolon1,'',100);
+  setDataStringKontrol(self,SozlesmeTarihi,'Baslangic','Baþlangýç Tarihi',Kolon1,'trh',100);
 
   SozlesmeTarihi := TcxDateEditKadir.Create(Self);
   SozlesmeTarihi.ValueTip := tvDate;
-  setDataStringKontrol(self,SozlesmeTarihi,'Bitis','Bitiþ Tarihi',Kolon1,'',100);
+  setDataStringKontrol(self,SozlesmeTarihi,'Bitis','Bitiþ Tarihi',Kolon1,'trh',100);
 
 
 
@@ -299,6 +260,21 @@ begin
   setDataStringKontrol(self,FaturaKesimAyGunu,'FaturaKesimAyGunu','Fatura Kesim Günü',Kolon1,'',100);
   OrtakEventAta(FaturaKesimAyGunu);
 
+  Onay := TcxImageComboKadir.Create(self);
+  Onay.Conn := nil;
+  Onay.ItemList := '1;Evet,0;Hayýr';
+  Onay.Filter := '';
+  setDataStringKontrol(self,Onay,'aktif','Aktif',kolon4,'trh',50);
+  OrtakEventAta(Onay);
+
+  Tip := TcxImageComboKadir.Create(self);
+  Tip.Conn := nil;
+  Tip.Tag := -100;
+  Tip.name := 'Tip';
+  Tip.ItemList := 'D;Dönem Fatura,H;Hizmet Fatura';
+  Tip.Filter := '';
+
+
  (*
   List := ListeAcCreate('SIRKETLER_TNM','sirketKod,tanimi,Aktif',
                        'SirketKod,Sirket,Durum',
@@ -308,6 +284,12 @@ begin
   TcxButtonEditKadir(FindComponent('sirketKod')).Visible := False;
  *)
   setDataString(self,'sirketKod','',Kolon1,'',0,True);
+
+  try
+     TcxImageComboBoxProperties(SozlesmeSatirlarTip.Properties).Items :=
+     TcxImageComboBoxProperties(TcxImageComboKadir(FindComponent('Tip')).Properties).Items;
+  finally
+  end;
 
   setDataStringBLabel(self,'bosSatir',kolon1,'',750,'Fatura Mal ve Hizmetleri');
   setDataStringKontrol(self,SozlesmeGrid,'SozlesmeGrid','',Kolon1,'',750,300);
