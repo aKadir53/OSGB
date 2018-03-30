@@ -16,17 +16,21 @@ object frmSirketSozlesme: TfrmSirketSozlesme
   PixelsPerInch = 96
   TextHeight = 13
   object SozlesmeGrid: TcxGridKadir
-    Left = 16
-    Top = 224
+    Left = 8
+    Top = 152
     Width = 784
     Height = 225
     TabOrder = 0
     ExceleGonder = False
     object SozlesmeSatirlar: TcxGridDBTableView
       DataController.Summary.DefaultGroupSummaryItems = <>
-      DataController.Summary.FooterSummaryItems = <>
+      DataController.Summary.FooterSummaryItems = <
+        item
+          Format = ',0.00'
+          Kind = skSum
+          Column = SozlesmeSatirlarToplamFiyat
+        end>
       DataController.Summary.SummaryGroups = <>
-      NewItemRow.Visible = True
       OptionsView.NoDataToDisplayInfoText = 'Faturaya Eklenmi'#351' Sat'#305'r Yok'
       OptionsView.Footer = True
       OptionsView.FooterMultiSummaries = True
@@ -41,13 +45,38 @@ object frmSirketSozlesme: TfrmSirketSozlesme
         Visible = False
       end
       object SozlesmeSatirlarHizmetKodu: TcxGridDBColumn
+        Caption = 'Hizmet Kodu'
         DataBinding.FieldName = 'HizmetKodu'
+        HeaderAlignmentHorz = taCenter
+        Width = 106
+      end
+      object SozlesmeSatirlarColumn1: TcxGridDBColumn
+        Caption = 'Hizmet Adi'
+        DataBinding.FieldName = 'HizmetAdi'
+        HeaderAlignmentHorz = taCenter
+        Width = 246
+      end
+      object SozlesmeSatirlarColumn2: TcxGridDBColumn
+        Caption = 'Adet'
+        DataBinding.FieldName = 'Miktar'
+        HeaderAlignmentHorz = taCenter
       end
       object SozlesmeSatirlarBirimFiyat: TcxGridDBColumn
         DataBinding.FieldName = 'BirimFiyat'
+        HeaderAlignmentHorz = taCenter
+        Width = 100
       end
       object SozlesmeSatirlarToplamFiyat: TcxGridDBColumn
         DataBinding.FieldName = 'ToplamFiyat'
+        HeaderAlignmentHorz = taCenter
+        Width = 106
+      end
+      object SozlesmeSatirlarTip: TcxGridDBColumn
+        DataBinding.FieldName = 'Tip'
+        PropertiesClassName = 'TcxImageComboBoxProperties'
+        Properties.Items = <>
+        HeaderAlignmentHorz = taCenter
+        Width = 95
       end
     end
     object SozlesmeGridLevel1: TcxGridLevel
@@ -84,8 +113,8 @@ object frmSirketSozlesme: TfrmSirketSozlesme
     Top = 304
   end
   object cxStyleRepository1: TcxStyleRepository
-    Left = 8
-    Top = 224
+    Left = 16
+    Top = 168
     PixelsPerInch = 96
     object cxStyle1: TcxStyle
       AssignedValues = [svColor, svFont]
@@ -157,57 +186,39 @@ object frmSirketSozlesme: TfrmSirketSozlesme
     Top = 248
     object miYeniGozetim: TMenuItem
       Tag = -9
-      Caption = 'Yeni Fatura'
+      Caption = 'Hizmet Listesi'
       ImageIndex = 30
-      OnClick = cxButtonCClick
-    end
-    object miGozetimDuzenle: TMenuItem
-      Tag = -11
-      Caption = 'Fatura D'#252'zenle'
-      ImageIndex = 31
-      OnClick = cxButtonCClick
-    end
-    object N1: TMenuItem
-      Caption = '-'
-    end
-    object E1: TMenuItem
-      Tag = -20
-      Caption = 'E-Ar'#351'iv G'#246'nder'
-      ImageIndex = 15
-      OnClick = cxButtonCClick
-    end
-    object E2: TMenuItem
-      Tag = -21
-      Caption = 'E-Ar'#351'iv Fatura '#304'ptal'
-      ImageIndex = 43
-      OnClick = cxButtonCClick
-    end
-    object E3: TMenuItem
-      Tag = -24
-      Caption = 'E-Ar'#351'iv Fatura PDF'
-      ImageIndex = 110
-      OnClick = cxButtonCClick
-      object K1: TMenuItem
-        Tag = -22
-        Caption = 'Kaydet'
-        ImageIndex = 29
-        OnClick = cxButtonCClick
-      end
-      object A1: TMenuItem
-        Tag = -23
-        Caption = 'Al'#305'c'#305'ya Email Gonder'
-        ImageIndex = 103
-        OnClick = cxButtonCClick
-      end
-    end
-    object E4: TMenuItem
-      Tag = -25
-      Caption = 'E-Ar'#351'iv Fatura Durum Sorgula'
       OnClick = cxButtonCClick
     end
   end
   object tmr1: TTimer
     Enabled = False
     Interval = 100
+  end
+  object List: TListeAc
+    ListeBaslik = 'Hizmetler'
+    TColcount = 3
+    TColsW = '60,250,100'
+    Conn = DATALAR.ADOConnection2
+    Filtercol = 0
+    BaslikRenk = clBlack
+    DipRenk = clBlack
+    Kolonlar.Strings = (
+      'code'
+      'name1'
+      'grupTanim')
+    KolonBasliklari.Strings = (
+      'Hizmet Kodu'
+      'Hizmet Ad'#305
+      'Grup')
+    Calistir = fgEvet
+    BiriktirmeliSecim = False
+    SiralamaKolonu = '1'
+    SkinName = 'lilian'
+    Grup = True
+    GrupCol = 2
+    KaynakTableTip = tpSp
+    Left = 288
+    Top = 56
   end
 end

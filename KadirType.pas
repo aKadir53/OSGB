@@ -3,7 +3,8 @@ unit KadirType;
 
 interface
 
-uses HizmetKayitIslemleriWS,DB,sysUtils,XSBuiltIns,Classes;
+uses HizmetKayitIslemleriWS,DB,sysUtils,XSBuiltIns,Classes,cxImage,ADODB,
+     Vcl.Graphics,jpeg,ExtCtrls;
 
 type TprintTip = (pTYazdir,pTOnIzle,pTDizayn,pTNone);
 type sqlType = (sql_Select,sql_Exec,sql_sp,sql_fn,sql_new,sql_edit,sql_delete,sql_none);
@@ -431,6 +432,14 @@ type
   End;
 
 type
+  TFirmaBilgi = Record
+    SirketKodu : String;
+    SirketAdi : String;
+    YetkiliMail : String;
+    YetkiliMobil : String;
+  End;
+
+type
   TGirisFormRecord = Record
     F_dosyaNO_ : string;
     F_gelisNO_ : string;
@@ -461,10 +470,14 @@ type
     F_sube_ : string;
     F_MuayeneProtokolNo_ : string;
     F_FaturaNO_ : string;
+    F_Tarih1_ : string;
+    F_Tarih2_ : string;
+    F_ResourceID_ : string;
   End;
 
 type
   TRiskRecord = Record
+    RiskID : string;
     SirketRiskID : string;
     Bolum : Variant;
     TehlikeKaynagi : Variant;
@@ -486,6 +499,9 @@ type
     Risk_2 : Variant;
     RDS_2 : Variant;
     yasalDayanak : string;
+    Image : TcxImage;
+    Stream : TMemoryStream;
+    SektorId : string;
   End;
 
   TSifreDegistir = record
@@ -593,6 +609,10 @@ Const
   TagfrmCariHareketGiris = 820;
   TagfrmCariHesapEkstre = 830;
   TagfrmRDS = 840;
+  TagfrmAjandaOzet = 850;
+  TagfrmSirketSahaGozetim = 860;
+  TagfrmCariHesapBorcAlacakToplam = 870;
+  TagfrmISGKurulToplanti = 880;
 
   ExceleGonder = 9997;
   SeansTarihiUpdate = 0;
@@ -639,6 +659,12 @@ Const
   sozlesmedenFatura = 6;
   yeniRisk = 27;
   riskDuzenle = 28;
+  yeniGozetim = 40;
+  gozetimDuzenle = 41;
+  yeniRiskBolum = 42;
+  yeniTehlikeKaynak = 43;
+  riskRaporuPaylas = 44;
+  sahaGozetimPaylas = 45;
 
 
   sp_HastaGelis = 'exec sp_HastaGelisleri ';
