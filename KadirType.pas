@@ -502,6 +502,14 @@ type
     Image : TcxImage;
     Stream : TMemoryStream;
     SektorId : string;
+    SSGBolum: integer;
+    SSGYapilacakFaliyetTuru: Integer;
+    SSGKokNeden: String;
+    SSGFaliyetPlan: String;
+    SSGUygulanacakFaliyetTarihi: TDateTime;
+    SSGBolumYetkilisi : String;
+    SSGSonuc : Integer;
+    SSGYapilanFaliyet: String;
   End;
 
   TSifreDegistir = record
