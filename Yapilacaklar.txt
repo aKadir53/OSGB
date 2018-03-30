@@ -251,3 +251,9 @@ yangýn tüpü, asansör, kompresör gibi peryodik bakým gerektiren cihazlarýn muayen
 
 eðitim konularýný detay tabloya çevirme çalýþmasý
 bu form bilmemneye özeldir mesajýnýn sonuna ilave bilgi ekle mesela kendinize ikinci bir kullanýcý açtýrabilirsiniz gibi.
+
+eðitimci 2 gibi bazý alanlarýn baskýya eklenmesi
+eðitimci 2 kutusu, listede olmayan eðitimci 1 girilince boþaldý
+
+
+döf no, ilgili bölüm, tarih, uygunsuzluðun tanýmý, yapýlacak faaliyet türü : Düzeltici / önleyici, faaliyet planý, tarihi, takip tyetkik sonucu : uygunsuzluk giderilmiþtir / kýsmen giderilmiþtir / giderilmemiþtir
