@@ -309,27 +309,24 @@ object frmLogin: TfrmLogin
     Properties.ActivePage = SayfaLogin
     OnChange = LoginSayfalarChange
     OnPageChanging = LoginSayfalarPageChanging
-    ExplicitHeight = 207
-    ClientRectBottom = 179
-    ClientRectLeft = 4
-    ClientRectRight = 305
-    ClientRectTop = 24
+    ClientRectBottom = 176
+    ClientRectLeft = 3
+    ClientRectRight = 302
+    ClientRectTop = 26
     object SayfaLogin: TcxTabSheet
       Caption = 'Kullan'#305'c'#305' Giri'#351'i   '
       ImageIndex = 17
-      ExplicitHeight = 179
       object dxLayoutControl1: TdxLayoutControl
         Left = 0
         Top = 0
-        Width = 301
-        Height = 155
+        Width = 299
+        Height = 150
         Align = alClient
         TabOrder = 0
         LayoutLookAndFeel = dxLayoutSkinLookAndFeel1
-        ExplicitHeight = 179
         object Image3: TImage
-          Left = 22
-          Top = 28
+          Left = 20
+          Top = 23
           Width = 53
           Height = 42
           Align = alLeft
@@ -628,8 +625,8 @@ object frmLogin: TfrmLogin
           Transparent = True
         end
         object Edit1: TcxTextEdit
-          Left = 107
-          Top = 76
+          Left = 105
+          Top = 71
           ParentFont = False
           Style.Font.Charset = DEFAULT_CHARSET
           Style.Font.Color = clWindowText
@@ -642,8 +639,8 @@ object frmLogin: TfrmLogin
           Width = 25
         end
         object Edit2: TcxTextEdit
-          Left = 107
-          Top = 106
+          Left = 105
+          Top = 101
           ParentFont = False
           ParentShowHint = False
           Properties.EchoMode = eemPassword
@@ -660,8 +657,8 @@ object frmLogin: TfrmLogin
           Width = 121
         end
         object txtSirket: TcxButtonEditKadir
-          Left = 107
-          Top = 136
+          Left = 105
+          Top = 131
           ParentFont = False
           Properties.Buttons = <
             item
@@ -684,8 +681,8 @@ object frmLogin: TfrmLogin
         end
         object txtSube: TcxImageComboKadir
           Tag = 1
-          Left = 107
-          Top = 163
+          Left = 105
+          Top = 158
           Properties.ClearKey = 46
           Properties.Items = <>
           Properties.OnChange = txtSubePropertiesChange
@@ -759,24 +756,21 @@ object frmLogin: TfrmLogin
     object SayfaConTest: TcxTabSheet
       Caption = 'Server Test'
       ImageIndex = 1
-      ExplicitHeight = 179
       object cxGroupBox1: TcxGroupBox
         Left = 0
         Top = 0
         Align = alClient
         Caption = 'Server Bilgisi'
         TabOrder = 0
-        ExplicitHeight = 179
-        Height = 155
-        Width = 301
+        Height = 150
+        Width = 299
         object dxLayoutControl2: TdxLayoutControl
-          Left = 2
-          Top = 18
-          Width = 297
-          Height = 135
+          Left = 3
+          Top = 15
+          Width = 293
+          Height = 125
           Align = alClient
           TabOrder = 0
-          ExplicitHeight = 159
           object txtServerName: TcxTextEditKadir
             Left = 104
             Top = 10
@@ -934,7 +928,6 @@ object frmLogin: TfrmLogin
       Caption = 'cxTabSheet1'
       ImageIndex = 2
       TabVisible = False
-      ExplicitHeight = 179
       object Label1: TLabel
         Left = 154
         Top = 46
@@ -1641,7 +1634,6 @@ object frmLogin: TfrmLogin
     Font.Height = -11
     Font.Name = 'Tahoma'
     Font.Style = []
-    ExplicitTop = 243
   end
   object pnlBottom: TcxGroupBox
     Left = 0
@@ -1651,7 +1643,6 @@ object frmLogin: TfrmLogin
     ParentShowHint = False
     ShowHint = False
     TabOrder = 2
-    ExplicitTop = 207
     Height = 36
     Width = 309
     object btnGiris: TcxButton

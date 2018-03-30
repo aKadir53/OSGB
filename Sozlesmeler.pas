@@ -78,29 +78,6 @@ type
     function Init(Sender: TObject) : Boolean; override;
   end;
 
-  TFaturaGonder = procedure(FaturaXML : PWideChar;
-                      kullaniciAdi : PWideChar;
-                      sifre : PWideChar;
-                      var sonuc : PWideChar;
-                      url : PWideChar); stdcall;
-
-  TFaturaIptal = procedure(FaturaGuid : PWideChar;
-                      kullaniciAdi : PWideChar;
-                      sifre : PWideChar;
-                      var sonuc : PWideChar;
-                      url : PWideChar); stdcall;
-  TFaturaPDF = procedure(FaturaGuid : PWideChar;
-                      kullaniciAdi : PWideChar;
-                      sifre : PWideChar;
-                      var sonuc : PWideChar;
-                      url : PWideChar;
-                      smtpClientHost : PWideChar;
-                      Username : PWideChar;
-                      Password : PWideChar;
-                      alici : PWideChar;
-                      konu : PWideChar;
-                      msj : PWideChar
-                      ); stdcall;
 
 
 const

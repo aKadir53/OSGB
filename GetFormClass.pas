@@ -41,11 +41,11 @@ uses message,Data_Modul,AnaUnit,message_y,popupForm,rapor,TedaviKart,Son6AylikTe
              Receteler,Sorgulamalar,sorguRaporCalistir,CariHareketGiris,CariHesapExtresi,
              HastaKart,FirmaKart,hizliKayit,receteSablonlari,RDS,
              HastaListe,IsKazasi,Anamnez,GrupDetayTanim,Sozlesmeler,
-             Tnm_UserSettings,HastaAsiKarti,HastaTaniKart,
+             Tnm_UserSettings,HastaAsiKarti,HastaTaniKart,sirketSahaGozetim,
              KurumLogin,Update_G, labaratuvarKabul,Faturalar,FaturaDetay,
              MedulaKurumSifreDegis,labParametreleri,SirketSozlesme,
-             Tnm_Doktor,LabTestAyarlari,SahaSaglikGozetim,
-             PopupDBGridForm,PopupDBVerticalGridForm,
+             Tnm_Doktor,LabTestAyarlari,SahaSaglikGozetim, CariHesapBorcAlacakToplam,
+             PopupDBGridForm,PopupDBVerticalGridForm,AjandaOzet,sirketISGKurulToplanti,
              Tnm_Ilaclar, PersonelEgitimFrm, About_Frm, MerkezBilgisi,
   HizmetKart;
 
@@ -226,8 +226,12 @@ begin
    TagfrmSirketSozlesmeler : Result := TfrmSozlesmeler;
    TagfrmCariHareketGiris : Result := TfrmCariHareket;
    TagfrmCariHesapEkstre : Result := TfrmCariHesapEkstre;
+   TagfrmCariHesapBorcAlacakToplam : Result := TfrmCariHesapBorcAlacakToplam;
    TagfrmSahaSaglikGozetim : Result := TfrmSahaSaglikGozetim;
    TagfrmRDS : Result := TfrmRDS;
+   TagfrmSirketSahaGozetim : Result := TfrmSirketSahaGozetim;
+   TagfrmISGKurulToplanti : Result := TfrmISGKurulToplanti;
+ //  TagfrmAjandaOzet : Result := TfrmAjandaOzet;
   end;
 end;
 
@@ -276,10 +280,14 @@ begin
 
    TagfrmCariHareketGiris : Result := frmCariHareket;
    TagfrmCariHesapEkstre : Result := frmCariHesapEkstre;
+   TagfrmCariHesapBorcAlacakToplam : Result := frmCariHesapBorcAlacakToplam;
    TagfrmRDS : Result := frmRDS;
+   TagfrmSirketSahaGozetim : Result := frmSirketSahaGozetim;
+   TagfrmISGKurulToplanti : Result := frmISGKurulToplanti;
 
    TagfrmLabParametreleri : Result := frmLabParams;
    TagfrmLabKabul : Result := frmLabaratuvarKabul;
+//   TagfrmAjandaOzet : Result := frmAjandaOzet;
 
   end;
 end;
@@ -332,7 +340,11 @@ begin
      TagfrmSirketSozlesmeler : frmSozlesmeler := TfrmSozlesmeler.Create(Tab);
      TagfrmCariHareketGiris : frmCariHareket := TfrmCariHareket.Create(Tab);
      TagfrmCariHesapEkstre : frmCariHesapEkstre := TfrmCariHesapEkstre.Create(Tab);
+     TagfrmCariHesapBorcAlacakToplam : frmCariHesapBorcAlacakToplam := TfrmCariHesapBorcAlacakToplam.Create(Tab);
      TagfrmRDS: frmRDS := TfrmRDS.Create(Tab);
+     TagfrmSirketSahaGozetim: frmSirketSahaGozetim := TfrmSirketSahaGozetim.Create(Tab);
+     TagfrmAjandaOzet : frmAjandaOzet := TfrmAjandaOzet.Create(Tab);
+     TagfrmISGKurulToplanti : frmISGKurulToplanti := TfrmISGKurulToplanti.Create(Tab);
   end;
   try
     if not (Form is TGirisForm) then
@@ -377,6 +389,10 @@ begin
     TGirisForm(Form)._firmaKod_ := Values.F_firmaKod_;
     TGirisForm(Form)._MuayeneProtokolNo_ := Values.F_MuayeneProtokolNo_;
     TGirisForm(Form)._FaturaNo_ := Values.F_FaturaNO_;
+    TGirisForm(Form)._Tarih1_ := Values.F_Tarih1_;
+    TGirisForm(Form)._Tarih2_ := Values.F_Tarih2_;
+    TGirisForm(Form)._ResourceID := Values.F_ResourceID_;
+
     TGirisForm(Form).Tag := FormTag;
     TgirisForm(Form).Parent := Tab;
     TGirisForm(Form).BringToFront;
@@ -442,7 +458,12 @@ begin
      TagfrmSirketSozlesmeler : frmSozlesmeler := TfrmSozlesmeler.Create(Tab);
      TagfrmCariHareketGiris : frmCariHareket := TfrmCariHareket.Create(Tab);
      TagfrmCariHesapEkstre : frmCariHesapEkstre := TfrmCariHesapEkstre.Create(Tab);
+     TagfrmCariHesapBorcAlacakToplam : frmCariHesapBorcAlacakToplam := TfrmCariHesapBorcAlacakToplam.Create(Tab);
+
      TagfrmRDS : frmRDS := TfrmRDS.Create(Tab);
+     TagfrmSirketSahaGozetim: frmSirketSahaGozetim := TfrmSirketSahaGozetim.Create(Tab);
+     TagfrmAjandaOzet : TfrmAjandaOzet.Create(Tab);
+     TagfrmISGKurulToplanti : frmISGKurulToplanti := TfrmISGKurulToplanti.Create(Tab);
   end;
   try
     Form := TGirisForm(FormClassType(abs(FormTag)));
@@ -499,6 +520,7 @@ begin
     TagfrmMerkezBilgisi : Application.CreateForm(TfrmMerkezBilgisi,frmMerkezBilgisi);
     TagfrmHizmetKart : Application.CreateForm(TfrmHizmetKart,frmHizmetKart);
     TagfrmPopupDBGridForm,TagfrmBolum,TagfrmBirim,TagfrmSube,TagFirmaCalismalari: Application.CreateForm(TfrmPopupDBGridForm , frmPopupDBGridForm);
+    TagfrmPopup : Application.CreateForm(TfrmPopup , frmPopup);
     TagfrmDoktorlar,TagfrmIGU,TagfrmDigerSaglikPers :  Application.CreateForm(TfrmDoktorlar, frmDoktorlar);
     TagfrmAbout :  Application.CreateForm(TfrmAbout, frmAbout);
     TagfrmPersonelEgitim :  Application.CreateForm(TfrmPersonelEgitim, frmPersonelEgitim);
@@ -535,7 +557,12 @@ begin
     TagfrmSirketSozlesmeler : Application.CreateForm(TfrmSozlesmeler , frmSozlesmeler);
     TagfrmCariHareketGiris : Application.CreateForm(TfrmCariHareket, frmCariHareket);
     TagfrmCariHesapEkstre : Application.CreateForm(TfrmCariHesapEkstre, frmCariHesapEkstre);
+    TagfrmCariHesapBorcAlacakToplam : Application.CreateForm(TfrmCariHesapBorcAlacakToplam, frmCariHesapBorcAlacakToplam);
+
     TagfrmRDS : Application.CreateForm(TfrmRDS, frmRDS);
+    TagfrmSirketSahaGozetim : Application.CreateForm(TfrmSirketSahaGozetim, frmSirketSahaGozetim);
+    TagfrmISGKurulToplanti : Application.CreateForm(TfrmISGKurulToplanti, frmISGKurulToplanti);
+
    end;
   try
     Form := TGirisForm(FormClassType(abs(FormTag)));
@@ -570,6 +597,9 @@ begin
     TGirisForm(Form)._sube_ := Value.F_sube_;
     TGirisForm(Form)._MuayeneProtokolNo_ := Value.F_MuayeneProtokolNo_;
     TGirisForm(Form)._FaturaNo_ := Value.F_FaturaNO_;
+    TGirisForm(Form)._Tarih1_ := Value.F_Tarih1_;
+    TGirisForm(Form)._Tarih2_ := Value.F_Tarih2_;
+    TGirisForm(Form)._ResourceID := Value.F_ResourceID_;
 
     TgirisForm(Form).Caption := sFormCaption + ' - ' + sFormAltCaption;
     if ik = ikEvet
