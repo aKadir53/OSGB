@@ -475,9 +475,9 @@ type
 
     { Private declarations }
   public
-   servername,username, usersifre , _username , _sifre , _donemuser , _donemsifre ,
+   servername,username, usersifre , _username , _sifre , _donemuser , _donemsifre , usernameAdi ,
    _tesisKodu , _labusername , _labsifre , doktor ,doktorKodu, SonReceteDoktorKodu,SonImzaDoktorKodu,sirketKodu,
-   IGU, DSPers, _dosyaNo_,_gelisNo_,kontrolKod,
+   IGU, DSPers, _dosyaNo_,_gelisNo_,kontrolKod,RiskTanimBilgiEkle,
    _labkurumkod , _labkurumkodText, _laburl , _labfirma ,  _SKRS , _saglikNetUser ,
    _saglikNetPass , _firmaSKRS , _usermernis , _passmernis, UserGroup : string;
    _doktorReceteUser,_doktorRecetePas,_KurumSKRS_, _userSaglikNet_ , _passSaglikNet_ , _userSaglikNet2_ , _passSaglikNet2_ , itsGLN , itsUser , itsPass: string;
@@ -529,6 +529,7 @@ type
    efaturaSifre : string;
    portalUser : string;
    portalSifre : string;
+   sirketlerUserFilter : string;
 
    function QuerySelect (Q: TADOQuery; sql:string) : Boolean;overload;
   // function QuerySelect (sql:string;Q: TADOQuery = nil) : Boolean;overload;

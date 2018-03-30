@@ -6,7 +6,7 @@ uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, cxGraphics, cxControls, cxLookAndFeels,
   cxLookAndFeelPainters, Vcl.ExtCtrls, dxNavBar,kadirType,kadir,GirisUnit,
-  KadirLabel, Data.DB, Data.Win.ADODB, dxSkinsForm, dxSkinsdxStatusBarPainter,
+  KadirLabel, Data.Win.ADODB, dxSkinsForm, dxSkinsdxStatusBarPainter,
   dxStatusBar, Vcl.ComCtrls, Vcl.ToolWin, Vcl.ImgList, cxClasses, dxNavBarBase,
   dxNavBarCollns,JPEG, Vcl.StdCtrls,pngimage, cxContainer, cxEdit, cxImage,
   cxTextEdit, cxCurrencyEdit, dxSkinsCore, dxSkinBlue, dxSkinCaramel,
@@ -25,7 +25,10 @@ uses
   dxSkinOffice2010Blue, dxSkinOffice2010Silver, dxSkinPumpkin, dxSkinSeven,
   dxSkinSharp, dxSkinSilver, dxSkinSpringTime, dxSkinStardust, dxSkinSummer2008,
   dxSkinValentine, dxSkinXmas2008Blue,cxSchedulerStrs, cxMaskEdit,
-  cxDropDownEdit, cxImageComboBox, Data.SqlExpr;
+  cxDropDownEdit, cxImageComboBox, Data.SqlExpr, cxCustomData, cxFilter, cxData,
+  cxDataStorage, cxDBData, cxMemo, cxGridLevel, cxGridBandedTableView,
+  cxGridDBBandedTableView, cxGridCustomTableView, cxGridTableView,
+  cxGridDBTableView, cxGridCustomView, cxGrid, DB;
 
 type
   TAnaForm = class(TForm)
@@ -71,7 +74,6 @@ type
     sayfalar: TcxPageControl;
     AjandaPage: TcxTabSheet;
     pnl_Ajanda: TcxGroupBox;
-    cxScheduler1: TcxScheduler;
     Panel1: TPanel;
     cxRadioGroup1: TcxRadioGroup;
     DuyuruPage: TcxTabSheet;
@@ -85,6 +87,54 @@ type
     cxSchedulerDBStorage2: TcxSchedulerDBStorage;
     xTmpPanel: TPanel;
     btRefresh: TcxButtonKadir;
+    AjandaAltPage: TcxPageControl;
+    pageAjanda: TcxTabSheet;
+    Liste: TcxTabSheet;
+    cxScheduler1: TcxScheduler;
+    AjandaGrid: TcxGridKadir;
+    cxGridDBTableView1: TcxGridDBTableView;
+    cxGridDBColumn1: TcxGridDBColumn;
+    cxGridDBColumn2: TcxGridDBColumn;
+    cxGridDBColumn3: TcxGridDBColumn;
+    cxGridDBColumn4: TcxGridDBColumn;
+    cxGridDBColumn5: TcxGridDBColumn;
+    cxGridDBColumn6: TcxGridDBColumn;
+    cxGridDBColumn7: TcxGridDBColumn;
+    cxGridDBColumn8: TcxGridDBColumn;
+    cxGridDBColumn9: TcxGridDBColumn;
+    cxGridDBColumn10: TcxGridDBColumn;
+    cxGridDBColumn11: TcxGridDBColumn;
+    cxGridDBColumn12: TcxGridDBColumn;
+    cxGridDBColumn13: TcxGridDBColumn;
+    cxGridDBColumn14: TcxGridDBColumn;
+    cxGridDBColumn15: TcxGridDBColumn;
+    cxGridDBColumn16: TcxGridDBColumn;
+    cxGridDBColumn17: TcxGridDBColumn;
+    cxGridDBColumn18: TcxGridDBColumn;
+    cxGridDBColumn19: TcxGridDBColumn;
+    cxGridDBColumn20: TcxGridDBColumn;
+    cxGridDBColumn21: TcxGridDBColumn;
+    cxGridDBColumn22: TcxGridDBColumn;
+    cxGridDBBandedTableView1: TcxGridDBBandedTableView;
+    AjandaGridSatirlar: TcxGridDBBandedTableView;
+    AjandaGridSatirlarLocation: TcxGridDBBandedColumn;
+    AjandaGridSatirlartanimi: TcxGridDBBandedColumn;
+    AjandaGridSatirlarILCE: TcxGridDBBandedColumn;
+    AjandaGridSatirlarHizmetSure: TcxGridDBBandedColumn;
+    AjandaGridSatirlarGirisSaat: TcxGridDBBandedColumn;
+    AjandaGridSatirlarCikisSaat: TcxGridDBBandedColumn;
+    AjandaGridSatirlarPlanlananTarih: TcxGridDBBandedColumn;
+    AjandaGridSatirlarResourceId: TcxGridDBBandedColumn;
+    AjandaGridSatirlarADISOYADI: TcxGridDBBandedColumn;
+    AjandaGridSatirlarColumn1: TcxGridDBBandedColumn;
+    AjandaGridSatirlarColumn2: TcxGridDBBandedColumn;
+    AjandaGridLevel1: TcxGridLevel;
+    AjandaPanel: TcxGroupBox;
+    btnYazdir: TcxButtonKadir;
+    cxButtonKadir1: TcxButtonKadir;
+    cxStyleRepository1: TcxStyleRepository;
+    cxStyle1: TcxStyle;
+    AjandaGridSatirlarColumn3: TcxGridDBBandedColumn;
     procedure FormCreate(Sender: TObject);
     procedure ToolButton1Click(Sender: TObject);
     procedure FormResize(Sender: TObject);
@@ -119,6 +169,12 @@ type
       AEvent: TcxSchedulerControlEvent; AImages: TcxSchedulerEventImages);
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
     procedure btRefreshClick(Sender: TObject);
+    procedure btnYazdirClick(Sender: TObject);
+    procedure cxButtonKadir1Click(Sender: TObject);
+    procedure AjandaAltPagePageChanging(Sender: TObject; NewPage: TcxTabSheet;
+      var AllowChange: Boolean);
+    procedure cxScheduler1AfterEditing(Sender: TcxCustomScheduler;
+      AEvent: TcxSchedulerControlEvent);
   private
     { Private declarations }
   public
@@ -138,7 +194,7 @@ var
 
 implementation
       uses Tnm_Ilaclar,Tnm_LabTest,
-      Data_Modul,HastaKart,Login,
+      Data_Modul,HastaKart,Login,EventCompletDurumBildir,
       Tnm_UserSettings, sifreDegis, Update_G;
 
 {$R *.dfm}
@@ -333,6 +389,68 @@ begin
   pnl_Ajanda.Visible := false;
 end;
 
+procedure TAnaForm.cxButtonKadir1Click(Sender: TObject);
+var
+  GirisRecord : TGirisFormRecord;
+  F : TGirisForm;
+  uu,sql,t1,t2 : string;
+begin
+(*
+    GirisRecord.F_Tarih1_ := FormatDateTime('YYYY-MM-DD',cxScheduler1.DateNavigator.SelectionList[0]);
+    GirisRecord.F_Tarih2_ := FormatDateTime('YYYY-MM-DD',cxScheduler1.DateNavigator.SelectionList[cxScheduler1.DateNavigator.SelectionList.Count-1]);
+    GirisRecord.F_ResourceID_ :=  cxScheduler1.SelResource.ResourceID;
+    F := FormINIT(TagfrmAjandaOzet,self,GirisRecord,'',NewTab(AnaForm.sayfalar,TagfrmAjandaOzet),ikHayir,'');
+    if F <> nil then F.ShowModal;
+    *)
+end;
+
+procedure TAnaForm.AjandaAltPagePageChanging(Sender: TObject;
+  NewPage: TcxTabSheet; var AllowChange: Boolean);
+var
+  uu,sql,t1,t2 : string;
+begin
+  if NewPage = Liste then
+  begin
+   t1 := FormatDateTime('YYYY-MM-DD',cxScheduler1.DateNavigator.SelectionList[0]);
+   t2 := FormatDateTime('YYYY-MM-DD',cxScheduler1.DateNavigator.SelectionList[cxScheduler1.DateNavigator.SelectionList.Count-1]);
+
+   if UserRight('Kullanýcý Ýþlemleri', 'Herkesin Ýþ Planýný Görsün') = True
+   then
+    uu := ''
+   else
+   uu :=  cxScheduler1.SelResource.ResourceID;
+
+   AjandaGrid.Dataset.Connection := datalar.ADOConnection2;
+   AjandaGrid.Dataset.Active := False;
+   AjandaGrid.Dataset.SQL.Text := 'exec sp_ajanda ' + QuotedStr(uu) + ',' +
+                                                     QuotedStr(t1) + ',' +
+                                                     QuotedStr(t2);
+
+   AjandaGrid.Dataset.Active := True;
+
+  end;
+
+end;
+
+procedure TAnaForm.btnYazdirClick(Sender: TObject);
+var
+  uu,sql,t1,t2 : string;
+  TopluDataset : TDataSetKadir;
+begin
+
+   t1 := FormatDateTime('YYYY-MM-DD',cxScheduler1.DateNavigator.SelectionList[0]);
+   t2 := FormatDateTime('YYYY-MM-DD',cxScheduler1.DateNavigator.SelectionList[cxScheduler1.DateNavigator.SelectionList.Count-1]);
+
+   uu :=  AjandaGrid.Dataset.FieldByName('ResourceId').AsString;
+   sql := 'exec sp_ajanda ' + QuotedStr(uu) + ','
+                            + QuotedStr(t1) + ','
+                            + QuotedStr(t2);
+  // datalar.QuerySelect(sql);
+   TopluDataset.Dataset0 := datalar.QuerySelect(sql);
+   PrintYap('AJP','\Ajanda Yazdýr',inttoStr(Tag) ,TopluDataset,KadirType.pTNone);
+
+end;
+
 procedure TAnaForm.cxRadioGroup1PropertiesChange(Sender: TObject);
 begin
   case cxRadioGroup1.EditValue of
@@ -340,6 +458,32 @@ begin
      7 : cxScheduler1.ViewWeek.Active := true;
      365 : cxScheduler1.ViewYear.Active := true;
   end;
+end;
+
+procedure TAnaForm.cxScheduler1AfterEditing(Sender: TcxCustomScheduler;
+  AEvent: TcxSchedulerControlEvent);
+var
+  FB : TFirmaBilgi;
+begin
+d
+  if AEvent.TaskStatus = tsComplete
+  Then Begin
+    try
+        FB := FirmaBilgileri(copy(AEvent.Location,1,6));
+        Application.CreateForm(TfrmEventDurumBildir, frmEventDurumBildir);
+        frmEventDurumBildir.EMail := FB.YetkiliMail;
+        frmEventDurumBildir.MobilTel := FB.YetkiliMobil;
+
+        frmEventDurumBildir.mesaj :=
+        datetimetostr(AEvent.Start) + ' - ' + datetimetostr(AEvent.Finish) + ' Tarihi ve Saatleri Arasýnda Ziyaretimiz ,' + char(13) +
+        AEvent.Message;
+
+        frmEventDurumBildir.ShowModal;
+    finally
+        frmEventDurumBildir := nil;
+    end;
+  End;
+
 end;
 
 procedure TAnaForm.cxScheduler1InitEventImages(Sender: TcxCustomScheduler;
@@ -441,7 +585,7 @@ begin
     Where := '';
     Sube := '';
   end;
-
+  datalar.sirketlerUserFilter := where + sube;
   Sirketler.Conn := Datalar.ADOConnection2;
   Sirketler.TableName := 'SIRKETLER_TNM_view';
   Sirketler.ValueField := 'SirketKod';
@@ -471,6 +615,8 @@ begin
    UserTable.Filter := 'Kullanici = ' + QuotedStr(datalar.username);
 
   EventsTable.Active := True;
+
+  AjandaAltPage.ActivePageIndex := 0;
 
 (*
   MainMenuKadir1.Left := -1 * MainMenuKadir1.Width;

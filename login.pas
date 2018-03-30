@@ -256,12 +256,12 @@ begin
       DATALAR.usersifre := edit2.Text;
       regyazLastLogin;
       bloginLog := True;
-      //SUTKODU;
+      datalar.usernameAdi := login.FieldByName('ADISOYADI').AsString;
       datalar.doktorKodu := login.FieldByName('doktor').AsString;
       datalar.sirketKodu := login.FieldByName('SirketKodu').AsString;
       datalar.IGU := login.FieldByName('IGU').AsString;
       datalar.DSPers := login.FieldByName('DigerSaglikPers').AsString;
-      datalar.UserGroup := login.FieldByName('Grup').AsString;
+      datalar.UserGroupx := login.FieldByName('Grup').AsString;
 
       AnaForm.dxSkinController1.SkinName := login.FieldByName('userSkin').AsString;
       FormatSettings.DateSeparator := '.';
