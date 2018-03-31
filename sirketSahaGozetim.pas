@@ -77,13 +77,13 @@ type
     Satirlarid: TcxGridDBBandedColumn;
     SatirlarTespitler: TcxGridDBBandedColumn;
     SatirlarImage: TcxGridDBBandedColumn;
-    SatirlarBolum: TcxGridDBBandedColumn;
-    SatirlarYapilacakFaliyetTuru: TcxGridDBBandedColumn;
+    SatirlarBolumTanimi: TcxGridDBBandedColumn;
+    SatirlarFaaliyetTanimi: TcxGridDBBandedColumn;
     SatirlarKokNeden: TcxGridDBBandedColumn;
     SatirlarFaliyetPlan: TcxGridDBBandedColumn;
     SatirlarUygulanacakFaliyetTarihi: TcxGridDBBandedColumn;
     SatirlarBolumYetkilisi: TcxGridDBBandedColumn;
-    SatirlarSonuc: TcxGridDBBandedColumn;
+    SatirlarSonucTanimi: TcxGridDBBandedColumn;
     SatirlarYapilanFaliyet: TcxGridDBBandedColumn;
     procedure Fatura(islem: Integer);
     procedure cxButtonCClick(Sender: TObject);
@@ -191,7 +191,7 @@ procedure TfrmSirketSahaGozetim.FaturaDetay;
 begin
 
      SahaGozetimGrid.Dataset.Active := False;
-     SahaGozetimGrid.Dataset.SQL.Text := 'select * from SirketSahaGozetimDetay where sirketSahaGozetimId = ' +
+     SahaGozetimGrid.Dataset.SQL.Text := 'select * from SirketSahaGozetimDetay_view where sirketSahaGozetimId = ' +
      QuotedStr(TcxButtonEditKadir(FindComponent('id')).Text);
      SahaGozetimGrid.Dataset.Active := True;
 
@@ -294,8 +294,14 @@ var
   Blob : TADOBlobStream;
 begin
    Satirlar.DataController.DataSet.FieldByName('Tespitler').AsString := datalar.Risk.Onlemler;
-   Satirlar.DataController.DataSet.FieldByName('Bolum').AsInteger := datalar.Risk.SSGBolum;
-   Satirlar.DataController.DataSet.FieldByName('YapilacakFaliyetTuru').AsInteger := datalar.Risk.SSGYapilacakFaliyetTuru;
+   if datalar.Risk.SSGBolum <= 0 then
+     Satirlar.DataController.DataSet.FieldByName('Bolum').Clear
+    else
+     Satirlar.DataController.DataSet.FieldByName('Bolum').AsInteger := datalar.Risk.SSGBolum;
+   if datalar.Risk.SSGYapilacakFaliyetTuru <= 0 then
+     Satirlar.DataController.DataSet.FieldByName('YapilacakFaliyetTuru').Clear
+    else
+     Satirlar.DataController.DataSet.FieldByName('YapilacakFaliyetTuru').AsInteger := datalar.Risk.SSGYapilacakFaliyetTuru;
    Satirlar.DataController.DataSet.FieldByName('KokNeden').AsString := datalar.Risk.SSGKokNeden;
    Satirlar.DataController.DataSet.FieldByName('FaliyetPlan').AsString := datalar.Risk.SSGFaliyetPlan;
    if IsNull (datalar.Risk.SSGUygulanacakFaliyetTarihi) then
@@ -303,7 +309,10 @@ begin
     else
      Satirlar.DataController.DataSet.FieldByName('UygulanacakFaliyetTarihi').AsDateTime := StrToDate (datalar.Risk.SSGUygulanacakFaliyetTarihi);
    Satirlar.DataController.DataSet.FieldByName('BolumYetkilisi').AsString := datalar.Risk.SSGBolumYetkilisi;
-   Satirlar.DataController.DataSet.FieldByName('Sonuc').AsInteger := datalar.Risk.SSGSonuc;
+   if datalar.Risk.SSGSonuc <= 0 then
+     Satirlar.DataController.DataSet.FieldByName('Sonuc').Clear
+    else
+     Satirlar.DataController.DataSet.FieldByName('Sonuc').AsInteger := datalar.Risk.SSGSonuc;
    Satirlar.DataController.DataSet.FieldByName('YapilanFaliyet').AsString := datalar.Risk.SSGYapilanFaliyet;
  //  Satirlar.DataController.DataSet.FieldByName('Image').AsVariant := datalar.Risk.Image;
 

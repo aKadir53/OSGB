@@ -241,14 +241,18 @@ object frmSirketSahaGozetim: TfrmSirketSahaGozetim
         Position.ColIndex = 3
         Position.RowIndex = 0
       end
-      object SatirlarBolum: TcxGridDBBandedColumn
-        DataBinding.FieldName = 'Bolum'
+      object SatirlarBolumTanimi: TcxGridDBBandedColumn
+        Caption = 'B'#246'l'#252'm'
+        DataBinding.FieldName = 'BolumTanimi'
+        Options.Editing = False
         Position.BandIndex = 0
         Position.ColIndex = 4
         Position.RowIndex = 0
       end
-      object SatirlarYapilacakFaliyetTuru: TcxGridDBBandedColumn
-        DataBinding.FieldName = 'YapilacakFaliyetTuru'
+      object SatirlarFaaliyetTanimi: TcxGridDBBandedColumn
+        Caption = 'Faaliyet T'#252'r'#252
+        DataBinding.FieldName = 'FaaliyetTanimi'
+        Options.Editing = False
         Position.BandIndex = 0
         Position.ColIndex = 5
         Position.RowIndex = 0
@@ -277,8 +281,10 @@ object frmSirketSahaGozetim: TfrmSirketSahaGozetim
         Position.ColIndex = 9
         Position.RowIndex = 0
       end
-      object SatirlarSonuc: TcxGridDBBandedColumn
-        DataBinding.FieldName = 'Sonuc'
+      object SatirlarSonucTanimi: TcxGridDBBandedColumn
+        Caption = 'Sonu'#231
+        DataBinding.FieldName = 'SonucTanimi'
+        Options.Editing = False
         Position.BandIndex = 0
         Position.ColIndex = 10
         Position.RowIndex = 0
