@@ -506,7 +506,7 @@ type
     SSGYapilacakFaliyetTuru: Integer;
     SSGKokNeden: String;
     SSGFaliyetPlan: String;
-    SSGUygulanacakFaliyetTarihi: TDateTime;
+    SSGUygulanacakFaliyetTarihi: String;
     SSGBolumYetkilisi : String;
     SSGSonuc : Integer;
     SSGYapilanFaliyet: String;

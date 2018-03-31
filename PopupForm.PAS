@@ -365,7 +365,7 @@ riskDuzenle,yeniRisk :
               datalar.Risk.SSGYapilacakFaliyetTuru := TcxImageComboKadir(FindComponent('YapilacakFaliyetTuru')).EditValue;
               datalar.Risk.SSGKokNeden := TcxTextEdit(FindComponent('KokNeden')).Text;
               datalar.Risk.SSGFaliyetPlan := TcxTextEdit(FindComponent('FaliyetPlan')).Text;
-              datalar.Risk.SSGUygulanacakFaliyetTarihi := StrToDate (VarToStr (TcxTextEdit(FindComponent('UygulanacakFaliyetTarihi')).EditValue));
+              datalar.Risk.SSGUygulanacakFaliyetTarihi := VarToStr (TcxTextEdit(FindComponent('UygulanacakFaliyetTarihi')).EditValue);
               datalar.Risk.SSGBolumYetkilisi := TcxTextEdit(FindComponent('BolumYetkilisi')).Text;
               datalar.Risk.SSGSonuc := TcxImageComboKadir(FindComponent('Sonuc')).EditValue;
               datalar.Risk.SSGYapilanFaliyet := TcxTextEdit(FindComponent('YapilanFaliyet')).Text;
@@ -1031,7 +1031,7 @@ ptPersonelTetkikleri :
                     _Tarih_ := TcxDateEditKadir.Create(self);
                     _Tarih_.Name := 'UygulanacakFaliyetTarihi';
                     setDataStringKontrol(self,_Tarih_, 'UygulanacakFaliyetTarihi','Uygulanacak Faaliyet Tarihi',Kolon1,'',100);
-                    TcxTextEdit(FindComponent('UygulanacakFaliyetTarihi')).Text := DateToStr (datalar.Risk.SSGUygulanacakFaliyetTarihi);
+                    TcxTextEdit(FindComponent('UygulanacakFaliyetTarihi')).Text := datalar.Risk.SSGUygulanacakFaliyetTarihi;
                     setDataString(self, 'BolumYetkilisi', 'Bolum Yetkilisi', kolon1, '', 200);
                     TcxTextEdit(FindComponent('BolumYetkilisi')).Text := datalar.Risk.SSGBolumYetkilisi;
 
