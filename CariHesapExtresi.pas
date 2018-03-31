@@ -21,9 +21,6 @@ type
     PersonelList: TListeAc;
     PopupMenu1: TPopupMenu;
     Y1: TMenuItem;
-    T1: TMenuItem;
-    S1: TMenuItem;
-    L1: TMenuItem;
     GridEkstre: TcxGridKadir;
     GridList: TcxGridDBBandedTableView;
     GridEkstreLevel1: TcxGridLevel;

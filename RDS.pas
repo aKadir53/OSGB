@@ -149,6 +149,7 @@ type
     N1: TMenuItem;
     R2: TMenuItem;
     e2: TMenuItem;
+    K1: TMenuItem;
     procedure cxButtonCClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure gridRaporCustomDrawGroupCell(Sender: TcxCustomGridTableView;
@@ -696,6 +697,7 @@ var
   ado : TADOQuery;
   sql : String;
   TopluDataset : TDataSetKadir;
+  F : TGirisForm;
 begin
   inherited;
 
@@ -727,6 +729,11 @@ begin
           end;
 
         end;
+   -25 : begin
+           datalar.KKD.SirketRiskID := TcxButtonEditKadir(FindComponent('id')).EditText;
+           F := FormINIT(TagfrmKKD,GirisRecord,ikHayir,'');
+           if F <> nil then F.ShowModal;
+         end;
 
   end;
 end;
