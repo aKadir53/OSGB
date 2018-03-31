@@ -403,6 +403,14 @@ riskDuzenle,yeniRisk :
  gozetimDuzenle,yeniGozetim :
             begin
               datalar.Risk.Onlemler := TcxMemo(FindComponent('Tespitler')).Text;
+              datalar.Risk.SSGBolum := TcxImageComboKadir(FindComponent('Bolum')).EditValue;
+              datalar.Risk.SSGYapilacakFaliyetTuru := TcxImageComboKadir(FindComponent('YapilacakFaliyetTuru')).EditValue;
+              datalar.Risk.SSGKokNeden := TcxTextEdit(FindComponent('KokNeden')).Text;
+              datalar.Risk.SSGFaliyetPlan := TcxTextEdit(FindComponent('FaliyetPlan')).Text;
+              datalar.Risk.SSGUygulanacakFaliyetTarihi := VarToStr (TcxTextEdit(FindComponent('UygulanacakFaliyetTarihi')).EditValue);
+              datalar.Risk.SSGBolumYetkilisi := TcxTextEdit(FindComponent('BolumYetkilisi')).Text;
+              datalar.Risk.SSGSonuc := TcxImageComboKadir(FindComponent('Sonuc')).EditValue;
+              datalar.Risk.SSGYapilanFaliyet := TcxTextEdit(FindComponent('YapilanFaliyet')).Text;
               //datalar.Risk.Image := TcxImage.Create(nil);
               datalar.Risk.Image.Picture := TcxImage(FindComponent('ImageResim')).Picture;
             end;
@@ -1043,6 +1051,52 @@ ptPersonelTetkikleri :
                     Image1 := TcxImage.Create(self);
                     Image1.Properties.GraphicClassName := 'TJPEGImage';
                     setDataStringKontrol(self,Image1,'ImageResim','Image',Kolon1,'',300,300);
+
+                    Doktorlar := TcxImageComboKadir.Create(self);
+                    Doktorlar.Conn := Datalar.ADOConnection2;
+                    Doktorlar.TableName := 'RDS_RiskBolum';
+                    Doktorlar.ValueField := 'kod';
+                    Doktorlar.DisplayField := 'tanimi';
+                    Doktorlar.BosOlamaz := True;
+                    Doktorlar.Filter := '';
+                    setDataStringKontrol(self,Doktorlar,'Bolum','Bölüm',Kolon1,'',150);
+                    Doktorlar.EditValue := datalar.Risk.SSGBolum;
+
+                    Doktorlar := TcxImageComboKadir.Create(self);
+                    Doktorlar.Conn := Datalar.ADOConnection2;
+                    Doktorlar.TableName := 'SahaGozetimFaaliyetTuru';
+                    Doktorlar.ValueField := 'kod';
+                    Doktorlar.DisplayField := 'tanimi';
+                    Doktorlar.BosOlamaz := True;
+                    Doktorlar.Filter := '';
+                    setDataStringKontrol(self,Doktorlar,'YapilacakFaliyetTuru','Yapýlacak Faaliyet Türü',Kolon1,'',150);
+                    Doktorlar.EditValue := datalar.Risk.SSGYapilacakFaliyetTuru;
+
+                    setDataString(self, 'KokNeden', 'Kok Neden', kolon1, '', 200);
+                    TcxTextEdit(FindComponent('KokNeden')).Text := datalar.Risk.SSGKokNeden;
+                    setDataString(self, 'FaliyetPlan', 'Faaliyet Plan', kolon1, '', 200);
+                    TcxTextEdit(FindComponent('FaliyetPlan')).Text := datalar.Risk.SSGFaliyetPlan;
+
+                    _Tarih_ := TcxDateEditKadir.Create(self);
+                    _Tarih_.Name := 'UygulanacakFaliyetTarihi';
+                    setDataStringKontrol(self,_Tarih_, 'UygulanacakFaliyetTarihi','Uygulanacak Faaliyet Tarihi',Kolon1,'',100);
+                    TcxTextEdit(FindComponent('UygulanacakFaliyetTarihi')).Text := datalar.Risk.SSGUygulanacakFaliyetTarihi;
+                    setDataString(self, 'BolumYetkilisi', 'Bolum Yetkilisi', kolon1, '', 200);
+                    TcxTextEdit(FindComponent('BolumYetkilisi')).Text := datalar.Risk.SSGBolumYetkilisi;
+
+                    Doktorlar := TcxImageComboKadir.Create(self);
+                    Doktorlar.Conn := Datalar.ADOConnection2;
+                    Doktorlar.TableName := 'SahaGozetimTakipTetkikSonuc';
+                    Doktorlar.ValueField := 'kod';
+                    Doktorlar.DisplayField := 'tanimi';
+                    Doktorlar.BosOlamaz := True;
+                    Doktorlar.Filter := '';
+                    setDataStringKontrol(self,Doktorlar,'Sonuc','Takip Tetkik Sonucu',Kolon1,'',150);
+                    Doktorlar.EditValue := datalar.Risk.SSGSonuc;
+
+                    setDataString(self, 'YapilanFaliyet', 'Yapýlan Faaliyet', kolon1, '', 200);
+                    TcxTextEdit(FindComponent('YapilanFaliyet')).Text := datalar.Risk.SSGYapilanFaliyet;
+
                   //  datalar.Risk.Image.Picture.SaveToFile('dd.jpg');
                     try
                      TcxImage(FindComponent('ImageResim')).Picture := datalar.Risk.Image.Picture;

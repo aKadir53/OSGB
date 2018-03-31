@@ -428,6 +428,22 @@ var
   sSQL : String;
   xEvt11, xEvt12, xEvt21, xEvt22 : TNotifyEvent;
 begin
+  xTExtObj1 := TcxTextEditKadir (FindComponent('EgitimciX'));
+  xComboObj1 := TcxImageComboKadir (FindComponent ('Egitimci'));
+  xTExtObj2 := TcxTextEditKadir (FindComponent('Egitimci2X'));
+  xComboObj2 := TcxImageComboKadir (FindComponent ('Egitimci2'));
+  case TControl(sender).Tag  of
+    0 : begin
+      if (not IsNull (VarToStr (xTExtObj1.EditValue))
+          and not IsNull (VarToStr (xComboObj1.EditValue)))
+        or (not IsNull (VarToStr (xTExtObj2.EditValue))
+          and not IsNull (VarToStr (xComboObj2.EditValue))) then
+      begin
+        ShowMessageSkin('Ayný hizadaki Eðitimci ve Listede Olmayan Eðitimci kutularý ayný anda doldurulmamalý'#13#10'- Birinci eðitimci 1. satýra, ikinci eðitimci 2. satýra'#13#10'- Listede varsa soldan seçilerek, yoksa saðda bir kereliðine elle yazýlarak eklenmelidir.', '', '', 'info');
+        Exit;
+      end;
+    end;
+    end;
   BeginTrans (DATALAR.ADOConnection2);
   try
     //SirketKodx.Text := datalar.AktifSirket; giriþ formuna eklendi.
@@ -441,10 +457,6 @@ begin
           xObj.Text := IntToStr (F_IDENTITY);
           ResetDetayDataset;
         end;
-        xTExtObj1 := TcxTextEditKadir (FindComponent('EgitimciX'));
-        xComboObj1 := TcxImageComboKadir (FindComponent ('Egitimci'));
-        xTExtObj2 := TcxTextEditKadir (FindComponent('Egitimci2X'));
-        xComboObj2 := TcxImageComboKadir (FindComponent ('Egitimci2'));
         if (not IsNull (VarToStr (xTExtObj1.EditValue))) or (not IsNull (VarToStr (xTExtObj2.EditValue))) then
         begin
           sqlRun.Edit;
@@ -473,8 +485,10 @@ begin
           xComboObj2.Properties.OnEditValueChanged := nil;
           xTExtObj2.Properties.OnEditValueChanged := nil;
           try
-            xComboObj1.EditValue := VarToStr (xTExtObj1.EditValue);
-            xComboObj2.EditValue := VarToStr (xTExtObj2.EditValue);
+            if not IsNull (VarToStr (xTExtObj1.EditValue)) then
+              xComboObj1.EditValue := VarToStr (xTExtObj1.EditValue);
+            if not IsNull (VarToStr (xTExtObj2.EditValue)) then
+              xComboObj2.EditValue := VarToStr (xTExtObj2.EditValue);
             xTExtObj1.EditValue := '';
             xTExtObj2.EditValue := '';
           finally
