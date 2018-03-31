@@ -39,7 +39,7 @@ implementation
 uses message,Data_Modul,AnaUnit,message_y,popupForm,rapor,TedaviKart,Son6AylikTetkikSonuc,
              HastaRecete,sifreDegis,HastaTetkikEkle,DokumanYukle,
              Receteler,Sorgulamalar,sorguRaporCalistir,CariHareketGiris,CariHesapExtresi,
-             HastaKart,FirmaKart,hizliKayit,receteSablonlari,RDS,
+             HastaKart,FirmaKart,hizliKayit,receteSablonlari,RDS,KKD,
              HastaListe,IsKazasi,Anamnez,GrupDetayTanim,Sozlesmeler,
              Tnm_UserSettings,HastaAsiKarti,HastaTaniKart,sirketSahaGozetim,
              KurumLogin,Update_G, labaratuvarKabul,Faturalar,FaturaDetay,
@@ -140,6 +140,7 @@ function GetFormCaptionInfo(const formId : integer; var pFormCaption, pFormAltCa
 var
   sql : string;
   ado : TADOQuery;
+  T : TstringList;
 begin
   Result := False;
   sql := 'select fc.formCaption, fc.formAltCaption, fc.UserGroup, ug.ADI UserGroupDesc '+
@@ -167,11 +168,16 @@ begin
     pUserGroupDesc := ado.Fields[3].AsString;
     if not IsNull (pUserGroup) then
     begin
-      if pUserGroup <> DATALAR.UserGroup then
+      T := TStringList.Create;
+      ExtractStrings(['0'],[],pchar(pUserGroup),T);
+
+      if (pUserGroup <> DATALAR.UserGroup)
+      then
       begin
         if pMsg then ShowMessageSkin('Bu form "' + pUserGroupDesc + '" kullanýcý grubuna özeldir', '', '', 'info');
         Exit;
       end;
+
     end;
     Result := True;
   finally
@@ -229,6 +235,7 @@ begin
    TagfrmCariHesapBorcAlacakToplam : Result := TfrmCariHesapBorcAlacakToplam;
    TagfrmSahaSaglikGozetim : Result := TfrmSahaSaglikGozetim;
    TagfrmRDS : Result := TfrmRDS;
+   TagfrmKKD : Result := TfrmKKD;
    TagfrmSirketSahaGozetim : Result := TfrmSirketSahaGozetim;
    TagfrmISGKurulToplanti : Result := TfrmISGKurulToplanti;
  //  TagfrmAjandaOzet : Result := TfrmAjandaOzet;
@@ -282,6 +289,7 @@ begin
    TagfrmCariHesapEkstre : Result := frmCariHesapEkstre;
    TagfrmCariHesapBorcAlacakToplam : Result := frmCariHesapBorcAlacakToplam;
    TagfrmRDS : Result := frmRDS;
+   TagfrmKKD : Result := frmKKD;
    TagfrmSirketSahaGozetim : Result := frmSirketSahaGozetim;
    TagfrmISGKurulToplanti : Result := frmISGKurulToplanti;
 
@@ -342,6 +350,7 @@ begin
      TagfrmCariHesapEkstre : frmCariHesapEkstre := TfrmCariHesapEkstre.Create(Tab);
      TagfrmCariHesapBorcAlacakToplam : frmCariHesapBorcAlacakToplam := TfrmCariHesapBorcAlacakToplam.Create(Tab);
      TagfrmRDS: frmRDS := TfrmRDS.Create(Tab);
+     TagfrmKKD: frmKKD := TfrmKKD.Create(Tab);
      TagfrmSirketSahaGozetim: frmSirketSahaGozetim := TfrmSirketSahaGozetim.Create(Tab);
      TagfrmAjandaOzet : frmAjandaOzet := TfrmAjandaOzet.Create(Tab);
      TagfrmISGKurulToplanti : frmISGKurulToplanti := TfrmISGKurulToplanti.Create(Tab);
@@ -461,6 +470,7 @@ begin
      TagfrmCariHesapBorcAlacakToplam : frmCariHesapBorcAlacakToplam := TfrmCariHesapBorcAlacakToplam.Create(Tab);
 
      TagfrmRDS : frmRDS := TfrmRDS.Create(Tab);
+     TagfrmKKD : frmKKD := TfrmKKD.Create(Tab);
      TagfrmSirketSahaGozetim: frmSirketSahaGozetim := TfrmSirketSahaGozetim.Create(Tab);
      TagfrmAjandaOzet : TfrmAjandaOzet.Create(Tab);
      TagfrmISGKurulToplanti : frmISGKurulToplanti := TfrmISGKurulToplanti.Create(Tab);
@@ -560,6 +570,7 @@ begin
     TagfrmCariHesapBorcAlacakToplam : Application.CreateForm(TfrmCariHesapBorcAlacakToplam, frmCariHesapBorcAlacakToplam);
 
     TagfrmRDS : Application.CreateForm(TfrmRDS, frmRDS);
+    TagfrmKKD : Application.CreateForm(TfrmKKD, frmKKD);
     TagfrmSirketSahaGozetim : Application.CreateForm(TfrmSirketSahaGozetim, frmSirketSahaGozetim);
     TagfrmISGKurulToplanti : Application.CreateForm(TfrmISGKurulToplanti, frmISGKurulToplanti);
 
