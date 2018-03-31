@@ -22,10 +22,6 @@ object frmCariHesapEkstre: TfrmCariHesapEkstre
     Align = alClient
     TabOrder = 0
     ExceleGonder = False
-    ExplicitLeft = 8
-    ExplicitTop = 8
-    ExplicitWidth = 513
-    ExplicitHeight = 251
     object GridList: TcxGridDBBandedTableView
       DataController.Summary.DefaultGroupSummaryItems = <>
       DataController.Summary.FooterSummaryItems = <>
@@ -162,21 +158,6 @@ object frmCariHesapEkstre: TfrmCariHesapEkstre
     object Y1: TMenuItem
       Caption = 'Yazd'#305'r'
       ImageIndex = 28
-      object T1: TMenuItem
-        Tag = -10
-        Caption = 'E'#287'itime Kat'#305'lan T'#252'm Personel Sertifika Bas'#305'm'#305
-        OnClick = cxButtonCClick
-      end
-      object S1: TMenuItem
-        Tag = -20
-        Caption = 'Se'#231'ili Personel Sertifika Bas'#305'm'#305
-        OnClick = cxButtonCClick
-      end
-      object L1: TMenuItem
-        Tag = -30
-        Caption = 'E'#287'itime Kat'#305'lan Personel Listesi'
-        OnClick = cxButtonCClick
-      end
     end
   end
   object DataSource1: TDataSource

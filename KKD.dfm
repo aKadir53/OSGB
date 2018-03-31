@@ -1,4 +1,4 @@
-object frmRDS: TfrmRDS
+object frmKKD: TfrmKKD
   Left = 1
   Top = 1
   Caption = 'Risk De'#287'erlendirme'
@@ -15,13 +15,13 @@ object frmRDS: TfrmRDS
   OnCreate = FormCreate
   PixelsPerInch = 96
   TextHeight = 13
-  object RDSGrid: TcxGridKadir
-    Left = 22
-    Top = 32
-    Width = 945
-    Height = 169
+  object KKDGrid: TcxGridKadir
+    Left = 8
+    Top = 8
+    Width = 1732
+    Height = 321
     TabOrder = 0
-    ExcelFileName = 'RiskDegerlendirme'
+    ExcelFileName = 'KKD'
     ExceleGonder = True
     object cxGridDBTableView1: TcxGridDBTableView
       DataController.Summary.DefaultGroupSummaryItems = <>
@@ -100,7 +100,6 @@ object frmRDS: TfrmRDS
         Properties.DropDownRows = 10
         Properties.ImmediatePost = True
         Properties.Items = <>
-        Properties.OnEditValueChanged = RDSSatirlarOlasilikPropertiesEditValueChanged
         HeaderAlignmentHorz = taCenter
         Width = 60
       end
@@ -177,7 +176,7 @@ object frmRDS: TfrmRDS
         item
         end>
     end
-    object RDSSatirlar: TcxGridDBBandedTableView
+    object KKDSatirlar: TcxGridDBBandedTableView
       PopupMenu = PopupMenu1
       Navigator.Buttons.OnButtonClick = RDSSatirlarNavigatorButtonsButtonClick
       Navigator.Buttons.First.Visible = False
@@ -192,818 +191,246 @@ object frmRDS: TfrmRDS
       Navigator.Buttons.GotoBookmark.Visible = False
       Navigator.Buttons.Filter.Visible = False
       Navigator.Visible = True
-      DataController.DataSource = DataSource1
       DataController.Summary.DefaultGroupSummaryItems = <>
       DataController.Summary.FooterSummaryItems = <>
       DataController.Summary.SummaryGroups = <>
       NewItemRow.SeparatorColor = 8454143
       OptionsCustomize.DataRowSizing = True
       OptionsView.CellAutoHeight = True
-      OptionsView.DataRowHeight = 144
+      OptionsView.DataRowHeight = 30
       OptionsView.GroupByBox = False
+      OptionsView.HeaderAutoHeight = True
       OptionsView.Indicator = True
       Bands = <
         item
-          Caption = 'Risk Tan'#305'm Bilgisi'
+          Caption = 'UYGULAMA'
           FixedKind = fkLeft
           Styles.Header = cxStyle8
+          Width = 485
         end
         item
-          Caption = 'Risk De'#287'erlendirme Bilgileri'
+          Caption = 'V'#252'cut'
+          FixedKind = fkLeft
+          Position.BandIndex = 0
+          Position.ColIndex = 0
+          Width = 159
+        end
+        item
+          FixedKind = fkLeft
+          Position.BandIndex = 0
+          Position.ColIndex = 1
+          Width = 283
+        end
+        item
+          Caption = 'R'#304'SKLER'
           Styles.Header = cxStyle8
+          Width = 1050
+        end
+        item
+          Caption = 'F'#304'Z'#304'KSEL'
+          Position.BandIndex = 3
+          Position.ColIndex = 0
+          Width = 824
+        end
+        item
+          Caption = 'K'#304'MYASAL'
+          Position.BandIndex = 3
+          Position.ColIndex = 1
+          Width = 226
+        end
+        item
+          Caption = 'MEKAN'#304'K'
+          Position.BandIndex = 4
+          Position.ColIndex = 0
+          Width = 398
+        end
+        item
+          Caption = 'TERMAL'
+          Position.BandIndex = 4
+          Position.ColIndex = 1
+          Width = 79
+        end
+        item
+          Caption = 'ELEKTR'#304'K'
+          Position.BandIndex = 4
+          Position.ColIndex = 2
+          Width = 62
+        end
+        item
+          Caption = 'RADYASYON'
+          Position.BandIndex = 4
+          Position.ColIndex = 3
+          Width = 108
+        end
+        item
+          Caption = 'G'#220'R'#220'LT'#220
+          Position.BandIndex = 4
+          Position.ColIndex = 4
+          Width = 106
+        end
+        item
+          Caption = 'AEROSOLLAR'
+          Position.BandIndex = 5
+          Position.ColIndex = 0
+          Width = 145
+        end
+        item
+          Caption = 'SIVILAR'
+          Position.BandIndex = 5
+          Position.ColIndex = 1
+          Width = 146
+        end
+        item
+          Caption = 'B'#304'YOLOJ'#304'K'
+          Width = 217
         end>
-      object RDSSatirlarSirketRiskID: TcxGridDBBandedColumn
-        DataBinding.FieldName = 'SirketRiskID'
+      object KKDSatirlarsirketRiskId: TcxGridDBBandedColumn
+        DataBinding.FieldName = 'sirketRiskId'
         Visible = False
         Options.Editing = False
-        Position.BandIndex = 1
+        Position.BandIndex = 6
         Position.ColIndex = 0
         Position.RowIndex = 0
       end
-      object RDSSatirlarid: TcxGridDBBandedColumn
+      object KKDSatirlarid: TcxGridDBBandedColumn
         DataBinding.FieldName = 'id'
         Visible = False
         Options.Editing = False
-        Position.BandIndex = 1
+        Position.BandIndex = 6
         Position.ColIndex = 1
         Position.RowIndex = 0
       end
-      object RDSSatirlarBolum: TcxGridDBBandedColumn
-        Caption = 'B'#246'l'#252'm'
-        DataBinding.FieldName = 'Bolum'
-        PropertiesClassName = 'TcxImageComboBoxProperties'
-        Properties.Alignment.Horz = taCenter
-        Properties.Alignment.Vert = taVCenter
-        Properties.Items = <>
+      object KKDSatirlarVucutKisim: TcxGridDBBandedColumn
+        Caption = 'Vucut Kisim'
+        DataBinding.FieldName = 'VucutKisim'
         HeaderAlignmentHorz = taCenter
+        HeaderAlignmentVert = vaCenter
         Options.Editing = False
-        Width = 100
-        Position.BandIndex = 0
+        Width = 50
+        Position.BandIndex = 1
         Position.ColIndex = 0
         Position.RowIndex = 0
       end
-      object RDSSatirlarTehlikeKaynagi: TcxGridDBBandedColumn
-        Caption = 'Tehlike Kaynagi'
-        DataBinding.FieldName = 'TehlikeKaynagi'
-        PropertiesClassName = 'TcxImageComboBoxProperties'
-        Properties.Alignment.Horz = taCenter
-        Properties.Alignment.Vert = taVCenter
-        Properties.Items = <>
+      object KKDSatirlarVucutUzuv: TcxGridDBBandedColumn
+        Caption = 'Uzuv'
+        DataBinding.FieldName = 'VucutUzuv'
         HeaderAlignmentHorz = taCenter
+        HeaderAlignmentVert = vaCenter
         Options.Editing = False
-        Width = 110
-        Position.BandIndex = 0
+        Width = 50
+        Position.BandIndex = 1
         Position.ColIndex = 1
         Position.RowIndex = 0
       end
-      object RDSSatirlarTehlike: TcxGridDBBandedColumn
-        DataBinding.FieldName = 'Tehlike'
-        PropertiesClassName = 'TcxButtonEditProperties'
-        Properties.Alignment.Horz = taCenter
-        Properties.Alignment.Vert = taVCenter
-        Properties.Buttons = <
-          item
-            Default = True
-            Kind = bkEllipsis
-          end>
+      object KKDSatirlarKKD: TcxGridDBBandedColumn
+        Caption = 'Kullan'#305'l'#305'cak KKD'
+        DataBinding.FieldName = 'KKD'
         HeaderAlignmentHorz = taCenter
+        HeaderAlignmentVert = vaCenter
         Options.Editing = False
-        Width = 67
-        Position.BandIndex = 0
+        Width = 118
+        Position.BandIndex = 2
+        Position.ColIndex = 0
+        Position.RowIndex = 0
+      end
+      object KKDSatirlarStandart: TcxGridDBBandedColumn
+        Caption = 'Ulusal Standart'
+        DataBinding.FieldName = 'Standart'
+        HeaderAlignmentHorz = taCenter
+        HeaderAlignmentVert = vaCenter
+        Options.Editing = False
+        Position.BandIndex = 2
+        Position.ColIndex = 1
+        Position.RowIndex = 0
+      end
+      object KKDSatirlarKullanilacakIS: TcxGridDBBandedColumn
+        Caption = 'Kullanilacak '#304#351'ler'
+        DataBinding.FieldName = 'KullanilacakIS'
+        HeaderAlignmentHorz = taCenter
+        HeaderAlignmentVert = vaCenter
+        Options.Editing = False
+        Width = 112
+        Position.BandIndex = 2
         Position.ColIndex = 2
         Position.RowIndex = 0
       end
-      object RDSSatirlarRisk_tanim: TcxGridDBBandedColumn
-        Caption = 'Riskin Tan'#305'm'#305
-        DataBinding.FieldName = 'Risk_tanim'
-        PropertiesClassName = 'TcxButtonEditProperties'
-        Properties.Alignment.Horz = taCenter
-        Properties.Alignment.Vert = taVCenter
-        Properties.Buttons = <
-          item
-            Default = True
-            Kind = bkEllipsis
-          end>
-        Properties.OnButtonClick = PropertiesButtonClick
+      object KKDSatirlarBolum: TcxGridDBBandedColumn
+        DataBinding.FieldName = 'Bolum'
         HeaderAlignmentHorz = taCenter
+        HeaderAlignmentVert = vaCenter
         Options.Editing = False
-        Width = 85
-        Position.BandIndex = 0
+        Width = 139
+        Position.BandIndex = 2
         Position.ColIndex = 3
         Position.RowIndex = 0
       end
-      object RDSSatirlarOnlemler: TcxGridDBBandedColumn
-        Caption = 'Al'#305'nmas'#305' Gereken '#214'nlemler'
-        DataBinding.FieldName = 'Onlemler'
-        PropertiesClassName = 'TcxMemoProperties'
-        Properties.Alignment = taCenter
-        HeaderAlignmentHorz = taCenter
-        Options.Editing = False
-        Width = 150
-        Position.BandIndex = 1
-        Position.ColIndex = 3
-        Position.RowIndex = 0
-      end
-      object RDSSatirlarOlasilik: TcxGridDBBandedColumn
-        DataBinding.FieldName = 'Olasilik'
-        PropertiesClassName = 'TcxCurrencyEditProperties'
-        Properties.Alignment.Horz = taCenter
-        Properties.Alignment.Vert = taVCenter
-        Properties.DisplayFormat = ',0.0'
-        HeaderAlignmentHorz = taCenter
-        Options.Editing = False
-        Position.BandIndex = 1
-        Position.ColIndex = 4
-        Position.RowIndex = 0
-      end
-      object RDSSatirlarFrekans: TcxGridDBBandedColumn
-        DataBinding.FieldName = 'Frekans'
-        PropertiesClassName = 'TcxCurrencyEditProperties'
-        Properties.Alignment.Horz = taCenter
-        Properties.Alignment.Vert = taVCenter
-        Properties.DisplayFormat = ',0.0'
-        HeaderAlignmentHorz = taCenter
-        Options.Editing = False
-        Position.BandIndex = 1
-        Position.ColIndex = 5
-        Position.RowIndex = 0
-      end
-      object RDSSatirlarSiddet: TcxGridDBBandedColumn
-        Caption = #350'iddet'
-        DataBinding.FieldName = 'Siddet'
-        PropertiesClassName = 'TcxCurrencyEditProperties'
-        Properties.Alignment.Horz = taCenter
-        Properties.Alignment.Vert = taVCenter
-        Properties.DisplayFormat = ',0.0'
-        HeaderAlignmentHorz = taCenter
-        Options.Editing = False
-        Position.BandIndex = 1
-        Position.ColIndex = 6
-        Position.RowIndex = 0
-      end
-      object RDSSatirlarRisk: TcxGridDBBandedColumn
-        DataBinding.FieldName = 'Risk'
-        PropertiesClassName = 'TcxCurrencyEditProperties'
-        Properties.Alignment.Horz = taCenter
-        Properties.Alignment.Vert = taVCenter
-        Properties.DisplayFormat = ',0.00'
-        HeaderAlignmentHorz = taCenter
-        Options.Editing = False
-        Position.BandIndex = 1
-        Position.ColIndex = 7
-        Position.RowIndex = 0
-      end
-      object RDSSatirlarRDS: TcxGridDBBandedColumn
-        DataBinding.FieldName = 'RDS'
+      object KKDSatirlarYuksektenDusme: TcxGridDBBandedColumn
+        Caption = 'Y'#252'ksekten D'#252#351'me'
+        DataBinding.FieldName = 'YuksektenDusme'
         PropertiesClassName = 'TcxImageComboBoxProperties'
-        Properties.Images = cxImageList1
         Properties.Items = <
           item
-            ImageIndex = 4
+            Description = 'E'
+            ImageIndex = 0
             Value = 1
           end
           item
-            ImageIndex = 0
-            Value = 2
-          end
-          item
-            ImageIndex = 3
-            Value = 3
-          end
-          item
-            ImageIndex = 2
-            Value = 4
-          end
-          item
-            ImageIndex = 1
-            Value = 5
+            Description = 'H'
+            Value = 0
           end>
         HeaderAlignmentHorz = taCenter
-        Options.Editing = False
-        Styles.Content = cxStyle9
-        Width = 30
-        Position.BandIndex = 1
-        Position.ColIndex = 8
-        Position.RowIndex = 0
-      end
-      object RDSSatirlarMevcutOnlem: TcxGridDBBandedColumn
-        Caption = 'Mevcut '#214'nlemler'
-        DataBinding.FieldName = 'MevcutOnlem'
-        PropertiesClassName = 'TcxMemoProperties'
-        Properties.Alignment = taCenter
-        Options.Editing = False
-        Width = 89
-        Position.BandIndex = 1
-        Position.ColIndex = 9
-        Position.RowIndex = 0
-      end
-      object RDSSatirlarSorumlu: TcxGridDBBandedColumn
-        DataBinding.FieldName = 'Sorumlu'
-        PropertiesClassName = 'TcxTextEditProperties'
-        Properties.Alignment.Horz = taCenter
-        Properties.Alignment.Vert = taVCenter
-        Options.Editing = False
-        Width = 55
-        Position.BandIndex = 1
-        Position.ColIndex = 10
-        Position.RowIndex = 0
-      end
-      object RDSSatirlarTermin: TcxGridDBBandedColumn
-        DataBinding.FieldName = 'Termin'
-        PropertiesClassName = 'TcxTextEditProperties'
-        Properties.Alignment.Horz = taCenter
-        Properties.Alignment.Vert = taVCenter
-        Options.Editing = False
-        Width = 54
-        Position.BandIndex = 1
-        Position.ColIndex = 11
-        Position.RowIndex = 0
-      end
-      object RDSSatirlarGerceklesme: TcxGridDBBandedColumn
-        Caption = 'Gerceklesme Tarihi'
-        DataBinding.FieldName = 'Gerceklesme'
-        PropertiesClassName = 'TcxDateEditProperties'
-        Properties.Alignment.Horz = taCenter
-        Properties.Alignment.Vert = taVCenter
-        Options.Editing = False
-        Position.BandIndex = 1
-        Position.ColIndex = 12
-        Position.RowIndex = 0
-      end
-      object RDSSatirlarOlasilik_2: TcxGridDBBandedColumn
-        Caption = 'Olasilik'
-        DataBinding.FieldName = 'Olasilik_2'
-        PropertiesClassName = 'TcxCurrencyEditProperties'
-        Properties.Alignment.Horz = taCenter
-        Properties.Alignment.Vert = taVCenter
-        Properties.DisplayFormat = ',0.0'
-        HeaderAlignmentHorz = taCenter
-        Options.Editing = False
-        Position.BandIndex = 1
-        Position.ColIndex = 13
-        Position.RowIndex = 0
-      end
-      object RDSSatirlarFrekans_2: TcxGridDBBandedColumn
-        Caption = 'Frekans'
-        DataBinding.FieldName = 'Frekans_2'
-        PropertiesClassName = 'TcxCurrencyEditProperties'
-        Properties.Alignment.Horz = taCenter
-        Properties.Alignment.Vert = taVCenter
-        Properties.DisplayFormat = ',0.0'
-        HeaderAlignmentHorz = taCenter
-        Options.Editing = False
-        Position.BandIndex = 1
-        Position.ColIndex = 14
-        Position.RowIndex = 0
-      end
-      object RDSSatirlarSiddet_2: TcxGridDBBandedColumn
-        Caption = #350'iddet'
-        DataBinding.FieldName = 'Siddet_2'
-        PropertiesClassName = 'TcxCurrencyEditProperties'
-        Properties.Alignment.Horz = taCenter
-        Properties.Alignment.Vert = taVCenter
-        Properties.DisplayFormat = ',0.0'
-        HeaderAlignmentHorz = taCenter
-        Options.Editing = False
-        Position.BandIndex = 1
-        Position.ColIndex = 15
-        Position.RowIndex = 0
-      end
-      object RDSSatirlarRisk_2: TcxGridDBBandedColumn
-        Caption = 'Risk'
-        DataBinding.FieldName = 'Risk_2'
-        PropertiesClassName = 'TcxCurrencyEditProperties'
-        Properties.Alignment.Horz = taCenter
-        Properties.Alignment.Vert = taVCenter
-        Properties.DisplayFormat = ',0.00'
-        HeaderAlignmentHorz = taCenter
-        Options.Editing = False
-        Position.BandIndex = 1
-        Position.ColIndex = 16
-        Position.RowIndex = 0
-      end
-      object RDSSatirlarRDS_2: TcxGridDBBandedColumn
-        Caption = 'RDS'
-        DataBinding.FieldName = 'RDS_2'
-        HeaderAlignmentHorz = taCenter
-        Options.Editing = False
-        Position.BandIndex = 1
-        Position.ColIndex = 17
-        Position.RowIndex = 0
-      end
-      object RDSSatirlaryasalDayanak: TcxGridDBBandedColumn
-        Caption = 'Yasal Dayanak'
-        DataBinding.FieldName = 'yasalDayanak'
-        PropertiesClassName = 'TcxMemoProperties'
-        Properties.Alignment = taCenter
-        Options.Editing = False
-        Width = 100
-        Position.BandIndex = 1
-        Position.ColIndex = 18
-        Position.RowIndex = 0
-      end
-      object RDSSatirlarColumn1: TcxGridDBBandedColumn
-        Caption = 'Resim'
-        DataBinding.FieldName = 'Image'
-        PropertiesClassName = 'TcxImageProperties'
-        Properties.GraphicClassName = 'TJPEGImage'
-        Properties.Stretch = True
-        HeaderAlignmentHorz = taCenter
-        Width = 100
-        Position.BandIndex = 1
+        Position.BandIndex = 6
         Position.ColIndex = 2
         Position.RowIndex = 0
       end
-    end
-    object RDSGridLevel1: TcxGridLevel
-      GridView = RDSSatirlar
-    end
-  end
-  object RDSGridMatris: TcxGridKadir
-    Left = 288
-    Top = 248
-    Width = 679
-    Height = 169
-    TabOrder = 1
-    ExceleGonder = False
-    object cxGridDBTableView2: TcxGridDBTableView
-      DataController.Summary.DefaultGroupSummaryItems = <>
-      DataController.Summary.FooterSummaryItems = <>
-      DataController.Summary.SummaryGroups = <>
-      NewItemRow.Visible = True
-      OptionsView.NoDataToDisplayInfoText = 'Faturaya Eklenmi'#351' Sat'#305'r Yok'
-      OptionsView.CellAutoHeight = True
-      OptionsView.Footer = True
-      OptionsView.FooterMultiSummaries = True
-      OptionsView.GroupByBox = False
-      OptionsView.GroupFooterMultiSummaries = True
-      object cxGridDBColumn23: TcxGridDBColumn
-        DataBinding.FieldName = 'SirketRiskID'
-        Visible = False
-      end
-      object cxGridDBColumn24: TcxGridDBColumn
-        DataBinding.FieldName = 'id'
-        Visible = False
-      end
-      object cxGridDBColumn25: TcxGridDBColumn
-        Caption = 'B'#246'l'#252'm'
-        DataBinding.FieldName = 'Bolum'
-        PropertiesClassName = 'TcxImageComboBoxProperties'
-        Properties.Alignment.Horz = taCenter
-        Properties.Alignment.Vert = taVCenter
-        Properties.DropDownRows = 20
-        Properties.Items = <>
-        HeaderAlignmentHorz = taCenter
-        Width = 100
-      end
-      object cxGridDBColumn26: TcxGridDBColumn
-        Caption = 'Tehlike Kayna'#287#305
-        DataBinding.FieldName = 'TehlikeKaynagi'
-        PropertiesClassName = 'TcxImageComboBoxProperties'
-        Properties.Alignment.Horz = taCenter
-        Properties.Alignment.Vert = taVCenter
-        Properties.DropDownRows = 20
-        Properties.Items = <>
-        HeaderAlignmentHorz = taCenter
-        Width = 111
-      end
-      object cxGridDBColumn27: TcxGridDBColumn
-        DataBinding.FieldName = 'Tehlike'
-        PropertiesClassName = 'TcxImageComboBoxProperties'
-        Properties.Alignment.Horz = taCenter
-        Properties.Alignment.Vert = taVCenter
-        Properties.DropDownRows = 20
-        Properties.Items = <>
-        HeaderAlignmentHorz = taCenter
-        Width = 122
-      end
-      object cxGridDBColumn28: TcxGridDBColumn
-        Caption = 'Risk Tan'#305'm'#305
-        DataBinding.FieldName = 'Risk_tanim'
-        PropertiesClassName = 'TcxImageComboBoxProperties'
-        Properties.Alignment.Horz = taCenter
-        Properties.Alignment.Vert = taVCenter
-        Properties.DropDownRows = 20
-        Properties.Items = <>
-        Properties.MultiLineText = True
-        HeaderAlignmentHorz = taCenter
-        Width = 120
-      end
-      object cxGridDBColumn29: TcxGridDBColumn
-        Caption = 'Al'#305'nmas'#305' Gereken '#214'nlemler'
-        DataBinding.FieldName = 'Onlemler'
-        PropertiesClassName = 'TcxMemoProperties'
-        Properties.Alignment = taCenter
-        HeaderAlignmentHorz = taCenter
-        Width = 120
-      end
-      object cxGridDBColumn30: TcxGridDBColumn
-        DataBinding.FieldName = 'Olasilik'
-        PropertiesClassName = 'TcxImageComboBoxProperties'
-        Properties.DropDownRows = 10
-        Properties.ImmediatePost = True
-        Properties.Items = <>
-        Properties.OnEditValueChanged = RDSSatirlarOlasilikPropertiesEditValueChanged
-        HeaderAlignmentHorz = taCenter
-        Width = 60
-      end
-      object cxGridDBColumn31: TcxGridDBColumn
-        DataBinding.FieldName = 'Frekans'
+      object KKDSatirlarDarbeKesik: TcxGridDBBandedColumn
+        Caption = 'Darbe Kesik'
+        DataBinding.FieldName = 'DarbeKesik'
         PropertiesClassName = 'TcxImageComboBoxProperties'
         Properties.Items = <>
         HeaderAlignmentHorz = taCenter
-        Width = 60
-      end
-      object cxGridDBColumn32: TcxGridDBColumn
-        DataBinding.FieldName = 'Siddet'
-        PropertiesClassName = 'TcxImageComboBoxProperties'
-        Properties.Items = <>
-        HeaderAlignmentHorz = taCenter
-        Width = 60
-      end
-      object cxGridDBColumn33: TcxGridDBColumn
-        DataBinding.FieldName = 'Risk'
-        PropertiesClassName = 'TcxCurrencyEditProperties'
-        Properties.Alignment.Horz = taCenter
-        Properties.Alignment.Vert = taVCenter
-        Properties.DisplayFormat = ',0.0'
-        HeaderAlignmentHorz = taCenter
-        Options.Editing = False
-      end
-      object cxGridDBColumn34: TcxGridDBColumn
-        DataBinding.FieldName = 'RDS'
-        Options.Editing = False
-      end
-      object cxGridDBColumn35: TcxGridDBColumn
-        DataBinding.FieldName = 'MevcutOnlem'
-      end
-      object cxGridDBColumn36: TcxGridDBColumn
-        DataBinding.FieldName = 'Sorumlu'
-      end
-      object cxGridDBColumn37: TcxGridDBColumn
-        DataBinding.FieldName = 'Termin'
-      end
-      object cxGridDBColumn38: TcxGridDBColumn
-        DataBinding.FieldName = 'Gerceklesme'
-      end
-      object cxGridDBColumn39: TcxGridDBColumn
-        DataBinding.FieldName = 'Olasilik_2'
-      end
-      object cxGridDBColumn40: TcxGridDBColumn
-        DataBinding.FieldName = 'Frekans_2'
-      end
-      object cxGridDBColumn41: TcxGridDBColumn
-        DataBinding.FieldName = 'Siddet_2'
-      end
-      object cxGridDBColumn42: TcxGridDBColumn
-        DataBinding.FieldName = 'Risk_2'
-      end
-      object cxGridDBColumn43: TcxGridDBColumn
-        DataBinding.FieldName = 'RDS_2'
-      end
-      object cxGridDBColumn44: TcxGridDBColumn
-        DataBinding.FieldName = 'yasalDayanak'
-      end
-    end
-    object cxGridDBBandedTableView2: TcxGridDBBandedTableView
-      DataController.Summary.DefaultGroupSummaryItems = <>
-      DataController.Summary.FooterSummaryItems = <>
-      DataController.Summary.SummaryGroups = <>
-      NewItemRow.Visible = True
-      OptionsView.NoDataToDisplayInfoText = 'Faturaya Eklenmi'#351' Sat'#305'r Yok'
-      OptionsView.CellAutoHeight = True
-      OptionsView.Footer = True
-      OptionsView.FooterMultiSummaries = True
-      OptionsView.GroupByBox = False
-      OptionsView.GroupFooterMultiSummaries = True
-      Bands = <
-        item
-        end>
-    end
-    object RDSSatirlarMatris: TcxGridDBBandedTableView
-      Navigator.Buttons.OnButtonClick = RDSSatirlarNavigatorButtonsButtonClick
-      Navigator.Buttons.First.Visible = False
-      Navigator.Buttons.PriorPage.Visible = False
-      Navigator.Buttons.Prior.Visible = False
-      Navigator.Buttons.Next.Visible = False
-      Navigator.Buttons.NextPage.Visible = False
-      Navigator.Buttons.Last.Visible = False
-      Navigator.Buttons.Insert.Visible = True
-      Navigator.Buttons.Append.Visible = False
-      Navigator.Buttons.SaveBookmark.Visible = False
-      Navigator.Buttons.GotoBookmark.Visible = False
-      Navigator.Buttons.Filter.Visible = False
-      Navigator.Visible = True
-      DataController.DataSource = DataSource1
-      DataController.Summary.DefaultGroupSummaryItems = <>
-      DataController.Summary.FooterSummaryItems = <>
-      DataController.Summary.SummaryGroups = <>
-      NewItemRow.SeparatorColor = 8454143
-      OptionsView.CellAutoHeight = True
-      OptionsView.GroupByBox = False
-      Bands = <
-        item
-          Caption = 'Risk Tan'#305'm Bilgisi'
-          FixedKind = fkLeft
-          Styles.Header = cxStyle8
-        end
-        item
-          Caption = 'Risk De'#287'erlendirme Bilgileri'
-          Styles.Header = cxStyle8
-        end>
-      object cxGridDBBandedColumn1: TcxGridDBBandedColumn
-        DataBinding.FieldName = 'SirketRiskID'
-        Visible = False
-        Options.Editing = False
-        Position.BandIndex = 1
-        Position.ColIndex = 0
-        Position.RowIndex = 0
-      end
-      object cxGridDBBandedColumn2: TcxGridDBBandedColumn
-        DataBinding.FieldName = 'id'
-        Visible = False
-        Options.Editing = False
-        Position.BandIndex = 1
-        Position.ColIndex = 1
-        Position.RowIndex = 0
-      end
-      object cxGridDBBandedColumn3: TcxGridDBBandedColumn
-        Caption = 'B'#246'l'#252'm'
-        DataBinding.FieldName = 'Bolum'
-        PropertiesClassName = 'TcxImageComboBoxProperties'
-        Properties.Alignment.Horz = taCenter
-        Properties.Alignment.Vert = taVCenter
-        Properties.Items = <>
-        HeaderAlignmentHorz = taCenter
-        Options.Editing = False
-        Width = 100
-        Position.BandIndex = 0
-        Position.ColIndex = 0
-        Position.RowIndex = 0
-      end
-      object cxGridDBBandedColumn4: TcxGridDBBandedColumn
-        Caption = 'Tehlike Kaynagi'
-        DataBinding.FieldName = 'TehlikeKaynagi'
-        PropertiesClassName = 'TcxImageComboBoxProperties'
-        Properties.Alignment.Horz = taCenter
-        Properties.Alignment.Vert = taVCenter
-        Properties.Items = <>
-        HeaderAlignmentHorz = taCenter
-        Options.Editing = False
-        Width = 110
-        Position.BandIndex = 0
-        Position.ColIndex = 1
-        Position.RowIndex = 0
-      end
-      object cxGridDBBandedColumn5: TcxGridDBBandedColumn
-        DataBinding.FieldName = 'Tehlike'
-        PropertiesClassName = 'TcxButtonEditProperties'
-        Properties.Alignment.Horz = taCenter
-        Properties.Alignment.Vert = taVCenter
-        Properties.Buttons = <
-          item
-            Default = True
-            Kind = bkEllipsis
-          end>
-        HeaderAlignmentHorz = taCenter
-        Options.Editing = False
-        Width = 67
-        Position.BandIndex = 0
-        Position.ColIndex = 2
-        Position.RowIndex = 0
-      end
-      object cxGridDBBandedColumn6: TcxGridDBBandedColumn
-        Caption = 'Riskin Tan'#305'm'#305
-        DataBinding.FieldName = 'Risk_tanim'
-        PropertiesClassName = 'TcxButtonEditProperties'
-        Properties.Alignment.Horz = taCenter
-        Properties.Alignment.Vert = taVCenter
-        Properties.Buttons = <
-          item
-            Default = True
-            Kind = bkEllipsis
-          end>
-        Properties.OnButtonClick = PropertiesButtonClick
-        HeaderAlignmentHorz = taCenter
-        Options.Editing = False
-        Width = 85
-        Position.BandIndex = 0
+        Position.BandIndex = 6
         Position.ColIndex = 3
         Position.RowIndex = 0
       end
-      object cxGridDBBandedColumn7: TcxGridDBBandedColumn
-        Caption = 'Al'#305'nmas'#305' Gereken '#214'nlemler'
-        DataBinding.FieldName = 'Onlemler'
-        PropertiesClassName = 'TcxMemoProperties'
-        Properties.Alignment = taCenter
+      object KKDSatirlarBatmaKesik: TcxGridDBBandedColumn
+        DataBinding.FieldName = 'BatmaKesik'
+        PropertiesClassName = 'TcxImageComboBoxProperties'
+        Properties.Items = <>
         HeaderAlignmentHorz = taCenter
-        Options.Editing = False
-        Width = 150
-        Position.BandIndex = 1
-        Position.ColIndex = 2
-        Position.RowIndex = 0
-      end
-      object cxGridDBBandedColumn8: TcxGridDBBandedColumn
-        DataBinding.FieldName = 'Olasilik'
-        PropertiesClassName = 'TcxCurrencyEditProperties'
-        Properties.Alignment.Horz = taCenter
-        Properties.Alignment.Vert = taVCenter
-        Properties.DisplayFormat = ',0.0'
-        HeaderAlignmentHorz = taCenter
-        Options.Editing = False
-        Position.BandIndex = 1
-        Position.ColIndex = 3
-        Position.RowIndex = 0
-      end
-      object cxGridDBBandedColumn9: TcxGridDBBandedColumn
-        DataBinding.FieldName = 'Frekans'
-        PropertiesClassName = 'TcxCurrencyEditProperties'
-        Properties.Alignment.Horz = taCenter
-        Properties.Alignment.Vert = taVCenter
-        Properties.DisplayFormat = ',0.0'
-        HeaderAlignmentHorz = taCenter
-        Options.Editing = False
-        Position.BandIndex = 1
+        Position.BandIndex = 6
         Position.ColIndex = 4
         Position.RowIndex = 0
       end
-      object cxGridDBBandedColumn10: TcxGridDBBandedColumn
-        Caption = #350'iddet'
-        DataBinding.FieldName = 'Siddet'
-        PropertiesClassName = 'TcxCurrencyEditProperties'
-        Properties.Alignment.Horz = taCenter
-        Properties.Alignment.Vert = taVCenter
-        Properties.DisplayFormat = ',0.0'
+      object KKDSatirlarTitresim: TcxGridDBBandedColumn
+        DataBinding.FieldName = 'Titresim'
+        PropertiesClassName = 'TcxImageComboBoxProperties'
+        Properties.Items = <>
         HeaderAlignmentHorz = taCenter
-        Options.Editing = False
-        Position.BandIndex = 1
+        Position.BandIndex = 6
         Position.ColIndex = 5
         Position.RowIndex = 0
       end
-      object cxGridDBBandedColumn11: TcxGridDBBandedColumn
-        DataBinding.FieldName = 'Risk'
-        PropertiesClassName = 'TcxCurrencyEditProperties'
-        Properties.Alignment.Horz = taCenter
-        Properties.Alignment.Vert = taVCenter
-        Properties.DisplayFormat = ',0.00'
+      object KKDSatirlarKaymaDusme: TcxGridDBBandedColumn
+        DataBinding.FieldName = 'KaymaDusme'
+        PropertiesClassName = 'TcxImageComboBoxProperties'
+        Properties.Items = <>
         HeaderAlignmentHorz = taCenter
-        Options.Editing = False
-        Position.BandIndex = 1
+        Position.BandIndex = 6
         Position.ColIndex = 6
         Position.RowIndex = 0
       end
-      object cxGridDBBandedColumn12: TcxGridDBBandedColumn
-        DataBinding.FieldName = 'RDS'
+      object KKDSatirlarSicaklikAlev: TcxGridDBBandedColumn
+        DataBinding.FieldName = 'SicaklikAlev'
         PropertiesClassName = 'TcxImageComboBoxProperties'
-        Properties.Images = cxImageList1
-        Properties.Items = <
-          item
-            ImageIndex = 4
-            Value = 1
-          end
-          item
-            ImageIndex = 0
-            Value = 2
-          end
-          item
-            ImageIndex = 3
-            Value = 3
-          end
-          item
-            ImageIndex = 2
-            Value = 4
-          end
-          item
-            ImageIndex = 1
-            Value = 5
-          end>
-        HeaderAlignmentHorz = taCenter
-        Options.Editing = False
-        Styles.Content = cxStyle9
-        Width = 30
-        Position.BandIndex = 1
-        Position.ColIndex = 7
-        Position.RowIndex = 0
-      end
-      object cxGridDBBandedColumn13: TcxGridDBBandedColumn
-        Caption = 'Mevcut '#214'nlemler'
-        DataBinding.FieldName = 'MevcutOnlem'
-        PropertiesClassName = 'TcxMemoProperties'
-        Properties.Alignment = taCenter
-        Options.Editing = False
-        Width = 89
-        Position.BandIndex = 1
-        Position.ColIndex = 8
-        Position.RowIndex = 0
-      end
-      object cxGridDBBandedColumn14: TcxGridDBBandedColumn
-        DataBinding.FieldName = 'Sorumlu'
-        PropertiesClassName = 'TcxTextEditProperties'
-        Properties.Alignment.Horz = taCenter
-        Properties.Alignment.Vert = taVCenter
-        Options.Editing = False
-        Width = 55
-        Position.BandIndex = 1
-        Position.ColIndex = 9
-        Position.RowIndex = 0
-      end
-      object cxGridDBBandedColumn15: TcxGridDBBandedColumn
-        DataBinding.FieldName = 'Termin'
-        PropertiesClassName = 'TcxTextEditProperties'
-        Properties.Alignment.Horz = taCenter
-        Properties.Alignment.Vert = taVCenter
-        Options.Editing = False
-        Width = 54
-        Position.BandIndex = 1
-        Position.ColIndex = 10
-        Position.RowIndex = 0
-      end
-      object cxGridDBBandedColumn16: TcxGridDBBandedColumn
-        Caption = 'Gerceklesme Tarihi'
-        DataBinding.FieldName = 'Gerceklesme'
-        PropertiesClassName = 'TcxDateEditProperties'
-        Properties.Alignment.Horz = taCenter
-        Properties.Alignment.Vert = taVCenter
-        Options.Editing = False
-        Position.BandIndex = 1
-        Position.ColIndex = 11
-        Position.RowIndex = 0
-      end
-      object cxGridDBBandedColumn17: TcxGridDBBandedColumn
-        Caption = 'Olasilik'
-        DataBinding.FieldName = 'Olasilik_2'
-        PropertiesClassName = 'TcxCurrencyEditProperties'
-        Properties.Alignment.Horz = taCenter
-        Properties.Alignment.Vert = taVCenter
-        Properties.DisplayFormat = ',0.0'
-        HeaderAlignmentHorz = taCenter
-        Options.Editing = False
-        Position.BandIndex = 1
-        Position.ColIndex = 12
-        Position.RowIndex = 0
-      end
-      object cxGridDBBandedColumn18: TcxGridDBBandedColumn
-        Caption = 'Frekans'
-        DataBinding.FieldName = 'Frekans_2'
-        PropertiesClassName = 'TcxCurrencyEditProperties'
-        Properties.Alignment.Horz = taCenter
-        Properties.Alignment.Vert = taVCenter
-        Properties.DisplayFormat = ',0.0'
-        HeaderAlignmentHorz = taCenter
-        Options.Editing = False
-        Position.BandIndex = 1
-        Position.ColIndex = 13
-        Position.RowIndex = 0
-      end
-      object cxGridDBBandedColumn19: TcxGridDBBandedColumn
-        Caption = #350'iddet'
-        DataBinding.FieldName = 'Siddet_2'
-        PropertiesClassName = 'TcxCurrencyEditProperties'
-        Properties.Alignment.Horz = taCenter
-        Properties.Alignment.Vert = taVCenter
-        Properties.DisplayFormat = ',0.0'
-        HeaderAlignmentHorz = taCenter
-        Options.Editing = False
-        Position.BandIndex = 1
-        Position.ColIndex = 14
-        Position.RowIndex = 0
-      end
-      object cxGridDBBandedColumn20: TcxGridDBBandedColumn
-        Caption = 'Risk'
-        DataBinding.FieldName = 'Risk_2'
-        PropertiesClassName = 'TcxCurrencyEditProperties'
-        Properties.Alignment.Horz = taCenter
-        Properties.Alignment.Vert = taVCenter
-        Properties.DisplayFormat = ',0.00'
-        HeaderAlignmentHorz = taCenter
-        Options.Editing = False
-        Position.BandIndex = 1
-        Position.ColIndex = 15
-        Position.RowIndex = 0
-      end
-      object cxGridDBBandedColumn21: TcxGridDBBandedColumn
-        Caption = 'RDS'
-        DataBinding.FieldName = 'RDS_2'
-        HeaderAlignmentHorz = taCenter
-        Options.Editing = False
-        Position.BandIndex = 1
-        Position.ColIndex = 16
-        Position.RowIndex = 0
-      end
-      object cxGridDBBandedColumn22: TcxGridDBBandedColumn
-        Caption = 'Yasal Dayanak'
-        DataBinding.FieldName = 'yasalDayanak'
-        PropertiesClassName = 'TcxMemoProperties'
-        Properties.Alignment = taCenter
-        Options.Editing = False
-        Width = 100
-        Position.BandIndex = 1
-        Position.ColIndex = 17
+        Properties.Items = <>
+        Position.BandIndex = 7
+        Position.ColIndex = 0
         Position.RowIndex = 0
       end
     end
-    object cxGridLevel1: TcxGridLevel
-      GridView = RDSSatirlarMatris
+    object KKDGridLevel1: TcxGridLevel
+      GridView = KKDSatirlar
     end
   end
   object DataSource1: TDataSource
@@ -1115,36 +542,13 @@ object frmRDS: TfrmRDS
       ImageIndex = 28
       OnClick = cxButtonCClick
     end
-    object E3: TMenuItem
-      Tag = -24
-      Caption = 'Raporun Risk Tan'#305'm Bilgisini Sekt'#246'rle E'#351'le'#351'tir'
-      ImageIndex = 32
-    end
-    object R1: TMenuItem
-      Caption = 'Raporu Sekt'#246'r E'#351'le'#351'tirmesinden Doldur'
-      ImageIndex = 98
-    end
     object N1: TMenuItem
       Caption = '-'
-    end
-    object R2: TMenuItem
-      Tag = -1
-      Caption = 'Raporu Ba'#351'ka Bir Kullan'#305'c'#305' '#304'le Payla'#351
-      ImageIndex = 109
-      OnClick = cxButtonCClick
     end
     object e2: TMenuItem
       Tag = 9997
       Caption = 'Excele G'#246'nder'
       ImageIndex = 75
-      OnClick = cxButtonCClick
-    end
-    object K1: TMenuItem
-      Tag = -25
-      Caption = 
-        'Ki'#351'isel Koruyucu Donan'#305'm Kullan'#305'm'#305'na '#304'li'#351'kin Risk Belirleme Tabl' +
-        'osu'
-      ImageIndex = 112
       OnClick = cxButtonCClick
     end
   end

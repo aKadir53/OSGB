@@ -476,6 +476,18 @@ type
   End;
 
 type
+  TKKDRecord = Record
+    KKDID : string;
+    SirketRiskID : string;
+    VucutKisim : string;
+    VucutUzuv : string;
+    KKD : string;
+    TSE : string;
+    KullanilacakIs : string;
+    Bolum : string;
+  End;
+
+type
   TRiskRecord = Record
     RiskID : string;
     SirketRiskID : string;
@@ -613,6 +625,7 @@ Const
   TagfrmSirketSahaGozetim = 860;
   TagfrmCariHesapBorcAlacakToplam = 870;
   TagfrmISGKurulToplanti = 880;
+  TagfrmKKD = 890;
 
   ExceleGonder = 9997;
   SeansTarihiUpdate = 0;
@@ -665,7 +678,9 @@ Const
   yeniTehlikeKaynak = 43;
   riskRaporuPaylas = 44;
   sahaGozetimPaylas = 45;
-
+  yeniKKD = 46;
+  KKDDuzenle = 47;
+  yeniKKDEkle = 48;
 
   sp_HastaGelis = 'exec sp_HastaGelisleri ';
 
