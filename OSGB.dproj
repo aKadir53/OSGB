@@ -235,6 +235,45 @@
 			<DCCReference Include="LabSonucGir.pas">
 				<Form>frmLabSonucGir</Form>
 			</DCCReference>
+			<DCCReference Include="AjandaOzet.pas">
+				<Form>frmAjandaOzet</Form>
+			</DCCReference>
+			<DCCReference Include="CariHareketGiris.pas">
+				<Form>frmCariHareket</Form>
+			</DCCReference>
+			<DCCReference Include="CariHesapBorcAlacakToplam.pas">
+				<Form>frmCariHesapBorcAlacakToplam</Form>
+			</DCCReference>
+			<DCCReference Include="CariHesapExtresi.pas">
+				<Form>frmCariHesapEkstre</Form>
+			</DCCReference>
+			<DCCReference Include="EventCompletDurumBildir.pas">
+				<Form>frmEventDurumBildir</Form>
+			</DCCReference>
+			<DCCReference Include="FaturaDetay.pas">
+				<Form>frmFaturaDetay</Form>
+			</DCCReference>
+			<DCCReference Include="Faturalar.pas">
+				<Form>frmFaturalar</Form>
+			</DCCReference>
+			<DCCReference Include="RDS.pas">
+				<Form>frmRDS</Form>
+			</DCCReference>
+			<DCCReference Include="sirketISGKurulToplanti.pas">
+				<Form>frmISGKurulToplanti</Form>
+			</DCCReference>
+			<DCCReference Include="sirketSahaGozetim.pas">
+				<Form>frmSirketSahaGozetim</Form>
+			</DCCReference>
+			<DCCReference Include="SirketSozlesme.pas">
+				<Form>frmSirketSozlesme</Form>
+			</DCCReference>
+			<DCCReference Include="Sozlesmeler.pas">
+				<Form>frmSozlesmeler</Form>
+			</DCCReference>
+			<DCCReference Include="UyumSoftPortal.pas">
+				<Form>frmPortal</Form>
+			</DCCReference>
 			<DCCReference Include="HastaListe.pas">
 				<Form>frmHastaListe</Form>
 			</DCCReference>
