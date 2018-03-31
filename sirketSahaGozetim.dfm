@@ -241,6 +241,60 @@ object frmSirketSahaGozetim: TfrmSirketSahaGozetim
         Position.ColIndex = 3
         Position.RowIndex = 0
       end
+      object SatirlarBolumTanimi: TcxGridDBBandedColumn
+        Caption = 'B'#246'l'#252'm'
+        DataBinding.FieldName = 'BolumTanimi'
+        Options.Editing = False
+        Position.BandIndex = 0
+        Position.ColIndex = 4
+        Position.RowIndex = 0
+      end
+      object SatirlarFaaliyetTanimi: TcxGridDBBandedColumn
+        Caption = 'Faaliyet T'#252'r'#252
+        DataBinding.FieldName = 'FaaliyetTanimi'
+        Options.Editing = False
+        Position.BandIndex = 0
+        Position.ColIndex = 5
+        Position.RowIndex = 0
+      end
+      object SatirlarKokNeden: TcxGridDBBandedColumn
+        DataBinding.FieldName = 'KokNeden'
+        Position.BandIndex = 0
+        Position.ColIndex = 6
+        Position.RowIndex = 0
+      end
+      object SatirlarFaliyetPlan: TcxGridDBBandedColumn
+        DataBinding.FieldName = 'FaliyetPlan'
+        Position.BandIndex = 0
+        Position.ColIndex = 7
+        Position.RowIndex = 0
+      end
+      object SatirlarUygulanacakFaliyetTarihi: TcxGridDBBandedColumn
+        DataBinding.FieldName = 'UygulanacakFaliyetTarihi'
+        Position.BandIndex = 0
+        Position.ColIndex = 8
+        Position.RowIndex = 0
+      end
+      object SatirlarBolumYetkilisi: TcxGridDBBandedColumn
+        DataBinding.FieldName = 'BolumYetkilisi'
+        Position.BandIndex = 0
+        Position.ColIndex = 9
+        Position.RowIndex = 0
+      end
+      object SatirlarSonucTanimi: TcxGridDBBandedColumn
+        Caption = 'Sonu'#231
+        DataBinding.FieldName = 'SonucTanimi'
+        Options.Editing = False
+        Position.BandIndex = 0
+        Position.ColIndex = 10
+        Position.RowIndex = 0
+      end
+      object SatirlarYapilanFaliyet: TcxGridDBBandedColumn
+        DataBinding.FieldName = 'YapilanFaliyet'
+        Position.BandIndex = 0
+        Position.ColIndex = 11
+        Position.RowIndex = 0
+      end
     end
     object SahaGozetimGridLevel1: TcxGridLevel
       GridView = Satirlar
