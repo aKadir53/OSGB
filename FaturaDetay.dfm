@@ -305,6 +305,11 @@ object frmFaturaDetay: TfrmFaturaDetay
       Caption = 'E-Ar'#351'iv Fatura Durum Sorgula'
       OnClick = cxButtonCClick
     end
+    object H1: TMenuItem
+      Tag = -26
+      Caption = 'Hizmet Ekle'
+      OnClick = cxButtonCClick
+    end
   end
   object tmr1: TTimer
     Enabled = False

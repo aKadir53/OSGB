@@ -126,6 +126,9 @@ begin
             then
                TcxImageComboKadir(FindComponent('TehlikeKaynak')).Filter := '';
          end;
+   22 : begin
+           ShowPopupForm('Tehlike Kaynak Ekle',yeniKKDEkle,'','KKDTanimEkleForm')
+        end;
 
   98,99 : begin
           try
@@ -161,6 +164,45 @@ var
  n : string;
 
 begin
+
+
+  if TControl(sender).Name = 'TS_EN_KODLARI'
+  Then begin
+    List.KaynakTableTip := tpTable;
+    List.Table := '(select TS_EN_NO kod,STANDART_ADI tanimi from KISISEL_KORUYUCU_TS_EN) t';
+    L := List.ListeGetir;
+    if Length(L) = 0 then exit;
+    TcxButtonEditKadir(FindComponent('TS_EN_KODLARI')).EditValue := L[0].Kolon1;
+  end;
+
+  if TControl(sender).Name = 'KKD'
+  Then begin
+    List.KaynakTableTip := tpTable;
+    List.Table := 'KKD';
+    L := List.ListeGetir;
+    if Length(L) = 0 then exit;
+    TcxButtonEditKadir(FindComponent('KKD')).EditValue := L[0].Kolon2;
+  end;
+
+
+  if TControl(sender).Name = 'VucutKisim'
+  Then begin
+    List.KaynakTableTip := tpTable;
+    List.Table := 'Uzuvlar';
+    L := List.ListeGetir;
+    if Length(L) = 0 then exit;
+    TcxButtonEditKadir(FindComponent('VucutKisim')).EditValue := L[0].Kolon2;
+  end;
+
+  if TControl(sender).Name = 'VucutUzuv'
+  Then begin
+    List.KaynakTableTip := tpTable;
+    List.Table := 'Uzuvlar';
+    L := List.ListeGetir;
+    if Length(L) = 0 then exit;
+    TcxButtonEditKadir(FindComponent('VucutUzuv')).EditValue := L[0].Kolon2;
+  end;
+
 
   if TControl(sender).Name = 'Risk_tanimi'
   Then begin
@@ -371,19 +413,21 @@ riskDuzenle,yeniRisk :
               datalar.Risk.SSGYapilanFaliyet := TcxTextEdit(FindComponent('YapilanFaliyet')).Text;
               //datalar.Risk.Image := TcxImage.Create(nil);
               datalar.Risk.Image.Picture := TcxImage(FindComponent('ImageResim')).Picture;
-              (*
-              try
-               Jpeg1 := TJPEGImage.Create;
-               Jpeg1.Assign(TcxImage(FindComponent('ImageResim')).Picture);
-               datalar.Risk.Image.Picture.Assign(Jpeg1);
-              finally
-               Jpeg1.free;
-              end;
-                *)
+            end;
+ yeniKKD,KKDDuzenle :
+            begin
+              datalar.KKD.VucutKisim := TcxButtonEditKadir(FindComponent('VucutKisim')).Text;
+              datalar.KKD.VucutUzuv := TcxButtonEditKadir(FindComponent('VucutUzuv')).Text;
+              datalar.KKD.KKD := TcxButtonEditKadir(FindComponent('KKD')).Text;
+              datalar.KKD.TSE := TcxButtonEditKadir(FindComponent('TS_EN_KODLARI')).EditText;
+              datalar.KKD.KullanilacakIs := TcxButtonEditKadir(FindComponent('KullanilacakIS')).EditText;
+
             end;
 
+
    yeniRiskBolum ,
-   yeniTehlikeKaynak
+   yeniTehlikeKaynak,
+   yeniKKDEkle
               :
               begin
 
@@ -398,6 +442,11 @@ riskDuzenle,yeniRisk :
                           datalar.QueryExec('insert into RDS_TehlikeKaynak (tanimi) values(' +
                                              QuotedStr(TcxTextEditKadir(FindComponent('TehlikeKaynak')).EditingValue) +
                                              ')');
+
+                   yeniKKDEkle :
+                         datalar.QueryExec('insert into KKD (tanimi) values(' +
+                                           QuotedStr(TcxTextEditKadir(FindComponent('KKD')).EditingValue) +
+                                           ')');
                  end;
 
 
@@ -434,7 +483,7 @@ end;
 procedure TfrmPopup.FormShow(Sender: TObject);
 var
   ilacList : TlisteAc;
-  Doktorlar,kulYolList : TcxImageComboKadir;
+  Doktorlar,kulYolList,uzuv : TcxImageComboKadir;
   txtTetkikIstem : TcxCheckGroupKadir;
   TabCaption : string;
   Image1 : TcxImage;
@@ -1057,9 +1106,71 @@ ptPersonelTetkikleri :
                     addButton(self,nil,'btnResimEkle','','Resim Ekle',Kolon1,'',100,ButtonClick,99);
 
                end;
+    yeniKKD,KKDDuzenle :
+               begin
+                  ClientHeight := 500;
+                  ClientWidth := 500;
+                 (*
+                  uzuv := TcxImageComboKadir.Create(self);
+                  uzuv.Conn := datalar.ADOConnection2;
+                  uzuv.TableName := 'Uzuvlar';
+                  uzuv.ValueField := 'Kod';
+                  uzuv.DisplayField := 'tanimi';
+                  uzuv.Filter := '';
+                  setDataStringKontrol(self,uzuv,'VucutKisim','Vücut Kýsým',Kolon1,'',150);
+                  TcxImageComboKadir(FindComponent('VucutKisim')).Text := datalar.KKD.VucutKisim;
+                  *)
+                  setDataStringB(self,'VucutKisim','Vücut Kýsým',Kolon1,'',150,List,False,nil,'','',False,True,-100);
+                  TcxButtonEditKadir(FindComponent('VucutKisim')).Properties.OnButtonClick := PropertiesButtonClick;
+                  TcxButtonEditKadir(FindComponent('VucutKisim')).EditText := datalar.KKD.VucutKisim;
+               (*
+                  uzuv := TcxImageComboKadir.Create(self);
+                  uzuv.Conn := datalar.ADOConnection2;
+                  uzuv.TableName := 'Uzuvlar';
+                  uzuv.ValueField := 'Kod';
+                  uzuv.DisplayField := 'tanimi';
+                  uzuv.Filter := '';
+                  setDataStringKontrol(self,uzuv,'VucutUzuv','Vücut Uzuv',Kolon1,'',150);
+                  TcxImageComboKadir(FindComponent('VucutUzuv')).EditText := datalar.KKD.VucutUzuv;
+                 *)
+                  setDataStringB(self,'VucutUzuv','Vücut Uzuv',Kolon1,'',150,List,False,nil,'','',False,True,-100);
+                  TcxButtonEditKadir(FindComponent('VucutUzuv')).Properties.OnButtonClick := PropertiesButtonClick;
+                  TcxButtonEditKadir(FindComponent('VucutUzuv')).EditText := datalar.KKD.VucutUzuv;
+                (*
+                  uzuv := TcxImageComboKadir.Create(self);
+                  uzuv.Name := 'KKD';
+                  uzuv.Tag := -100;
+                  uzuv.Conn := datalar.ADOConnection2;
+                  uzuv.TableName := 'KKD';
+                  uzuv.ValueField := 'Kod';
+                  uzuv.DisplayField := 'tanimi';
+                  uzuv.Filter := '';
+                  setDataStringKontrol(self,uzuv,'KKD','Kullanýlacak KKD',Kolon1,'kk',150);
+                  *)
+                  setDataStringB(self,'KKD','Kiþisel Donaným',Kolon1,'kk',150,List,False,nil,'','',False,True,-100);
+                  TcxButtonEditKadir(FindComponent('KKD')).Properties.OnButtonClick := PropertiesButtonClick;
+                  TcxButtonEditKadir(FindComponent('KKD')).EditText := datalar.KKD.KKD;
+                  addButton(self,nil,'btnKKDEkle','','Ekle',Kolon1,'kk',40,ButtonClick,22);
+
+                  setDataStringB(self,'TS_EN_KODLARI','Ulusal Standart',Kolon1,'',150,List,False,nil,'','',False,True,-100);
+                  TcxButtonEditKadir(FindComponent('TS_EN_KODLARI')).Properties.OnButtonClick := PropertiesButtonClick;
+                  TcxButtonEditKadir(FindComponent('TS_EN_KODLARI')).EditText := datalar.KKD.TSE;
+
+                  setDataString(self,'KullanilacakIS','KullanilacakIS',Kolon1,'',250);
+                  TcxTextEditKadir(FindComponent('KullanilacakIS')).EditingText := datalar.KKD.KullanilacakIs;
+
+                  (*
+                  setDataStringB(self,'Risk_tanimi','Risk Taným',Kolon1,'',250,List,False,nil,'','',False,True,-100);
+                  TcxButtonEditKadir(FindComponent('Risk_tanimi')).Properties.OnButtonClick := PropertiesButtonClick;
+                  TcxImageComboKadir(FindComponent('Risk_tanimi')).EditValue := datalar.Risk.Risk_tanim;
+                    *)
+
+               end;
+
 
    yeniRiskBolum ,
-   yeniTehlikeKaynak
+   yeniTehlikeKaynak,
+   yeniKKDEkle
               :
               begin
                  ClientHeight := 200;
@@ -1070,6 +1181,7 @@ ptPersonelTetkikleri :
                  case TfrmPopup(self).islem_ of
                    yeniRiskBolum : setDataString(self,'RiskBolum','Risk Bölüm',Kolon1,'',200,True,'',False,0,'',ecUpperCase);
                    yeniTehlikeKaynak : setDataString(self,'TehlikeKaynak','Tehlike Kaynaðý',Kolon1,'',200,True,'',False,0,'',ecUpperCase);
+                   yeniKKDEkle : setDataString(self,'KKD','Kiþisel Koruyucu Donaným',Kolon1,'',200,True,'',False,0,'',ecUpperCase);
                  end;
 
 
