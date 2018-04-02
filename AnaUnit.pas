@@ -358,7 +358,7 @@ begin
     datalar.Ado_DSP.Active := True;
     datalar.ADO_TehlikeSiniflari.Active := True;
     datalar.KontrolZorunlu.Active := True;
-    ado.SQL.Text := 'Select Doktor, SirketKodu, IGU, DigerSaglikPers, Grup from Users where Kullanici = ' + SQLValue(DATALAR.username);
+    ado.SQL.Text := 'Select Doktor, SirketKodu, IGU, DigerSaglikPers, Grup, ADISOYADI from Users where Kullanici = ' + SQLValue(DATALAR.username);
     ado.Open;
     try
       if not ado.Eof then
