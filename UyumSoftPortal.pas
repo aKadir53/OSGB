@@ -1,7 +1,7 @@
 unit UyumSoftPortal;
 
 interface
-incele
+
 uses
   Windows, Messages, SysUtils, Classes, Graphics, Controls, Forms, Dialogs,
   StdCtrls, ADODB,  DBGrids,  Grids, ComCtrls, Mask, ExtCtrls,

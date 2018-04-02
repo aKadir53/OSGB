@@ -512,7 +512,7 @@ var
   Jpeg1: TJpegImage;
   CompressedImage: TImage;
   Oran, OranW, OranH: Real;
-begin þ
+begin
   if Image1.Picture.Graphic<>nil then
   begin
     if (Image1.Picture.Graphic.Width >300) or (Image1.Picture.Graphic.Height>300) then
@@ -578,7 +578,7 @@ var
   CompressedImage: TImage;
   Oran, OranW, OranH: Real;
 begin
-  if Image1.Picture.Graphic<>nil then þ
+  if Image1.Picture.Graphic<>nil then
   begin
     if (Image1.Picture.Graphic.Width >300) or (Image1.Picture.Graphic.Height>300) then
     begin
@@ -8103,7 +8103,7 @@ begin
                exit;
             end;
          end;
-    end;þ
+    end;
 
     F.islem_ := Tag;
     F.caption_ := Caption;

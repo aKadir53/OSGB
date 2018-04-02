@@ -261,7 +261,7 @@ begin
       datalar.sirketKodu := login.FieldByName('SirketKodu').AsString;
       datalar.IGU := login.FieldByName('IGU').AsString;
       datalar.DSPers := login.FieldByName('DigerSaglikPers').AsString;
-      datalar.UserGroupx := login.FieldByName('Grup').AsString;
+      datalar.UserGroup := login.FieldByName('Grup').AsString;
 
       AnaForm.dxSkinController1.SkinName := login.FieldByName('userSkin').AsString;
       FormatSettings.DateSeparator := '.';

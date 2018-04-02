@@ -468,17 +468,17 @@ var
 begin
   if AEvent.TaskStatus = tsComplete
   Then Begin
-        FB := FirmaBilgileri(copy(AEvent.Location,1,6));
-        Application.CreateForm(TfrmEventDurumBildir, frmEventDurumBildir);
+    FB := FirmaBilgileri(copy(AEvent.Location,1,6));
+    Application.CreateForm(TfrmEventDurumBildir, frmEventDurumBildir);
     try
-        frmEventDurumBildir.EMail := FB.YetkiliMail;
-        frmEventDurumBildir.MobilTel := FB.YetkiliMobil;
+      frmEventDurumBildir.EMail := FB.YetkiliMail;
+      frmEventDurumBildir.MobilTel := FB.YetkiliMobil;
 
-        frmEventDurumBildir.mesaj :=
-        datetimetostr(AEvent.Start) + ' - ' + datetimetostr(AEvent.Finish) + ' Tarihi ve Saatleri Arasýnda Ziyaretimiz ,' + char(13) +
-        AEvent.Message;
+      frmEventDurumBildir.mesaj :=
+      datetimetostr(AEvent.Start) + ' - ' + datetimetostr(AEvent.Finish) + ' Tarihi ve Saatleri Arasýnda Ziyaretimiz ,' + char(13) +
+      AEvent.Message;
 
-        frmEventDurumBildir.ShowModal;
+      frmEventDurumBildir.ShowModal;
     finally
       FreeAndNil (frmEventDurumBildir);
     end;
