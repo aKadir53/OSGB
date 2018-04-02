@@ -192,14 +192,21 @@ begin
   inherited;
 
   case Tcontrol(sender).Tag of
-  -9 : begin
+    -9 : begin
          L := List.ListeGetir;
-         SozlesmeSatirlar.DataController.DataSet.Append;
-         SozlesmeSatirlar.DataController.DataSet.FieldByName('HizmetKodu').AsString := L[0].kolon1;
-         SozlesmeSatirlar.DataController.DataSet.FieldByName('HizmetAdi').AsString := L[0].kolon2;
-         SozlesmeSatirlar.DataController.DataSet.Post;
+         if High (L) >= 0 then
+         begin
+           SozlesmeSatirlar.DataController.DataSet.Append;
+           try
+             SozlesmeSatirlar.DataController.DataSet.FieldByName('HizmetKodu').AsString := L[0].kolon1;
+             SozlesmeSatirlar.DataController.DataSet.FieldByName('HizmetAdi').AsString := L[0].kolon2;
+             SozlesmeSatirlar.DataController.DataSet.Post;
+           except
+             SozlesmeSatirlar.DataController.DataSet.Cancel;
+             raise;
+           end;
+         end;
        end;
-
   end;
 end;
 

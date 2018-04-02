@@ -368,6 +368,7 @@ begin
         datalar.IGU := ado.FieldByName('IGU').AsString;
         datalar.DSPers := ado.FieldByName('DigerSaglikPers').AsString;
         datalar.UserGroup := ado.FieldByName('Grup').AsString;
+        datalar.usernameAdi := ado.FieldByName('ADISOYADI').AsString;
       end
       else begin
         DATALAR.doktorKodu := '';
@@ -465,22 +466,21 @@ procedure TAnaForm.cxScheduler1AfterEditing(Sender: TcxCustomScheduler;
 var
   FB : TFirmaBilgi;
 begin
-
   if AEvent.TaskStatus = tsComplete
   Then Begin
+    FB := FirmaBilgileri(copy(AEvent.Location,1,6));
+    Application.CreateForm(TfrmEventDurumBildir, frmEventDurumBildir);
     try
-        FB := FirmaBilgileri(copy(AEvent.Location,1,6));
-        Application.CreateForm(TfrmEventDurumBildir, frmEventDurumBildir);
-        frmEventDurumBildir.EMail := FB.YetkiliMail;
-        frmEventDurumBildir.MobilTel := FB.YetkiliMobil;
+      frmEventDurumBildir.EMail := FB.YetkiliMail;
+      frmEventDurumBildir.MobilTel := FB.YetkiliMobil;
 
-        frmEventDurumBildir.mesaj :=
-        datetimetostr(AEvent.Start) + ' - ' + datetimetostr(AEvent.Finish) + ' Tarihi ve Saatleri Arasýnda Ziyaretimiz ,' + char(13) +
-        AEvent.Message;
+      frmEventDurumBildir.mesaj :=
+      datetimetostr(AEvent.Start) + ' - ' + datetimetostr(AEvent.Finish) + ' Tarihi ve Saatleri Arasýnda Ziyaretimiz ,' + char(13) +
+      AEvent.Message;
 
-        frmEventDurumBildir.ShowModal;
+      frmEventDurumBildir.ShowModal;
     finally
-        frmEventDurumBildir := nil;
+      FreeAndNil (frmEventDurumBildir);
     end;
   End;
 

@@ -519,31 +519,16 @@ begin
     begin
     //    ShowMessage('Geniþlik: '+IntToStr(Image1.Picture.Graphic.Width)+'  Yükseklik: '+IntToStr(Image1.Picture.Graphic.Height));
       CompressedImage := TImage.Create(nil);
-
-      if StretchType = stBuyukseKucult then
-      begin
-        if (Image1.Picture.Graphic.Width>newWidth) or
-           (Image1.Picture.Graphic.Height>NewHeight) then
+      try
+        if StretchType = stBuyukseKucult then
         begin
-          OranW:=NewWidth/Image1.Picture.Graphic.Width;
-          OranH:=NewHeight/Image1.Picture.Graphic.Height;
-          if OranW>OranH then Oran:=OranH else Oran:=OranW;
-          //\\ JCL Graphics ten dolayý iptal
-          Stretch(Round(Image1.Picture.Graphic.Width*Oran),
-                  Round(Image1.Picture.Graphic.Height*Oran),
-                  rfBell, 1, Image1.Picture.Graphic, CompressedImage.Picture.Bitmap);
-          Image1.Picture.Bitmap.Assign(CompressedImage.Picture.Bitmap);
-        end;
-      end else
-      begin
-        if StretchType=stKucukseBuyult then
-        begin
-          if (Image1.Picture.Graphic.Width<NewWidth) or
-             (Image1.Picture.Graphic.Height<NewHeight) then
+          if (Image1.Picture.Graphic.Width>newWidth) or
+             (Image1.Picture.Graphic.Height>NewHeight) then
           begin
             OranW:=NewWidth/Image1.Picture.Graphic.Width;
             OranH:=NewHeight/Image1.Picture.Graphic.Height;
             if OranW>OranH then Oran:=OranH else Oran:=OranW;
+            //\\ JCL Graphics ten dolayý iptal
             Stretch(Round(Image1.Picture.Graphic.Width*Oran),
                     Round(Image1.Picture.Graphic.Height*Oran),
                     rfBell, 1, Image1.Picture.Graphic, CompressedImage.Picture.Bitmap);
@@ -551,20 +536,37 @@ begin
           end;
         end else
         begin
-          if StretchType=stHerDurumdaStretch then
+          if StretchType=stKucukseBuyult then
           begin
-            OranW:=NewWidth/Image1.Picture.Graphic.Width;
-            OranH:=NewHeight/Image1.Picture.Graphic.Height;
-            if OranW>OranH then Oran:=OranH else Oran:=OranW;
-            Stretch(Round(Image1.Picture.Graphic.Width*Oran),
-                    Round(Image1.Picture.Graphic.Height*Oran),
-                    rfBell, 1, Image1.Picture.Graphic, CompressedImage.Picture.Bitmap);
-            Image1.Picture.Bitmap.Assign(CompressedImage.Picture.Bitmap);
+            if (Image1.Picture.Graphic.Width<NewWidth) or
+               (Image1.Picture.Graphic.Height<NewHeight) then
+            begin
+              OranW:=NewWidth/Image1.Picture.Graphic.Width;
+              OranH:=NewHeight/Image1.Picture.Graphic.Height;
+              if OranW>OranH then Oran:=OranH else Oran:=OranW;
+              Stretch(Round(Image1.Picture.Graphic.Width*Oran),
+                      Round(Image1.Picture.Graphic.Height*Oran),
+                      rfBell, 1, Image1.Picture.Graphic, CompressedImage.Picture.Bitmap);
+              Image1.Picture.Bitmap.Assign(CompressedImage.Picture.Bitmap);
+            end;
+          end else
+          begin
+            if StretchType=stHerDurumdaStretch then
+            begin
+              OranW:=NewWidth/Image1.Picture.Graphic.Width;
+              OranH:=NewHeight/Image1.Picture.Graphic.Height;
+              if OranW>OranH then Oran:=OranH else Oran:=OranW;
+              Stretch(Round(Image1.Picture.Graphic.Width*Oran),
+                      Round(Image1.Picture.Graphic.Height*Oran),
+                      rfBell, 1, Image1.Picture.Graphic, CompressedImage.Picture.Bitmap);
+              Image1.Picture.Bitmap.Assign(CompressedImage.Picture.Bitmap);
 
+            end;
           end;
         end;
+      finally
+        CompressedImage.Free;
       end;
-      CompressedImage.Free;
       // ShowMessage('Küçültüldü Geniþlik: '+IntToStr(Image1.Picture.Bitmap.Width)+'  Yükseklik: '+IntToStr(Image1.Picture.Bitmap.Height));
     end;
   end;
@@ -582,31 +584,16 @@ begin
     begin
     //    ShowMessage('Geniþlik: '+IntToStr(Image1.Picture.Graphic.Width)+'  Yükseklik: '+IntToStr(Image1.Picture.Graphic.Height));
       CompressedImage := TImage.Create(nil);
-
-      if StretchType = stBuyukseKucult then
-      begin
-        if (Image1.Picture.Graphic.Width>newWidth) or
-           (Image1.Picture.Graphic.Height>NewHeight) then
+      try
+        if StretchType = stBuyukseKucult then
         begin
-          OranW:=NewWidth/Image1.Picture.Graphic.Width;
-          OranH:=NewHeight/Image1.Picture.Graphic.Height;
-          if OranW>OranH then Oran:=OranH else Oran:=OranW;
-          //\\ JCL Graphics ten dolayý iptal
-          Stretch(Round(Image1.Picture.Graphic.Width*Oran),
-                  Round(Image1.Picture.Graphic.Height*Oran),
-                  rfBell, 1, Image1.Picture.Graphic, CompressedImage.Picture.Bitmap);
-          Image1.Picture.Bitmap.Assign(CompressedImage.Picture.Bitmap);
-        end;
-      end else
-      begin
-        if StretchType=stKucukseBuyult then
-        begin
-          if (Image1.Picture.Graphic.Width<NewWidth) or
-             (Image1.Picture.Graphic.Height<NewHeight) then
+          if (Image1.Picture.Graphic.Width>newWidth) or
+             (Image1.Picture.Graphic.Height>NewHeight) then
           begin
             OranW:=NewWidth/Image1.Picture.Graphic.Width;
             OranH:=NewHeight/Image1.Picture.Graphic.Height;
             if OranW>OranH then Oran:=OranH else Oran:=OranW;
+            //\\ JCL Graphics ten dolayý iptal
             Stretch(Round(Image1.Picture.Graphic.Width*Oran),
                     Round(Image1.Picture.Graphic.Height*Oran),
                     rfBell, 1, Image1.Picture.Graphic, CompressedImage.Picture.Bitmap);
@@ -614,20 +601,37 @@ begin
           end;
         end else
         begin
-          if StretchType=stHerDurumdaStretch then
+          if StretchType=stKucukseBuyult then
           begin
-            OranW:=NewWidth/Image1.Picture.Graphic.Width;
-            OranH:=NewHeight/Image1.Picture.Graphic.Height;
-            if OranW>OranH then Oran:=OranH else Oran:=OranW;
-            Stretch(Round(Image1.Picture.Graphic.Width*Oran),
-                    Round(Image1.Picture.Graphic.Height*Oran),
-                    rfBell, 1, Image1.Picture.Graphic, CompressedImage.Picture.Bitmap);
-            Image1.Picture.Bitmap.Assign(CompressedImage.Picture.Bitmap);
+            if (Image1.Picture.Graphic.Width<NewWidth) or
+               (Image1.Picture.Graphic.Height<NewHeight) then
+            begin
+              OranW:=NewWidth/Image1.Picture.Graphic.Width;
+              OranH:=NewHeight/Image1.Picture.Graphic.Height;
+              if OranW>OranH then Oran:=OranH else Oran:=OranW;
+              Stretch(Round(Image1.Picture.Graphic.Width*Oran),
+                      Round(Image1.Picture.Graphic.Height*Oran),
+                      rfBell, 1, Image1.Picture.Graphic, CompressedImage.Picture.Bitmap);
+              Image1.Picture.Bitmap.Assign(CompressedImage.Picture.Bitmap);
+            end;
+          end else
+          begin
+            if StretchType=stHerDurumdaStretch then
+            begin
+              OranW:=NewWidth/Image1.Picture.Graphic.Width;
+              OranH:=NewHeight/Image1.Picture.Graphic.Height;
+              if OranW>OranH then Oran:=OranH else Oran:=OranW;
+              Stretch(Round(Image1.Picture.Graphic.Width*Oran),
+                      Round(Image1.Picture.Graphic.Height*Oran),
+                      rfBell, 1, Image1.Picture.Graphic, CompressedImage.Picture.Bitmap);
+              Image1.Picture.Bitmap.Assign(CompressedImage.Picture.Bitmap);
 
+            end;
           end;
         end;
+      finally
+        CompressedImage.Free;
       end;
-      CompressedImage.Free;
       // ShowMessage('Küçültüldü Geniþlik: '+IntToStr(Image1.Picture.Bitmap.Width)+'  Yükseklik: '+IntToStr(Image1.Picture.Bitmap.Height));
     end;
   end;
@@ -670,14 +674,13 @@ var
   sql,sonucStr : string;
   Sonuc : TStringList;
 begin
+  mailserver := datalar.SMTPSunucu;
+  username := datalar.SMTPUserName;
+  password := datalar.SMTPPassword;
+
+  ss := '';
+  dllHandle := LoadLibrary(LIB_DLL);
   try
-
-    mailserver := datalar.SMTPSunucu;
-    username := datalar.SMTPUserName;
-    password := datalar.SMTPPassword;
-
-    ss := '';
-    dllHandle := LoadLibrary(LIB_DLL);
     if dllHandle = 0 then
       exit;
 
@@ -690,21 +693,24 @@ begin
 
     sonucStr := ss;
     Sonuc := TStringList.Create;
-    ExtractStrings(['|'],[],PWideChar(sonucStr),Sonuc);
+    try
+      ExtractStrings(['|'],[],PWideChar(sonucStr),Sonuc);
 
-    if sonuc[0] = '0000' then
-    begin
-      mailGonder := '0000';
-    end
-    else
-      ShowMessageSkin(Sonuc[0],'','','info');
+      if sonuc[0] = '0000' then
+      begin
+        mailGonder := '0000';
+      end
+      else
+        ShowMessageSkin(Sonuc[0],'','','info');
 
 
-    if not Assigned(Mail) then
-      raise Exception.Create(LIB_DLL + ' içersinde EMailSend bulunamadý!');
+      if not Assigned(Mail) then
+        raise Exception.Create(LIB_DLL + ' içersinde EMailSend bulunamadý!');
+    finally
+      sonuc.Free;
+    end;
   finally
     FreeLibrary(dllHandle);
-    sonuc.Free;
   end;
 end;
 
@@ -931,8 +937,11 @@ end;
 procedure DestekTalep;
 begin
   Application.CreateForm(TfrmDestekSorunBildir, frmDestekSorunBildir);
-  frmDestekSorunBildir.ShowModal;
-  frmDestekSorunBildir := nil;
+  try
+    frmDestekSorunBildir.ShowModal;
+  finally
+    FreeAndNil (frmDestekSorunBildir);
+  end;
 end;
 
 procedure ExceldenPersonelYukle;
@@ -8082,10 +8091,8 @@ var
  F : TfrmPopup;
 begin
   Application.CreateForm(TfrmPopup, F);
-  F.Name := FormName;
-
   try
-
+    F.Name := FormName;
     case Tag of
       gdgelisAc,gdPeryodikgelisAc,gdgelisDuzenle,ReceteYeni,
       ReceteDuzenle,ReceteIlacEkle,ReceteIlacDuzenle :
