@@ -664,7 +664,7 @@ var
   iThermo : Integer;
 begin
   try
-    ShowThermo (iThermo, 'Parametreler ve ayarlar yükleniyor', 0, 20, 0);
+    ShowThermo (iThermo, 'Parametreler ve ayarlar yükleniyor', 0, 23, 0);
     try
       ado := TADOQuery.Create(nil);
       try
@@ -1058,15 +1058,20 @@ begin
 //      and (Pos ('ORDER BY',AnsiUpperCase(sql)) = 0)
 //      Then sql := sql + ' WITH(NOLOCK) ';
     Result := TADOQuery.Create(nil);
-    Result.Connection := ADOConnection2;
+    try
+      Result.Connection := ADOConnection2;
 
-    Result.Close;
-    Result.SQL.Clear ;
-    if Copy(AnsiUppercase(sql) ,1, 6) = 'SELECT'
-    Then sql := 'SET TRANSACTION ISOLATION LEVEL READ UNCOMMITTED  '+ sql;
-    Result.SQL.Add (sql);
-//    Q.Prepare;
-    Result.Open;
+      Result.Close;
+      Result.SQL.Clear ;
+      if Copy(AnsiUppercase(sql) ,1, 6) = 'SELECT'
+      Then sql := 'SET TRANSACTION ISOLATION LEVEL READ UNCOMMITTED  '+ sql;
+      Result.SQL.Add (sql);
+  //    Q.Prepare;
+      Result.Open;
+    except
+      FreeAndNil (Result);
+      raise;
+    end;
 end;
 
 procedure TDATALAR.pcarihareketlerAfterScroll(DataSet: TDataSet);

@@ -131,20 +131,23 @@ begin
         end;
 
   98,99 : begin
+          open := TOpenDialog.Create(self);
           try
-            open := TOpenDialog.Create(self);
-            open.Execute;
+            if not open.Execute then Exit;
             filename := open.FileName;
             TcxImage(FindComponent('ImageResim')).Picture.LoadFromFile(filename);
             Image := TcxImage(FindComponent('ImageResim'));
             StretchImage(Image,stHerDurumdaStretch,400,300);
             Jpeg1 := TJPEGImage.Create;
-            Jpeg1.Assign(Image.Picture.Bitmap);
-            TcxImage(FindComponent('ImageResim')).Clear;
-            TcxImage(FindComponent('ImageResim')).Picture.Assign(Jpeg1);
+            try
+              Jpeg1.Assign(Image.Picture.Bitmap);
+              TcxImage(FindComponent('ImageResim')).Clear;
+              TcxImage(FindComponent('ImageResim')).Picture.Assign(Jpeg1);
+            finally
+              Jpeg1.Free;
+            end;
           finally
             open.Free;
-            Jpeg1.Free;
           end;
          end;
   end;
@@ -256,7 +259,6 @@ procedure TfrmPopup.FormClose(Sender: TObject; var Action: TCloseAction);
 var
   xSahaDenetimVeri : TSahaDenetimler;
   Blob : TStream;
-  Jpeg1 : TJpegImage;
 begin
   if TfrmPopup(self).ModalResult = mrYes
   then
@@ -487,7 +489,6 @@ var
   txtTetkikIstem : TcxCheckGroupKadir;
   TabCaption : string;
   Image1 : TcxImage;
-  Jpeg1 : TJpegImage;
   List : TListeAc;
   ICombo : TcxImageComboKadir;
   Tarih : TcxDateEditKadir;
