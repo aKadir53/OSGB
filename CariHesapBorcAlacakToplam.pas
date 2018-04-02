@@ -1,7 +1,7 @@
 unit CariHesapBorcAlacakToplam;
 
 interface
-incele
+
 uses
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
   Dialogs, cxGraphics, cxControls, cxLookAndFeels, cxLookAndFeelPainters,
