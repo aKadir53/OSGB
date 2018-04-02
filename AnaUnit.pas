@@ -368,6 +368,7 @@ begin
         datalar.IGU := ado.FieldByName('IGU').AsString;
         datalar.DSPers := ado.FieldByName('DigerSaglikPers').AsString;
         datalar.UserGroup := ado.FieldByName('Grup').AsString;
+        datalar.usernameAdi := ado.FieldByName('ADISOYADI').AsString;
       end
       else begin
         DATALAR.doktorKodu := '';
@@ -465,12 +466,11 @@ procedure TAnaForm.cxScheduler1AfterEditing(Sender: TcxCustomScheduler;
 var
   FB : TFirmaBilgi;
 begin
-d
   if AEvent.TaskStatus = tsComplete
   Then Begin
-    try
         FB := FirmaBilgileri(copy(AEvent.Location,1,6));
         Application.CreateForm(TfrmEventDurumBildir, frmEventDurumBildir);
+    try
         frmEventDurumBildir.EMail := FB.YetkiliMail;
         frmEventDurumBildir.MobilTel := FB.YetkiliMobil;
 
@@ -480,7 +480,7 @@ d
 
         frmEventDurumBildir.ShowModal;
     finally
-        frmEventDurumBildir := nil;
+      FreeAndNil (frmEventDurumBildir);
     end;
   End;
 

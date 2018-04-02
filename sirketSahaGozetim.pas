@@ -1,7 +1,7 @@
 unit sirketSahaGozetim;
 
 interface
-incel
+
 uses
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
   Dialogs, cxGraphics, cxControls, cxLookAndFeels, cxLookAndFeelPainters,
@@ -317,11 +317,15 @@ begin
  //  Satirlar.DataController.DataSet.FieldByName('Image').AsVariant := datalar.Risk.Image;
 
     Blob := TADOBlobStream.Create(TBlobField(Satirlar.DataController.DataSet.FieldByName('Image')),bmwrite);
-  //  datalar.Risk.Image.Picture.SaveToFile('dd.jpg');
-    datalar.Risk.Image.Picture.Graphic.SaveToStream(Blob);
-   // Blob.LoadFromStream(datalar.Risk.Stream);
-    Blob.Position := 0;
-    TBlobField(Satirlar.DataController.DataSet.FieldByName('Image')).LoadFromStream(Blob);
+    try
+    //  datalar.Risk.Image.Picture.SaveToFile('dd.jpg');
+      datalar.Risk.Image.Picture.Graphic.SaveToStream(Blob);
+     // Blob.LoadFromStream(datalar.Risk.Stream);
+      Blob.Position := 0;
+      TBlobField(Satirlar.DataController.DataSet.FieldByName('Image')).LoadFromStream(Blob);
+    finally
+      Blob.Free;
+    end;
 
 end;
 
@@ -329,8 +333,8 @@ procedure dataRead;
 var
   G : TGraphic;
 begin
+   g := TJpegimage.Create;
    try
-      g := TJpegimage.Create;
       g.Assign(Satirlar.DataController.DataSet.FieldByName('Image'));
       datalar.Risk.Image := TcxImage.Create(nil);
       datalar.Risk.Image.Picture.Assign(g);

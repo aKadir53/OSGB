@@ -131,20 +131,23 @@ begin
         end;
 
   98,99 : begin
+          open := TOpenDialog.Create(self);
           try
-            open := TOpenDialog.Create(self);
-            open.Execute; þþ
+            if not open.Execute then Exit;
             filename := open.FileName;
             TcxImage(FindComponent('ImageResim')).Picture.LoadFromFile(filename);
             Image := TcxImage(FindComponent('ImageResim'));
             StretchImage(Image,stHerDurumdaStretch,400,300);
             Jpeg1 := TJPEGImage.Create;
-            Jpeg1.Assign(Image.Picture.Bitmap);
-            TcxImage(FindComponent('ImageResim')).Clear;
-            TcxImage(FindComponent('ImageResim')).Picture.Assign(Jpeg1);
+            try
+              Jpeg1.Assign(Image.Picture.Bitmap);
+              TcxImage(FindComponent('ImageResim')).Clear;
+              TcxImage(FindComponent('ImageResim')).Picture.Assign(Jpeg1);
+            finally
+              Jpeg1.Free;
+            end;
           finally
             open.Free;
-            Jpeg1.Free;
           end;
          end;
   end;
@@ -256,7 +259,6 @@ procedure TfrmPopup.FormClose(Sender: TObject; var Action: TCloseAction);
 var
   xSahaDenetimVeri : TSahaDenetimler;
   Blob : TStream;
-  Jpeg1 : TJpegImage;þ
 begin
   if TfrmPopup(self).ModalResult = mrYes
   then
@@ -486,8 +488,7 @@ var
   Doktorlar,kulYolList,uzuv : TcxImageComboKadir;
   txtTetkikIstem : TcxCheckGroupKadir;
   TabCaption : string;
-  Image1 : TcxImage;s
-  Jpeg1 : TJpegImage;s
+  Image1 : TcxImage;
   List : TListeAc;
   ICombo : TcxImageComboKadir;
   Tarih : TcxDateEditKadir;

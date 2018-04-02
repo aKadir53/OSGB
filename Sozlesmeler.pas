@@ -1,7 +1,7 @@
 unit Sozlesmeler;
 
 interface
-incele
+
 uses
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
   Dialogs, cxGraphics, cxControls, cxLookAndFeels, cxLookAndFeelPainters,
@@ -103,7 +103,6 @@ procedure TfrmSozlesmeler.Gonder;
 var
  i : integer;
  sql ,sozlesmeId,sirket,sirketAdi,FaturaTarihi,sonucStr,faturaID : string;
- Sonuc : TStringList;
 begin
    sonucStr := '';
    if mrYes = ShowMessageSkin('Seçili Sözleþmelerden Fatura Oluþturulacak',
@@ -111,7 +110,7 @@ begin
    then begin
        pBar.Properties.Max := GridSozlesmeler.Controller.SelectedRowCount;
        pBar.Position := 0;
-       Sonuc := TStringList.Create;
+       DurumGoster(True,True,'Fatura Oluþturuluyor... , ' + sirketAdi);
        try
          for i := 0 to GridSozlesmeler.Controller.SelectedRowCount - 1 do
          begin
@@ -123,27 +122,23 @@ begin
 
             if faturaID = '' then
             begin
-              DurumGoster(True,True,'Fatura Oluþturuluyor... , ' + sirketAdi);
-              Application.ProcessMessages;
-              pBar.Position := i;
-              sql := 'exec sp_SirketAktifSozlesmedenFaturaUret ' + sozlesmeId + ',' + QuotedStr(faturaTarihi);
-              sonucStr := datalar.QuerySelect(sql).Fields[0].AsString;
-              if sonucStr = '1' then
-                 TcxMemo(FindComponent('SonucLog')).Lines.Add(sirketAdi + ' : OK')
-               else
-                 TcxMemo(FindComponent('SonucLog')).Lines.Add(sirketAdi + ' : ' + sonucStr)
+                Application.ProcessMessages;
+                pBar.Position := i;
+                sql := 'exec sp_SirketAktifSozlesmedenFaturaUret ' + sozlesmeId + ',' + QuotedStr(faturaTarihi);
+                sonucStr := datalar.QuerySelect(sql).Fields[0].AsString;
+                if sonucStr = '1' then
+                   TcxMemo(FindComponent('SonucLog')).Lines.Add(sirketAdi + ' : OK')
+                 else
+                   TcxMemo(FindComponent('SonucLog')).Lines.Add(sirketAdi + ' : ' + sonucStr)
             end
             else
               Continue;
-
          end;
          ShowMessageSkin('Fatura Oluþturma Ýþlemi Tamamlandý','','','info');
        finally
-        Sonuc.free;
-        DurumGoster(False,False,'');
+         DurumGoster(False,False,'');
        end;
    end;
-
 end;
 
 
