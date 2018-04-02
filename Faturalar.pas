@@ -187,20 +187,20 @@ begin
    if mrYes = ShowMessageSkin('Seçili Faturalar E-Arþive Gönderilecek',
                                '','','msg')
    then begin
-       pBar.Properties.Max := GridFaturalar.Controller.SelectedRowCount;
-       pBar.Position := 0;
-       Sonuc := TStringList.Create;
+     pBar.Properties.Max := GridFaturalar.Controller.SelectedRowCount;
+     pBar.Position := 0;
+     Sonuc := TStringList.Create;
+     try
+       DurumGoster(True,True,'Fatura E-Arþive Gönderiliyor , ' + faturaId);
        try
          for i := 0 to GridFaturalar.Controller.SelectedRowCount - 1 do
          begin
             faturaId := GridCellToString(GridFaturalar,'sira',i);
-            DurumGoster(True,True,'Fatura E-Arþive Gönderiliyor , ' + faturaId);
             Application.ProcessMessages;
             pBar.Position := i;
 
             sonucStr := EArsivGonder(faturaId);
-            Sonuc := TStringList.Create;
-           // Split('|',sonucStr,Sonuc);
+            Sonuc.Text := '';
             ExtractStrings(['|'],[],PWideChar(sonucStr),Sonuc);
             txtLog.Lines.Add('Fatura ID : ' + faturaId + ' Sonuc : ' + SonucStr);
             if Sonuc[0]= '0000' then
@@ -211,19 +211,16 @@ begin
                      ' where sira = ' + faturaId;
               datalar.QueryExec(sql);
             end;
-
          end;
          ShowMessageSkin('Fatura Gönderim Ýþlemi Tamamlandý','','','info');
        finally
-        Sonuc.free;
-        DurumGoster(False,False,faturaId);
+         DurumGoster(False,False,faturaId);
        end;
+     finally
+       Sonuc.free;
+     end;
    end;
-
 end;
-
-
-
 
 function TfrmFaturalar.EArsivGonder(FaturaId : string) : string;
 var
@@ -235,22 +232,21 @@ var
   ss : PWideChar;
   sql : string;
 begin
+  sql := 'sp_FaturaXML ' + FaturaId;
+  QuerySelect(sql);
+
+  ss := 'Yok';
+  faturaXML := SelectAdo.FieldByName('FaturaXML').AsString;
+
+  dllHandle := LoadLibrary(LIB_DLL);
   try
-    sql := 'sp_FaturaXML ' + FaturaId;
-    QuerySelect(sql);
-
-    ss := 'Yok';
-    faturaXML := SelectAdo.FieldByName('FaturaXML').AsString;
-
-    dllHandle := LoadLibrary(LIB_DLL);
-    if dllHandle = 0 then
-      exit;
+    if dllHandle = 0 then exit;
 
     @fatura := findMethod(dllHandle, 'EArsivFaturaGonder');
     if addr(fatura) <> nil then
     fatura(PWideChar(faturaXML),PWideChar(datalar.efaturaUsername),PWideChar(datalar.efaturaSifre),ss,PWideChar(datalar.eFaturaUrl));
   //  ShowMessage(ss,'','','info');
-    EArsivGonder := ss;
+    Result := ss;
 
     if not Assigned(fatura) then
       raise Exception.Create(LIB_DLL + ' içersinde EArsivFaturaGonder bulunamadý!');
@@ -271,43 +267,45 @@ var
   sql,sonucStr : string;
   Sonuc : TstringList;
 begin
+
+  DurumGoster(True,True,'E-Arþiv Fatura Sorgulanýyor , ' + FaturaGuid);
   try
-
-    DurumGoster(True,True,'E-Arþiv Fatura Sorgulanýyor , ' + FaturaGuid);
     Application.ProcessMessages;
-
     ss := '';
     dllHandle := LoadLibrary(LIB_DLL);
-    if dllHandle = 0 then
-      exit;
+    try
+      if dllHandle = 0 then exit;
 
-    @fatura := findMethod(dllHandle, 'EArsivFaturaDurum');
-    if addr(fatura) <> nil then
-    fatura(PWideChar(FaturaGuid),PWideChar(datalar.efaturaUsername),PWideChar(datalar.efaturaSifre),ss,PWideChar(datalar.eFaturaUrl));
+      @fatura := findMethod(dllHandle, 'EArsivFaturaDurum');
+      if addr(fatura) <> nil then
+      fatura(PWideChar(FaturaGuid),PWideChar(datalar.efaturaUsername),PWideChar(datalar.efaturaSifre),ss,PWideChar(datalar.eFaturaUrl));
 
-    EArsivDurumSorgula := ss;
+      EArsivDurumSorgula := ss;
 
+      sonucStr := ss;
+      txtLog.Lines.Add('Fatura Guid : ' + FaturaGuid + ' Sonuc : ' + SonucStr);
+      Sonuc := TStringList.Create;
+      try
+       // Split('|',sonucStr,Sonuc);
+        ExtractStrings(['|'],[],PWideChar(sonucStr),Sonuc);
 
+        if Sonuc[0] = '0000' then
+        begin
+          sql := 'update faturalar set eArsivDurum = ' + QuotedStr(Sonuc[2]) +
+                 ' where Guid = ' + QuotedStr(FaturaGuid);
+          datalar.QueryExec(sql);
+        end;
 
-    sonucStr := ss;
-    txtLog.Lines.Add('Fatura Guid : ' + FaturaGuid + ' Sonuc : ' + SonucStr);
-    Sonuc := TStringList.Create;
-   // Split('|',sonucStr,Sonuc);
-    ExtractStrings(['|'],[],PWideChar(sonucStr),Sonuc);
-
-    if Sonuc[0] = '0000' then
-    begin
-      sql := 'update faturalar set eArsivDurum = ' + QuotedStr(Sonuc[2]) +
-             ' where Guid = ' + QuotedStr(FaturaGuid);
-      datalar.QueryExec(sql);
+        if not Assigned(fatura) then
+          raise Exception.Create(LIB_DLL + ' içersinde EArsivFaturaDurum bulunamadý!');
+      finally
+        Sonuc.Free;
+      end;
+    finally
+      FreeLibrary(dllHandle);
     end;
-
-    if not Assigned(fatura) then
-      raise Exception.Create(LIB_DLL + ' içersinde EArsivFaturaDurum bulunamadý!');
   finally
-    FreeLibrary(dllHandle);
     DurumGoster(False,False,'');
-    Sonuc.Free;
   end;
 end;
 
@@ -321,11 +319,10 @@ var
   ss : PWideChar;
   sql,sonucStr : string;
 begin
+  ss := '';
+  dllHandle := LoadLibrary(LIB_DLL);
   try
-    ss := '';
-    dllHandle := LoadLibrary(LIB_DLL);
-    if dllHandle = 0 then
-      exit;
+    if dllHandle = 0 then exit;
 
     @fatura := findMethod(dllHandle, 'EArsivFaturaIptal');
     if addr(fatura) <> nil then
@@ -334,24 +331,27 @@ begin
     EArsivIptal := ss;
 
     DurumGoster(True,True,'E-Arþiv Fatura Ýptal Ediliyor , ' + FaturaGuid);
-    Application.ProcessMessages;
+    try
+      Application.ProcessMessages;
 
-    sonucStr := ss;
-    txtLog.Lines.Add('Fatura Guid : ' + FaturaGuid + ' Sonuc : ' + SonucStr);
+      sonucStr := ss;
+      txtLog.Lines.Add('Fatura Guid : ' + FaturaGuid + ' Sonuc : ' + SonucStr);
 
-    if sonucStr = '0000' then
-    begin
-      sql := 'update faturalar set eArsivDurum = 1400 ' +
-          //   'Guid = ' + QuotedStr('') +
-             ' where Guid = ' + QuotedStr(FaturaGuid);
-      datalar.QueryExec(sql);
+      if sonucStr = '0000' then
+      begin
+        sql := 'update faturalar set eArsivDurum = 1400 ' +
+            //   'Guid = ' + QuotedStr('') +
+               ' where Guid = ' + QuotedStr(FaturaGuid);
+        datalar.QueryExec(sql);
+      end;
+
+      if not Assigned(fatura) then
+        raise Exception.Create(LIB_DLL + ' içersinde EArsivFaturaIptal bulunamadý!');
+    finally
+      DurumGoster(False,False,'');
     end;
-
-    if not Assigned(fatura) then
-      raise Exception.Create(LIB_DLL + ' içersinde EArsivFaturaIptal bulunamadý!');
   finally
     FreeLibrary(dllHandle);
-    DurumGoster(False,False,'');
   end;
 end;
 
@@ -368,56 +368,61 @@ var
   Sonuc : TStringList;
   alici : TFirmaBilgi;
 begin
+  DurumGoster(True,True,'E-Arþiv Fatura PDF indiriliyor , ' + FaturaGuid);
   try
-    DurumGoster(True,True,'E-Arþiv Fatura PDF indiriliyor , ' + FaturaGuid);
     Application.ProcessMessages;
 
     ss := '';
     dllHandle := LoadLibrary(LIB_DLL);
-    if dllHandle = 0 then
-      exit;
+    try
+      if dllHandle = 0 then exit;
 
-    @fatura := findMethod(dllHandle, 'EArsivFaturaSavePDF');
-    if addr(fatura) <> nil then
+      @fatura := findMethod(dllHandle, 'EArsivFaturaSavePDF');
+      if addr(fatura) <> nil then
 
-    case _tag_ of
-    -22 : begin
-           alici.YetkiliMail := '' ; username := ''; password := ''; mailserver := ''; konu := '' ; msj := '';
-          end;
-    -23 : begin
-           alici := FirmaBilgileri(GridCellToString(GridFaturalar,'sirketKod',0));
-           mailserver := datalar.SMTPSunucu;
-           username := datalar.SMTPUserName;
-           password := datalar.SMTPPassword;
-           konu := 'Dönem Faturasý';
-           msj := 'Dönem Faturanýz ektedir. Ýyi Çalýþmalar';
-          end;
+      case _tag_ of
+      -22 : begin
+             alici.YetkiliMail := '' ; username := ''; password := ''; mailserver := ''; konu := '' ; msj := '';
+            end;
+      -23 : begin
+             alici := FirmaBilgileri(GridCellToString(GridFaturalar,'sirketKod',0));
+             mailserver := datalar.SMTPSunucu;
+             username := datalar.SMTPUserName;
+             password := datalar.SMTPPassword;
+             konu := 'Dönem Faturasý';
+             msj := 'Dönem Faturanýz ektedir. Ýyi Çalýþmalar';
+            end;
+      end;
+
+      fatura(PWideChar(FaturaGuid),PWideChar(datalar.efaturaUsername),PWideChar(datalar.efaturaSifre),ss,PWideChar(datalar.eFaturaUrl),
+             PWideChar(mailserver),PWideChar(username),PWideChar(password),PWideChar(alici.YetkiliMail),PWideChar(konu),PWideChar(msj));
+
+      EArsivPDF := ss;
+
+      sonucStr := ss;
+      Sonuc := TStringList.Create;
+      try
+        ExtractStrings(['|'],[],PWideChar(sonucStr),Sonuc);
+
+        if sonuc[0] = '0000' then
+        begin
+         if _tag_ = -22 then ShellExecute(0, 'open', PChar(sonuc[1]), nil, nil, SW_SHOWNORMAL);
+         //if _tag_ = -23 then ShowMessageSkin('Fatura Gönderildi','','','info');
+        end
+        else
+          ShowMessageSkin(Sonuc[0],Sonuc[1],'','info');
+
+
+        if not Assigned(fatura) then
+          raise Exception.Create(LIB_DLL + ' içersinde EArsivFaturaSavePDF bulunamadý!');
+      finally
+        Sonuc.Free;
+      end;
+    finally
+      FreeLibrary(dllHandle);
     end;
-
-    fatura(PWideChar(FaturaGuid),PWideChar(datalar.efaturaUsername),PWideChar(datalar.efaturaSifre),ss,PWideChar(datalar.eFaturaUrl),
-           PWideChar(mailserver),PWideChar(username),PWideChar(password),PWideChar(alici.YetkiliMail),PWideChar(konu),PWideChar(msj));
-
-    EArsivPDF := ss;
-
-    sonucStr := ss;
-    Sonuc := TStringList.Create;
-    ExtractStrings(['|'],[],PWideChar(sonucStr),Sonuc);
-
-    if sonuc[0] = '0000' then
-    begin
-     if _tag_ = -22 then ShellExecute(0, 'open', PChar(sonuc[1]), nil, nil, SW_SHOWNORMAL);
-     //if _tag_ = -23 then ShowMessageSkin('Fatura Gönderildi','','','info');
-    end
-    else
-      ShowMessageSkin(Sonuc[0],Sonuc[1],'','info');
-
-
-    if not Assigned(fatura) then
-      raise Exception.Create(LIB_DLL + ' içersinde EArsivFaturaSavePDF bulunamadý!');
   finally
-    FreeLibrary(dllHandle);
     DurumGoster(False,False,'');
-    sonuc.Free;
   end;
 end;
 

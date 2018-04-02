@@ -81,9 +81,9 @@ var
   dllHandle: Cardinal;
   _sonuc_ : string;
 begin
-    SendMesajGonder := '';
-    dllHandle := LoadLibrary(LIB_DLL);
-
+  SendMesajGonder := '';
+  dllHandle := LoadLibrary(LIB_DLL);
+  try
     if dllHandle = 0 then exit;
     @SendMesaj := findMethod(dllHandle, 'SmsGonder');
 
@@ -96,23 +96,23 @@ begin
     if not Assigned(SendMesaj)
     then
       raise Exception.Create(LIB_DLL + ' içersinde SmsGonder Method bulunamadý!');
-
+  finally
     FreeLibrary(dllHandle);
-
+  end;
 end;
 
 procedure TfrmEventDurumBildir.btnDosyaEkleClick(Sender: TObject);
 var
   open : TOpenDialog;
 begin
- try
-  open := TOpenDialog.Create(self);
-  open.Execute;
-  filename := open.FileName;
-  lblFileName.Caption := filename;
- finally
-  open.Free;
- end;
+  try
+    open := TOpenDialog.Create(self);
+    if not open.Execute then exit;
+    filename := open.FileName;
+    lblFileName.Caption := filename;
+  finally
+    open.Free;
+  end;
 end;
 
 procedure TfrmEventDurumBildir.btnMesajGonderClick(Sender: TObject);
