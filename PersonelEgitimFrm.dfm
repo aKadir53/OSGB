@@ -112,6 +112,11 @@ object frmPersonelEgitim: TfrmPersonelEgitim
         Caption = 'E'#287'itime Kat'#305'lan Personel Listesi'
         OnClick = cxButtonCClick
       end
+      object miEgitimBilgisiniIBYSyeGonder: TMenuItem
+        Tag = -40
+        Caption = 'E'#287'itim Bilgisini '#304'BYS'#39'ye G'#246'nder'
+        OnClick = cxButtonCClick
+      end
     end
   end
 end

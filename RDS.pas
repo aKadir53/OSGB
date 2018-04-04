@@ -813,7 +813,7 @@ begin
  // TopPanel.Visible := true;
 
   where := ' hazirlayan = ' + QuotedStr(datalar.IGU) + ' or paylasilan = ' + QuotedStr(datalar.IGU) +
-           ' or hazirlayan = ' + QuotedStr(datalar.doktor) + ' or paylasilan = ' + QuotedStr(datalar.doktor);
+           ' or hazirlayanDoktor = ' + QuotedStr(datalar.doktor) + ' or paylasilan = ' + QuotedStr(datalar.doktor);
 
   Faturalar := ListeAcCreate('RDS_SirketRiskView','id,sirketKod,sirketAdi,Tarih,GTarih,Method,hazirlayan',
                        'ID,ÞirketKodu,ÞirketAdý,HazýrlamaTarihi,Geçerlilik,Method,Hazýrlayan',
