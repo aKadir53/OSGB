@@ -128,7 +128,7 @@ type
     procedure cGridcxButtonEditPropertiesButtonClick(Sender: TObject;
       AButtonIndex: Integer);
     procedure KontrolEditValueClear;
-    procedure sqlRunLoad;
+    procedure sqlRunLoad;virtual;
     procedure Yukle;virtual;
     procedure Disabled(_form: TForm ; indexField : Boolean);
     procedure Enabled;
