@@ -1389,6 +1389,8 @@ begin
   inherited;
   if not CheckReceteStatus (True, False, True, True, True) then Exit;
   ADO_receteAcikla.Delete;
+  ADO_receteAcikla.Close;
+  ADO_receteAcikla.Open;
 end;
 
 procedure TfrmHastaRecete.cxButtonKadirIlacAckEkleClick(Sender: TObject);

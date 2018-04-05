@@ -254,6 +254,14 @@ begin
 
       datalar.username := edit1.Text;
       DATALAR.usersifre := edit2.Text;
+
+      //þifre deðiþtirme gerekliyse...
+      if Login.FieldByName ('SifreDegismeli').AsBoolean then
+      begin
+        ShowMessageSkin('Þifrenizi Deðiþtirmeniz Gerekmektedir...', '', '', 'info');
+        if not SifreDegistir then Exit;
+      end;
+
       regyazLastLogin;
       bloginLog := True;
       datalar.usernameAdi := login.FieldByName('ADISOYADI').AsString;
@@ -376,7 +384,7 @@ var
 begin
   if Datalar.Baglan ('', '', Edit1.Text, '', '')
   Then Begin
-     sql := 'select doktor,sirketKodu from Users where kullanici = ' + QuotedStr(edit1.text);þ
+     sql := 'select doktor,sirketKodu from Users where kullanici = ' + QuotedStr(edit1.text);
      datalar.QuerySelect(DONEMBUL,sql);
 
 
@@ -457,6 +465,5 @@ begin
    Labelx.Caption := regOku('OSGB_description');
    if LoginSayfalar.ActivePageIndex = 0 then Edit2.SetFocus;
 end;
-      'update Users set password = ' + QuotedStr(txtSifre.Text) + ', SifreDegisiklikTarihi = getdate (), Dogrulama = 1 where Kullanici = ' + QuotedStr(datalar.username);
-      'insert into UserPasswordHistory (Kullanici, [Password]) Select ' + SQLValue (datalar.username) + ', ' + SQLValue(txtSifre.Text);
+
 end.

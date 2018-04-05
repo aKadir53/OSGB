@@ -345,7 +345,7 @@ procedure GetBuildInfo(const AppName: string; var V1, V2, V3,V4: Word);
 procedure MedEczaneGit(user,pasword,Tc : string);
 procedure cxExceleGonder(grid : TcxGrid ; dosyaName : string);
 procedure SifreDegistir(newSifre : string ; sifreTip : integer);  overload;
-procedure SifreDegistir;overload;
+function SifreDegistir: Boolean;overload;
 procedure HastaBilgiRecordSet(Adi,Soyadi,Tc,Yas : string);
 procedure HastaRapor(dosyaNo,gelisNo : string);
 procedure Son6AylikTetkikSonuc(dosyaNo,Tarih : string);
@@ -8925,46 +8925,45 @@ begin
   Result := doktorkod;
 end;
 
-procedure SifreDegistir;
+function SifreDegistir: Boolean;
 var
   ado : TadoQuery;
-  bTamam : Boolean;
 begin
   datalar.SifreDegistir.KullaniciAdi := DATALAR.username;
   datalar.SifreDegistir.Sifre := DATALAR.usersifre;
+  Result := False;
+  if mrYes <> ShowPopupForm('Þifre Deðiþtirme',PrgSifre) then
+  begin
+    ShowMessageSkin('Ýþlem iptal edildi','','','info');
+    exit;
+  end;
 
-  if mrYes = ShowPopupForm('Þifre Deðiþtirme',PrgSifre)
-  then begin
-    //güncellemeleri yap
-    ado := TADOQuery.Create(nil);
+  //güncellemeleri yap
+  ado := TADOQuery.Create(nil);
+  try
+    BeginTrans(DATALAR.ADOConnection2);
     try
-      bTamam := False;
-      BeginTrans(DATALAR.ADOConnection2);
-      try
-        sql := 'update Users set password = ' + SQLValue (datalar.SifreDegistir.Sifre)
-               + ', SifreDegisiklikTarihi = getdate (), Dogrulama = 1 where Kullanici = ' + SQLValue (datalar.username);
-        datalar.QueryExec(ado,sql);
-        sql :=
-          'insert into UserPasswordHistory (TarihSaat, Kullanici, [Password]) '+
-          'Select GETDATE (), ' + SQLValue (datalar.username) + ', ' + SQLValue(datalar.SifreDegistir.Sifre);
-        datalar.QueryExec(ado,sql);
-        bTamam := True;
-      finally
-        if bTamam then
-        begin
-          CommitTrans(DATALAR.ADOConnection2);
-          ShowMessageSkin('Þifreniz Deðiþtirildi','','','info');
-          DATALAR.usersifre := datalar.SifreDegistir.Sifre
-        end
-        else
-          RollBackTrans(DATALAR.ADOConnection2);
-      end;
+      sql := 'update Users set password = ' + SQLValue (datalar.SifreDegistir.Sifre)
+             + ', SifreDegisiklikTarihi = getdate (), Dogrulama = 1 where Kullanici = ' + SQLValue (datalar.username);
+      datalar.QueryExec(ado,sql);
+      sql :=
+        'insert into UserPasswordHistory (TarihSaat, Kullanici, [Password]) '+
+        'Select GETDATE (), ' + SQLValue (datalar.username) + ', ' + SQLValue(datalar.SifreDegistir.Sifre);
+      datalar.QueryExec(ado,sql);
+      Result := True;
     finally
-      ado.Free;
-    end
-  End
-  else
-      ShowMessageSkin('Ýþlem iptal edildi','','','info');
+      if Result then
+      begin
+        CommitTrans(DATALAR.ADOConnection2);
+        ShowMessageSkin('Þifreniz Deðiþtirildi','','','info');
+        DATALAR.usersifre := datalar.SifreDegistir.Sifre
+      end
+      else
+        RollBackTrans(DATALAR.ADOConnection2);
+    end;
+  finally
+    ado.Free;
+  end
 end;
 
 function SahaSaglikGozlemSil(const GozlemID: integer): Boolean;
