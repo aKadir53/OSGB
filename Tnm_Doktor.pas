@@ -77,7 +77,7 @@ begin
         list.Where := GetUserDoktorFilter;//login olan kullanýcý admin grubunda deðilse onun doktor kodu;
         List.SkinName := 'coffee';//AnaForm.dxSkinController1.SkinName;
 
-        setDataStringB(self,'kod','Doktor Kodu',Kolon1,'',70,List,True,nil);
+        setDataStringB(self,'kod','Doktor Kodu',Kolon1,'',70,List,True,nil,'','',True,True);
 
         setDataString(self,'tanimi','Adý Soyadý',Kolon1,'',200,True);
         setDataString(self,'tcKimlikNo','TC Kimlik No',Kolon1,'',100,True);
@@ -189,7 +189,7 @@ begin
         list.Where := GetUserIGUFilter;//login olan kullanýcý admin grubunda deðilse onun doktor kodu;
         List.SkinName := 'coffee';//AnaForm.dxSkinController1.SkinName;
 
-        setDataStringB(self,'kod','Uzman Kodu',Kolon1,'',70,List,True,nil);
+        setDataStringB(self,'kod','Uzman Kodu',Kolon1,'',70,List,True,nil,'','',True,True);
 
         setDataString(self,'tanimi','Adý Soyadý',Kolon1,'',200,True);
         setDataString(self,'tcKimlikNo','TC Kimlik No',Kolon1,'',150,True);
@@ -251,7 +251,7 @@ begin
         list.Where := GetUserDSPFilter;//login olan kullanýcý admin grubunda deðilse onun doktor kodu;
         List.SkinName := 'coffee';//AnaForm.dxSkinController1.SkinName;
 
-        setDataStringB(self,'kod','Uzman Kodu',Kolon1,'',70,List,True,nil);
+        setDataStringB(self,'kod','Uzman Kodu',Kolon1,'',70,List,True,nil,'','',True,True);
 
         setDataString(self,'tanimi','Adý Soyadý',Kolon1,'',200,True);
         setDataString(self,'tcKimlikNo','TC Kimlik No',Kolon1,'',150,True);
@@ -349,6 +349,14 @@ begin
          // post;
          //ShowMessage('Ýptal');
     end;
+    2 : begin
+         case self.Tag of
+          TagfrmDoktorlar : TcxButtonEditKadir(FindComponent('Kod')).EditValue := dosyaNoYeniNumaraAl('DR');
+          TagfrmIGU : TcxButtonEditKadir(FindComponent('Kod')).EditValue := dosyaNoYeniNumaraAl('IG');
+          TagfrmDigerSaglikPers : TcxButtonEditKadir(FindComponent('Kod')).EditValue := dosyaNoYeniNumaraAl('DS');
+
+         end;
+        end;
   end;
 end;
 
