@@ -593,8 +593,9 @@ begin
      if c in ['A'..'Z'] then b := c else b := '1';
 
      p := b + inttostr(Random(15000));
-     sql := 'update Users set password = ' + QuotedStr(p) +
-                       ' where kullanici = ' + QuotedStr(TcxTextEditKadir(FindComponent('kullanici')).Text);
+     sql := 'update Users set password = ' + SQLValue(p) +
+            ', SifreDegisiklikTarihi = getdate () - 1000, Dogrulama = 0 where kullanici = ' +
+            QuotedStr(TcxTextEditKadir(FindComponent('kullanici')).Text);
      datalar.QueryExec(sql);
 
      if mailGonder ('destek@noktayazilim.net' , 'Þifre Onaylama' , 'Þifreniz : ' + p)

@@ -358,6 +358,10 @@ begin
              begin
                ShowMessageSkin('Yeni þifre ve tekrar giriþleri uyumsuz', '', '', 'info');
                Action := caNone;
+             end
+             else if SifreGecerliMi (TcxTextEdit(FindComponent('YeniSifre')).EditValue, 6, 1, 0, 0, 1) then
+             begin
+               Action := caNone;
              end;
              datalar.SifreDegistir.Sifre := TcxTextEdit(FindComponent('YeniSifre')).EditValue;
            end;

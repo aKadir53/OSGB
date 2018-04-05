@@ -64,20 +64,22 @@ begin
   end
   else
   begin
-    if txtSifre.Text = txtTekrar.Text
-    Then Begin
-      sql := 'update Users set password = ' + QuotedStr(txtSifre.Text)
-             + ' where Kullanici = ' + QuotedStr(datalar.username);
-      ado := TADOQuery.Create(nil);
-      try
-        datalar.QueryExec(ado,sql);
-        ShowMessageSkin('Þifreniz Deðiþtirildi','','','info');
-        close;
-      finally
-        ado.Free;
-      end;
-    End else
+    if txtSifre.Text <> txtTekrar.Text Then
+    Begin
      ShowMessageSkin('Þifre Tekrarý Hatalý','','','info');
+     Exit;
+    end;
+    if SifreGecerliMi (txtSifre.Text, 6, 1, 0, 0, 1) Then Exit;
+    sql :=
+      'update Users set password = ' + QuotedStr(txtSifre.Text) + ', SifreDegisiklikTarihi = getdate (), Dogrulama = 1 where Kullanici = ' + QuotedStr(datalar.username);
+    ado := TADOQuery.Create(nil);
+    try
+      datalar.QueryExec(ado,sql);
+      ShowMessageSkin('Þifreniz Deðiþtirildi','','','info');
+      close;
+    finally
+      ado.Free;
+    end;
   end;
 
 end;

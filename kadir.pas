@@ -406,7 +406,7 @@ function FaturaSilIptal(FID : string) : Boolean;
 
 procedure StretchImage(var Image1: TImage; StretchType: Byte; NewWidth, NewHeight: Word);overload;
 procedure StretchImage(var Image1: TcxImage; StretchType: Byte; NewWidth, NewHeight: Word);overload;
-
+function SifreGecerliMi (const sSifre: String; const pMinKarakter, pMinHarf, pMinKucukHarf, pMinBuyukHarf, pMinRakam : Integer; pMsgGostrt : Boolean = True) : Boolean;
 
 
 function findMethod(dllHandle: Cardinal;  methodName: string): FARPROC;
@@ -8936,7 +8936,7 @@ begin
   then begin
     //güncellemeleri yap
     sql := 'update Users set password = ' + QuotedStr(datalar.SifreDegistir.Sifre)
-           + ' where Kullanici = ' + QuotedStr(datalar.username);
+           + ', SifreDegisiklikTarihi = getdate (), Dogrulama = 1 where Kullanici = ' + QuotedStr(datalar.username);
     ado := TADOQuery.Create(nil);
     try
       datalar.QueryExec(ado,sql);
@@ -9438,6 +9438,94 @@ begin
     end;
   finally
     aQuery.Free;
+  end;
+end;
+
+function SifreGecerliMi (const sSifre: String; const pMinKarakter, pMinHarf, pMinKucukHarf, pMinBuyukHarf, pMinRakam : Integer; pMsgGostrt : Boolean = True) : Boolean;
+var
+  i, iKarakter, iHarf, iKucukHarf, iBuyukHarf, iRakam : Integer;
+  sMessage : String;
+  bTmp : Boolean;
+begin
+  Result := True;
+  iKarakter := 0;
+  iHarf := 0;
+  iKucukHarf := 0;
+  iBuyukHarf := 0;
+  iRakam := 0;
+  for i := 1 to Length (sSifre) do
+  begin
+    case sSifre [i] of
+      'a'..'z' : begin
+        Inc (iKucukHarf);
+        Inc (iHarf);
+      end;
+      'A'..'Z' : begin
+        Inc (iBuyukHarf);
+        Inc (iHarf);
+      end;
+      '0'..'9' : begin
+        Inc (iRakam);
+      end;
+    end;
+    Inc (iKarakteR);
+  end;
+  sMessage := '';
+  try
+    if pMinKarakter > 0 then
+    begin
+      bTmp := (iKarakter >= pMinKarakter);
+      Result := Result and bTmp;
+      if not bTmp then
+      begin
+        sMessage := sMessage + 'en az ' + IntToStr (pMinKarakter) + ' karakterden, ';
+      end;
+    end;
+    if pMinHarf > 0 then
+    begin
+      bTmp := (iHarf >= pMinHarf);
+      Result := Result and bTmp;
+      if not bTmp then
+      begin
+        sMessage := sMessage + 'en az ' + IntToStr (pMinHarf) + ' harften, ';
+      end;
+    end;
+    if pMinKucukHarf > 0 then
+    begin
+      bTmp := (iKucukHarf >= pMinKucukHarf);
+      Result := Result and bTmp;
+      if not bTmp then
+      begin
+        sMessage := sMessage + 'en az ' + IntToStr (pMinKucukHarf) + ' küçük harften, ';
+      end;
+    end;
+    if pMinBuyukHarf > 0 then
+    begin
+      bTmp := (iBuyukHarf >= pMinBuyukHarf);
+      Result := Result and bTmp;
+      if not bTmp then
+      begin
+        sMessage := sMessage + 'en az ' + IntToStr (pMinBuyukHarf) + ' büyük harften, ';
+      end;
+    end;
+    if pMinRakam > 0 then
+    begin
+      bTmp := (iRakam >= pMinRakam);
+      Result := Result and bTmp;
+      if not bTmp then
+      begin
+        sMessage := sMessage + 'en az ' + IntToStr (pMinRakam) + ' rakamdan, ';
+      end;
+    end;
+  finally
+    if not Result then
+    begin
+      Delete (sMessage, Length (sMessage) - 1, 2);
+      if pMsgGostrt then
+      begin
+        ShowmessageSkin ('Þifre, '+ sMessage + ' oluþmalýdýr', '', '', 'info');
+      end;
+    end;
   end;
 end;
 

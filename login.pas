@@ -376,7 +376,7 @@ var
 begin
   if Datalar.Baglan ('', '', Edit1.Text, '', '')
   Then Begin
-     sql := 'select doktor,sirketKodu from Users where kullanici = ' + QuotedStr(edit1.text);
+     sql := 'select doktor,sirketKodu from Users where kullanici = ' + QuotedStr(edit1.text);þ
      datalar.QuerySelect(DONEMBUL,sql);
 
 
@@ -457,5 +457,5 @@ begin
    Labelx.Caption := regOku('OSGB_description');
    if LoginSayfalar.ActivePageIndex = 0 then Edit2.SetFocus;
 end;
-
+      'update Users set password = ' + QuotedStr(txtSifre.Text) + ', SifreDegisiklikTarihi = getdate (), Dogrulama = 1 where Kullanici = ' + QuotedStr(datalar.username);
 end.
