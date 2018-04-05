@@ -516,6 +516,11 @@ object frmFaturalar: TfrmFaturalar
       ImageIndex = 42
       OnClick = cxButtonCClick
     end
+    object T1: TMenuItem
+      Tag = -28
+      Caption = 'Tahsilat Ekle'
+      OnClick = cxButtonCClick
+    end
     object F1: TMenuItem
       Tag = -30
       Caption = 'Fatura Yazd'#305'r'
