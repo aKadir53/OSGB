@@ -432,6 +432,16 @@ begin
 
            end;
 
+       TagfrmCekler :
+           begin
+             sql := 'exec sp_Cekler ' + vartostr(KurumTipTopPanel.EditValue);
+           end;
+
+       TagfrmKasaBanka :
+           begin
+             sql := 'exec sp_KasaDefteri ' +      txtTopPanelTarih1.GetSQLValue + ',' +
+                                                  txtTopPanelTarih2.GetSQLValue;
+           end;
 
      end;
      datalar.QuerySelect(ADO,sql);
@@ -467,6 +477,8 @@ begin
   btnListTopPanel.Visible := ButtonList;
   txtTopPanelTarih1.Visible := Tarih1;
   txtTopPanelTarih2.Visible := Tarih2;
+  txtTopPanelTarih1.EditValue := date;
+  txtTopPanelTarih2.EditValue := date;
   ENabizmesajTipi.Visible := ENabizmesajTip;
   txtSeansTopPanel.Visible := Seans;
   txtkodTopPanel.Visible := HizmetKod;
@@ -793,7 +805,7 @@ begin
      sqlRunLoad;
      if (TcxButtonEditKadir(FindComponent(Fieldname)).indexField = True)
      Then begin
-       TcxButtonEditKadir(FindComponent(Fieldname)).Properties.ReadOnly := false;
+      // TcxButtonEditKadir(FindComponent(Fieldname)).Properties.ReadOnly := false;
        try ActiveControl := TcxButtonEditKadir(FindComponent(Fieldname));except end;
      end;
      exit;
@@ -831,6 +843,8 @@ var
   _Obje_ : TcxCustomEdit;
 begin
   _say := self.ComponentCount - 1;
+  cxTopPanel.Enabled := True;
+
   for x := 0 to _say do
   begin
        _obje_ := TcxCustomEdit(self.Components[x]);
@@ -863,6 +877,8 @@ var
   _Obje_ : TcxCustomEdit;
 begin
   _say := _form.ComponentCount - 1;
+
+  cxTopPanel.Enabled := false;
 
   for x := 0 to _say do
   begin

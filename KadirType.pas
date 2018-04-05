@@ -634,6 +634,10 @@ Const
   TagfrmCariHesapBorcAlacakToplam = 870;
   TagfrmISGKurulToplanti = 880;
   TagfrmKKD = 890;
+  TagfrmTedarikci = 900;
+  TagfrmCekler = 910;
+  TagfrmKasaBanka = 920;
+
 
   ExceleGonder = 9997;
   SeansTarihiUpdate = 0;
@@ -689,6 +693,8 @@ Const
   yeniKKD = 46;
   KKDDuzenle = 47;
   yeniKKDEkle = 48;
+  FaturaTahsilatEkle = 49;
+  CekTahsilat = 50;
 
   sp_HastaGelis = 'exec sp_HastaGelisleri ';
 

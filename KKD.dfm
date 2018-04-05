@@ -16,9 +16,9 @@ object frmKKD: TfrmKKD
   PixelsPerInch = 96
   TextHeight = 13
   object KKDGrid: TcxGridKadir
-    Left = 8
-    Top = 8
-    Width = 1732
+    Left = -784
+    Top = 16
+    Width = 1785
     Height = 321
     TabOrder = 0
     ExcelFileName = 'KKD'
@@ -197,7 +197,6 @@ object frmKKD: TfrmKKD
       NewItemRow.SeparatorColor = 8454143
       OptionsCustomize.DataRowSizing = True
       OptionsView.CellAutoHeight = True
-      OptionsView.DataRowHeight = 30
       OptionsView.GroupByBox = False
       OptionsView.HeaderAutoHeight = True
       OptionsView.Indicator = True
@@ -224,64 +223,66 @@ object frmKKD: TfrmKKD
         item
           Caption = 'R'#304'SKLER'
           Styles.Header = cxStyle8
-          Width = 1050
+          Width = 1158
         end
         item
           Caption = 'F'#304'Z'#304'KSEL'
           Position.BandIndex = 3
           Position.ColIndex = 0
-          Width = 824
+          Width = 773
         end
         item
           Caption = 'K'#304'MYASAL'
           Position.BandIndex = 3
           Position.ColIndex = 1
-          Width = 226
+          Width = 277
         end
         item
           Caption = 'MEKAN'#304'K'
           Position.BandIndex = 4
           Position.ColIndex = 0
-          Width = 398
+          Width = 363
         end
         item
           Caption = 'TERMAL'
           Position.BandIndex = 4
           Position.ColIndex = 1
-          Width = 79
+          Width = 141
         end
         item
           Caption = 'ELEKTR'#304'K'
           Position.BandIndex = 4
           Position.ColIndex = 2
-          Width = 62
+          Width = 67
         end
         item
           Caption = 'RADYASYON'
           Position.BandIndex = 4
           Position.ColIndex = 3
-          Width = 108
+          Width = 146
         end
         item
           Caption = 'G'#220'R'#220'LT'#220
           Position.BandIndex = 4
           Position.ColIndex = 4
-          Width = 106
+          Width = 60
         end
         item
           Caption = 'AEROSOLLAR'
           Position.BandIndex = 5
           Position.ColIndex = 0
-          Width = 145
+          Width = 149
         end
         item
           Caption = 'SIVILAR'
           Position.BandIndex = 5
           Position.ColIndex = 1
-          Width = 146
+          Width = 128
         end
         item
           Caption = 'B'#304'YOLOJ'#304'K'
+          Position.BandIndex = 3
+          Position.ColIndex = 2
           Width = 217
         end>
       object KKDSatirlarsirketRiskId: TcxGridDBBandedColumn
@@ -379,6 +380,8 @@ object frmKKD: TfrmKKD
             Value = 0
           end>
         HeaderAlignmentHorz = taCenter
+        HeaderAlignmentVert = vaCenter
+        Width = 50
         Position.BandIndex = 6
         Position.ColIndex = 2
         Position.RowIndex = 0
@@ -389,6 +392,8 @@ object frmKKD: TfrmKKD
         PropertiesClassName = 'TcxImageComboBoxProperties'
         Properties.Items = <>
         HeaderAlignmentHorz = taCenter
+        HeaderAlignmentVert = vaCenter
+        Width = 50
         Position.BandIndex = 6
         Position.ColIndex = 3
         Position.RowIndex = 0
@@ -398,6 +403,8 @@ object frmKKD: TfrmKKD
         PropertiesClassName = 'TcxImageComboBoxProperties'
         Properties.Items = <>
         HeaderAlignmentHorz = taCenter
+        HeaderAlignmentVert = vaCenter
+        Width = 50
         Position.BandIndex = 6
         Position.ColIndex = 4
         Position.RowIndex = 0
@@ -407,25 +414,186 @@ object frmKKD: TfrmKKD
         PropertiesClassName = 'TcxImageComboBoxProperties'
         Properties.Items = <>
         HeaderAlignmentHorz = taCenter
+        HeaderAlignmentVert = vaCenter
+        Width = 50
         Position.BandIndex = 6
         Position.ColIndex = 5
         Position.RowIndex = 0
       end
       object KKDSatirlarKaymaDusme: TcxGridDBBandedColumn
+        Caption = 'Kayma Dusme'
         DataBinding.FieldName = 'KaymaDusme'
         PropertiesClassName = 'TcxImageComboBoxProperties'
         Properties.Items = <>
         HeaderAlignmentHorz = taCenter
+        HeaderAlignmentVert = vaCenter
+        Width = 50
         Position.BandIndex = 6
         Position.ColIndex = 6
         Position.RowIndex = 0
       end
       object KKDSatirlarSicaklikAlev: TcxGridDBBandedColumn
+        Caption = 'Sicaklik Alev'
         DataBinding.FieldName = 'SicaklikAlev'
         PropertiesClassName = 'TcxImageComboBoxProperties'
         Properties.Items = <>
+        HeaderAlignmentHorz = taCenter
+        HeaderAlignmentVert = vaCenter
+        Width = 50
         Position.BandIndex = 7
         Position.ColIndex = 0
+        Position.RowIndex = 0
+      end
+      object KKDSatirlarSoguk: TcxGridDBBandedColumn
+        DataBinding.FieldName = 'Soguk'
+        PropertiesClassName = 'TcxImageComboBoxProperties'
+        Properties.Items = <>
+        HeaderAlignmentHorz = taCenter
+        HeaderAlignmentVert = vaCenter
+        Width = 50
+        Position.BandIndex = 7
+        Position.ColIndex = 1
+        Position.RowIndex = 0
+      end
+      object KKDSatirlarElektrik: TcxGridDBBandedColumn
+        DataBinding.FieldName = 'Elektrik'
+        PropertiesClassName = 'TcxImageComboBoxProperties'
+        Properties.Items = <>
+        HeaderAlignmentHorz = taCenter
+        Width = 50
+        Position.BandIndex = 8
+        Position.ColIndex = 0
+        Position.RowIndex = 0
+        IsCaptionAssigned = True
+      end
+      object KKDSatirlariyonizeOlmayan: TcxGridDBBandedColumn
+        Caption = #304'yonize Olmayan'
+        DataBinding.FieldName = 'iyonizeOlmayan'
+        PropertiesClassName = 'TcxImageComboBoxProperties'
+        Properties.Items = <>
+        HeaderAlignmentHorz = taCenter
+        HeaderAlignmentVert = vaCenter
+        Position.BandIndex = 9
+        Position.ColIndex = 0
+        Position.RowIndex = 0
+      end
+      object KKDSatirlariyonize: TcxGridDBBandedColumn
+        Caption = #304'yonize'
+        DataBinding.FieldName = 'iyonize'
+        PropertiesClassName = 'TcxImageComboBoxProperties'
+        Properties.Items = <>
+        HeaderAlignmentHorz = taCenter
+        HeaderAlignmentVert = vaCenter
+        Position.BandIndex = 9
+        Position.ColIndex = 1
+        Position.RowIndex = 0
+      end
+      object KKDSatirlargurultu: TcxGridDBBandedColumn
+        DataBinding.FieldName = 'gurultu'
+        PropertiesClassName = 'TcxImageComboBoxProperties'
+        Properties.Items = <>
+        Position.BandIndex = 10
+        Position.ColIndex = 0
+        Position.RowIndex = 0
+        IsCaptionAssigned = True
+      end
+      object KKDSatirlartozlarLifler: TcxGridDBBandedColumn
+        Caption = 'Tozlar Lifler'
+        DataBinding.FieldName = 'tozlarLifler'
+        PropertiesClassName = 'TcxImageComboBoxProperties'
+        Properties.Items = <>
+        HeaderAlignmentHorz = taCenter
+        HeaderAlignmentVert = vaCenter
+        Position.BandIndex = 11
+        Position.ColIndex = 0
+        Position.RowIndex = 0
+      end
+      object KKDSatirlarduman: TcxGridDBBandedColumn
+        Caption = 'Duman'
+        DataBinding.FieldName = 'duman'
+        PropertiesClassName = 'TcxImageComboBoxProperties'
+        Properties.Items = <>
+        HeaderAlignmentHorz = taCenter
+        HeaderAlignmentVert = vaCenter
+        Position.BandIndex = 11
+        Position.ColIndex = 1
+        Position.RowIndex = 0
+      end
+      object KKDSatirlarbuhar: TcxGridDBBandedColumn
+        Caption = 'Buhar'
+        DataBinding.FieldName = 'buhar'
+        PropertiesClassName = 'TcxImageComboBoxProperties'
+        Properties.Items = <>
+        HeaderAlignmentHorz = taCenter
+        HeaderAlignmentVert = vaCenter
+        Position.BandIndex = 11
+        Position.ColIndex = 2
+        Position.RowIndex = 0
+      end
+      object KKDSatirlarsiviyaBatma: TcxGridDBBandedColumn
+        Caption = 'S'#305'v'#305'ya Batma'
+        DataBinding.FieldName = 'siviyaBatma'
+        PropertiesClassName = 'TcxImageComboBoxProperties'
+        Properties.Items = <>
+        HeaderAlignmentHorz = taCenter
+        HeaderAlignmentVert = vaCenter
+        Position.BandIndex = 12
+        Position.ColIndex = 0
+        Position.RowIndex = 0
+      end
+      object KKDSatirlarsicrama: TcxGridDBBandedColumn
+        Caption = 'S'#305#231'rama'
+        DataBinding.FieldName = 'sicrama'
+        PropertiesClassName = 'TcxImageComboBoxProperties'
+        Properties.Items = <>
+        HeaderAlignmentHorz = taCenter
+        HeaderAlignmentVert = vaCenter
+        Position.BandIndex = 12
+        Position.ColIndex = 1
+        Position.RowIndex = 0
+      end
+      object KKDSatirlarzararliBakteri: TcxGridDBBandedColumn
+        Caption = 'Zararl'#305' Bakteri'
+        DataBinding.FieldName = 'zararliBakteri'
+        PropertiesClassName = 'TcxImageComboBoxProperties'
+        Properties.Items = <>
+        HeaderAlignmentHorz = taCenter
+        HeaderAlignmentVert = vaCenter
+        Position.BandIndex = 13
+        Position.ColIndex = 0
+        Position.RowIndex = 0
+      end
+      object KKDSatirlarzararliVirus: TcxGridDBBandedColumn
+        Caption = 'Zararli Virus'
+        DataBinding.FieldName = 'zararliVirus'
+        PropertiesClassName = 'TcxImageComboBoxProperties'
+        Properties.Items = <>
+        HeaderAlignmentHorz = taCenter
+        HeaderAlignmentVert = vaCenter
+        Position.BandIndex = 13
+        Position.ColIndex = 1
+        Position.RowIndex = 0
+      end
+      object KKDSatirlarmantar: TcxGridDBBandedColumn
+        Caption = 'Mantar'
+        DataBinding.FieldName = 'mantar'
+        PropertiesClassName = 'TcxImageComboBoxProperties'
+        Properties.Items = <>
+        HeaderAlignmentHorz = taCenter
+        HeaderAlignmentVert = vaCenter
+        Position.BandIndex = 13
+        Position.ColIndex = 2
+        Position.RowIndex = 0
+      end
+      object KKDSatirlarantijen: TcxGridDBBandedColumn
+        Caption = 'Antijen'
+        DataBinding.FieldName = 'antijen'
+        PropertiesClassName = 'TcxImageComboBoxProperties'
+        Properties.Items = <>
+        HeaderAlignmentHorz = taCenter
+        HeaderAlignmentVert = vaCenter
+        Position.BandIndex = 13
+        Position.ColIndex = 3
         Position.RowIndex = 0
       end
     end
@@ -435,8 +603,8 @@ object frmKKD: TfrmKKD
   end
   object DataSource1: TDataSource
     DataSet = ADO_RiskDetay
-    Left = 104
-    Top = 146
+    Left = 88
+    Top = 58
   end
   object ADO_RiskDetay: TADOQuery
     Connection = DATALAR.ADOConnection2
@@ -459,8 +627,8 @@ object frmKKD: TfrmKKD
       '  and sst.SubeKod = SR.SubeKod'
       'where FirmaKodu = '#39'0001'#39
       'order by SR.ID')
-    Left = 104
-    Top = 208
+    Left = 136
+    Top = 32
   end
   object cxStyleRepository1: TcxStyleRepository
     Left = 8
@@ -535,7 +703,7 @@ object frmKKD: TfrmKKD
   object PopupMenu1: TPopupMenu
     Images = DATALAR.imag24png
     Left = 232
-    Top = 176
+    Top = 32
     object E1: TMenuItem
       Tag = -20
       Caption = 'Yazd'#305'r'

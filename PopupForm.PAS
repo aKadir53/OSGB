@@ -20,7 +20,7 @@ uses
   DB, cxDBData, cxCurrencyEdit, cxGridLevel, cxGridBandedTableView,
   cxGridDBBandedTableView, cxGridCustomTableView, cxGridTableView,
   cxGridDBTableView, cxClasses, cxGridCustomView, cxGrid, cxLabel, cxCheckBox,
-  cxImageComboBox, cxMemo,Variants, cxCheckGroup,cxImage;
+  cxImageComboBox, cxMemo,Variants, cxCheckGroup,cxImage,dxLayoutControl,dxLayoutContainer;
 
 type
   TfrmPopup = class(TGirisForm)
@@ -462,6 +462,42 @@ riskDuzenle,yeniRisk :
                   datalar.QueryExec('update SirketSahaGozetim set paylasilan = ' +
                      QuotedStr(TcxImageComboKadir(FindComponent('paylasilan')).EditingValue) +
                      ' where id = ' + datalar.Risk.RiskID);
+              end;
+   FaturaTahsilatEkle :
+              begin
+                   if TcxImageComboKadir(FindComponent('OdemeTip')).EditValue = 1
+                   Then
+                     HesapIsle(TcxImageComboKadir(FindComponent('HesapKod')).EditValue,
+                               self._value_,
+                               TcxTextEdit(FindComponent('Aciklama')).EditValue ,
+                               TcxCurrencyEdit(FindComponent('Tutar')).EditValue,
+                               TcxDateEditKadir(FindComponent('Tarih')).GetSQLValue,'H','','','','',''
+
+                               )
+                   else
+                   begin
+                     HesapIsle(vartostr(TcxImageComboKadir(FindComponent('HesapKod')).EditValue),
+                               self._value_,
+                               TcxTextEdit(FindComponent('Aciklama')).EditValue ,
+                               TcxCurrencyEdit(FindComponent('Tutar')).EditValue,
+                               TcxDateEditKadir(FindComponent('Tarih')).GetSQLValue,
+                               'E',
+                               TcxDateEditKadir(FindComponent('VadeTarih')).GetSQLValue,'','','','');
+
+                   end;
+              end;
+
+    CekTahsilat    :
+              begin
+                     HesapIsle(vartostr(TcxImageComboKadir(FindComponent('HesapKod')).EditValue),
+                               '',
+                               TcxTextEdit(FindComponent('Aciklama')).EditValue ,
+                               TcxCurrencyEdit(FindComponent('Tutar')).EditValue,
+                               TcxDateEditKadir(FindComponent('Tarih')).GetSQLValue,
+                               'T',
+                               QuotedStr(''),
+                               '3','','2',self._value_);
+
               end;
 
   end;
@@ -1205,6 +1241,56 @@ ptPersonelTetkikleri :
                    setDataStringKontrol(self,Doktorlar, 'paylasilan','Kullanýcý',Kolon1,'',180);
                 end;
 
+   FaturaTahsilatEkle,
+   CekTahsilat
+              : begin
+                    ClientHeight := 300;
+                    ClientWidth := 300;
+                    Doktorlar := TcxImageComboKadir.Create(self);
+                    Doktorlar.Conn := Datalar.ADOConnection2;
+                    Doktorlar.TableName := 'cari_OdemeTip';
+                    Doktorlar.ValueField := 'kod';
+                    Doktorlar.DisplayField := 'tanimi';
+                    Doktorlar.BosOlamaz := True;
+                    Doktorlar.Filter := '';
+                    Doktorlar.tag := -3;
+                    setDataStringKontrol(self,Doktorlar,'OdemeTip','Tahsilat Tip',Kolon1,'',150);
+                    TcxImageComboKadir(FindComponent('OdemeTip')).Properties.OnEditValueChanged := PropertiesEditValueChanged;
+
+                    _Tarih_ := TcxDateEditKadir.Create(self);
+                    _Tarih_.Name := 'Tarih';
+                    setDataStringKontrol(self,_Tarih_, 'Tarih','Tarih',Kolon1,'',100);
+                    TcxDateEditKadir(FindComponent('Tarih')).EditValue := date;
+
+                    Doktorlar := TcxImageComboKadir.Create(self);
+                    Doktorlar.Conn := Datalar.ADOConnection2;
+                    Doktorlar.TableName := 'cari_Hesaplar';
+                    Doktorlar.ValueField := 'kod';
+                    Doktorlar.DisplayField := 'tanimi';
+                    Doktorlar.BosOlamaz := True;
+                    Doktorlar.Filter := '';
+                    setDataStringKontrol(self,Doktorlar,'HesapKod','Hesap',Kolon1,'',150);
+
+
+                    _Tarih_ := TcxDateEditKadir.Create(self);
+                    _Tarih_.Name := 'VadeTarih';
+                    setDataStringKontrol(self,_Tarih_, 'VadeTarih','Vade Tarihi',Kolon1,'',100);
+                    TcxDateEditKadir(FindComponent('VadeTarih')).EditValue := date;
+                    TcxDateEditKadir(FindComponent('VadeTarih')).Visible := False;
+
+
+                    setDataStringCurr(self,'Tutar','Meblað',Kolon1,'',100,',0.00');
+                    setDataString(self,'Aciklama','Açýklama',Kolon1,'',200,True,'',False,0,'',ecUpperCase);
+
+
+                    TcxImageComboKadir(FindComponent('OdemeTip')).EditValue := 1;
+
+                    case TfrmPopup(self).islem_ of
+                      CekTahsilat : TcxImageComboKadir(FindComponent('OdemeTip')).Enabled := false;
+                    end;
+
+                end;
+
   end;
 
 
@@ -1214,6 +1300,20 @@ end;
 procedure TfrmPopup.PropertiesEditValueChanged(Sender: TObject);
 begin
   inherited;
+  if TcxImageComboKadir(sender).Tag = -3
+  Then begin
+    if TcxImageComboKadir(FindComponent('OdemeTip')).EditingValue = 1
+    Then begin
+     TdxLayoutItem(FindComponent('dxLaVadeTarih')).Visible := False;
+     TdxLayoutItem(FindComponent('dxLaHesapKod')).Visible := True;
+    end
+    else
+    begin
+     TdxLayoutItem(FindComponent('dxLaVadeTarih')).Visible := True;
+     TdxLayoutItem(FindComponent('dxLaHesapKod')).Visible := False;
+    end;
+  end
+  else
   if TcxImageComboKadir(sender).Tag = -2
   Then begin
     TcxCurrencyEdit(FindComponent('Risk_2')).EditValue :=
@@ -1227,6 +1327,8 @@ begin
     TcxImageComboKadir(FindComponent('Frekans')).EditValue*
     TcxImageComboKadir(FindComponent('Siddet')).EditValue;
   end;
+
+
 
 end;
 
