@@ -88,6 +88,20 @@ type
     KKDSatirlarTitresim: TcxGridDBBandedColumn;
     KKDSatirlarKaymaDusme: TcxGridDBBandedColumn;
     KKDSatirlarSicaklikAlev: TcxGridDBBandedColumn;
+    KKDSatirlarSoguk: TcxGridDBBandedColumn;
+    KKDSatirlarElektrik: TcxGridDBBandedColumn;
+    KKDSatirlariyonizeOlmayan: TcxGridDBBandedColumn;
+    KKDSatirlariyonize: TcxGridDBBandedColumn;
+    KKDSatirlargurultu: TcxGridDBBandedColumn;
+    KKDSatirlartozlarLifler: TcxGridDBBandedColumn;
+    KKDSatirlarduman: TcxGridDBBandedColumn;
+    KKDSatirlarbuhar: TcxGridDBBandedColumn;
+    KKDSatirlarsiviyaBatma: TcxGridDBBandedColumn;
+    KKDSatirlarsicrama: TcxGridDBBandedColumn;
+    KKDSatirlarzararliBakteri: TcxGridDBBandedColumn;
+    KKDSatirlarzararliVirus: TcxGridDBBandedColumn;
+    KKDSatirlarmantar: TcxGridDBBandedColumn;
+    KKDSatirlarantijen: TcxGridDBBandedColumn;
     procedure cxButtonCClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure gridRaporCustomDrawGroupCell(Sender: TcxCustomGridTableView;
@@ -225,6 +239,7 @@ function TfrmKKD.Init(Sender : TObject) : Boolean;
 var
   _obje_ : TcxCustomEdit;
 begin
+  KKDGrid.Dataset.Connection := datalar.ADOConnection2;
   KKDGrid.Dataset.Active := false;
   KKDGrid.Dataset.SQL.Text := 'select * from RDS_KKD_Sirket where sirketRiskId = ' + datalar.KKD.SirketRiskID;
   KKDGrid.Dataset.Active := True;
@@ -395,7 +410,8 @@ begin
   TableName := 'RDS_SirketRisk';
  // TopPanel.Visible := true;
 
-
+  ClientHeight := 600;
+  ClientWidth := 1280;
 
   ICombo := TcxImageComboKadir.Create(self);
   ICombo.Name := 'ICombo';
@@ -414,14 +430,50 @@ begin
      TcxImageComboBoxProperties(TcxImageComboKadir(FindComponent('ICombo')).Properties).Items;
      TcxImageComboBoxProperties(KKDSatirlarTitresim.Properties).Items :=
      TcxImageComboBoxProperties(TcxImageComboKadir(FindComponent('ICombo')).Properties).Items;
-  finally
+     TcxImageComboBoxProperties(KKDSatirlarKaymaDusme.Properties).Items :=
+     TcxImageComboBoxProperties(TcxImageComboKadir(FindComponent('ICombo')).Properties).Items;
+
+     TcxImageComboBoxProperties(KKDSatirlarSicaklikAlev.Properties).Items :=
+     TcxImageComboBoxProperties(TcxImageComboKadir(FindComponent('ICombo')).Properties).Items;
+
+     TcxImageComboBoxProperties(KKDSatirlarSoguk.Properties).Items :=
+     TcxImageComboBoxProperties(TcxImageComboKadir(FindComponent('ICombo')).Properties).Items;
+
+     TcxImageComboBoxProperties(KKDSatirlarElektrik.Properties).Items :=
+     TcxImageComboBoxProperties(TcxImageComboKadir(FindComponent('ICombo')).Properties).Items;
+     TcxImageComboBoxProperties(KKDSatirlariyonizeOlmayan.Properties).Items :=
+     TcxImageComboBoxProperties(TcxImageComboKadir(FindComponent('ICombo')).Properties).Items;
+     TcxImageComboBoxProperties(KKDSatirlariyonize.Properties).Items :=
+     TcxImageComboBoxProperties(TcxImageComboKadir(FindComponent('ICombo')).Properties).Items;
+     TcxImageComboBoxProperties(KKDSatirlargurultu.Properties).Items :=
+     TcxImageComboBoxProperties(TcxImageComboKadir(FindComponent('ICombo')).Properties).Items;
+     TcxImageComboBoxProperties(KKDSatirlartozlarLifler.Properties).Items :=
+     TcxImageComboBoxProperties(TcxImageComboKadir(FindComponent('ICombo')).Properties).Items;
+     TcxImageComboBoxProperties(KKDSatirlarduman.Properties).Items :=
+     TcxImageComboBoxProperties(TcxImageComboKadir(FindComponent('ICombo')).Properties).Items;
+     TcxImageComboBoxProperties(KKDSatirlarbuhar.Properties).Items :=
+     TcxImageComboBoxProperties(TcxImageComboKadir(FindComponent('ICombo')).Properties).Items;
+     TcxImageComboBoxProperties(KKDSatirlarsiviyaBatma.Properties).Items :=
+     TcxImageComboBoxProperties(TcxImageComboKadir(FindComponent('ICombo')).Properties).Items;
+     TcxImageComboBoxProperties(KKDSatirlarsicrama.Properties).Items :=
+     TcxImageComboBoxProperties(TcxImageComboKadir(FindComponent('ICombo')).Properties).Items;
+     TcxImageComboBoxProperties(KKDSatirlarzararliBakteri.Properties).Items :=
+     TcxImageComboBoxProperties(TcxImageComboKadir(FindComponent('ICombo')).Properties).Items;
+     TcxImageComboBoxProperties(KKDSatirlarzararliVirus.Properties).Items :=
+     TcxImageComboBoxProperties(TcxImageComboKadir(FindComponent('ICombo')).Properties).Items;
+     TcxImageComboBoxProperties(KKDSatirlarmantar.Properties).Items :=
+     TcxImageComboBoxProperties(TcxImageComboKadir(FindComponent('ICombo')).Properties).Items;
+     TcxImageComboBoxProperties(KKDSatirlarantijen.Properties).Items :=
+     TcxImageComboBoxProperties(TcxImageComboKadir(FindComponent('ICombo')).Properties).Items;
+
+  except
   end;
 
 
 
 
 //  setDataStringBLabel(self,'bosSatir',kolon1,'',1000,'Risk Kaynaklarý');
-  setDataStringKontrol(self,KKDGrid,'KKDGrid','',Kolon1,'',1050,450);
+  setDataStringKontrol(self,KKDGrid,'KKDGrid','',Kolon1,'',1250,480);
 
   KKDGrid.Dataset.Connection := datalar.ADOConnection2;
 
