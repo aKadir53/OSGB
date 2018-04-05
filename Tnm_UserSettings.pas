@@ -111,8 +111,7 @@ var
 
 
 implementation
-
-uses StrUtils, AnaUnit;
+uses StrUtils, AnaUnit, TransUtils;
 {$R *.dfm}
 const _TableName_ = 'Users';
       formGenislik = 780;

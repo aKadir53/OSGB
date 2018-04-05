@@ -73,6 +73,7 @@ uses
   CariHesapBorcAlacakToplam in 'CariHesapBorcAlacakToplam.pas' {frmCariHesapBorcAlacakToplam},
   CariHesapExtresi in 'CariHesapExtresi.pas' {frmCariHesapEkstre},
   DokumanYukle in 'DokumanYukle.pas' {frmDokumanYonetim},
+  TransUtils in 'TransUtils.pas',
   DestekSorunBildir in 'DestekSorunBildir.pas' {frmDestekSorunBildir};
 
 // KadirMedula3 in '..\..\medula3wsdl\KadirMedula3.pas';

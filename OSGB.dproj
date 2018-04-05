@@ -275,6 +275,7 @@
 			<DCCReference Include="DokumanYukle.pas">
 				<Form>frmDokumanYonetim</Form>
 			</DCCReference>
+			<DCCReference Include="TransUtils.pas"/>
 			<DCCReference Include="DestekSorunBildir.pas">
 				<Form>frmDestekSorunBildir</Form>
 			</DCCReference>

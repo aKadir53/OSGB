@@ -199,13 +199,13 @@ var
   bBasarili : Boolean;
   iServerIndex : Integer;
 begin
-  bBasarili := CreateNewConnection (txtServerName.Text,txtUserName.Text, txtPassword.Text, txtDBName.Text);
+  bBasarili := CreateNewConnection (txtServerName.Text,txtUserName.Text, txtPassword.Text, txtDBName.Text, 'Veritabaný deðiþimleri takip programý');
   if bBasarili then
   begin
-    iServerIndex := ServerConnectionParameterIndex (FServers, ServerConnectionParameterRec (txtServerName.Text, txtUserName.Text, txtPassword.Text, txtDBName.Text, txtLocalFolder.Text));
+    iServerIndex := ServerConnectionParameterIndex (FServers, ServerConnectionParameterRec (txtServerName.Text, txtUserName.Text, txtPassword.Text, txtDBName.Text, txtLocalFolder.Text, ''));
     if iServerIndex < 0 then
     begin
-      ServerConnectionParameterAdd (FServers, ServerConnectionParameterRec (txtServerName.Text, txtUserName.Text, txtPassword.Text, txtDBName.Text, txtLocalFolder.Text));
+      ServerConnectionParameterAdd (FServers, ServerConnectionParameterRec (txtServerName.Text, txtUserName.Text, txtPassword.Text, txtDBName.Text, txtLocalFolder.Text, ''));
       FillServersToList;
     end;
   end;
@@ -548,7 +548,7 @@ begin
   if SelectDirectory (sFolder, [], 0) then
   begin
     txtLocalFolder.Text := sFolder;
-    iServer := ServerConnectionParameterIndex(FServers, ServerConnectionParameterRec(txtServerName.Text, txtUserName.Text, txtPassword.Text, txtDBName.Text, txtLocalFolder.Text));
+    iServer := ServerConnectionParameterIndex(FServers, ServerConnectionParameterRec(txtServerName.Text, txtUserName.Text, txtPassword.Text, txtDBName.Text, txtLocalFolder.Text, ''));
     if iServer >= 0 then
       FServers [iServer].sLocalExportFolder := sFolder;
   end;

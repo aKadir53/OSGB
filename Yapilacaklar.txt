@@ -1,4 +1,3 @@
-
 yapýlacaklar
 ---------------------------------
 osgb master tabloya lisans sayýsý bilgisi eklenecek.
@@ -193,5 +192,68 @@ adoconnection2 kapat aç yapabilir miyiz ?
 
 çekmeköy'e restore olacak olan master veritabanýný uzak sunucuya baþka isimle tekrar koy. master veritabaný deðiþikliklerini takip et
 
-isg katip excel aktarimina sgk sicil il deðerinden tesis kodu ayarlamasý eklenebilir.
-personel kategori þeysi gibi özel ilgi isteyen string alanlar için foreign key baðlantýlý deðerler tablosu oluþturup, çevrim deðer deðeri ekleyip, bu deðer üzerinden çalýþtýrabiliriz. Örnek: iþyeri hekimi, iþ yeri hekimi hepsinin çevrim tipi 1 olur. a sýnýfý iþ güvenliði uzmaný 2, b sýnýfý 3... gibi...
+peryodik muayene seçildiðinde diðer adýmdan yap ikazý
+muayene düzenle'de girilen protokol numarasý, þube kartýna yazýlabilir mi ? onay sorusu ile olabilir.
+reçete imzala gönder yaparken reçete doktoru ile user doktoru farklý ise uyarý ver
+
+uzmanlar osgb hülya haným:
+aþý kartlarýna aþý planý ekledik bir personele ileri tarihli aþý girdik, tarih yaklaþýnca uyarý verecek mi, durum alaný ne iþe yarýyor, uygulama tarihi aþýnýn yapýldýðý tarih sanýrým
+kalp, þeker hastasý gibi risk grubu yüksek hastalarýn belirgin gözükmesi.
+peryodik muayene, aþý vb iþlemlerin liste ilaveten programa giriþte alarm þeklinde gözükmesi
+çok tehlikelilerde yýlda 1, tehlikelilerde 2 yýlda 1 az tehlikelilerde 3 yýlda bir verilmesi gereken eðitimlerin de alarm ile bildirilmesi.
+eðitim sertifika baskýsý için taslak gönderecek
+
+kullanýcý kartlarýna kullanýcý adýmý deðiþtir düðmesi eklenebilir.
+
+admin gibi kullanýcýlar bir reçete ya da muayene yazýp doktor olarak girmiþ gibi olunca þirket seçemez hale geliyorlar.
+
+foreign key tablolarý 
+tanýlar anamnez_ICD
+
+reçete þablonu kaydederken sapýtmasý
+
+önemli tablolara log konulmasý lazým
+
+
+Saliha > ÞUBELERÝN PASÝFE ALINMASI
+Saliha > bide eczaneden firma adý çýkmasý için acil çalýþýlmasý lazým taný ekranýnda aramada çýkmayan
+Saliha > diyabet hiper tansiyon
+
+Ýþ güv. uzm., doktor ve diðer saðlýk personeli gibi kiþiler ve üzerine atanmýþ firmalar raporu
+
+erhan erkan:
+4-) Personel kartýndaki risk grubu kombosundaki dereceler artan mý azalan mý ? mesela yanýklar 1, 2, 3, þiddeti artarken kalitede azalýyor.
+
+
+imes osgb mehmet:
+doktor branþýna göre ilaç kriteri ekleme konusu araþtýrýlacak.
+
+yenihayat osgb emre :
+tablet uygulamasýnda kaydýrma
+
+iþe giriþ möuayenesi
+
+dr.Uz programý
+
+e-imza takýlý mý deðil mi gösteriyormuþ.
+
+medula durumunu gösteriyormuþ
+
+türkçe karakter
+
+
+ana form''daki merkez bilgisinin solundaki sabit OSGB yazýsýný bu duruma göre göster (OSGB dýþýndaki boþ olabilir.)
+loglama için bakýlacak
+
+mobil uygulamada log tablolarýnda hep SRV yazýyor ve sunucu IP'si var. loginlog'da kayýt yok
+eðitimden sonra ölçme deðerlendirme formu, sýnav sonuçlarý giriþ ekraný
+yangýn tüpü, asansör, kompresör gibi peryodik bakým gerektiren cihazlarýn muayene takipleri
+
+eðitim konularýný detay tabloya çevirme çalýþmasý
+bu form bilmemneye özeldir mesajýnýn sonuna ilave bilgi ekle mesela kendinize ikinci bir kullanýcý açtýrabilirsiniz gibi.
+
+eðitimci 2 gibi bazý alanlarýn baskýya eklenmesi
+eðitimci 2 kutusu, listede olmayan eðitimci 1 girilince boþaldý
+
+
+döf no, ilgili bölüm, tarih, uygunsuzluðun tanýmý, yapýlacak faaliyet türü : Düzeltici / önleyici, faaliyet planý, tarihi, takip tyetkik sonucu : uygunsuzluk giderilmiþtir / kýsmen giderilmiþtir / giderilmemiþtir

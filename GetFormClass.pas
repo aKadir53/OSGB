@@ -592,7 +592,7 @@ begin
     TagfrmSirketSahaGozetim : Application.CreateForm(TfrmSirketSahaGozetim, frmSirketSahaGozetim);
     TagfrmISGKurulToplanti : Application.CreateForm(TfrmISGKurulToplanti, frmISGKurulToplanti);
 
-   end;
+  end;
   try
     Form := TGirisForm(FormClassType(abs(FormTag)));
 
