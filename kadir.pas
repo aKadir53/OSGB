@@ -8927,7 +8927,8 @@ end;
 
 procedure SifreDegistir;
 var
- ado : TadoQuery;
+  ado : TadoQuery;
+  bTamam : Boolean;
 begin
   datalar.SifreDegistir.KullaniciAdi := DATALAR.username;
   datalar.SifreDegistir.Sifre := DATALAR.usersifre;
@@ -8935,13 +8936,29 @@ begin
   if mrYes = ShowPopupForm('Þifre Deðiþtirme',PrgSifre)
   then begin
     //güncellemeleri yap
-    sql := 'update Users set password = ' + QuotedStr(datalar.SifreDegistir.Sifre)
-           + ', SifreDegisiklikTarihi = getdate (), Dogrulama = 1 where Kullanici = ' + QuotedStr(datalar.username);
     ado := TADOQuery.Create(nil);
     try
-      datalar.QueryExec(ado,sql);
-      ShowMessageSkin('Þifreniz Deðiþtirildi','','','info');
-      DATALAR.usersifre := datalar.SifreDegistir.Sifre
+      bTamam := False;
+      BeginTrans(DATALAR.ADOConnection2);
+      try
+        sql := 'update Users set password = ' + SQLValue (datalar.SifreDegistir.Sifre)
+               + ', SifreDegisiklikTarihi = getdate (), Dogrulama = 1 where Kullanici = ' + SQLValue (datalar.username);
+        datalar.QueryExec(ado,sql);
+        sql :=
+          'insert into UserPasswordHistory (Kullanici, [Password]) '+
+          'Select ' + SQLValue (datalar.username) + ', ' + SQLValue(datalar.SifreDegistir.Sifre);
+        datalar.QueryExec(ado,sql);
+        bTamam := True;
+      finally
+        if bTamam then
+        begin
+          CommitTrans(DATALAR.ADOConnection2);
+          ShowMessageSkin('Þifreniz Deðiþtirildi','','','info');
+          DATALAR.usersifre := datalar.SifreDegistir.Sifre
+        end
+        else
+          RollBackTrans(DATALAR.ADOConnection2);
+      end;
     finally
       ado.Free;
     end

@@ -458,4 +458,5 @@ begin
    if LoginSayfalar.ActivePageIndex = 0 then Edit2.SetFocus;
 end;
       'update Users set password = ' + QuotedStr(txtSifre.Text) + ', SifreDegisiklikTarihi = getdate (), Dogrulama = 1 where Kullanici = ' + QuotedStr(datalar.username);
+      'insert into UserPasswordHistory (Kullanici, [Password]) Select ' + SQLValue (datalar.username) + ', ' + SQLValue(txtSifre.Text);
 end.
