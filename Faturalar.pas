@@ -91,6 +91,7 @@ type
     FaturaDetaySatirlarColumn4: TcxGridDBColumn;
     F1: TMenuItem;
     E5: TMenuItem;
+    T1: TMenuItem;
     procedure Fatura(islem: Integer);
     procedure cxButtonCClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
@@ -151,8 +152,8 @@ type
                       url : PWideChar); stdcall;
 
 const
-  LIB_DLL = 'EFaturaDLL.dll';
- // LIB_DLL = 'D:\Projeler\VS\c#\EFatura\EFaturaDLL\ClassLibrary1\bin\Debug\EFaturaDLL.dll';
+  //LIB_DLL = 'EFaturaDLL.dll';
+  LIB_DLL = 'D:\Projeler\VS\c#\EFatura\EFaturaDLL\ClassLibrary1\bin\Debug\EFaturaDLL.dll';
 
 //  test = 'https://efatura-test.uyumsoft.com.tr/Services/Integration';
 //  gercek = 'https://efatura.uyumsoft.com.tr/Services/Integration';
@@ -429,8 +430,6 @@ end;
 function TfrmFaturalar.Init(Sender : TObject) : Boolean;
 begin
   TapPanelElemanVisible(True,True,True,false,false,false,False,false,False,False,False,False,True);
-  txtTopPanelTarih1.Date := date;
-  txtTopPanelTarih2.Date := date;
   Result := True;
 end;
 
@@ -463,6 +462,16 @@ begin
                        DataSource.DataSet.Active := True;
                      end;
                      exit;
+                   end;
+
+   FaturaTahsilatEkle :
+                   begin
+                       fID := GridCellToString(GridFaturalar,'sirketKod',0);
+                       if mrYEs = ShowPopupForm('Fatura Tahsilat Ekle',FaturaTahsilatEkle,fID)
+                       then begin
+
+                       end;
+                       exit;
                    end;
 
   end;
@@ -533,9 +542,14 @@ begin
                then
                 Fatura(faturaSil);
         end;
+   -28 : begin
+           Fatura(FaturaTahsilatEkle);
+         end;
    -30 : begin
             sql := 'exec sp_FaturaPrint ' + QuotedStr(seciliSatirlarColumData(GridFaturalar,0));
             TopluDataset.Dataset0 := datalar.QuerySelect(sql);
+            sql := 'exec sp_FaturaPrint ' + QuotedStr(seciliSatirlarColumData(GridFaturalar,0)) + ',' +  QuotedStr('E');
+            TopluDataset.Dataset1 := datalar.QuerySelect(sql);
             PrintYap('FYZ','Fatura Print Et','',TopluDataset,pTNone)
          end;
 
