@@ -70,7 +70,7 @@ begin
      ShowMessageSkin('Þifre Tekrarý Hatalý','','','info');
      Exit;
     end;
-    if SifreGecerliMi (txtSifre.Text, 6, 1, 0, 0, 1) Then Exit;
+    if not SifreGecerliMi (txtSifre.Text, 6, 1, 0, 0, 1) Then Exit;
     ado := TADOQuery.Create(nil);
     try
       bTamam := False;
@@ -78,7 +78,9 @@ begin
       try
         sql := 'update Users set password = ' + QuotedStr(txtSifre.Text) + ', SifreDegisiklikTarihi = getdate (), Dogrulama = 1 where Kullanici = ' + QuotedStr(datalar.username);
         datalar.QueryExec(ado,sql);
-        sql := 'insert into UserPasswordHistory (Kullanici, [Password]) Select ' + SQLValue (datalar.username) + ', ' + SQLValue(txtSifre.Text);
+        sql :=
+          'insert into UserPasswordHistory (TarihSaat, Kullanici, [Password]) '+
+          'Select GETDATE (), ' + SQLValue (datalar.username) + ', ' + SQLValue(txtSifre.Text);
         datalar.QueryExec(ado,sql);
         bTamam := True;
       finally

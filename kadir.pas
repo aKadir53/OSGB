@@ -8945,8 +8945,8 @@ begin
                + ', SifreDegisiklikTarihi = getdate (), Dogrulama = 1 where Kullanici = ' + SQLValue (datalar.username);
         datalar.QueryExec(ado,sql);
         sql :=
-          'insert into UserPasswordHistory (Kullanici, [Password]) '+
-          'Select ' + SQLValue (datalar.username) + ', ' + SQLValue(datalar.SifreDegistir.Sifre);
+          'insert into UserPasswordHistory (TarihSaat, Kullanici, [Password]) '+
+          'Select GETDATE (), ' + SQLValue (datalar.username) + ', ' + SQLValue(datalar.SifreDegistir.Sifre);
         datalar.QueryExec(ado,sql);
         bTamam := True;
       finally
