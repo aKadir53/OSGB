@@ -7,7 +7,7 @@ begin
   declare @sql varchar (max)
   set @sql = 
     'set nocount on' + char (13) + char (10) +
-    'select identity (int, 1, 1) id, min (DBName) DBName, TableName, FieldName, '+case when IsNull (@ignoreColid, 0) = 1 then '' else 'colid, ' end +'fieldtype, sum (x) x, FieldString, Formula, IsIdentity, IsComputed' + char (13) + char (10) +
+    'select identity (int, 1, 1) id, min (DBName) DBName, TableName, FieldName, '+case when IsNull (@ignoreColid, 0) = 1 then 'min (colid) colid1, max (colid) colid2, ' else 'colid, ' end +'fieldtype, sum (x) x, FieldString, Formula, IsIdentity, IsComputed' + char (13) + char (10) +
     'into #t ' + char (13) + char (10) +
     'from ' + char (13) + char (10) +
     '(' + char (13) + char (10) +
