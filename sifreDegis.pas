@@ -36,14 +36,15 @@ var
 
 implementation
 
-uses data_modul;
+uses data_modul, TransUtils;
 
 {$R *.dfm}
 
 procedure TfrmSifreDegis.btnSendClick(Sender: TObject);
 var
-   sql : string;
-   ado : TADOQuery;
+  sql : string;
+  ado : TADOQuery;
+  bTamam: Boolean;
 begin
   if sifreTip = ReceteSifre
   then begin
@@ -64,20 +65,37 @@ begin
   end
   else
   begin
-    if txtSifre.Text = txtTekrar.Text
-    Then Begin
-      sql := 'update Users set password = ' + QuotedStr(txtSifre.Text)
-             + ' where Kullanici = ' + QuotedStr(datalar.username);
-      ado := TADOQuery.Create(nil);
-      try
-        datalar.QueryExec(ado,sql);
-        ShowMessageSkin('Þifreniz Deðiþtirildi','','','info');
-        close;
-      finally
-        ado.Free;
-      end;
-    End else
+    if txtSifre.Text <> txtTekrar.Text Then
+    Begin
      ShowMessageSkin('Þifre Tekrarý Hatalý','','','info');
+     Exit;
+    end;
+    if not SifreGecerliMi (txtSifre.Text, 6, 1, 0, 0, 1) Then Exit;
+    ado := TADOQuery.Create(nil);
+    try
+      bTamam := False;
+      BeginTrans (DATALAR.ADOConnection2);
+      try
+        sql := 'update Users set password = ' + QuotedStr(txtSifre.Text) + ', SifreDegisiklikTarihi = getdate (), Dogrulama = 1 where Kullanici = ' + QuotedStr(datalar.username);
+        datalar.QueryExec(ado,sql);
+        sql :=
+          'insert into UserPasswordHistory (TarihSaat, Kullanici, [Password]) '+
+          'Select GETDATE (), ' + SQLValue (datalar.username) + ', ' + SQLValue(txtSifre.Text);
+        datalar.QueryExec(ado,sql);
+        bTamam := True;
+      finally
+        if bTamam then
+        begin
+          CommitTrans(DATALAR.ADOConnection2);
+          ShowMessageSkin('Þifreniz Deðiþtirildi','','','info');
+          close;
+        end
+        else
+          RollBackTrans(DATALAR.ADOConnection2);
+      end;
+    finally
+      ado.Free;
+    end;
   end;
 
 end;

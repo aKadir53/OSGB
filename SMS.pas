@@ -67,22 +67,22 @@ var
 begin
   SendMesajGonder := '';
   dllHandle := LoadLibrary(LIB_DLL);
+  try
+    if dllHandle = 0 then exit;
+    @SendMesaj := findMethod(dllHandle, 'SmsGonder');
 
-  if dllHandle = 0 then exit;
-  @SendMesaj := findMethod(dllHandle, 'SmsGonder');
+    if addr(SendMesaj) <> nil
+    then
+      SendMesaj(datalar.SMSHesapUser,datalar.SMSHesapSifre,datalar.SMSHesapFrom,tel,mesaj,_sonuc_);
 
-  if addr(SendMesaj) <> nil
-  then
-    SendMesaj(datalar.SMSHesapUser,datalar.SMSHesapSifre,datalar.SMSHesapFrom,tel,mesaj,_sonuc_);
+    SendMesajGonder := _sonuc_;
 
-  SendMesajGonder := _sonuc_;
-
-  if not Assigned(SendMesaj)
-  then
-    raise Exception.Create(LIB_DLL + ' içersinde SmsGonder Method bulunamadý!');
-
-  FreeLibrary(dllHandle);
-
+    if not Assigned(SendMesaj)
+    then
+      raise Exception.Create(LIB_DLL + ' içersinde SmsGonder Method bulunamadý!');
+  finally
+    FreeLibrary(dllHandle);
+  end;
 end;
 
 procedure TfrmSMS.btnMesajGonderClick(Sender: TObject);

@@ -96,9 +96,10 @@ type
     procedure UserGroupDeleteError(DataSet: TDataSet; E: EDatabaseError;
       var Action: TDataAction);
     procedure UserGroupAfterDelete(DataSet: TDataSet);
-
+    procedure sqlRunLoad;override;
   private
     { Private declarations }
+    FEskiSifre : StrinG;
   protected
     procedure YetkiAyarButtonsClick(Sender: TObject);
   public
@@ -111,7 +112,7 @@ var
 
 
 implementation
-uses StrUtils, AnaUnit, TransUtils;
+uses cxCheckBox, cxCalendar, StrUtils, AnaUnit, TransUtils;
 {$R *.dfm}
 const _TableName_ = 'Users';
       formGenislik = 780;
@@ -193,6 +194,12 @@ begin
       cxGridUserSet.DataController.DataSource := UserGroupSettings_DataSource;
       cxGridMenuSet.DataController.DataSource := UserGroup_Menu_Settings_DataSource;
   end;
+end;
+
+procedure TfrmUsers.sqlRunLoad;
+begin
+  inherited;
+  FEskiSifre := TcxTextEditKadir (FindComponent ('password')).Text;
 end;
 
 procedure TfrmUsers.cxButtonEditPropertiesButtonClick(Sender: TObject;
@@ -283,6 +290,7 @@ procedure TfrmUsers.FormCreate(Sender: TObject);
 var
   List : TListeAc;
   Grup,ustUser,doktor,sirketler,IGU, DSPers : TcxImageComboKadir;
+  dateEdit:TcxDateEditKadir;
 begin
 
 
@@ -301,9 +309,18 @@ begin
   setDataStringKontrol(self,txtSifreTekrar, 'txtSifreTekrar','Þifre Tekrarý',Kolon1,'',150);
   TcxTextEdit (FindComponent ('txtSifreTekrar')).Properties.EchoMode := eemPassword;
   TcxTextEdit (FindComponent ('txtSifreTekrar')).Properties.PasswordChar := '*';
+
+  setDataStringChk(Self, 'Dogrulama', 'Þifre Doðrulandý', Kolon1, '', 150);
+  TcxCheckBox(FindComponent('Dogrulama')).Properties.Alignment := taRightJustify;
+  TcxCheckBox(FindComponent('Dogrulama')).Properties.ReadOnly := True;
+
+  dateEdit := TcxDateEditKadir.Create(self);
+  dateEdit.ValueTip := tvDate;
+  dateEdit.Properties.Kind := ckdatetime;
+  setDataStringKontrol(self,dateEdit, 'SifreDegisiklikTarihi','Þifre Deðiþiklik Tarihi',Kolon1,'',145);
+  dateEdit.Properties.ReadOnly := True;
+
   setDataStringBLabel(self,'bosSatir1',kolon1,'',50);
-
-
 
   Grup := TcxImageComboKadir.Create(self);
   Grup.Conn := Datalar.ADOConnection2;
@@ -593,8 +610,9 @@ begin
      if c in ['A'..'Z'] then b := c else b := '1';
 
      p := b + inttostr(Random(15000));
-     sql := 'update Users set password = ' + QuotedStr(p) +
-                       ' where kullanici = ' + QuotedStr(TcxTextEditKadir(FindComponent('kullanici')).Text);
+     sql := 'update Users set password = ' + SQLValue(p) +
+            ', SifreDegisiklikTarihi = getdate () - 1000, Dogrulama = 0 where kullanici = ' +
+            QuotedStr(TcxTextEditKadir(FindComponent('kullanici')).Text);
      datalar.QueryExec(sql);
 
      if mailGonder ('destek@noktayazilim.net' , 'Þifre Onaylama' , 'Þifreniz : ' + p)
@@ -604,20 +622,42 @@ begin
     exit;
   end;
 
-  if TcxButton(sender).Tag = 0
-  then
-   if TcxButtonEditKadir(FindComponent('password')).Text <> txtSifreTekrar.Text
-    Then begin
-     ShowMessageSkin('Þifre Tekrarý Hatalý','','','info');
-     exit;
+  if TcxButton(sender).Tag = 0 then
+  begin
+    if TcxButtonEditKadir(FindComponent('password')).Text <> txtSifreTekrar.Text Then
+    begin
+      ShowMessageSkin('Þifre Tekrarý Hatalý','','','info');
+      exit;
     end;
+    if FEskiSifre <> TcxTextEditKadir (FindComponent ('password')).Text then
+      if not SifreGecerliMi (TcxTextEditKadir (FindComponent ('password')).Text, 6, 1, 0, 0, 1) then Exit;
+  end;
   BeginTrans (DATALAR.ADOConnection2);
   try
-    if TcxButton(sender).Tag = 1
-    then
+    if TcxButton(sender).Tag = 1 then
     begin
       DATALAR.QueryExec('delete from UserMenuSettings where Kullanici = ' + QuotedStr(TcxButtonEditKadir (FindComponent('Kullanici')).Text));
       DATALAR.QueryExec('delete from UserSettings where Kullanici = ' + QuotedStr(TcxButtonEditKadir (FindComponent('Kullanici')).Text));
+    end
+    else
+    if TcxButton(sender).Tag = 0 then
+    begin
+      //þifre deðiþtirilmiþ
+      if FEskiSifre <> TcxTextEditKadir (FindComponent ('password')).Text then
+      begin
+        //kullanýcý kendi þifresini deðiþtirmiþ
+        if AnsiSameText (TcxButtonEditKadir (FindComponent('Kullanici')).Text, DATALAR.UserName) then
+        begin
+          TcxCheckBox(FindComponent('Dogrulama')).Checked := True;
+          TcxDateEditKadir (FindComponent('SifreDegisiklikTarihi')).Text := DateTimeToStr (Now);
+        end
+        //baþkasýnýn þifresini deðiþtirmiþ
+        else begin
+          TcxCheckBox(FindComponent('Dogrulama')).Checked := False;
+          TcxDateEditKadir (FindComponent('SifreDegisiklikTarihi')).Text := DateTimeToStr (Now - 1000);
+        end;
+      end;
+
     end;
 
     inherited;
@@ -638,7 +678,12 @@ begin
     end;
   finally
     if cxKaydetResult then
-      CommitTrans (DATALAR.ADOConnection2)
+    begin
+      CommitTrans (DATALAR.ADOConnection2);
+      FEskiSifre := TcxTextEditKadir (FindComponent ('password')).Text;
+      if AnsiSameText (TcxButtonEditKadir (FindComponent('Kullanici')).Text, DATALAR.UserName) then
+        DATALAR.usersifre := TcxTextEditKadir (FindComponent ('password')).Text;
+    end
      else
       RollbackTrans (DATALAR.ADOConnection2);
   end;
