@@ -257,3 +257,10 @@ eðitimci 2 kutusu, listede olmayan eðitimci 1 girilince boþaldý
 
 
 döf no, ilgili bölüm, tarih, uygunsuzluðun tanýmý, yapýlacak faaliyet türü : Düzeltici / önleyici, faaliyet planý, tarihi, takip tyetkik sonucu : uygunsuzluk giderilmiþtir / kýsmen giderilmiþtir / giderilmemiþtir
+
+1- kullanýcý kendisi þifre deðiþtirirse þifre deðiþtirme tarihi güncellenecek, doðrulama alaný 1 olacak
+2- kullanýcýnýn þifresini baþkasý deðiþtirirse þifre deðiþtirme tarihi 1 sene önceye alýnýp doðrulama alaný 0 olacak.
+3- programa giriþte doðrulama alaný sýfýr ise þifrenizi deðiþtirmeniz gerekmektedir diyecek ve þifre deðiþtirme ekranýný açacak. iptal ederse programa giremeyecek
+4- þifre deðiþtirme iþlemini yapýnca 1. madde geçerli olacak
+5- þifre bazý þartlarý taþýmalý. en az 1 harf en az bir rakam ve en az 6 karakter gibi.
+6- kullanýcý kendisi þifre deðiþtirince tarihçeye kayýt atacak. son kaç þifre geçerli olamayacak ?

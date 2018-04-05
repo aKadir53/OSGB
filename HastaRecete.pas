@@ -274,19 +274,21 @@ begin
   cardType :=  SelectAdo.FieldByName('cardType').AsString;
 
   dllHandle := LoadLibrary(LIB_DLL);
-  if dllHandle = 0 then
-    exit;
+  try
+    if dllHandle = 0 then exit;
 
-  @imzala := findMethod(dllHandle, 'ReceteImzalaGonder');
-  if addr(imzala) <> nil then
-  imzala(receteId,recete,doktorKullanici,doktorsifre,pin,doktorTc,TesisKodu,ss,url,cardType);
+    @imzala := findMethod(dllHandle, 'ReceteImzalaGonder');
+    if addr(imzala) <> nil then
+    imzala(receteId,recete,doktorKullanici,doktorsifre,pin,doktorTc,TesisKodu,ss,url,cardType);
 
-  ReceteImzalaGonder := ss;
+    ReceteImzalaGonder := ss;
 
-  if not Assigned(imzala) then
-    raise Exception.Create(LIB_DLL + ' içersinde ReceteImzalaGonder bulunamadý!');
+    if not Assigned(imzala) then
+      raise Exception.Create(LIB_DLL + ' içersinde ReceteImzalaGonder bulunamadý!');
 
-  FreeLibrary(dllHandle);
+  finally
+    FreeLibrary(dllHandle);
+  end;
 end;
 
 function TfrmHastaRecete.ReceteGonder : string;
@@ -314,19 +316,20 @@ begin
   TesisKodu :=  (SelectAdo.FieldByName('TesisKodu').AsInteger);
 
   dllHandle := LoadLibrary(LIB_DLL);
-  if dllHandle = 0 then
-    exit;
+  try
+    if dllHandle = 0 then exit;
 
-  @imzala := findMethod(dllHandle, 'ReceteGonder');
-  if addr(imzala) <> nil then
-  imzala(receteId,recete,doktorKullanici,doktorsifre,doktorTc,TesisKodu,ss,url);
+    @imzala := findMethod(dllHandle, 'ReceteGonder');
+    if addr(imzala) <> nil then
+    imzala(receteId,recete,doktorKullanici,doktorsifre,doktorTc,TesisKodu,ss,url);
 
-  ReceteGonder := ss;
+    ReceteGonder := ss;
 
-  if not Assigned(imzala) then
-    raise Exception.Create(LIB_DLL + ' içersinde ReceteGonder bulunamadý!');
-
-  FreeLibrary(dllHandle);
+    if not Assigned(imzala) then
+      raise Exception.Create(LIB_DLL + ' içersinde ReceteGonder bulunamadý!');
+  finally
+    FreeLibrary(dllHandle);
+  end;
 end;
 
 
@@ -354,24 +357,25 @@ begin
   cardType :=  SelectAdo.FieldByName('cardType').AsString;
 
   dllHandle := LoadLibrary(LIB_DLL);
-  if dllHandle = 0 then
-    exit;
+  try
+    if dllHandle = 0 then exit;
 
 
-  @imzala := findMethod(dllHandle, 'ReceteImzalaSil');
-  if addr(imzala) <> nil then
-  imzala(PWideChar(receteId),PWideChar(recete),
-                                PWideChar(doktorKullanici),PWideChar(doktorsifre),
-                                PWideChar(pin),PWideChar(doktorTc),PWideChar(TesisKodu),ss,
-                                PWideChar(datalar.receteURL),
-                                PWideChar(cardType));
+    @imzala := findMethod(dllHandle, 'ReceteImzalaSil');
+    if addr(imzala) <> nil then
+    imzala(PWideChar(receteId),PWideChar(recete),
+                                  PWideChar(doktorKullanici),PWideChar(doktorsifre),
+                                  PWideChar(pin),PWideChar(doktorTc),PWideChar(TesisKodu),ss,
+                                  PWideChar(datalar.receteURL),
+                                  PWideChar(cardType));
 
-  ReceteImzalaSil := ss;
+    ReceteImzalaSil := ss;
 
-  if not Assigned(imzala) then
-    raise Exception.Create(LIB_DLL + ' içersinde ReceteImzalaSil bulunamadý!');
-
-  FreeLibrary(dllHandle);
+    if not Assigned(imzala) then
+      raise Exception.Create(LIB_DLL + ' içersinde ReceteImzalaSil bulunamadý!');
+  finally
+    FreeLibrary(dllHandle);
+  end;
 end;
 
 function TfrmHastaRecete.ReceteSil : string;
@@ -397,23 +401,24 @@ begin
   TesisKodu :=  SelectAdo.FieldByName('TesisKodu').AsInteger;
 
   dllHandle := LoadLibrary(LIB_DLL);
-  if dllHandle = 0 then
-    exit;
+  try
+    if dllHandle = 0 then exit;
 
 
-  @imzala := findMethod(dllHandle, 'ReceteSil');
-  if addr(imzala) <> nil then
-  imzala(PWideChar(receteId),PWideChar(recete),
-                                PWideChar(doktorKullanici),PWideChar(doktorsifre),
-                                PWideChar(doktorTc),TesisKodu,ss,
-                                PWideChar(datalar.receteURL));
+    @imzala := findMethod(dllHandle, 'ReceteSil');
+    if addr(imzala) <> nil then
+    imzala(PWideChar(receteId),PWideChar(recete),
+                                  PWideChar(doktorKullanici),PWideChar(doktorsifre),
+                                  PWideChar(doktorTc),TesisKodu,ss,
+                                  PWideChar(datalar.receteURL));
 
-  ReceteSil := ss;
+    ReceteSil := ss;
 
-  if not Assigned(imzala) then
-    raise Exception.Create(LIB_DLL + ' içersinde ReceteSil bulunamadý!');
-
-  FreeLibrary(dllHandle);
+    if not Assigned(imzala) then
+      raise Exception.Create(LIB_DLL + ' içersinde ReceteSil bulunamadý!');
+  finally
+    FreeLibrary(dllHandle);
+  end;
 end;
 
 procedure TfrmHastaRecete.MedEczane;
@@ -1384,6 +1389,8 @@ begin
   inherited;
   if not CheckReceteStatus (True, False, True, True, True) then Exit;
   ADO_receteAcikla.Delete;
+  ADO_receteAcikla.Close;
+  ADO_receteAcikla.Open;
 end;
 
 procedure TfrmHastaRecete.cxButtonKadirIlacAckEkleClick(Sender: TObject);

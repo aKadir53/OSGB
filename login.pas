@@ -254,6 +254,14 @@ begin
 
       datalar.username := edit1.Text;
       DATALAR.usersifre := edit2.Text;
+
+      //þifre deðiþtirme gerekliyse...
+      if Login.FieldByName ('SifreDegismeli').AsBoolean then
+      begin
+        ShowMessageSkin('Þifrenizi Deðiþtirmeniz Gerekmektedir...', '', '', 'info');
+        if not SifreDegistir then Exit;
+      end;
+
       regyazLastLogin;
       bloginLog := True;
       datalar.usernameAdi := login.FieldByName('ADISOYADI').AsString;
