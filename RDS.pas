@@ -173,6 +173,7 @@ type
       AButtonIndex: Integer; var ADone: Boolean);
     procedure E3Click(Sender: TObject);
     procedure SirketlerPropertiesChange(Sender: TObject);
+
  //   function EArsivGonder(FaturaId : string) : string;
  //   function EArsivIptal(FaturaGuid : string) : string;
  //   function EArsivPDF(FaturaGuid : string ; _tag_ : integer) : string;
@@ -197,12 +198,14 @@ type
 var
   frmRDS: TfrmRDS;
   Dataset : Tdataset;
-
+  List,Faturalar : TListeAc;
 implementation
 
 uses data_modul, StrUtils, Jpeg;
 
 {$R *.dfm}
+
+
 
 procedure TfrmRDS.SirketlerPropertiesChange(Sender: TObject);
 var
@@ -395,7 +398,15 @@ procedure TfrmRDS.cxButtonEditPropertiesButtonClick(Sender: TObject;
 var
   list : ArrayListeSecimler;
   where,prm : string;
+
 begin
+
+    where := ' hazirlayan = ' + QuotedStr(datalar.IGU) + ' or paylasilan = ' + QuotedStr(datalar.IGU) +
+           ' or hazirlayan = ' + QuotedStr(datalar.doktorKodu) + ' or paylasilan = ' + QuotedStr(datalar.doktorKodu);
+
+
+    TListeAc(FindComponent('RDSList')).Where := where;
+
     inherited;
     Enabled;
     FaturaDetay;
@@ -750,7 +761,6 @@ end;
 
 procedure TfrmRDS.FormCreate(Sender: TObject);
 var
-  List,Faturalar : TListeAc;
   RiskBolum,sirketlerx,TehlikeKaynak ,Tehlike , Risk ,
   Olasilik,Frekans,Siddet,Skor ,Method,Onay,subeler  : TcxImageComboKadir;
   FaturaTarihi : TcxDateEditKadir;
@@ -797,11 +807,13 @@ begin
  // TopPanel.Visible := true;
 
   where := ' hazirlayan = ' + QuotedStr(datalar.IGU) + ' or paylasilan = ' + QuotedStr(datalar.IGU) +
-           ' or hazirlayan = ' + QuotedStr(datalar.doktor) + ' or paylasilan = ' + QuotedStr(datalar.doktor);
+           ' or hazirlayan = ' + QuotedStr(datalar.doktorKodu) + ' or paylasilan = ' + QuotedStr(datalar.doktorKodu);
 
   Faturalar := ListeAcCreate('RDS_SirketRiskView','id,sirketKod,sirketAdi,Tarih,GTarih,Method,hazirlayan',
                        'ID,ÞirketKodu,ÞirketAdý,HazýrlamaTarihi,Geçerlilik,Method,Hazýrlayan',
-                       '40,60,250,80,80,80,80','ID','Risk Raporlarý',where,7,True);
+                       '40,60,250,80,80,80,80','RDSList','Risk Raporlarý',where,7,True,self);
+
+
 
   setDataStringB(self,'id','Risk ID',Kolon1,'trh',50,Faturalar,True,nil,'','',True,True,-100);
   TcxButtonEditKadir(FindComponent('id')).Identity := True;
