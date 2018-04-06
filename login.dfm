@@ -1625,6 +1625,18 @@ object frmLogin: TfrmLogin
         PanelStyle.InsertKeyAppearance.InactiveCaption = 'INS'
       end
       item
+        PanelStyleClassName = 'TdxStatusBarTextPanelStyle'
+        PanelStyle.Alignment = taCenter
+        PanelStyle.Font.Charset = DEFAULT_CHARSET
+        PanelStyle.Font.Color = clWindowText
+        PanelStyle.Font.Height = -11
+        PanelStyle.Font.Name = 'Tahoma'
+        PanelStyle.Font.Style = [fsBold]
+        PanelStyle.ParentFont = False
+        Text = '.'
+        Width = 100
+      end
+      item
         PanelStyleClassName = 'TdxStatusBarStateIndicatorPanelStyle'
         PanelStyle.Indicators = <>
       end>

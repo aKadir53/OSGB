@@ -270,6 +270,10 @@ begin
       datalar.IGU := login.FieldByName('IGU').AsString;
       datalar.DSPers := login.FieldByName('DigerSaglikPers').AsString;
       datalar.UserGroup := login.FieldByName('Grup').AsString;
+      datalar.UserGroupName := login.FieldByName('GrupTanimi').AsString;
+      RegYaz('OSGB_Userdescription', datalar.usernameAdi + ' (' + datalar.UserGroupName + ')');
+      dxStatusBar1.Panels [1].Text := datalar.usernameAdi + ' (' + datalar.UserGroupName + ')';
+      dxStatusBar1.Panels [1].Width := Length (dxStatusBar1.Panels [1].Text) * 8;
 
       AnaForm.dxSkinController1.SkinName := login.FieldByName('userSkin').AsString;
       FormatSettings.DateSeparator := '.';
@@ -463,6 +467,8 @@ begin
 
    txtDataBase.EditValue := Decode64(regOku('OSGB_db_name'));
    Labelx.Caption := regOku('OSGB_description');
+   dxStatusBar1.Panels [1].Text := regOku('OSGB_Userdescription');
+   dxStatusBar1.Panels [1].Width := Length (dxStatusBar1.Panels [1].Text) * 8;
    if LoginSayfalar.ActivePageIndex = 0 then Edit2.SetFocus;
 end;
 
