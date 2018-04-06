@@ -218,3 +218,27 @@ eðitimler tablosuna geçerlilik tarihi ekledik
 reçete ekranýnda reçete baþlýðý girilmelidir uyarýsýna nereden nasýl ekleneceði bilgisini ekledik
 merkez bilgisi tablosuna log eklendi
 Hizmet tanýmý ekraný eklendi
+
+kullanýcý grup tanýmlarýna þifre yenileme peryodu gün cinsinden alan eklemiþtik
+kullanýcý kartýnýn son þifre deðiþiklik tarihinden o kadar günden fazla geçmiþse deðiþiklik istemeye baþladýk
+kullanýcý kendisi þifre deðiþtirirse þifre deðiþtirme tarihi güncellenecek, doðrulama alaný 1 olacak
+kullanýcýnýn þifresini baþkasý deðiþtirirse þifre deðiþtirme tarihi 1 sene önceye alýnýp doðrulama alaný 0 olacak.
+programa giriþte doðrulama alaný sýfýr ise þifrenizi deðiþtirmeniz gerekmektedir diyecek ve þifre deðiþtirme ekranýný açacak. iptal ederse programa giremeyecek
+þifre deðiþtirme iþlemini yapýnca 1. madde geçerli olacak
+þifre bazý þartlarý taþýmalý. en az 1 harf en az bir rakam ve en az 6 karakter gibi.
+kullanýcý kendisi þifre deðiþtirince tarihçeye kayýt atacak. 
+gruba baðlý olmayan kullanýcýlar için grup tablosundaki sýfýrdan farklý olan en küçük peryodu alabiliriz.
+
+imes osgb dr Murat: eczacý reçetede çalýþtýðý firma ismi açýklama olarak olmalý demiþ. tabletten girilenlerde de iþlemesi için trigger ekledik
+
+þube kartlarýna aktif / pasif ayarý eklendi
+adoconnection2 kapat aç yapabilir miyiz ? tazele / listeyi yenile düðmesine eklendi
+kalibre osgb 263 þirket koduna ait sgk sicili 34 37 36 ile biten þube pasif olacak
+peryodik muayene seçildiðinde diðer adýmdan yap ikazý (hacý kadir anamnez penceresine taþýdý)
+muayene düzenle'de girilen protokol numarasý, þube kartýna yazýlabilir mi ? onay sorusu ile olabilir. (ekledik)
+Saliha > ÞUBELERÝN PASÝFE ALINMASI
+eðitimci 2 kutusu, listede olmayan eðitimci 1 girilince boþaldý. if'leri kendi içinde ayýrýp düzelttik
+isg saha gözetimi'ne döf no, ilgili bölüm, tarih, uygunsuzluðun tanýmý, yapýlacak faaliyet türü : Düzeltici / önleyici, faaliyet planý, tarihi, takip tyetkik sonucu : uygunsuzluk giderilmiþtir / kýsmen giderilmiþtir / giderilmemiþtir eklendi
+
+kullanýcýnýn giriþte kullanýcý tipinin bilgi olarak gösterilmesi.
+main form'da kullanýcý ve grup bilgisinin alttaki statusbar'da gösterilmesi
