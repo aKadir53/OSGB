@@ -256,6 +256,15 @@
 			<DCCReference Include="Faturalar.pas">
 				<Form>frmFaturalar</Form>
 			</DCCReference>
+			<DCCReference Include="Tedarikci.pas">
+				<Form>frmTedarikci</Form>
+			</DCCReference>
+			<DCCReference Include="Cekler.pas">
+				<Form>frmCekler</Form>
+			</DCCReference>
+			<DCCReference Include="KasaBanka.pas">
+				<Form>frmKasaBanka</Form>
+			</DCCReference>
 			<DCCReference Include="RDS.pas">
 				<Form>frmRDS</Form>
 			</DCCReference>
