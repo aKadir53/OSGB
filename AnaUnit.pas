@@ -177,6 +177,8 @@ type
       AEvent: TcxSchedulerControlEvent);
   private
     { Private declarations }
+  protected
+    procedure SetUserInfo;
   public
     { Public declarations }
     destructor Destroy; override;
@@ -358,7 +360,7 @@ begin
     datalar.Ado_DSP.Active := True;
     datalar.ADO_TehlikeSiniflari.Active := True;
     datalar.KontrolZorunlu.Active := True;
-    ado.SQL.Text := 'Select Doktor, SirketKodu, IGU, DigerSaglikPers, Grup, ADISOYADI from Users where Kullanici = ' + SQLValue(DATALAR.username);
+    ado.SQL.Text := 'Select Doktor, SirketKodu, IGU, DigerSaglikPers, Grup, ADISOYADI, GrupTanimi from Users where Kullanici = ' + SQLValue(DATALAR.username);
     ado.Open;
     try
       if not ado.Eof then
@@ -369,6 +371,7 @@ begin
         datalar.DSPers := ado.FieldByName('DigerSaglikPers').AsString;
         datalar.UserGroup := ado.FieldByName('Grup').AsString;
         datalar.usernameAdi := ado.FieldByName('ADISOYADI').AsString;
+        datalar.UserGroupName := ado.FieldByName('GrupTanimi').AsString;
       end
       else begin
         DATALAR.doktorKodu := '';
@@ -376,7 +379,10 @@ begin
         datalar.IGU := '';
         datalar.DSPers := '';
         datalar.UserGroup := '';
+        datalar.UserGroupName := '';
+        DATALAR.usernameAdi := '';
       end;
+      SetUserInfo;
     finally
       ado.Close;
     end;
@@ -652,8 +658,9 @@ begin
  // dxStatusBar1.Panels[1].Text := DATALAR.AktifSirketAdi + '-' + datalar.AktifSubeAdi;
  // dxStatusBar1.Panels[1].Width := length(Datalar.AktifSirketAdi) * 8;
   dxStatusBar1.Panels[3].Text := DATALAR._merkezAdi;
-  dxStatusBar1.Panels[4].Text := 'Versiyon : ' + datalar.versiyon;
-
+  dxStatusBar1.Panels[3].Width := length(dxStatusBar1.Panels[3].Text) * 8;
+  dxStatusBar1.Panels[5].Text := 'Versiyon : ' + datalar.versiyon;
+  SetUserInfo;
 end;
 
 procedure TAnaForm.MainMenuKadir1DragDrop(Sender, Source: TObject; X,
@@ -1004,6 +1011,12 @@ begin
    // Deneme
 
 
+end;
+
+procedure TAnaForm.SetUserInfo;
+begin
+  dxStatusBar1.Panels[4].Text := 'Kullanýcý : ' + datalar.username + ' ('+datalar.usernameAdi+'), Grubu: ' + DATALAR.UserGroupName;
+  dxStatusBar1.Panels[4].Width := length(dxStatusBar1.Panels[4].Text) * 6;
 end;
 
 procedure TAnaForm.SirketlerPropertiesChange(Sender: TObject);
