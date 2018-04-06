@@ -479,7 +479,7 @@ type
    _tesisKodu , _labusername , _labsifre , doktor ,doktorKodu, SonReceteDoktorKodu,SonImzaDoktorKodu,sirketKodu,
    IGU, DSPers, _dosyaNo_,_gelisNo_,kontrolKod,RiskTanimBilgiEkle,
    _labkurumkod , _labkurumkodText, _laburl , _labfirma ,  _SKRS , _saglikNetUser ,
-   _saglikNetPass , _firmaSKRS , _usermernis , _passmernis, UserGroup : string;
+   _saglikNetPass , _firmaSKRS , _usermernis , _passmernis, UserGroup, UserGroupName : string;
    _doktorReceteUser,_doktorRecetePas,_KurumSKRS_, _userSaglikNet_ , _passSaglikNet_ , _userSaglikNet2_ , _passSaglikNet2_ , itsGLN , itsUser , itsPass: string;
    _merkezAdi , _DyobKurumKodu_,_DyobSifre_,_DyobServiceKodu_ , doktorTip , bashekimKodu,hekimKodu,ImajFTPServer : string;
    _medulaOrtam_ , WanIp,WanIpURL ,_firmaKod_ , osgbKodu : string;
