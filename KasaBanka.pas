@@ -1,7 +1,7 @@
 unit KasaBanka;
 
 interface
-incele
+
 uses
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
   Dialogs, cxGraphics, cxControls, cxLookAndFeels, cxLookAndFeelPainters,
@@ -31,7 +31,6 @@ type
     GridKasaHareketbakiye: TcxGridDBBandedColumn;
     GridKasaHareketaciklama: TcxGridDBBandedColumn;
     procedure FormCreate(Sender: TObject);
-    procedure ButtonClick(Sender: TObject);
     procedure cxKaydetClick(Sender: TObject);
     procedure cxTextEditKeyDown(Sender: TObject; var Key: Word;
       Shift: TShiftState);
@@ -65,54 +64,51 @@ var
 
 implementation
 
-uses StrUtils;
+uses StrUtils, TransUtils;
 
 {$R *.dfm}
 
 procedure TfrmKasaBanka.CekTahsilatIptal(id,carid : string);
 var
   sql : string;
+  bTmm : Boolean;
 begin
-   datalar.ADOConnection2.BeginTrans;
-   try
+  try
+    bTmm := False;
+    BeginTrans (datalar.ADOConnection2);
+    try
       sql := 'update cari_cekler set durum = 1 where id  = ' + id;
       datalar.QueryExec(sql);
 
       sql := 'delete from cariHareketler where id = ' + carid;
       datalar.QueryExec(sql);
-
-      datalar.ADOConnection2.CommitTrans;
-   except on e : Exception do
-    begin
-     datalar.ADOConnection2.RollbackTrans;
-     ShowMessageSkin(e.Message,'','','info');
+      bTmm := True;
+    finally
+      if bTmm then
+        CommitTrans (datalar.ADOConnection2)
+       else
+        RollbackTrans (datalar.ADOConnection2);
     end;
-
+  except on e : Exception do
+   begin
+    ShowMessageSkin(e.Message,'','','info');
    end;
+
+  end;
 
 end;
 
 
 procedure TfrmKasaBanka.PropertiesEditValueChanged(Sender: TObject);
-var
-  xDeger : String;
+//var
+//  xDeger : String;
 begin
 //
 end;
 
-procedure TfrmKasaBanka.ButtonClick(Sender: TObject);
-var
-  i : Integer;
-  sTmp: String;
-  ado : TADOQuery;
-begin
-end;
-
 procedure TfrmKasaBanka.cxButtonCClick(Sender: TObject);
 var
-  Ado,ado1 : TADOQuery;
-  sql,fID : string;
-  TopluDataset : TDataSetKadir;
+  fID : string;
 begin
   inherited;
 
@@ -167,11 +163,6 @@ begin
 end;
 
 procedure TfrmKasaBanka.FormCreate(Sender: TObject);
-var
-  List : TListeAc;
-  kombo , kombo1 ,sirketlerx ,sirketlerxx , EvrakTip: TcxImageComboKadir;
-  dateEdit: TcxDateEditKadir;
-  Egitimler : TcxCheckGroupKadir;
 begin
   cxPanel.Visible := false;
   TopPanel.Visible := true;

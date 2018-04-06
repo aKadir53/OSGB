@@ -1,7 +1,7 @@
 unit Tedarikci;
 
 interface
-incele
+
 uses
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
   Dialogs, cxGraphics, cxControls, cxLookAndFeels, cxLookAndFeelPainters,
@@ -47,10 +47,8 @@ implementation
 
 function TfrmTedarikci.Init(Sender: TObject) : Boolean;
  var
-  index,i : integer;
-  Ts,Ts1 : TStringList;
-  List,List1,List3 : TListeAc;
-  bransKodu,calismaTipi,cardType,sirket,medulaGonderimTipi : TcxImageComboKadir;
+  List : TListeAc;
+  bransKodu,cardType : TcxImageComboKadir;
 begin
   Result := False;
 
@@ -162,8 +160,8 @@ begin
 end;
 
 procedure TfrmTedarikci.ButtonClick(Sender: TObject);
-var
-  ID : integer;
+//var
+//  ID : integer;
 begin
 //
 end;
