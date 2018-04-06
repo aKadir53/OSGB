@@ -264,3 +264,8 @@ döf no, ilgili bölüm, tarih, uygunsuzluðun tanýmý, yapýlacak faaliyet türü : Düz
 4- þifre deðiþtirme iþlemini yapýnca 1. madde geçerli olacak
 5- þifre bazý þartlarý taþýmalý. en az 1 harf en az bir rakam ve en az 6 karakter gibi.
 6- kullanýcý kendisi þifre deðiþtirince tarihçeye kayýt atacak. son kaç þifre geçerli olamayacak ?
+
+3 kullanýcý - yetkileri...
+kullanýcýnýn giriþte kullanýcý tipi.
+main form'da kullanýcý ve grup bilgisi
+diðer kullanýcýlar silinecek
