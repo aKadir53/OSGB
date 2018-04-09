@@ -118,7 +118,6 @@ sorular grup baþlýklý
 eðitim, iþ kazasý, saha gözlem gibi ekranlarda tablolara þube kodu alaný eklenecek.
 
 Tablette hiç internet eriþimi olmadan kayýt girme ve sisteme gönderebilme özelliði
-Programa girerken þube seçmiyoruz. Sýkýntý olur mu
 Ýþten çýkanlar exceli
 Hocam kendisi Excel sütunlarýný programýn formatýnda ayarlayacaklarmýþ
 Personel listesi ekranda kalan gün belirgin olsa...
@@ -146,7 +145,6 @@ formlarýn enabled disabled durumlarý kontrol edilecek
 
 ana menü üstündeki þirket kombosundan þirket seçildiðinde alttaki þube otomatik güncelleniyor gibi ama excel aktarýmý þube seçilmemiþ ikazý yapýyor. galiba deðeri atamýyor. birden çok þubesi olan þirketlere geçiþte hataya sebep oluyor
 kalibre osgb çift personel silinmesi
-kalibre osgb 263 þirket koduna ait sgk sicili 34 37 36 ile biten þube pasif olacak
 kalibre osgb'de geliþlerin çoklandýðý þikayeti var
 firma kartlarýnda override kelimesi kaybolmuþ, hacý kadir ile aradaki whatsapp notlarýndan tarihine bakýlýp logdan incelenecek
 reçete ekraný reçete þifremi deðiþtir düðmesi. form baþlýðý dþlsas asdlaiþl olmuþ
@@ -163,15 +161,8 @@ ilaç gruplarý antibiyotik vs
 eðitim formunda ilk sekmedeki þirket kombosuna farklý, ikincisine farklý liste geliyor.
 
 
-kullanýcý grup tanýmlarýna þifre yenileme peryodu gün cinsinden alan ekle
-kullanýcý kartýnýn son þifre deðiþiklik tarihinden o kadar günden fazla geçmiþse deðiþiklik iste
-kullanýcý kartýnda baþkasýnýn þifresini deðiþtirince ne olacak ?
-gruba baðlý olmayan kullanýcýlar için grup tablosundaki sýfýrdan farklý olan en küçük peryodu alabiliriz.
-þifre minimum 6 karakter en az 1 harf gibi kontroller
 
 data modul'deki lüzumsuz deðiþkenleri sil
-
-imes osgb dr Murat: eczacý reçetede çalýþtýðý firma ismi açýklama olarak olmalý demiþ
 
 disAktarimParametre gibi bir tablo ile @@spid bazýnda aktif þirket, aktif kullanýcý, aktif þube, aktif doktor gibi bilgileri yaz oku sil yapabiliriz. 
 otomatik excel aktarimi sp'lerinde bu tabloya join ile data alabiliriz. 
@@ -184,7 +175,6 @@ ilgili dýþ aktarýmýn tablosuna ilk kayýt yazarken disAktarimParametre tablosu il
 dýþ aktarým sp'sinde, ara tablodan data alýp kullanýrken þirket kodu, user vs bilgiler için gidip kendisindeki aktarim parametre id'sindeki parametre kaydýna gidilip data kullanýlabilir.
 iþte bu kadar basit.
 
-þube kartlarýna aktif / pasif ayarý eklenecek
 isg katip aktarýmýnda nace kodlarý firma kartýna güncelleniyor, þube kartýna da güncellemek lazým
 
 taný dataseti lokalde açýk tutabilir miyiz ?
@@ -192,8 +182,6 @@ adoconnection2 kapat aç yapabilir miyiz ?
 
 çekmeköy'e restore olacak olan master veritabanýný uzak sunucuya baþka isimle tekrar koy. master veritabaný deðiþikliklerini takip et
 
-peryodik muayene seçildiðinde diðer adýmdan yap ikazý
-muayene düzenle'de girilen protokol numarasý, þube kartýna yazýlabilir mi ? onay sorusu ile olabilir.
 reçete imzala gönder yaparken reçete doktoru ile user doktoru farklý ise uyarý ver
 
 uzmanlar osgb hülya haným:
@@ -215,7 +203,6 @@ reçete þablonu kaydederken sapýtmasý
 önemli tablolara log konulmasý lazým
 
 
-Saliha > ÞUBELERÝN PASÝFE ALINMASI
 Saliha > bide eczaneden firma adý çýkmasý için acil çalýþýlmasý lazým taný ekranýnda aramada çýkmayan
 Saliha > diyabet hiper tansiyon
 
@@ -253,7 +240,9 @@ eðitim konularýný detay tabloya çevirme çalýþmasý
 bu form bilmemneye özeldir mesajýnýn sonuna ilave bilgi ekle mesela kendinize ikinci bir kullanýcý açtýrabilirsiniz gibi.
 
 eðitimci 2 gibi bazý alanlarýn baskýya eklenmesi
-eðitimci 2 kutusu, listede olmayan eðitimci 1 girilince boþaldý
 
 
-döf no, ilgili bölüm, tarih, uygunsuzluðun tanýmý, yapýlacak faaliyet türü : Düzeltici / önleyici, faaliyet planý, tarihi, takip tyetkik sonucu : uygunsuzluk giderilmiþtir / kýsmen giderilmiþtir / giderilmemiþtir
+
+3 kullanýcý - yetkileri...
+diðer kullanýcýlar silinecek
+son kaç þifre geçerli olamayacak ?

@@ -6,7 +6,7 @@ GO
 AS
 select carikod,S.tanimi, sum(borc) B,sum(alacak) A,sum(borc-alacak) BK 
 from cariHareketler ch
-join SIRKETLER_TNM s on s.SirketKod = ch.carikod
+left join SIRKETLER_TNM s on s.SirketKod = ch.carikod
 group by  carikod,S.tanimi
 GO
 exec sp_vw_sys_upd 'P ', 'dbo', 'sp_CariHesapBorcAlacakToplam'

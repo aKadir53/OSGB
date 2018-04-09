@@ -284,13 +284,25 @@ begin
           List := ListeAcCreate('HIZMET','code,name1,kdv,SATISF00',
                                'HizmetKod,HizmetTaným,Kdv,Fiyat',
                                '50,250,50,80','List','Hizmet Listesi','',4,True);
-          L := List.ListeGetir;
-          FaturaGrid.Dataset.Append;
-          FaturaGrid.Dataset.FieldByName('hizmetkodu').AsString := L[0].kolon1;
-          FaturaGrid.Dataset.FieldByName('hizmetAdi').AsString := L[0].kolon2;
-          FaturaGrid.Dataset.FieldByName('kdv').AsString := L[0].kolon3;
-          FaturaGrid.Dataset.FieldByName('fiyat').AsString := L[0].kolon4;
-          FaturaGrid.Dataset.post;
+          try
+            L := List.ListeGetir;
+            if High (L) >= 0 then
+            begin
+              FaturaGrid.Dataset.Append;
+              try
+                FaturaGrid.Dataset.FieldByName('hizmetkodu').AsString := L[0].kolon1;
+                FaturaGrid.Dataset.FieldByName('hizmetAdi').AsString := L[0].kolon2;
+                FaturaGrid.Dataset.FieldByName('kdv').AsString := L[0].kolon3;
+                FaturaGrid.Dataset.FieldByName('fiyat').AsString := L[0].kolon4;
+                FaturaGrid.Dataset.post;
+              except
+                FaturaGrid.Dataset.Cancel;
+                raise;
+              end;
+            end;
+          finally
+            List.Free;
+          end;
         end;
   end;
 end;

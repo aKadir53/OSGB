@@ -10,7 +10,7 @@ declare @faturaNo varchar(20),@guid varchar(50),@faturaTarihi varchar(10),@fatur
 		@saticiTel varchar(50),@saticiFax varchar(50),@saticiEmail varchar(50),
         @aliciVergiNo varchar(20),@aliciAdres varchar(200),@aliciKapiNo varchar(10),@aliciILCE varchar(50),@aliciIL varchar(50),
 		@aliciPostaKodu varchar(10) ,@aliciUrl varchar(100),@aliciAdi varchar(100),@aliciVergiDairesi varchar(50),
-		@aliciTel varchar(50),@aliciFax varchar(50),@aliciEmail varchar(50),
+		@aliciTel varchar(50),@aliciFax varchar(50),@aliciEmail varchar(50),@vergiler varchar(max),
 		@faturaTutar varchar(10),@faturaKdvTutar varchar(10),@faturaGenelTutar varchar(10),
 		@faturaHareket varchar(max),@fatura varchar(max),
 		@IBAN varchar(100),@faturaGonderimTip varchar(1)
@@ -19,6 +19,7 @@ declare @faturaNo varchar(20),@guid varchar(50),@faturaTarihi varchar(10),@fatur
 set @faturaSatir = '1'
 set @faturaHareket = ''
 set @fatura = ''
+set @vergiler = ''
 
 select @saticiVergiNo = isnull(vergiNo,'') , @saticiAdres = isnull(Adres,'') , @saticiKapiNo = isnull(KapiNo,'') ,
        @saticiILCE = isnull(ILCE,''),@saticiIL = isnull(Il,''),@saticiPostaKodu = isnull(PostaKodu,''),
@@ -53,6 +54,20 @@ join SIRKETLER_TNM s on s.sirketKod = f.sirketKod
 join SKRS_IL_KODLARI IK on IK.KODU = s.SEHIR
 join SKRS_ILCE_KODLARI ILK on ILK.KODU = s.ILCE
 where f.sira = @faturaId
+
+	Select 
+	    @vergiler = @vergiler + 
+			'<Vergiler>'+
+				'<kdvTutar>' + cast(sum(kdvTutar) as varchar)  + '</kdvTutar>'+
+				'<faturaTutar>' + cast(sum(tutar) as varchar) + '</faturaTutar>'+
+				'<CalculationSequenceNumeric>1.0</CalculationSequenceNumeric>'+
+				'<kdvOran>' + cast(kdv as varchar) + '</kdvOran>'+
+				'<vergiTanimi>Katma Deger Vergisi</vergiTanimi>'+
+				'<vergiKodu>0015</vergiKodu>'+
+			'</Vergiler>'	
+	from faturaHareket 
+	where faturaId = @faturaId
+	group by kdv
 
 select @faturaSatir = count(*) from FaturaHareket where faturaId = @faturaId
 
@@ -115,14 +130,16 @@ select
 			'<fax>'+@aliciFax+'</fax>'+
 			'<EMail>'+@aliciEmail+'</EMail>'+
 	'</aliciBilgisi>'+
-	'<Vergiler>'+
-		'<kdvTutar>'+ @faturaKdvTutar + '</kdvTutar>'+
-		'<faturaTutar>'+@faturaTutar+'</faturaTutar>'+
-		'<CalculationSequenceNumeric>1.0</CalculationSequenceNumeric>'+
-		'<kdvOran>18</kdvOran>'+
-		'<vergiTanimi>Katma Deger Vergisi</vergiTanimi>'+
-		'<vergiKodu>0015</vergiKodu>'+
-	'</Vergiler>'+
+	
+		@vergiler +
+	--'<Vergiler>'+
+	--	'<kdvTutar>'+ @faturaKdvTutar + '</kdvTutar>'+
+	--	'<faturaTutar>'+@faturaTutar+'</faturaTutar>'+
+	--	'<CalculationSequenceNumeric>1.0</CalculationSequenceNumeric>'+
+	--	'<kdvOran>18</kdvOran>'+
+	--	'<vergiTanimi>Katma Deger Vergisi</vergiTanimi>'+
+	--	'<vergiKodu>0015</vergiKodu>'+
+	--'</Vergiler>'+
 
 	'<faturaToplamlari>'+
 		'<faturaTutar>'+@faturaTutar +'</faturaTutar>'+

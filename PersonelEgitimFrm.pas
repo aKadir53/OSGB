@@ -48,6 +48,7 @@ type
     EgitimGridSatirlarSirketTanimi: TcxGridDBBandedColumn;
     EgitimGridSatirlarEgitimBilgi: TcxGridDBBandedColumn;
     EgitimGridSatirlarEgitimCSGBGonderimSonuc: TcxGridDBBandedColumn;
+    miEgitimBilgisiniIBYSyeGonder: TMenuItem;
     procedure FormCreate(Sender: TObject);
     procedure ButtonClick(Sender: TObject);
     procedure cxKaydetClick(Sender: TObject);
@@ -242,31 +243,39 @@ begin
     Exit;
   end;
   ado := TADOQuery.Create(nil);
-  ado1 := TADOQuery.Create(nil);
   try
-    ado.Connection := datalar.ADOConnection2;
-    ado1.Connection := datalar.ADOConnection2;
-    sql := 'sp_frmPersonelEgitim ' + TcxButtonEditKadir(FindComponent('id')).Text;
-    if TMenuItem (Sender).Tag = -20 then sql := sql + ', ' + QuotedStr (EgitimPersonel.Dataset.FieldByName('PersonelDosyaNo').AsString);
+    ado1 := TADOQuery.Create(nil);
+    try
+      ado.Connection := datalar.ADOConnection2;
+      ado1.Connection := datalar.ADOConnection2;
+      if TMenuItem (Sender).Tag = -40 then
+      begin
+        showmessageSkin ('CÇSB Servisleri aktif deðil ya da servislere ulaþýlamýyor', '', '', 'info');
+        Exit;
+      end;
+      sql := 'sp_frmPersonelEgitim ' + TcxButtonEditKadir(FindComponent('id')).Text;
+      if TMenuItem (Sender).Tag = -20 then sql := sql + ', ' + QuotedStr (EgitimPersonel.Dataset.FieldByName('PersonelDosyaNo').AsString);
 
-    datalar.QuerySelect(ado, sql);
-    TopluDataset.Dataset0 := ado;
-    TopluDataset.Dataset0.Name := 'PersonelEgitimleri';
+      datalar.QuerySelect(ado, sql);
+      TopluDataset.Dataset0 := ado;
+      TopluDataset.Dataset0.Name := 'PersonelEgitimleri';
 
 
-    sql := 'declare @ek varchar(max),@et int ' +
-           ' select @ek = EgitimKod,@et = EgitimTuru from egitimler where id = ' + TcxButtonEditKadir(FindComponent('id')).Text +
-           ' select datavalue Egitimler from dbo.strtotable(dbo.egitimCheckStateToTanim(@ek,@et),'','') where datavalue <> ''''';
-    datalar.QuerySelect(ado1, sql);
-    TopluDataset.Dataset1 := ado1;
+      sql := 'declare @ek varchar(max),@et int ' +
+             ' select @ek = EgitimKod,@et = EgitimTuru from egitimler where id = ' + TcxButtonEditKadir(FindComponent('id')).Text +
+             ' select datavalue Egitimler from dbo.strtotable(dbo.egitimCheckStateToTanim(@ek,@et),'','') where datavalue <> ''''';
+      datalar.QuerySelect(ado1, sql);
+      TopluDataset.Dataset1 := ado1;
 
-    if TMenuItem (Sender).Tag = -30 then
-      PrintYap('004','Eðitime Katýlan Personel Listesi','',TopluDataset,pTNone)
-     else
-      PrintYap('005','Personel Eðitimi Sertifikasý','',TopluDataset,pTNone);
+      if TMenuItem (Sender).Tag = -30 then
+        PrintYap('004','Eðitime Katýlan Personel Listesi','',TopluDataset,pTNone)
+       else
+        PrintYap('005','Personel Eðitimi Sertifikasý','',TopluDataset,pTNone);
+    finally
+      ado1.free;
+    end;
   finally
     ado.free;
-    ado1.free;
   end;
 end;
 
@@ -347,7 +356,8 @@ begin
   List.Conn := Datalar.ADOConnection2;
   List.SkinName := 'coffee';//AnaForm.dxSkinController1.SkinName;
   List.Where := '';//'SirketKod = ' + QuotedStr (DATALAR.AktifSirket);
-  setDataStringB(self,'id','Eðitim No.',Kolon1,'',70,List,True,nil, 'tanimi', '', False, True, -100);
+  setDataStringB(self,'id','Eðitim No.',Kolon1,'ababa',70,List,True,nil, 'tanimi', '', False, True, -100);
+  setDataString(self,'EgitimCSGBGonderimSonuc','ÇSGB Gönderim Sonucu',Kolon1,'ababa',50, False, '', True);
 
  // setDataStringB(self,'SirketKod','Þirket Kodu',Kolon1,'',100,nil, True, SirketKod);
  // SirketKod.Properties.ReadOnly := True;
@@ -464,6 +474,7 @@ begin
   kombo.Filter := '';
   OrtakEventAta(kombo);
   setDataStringKontrol(self,kombo,'EgitimUcretiOdendi','Ödendi mi?',kolon1,'ecr',100);
+
 
   sirketlerxx := TcxImageComboKadir.Create(self);
   sirketlerxx.Conn := Datalar.ADOConnection2;

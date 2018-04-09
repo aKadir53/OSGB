@@ -479,7 +479,7 @@ type
    _tesisKodu , _labusername , _labsifre , doktor ,doktorKodu, SonReceteDoktorKodu,SonImzaDoktorKodu,sirketKodu,
    IGU, DSPers, _dosyaNo_,_gelisNo_,kontrolKod,RiskTanimBilgiEkle,
    _labkurumkod , _labkurumkodText, _laburl , _labfirma ,  _SKRS , _saglikNetUser ,
-   _saglikNetPass , _firmaSKRS , _usermernis , _passmernis, UserGroup : string;
+   _saglikNetPass , _firmaSKRS , _usermernis , _passmernis, UserGroup, UserGroupName : string;
    _doktorReceteUser,_doktorRecetePas,_KurumSKRS_, _userSaglikNet_ , _passSaglikNet_ , _userSaglikNet2_ , _passSaglikNet2_ , itsGLN , itsUser , itsPass: string;
    _merkezAdi , _DyobKurumKodu_,_DyobSifre_,_DyobServiceKodu_ , doktorTip , bashekimKodu,hekimKodu,ImajFTPServer : string;
    _medulaOrtam_ , WanIp,WanIpURL ,_firmaKod_ , osgbKodu : string;
@@ -664,7 +664,7 @@ var
   iThermo : Integer;
 begin
   try
-    ShowThermo (iThermo, 'Parametreler ve ayarlar yükleniyor', 0, 20, 0);
+    ShowThermo (iThermo, 'Parametreler ve ayarlar yükleniyor', 0, 23, 0);
     try
       ado := TADOQuery.Create(nil);
       try
@@ -1058,15 +1058,20 @@ begin
 //      and (Pos ('ORDER BY',AnsiUpperCase(sql)) = 0)
 //      Then sql := sql + ' WITH(NOLOCK) ';
     Result := TADOQuery.Create(nil);
-    Result.Connection := ADOConnection2;
+    try
+      Result.Connection := ADOConnection2;
 
-    Result.Close;
-    Result.SQL.Clear ;
-    if Copy(AnsiUppercase(sql) ,1, 6) = 'SELECT'
-    Then sql := 'SET TRANSACTION ISOLATION LEVEL READ UNCOMMITTED  '+ sql;
-    Result.SQL.Add (sql);
-//    Q.Prepare;
-    Result.Open;
+      Result.Close;
+      Result.SQL.Clear ;
+      if Copy(AnsiUppercase(sql) ,1, 6) = 'SELECT'
+      Then sql := 'SET TRANSACTION ISOLATION LEVEL READ UNCOMMITTED  '+ sql;
+      Result.SQL.Add (sql);
+  //    Q.Prepare;
+      Result.Open;
+    except
+      FreeAndNil (Result);
+      raise;
+    end;
 end;
 
 procedure TDATALAR.pcarihareketlerAfterScroll(DataSet: TDataSet);

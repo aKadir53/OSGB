@@ -345,7 +345,7 @@ procedure GetBuildInfo(const AppName: string; var V1, V2, V3,V4: Word);
 procedure MedEczaneGit(user,pasword,Tc : string);
 procedure cxExceleGonder(grid : TcxGrid ; dosyaName : string);
 procedure SifreDegistir(newSifre : string ; sifreTip : integer);  overload;
-procedure SifreDegistir;overload;
+function SifreDegistir: Boolean;overload;
 procedure HastaBilgiRecordSet(Adi,Soyadi,Tc,Yas : string);
 procedure HastaRapor(dosyaNo,gelisNo : string);
 procedure Son6AylikTetkikSonuc(dosyaNo,Tarih : string);
@@ -408,6 +408,7 @@ procedure StretchImage(var Image1: TImage; StretchType: Byte; NewWidth, NewHeigh
 procedure StretchImage(var Image1: TcxImage; StretchType: Byte; NewWidth, NewHeight: Word);overload;
 procedure HesapIsle(BorcHesap,AlacakHesap,Aciklama : string ; Tutar : Double ; Tarih ,cek,vadeTarihi,evrakTipi,evrakNo,cekdurum,cekId: string);
 procedure HesapIsleOdeme(BorcHesap,AlacakHesap,Aciklama : string ; Tutar : Double ; Tarih ,cek,vadeTarihi,evrakTipi,evrakNo,cekdurum,cekId: string);
+function SifreGecerliMi (const sSifre: String; const pMinKarakter, pMinHarf, pMinKucukHarf, pMinBuyukHarf, pMinRakam : Integer; pMsgGostrt : Boolean = True) : Boolean;
 
 
 function findMethod(dllHandle: Cardinal;  methodName: string): FARPROC;
@@ -582,31 +583,16 @@ begin
     begin
     //    ShowMessage('Geniþlik: '+IntToStr(Image1.Picture.Graphic.Width)+'  Yükseklik: '+IntToStr(Image1.Picture.Graphic.Height));
       CompressedImage := TImage.Create(nil);
-
-      if StretchType = stBuyukseKucult then
-      begin
-        if (Image1.Picture.Graphic.Width>newWidth) or
-           (Image1.Picture.Graphic.Height>NewHeight) then
+      try
+        if StretchType = stBuyukseKucult then
         begin
-          OranW:=NewWidth/Image1.Picture.Graphic.Width;
-          OranH:=NewHeight/Image1.Picture.Graphic.Height;
-          if OranW>OranH then Oran:=OranH else Oran:=OranW;
-          //\\ JCL Graphics ten dolayý iptal
-          Stretch(Round(Image1.Picture.Graphic.Width*Oran),
-                  Round(Image1.Picture.Graphic.Height*Oran),
-                  rfBell, 1, Image1.Picture.Graphic, CompressedImage.Picture.Bitmap);
-          Image1.Picture.Bitmap.Assign(CompressedImage.Picture.Bitmap);
-        end;
-      end else
-      begin
-        if StretchType=stKucukseBuyult then
-        begin
-          if (Image1.Picture.Graphic.Width<NewWidth) or
-             (Image1.Picture.Graphic.Height<NewHeight) then
+          if (Image1.Picture.Graphic.Width>newWidth) or
+             (Image1.Picture.Graphic.Height>NewHeight) then
           begin
             OranW:=NewWidth/Image1.Picture.Graphic.Width;
             OranH:=NewHeight/Image1.Picture.Graphic.Height;
             if OranW>OranH then Oran:=OranH else Oran:=OranW;
+            //\\ JCL Graphics ten dolayý iptal
             Stretch(Round(Image1.Picture.Graphic.Width*Oran),
                     Round(Image1.Picture.Graphic.Height*Oran),
                     rfBell, 1, Image1.Picture.Graphic, CompressedImage.Picture.Bitmap);
@@ -614,20 +600,37 @@ begin
           end;
         end else
         begin
-          if StretchType=stHerDurumdaStretch then
+          if StretchType=stKucukseBuyult then
           begin
-            OranW:=NewWidth/Image1.Picture.Graphic.Width;
-            OranH:=NewHeight/Image1.Picture.Graphic.Height;
-            if OranW>OranH then Oran:=OranH else Oran:=OranW;
-            Stretch(Round(Image1.Picture.Graphic.Width*Oran),
-                    Round(Image1.Picture.Graphic.Height*Oran),
-                    rfBell, 1, Image1.Picture.Graphic, CompressedImage.Picture.Bitmap);
-            Image1.Picture.Bitmap.Assign(CompressedImage.Picture.Bitmap);
+            if (Image1.Picture.Graphic.Width<NewWidth) or
+               (Image1.Picture.Graphic.Height<NewHeight) then
+            begin
+              OranW:=NewWidth/Image1.Picture.Graphic.Width;
+              OranH:=NewHeight/Image1.Picture.Graphic.Height;
+              if OranW>OranH then Oran:=OranH else Oran:=OranW;
+              Stretch(Round(Image1.Picture.Graphic.Width*Oran),
+                      Round(Image1.Picture.Graphic.Height*Oran),
+                      rfBell, 1, Image1.Picture.Graphic, CompressedImage.Picture.Bitmap);
+              Image1.Picture.Bitmap.Assign(CompressedImage.Picture.Bitmap);
+            end;
+          end else
+          begin
+            if StretchType=stHerDurumdaStretch then
+            begin
+              OranW:=NewWidth/Image1.Picture.Graphic.Width;
+              OranH:=NewHeight/Image1.Picture.Graphic.Height;
+              if OranW>OranH then Oran:=OranH else Oran:=OranW;
+              Stretch(Round(Image1.Picture.Graphic.Width*Oran),
+                      Round(Image1.Picture.Graphic.Height*Oran),
+                      rfBell, 1, Image1.Picture.Graphic, CompressedImage.Picture.Bitmap);
+              Image1.Picture.Bitmap.Assign(CompressedImage.Picture.Bitmap);
 
+            end;
           end;
         end;
+      finally
+        CompressedImage.Free;
       end;
-      CompressedImage.Free;
       // ShowMessage('Küçültüldü Geniþlik: '+IntToStr(Image1.Picture.Bitmap.Width)+'  Yükseklik: '+IntToStr(Image1.Picture.Bitmap.Height));
     end;
   end;
@@ -645,31 +648,16 @@ begin
     begin
     //    ShowMessage('Geniþlik: '+IntToStr(Image1.Picture.Graphic.Width)+'  Yükseklik: '+IntToStr(Image1.Picture.Graphic.Height));
       CompressedImage := TImage.Create(nil);
-
-      if StretchType = stBuyukseKucult then
-      begin
-        if (Image1.Picture.Graphic.Width>newWidth) or
-           (Image1.Picture.Graphic.Height>NewHeight) then
+      try
+        if StretchType = stBuyukseKucult then
         begin
-          OranW:=NewWidth/Image1.Picture.Graphic.Width;
-          OranH:=NewHeight/Image1.Picture.Graphic.Height;
-          if OranW>OranH then Oran:=OranH else Oran:=OranW;
-          //\\ JCL Graphics ten dolayý iptal
-          Stretch(Round(Image1.Picture.Graphic.Width*Oran),
-                  Round(Image1.Picture.Graphic.Height*Oran),
-                  rfBell, 1, Image1.Picture.Graphic, CompressedImage.Picture.Bitmap);
-          Image1.Picture.Bitmap.Assign(CompressedImage.Picture.Bitmap);
-        end;
-      end else
-      begin
-        if StretchType=stKucukseBuyult then
-        begin
-          if (Image1.Picture.Graphic.Width<NewWidth) or
-             (Image1.Picture.Graphic.Height<NewHeight) then
+          if (Image1.Picture.Graphic.Width>newWidth) or
+             (Image1.Picture.Graphic.Height>NewHeight) then
           begin
             OranW:=NewWidth/Image1.Picture.Graphic.Width;
             OranH:=NewHeight/Image1.Picture.Graphic.Height;
             if OranW>OranH then Oran:=OranH else Oran:=OranW;
+            //\\ JCL Graphics ten dolayý iptal
             Stretch(Round(Image1.Picture.Graphic.Width*Oran),
                     Round(Image1.Picture.Graphic.Height*Oran),
                     rfBell, 1, Image1.Picture.Graphic, CompressedImage.Picture.Bitmap);
@@ -677,20 +665,37 @@ begin
           end;
         end else
         begin
-          if StretchType=stHerDurumdaStretch then
+          if StretchType=stKucukseBuyult then
           begin
-            OranW:=NewWidth/Image1.Picture.Graphic.Width;
-            OranH:=NewHeight/Image1.Picture.Graphic.Height;
-            if OranW>OranH then Oran:=OranH else Oran:=OranW;
-            Stretch(Round(Image1.Picture.Graphic.Width*Oran),
-                    Round(Image1.Picture.Graphic.Height*Oran),
-                    rfBell, 1, Image1.Picture.Graphic, CompressedImage.Picture.Bitmap);
-            Image1.Picture.Bitmap.Assign(CompressedImage.Picture.Bitmap);
+            if (Image1.Picture.Graphic.Width<NewWidth) or
+               (Image1.Picture.Graphic.Height<NewHeight) then
+            begin
+              OranW:=NewWidth/Image1.Picture.Graphic.Width;
+              OranH:=NewHeight/Image1.Picture.Graphic.Height;
+              if OranW>OranH then Oran:=OranH else Oran:=OranW;
+              Stretch(Round(Image1.Picture.Graphic.Width*Oran),
+                      Round(Image1.Picture.Graphic.Height*Oran),
+                      rfBell, 1, Image1.Picture.Graphic, CompressedImage.Picture.Bitmap);
+              Image1.Picture.Bitmap.Assign(CompressedImage.Picture.Bitmap);
+            end;
+          end else
+          begin
+            if StretchType=stHerDurumdaStretch then
+            begin
+              OranW:=NewWidth/Image1.Picture.Graphic.Width;
+              OranH:=NewHeight/Image1.Picture.Graphic.Height;
+              if OranW>OranH then Oran:=OranH else Oran:=OranW;
+              Stretch(Round(Image1.Picture.Graphic.Width*Oran),
+                      Round(Image1.Picture.Graphic.Height*Oran),
+                      rfBell, 1, Image1.Picture.Graphic, CompressedImage.Picture.Bitmap);
+              Image1.Picture.Bitmap.Assign(CompressedImage.Picture.Bitmap);
 
+            end;
           end;
         end;
+      finally
+        CompressedImage.Free;
       end;
-      CompressedImage.Free;
       // ShowMessage('Küçültüldü Geniþlik: '+IntToStr(Image1.Picture.Bitmap.Width)+'  Yükseklik: '+IntToStr(Image1.Picture.Bitmap.Height));
     end;
   end;
@@ -733,14 +738,13 @@ var
   sql,sonucStr : string;
   Sonuc : TStringList;
 begin
+  mailserver := datalar.SMTPSunucu;
+  username := datalar.SMTPUserName;
+  password := datalar.SMTPPassword;
+
+  ss := '';
+  dllHandle := LoadLibrary(LIB_DLL);
   try
-
-    mailserver := datalar.SMTPSunucu;
-    username := datalar.SMTPUserName;
-    password := datalar.SMTPPassword;
-
-    ss := '';
-    dllHandle := LoadLibrary(LIB_DLL);
     if dllHandle = 0 then
       exit;
 
@@ -753,21 +757,24 @@ begin
 
     sonucStr := ss;
     Sonuc := TStringList.Create;
-    ExtractStrings(['|'],[],PWideChar(sonucStr),Sonuc);
+    try
+      ExtractStrings(['|'],[],PWideChar(sonucStr),Sonuc);
 
-    if sonuc[0] = '0000' then
-    begin
-      mailGonder := '0000';
-    end
-    else
-      ShowMessageSkin(Sonuc[0],'','','info');
+      if sonuc[0] = '0000' then
+      begin
+        mailGonder := '0000';
+      end
+      else
+        ShowMessageSkin(Sonuc[0],'','','info');
 
 
-    if not Assigned(Mail) then
-      raise Exception.Create(LIB_DLL + ' içersinde EMailSend bulunamadý!');
+      if not Assigned(Mail) then
+        raise Exception.Create(LIB_DLL + ' içersinde EMailSend bulunamadý!');
+    finally
+      sonuc.Free;
+    end;
   finally
     FreeLibrary(dllHandle);
-    sonuc.Free;
   end;
 end;
 
@@ -994,8 +1001,11 @@ end;
 procedure DestekTalep;
 begin
   Application.CreateForm(TfrmDestekSorunBildir, frmDestekSorunBildir);
-  frmDestekSorunBildir.ShowModal;
-  frmDestekSorunBildir := nil;
+  try
+    frmDestekSorunBildir.ShowModal;
+  finally
+    FreeAndNil (frmDestekSorunBildir);
+  end;
 end;
 
 procedure ExceldenPersonelYukle;
@@ -8147,10 +8157,8 @@ var
  F : TfrmPopup;
 begin
   Application.CreateForm(TfrmPopup, F);
-  F.Name := FormName;
-
   try
-
+    F.Name := FormName;
     case Tag of
       gdgelisAc,gdPeryodikgelisAc,gdgelisDuzenle,ReceteYeni,
       ReceteDuzenle,ReceteIlacEkle,ReceteIlacDuzenle :
@@ -8983,29 +8991,45 @@ begin
   Result := doktorkod;
 end;
 
-procedure SifreDegistir;
+function SifreDegistir: Boolean;
 var
- ado : TadoQuery;
+  ado : TadoQuery;
 begin
   datalar.SifreDegistir.KullaniciAdi := DATALAR.username;
   datalar.SifreDegistir.Sifre := DATALAR.usersifre;
+  Result := False;
+  if mrYes <> ShowPopupForm('Þifre Deðiþtirme',PrgSifre) then
+  begin
+    ShowMessageSkin('Ýþlem iptal edildi','','','info');
+    exit;
+  end;
 
-  if mrYes = ShowPopupForm('Þifre Deðiþtirme',PrgSifre)
-  then begin
-    //güncellemeleri yap
-    sql := 'update Users set password = ' + QuotedStr(datalar.SifreDegistir.Sifre)
-           + ' where Kullanici = ' + QuotedStr(datalar.username);
-    ado := TADOQuery.Create(nil);
+  //güncellemeleri yap
+  ado := TADOQuery.Create(nil);
+  try
+    BeginTrans(DATALAR.ADOConnection2);
     try
+      sql := 'update Users set password = ' + SQLValue (datalar.SifreDegistir.Sifre)
+             + ', SifreDegisiklikTarihi = getdate (), Dogrulama = 1 where Kullanici = ' + SQLValue (datalar.username);
       datalar.QueryExec(ado,sql);
-      ShowMessageSkin('Þifreniz Deðiþtirildi','','','info');
-      DATALAR.usersifre := datalar.SifreDegistir.Sifre
+      sql :=
+        'insert into UserPasswordHistory (TarihSaat, Kullanici, [Password]) '+
+        'Select GETDATE (), ' + SQLValue (datalar.username) + ', ' + SQLValue(datalar.SifreDegistir.Sifre);
+      datalar.QueryExec(ado,sql);
+      Result := True;
     finally
-      ado.Free;
-    end
-  End
-  else
-      ShowMessageSkin('Ýþlem iptal edildi','','','info');
+      if Result then
+      begin
+        CommitTrans(DATALAR.ADOConnection2);
+        ShowMessageSkin('Þifreniz Deðiþtirildi','','','info');
+        DATALAR.usersifre := datalar.SifreDegistir.Sifre
+      end
+      else
+        RollBackTrans(DATALAR.ADOConnection2);
+    end;
+  finally
+    ado.Free;
+  end
 end;
 
 function SahaSaglikGozlemSil(const GozlemID: integer): Boolean;
@@ -9496,6 +9520,94 @@ begin
     end;
   finally
     aQuery.Free;
+  end;
+end;
+
+function SifreGecerliMi (const sSifre: String; const pMinKarakter, pMinHarf, pMinKucukHarf, pMinBuyukHarf, pMinRakam : Integer; pMsgGostrt : Boolean = True) : Boolean;
+var
+  i, iKarakter, iHarf, iKucukHarf, iBuyukHarf, iRakam : Integer;
+  sMessage : String;
+  bTmp : Boolean;
+begin
+  Result := True;
+  iKarakter := 0;
+  iHarf := 0;
+  iKucukHarf := 0;
+  iBuyukHarf := 0;
+  iRakam := 0;
+  for i := 1 to Length (sSifre) do
+  begin
+    case sSifre [i] of
+      'a'..'z' : begin
+        Inc (iKucukHarf);
+        Inc (iHarf);
+      end;
+      'A'..'Z' : begin
+        Inc (iBuyukHarf);
+        Inc (iHarf);
+      end;
+      '0'..'9' : begin
+        Inc (iRakam);
+      end;
+    end;
+    Inc (iKarakteR);
+  end;
+  sMessage := '';
+  try
+    if pMinKarakter > 0 then
+    begin
+      bTmp := (iKarakter >= pMinKarakter);
+      Result := Result and bTmp;
+      if not bTmp then
+      begin
+        sMessage := sMessage + 'en az ' + IntToStr (pMinKarakter) + ' karakterden, ';
+      end;
+    end;
+    if pMinHarf > 0 then
+    begin
+      bTmp := (iHarf >= pMinHarf);
+      Result := Result and bTmp;
+      if not bTmp then
+      begin
+        sMessage := sMessage + 'en az ' + IntToStr (pMinHarf) + ' harften, ';
+      end;
+    end;
+    if pMinKucukHarf > 0 then
+    begin
+      bTmp := (iKucukHarf >= pMinKucukHarf);
+      Result := Result and bTmp;
+      if not bTmp then
+      begin
+        sMessage := sMessage + 'en az ' + IntToStr (pMinKucukHarf) + ' küçük harften, ';
+      end;
+    end;
+    if pMinBuyukHarf > 0 then
+    begin
+      bTmp := (iBuyukHarf >= pMinBuyukHarf);
+      Result := Result and bTmp;
+      if not bTmp then
+      begin
+        sMessage := sMessage + 'en az ' + IntToStr (pMinBuyukHarf) + ' büyük harften, ';
+      end;
+    end;
+    if pMinRakam > 0 then
+    begin
+      bTmp := (iRakam >= pMinRakam);
+      Result := Result and bTmp;
+      if not bTmp then
+      begin
+        sMessage := sMessage + 'en az ' + IntToStr (pMinRakam) + ' rakamdan, ';
+      end;
+    end;
+  finally
+    if not Result then
+    begin
+      Delete (sMessage, Length (sMessage) - 1, 2);
+      if pMsgGostrt then
+      begin
+        ShowmessageSkin ('Þifre, '+ sMessage + ' oluþmalýdýr', '', '', 'info');
+      end;
+    end;
   end;
 end;
 

@@ -197,7 +197,6 @@ type
 
 var
   frmRDS: TfrmRDS;
-  Dataset : Tdataset;
   List,Faturalar : TListeAc;
 implementation
 
@@ -319,32 +318,35 @@ begin
     if MrYes = ShowMessageSkin('Rapor ' + TMenuItem(sender).Caption + ' Sektörü ile Eþleþtirilecek','','','msg')
     then begin
       DurumGoster(True,True);
-      pBar.Properties.Max := RDSSatirlar.DataController.DataSet.RecordCount-1;
+      try
+        pBar.Properties.Max := RDSSatirlar.DataController.DataSet.RecordCount-1;
 
-      for i := 0 to RDSSatirlar.DataController.DataSet.RecordCount - 1 do
-      begin
-       try
-        datalar.QueryExec('if not exists(select * from RDS_RiskKaynakSektorEslesmeTablosu where sektorid = ' + TcxButtonEditKadir(FindComponent('id')).Text +
-                          ' and Bolum = ' + QuotedStr(RDSSatirlar.DataController.DataSet.FieldByName('Bolum').AsString) +
-                          ' and TehlikeKaynagi = ' + QuotedStr(RDSSatirlar.DataController.DataSet.FieldByName('TehlikeKaynagi').AsString) +
-                          ' and Tehlike = ' +  QuotedStr(RDSSatirlar.DataController.DataSet.FieldByName('Tehlike').AsString) +')' +
-                          'begin ' +
-                          'insert into RDS_RiskKaynakSektorEslesmeTablosu (sektorid,Bolum,TehlikeKaynagi,Tehlike,Risk_tanim) ' +
-                          'values(' + inttostr(TMenuItem(sender).Tag) + ',' +
-                                      QuotedStr(RDSSatirlar.DataController.DataSet.FieldByName('Bolum').AsString) + ',' +
-                                      QuotedStr(RDSSatirlar.DataController.DataSet.FieldByName('TehlikeKaynagi').AsString) + ',' +
-                                      QuotedStr(RDSSatirlar.DataController.DataSet.FieldByName('Tehlike').AsString) + ',' +
-                                      QuotedStr(RDSSatirlar.DataController.DataSet.FieldByName('Risk_tanim').AsString) +
-                          ') end');
-       finally
-         RDSSatirlar.DataController.DataSet.Next;
-         pBar.Position := pBar.Position + 1;
-       end;
+        for i := 0 to RDSSatirlar.DataController.DataSet.RecordCount - 1 do
+        begin
+         try
+          datalar.QueryExec('if not exists(select * from RDS_RiskKaynakSektorEslesmeTablosu where sektorid = ' + TcxButtonEditKadir(FindComponent('id')).Text +
+                            ' and Bolum = ' + QuotedStr(RDSSatirlar.DataController.DataSet.FieldByName('Bolum').AsString) +
+                            ' and TehlikeKaynagi = ' + QuotedStr(RDSSatirlar.DataController.DataSet.FieldByName('TehlikeKaynagi').AsString) +
+                            ' and Tehlike = ' +  QuotedStr(RDSSatirlar.DataController.DataSet.FieldByName('Tehlike').AsString) +')' +
+                            'begin ' +
+                            'insert into RDS_RiskKaynakSektorEslesmeTablosu (sektorid,Bolum,TehlikeKaynagi,Tehlike,Risk_tanim) ' +
+                            'values(' + inttostr(TMenuItem(sender).Tag) + ',' +
+                                        QuotedStr(RDSSatirlar.DataController.DataSet.FieldByName('Bolum').AsString) + ',' +
+                                        QuotedStr(RDSSatirlar.DataController.DataSet.FieldByName('TehlikeKaynagi').AsString) + ',' +
+                                        QuotedStr(RDSSatirlar.DataController.DataSet.FieldByName('Tehlike').AsString) + ',' +
+                                        QuotedStr(RDSSatirlar.DataController.DataSet.FieldByName('Risk_tanim').AsString) +
+                            ') end');
+         finally
+           RDSSatirlar.DataController.DataSet.Next;
+           pBar.Position := pBar.Position + 1;
+         end;
 
 
 
+        end;
+      finally
+        DurumGoster(False,False);
       end;
-      DurumGoster(False,False);
     end;
   end
   else
@@ -353,38 +355,41 @@ begin
     then begin
       datalar.QuerySelect(SelectAdo,'Select Bolum,TehlikeKaynagi,Tehlike,Risk_tanim from RDS_RiskKaynakSektorEslesmeTablosu where sektorid = ' + inttostr(TMenuItem(sender).Tag-1000));
       DurumGoster(True,True);
-      pBar.Properties.Max := SelectAdo.RecordCount-1;
+      try
+        pBar.Properties.Max := SelectAdo.RecordCount-1;
 
-      for i := 0 to SelectAdo.RecordCount - 1 do
-      begin
-       try
-         if not
-          RDSSatirlar.DataController.DataSet.Locate('SirketRiskID;Bolum;TehlikeKaynagi',
-                                                    VarArrayOf([TcxButtonEditKadir(FindComponent('id')).Text,
-                                                    SelectAdo.FieldByName('Bolum').AsString,
-                                                    SelectAdo.FieldByName('TehlikeKaynagi').AsString]),[])
-         Then Begin
-           RDSSatirlar.DataController.DataSet.Append;
-           RDSSatirlar.DataController.DataSet.FieldByName('Bolum').AsString := SelectAdo.FieldByName('Bolum').AsString;
-           RDSSatirlar.DataController.DataSet.FieldByName('TehlikeKaynagi').AsString := SelectAdo.FieldByName('TehlikeKaynagi').AsString;
-           RDSSatirlar.DataController.DataSet.FieldByName('Tehlike').AsString := SelectAdo.FieldByName('Tehlike').AsString;
-           RDSSatirlar.DataController.DataSet.FieldByName('Risk_tanim').AsString := SelectAdo.FieldByName('Risk_tanim').AsString;
-           RDSSatirlar.DataController.DataSet.Post;
-         End;
-         (*
-         datalar.QueryExec('insert into RDS_RiskKaynakSektorEslesmeTablosu (sektorid,Bolum,TehlikeKaynagi,Tehlike,Risk_tanim) ' +
-                          'values(' + inttostr(TMenuItem(sender).Tag) + ',' +
-                                      QuotedStr(RDSSatirlar.DataController.DataSet.FieldByName('Bolum').AsString) + ',' +
-                                      QuotedStr(RDSSatirlar.DataController.DataSet.FieldByName('TehlikeKaynagi').AsString) + ',' +
-                                      QuotedStr(RDSSatirlar.DataController.DataSet.FieldByName('Tehlike').AsString) + ',' +
-                                      QuotedStr(RDSSatirlar.DataController.DataSet.FieldByName('Risk_tanim').AsString) + ')');
-        *)
-         SelectAdo.Next;
-         pBar.Position := pBar.Position + 1;
-       except
-       end;
+        for i := 0 to SelectAdo.RecordCount - 1 do
+        begin
+         try
+           if not
+            RDSSatirlar.DataController.DataSet.Locate('SirketRiskID;Bolum;TehlikeKaynagi',
+                                                      VarArrayOf([TcxButtonEditKadir(FindComponent('id')).Text,
+                                                      SelectAdo.FieldByName('Bolum').AsString,
+                                                      SelectAdo.FieldByName('TehlikeKaynagi').AsString]),[])
+           Then Begin
+             RDSSatirlar.DataController.DataSet.Append;
+             RDSSatirlar.DataController.DataSet.FieldByName('Bolum').AsString := SelectAdo.FieldByName('Bolum').AsString;
+             RDSSatirlar.DataController.DataSet.FieldByName('TehlikeKaynagi').AsString := SelectAdo.FieldByName('TehlikeKaynagi').AsString;
+             RDSSatirlar.DataController.DataSet.FieldByName('Tehlike').AsString := SelectAdo.FieldByName('Tehlike').AsString;
+             RDSSatirlar.DataController.DataSet.FieldByName('Risk_tanim').AsString := SelectAdo.FieldByName('Risk_tanim').AsString;
+             RDSSatirlar.DataController.DataSet.Post;
+           End;
+           (*
+           datalar.QueryExec('insert into RDS_RiskKaynakSektorEslesmeTablosu (sektorid,Bolum,TehlikeKaynagi,Tehlike,Risk_tanim) ' +
+                            'values(' + inttostr(TMenuItem(sender).Tag) + ',' +
+                                        QuotedStr(RDSSatirlar.DataController.DataSet.FieldByName('Bolum').AsString) + ',' +
+                                        QuotedStr(RDSSatirlar.DataController.DataSet.FieldByName('TehlikeKaynagi').AsString) + ',' +
+                                        QuotedStr(RDSSatirlar.DataController.DataSet.FieldByName('Tehlike').AsString) + ',' +
+                                        QuotedStr(RDSSatirlar.DataController.DataSet.FieldByName('Risk_tanim').AsString) + ')');
+          *)
+           SelectAdo.Next;
+           pBar.Position := pBar.Position + 1;
+         except
+         end;
+        end;
+      finally
+        DurumGoster(False,False);
       end;
-      DurumGoster(False,False);
     end;
   end;
 
@@ -476,10 +481,10 @@ end;
 procedure TfrmRDS.RDSSatirlarNavigatorButtonsButtonClick(Sender: TObject;
   AButtonIndex: Integer; var ADone: Boolean);
 
-procedure datawrite;
-var
-  Blob : TADOBlobStream;
-begin
+  procedure datawrite;
+  var
+    Blob : TADOBlobStream;
+  begin
     RDSSatirlar.DataController.DataSet.FieldByName('Bolum').AsString := datalar.Risk.Bolum;
     RDSSatirlar.DataController.DataSet.FieldByName('TehlikeKaynagi').AsString := datalar.Risk.TehlikeKaynagi;
     RDSSatirlar.DataController.DataSet.FieldByName('Tehlike').AsString := datalar.Risk.Tehlike;
@@ -501,57 +506,57 @@ begin
     RDSSatirlar.DataController.DataSet.FieldByName('RDS_2').AsVariant := datalar.Risk.RDS_2;
     RDSSatirlar.DataController.DataSet.FieldByName('yasalDayanak').AsString := datalar.Risk.yasalDayanak;
 
-    try
-      if Assigned(datalar.Risk.Image.Picture.Graphic)
-      then begin
-        Blob := TADOBlobStream.Create(TBlobField(RDSSatirlar.DataController.DataSet.FieldByName('Image')),bmwrite);
-    //  datalar.Risk.Image.Picture.SaveToFile('dd.jpg');
+    if Assigned(datalar.Risk.Image.Picture.Graphic)
+    then begin
+      Blob := TADOBlobStream.Create(TBlobField(RDSSatirlar.DataController.DataSet.FieldByName('Image')),bmwrite);
+      try
+        //datalar.Risk.Image.Picture.SaveToFile('dd.jpg');
         datalar.Risk.Image.Picture.Graphic.SaveToStream(Blob);
         Blob.Position := 0;
         TBlobField(RDSSatirlar.DataController.DataSet.FieldByName('Image')).LoadFromStream(Blob);
-       end;
-    finally
-      Blob.Free;
+      finally
+        Blob.Free;
+      end;
     end;
-end;
-
-procedure dataRead;
-var
-  G : TGraphic;
-begin
-  datalar.Risk.Bolum := RDSSatirlar.DataController.DataSet.FieldByName('Bolum').AsVariant;
-  datalar.Risk.TehlikeKaynagi := RDSSatirlar.DataController.DataSet.FieldByName('TehlikeKaynagi').AsVariant;
-  datalar.Risk.Tehlike := RDSSatirlar.DataController.DataSet.FieldByName('Tehlike').AsVariant;
-  datalar.Risk.Risk_tanim := RDSSatirlar.DataController.DataSet.FieldByName('Risk_tanim').AsVariant;
-  datalar.Risk.Onlemler := RDSSatirlar.DataController.DataSet.FieldByName('Onlemler').AsString;
-  datalar.Risk.Olasilik := RDSSatirlar.DataController.DataSet.FieldByName('Olasilik').AsVariant;;
-  datalar.Risk.Frekans := RDSSatirlar.DataController.DataSet.FieldByName('Frekans').AsVariant;;
-  datalar.Risk.Siddet := RDSSatirlar.DataController.DataSet.FieldByName('Siddet').AsVariant;;
-  datalar.Risk.RDS := RDSSatirlar.DataController.DataSet.FieldByName('RDS').AsVariant;;
-  datalar.Risk.MevcutOnlem := RDSSatirlar.DataController.DataSet.FieldByName('MevcutOnlem').AsString;
-  datalar.Risk.Sorumlu := RDSSatirlar.DataController.DataSet.FieldByName('Sorumlu').AsString;
-  datalar.Risk.Termin := RDSSatirlar.DataController.DataSet.FieldByName('Termin').AsString;
-  datalar.Risk.Gerceklesme := RDSSatirlar.DataController.DataSet.FieldByName('Gerceklesme').AsString;
-  datalar.Risk.Olasilik_2 := RDSSatirlar.DataController.DataSet.FieldByName('Olasilik_2').AsVariant;
-  datalar.Risk.Frekans_2 := RDSSatirlar.DataController.DataSet.FieldByName('Frekans_2').AsVariant;
-  datalar.Risk.Siddet_2 := RDSSatirlar.DataController.DataSet.FieldByName('Siddet_2').AsVariant;
-  datalar.Risk.Risk_2 := RDSSatirlar.DataController.DataSet.FieldByName('Risk_2').AsVariant;
-  datalar.Risk.RDS_2 := RDSSatirlar.DataController.DataSet.FieldByName('RDS_2').AsVariant;
-  datalar.Risk.yasalDayanak := RDSSatirlar.DataController.DataSet.FieldByName('yasalDayanak').AsString;
-
-  try
-      g := TJpegimage.Create;
-      g.Assign(RDSSatirlar.DataController.DataSet.FieldByName('Image'));
-      datalar.Risk.Image := TcxImage.Create(nil);
-      datalar.Risk.Image.Picture.Assign(g);
-  //    datalar.Risk.Image.Picture.SaveToFile('dd.jpg');
-  finally
-     g.free;
   end;
-end;
 
+  procedure dataRead;
+  var
+    G : TGraphic;
+  begin
+    datalar.Risk.Bolum := RDSSatirlar.DataController.DataSet.FieldByName('Bolum').AsVariant;
+    datalar.Risk.TehlikeKaynagi := RDSSatirlar.DataController.DataSet.FieldByName('TehlikeKaynagi').AsVariant;
+    datalar.Risk.Tehlike := RDSSatirlar.DataController.DataSet.FieldByName('Tehlike').AsVariant;
+    datalar.Risk.Risk_tanim := RDSSatirlar.DataController.DataSet.FieldByName('Risk_tanim').AsVariant;
+    datalar.Risk.Onlemler := RDSSatirlar.DataController.DataSet.FieldByName('Onlemler').AsString;
+    datalar.Risk.Olasilik := RDSSatirlar.DataController.DataSet.FieldByName('Olasilik').AsVariant;;
+    datalar.Risk.Frekans := RDSSatirlar.DataController.DataSet.FieldByName('Frekans').AsVariant;;
+    datalar.Risk.Siddet := RDSSatirlar.DataController.DataSet.FieldByName('Siddet').AsVariant;;
+    datalar.Risk.RDS := RDSSatirlar.DataController.DataSet.FieldByName('RDS').AsVariant;;
+    datalar.Risk.MevcutOnlem := RDSSatirlar.DataController.DataSet.FieldByName('MevcutOnlem').AsString;
+    datalar.Risk.Sorumlu := RDSSatirlar.DataController.DataSet.FieldByName('Sorumlu').AsString;
+    datalar.Risk.Termin := RDSSatirlar.DataController.DataSet.FieldByName('Termin').AsString;
+    datalar.Risk.Gerceklesme := RDSSatirlar.DataController.DataSet.FieldByName('Gerceklesme').AsString;
+    datalar.Risk.Olasilik_2 := RDSSatirlar.DataController.DataSet.FieldByName('Olasilik_2').AsVariant;
+    datalar.Risk.Frekans_2 := RDSSatirlar.DataController.DataSet.FieldByName('Frekans_2').AsVariant;
+    datalar.Risk.Siddet_2 := RDSSatirlar.DataController.DataSet.FieldByName('Siddet_2').AsVariant;
+    datalar.Risk.Risk_2 := RDSSatirlar.DataController.DataSet.FieldByName('Risk_2').AsVariant;
+    datalar.Risk.RDS_2 := RDSSatirlar.DataController.DataSet.FieldByName('RDS_2').AsVariant;
+    datalar.Risk.yasalDayanak := RDSSatirlar.DataController.DataSet.FieldByName('yasalDayanak').AsString;
+
+    g := TJpegimage.Create;
+    try
+        g.Assign(RDSSatirlar.DataController.DataSet.FieldByName('Image'));
+        datalar.Risk.Image := TcxImage.Create(nil);
+        datalar.Risk.Image.Picture.Assign(g);
+    //    datalar.Risk.Image.Picture.SaveToFile('dd.jpg');
+    finally
+       g.free;
+    end;
+  end;
+var
+  Dataset : Tdataset;
 begin
-
   case AButtonIndex of
    6 : begin
         datalar.Risk.Bolum := Null;
@@ -589,26 +594,26 @@ begin
           end
           else
           begin
-           Dataset := TDataSet.Create(nil);
            Dataset := datalar.QuerySelect('select * from RDS_RiskKaynakSektorEslesmeTablosu ES ' +
                                      ' join RDS_TehlikeKaynak TK on TK.kod = ES.TehlikeKaynagi ' +
                                      ' where sektorid = ' + datalar.Risk.SektorId +
                                      ' and TehlikeKaynagi = ' +  datalar.Risk.TehlikeKaynagi);
-           while not Dataset.Eof
-            do
-            begin
-              RDSSatirlar.DataController.DataSet.Append;
-              RDSSatirlar.DataController.DataSet.FieldByName('Bolum').AsString := datalar.Risk.Bolum;
-              RDSSatirlar.DataController.DataSet.FieldByName('TehlikeKaynagi').AsString := Dataset.FieldByName('TehlikeKaynagi').AsString;
-              RDSSatirlar.DataController.DataSet.FieldByName('Tehlike').AsString := Dataset.FieldByName('Tehlike').AsString;
-              RDSSatirlar.DataController.DataSet.FieldByName('Risk_Tanim').AsString := Dataset.FieldByName('Risk_Tanim').AsString;
-              RDSSatirlar.DataController.DataSet.post;
-              Dataset.Next;
-            end;
-
+           try
+             while not Dataset.Eof
+              do
+              begin
+                RDSSatirlar.DataController.DataSet.Append;
+                RDSSatirlar.DataController.DataSet.FieldByName('Bolum').AsString := datalar.Risk.Bolum;
+                RDSSatirlar.DataController.DataSet.FieldByName('TehlikeKaynagi').AsString := Dataset.FieldByName('TehlikeKaynagi').AsString;
+                RDSSatirlar.DataController.DataSet.FieldByName('Tehlike').AsString := Dataset.FieldByName('Tehlike').AsString;
+                RDSSatirlar.DataController.DataSet.FieldByName('Risk_Tanim').AsString := Dataset.FieldByName('Risk_Tanim').AsString;
+                RDSSatirlar.DataController.DataSet.post;
+                Dataset.Next;
+              end;
+           finally
+             Dataset.Free;
+           end
           end;
-
-
           RDSSatirlar.DataController.DataSet.Refresh;
           ADone := True;
         except on e : Exception do
@@ -666,20 +671,31 @@ begin
   Then begin
     List.Table := 'RDS_Risk';
     L := List.ListeGetir;
+    if High (L) < 0 then Exit;
     RDSSatirlar.DataController.DataSet.Edit;
-    RDSSatirlar.DataController.DataSet.FieldByName('Risk_tanim').AsString := L[0].Kolon2;
-    RDSSatirlar.DataController.DataSet.Post;
+    try
+      RDSSatirlar.DataController.DataSet.FieldByName('Risk_tanim').AsString := L[0].Kolon2;
+      RDSSatirlar.DataController.DataSet.Post;
+    except
+      RDSSatirlar.DataController.DataSet.Cancel;
+      raise;
+    end;
   end;
 
   if RDSSatirlar.Controller.FocusedColumn.Name = 'RDSSatirlarTehlike'
   Then begin
     List.Table := 'RDS_Tehlike';
     L := List.ListeGetir;
+    if High (L) < 0 then Exit;
     RDSSatirlar.DataController.DataSet.Edit;
-    RDSSatirlar.DataController.DataSet.FieldByName('Tehlike').AsString := L[0].Kolon2;
-    RDSSatirlar.DataController.DataSet.Post;
+    try
+      RDSSatirlar.DataController.DataSet.FieldByName('Tehlike').AsString := L[0].Kolon2;
+      RDSSatirlar.DataController.DataSet.Post;
+    except
+      RDSSatirlar.DataController.DataSet.Cancel;
+      raise;
+    end;
   end;
-
 end;
 
 procedure TfrmRDS.AfterScroll(DataSet: TDataSet);
@@ -813,7 +829,7 @@ begin
  // TopPanel.Visible := true;
 
   where := ' hazirlayan = ' + QuotedStr(datalar.IGU) + ' or paylasilan = ' + QuotedStr(datalar.IGU) +
-           ' or hazirlayan = ' + QuotedStr(datalar.doktorKodu) + ' or paylasilan = ' + QuotedStr(datalar.doktorKodu);
+           ' or hazirlayanDoktor = ' + QuotedStr(datalar.doktorKodu) + ' or paylasilan = ' + QuotedStr(datalar.doktorKodu);
 
   Faturalar := ListeAcCreate('RDS_SirketRiskView','id,sirketKod,sirketAdi,Tarih,GTarih,Method,hazirlayan',
                        'ID,ÞirketKodu,ÞirketAdý,HazýrlamaTarihi,Geçerlilik,Method,Hazýrlayan',
