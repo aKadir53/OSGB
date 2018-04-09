@@ -486,6 +486,30 @@ riskDuzenle,yeniRisk :
 
                    end;
               end;
+     OdemeEkle     :
+              begin
+                   if TcxImageComboKadir(FindComponent('OdemeTip')).EditValue = 1
+                   Then
+                     HesapIsleOdeme(TcxImageComboKadir(FindComponent('HesapKod')).EditValue,
+                               self._value_,
+                               TcxTextEdit(FindComponent('Aciklama')).EditValue ,
+                               TcxCurrencyEdit(FindComponent('Tutar')).EditValue,
+                               TcxDateEditKadir(FindComponent('Tarih')).GetSQLValue,'H','','','','',''
+
+                               )
+                   else
+                   begin
+                     HesapIsleOdeme(vartostr(TcxImageComboKadir(FindComponent('HesapKod')).EditValue),
+                               self._value_,
+                               TcxTextEdit(FindComponent('Aciklama')).EditValue ,
+                               TcxCurrencyEdit(FindComponent('Tutar')).EditValue,
+                               TcxDateEditKadir(FindComponent('Tarih')).GetSQLValue,
+                               'E',
+                               TcxDateEditKadir(FindComponent('VadeTarih')).GetSQLValue,'','','','');
+
+                   end;
+
+              end;
 
     CekTahsilat    :
               begin
@@ -521,7 +545,7 @@ var
   ilacList : TlisteAc;
   Doktorlar,kulYolList,uzuv : TcxImageComboKadir;
   txtTetkikIstem : TcxCheckGroupKadir;
-  TabCaption : string;
+  TabCaption ,TahsilatOdemeTipCaption : string;
   Image1 : TcxImage;
   Jpeg1 : TJpegImage;
   List : TListeAc;
@@ -1242,10 +1266,38 @@ ptPersonelTetkikleri :
                 end;
 
    FaturaTahsilatEkle,
-   CekTahsilat
+   CekTahsilat ,
+   OdemeEkle
               : begin
                     ClientHeight := 300;
                     ClientWidth := 300;
+                    TahsilatOdemeTipCaption := ifThen(TfrmPopup(self).islem_ = OdemeEkle,'Ödeme Tip','Tahsilat Tip');
+
+                    List := TListeAc.Create(nil);
+                    List.Table := '(select c.id,c.VadeTarihi,tutar, isnull(S.tanimi,'')+isnull(T.tanimi,'') tanimi, aciklama '+
+                                   ' from cari_cekler c ' +
+                                   ' left join SIRKETLER_TNM S on s.sirketKod = c.sirketKod '+
+                                   ' left join  cari_Tedarikciler T on T.kod = c.TedarikciKod '+
+                                   ' where c.Durum = 1) t ';
+
+                    List.kolonlar.Add('id');// := Ts;
+                    List.kolonlar.Add('VadeTarihi');// := Ts;
+                    List.kolonlar.Add('tutar');// := Ts;
+                    List.kolonlar.Add('tanimi'); // := Ts;
+                    List.kolonlar.Add('aciklama'); // := Ts;
+
+
+                    List.KolonBasliklari.Add('CekID');// := Ts1;
+                    List.KolonBasliklari.Add('Vade');// := Ts1;
+                    List.KolonBasliklari.Add('Tutar');// := Ts1;
+                    List.KolonBasliklari.Add('Tanimi');// := Ts1;
+                    List.KolonBasliklari.Add('Açýklama');// := Ts1;
+
+                    List.TColcount := 5;
+                    List.TColsW := '40,80,80,200,200';
+                    List.ListeBaslik := 'Tedarikçiler';
+                    List.Conn := Datalar.ADOConnection2;
+
                     Doktorlar := TcxImageComboKadir.Create(self);
                     Doktorlar.Conn := Datalar.ADOConnection2;
                     Doktorlar.TableName := 'cari_OdemeTip';
@@ -1254,8 +1306,9 @@ ptPersonelTetkikleri :
                     Doktorlar.BosOlamaz := True;
                     Doktorlar.Filter := '';
                     Doktorlar.tag := -3;
-                    setDataStringKontrol(self,Doktorlar,'OdemeTip','Tahsilat Tip',Kolon1,'',150);
+                    setDataStringKontrol(self,Doktorlar,'OdemeTip',TahsilatOdemeTipCaption,Kolon1,'',150);
                     TcxImageComboKadir(FindComponent('OdemeTip')).Properties.OnEditValueChanged := PropertiesEditValueChanged;
+                    setDataStringB(self,'CekId','Çek Bilgisi',Kolon1,'',70,List,False,nil,'','',False,True,-100);
 
                     _Tarih_ := TcxDateEditKadir.Create(self);
                     _Tarih_.Name := 'Tarih';
@@ -1306,11 +1359,13 @@ begin
     Then begin
      TdxLayoutItem(FindComponent('dxLaVadeTarih')).Visible := False;
      TdxLayoutItem(FindComponent('dxLaHesapKod')).Visible := True;
+     TdxLayoutItem(FindComponent('dxLacekID')).Visible := False;
     end
     else
     begin
      TdxLayoutItem(FindComponent('dxLaVadeTarih')).Visible := True;
      TdxLayoutItem(FindComponent('dxLaHesapKod')).Visible := False;
+     TdxLayoutItem(FindComponent('dxLacekID')).Visible := True;
     end;
   end
   else

@@ -637,6 +637,7 @@ Const
   TagfrmTedarikci = 900;
   TagfrmCekler = 910;
   TagfrmKasaBanka = 920;
+  TagfrmCSGBveriGonder = 930;
 
 
   ExceleGonder = 9997;
@@ -695,6 +696,7 @@ Const
   yeniKKDEkle = 48;
   FaturaTahsilatEkle = 49;
   CekTahsilat = 50;
+  OdemeEkle = 51;
 
   sp_HastaGelis = 'exec sp_HastaGelisleri ';
 

@@ -157,8 +157,8 @@ begin
 
 
   KurumTipTopPanel.Conn := Datalar.ADOConnection2;
-  KurumTipTopPanel.TableName := 'SIRKETLER_TNM_view';
-  KurumTipTopPanel.ValueField := 'SirketKod';
+  KurumTipTopPanel.TableName := 'cari_CariKartView';
+  KurumTipTopPanel.ValueField := 'Kod';
   KurumTipTopPanel.DisplayField := 'Tanimi';
   KurumTipTopPanel.BosOlamaz := False;
   KurumTipTopPanel.Filter := '';
