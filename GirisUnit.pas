@@ -156,6 +156,7 @@ type
     function FormInputZorunluKontrol(form : TForm) : Boolean;
     procedure FormCreate(Sender: TObject);
     procedure SayfalarChange(Sender: TObject);
+    procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
 
   private
     F_dosyaNO_ : string;
@@ -195,7 +196,13 @@ type
     F_ResourceID_ : string;
   protected
     F_IDENTITY : Integer;
-    { Private declarations }
+    function IsPostControl (aComponent : TComponent) : Boolean;
+    function IsLoadControl (aComponent : TComponent) : Boolean;
+    function IsPostSQLControl (aComponent : TComponent) : Boolean;
+    function IsGridPropertyControl (aComponent : TComponent) : Boolean;
+    function IsInputZorunluControl (aComponent : TComponent) : Boolean;
+    function IsClearControl (aComponent : TComponent) : Boolean;
+    function IsEnableDisableControl (aComponent : TComponent) : Boolean;
   public
     indexFieldName,TableName,_SqlInsert_,_SqlUpdate_,_SqlDelete_ : string;
     _fieldsEdit_,_fields_ ,_fieldBaslik_,_fieldTips_,_fieldFormats_,_spSQL_,_ICParams_ : string;
@@ -544,6 +551,56 @@ begin
   Result := True;
 end;
 
+function TGirisForm.IsClearControl(aComponent: TComponent): Boolean;
+begin
+
+end;
+
+function TGirisForm.IsEnableDisableControl(aComponent: TComponent): Boolean;
+begin
+
+end;
+
+function TGirisForm.IsGridPropertyControl(aComponent: TComponent): Boolean;
+begin
+
+end;
+
+function TGirisForm.IsInputZorunluControl(aComponent: TComponent): Boolean;
+begin
+
+end;
+
+function TGirisForm.IsLoadControl(aComponent: TComponent): Boolean;
+begin
+
+end;
+
+function TGirisForm.IsPostControl(aComponent: TComponent): Boolean;
+begin
+  Result :=
+    (SameText (aComponent.ClassName, 'TcxTextEdit')) or
+    (SameText (aComponent.ClassName, 'TcxTextEditKadir')) or
+    (SameText (aComponent.ClassName, 'TcxButtonEdit')) or
+    (SameText (aComponent.ClassName, 'TcxButtonEditKadir')) or
+    (SameText (aComponent.ClassName, 'TcxComboBox')) or
+    (SameText (aComponent.ClassName, 'TcxMemo')) or
+    (SameText (aComponent.ClassName, 'TcxImageComboBox')) or
+    (SameText (aComponent.ClassName, 'TcxImageComboKadir')) or
+    (SameText (aComponent.ClassName, 'TcxImage')) or
+    (SameText (aComponent.ClassName, 'TcxCheckBox')) or
+    (SameText (aComponent.ClassName, 'TcxCurrencyEdit')) or
+    (SameText (aComponent.ClassName, 'TcxDateEdit')) or
+    (SameText (aComponent.ClassName, 'TcxDateEditKadir')) or
+    (SameText (aComponent.ClassName, 'TcxCheckGroup')) or
+    (SameText (aComponent.ClassName, 'TcxCheckGroupKadir'));
+end;
+
+function TGirisForm.IsPostSQLControl(aComponent: TComponent): Boolean;
+begin
+
+end;
+
 procedure TGirisForm.DiyalizTedavi_UF_KontrolleriniFormaEkle(Grp : TdxLayoutGroup);
 begin
     setDataStringBLabel(self,'lblBostatir2',kolon2,'',1,'','');
@@ -814,7 +871,7 @@ begin
     if (sqlRun.Eof) and (sqlTip = sql_Select)
     Then begin
          _SQLRUN_ := _SqlInsert_;
-         sqlRun.Append;
+         sqlRun.Append;x
          _oldvalue_ := TcxButtonEditKadir(FindComponent(Fieldname)).Text;
          sqlRunLoad;
          if (TcxButtonEditKadir(FindComponent(Fieldname)).indexField = True)
@@ -824,7 +881,7 @@ begin
     end
     Else begin
       cxPanelButtonEnabled(true,true,true);
-      sqlRun.Edit;
+      sqlRun.Edit;þ
       _SQLRUN_ := _SqlUpdate_;
       sqlRunLoad;
     end;
@@ -2050,22 +2107,7 @@ begin
     if sqlRun.State <> dsNewValue then sqlRun.Edit;
     for i := 0 to self.ComponentCount - 1 do
     begin
-      if (self.Components[i].ClassName = 'TcxTextEdit') or
-         (self.Components[i].ClassName = 'TcxTextEditKadir') or
-         (self.Components[i].ClassName = 'TcxButtonEdit') or
-         (self.Components[i].ClassName = 'TcxButtonEditKadir') or
-         (self.Components[i].ClassName = 'TcxComboBox') or
-         (self.Components[i].ClassName = 'TcxMemo') or
-         (self.Components[i].ClassName = 'TcxImageComboBox') or
-         (self.Components[i].ClassName = 'TcxImageComboKadir') or
-         (self.Components[i].ClassName = 'TcxImage') or
-         (self.Components[i].ClassName = 'TcxCheckBox') or
-         (self.Components[i].ClassName = 'TcxCurrencyEdit') or
-         (self.Components[i].ClassName = 'TcxDateEdit') or
-         (self.Components[i].ClassName = 'TcxDateEditKadir') or
-         (self.Components[i].ClassName = 'TcxCheckGroup') or
-         (self.Components[i].ClassName = 'TcxCheckGroupKadir')
-
+      if IsPostControl (self.Components[i])
       then begin
         //_obje_ := nil;
         if TcxCustomEdit(self.Components[i]).Name = 'txtSifreTekrar' then Continue;
@@ -2375,7 +2417,7 @@ begin
          //  KontrolEditValueClear;
            sqlRunLoad;
 
-           sqlRun.Append;
+           sqlRun.Append;x
            F_IDENTITY := -1;
            cxPanelButtonEnabled(false,true,false);
            newButonVisible(true);
@@ -2414,7 +2456,24 @@ end;
 
 procedure TGirisForm.FormClose(Sender: TObject; var Action: TCloseAction);
 begin
-  action := Cafree;
+  action := caFree;
+end;
+
+procedure TGirisForm.FormCloseQuery(Sender: TObject; var CanClose: Boolean);
+var
+  aModalResult : TModalResult;
+begin
+  CanClose := True;//þ
+  if sqlRun.State in [dsEdit, dsInsert] then
+  begin
+    aModalResult := dialogs.MessageDlg ('Kaydedilmemiþ Bilgiler var, kaydedilsin mi ?', mtConfirmation, [mbYes, mbNo, mbCancel], 0);
+    case aModalResult of
+      mrYes : sqlRun.Post;
+      mrNo : sqlRun.Cancel;
+    else
+      Canclose := False;
+    end;
+  end;
 end;
 
 procedure TGirisForm.FormCreate(Sender: TObject);
