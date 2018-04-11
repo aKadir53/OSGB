@@ -113,7 +113,7 @@ type
     Meslekler: TListeAc;
     MESLEK: TcxButtonEditKadir;
     procedure FormCreate(Sender: TObject);
-    procedure cxKaydetClick(Sender: TObject);
+    procedure cxKaydetClick(Sender: TObject);override;
     procedure cxButtonCClick(Sender: TObject);
     procedure cxTextEditKeyDown(Sender: TObject; var Key: Word;
       Shift: TShiftState);
@@ -125,7 +125,7 @@ type
     procedure FotoEkle;
     procedure FotoNewRecord;
     procedure cxButtonEditPropertiesButtonClick(Sender: TObject;
-      AButtonIndex: Integer);
+      AButtonIndex: Integer);override;
     procedure TakipAl;
     function TakipSil(TakipNo : string) : string;
     procedure Gelisler(kartNo : string);
@@ -139,7 +139,7 @@ type
     procedure HastaRaporlari;
     procedure txtBobrekHastaligiPropertiesButtonClick(Sender: TObject;
       AButtonIndex: Integer);
-    procedure PropertiesEditValueChanged(Sender: TObject);
+    procedure PropertiesEditValueChanged(Sender: TObject);override;
     procedure cxGridGelislerFocusedRecordChanged(Sender: TcxCustomGridTableView;
       APrevFocusedRecord, AFocusedRecord: TcxCustomGridRecord;
       ANewItemRecordFocusingChanged: Boolean);
@@ -625,8 +625,6 @@ end;
 
 procedure TfrmHastaKart.PropertiesEditValueChanged(
   Sender: TObject);
-var
-  filter : string;
 begin
   inherited;
 
@@ -1019,14 +1017,12 @@ end;
 procedure TfrmHastaKart.FormCreate(Sender: TObject);
 var
   List,
-  UYRUK ,meslekler : TListeAc;
+  UYRUK  : TListeAc;
   BASLANGIC : TcxDateEditKadir;
   EV_SEHIR ,EV_ILCE ,EV_BUCAK , EV_KOY,EV_MAHALLE : TcxImageComboKadir;
-  DEV_KURUM,Kurum,EGITIM : TcxImageComboKadir;
+  EGITIM : TcxImageComboKadir;
   askerlik,ozur,bolum,birim,risk,muayenePeryot,tetkikIstemGrupSablon,
-  Subeler,sirketlerx,SirketKodNew: TcxImageComboKadir;
-  where,sube : string;
-  bolumEkle,birimEkle : TcxButtonKadir;
+  Subeler,sirketlerx: TcxImageComboKadir;
 
 begin
   USER_ID.Tag := 0;
