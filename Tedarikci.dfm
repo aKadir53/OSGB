@@ -22,6 +22,7 @@ object frmTedarikci: TfrmTedarikci
       Tag = -1
       Caption = #214'deme Ekle'
       ImageIndex = 15
+      OnClick = cxButtonCClick
     end
     object T1: TMenuItem
       Tag = -2
