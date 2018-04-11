@@ -525,6 +525,7 @@ object frmRDS: TfrmRDS
     Width = 679
     Height = 169
     TabOrder = 1
+    Visible = False
     ExceleGonder = False
     object cxGridDBTableView2: TcxGridDBTableView
       DataController.Summary.DefaultGroupSummaryItems = <>
