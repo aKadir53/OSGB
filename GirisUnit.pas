@@ -574,23 +574,7 @@ end;
 
 function TGirisForm.IsDisableControl(const aComponent: TComponent): Boolean;
 begin
-  Result :=
-    (SameText (aComponent.ClassName, 'TcxTextEdit')) or
-    (SameText (aComponent.ClassName, 'TcxTextEditKadir')) or
-    (SameText (aComponent.ClassName, 'TcxButtonEdit')) or
-    (SameText (aComponent.ClassName, 'TcxButtonEditKadir')) or
-    (SameText (aComponent.ClassName, 'TcxComboBox')) or
-    (SameText (aComponent.ClassName, 'TcxMemo')) or
-    (SameText (aComponent.ClassName, 'TcxImageComboBox')) or
-    (SameText (aComponent.ClassName, 'TcxImageComboKadir')) or
-    (SameText (aComponent.ClassName, 'TcxCheckBox')) or
-    (SameText (aComponent.ClassName, 'TcxCurrencyEdit')) or
-    (SameText (aComponent.ClassName, 'TcxDateEdit')) or
-    (SameText (aComponent.ClassName, 'TcxDateEditKadir')) or
-    (SameText (aComponent.ClassName, 'TcxCheckGroup')) or
-    (SameText (aComponent.ClassName, 'TcxButton')) or
-    (SameText (aComponent.ClassName, 'TcxGrid')) or
-    (SameText (aComponent.ClassName, 'TcxCheckGroupKadir'));
+  Result := IsEnableControl(aComponent);
 end;
 
 function TGirisForm.IsEnableControl(const aComponent: TComponent): Boolean;
@@ -652,22 +636,8 @@ end;
 function TGirisForm.IsLoadControl(const aComponent: TComponent): Boolean;
 begin
   Result :=
-    (SameText (aComponent.ClassName, 'TcxTextEdit')) or
-    (SameText (aComponent.ClassName, 'TcxTextEditKadir')) or
-    (SameText (aComponent.ClassName, 'TcxButtonEdit')) or
-    (SameText (aComponent.ClassName, 'TcxButtonEditKadir')) or
-    (SameText (aComponent.ClassName, 'TcxComboBox')) or
-    (SameText (aComponent.ClassName, 'TcxMemo')) or
-    (SameText (aComponent.ClassName, 'TcxImageComboBox')) or
-    (SameText (aComponent.ClassName, 'TcxImageComboKadir')) or
-    (SameText (aComponent.ClassName, 'TcxImage')) or
-    (SameText (aComponent.ClassName, 'TcxCheckBox')) or
-    (SameText (aComponent.ClassName, 'TcxCurrencyEdit')) or
+    IsPostControl(aComponent) or
     (SameText (aComponent.ClassName, 'TcxRadioGroup')) or
-    (SameText (aComponent.ClassName, 'TcxDateEdit')) or
-    (SameText (aComponent.ClassName, 'TcxDateEditKadir')) or
-    (SameText (aComponent.ClassName, 'TcxCheckGroup')) or
-    (SameText (aComponent.ClassName, 'TcxCheckGroupKadir')) or
     ((SameText (aComponent.ClassName, 'TcxLabel'))
        and (TcxLabel(aComponent).Tag = -200));
   //ÜÖ 20171215 görünmeyen bileþenin doldurulmasýnda sakýnca yok, þirket kodu bazý yerlerde görünmediði halde yazýlýp okunmasý gerekiyor. istenmeyen bileþen için Tag atanabilir.
@@ -680,21 +650,8 @@ end;
 function TGirisForm.IsPostControl(const aComponent: TComponent): Boolean;
 begin
   Result :=
-    (SameText (aComponent.ClassName, 'TcxTextEdit')) or
-    (SameText (aComponent.ClassName, 'TcxTextEditKadir')) or
-    (SameText (aComponent.ClassName, 'TcxButtonEdit')) or
-    (SameText (aComponent.ClassName, 'TcxButtonEditKadir')) or
-    (SameText (aComponent.ClassName, 'TcxComboBox')) or
-    (SameText (aComponent.ClassName, 'TcxMemo')) or
-    (SameText (aComponent.ClassName, 'TcxImageComboBox')) or
-    (SameText (aComponent.ClassName, 'TcxImageComboKadir')) or
-    (SameText (aComponent.ClassName, 'TcxImage')) or
-    (SameText (aComponent.ClassName, 'TcxCheckBox')) or
-    (SameText (aComponent.ClassName, 'TcxCurrencyEdit')) or
-    (SameText (aComponent.ClassName, 'TcxDateEdit')) or
-    (SameText (aComponent.ClassName, 'TcxDateEditKadir')) or
-    (SameText (aComponent.ClassName, 'TcxCheckGroup')) or
-    (SameText (aComponent.ClassName, 'TcxCheckGroupKadir'));
+    IsPostSQLControl(aComponent) or
+    (SameText (aComponent.ClassName, 'TcxImage'));
   Result := Result and (not SameText (TcxCustomEdit(aComponent).Name, 'txtSifreTekrar'));
   Result := Result and (TcxCustomEdit(aComponent).Tag <> -100);
   Result := Result and (TcxImage(aComponent).Tag <> -1);
@@ -702,21 +659,7 @@ end;
 
 function TGirisForm.IsPostSQLControl(const aComponent: TComponent): Boolean;
 begin
-  Result :=
-    (SameText (aComponent.ClassName, 'TcxTextEdit')) or
-    (SameText (aComponent.ClassName, 'TcxTextEditKadir')) or
-    (SameText (aComponent.ClassName, 'TcxButtonEdit')) or
-    (SameText (aComponent.ClassName, 'TcxButtonEditKadir')) or
-    (SameText (aComponent.ClassName, 'TcxComboBox')) or
-    (SameText (aComponent.ClassName, 'TcxMemo')) or
-    (SameText (aComponent.ClassName, 'TcxImageComboBox')) or
-    (SameText (aComponent.ClassName, 'TcxImageComboKadir')) or
-    (SameText (aComponent.ClassName, 'TcxCheckBox')) or
-    (SameText (aComponent.ClassName, 'TcxCurrencyEdit')) or
-    (SameText (aComponent.ClassName, 'TcxDateEdit')) or
-    (SameText (aComponent.ClassName, 'TcxDateEditKadir')) or
-    (SameText (aComponent.ClassName, 'TcxCheckGroup')) or
-    (SameText (aComponent.ClassName, 'TcxCheckGroupKadir'));
+  Result := IsInputZorunluControl(aComponent);
   Result := Result and (TcxCustomEdit(aComponent).Tag <> -100);
 end;
 
@@ -1000,7 +943,8 @@ begin
     end
     Else begin
       cxPanelButtonEnabled(true,true,true);
-      sqlRun.Edit;þ
+      //ÜÖ 20180411 edit kutularý deðiþirken edit moduna geçir dedik, kaydedilmemiþ bilgi uyarýsýnýn düzgün çalýþmasý için...
+      //sqlRun.Edit;
       _SQLRUN_ := _SqlUpdate_;
       sqlRunLoad;
     end;
@@ -1427,6 +1371,13 @@ begin
           ShowMessageSkin('Tc Hatalý','','','info');
         //  TcxTextEditKadir(sender).SetFocus;
     end;
+  end;
+
+  if IsPostControl (TComponent (Sender))
+    and TcxTextEditKadir(sender).EditModified
+    and (sqlRun.State = dsBrowse) then
+  begin
+    sqlRun.Edit;
   end;
 
 end;
