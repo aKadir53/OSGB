@@ -513,7 +513,7 @@ procedure HesapIsle(BorcHesap,AlacakHesap,Aciklama : string ; Tutar : Double ; T
 var
  Sql : string;
 begin
-   datalar.ADOConnection2.BeginTrans;
+   BeginTrans (datalar.ADOConnection2);
    try
      sql := 'exec sp_FaturaTahsilat ' +
                        QuotedStr(BorcHesap) + ',' +
@@ -530,10 +530,10 @@ begin
 
      datalar.QueryExec('set nocount on ' +  Sql + ' set nocount off ');
 
-     datalar.ADOConnection2.CommitTrans;
+     CommitTrans (datalar.ADOConnection2);
    except on e : Exception do
     begin
-     datalar.ADOConnection2.RollbackTrans;
+     RollbackTrans (datalar.ADOConnection2);
      ShowMessageSkin(e.Message,'','','info');
     end;
    end;
@@ -544,7 +544,7 @@ procedure HesapIsleOdeme(BorcHesap,AlacakHesap,Aciklama : string ; Tutar : Doubl
 var
  Sql : string;
 begin
-   datalar.ADOConnection2.BeginTrans;
+   BeginTrans (datalar.ADOConnection2);
    try
      sql := 'exec sp_FaturaOdeme ' +
                        QuotedStr(BorcHesap) + ',' +
@@ -561,10 +561,10 @@ begin
 
      datalar.QueryExec('set nocount on ' +  Sql + ' set nocount off ');
 
-     datalar.ADOConnection2.CommitTrans;
+     CommitTrans (datalar.ADOConnection2);
    except on e : Exception do
     begin
-     datalar.ADOConnection2.RollbackTrans;
+     RollbackTrans (datalar.ADOConnection2);
      ShowMessageSkin(e.Message,'','','info');
     end;
    end;
@@ -706,19 +706,19 @@ function FaturaSilIptal(FID : string) : Boolean;
 var
   sql : string;
 begin
-  datalar.ADOConnection2.BeginTrans;
+  BeginTrans (datalar.ADOConnection2);
   try
    sql := 'delete from faturaHareket where faturaId = ' + FID;
    datalar.QueryExec(sql);
    sql := 'delete from faturalar where sira = ' + FID;
    datalar.QueryExec(sql);
-   datalar.ADOConnection2.CommitTrans;
+   CommitTrans (datalar.ADOConnection2);
    ShowMessageSkin('Fatura Silindi','','','info');
    FaturaSilIptal := True;
   except on e : Exception do
    begin
+    RollbackTrans (datalar.ADOConnection2);
     ShowMessageSkin(E.Message,'','','info');
-    datalar.ADOConnection2.RollbackTrans;
     FaturaSilIptal := False;
    end;
   end;

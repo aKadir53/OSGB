@@ -112,7 +112,7 @@ type
     SeansKriter: TcxTextEdit;
     pnlDurumImageList: TcxImageList;
 
-    procedure cxKaydetClick(Sender: TObject);
+    procedure cxKaydetClick(Sender: TObject);virtual;
     procedure cxButtonCClick(Sender: TObject);
     procedure TopPanelPropertiesChange(Sender: TObject);
     function Post : Boolean;
@@ -2430,7 +2430,11 @@ begin
   begin
     aModalResult := dialogs.MessageDlg ('Kaydedilmemiþ Bilgiler var, kaydedilsin mi ?', mtConfirmation, [mbYes, mbNo, mbCancel], 0);
     case aModalResult of
-      mrYes : sqlRun.Post;
+      mrYes : begin
+        sqlRun.Post;
+        cxKaydetClick(cxKaydet);
+        Canclose := cxKaydetResult;
+      end;
       mrNo : sqlRun.Cancel;
     else
       Canclose := False;
