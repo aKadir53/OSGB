@@ -615,7 +615,7 @@ begin
             QuotedStr(TcxTextEditKadir(FindComponent('kullanici')).Text);
      datalar.QueryExec(sql);
 
-     if mailGonder ('destek@noktayazilim.net' , 'Þifre Onaylama' , 'Þifreniz : ' + p)
+     if mailGonder (TcxTextEditKadir(FindComponent('email')).Text , 'Þifre Onaylama' , 'Þifreniz : ' + p)
         = '0000'
       then ShowMessageSkin('Þifreniz Mail adresinize Gönderildi','','','info')
       else ShowMessageSkin('Gönderilemedi','','','info');
