@@ -139,6 +139,11 @@ procedure TfrmTedarikci.cxButtonCClick(Sender: TObject);
 begin
   inherited;
    case TMenuItem(sender).Tag of
+    -1 : begin
+           if mrYEs = ShowPopupForm('Ödeme Ekle',OdemeEkle,TcxButtonEditKadir(FindComponent('kod')).EditingValue)
+           then begin
+           end;
+         end;
     -2 : begin
            if mrYEs = ShowPopupForm('Tedarikçi Tahsilat Ekle',FaturaTahsilatEkle,TcxButtonEditKadir(FindComponent('kod')).EditingValue)
            then begin

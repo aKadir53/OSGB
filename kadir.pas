@@ -407,6 +407,7 @@ function FaturaSilIptal(FID : string) : Boolean;
 procedure StretchImage(var Image1: TImage; StretchType: Byte; NewWidth, NewHeight: Word);overload;
 procedure StretchImage(var Image1: TcxImage; StretchType: Byte; NewWidth, NewHeight: Word);overload;
 procedure HesapIsle(BorcHesap,AlacakHesap,Aciklama : string ; Tutar : Double ; Tarih ,cek,vadeTarihi,evrakTipi,evrakNo,cekdurum,cekId: string);
+procedure HesapIsleOdeme(BorcHesap,AlacakHesap,Aciklama : string ; Tutar : Double ; Tarih ,cek,vadeTarihi,evrakTipi,evrakNo,cekdurum,cekId: string);
 function SifreGecerliMi (const sSifre: String; const pMinKarakter, pMinHarf, pMinKucukHarf, pMinBuyukHarf, pMinRakam : Integer; pMsgGostrt : Boolean = True) : Boolean;
 
 
@@ -515,6 +516,37 @@ begin
    datalar.ADOConnection2.BeginTrans;
    try
      sql := 'exec sp_FaturaTahsilat ' +
+                       QuotedStr(BorcHesap) + ',' +
+                       QuotedStr(AlacakHesap) + ',' +
+                       floattostr(Tutar) + ',' +
+                       QuotedStr(Aciklama) + ',' +
+                       Tarih + ',' +
+                       QuotedStr(cek) + ',' +
+                       ifThen(vadeTarihi='',QuotedStr(vadeTarihi),vadeTarihi)  + ',' +
+                       ifThen(cek = 'E','2',ifThen(AlacakHesap = '1','5','3')) + ',' +
+                       QuotedStr(evrakNo) + ',' +
+                       QuotedStr(cekdurum) + ',' +
+                       QuotedStr(cekId);
+
+     datalar.QueryExec('set nocount on ' +  Sql + ' set nocount off ');
+
+     datalar.ADOConnection2.CommitTrans;
+   except on e : Exception do
+    begin
+     datalar.ADOConnection2.RollbackTrans;
+     ShowMessageSkin(e.Message,'','','info');
+    end;
+   end;
+
+end;
+
+procedure HesapIsleOdeme(BorcHesap,AlacakHesap,Aciklama : string ; Tutar : Double ; Tarih,cek,vadeTarihi,evrakTipi,evrakNo,cekdurum,cekId : string );
+var
+ Sql : string;
+begin
+   datalar.ADOConnection2.BeginTrans;
+   try
+     sql := 'exec sp_FaturaOdeme ' +
                        QuotedStr(BorcHesap) + ',' +
                        QuotedStr(AlacakHesap) + ',' +
                        floattostr(Tutar) + ',' +
