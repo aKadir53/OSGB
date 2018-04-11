@@ -668,7 +668,13 @@ begin
     (SameText (aComponent.ClassName, 'TcxDateEditKadir')) or
     (SameText (aComponent.ClassName, 'TcxCheckGroup')) or
     (SameText (aComponent.ClassName, 'TcxCheckGroupKadir')) or
-    ((SameText (aComponent.ClassName, 'TcxLabel')) and (TcxLabel(aComponent).Tag = -200));
+    ((SameText (aComponent.ClassName, 'TcxLabel'))
+       and (TcxLabel(aComponent).Tag = -200));
+  //ÜÖ 20171215 görünmeyen bileþenin doldurulmasýnda sakýnca yok, þirket kodu bazý yerlerde görünmediði halde yazýlýp okunmasý gerekiyor. istenmeyen bileþen için Tag atanabilir.
+  //if TcxCustomEdit(self.Components[i]).Visible = false then Continue;
+  Result := Result and (not SameText (TcxCustomEdit(aComponent).Name, 'txtSifreTekrar'));
+  Result := Result and (TcxCustomEdit(aComponent).Tag <> -100);
+  Result := Result and (TcxImage(aComponent).Tag <> -1);
 end;
 
 function TGirisForm.IsPostControl(const aComponent: TComponent): Boolean;
@@ -689,6 +695,9 @@ begin
     (SameText (aComponent.ClassName, 'TcxDateEditKadir')) or
     (SameText (aComponent.ClassName, 'TcxCheckGroup')) or
     (SameText (aComponent.ClassName, 'TcxCheckGroupKadir'));
+  Result := Result and (not SameText (TcxCustomEdit(aComponent).Name, 'txtSifreTekrar'));
+  Result := Result and (TcxCustomEdit(aComponent).Tag <> -100);
+  Result := Result and (TcxImage(aComponent).Tag <> -1);
 end;
 
 function TGirisForm.IsPostSQLControl(const aComponent: TComponent): Boolean;
@@ -708,6 +717,7 @@ begin
     (SameText (aComponent.ClassName, 'TcxDateEditKadir')) or
     (SameText (aComponent.ClassName, 'TcxCheckGroup')) or
     (SameText (aComponent.ClassName, 'TcxCheckGroupKadir'));
+  Result := Result and (TcxCustomEdit(aComponent).Tag <> -100);
 end;
 
 procedure TGirisForm.DiyalizTedavi_UF_KontrolleriniFormaEkle(Grp : TdxLayoutGroup);
@@ -1127,11 +1137,6 @@ begin
   begin
     if IsLoadControl(components [i])
     then begin
-        //ÜÖ 20171215 görünmeyen bileþenin doldurulmasýnda sakýnca yok, þirket kodu bazý yerlerde görünmediði halde yazýlýp okunmasý gerekiyor. istenmeyen bileþen için Tag atanabilir.
-        //if TcxCustomEdit(self.Components[i]).Visible = false then Continue;
-        if TcxCustomEdit(self.Components[i]).Name = 'txtSifreTekrar' then Continue;
-        if TcxCustomEdit(self.Components[i]).Tag = -100 then Continue;
-        if TcxImage(self.Components[i]).Tag = -1 then Continue;
       _obje_ := TcxCustomEdit(self.Components[i]);
       try
 
@@ -2072,7 +2077,6 @@ begin
     if IsPostSQLControl(Components [i])
        and (TcxTextEdit(self.Components[i]).Properties.ReadOnly = False)
     then begin
-     if TcxCustomEdit(self.Components[i]).Tag = -100 then Continue;
      if (self.Components[i].ClassName = 'TcxCurrencyEdit')
      then
       value :=  TcxCurrencyEdit(self.Components[i]).Text
@@ -2120,9 +2124,6 @@ begin
       if IsPostControl (self.Components[i])
       then begin
         //_obje_ := nil;
-        if TcxCustomEdit(self.Components[i]).Name = 'txtSifreTekrar' then Continue;
-        if TcxCustomEdit(self.Components[i]).Tag = -100 then Continue;
-        if TcxImage(self.Components[i]).Tag = -1 then Continue;
 
         _obje_ := TcxCustomEdit(self.Components[i]);
 
