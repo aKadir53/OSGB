@@ -51,7 +51,7 @@ type
     procedure gridRaporCustomDrawGroupCell(Sender: TcxCustomGridTableView;
       ACanvas: TcxCanvas; AViewInfo: TcxGridTableCellViewInfo;
       var ADone: Boolean);
-    procedure cxKaydetClick(Sender: TObject);
+    procedure cxKaydetClick(Sender: TObject);override;
     procedure cxButtonEditPropertiesButtonClick(Sender: TObject;
                 AButtonIndex: Integer); override;
 
@@ -69,9 +69,6 @@ type
 
   private
     { Private declarations }
-    FImages : array of TcxImage;
-    FImageIds : array of Integer;
-    function findMethod(dllHandle: Cardinal; methodName: string): FARPROC;
 
   protected
     procedure GozlemYazdir (const GozlemID : integer);
@@ -120,11 +117,6 @@ uses data_modul, StrUtils, Jpeg;
 
 {$R *.dfm}
 
-function TfrmISGKurulToplanti.findMethod(dllHandle: Cardinal;  methodName: string): FARPROC;
-begin
-  Result := GetProcAddress(dllHandle, pchar(methodName));
-end;
-
 function TfrmISGKurulToplanti.CreateRotatedFont: HFONT;
   var
     ALogFont: TLogFont;
@@ -163,9 +155,6 @@ end;
 
 procedure TfrmISGKurulToplanti.cxButtonEditPropertiesButtonClick(Sender: TObject;
   AButtonIndex: Integer);
-var
-  list : ArrayListeSecimler;
-  where,prm : string;
 begin
     inherited;
     Enabled;
@@ -202,17 +191,12 @@ begin
 end;
 
 function TfrmISGKurulToplanti.Init(Sender : TObject) : Boolean;
-var
-  _obje_ : TcxCustomEdit;
 begin
   Result := True;
 end;
 
 
 procedure TfrmISGKurulToplanti.Fatura(islem: Integer);
-var
-  F : TForm;
-  bBasarili: Boolean;
 
 begin
   //
@@ -220,11 +204,6 @@ end;
 
 procedure TfrmISGKurulToplanti.PropertiesButtonClick(Sender: TObject;
   AButtonIndex: Integer);
-var
- L : ArrayListeSecimler;
- i : integer;
- n : string;
-
 begin
 (*
   if RDSSatirlar.Controller.FocusedColumn.Name = 'RDSSatirlarRisk_tanim'
@@ -248,10 +227,6 @@ begin
 end;
 
 procedure TfrmISGKurulToplanti.cxButtonCClick(Sender: TObject);
-var
-  GirisRecord : TGirisFormRecord;
-  aModalResult : TModalResult;
-  guid : string;
 begin
   inherited;
 
@@ -278,12 +253,9 @@ end;
 
 procedure TfrmISGKurulToplanti.FormCreate(Sender: TObject);
 var
-  List,Faturalar : TListeAc;
-  sirketlerx ,Onay : TcxImageComboKadir;
+  Faturalar : TListeAc;
+  sirketlerx : TcxImageComboKadir;
   FaturaTarihi : TcxDateEditKadir;
-  SirketAdi : TcxTextEditKadir;
-  item : TcxRadioGroupItem;
-  i : TcxImageComboBoxItem;
    where : string;
 begin
   inherited;

@@ -17,7 +17,7 @@ type
     PopupMenu1: TPopupMenu;
     E1: TMenuItem;
     T1: TMenuItem;
-    procedure cxKaydetClick(Sender: TObject);
+    procedure cxKaydetClick(Sender: TObject);override;
     procedure cxTextEditKeyDown(Sender: TObject; var Key: Word;
       Shift: TShiftState);
     procedure cxButtonEditPropertiesButtonClick(Sender: TObject;
@@ -46,11 +46,9 @@ implementation
 {$R *.dfm}
 
 function TfrmTedarikci.Init(Sender: TObject) : Boolean;
- var
-  index,i : integer;
-  Ts,Ts1 : TStringList;
-  List,List1,List3 : TListeAc;
-  bransKodu,calismaTipi,cardType,sirket,medulaGonderimTipi : TcxImageComboKadir;
+var
+  List : TListeAc;
+  bransKodu,cardType : TcxImageComboKadir;
 begin
   Result := False;
 
@@ -167,8 +165,6 @@ begin
 end;
 
 procedure TfrmTedarikci.ButtonClick(Sender: TObject);
-var
-  ID : integer;
 begin
 //
 end;

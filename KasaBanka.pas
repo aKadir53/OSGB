@@ -32,7 +32,7 @@ type
     GridKasaHareketaciklama: TcxGridDBBandedColumn;
     procedure FormCreate(Sender: TObject);
     procedure ButtonClick(Sender: TObject);
-    procedure cxKaydetClick(Sender: TObject);
+    procedure cxKaydetClick(Sender: TObject);override;
     procedure cxTextEditKeyDown(Sender: TObject; var Key: Word;
       Shift: TShiftState);
     procedure cxButtonEditPropertiesButtonClick(Sender: TObject;
@@ -43,7 +43,7 @@ type
        var AllowChange: Boolean);
     procedure SayfalarChange(Sender: TObject);
     procedure cxButtonCClick(Sender: TObject);
-    procedure PropertiesEditValueChanged(Sender: TObject);
+    procedure PropertiesEditValueChanged(Sender: TObject);override;
   private
     { Private declarations }
   protected
@@ -94,25 +94,18 @@ end;
 
 
 procedure TfrmKasaBanka.PropertiesEditValueChanged(Sender: TObject);
-var
-  xDeger : String;
 begin
 //
 end;
 
 procedure TfrmKasaBanka.ButtonClick(Sender: TObject);
-var
-  i : Integer;
-  sTmp: String;
-  ado : TADOQuery;
 begin
+//
 end;
 
 procedure TfrmKasaBanka.cxButtonCClick(Sender: TObject);
 var
-  Ado,ado1 : TADOQuery;
-  sql,fID : string;
-  TopluDataset : TDataSetKadir;
+  fID : string;
 begin
   inherited;
 
@@ -167,11 +160,6 @@ begin
 end;
 
 procedure TfrmKasaBanka.FormCreate(Sender: TObject);
-var
-  List : TListeAc;
-  kombo , kombo1 ,sirketlerx ,sirketlerxx , EvrakTip: TcxImageComboKadir;
-  dateEdit: TcxDateEditKadir;
-  Egitimler : TcxCheckGroupKadir;
 begin
   cxPanel.Visible := false;
   TopPanel.Visible := true;

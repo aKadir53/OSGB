@@ -107,7 +107,7 @@ type
     procedure gridRaporCustomDrawGroupCell(Sender: TcxCustomGridTableView;
       ACanvas: TcxCanvas; AViewInfo: TcxGridTableCellViewInfo;
       var ADone: Boolean);
-    procedure cxKaydetClick(Sender: TObject);
+    procedure cxKaydetClick(Sender: TObject);override;
     procedure cxButtonEditPropertiesButtonClick(Sender: TObject;
                 AButtonIndex: Integer); override;
     procedure NewRecord(DataSet: TDataSet);
@@ -125,9 +125,6 @@ type
 
   private
     { Private declarations }
-    FImages : array of TcxImage;
-    FImageIds : array of Integer;
-    function findMethod(dllHandle: Cardinal; methodName: string): FARPROC;
 
   protected
     procedure GozlemYazdir (const GozlemID : integer);
@@ -148,11 +145,6 @@ implementation
 uses data_modul, StrUtils, Jpeg;
 
 {$R *.dfm}
-
-function TfrmKKD.findMethod(dllHandle: Cardinal;  methodName: string): FARPROC;
-begin
-  Result := GetProcAddress(dllHandle, pchar(methodName));
-end;
 
 procedure TfrmKKD.cxKaydetClick(Sender: TObject);
 begin
@@ -177,16 +169,12 @@ end;
 
 
 procedure TfrmKKD.E3Click(Sender: TObject);
-var
- i : integer;
 begin
+//
 end;
 
 procedure TfrmKKD.cxButtonEditPropertiesButtonClick(Sender: TObject;
   AButtonIndex: Integer);
-var
-  list : ArrayListeSecimler;
-  where,prm : string;
 begin
     inherited;
     (*
@@ -236,8 +224,6 @@ begin
 end;
 
 function TfrmKKD.Init(Sender : TObject) : Boolean;
-var
-  _obje_ : TcxCustomEdit;
 begin
   KKDGrid.Dataset.Connection := datalar.ADOConnection2;
   KKDGrid.Dataset.Active := false;
@@ -341,11 +327,6 @@ end;
 
 procedure TfrmKKD.cxButtonCClick(Sender: TObject);
 var
-  GirisRecord : TGirisFormRecord;
-  aModalResult : TModalResult;
-  guid : string;
-  ado : TADOQuery;
-  sql : String;
   TopluDataset : TDataSetKadir;
 begin
   inherited;
@@ -389,16 +370,7 @@ end;
 
 procedure TfrmKKD.FormCreate(Sender: TObject);
 var
-  List,TSE : TListeAc;
   ICombo : TcxImageComboKadir;
-  FaturaTarihi : TcxDateEditKadir;
-  SirketAdi : TcxTextEditKadir;
-  item : TcxRadioGroupItem;
-  i : TcxImageComboBoxItem;
-  where : string;
-  r : integer;
-  SubItem : TMenuItem;
-  pmenu : TPopupMenu;
 begin
   inherited;
 

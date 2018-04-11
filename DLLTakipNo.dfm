@@ -309,6 +309,7 @@ object frmTakipNo: TfrmTakipNo
   object txtDevredilenKurum: TcxImageComboKadir
     Left = 11
     Top = 117
+    Properties.ClearKey = 46
     Properties.Items = <>
     TabOrder = 11
     BosOlamaz = False

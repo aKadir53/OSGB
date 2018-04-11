@@ -166,7 +166,7 @@ type
     cxDBVerticalGrid1Kodsuz: TcxDBEditorRow;
     ListeAc2: TListeAc;
     procedure FormCreate(Sender: TObject);
-    procedure cxKaydetClick(Sender: TObject);
+    procedure cxKaydetClick(Sender: TObject);override;
     procedure cxTextEditKeyDown(Sender: TObject; var Key: Word;
       Shift: TShiftState);
     procedure cxEditEnter(Sender: TObject);

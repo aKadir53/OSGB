@@ -52,7 +52,7 @@ type
     procedure ListeDblClick(Sender: TObject);
     procedure btnListeleClick(Sender: TObject);
     procedure cxButtonCClick(Sender: TObject);
-    procedure cxKaydetClick(Sender: TObject);
+    procedure cxKaydetClick(Sender: TObject);override;
     procedure Yazdir;
     procedure Duzenle;
     procedure FormCreate(Sender: TObject);

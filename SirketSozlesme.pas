@@ -60,7 +60,7 @@ type
     procedure gridRaporCustomDrawGroupCell(Sender: TcxCustomGridTableView;
       ACanvas: TcxCanvas; AViewInfo: TcxGridTableCellViewInfo;
       var ADone: Boolean);
-    procedure cxKaydetClick(Sender: TObject);
+    procedure cxKaydetClick(Sender: TObject);override;
     procedure cxButtonEditPropertiesButtonClick(Sender: TObject;
                 AButtonIndex: Integer); override;
     procedure SozlesmeDetay;
@@ -74,9 +74,6 @@ type
 
   private
     { Private declarations }
-    FImages : array of TcxImage;
-    FImageIds : array of Integer;
-    function findMethod(dllHandle: Cardinal; methodName: string): FARPROC;
 
   protected
     procedure GozlemYazdir (const GozlemID : integer);
@@ -102,11 +99,6 @@ uses data_modul, StrUtils, Jpeg;
 
 {$R *.dfm}
 
-
-function TfrmSirketSozlesme.findMethod(dllHandle: Cardinal;  methodName: string): FARPROC;
-begin
-  Result := GetProcAddress(dllHandle, pchar(methodName));
-end;
 
 procedure TfrmSirketSozlesme.SozlesmeDetay;
 begin
@@ -135,9 +127,6 @@ end;
 
 procedure TfrmSirketSozlesme.cxButtonEditPropertiesButtonClick(Sender: TObject;
   AButtonIndex: Integer);
-var
-  list : ArrayListeSecimler;
-  where,prm : string;
 begin
     inherited;
     if TcxButtonEditKadir(sender).name = 'SirketKod'
@@ -161,9 +150,6 @@ end;
 
 
 procedure TfrmSirketSozlesme.Fatura(islem: Integer);
-var
-  F : TForm;
-  bBasarili: Boolean;
 
 begin
   //
@@ -184,9 +170,6 @@ end;
 
 procedure TfrmSirketSozlesme.cxButtonCClick(Sender: TObject);
 var
-  GirisRecord : TGirisFormRecord;
-  aModalResult : TModalResult;
-  guid : string;
   L : ArrayListeSecimler;
 begin
   inherited;
@@ -213,10 +196,8 @@ end;
 procedure TfrmSirketSozlesme.FormCreate(Sender: TObject);
 var
  // List : TListeAc;
-  FaturaOzelKodlari : TcxImageComboKadir;
   FaturaKesimAyGunu : TcxSpinEdit;
   SozlesmeTarihi : TcxDateEditKadir;
-  SirketAdi : TcxTextEditKadir;
   Onay ,Tip : TcxImageComboKadir;
 begin
   inherited;

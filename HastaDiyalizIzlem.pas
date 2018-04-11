@@ -56,7 +56,7 @@ type
     K2: TMenuItem;
     procedure FormCreate(Sender: TObject);
     procedure ItemClick(Sender: TObject);
-    procedure cxKaydetClick(Sender: TObject);
+    procedure cxKaydetClick(Sender: TObject);override;
     procedure cxGridIlacTedaviPlaniStylesGetContentStyle(
       Sender: TcxCustomGridTableView; ARecord: TcxCustomGridRecord;
       AItem: TcxCustomGridTableItem; out AStyle: TcxStyle);

@@ -72,7 +72,7 @@ type
     procedure gridRaporCustomDrawGroupCell(Sender: TcxCustomGridTableView;
       ACanvas: TcxCanvas; AViewInfo: TcxGridTableCellViewInfo;
       var ADone: Boolean);
-    procedure cxKaydetClick(Sender: TObject);
+    procedure cxKaydetClick(Sender: TObject);override;
     procedure cxButtonEditPropertiesButtonClick(Sender: TObject;
                 AButtonIndex: Integer); override;
     procedure FaturaDetay;
@@ -89,10 +89,6 @@ type
 
   private
     { Private declarations }
-    FImages : array of TcxImage;
-    FImageIds : array of Integer;
-    function findMethod(dllHandle: Cardinal; methodName: string): FARPROC;
-
   protected
     procedure GozlemYazdir (const GozlemID : integer);
 
@@ -149,10 +145,6 @@ begin
      TcxCurrencyEdit(FindComponent('faturaGenelTutar')).EditValue :=
      FaturaSatirlar.DataController.Summary.FooterSummaryValues[2];
 end;
-function TfrmFaturaDetay.findMethod(dllHandle: Cardinal;  methodName: string): FARPROC;
-begin
-  Result := GetProcAddress(dllHandle, pchar(methodName));
-end;
 
 procedure TfrmFaturaDetay.FaturaDetay;
 begin
@@ -193,9 +185,6 @@ end;
 
 procedure TfrmFaturaDetay.cxButtonEditPropertiesButtonClick(Sender: TObject;
   AButtonIndex: Integer);
-var
-  list : ArrayListeSecimler;
-  where,prm : string;
 begin
     inherited;
     if TcxButtonEditKadir(sender).name = 'SirketKod'
@@ -227,10 +216,6 @@ end;
 
 
 procedure TfrmFaturaDetay.Fatura(islem: Integer);
-var
-  F : TForm;
-  bBasarili: Boolean;
-
 begin
   //
 end;
@@ -250,9 +235,6 @@ end;
 
 procedure TfrmFaturaDetay.cxButtonCClick(Sender: TObject);
 var
-  GirisRecord : TGirisFormRecord;
-  aModalResult : TModalResult;
-  guid : string;
   List : TListeAc;
   L : ArrayListeSecimler;
 begin
