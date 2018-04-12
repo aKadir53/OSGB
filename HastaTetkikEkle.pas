@@ -105,7 +105,7 @@ type
     procedure ItemClick(Sender: TObject);
 
     procedure SubItemClick(Sender: TObject);
-    procedure cxKaydetClick(Sender: TObject);
+    procedure cxKaydetClick(Sender: TObject);override;
     procedure cxGridIlacTedaviPlaniStylesGetContentStyle(
       Sender: TcxCustomGridTableView; ARecord: TcxCustomGridRecord;
       AItem: TcxCustomGridTableItem; out AStyle: TcxStyle);
@@ -341,7 +341,7 @@ end;
 procedure TfrmHastaTetkikEkle.ItemClick(Sender: TObject);
 var
   ado : TADOQuery;
-  kabulNo ,code,grup,name,sira : string;
+  kabulNo ,code,name,sira : string;
   DataSource : TDataSource;
 begin
     case TMenuItem(sender).Tag of

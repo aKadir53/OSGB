@@ -47,7 +47,7 @@ type
     gridDokumanColumn1: TcxGridDBColumn;
     cxStyleRepository1: TcxStyleRepository;
     cxStyle1: TcxStyle;
-    procedure cxKaydetClick(Sender: TObject);
+    procedure cxKaydetClick(Sender: TObject);override;
     procedure cxTextEditKeyDown(Sender: TObject; var Key: Word;
       Shift: TShiftState);
     procedure cxButtonEditPropertiesButtonClick(Sender: TObject;
@@ -133,8 +133,6 @@ begin
 end;
 
 procedure TfrmDokumanYonetim.Y1Click(Sender: TObject);
-var
-   Blob : TADOBlobStream;
 begin
   if
   ((txtSirket.text <> '') or (txtDokumanGrup.text <> ''))

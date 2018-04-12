@@ -73,11 +73,16 @@ begin
     if length(List) > 0
     Then BEgin
        sqlRun.Append;
-       sqlRun.FieldByName('asiKodu').AsString := List[0].kolon1;
-       sqlRun.FieldByName('asiAdi').AsString := List[0].kolon2;
-       sqlRun.FieldByName('Tarih').AsDateTime := date();
-       sqlRun.FieldByName('dosyaNo').AsString := _dosyaNO_;
-       sqlRun.Post;
+       try
+         sqlRun.FieldByName('asiKodu').AsString := List[0].kolon1;
+         sqlRun.FieldByName('asiAdi').AsString := List[0].kolon2;
+         sqlRun.FieldByName('Tarih').AsDateTime := date();
+         sqlRun.FieldByName('dosyaNo').AsString := _dosyaNO_;
+         sqlRun.Post;
+       except
+         sqlRun.Cancel;
+         raise;
+       end;
     End;
 end;
 procedure TfrmAsiKarti.AsiGetir;
@@ -110,10 +115,6 @@ begin
 end;
 
 procedure TfrmAsiKarti.FormCreate(Sender: TObject);
-var
-  index,i : integer;
-  Ts,Ts1 : TStringList;
-  List,List1 : TListeAc;
 begin
 
   ClientHeight := formYukseklik;

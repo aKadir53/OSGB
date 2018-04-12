@@ -15,7 +15,7 @@ type
   TfrmMakina = class(TGirisForm)
     procedure FormCreate(Sender: TObject);
     procedure ButtonClick(Sender: TObject);
-    procedure cxKaydetClick(Sender: TObject);
+    procedure cxKaydetClick(Sender: TObject);override;
   private
     { Private declarations }
   public

@@ -20,7 +20,7 @@ type
     Y1: TMenuItem;
     TaniList: TListeAc;
     procedure FormCreate(Sender: TObject);
-    procedure cxKaydetClick(Sender: TObject);
+    procedure cxKaydetClick(Sender: TObject);override;
     procedure cxTextEditKeyDown(Sender: TObject; var Key: Word;
       Shift: TShiftState);
     procedure cxButtonEditPropertiesButtonClick(Sender: TObject;

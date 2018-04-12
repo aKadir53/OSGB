@@ -53,7 +53,7 @@ type
     procedure btnYardimHakkiClick(Sender: TObject);
     procedure cxButtonCClick(Sender: TObject);
     procedure TakipAl;
-    procedure cxKaydetClick(Sender: TObject);
+    procedure cxKaydetClick(Sender: TObject);override;
   private
     { Private declarations }
   public

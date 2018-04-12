@@ -513,7 +513,7 @@ procedure HesapIsle(BorcHesap,AlacakHesap,Aciklama : string ; Tutar : Double ; T
 var
  Sql : string;
 begin
-   datalar.ADOConnection2.BeginTrans;
+   BeginTrans (datalar.ADOConnection2);
    try
      sql := 'exec sp_FaturaTahsilat ' +
                        QuotedStr(BorcHesap) + ',' +
@@ -530,10 +530,10 @@ begin
 
      datalar.QueryExec('set nocount on ' +  Sql + ' set nocount off ');
 
-     datalar.ADOConnection2.CommitTrans;
+     CommitTrans (datalar.ADOConnection2);
    except on e : Exception do
     begin
-     datalar.ADOConnection2.RollbackTrans;
+     RollbackTrans (datalar.ADOConnection2);
      ShowMessageSkin(e.Message,'','','info');
     end;
    end;
@@ -544,7 +544,7 @@ procedure HesapIsleOdeme(BorcHesap,AlacakHesap,Aciklama : string ; Tutar : Doubl
 var
  Sql : string;
 begin
-   datalar.ADOConnection2.BeginTrans;
+   BeginTrans (datalar.ADOConnection2);
    try
      sql := 'exec sp_FaturaOdeme ' +
                        QuotedStr(BorcHesap) + ',' +
@@ -561,10 +561,10 @@ begin
 
      datalar.QueryExec('set nocount on ' +  Sql + ' set nocount off ');
 
-     datalar.ADOConnection2.CommitTrans;
+     CommitTrans (datalar.ADOConnection2);
    except on e : Exception do
     begin
-     datalar.ADOConnection2.RollbackTrans;
+     RollbackTrans (datalar.ADOConnection2);
      ShowMessageSkin(e.Message,'','','info');
     end;
    end;
@@ -573,7 +573,6 @@ end;
 
 procedure StretchImage(var Image1: TImage; StretchType: Byte; NewWidth, NewHeight: Word);
 var
-  Jpeg1: TJpegImage;
   CompressedImage: TImage;
   Oran, OranW, OranH: Real;
 begin
@@ -638,7 +637,6 @@ end;
 
 procedure StretchImage(var Image1: TcxImage; StretchType: Byte; NewWidth, NewHeight: Word);
 var
-  Jpeg1: TJpegImage;
   CompressedImage: TImage;
   Oran, OranW, OranH: Real;
 begin
@@ -706,19 +704,19 @@ function FaturaSilIptal(FID : string) : Boolean;
 var
   sql : string;
 begin
-  datalar.ADOConnection2.BeginTrans;
+  BeginTrans (datalar.ADOConnection2);
   try
    sql := 'delete from faturaHareket where faturaId = ' + FID;
    datalar.QueryExec(sql);
    sql := 'delete from faturalar where sira = ' + FID;
    datalar.QueryExec(sql);
-   datalar.ADOConnection2.CommitTrans;
+   CommitTrans (datalar.ADOConnection2);
    ShowMessageSkin('Fatura Silindi','','','info');
    FaturaSilIptal := True;
   except on e : Exception do
    begin
+    RollbackTrans (datalar.ADOConnection2);
     ShowMessageSkin(E.Message,'','','info');
-    datalar.ADOConnection2.RollbackTrans;
     FaturaSilIptal := False;
    end;
   end;
@@ -730,12 +728,9 @@ function mailGonder (alici , konu , mesaj : string ; filename : string = ''): st
 var
   Mail : TEmailSend;
   dllHandle: Cardinal;
-  TesisKodu: integer;
-  faturaXML,doktorKullanici,doktorsifre,pin,url,cardType : string;
   username,password,mailserver : string;
-  doktorTc : string;
   ss : PWideChar;
-  sql,sonucStr : string;
+  sonucStr : string;
   Sonuc : TStringList;
 begin
   mailserver := datalar.SMTPSunucu;
@@ -845,10 +840,7 @@ end;
 procedure YeniRecete(islem: Integer ; _dosyaNo_,_gelisNo_,_MuayeneProtokolNo_ : string);
 var
     sql : string;
-    ado , adoD : TADOQuery;
-    receteNo , songel : string;
-    ack : TStringList;
-    j : integer;
+    ado : TADOQuery;
     bBasari : Boolean;
 begin
   datalar.YeniRecete.doktor := datalar.doktorKodu;
@@ -1011,8 +1003,8 @@ end;
 procedure ExceldenPersonelYukle;
 var
   openD : TOpenDialog;
-  dosya ,sql : string;
-  sonsatir , x : integer;
+  dosya : string;
+  sonsatir : integer;
 begin
   openD := TOpenDialog.Create(nil);
   try
@@ -1808,9 +1800,6 @@ end;
 procedure PopupMenuEnabled(AOwner : TComponent ; Menu : TPopupMenu ; Enableded : Boolean = True);
 var
   mi : TMenuItem;
-  TBBDown : TMenuItem;
-  TBB : TToolButton;
-  i,r : integer;
 begin
   for mi in Menu.Items do
   begin
@@ -7778,8 +7767,8 @@ end;
 
 function seciliSatirlarColumData(Grid: TcxGridTableView; col: integer): string;
 var
-  x, r, seciliadet: integer;
-  ss,columName : string;
+  x: integer;
+  ss : string;
 begin
   seciliSatirlarColumData := '';
  // columName := Grid.Columns[col].DataBinding.

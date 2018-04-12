@@ -62,7 +62,7 @@ type
     T3: TMenuItem;
     NaceKod: TcxButtonEditKadir;
     procedure FormCreate(Sender: TObject);
-    procedure cxKaydetClick(Sender: TObject);
+    procedure cxKaydetClick(Sender: TObject);override;
     procedure cxButtonCClick(Sender: TObject);
     procedure cxTextEditBKeyDown(Sender: TObject; var Key: Word;
       Shift: TShiftState);

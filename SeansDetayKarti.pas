@@ -34,7 +34,7 @@ type
     ADO_Gelisler: TADOQuery;
     H1: TMenuItem;
     procedure FormCreate(Sender: TObject);
-    procedure cxKaydetClick(Sender: TObject);
+    procedure cxKaydetClick(Sender: TObject);override;
     procedure cxButtonCClick(Sender: TObject);
     procedure seansGunleriPropertiesEditValueChanged(Sender: TObject);
     procedure Yukle;
