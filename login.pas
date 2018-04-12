@@ -259,7 +259,7 @@ begin
       if Login.FieldByName ('SifreDegismeli').AsBoolean then
       begin
         ShowMessageSkin('Þifrenizi Deðiþtirmeniz Gerekmektedir...', '', '', 'info');
-        if not SifreDegistir then Exit;
+        if not SifreDegistir (True) then Exit;
       end;
 
       regyazLastLogin;
