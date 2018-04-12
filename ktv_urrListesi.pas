@@ -42,7 +42,7 @@ type
     procedure cxButtonKaydetClick(Sender: TObject);
     procedure DiyalizTipPropertiesChange(Sender: TObject);
     procedure FormCreate(Sender: TObject);
-    procedure cxKaydetClick(Sender: TObject);
+    procedure cxKaydetClick(Sender: TObject);override;
     procedure yeniGrupEkle;
 
     procedure cxButtonCClick(Sender: TObject);

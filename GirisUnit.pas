@@ -112,7 +112,7 @@ type
     SeansKriter: TcxTextEdit;
     pnlDurumImageList: TcxImageList;
 
-    procedure cxKaydetClick(Sender: TObject);
+    procedure cxKaydetClick(Sender: TObject);virtual;
     procedure cxButtonCClick(Sender: TObject);
     procedure TopPanelPropertiesChange(Sender: TObject);
     function Post : Boolean;
@@ -156,6 +156,7 @@ type
     function FormInputZorunluKontrol(form : TForm) : Boolean;
     procedure FormCreate(Sender: TObject);
     procedure SayfalarChange(Sender: TObject);
+    procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
 
   private
     F_dosyaNO_ : string;
@@ -195,7 +196,14 @@ type
     F_ResourceID_ : string;
   protected
     F_IDENTITY : Integer;
-    { Private declarations }
+    function IsPostControl (const aComponent : TComponent) : Boolean;
+    function IsLoadControl (const aComponent : TComponent) : Boolean;
+    function IsPostSQLControl (const aComponent : TComponent) : Boolean;
+    function IsGridPropertyControl (const aComponent : TComponent) : Boolean;
+    function IsInputZorunluControl (const aComponent : TComponent) : Boolean;
+    function IsClearControl (const aComponent : TComponent) : Boolean;
+    function IsEnableControl (const aComponent : TComponent) : Boolean;
+    function IsDisableControl (const aComponent : TComponent) : Boolean;
   public
     indexFieldName,TableName,_SqlInsert_,_SqlUpdate_,_SqlDelete_ : string;
     _fieldsEdit_,_fields_ ,_fieldBaslik_,_fieldTips_,_fieldFormats_,_spSQL_,_ICParams_ : string;
@@ -544,6 +552,117 @@ begin
   Result := True;
 end;
 
+function TGirisForm.IsClearControl(const aComponent: TComponent): Boolean;
+begin
+  Result :=
+    (SameText (aComponent.ClassName, 'TcxTextEdit')) or
+    (SameText (aComponent.ClassName, 'TcxTextEditKadir')) or
+    (SameText (aComponent.ClassName, 'TcxButtonEdit')) or
+    (SameText (aComponent.ClassName, 'TcxButtonEditKadir')) or
+    (SameText (aComponent.ClassName, 'TcxComboBox')) or
+    (SameText (aComponent.ClassName, 'TcxMemo')) or
+    (SameText (aComponent.ClassName, 'TcxImageComboBox')) or
+    (SameText (aComponent.ClassName, 'TcxImageComboKadir')) or
+    (SameText (aComponent.ClassName, 'TcxImage')) or
+    (SameText (aComponent.ClassName, 'TcxCheckBox')) or
+    (SameText (aComponent.ClassName, 'TcxCurrencyEdit')) or
+    (SameText (aComponent.ClassName, 'TcxRadioGroup')) or
+    (SameText (aComponent.ClassName, 'TcxDateEdit')) or
+    (SameText (aComponent.ClassName, 'TcxDateEditKadir')) or
+    (SameText (aComponent.ClassName, 'TcxCheckGroup'));
+end;
+
+function TGirisForm.IsDisableControl(const aComponent: TComponent): Boolean;
+begin
+  Result := IsEnableControl(aComponent);
+end;
+
+function TGirisForm.IsEnableControl(const aComponent: TComponent): Boolean;
+begin
+  Result :=
+    (SameText (aComponent.ClassName, 'TcxTextEdit')) or
+    (SameText (aComponent.ClassName, 'TcxTextEditKadir')) or
+    (SameText (aComponent.ClassName, 'TcxButtonEdit')) or
+    (SameText (aComponent.ClassName, 'TcxButtonEditKadir')) or
+    (SameText (aComponent.ClassName, 'TcxComboBox')) or
+    (SameText (aComponent.ClassName, 'TcxMemo')) or
+    (SameText (aComponent.ClassName, 'TcxImageComboBox')) or
+    (SameText (aComponent.ClassName, 'TcxImageComboKadir')) or
+    (SameText (aComponent.ClassName, 'TcxCheckBox')) or
+    (SameText (aComponent.ClassName, 'TcxCurrencyEdit')) or
+    (SameText (aComponent.ClassName, 'TcxDateEdit')) or
+    (SameText (aComponent.ClassName, 'TcxDateEditKadir')) or
+    (SameText (aComponent.ClassName, 'TcxCheckGroup')) or
+    (SameText (aComponent.ClassName, 'TcxButton')) or
+    (SameText (aComponent.ClassName, 'TcxGrid')) or
+    (SameText (aComponent.ClassName, 'TcxCheckGroupKadir'));
+end;
+
+function TGirisForm.IsGridPropertyControl(const aComponent: TComponent): Boolean;
+begin
+  Result :=
+    (SameText (aComponent.ClassName, 'TcxTextEdit')) or
+    (SameText (aComponent.ClassName, 'TcxButtonEdit')) or
+    (SameText (aComponent.ClassName, 'TcxButtonEditKadir')) or
+    (SameText (aComponent.ClassName, 'TcxComboBox')) or
+    (SameText (aComponent.ClassName, 'TcxMemo')) or
+    (SameText (aComponent.ClassName, 'TcxImageComboBox')) or
+    (SameText (aComponent.ClassName, 'TcxImage')) or
+    (SameText (aComponent.ClassName, 'TcxCheckBox')) or
+    (SameText (aComponent.ClassName, 'TcxCurrencyEdit')) or
+    (SameText (aComponent.ClassName, 'TcxRadioGroup')) or
+    (SameText (aComponent.ClassName, 'TcxDateEdit'));
+end;
+
+function TGirisForm.IsInputZorunluControl(const aComponent: TComponent): Boolean;
+begin
+  Result :=
+    (SameText (aComponent.ClassName, 'TcxTextEdit')) or
+    (SameText (aComponent.ClassName, 'TcxTextEditKadir')) or
+    (SameText (aComponent.ClassName, 'TcxButtonEdit')) or
+    (SameText (aComponent.ClassName, 'TcxButtonEditKadir')) or
+    (SameText (aComponent.ClassName, 'TcxComboBox')) or
+    (SameText (aComponent.ClassName, 'TcxMemo')) or
+    (SameText (aComponent.ClassName, 'TcxImageComboBox')) or
+    (SameText (aComponent.ClassName, 'TcxImageComboKadir')) or
+    (SameText (aComponent.ClassName, 'TcxCheckBox')) or
+    (SameText (aComponent.ClassName, 'TcxCurrencyEdit')) or
+    (SameText (aComponent.ClassName, 'TcxDateEdit')) or
+    (SameText (aComponent.ClassName, 'TcxDateEditKadir')) or
+    (SameText (aComponent.ClassName, 'TcxCheckGroup')) or
+    (SameText (aComponent.ClassName, 'TcxCheckGroupKadir'));
+end;
+
+function TGirisForm.IsLoadControl(const aComponent: TComponent): Boolean;
+begin
+  Result :=
+    IsPostControl(aComponent) or
+    (SameText (aComponent.ClassName, 'TcxRadioGroup')) or
+    ((SameText (aComponent.ClassName, 'TcxLabel'))
+       and (TcxLabel(aComponent).Tag = -200));
+  //ÜÖ 20171215 görünmeyen bileþenin doldurulmasýnda sakýnca yok, þirket kodu bazý yerlerde görünmediði halde yazýlýp okunmasý gerekiyor. istenmeyen bileþen için Tag atanabilir.
+  //if TcxCustomEdit(self.Components[i]).Visible = false then Continue;
+  Result := Result and (not SameText (TcxCustomEdit(aComponent).Name, 'txtSifreTekrar'));
+  Result := Result and (TcxCustomEdit(aComponent).Tag <> -100);
+  Result := Result and (TcxImage(aComponent).Tag <> -1);
+end;
+
+function TGirisForm.IsPostControl(const aComponent: TComponent): Boolean;
+begin
+  Result :=
+    IsPostSQLControl(aComponent) or
+    (SameText (aComponent.ClassName, 'TcxImage'));
+  Result := Result and (not SameText (TcxCustomEdit(aComponent).Name, 'txtSifreTekrar'));
+  Result := Result and (TcxCustomEdit(aComponent).Tag <> -100);
+  Result := Result and (TcxImage(aComponent).Tag <> -1);
+end;
+
+function TGirisForm.IsPostSQLControl(const aComponent: TComponent): Boolean;
+begin
+  Result := IsInputZorunluControl(aComponent);
+  Result := Result and (TcxCustomEdit(aComponent).Tag <> -100);
+end;
+
 procedure TGirisForm.DiyalizTedavi_UF_KontrolleriniFormaEkle(Grp : TdxLayoutGroup);
 begin
     setDataStringBLabel(self,'lblBostatir2',kolon2,'',1,'','');
@@ -824,7 +943,8 @@ begin
     end
     Else begin
       cxPanelButtonEnabled(true,true,true);
-      sqlRun.Edit;
+      //ÜÖ 20180411 edit kutularý deðiþirken edit moduna geçir dedik, kaydedilmemiþ bilgi uyarýsýnýn düzgün çalýþmasý için...
+      //sqlRun.Edit;
       _SQLRUN_ := _SqlUpdate_;
       sqlRunLoad;
     end;
@@ -848,22 +968,7 @@ begin
   for x := 0 to _say do
   begin
        _obje_ := TcxCustomEdit(self.Components[x]);
-       if (_obje_.ClassName = 'TcxTextEdit') or
-       (_obje_.ClassName = 'TcxTextEditKadir') or
-       (_obje_.ClassName = 'TcxButtonEdit') or
-       (_obje_.ClassName = 'TcxButtonEditKadir') or
-       (_obje_.ClassName = 'TcxComboBox') or
-       (_obje_.ClassName = 'TcxMemo') or
-       (_obje_.ClassName = 'TcxImageComboBox') or
-       (_obje_.ClassName = 'TcxImageComboKadir') or
-       (_obje_.ClassName = 'TcxCheckBox') or
-       (_obje_.ClassName = 'TcxCurrencyEdit') or
-       (_obje_.ClassName = 'TcxDateEdit') or
-       (_obje_.ClassName = 'TcxDateEditKadir') or
-       (_obje_.ClassName = 'TcxCheckGroup') or
-       (_obje_.ClassName = 'TcxButton') or
-       (_obje_.ClassName = 'TcxGrid') or
-       (_obje_.ClassName = 'TcxCheckGroupKadir')
+       if IsEnableControl(_obje_)
       Then
         TControl(_obje_).Enabled := True;
 
@@ -890,22 +995,7 @@ begin
      TcxButtonEditKadir(_obje_).Enabled := True;
     end
     else
-      if (_obje_.ClassName = 'TcxTextEdit') or
-       (_obje_.ClassName = 'TcxTextEditKadir') or
-       (_obje_.ClassName = 'TcxButtonEdit') or
-       (_obje_.ClassName = 'TcxButtonEditKadir') or
-       (_obje_.ClassName = 'TcxComboBox') or
-       (_obje_.ClassName = 'TcxMemo') or
-       (_obje_.ClassName = 'TcxImageComboBox') or
-       (_obje_.ClassName = 'TcxImageComboKadir') or
-       (_obje_.ClassName = 'TcxCheckBox') or
-       (_obje_.ClassName = 'TcxCurrencyEdit') or
-       (_obje_.ClassName = 'TcxDateEdit') or
-       (_obje_.ClassName = 'TcxDateEditKadir') or
-       (_obje_.ClassName = 'TcxCheckGroup') or
-       (_obje_.ClassName = 'TcxButton') or
-       (_obje_.ClassName = 'TcxGrid') or
-       (_obje_.ClassName = 'TcxCheckGroupKadir')
+      if IsDisableControl (_obje_)
       Then
         TControl(_obje_).Enabled := False;
   end;
@@ -932,20 +1022,7 @@ begin
   FormInputZorunluKontrol := False;
   for i := 0 to form.ComponentCount - 1 do
   begin
-    if (form.Components[i].ClassName = 'TcxTextEdit') or
-       (form.Components[i].ClassName = 'TcxTextEditKadir') or
-       (form.Components[i].ClassName = 'TcxButtonEdit') or
-       (form.Components[i].ClassName = 'TcxButtonEditKadir') or
-       (form.Components[i].ClassName = 'TcxComboBox') or
-       (form.Components[i].ClassName = 'TcxMemo') or
-       (form.Components[i].ClassName = 'TcxImageComboBox') or
-       (form.Components[i].ClassName = 'TcxImageComboKadir') or
-       (form.Components[i].ClassName = 'TcxCheckBox') or
-       (form.Components[i].ClassName = 'TcxCurrencyEdit') or
-       (form.Components[i].ClassName = 'TcxDateEdit') or
-       (form.Components[i].ClassName = 'TcxDateEditKadir') or
-       (form.Components[i].ClassName = 'TcxCheckGroup') or
-       (form.Components[i].ClassName = 'TcxCheckGroupKadir')
+    if IsInputZorunluControl (form.Components [i])
     then Begin
         _obje_ := TcxCustomEdit(form.Components[i]);
 
@@ -975,21 +1052,7 @@ var
 begin
   for i := 0 to self.ComponentCount - 1 do
   begin
-    if (self.Components[i].ClassName = 'TcxTextEdit') or
-       (self.Components[i].ClassName = 'TcxTextEditKadir') or
-       (self.Components[i].ClassName = 'TcxButtonEdit') or
-       (self.Components[i].ClassName = 'TcxButtonEditKadir') or
-       (self.Components[i].ClassName = 'TcxComboBox') or
-       (self.Components[i].ClassName = 'TcxMemo') or
-       (self.Components[i].ClassName = 'TcxImageComboBox') or
-       (self.Components[i].ClassName = 'TcxImageComboKadir') or
-       (self.Components[i].ClassName = 'TcxImage') or
-       (self.Components[i].ClassName = 'TcxCheckBox') or
-       (self.Components[i].ClassName = 'TcxCurrencyEdit') or
-       (self.Components[i].ClassName = 'TcxRadioGroup') or
-       (self.Components[i].ClassName = 'TcxDateEdit') or
-       (self.Components[i].ClassName = 'TcxDateEditKadir') or
-       (self.Components[i].ClassName = 'TcxCheckGroup')
+    if IsClearControl (Components [i])
     then begin
       try
         _obje_ := TcxCustomEdit(self.Components[i]);
@@ -1016,29 +1079,8 @@ begin
 
   for i := 0 to self.ComponentCount - 1 do
   begin
-    if (self.Components[i].ClassName = 'TcxTextEdit') or
-       (self.Components[i].ClassName = 'TcxTextEditKadir') or
-       (self.Components[i].ClassName = 'TcxButtonEdit') or
-       (self.Components[i].ClassName = 'TcxButtonEditKadir') or
-       (self.Components[i].ClassName = 'TcxComboBox') or
-       (self.Components[i].ClassName = 'TcxMemo') or
-       (self.Components[i].ClassName = 'TcxImageComboBox') or
-       (self.Components[i].ClassName = 'TcxImageComboKadir') or
-       (self.Components[i].ClassName = 'TcxImage') or
-       (self.Components[i].ClassName = 'TcxCheckBox') or
-       (self.Components[i].ClassName = 'TcxCurrencyEdit') or
-       (self.Components[i].ClassName = 'TcxRadioGroup') or
-       (self.Components[i].ClassName = 'TcxDateEdit') or
-       (self.Components[i].ClassName = 'TcxDateEditKadir') or
-       (self.Components[i].ClassName = 'TcxCheckGroup') or
-       (self.Components[i].ClassName = 'TcxCheckGroupKadir') or
-       ((self.Components[i].ClassName = 'TcxLabel') and (TcxLabel(self.Components[i]).Tag = -200))
+    if IsLoadControl(components [i])
     then begin
-        //ÜÖ 20171215 görünmeyen bileþenin doldurulmasýnda sakýnca yok, þirket kodu bazý yerlerde görünmediði halde yazýlýp okunmasý gerekiyor. istenmeyen bileþen için Tag atanabilir.
-        //if TcxCustomEdit(self.Components[i]).Visible = false then Continue;
-        if TcxCustomEdit(self.Components[i]).Name = 'txtSifreTekrar' then Continue;
-        if TcxCustomEdit(self.Components[i]).Tag = -100 then Continue;
-        if TcxImage(self.Components[i]).Tag = -1 then Continue;
       _obje_ := TcxCustomEdit(self.Components[i]);
       try
 
@@ -1231,18 +1273,7 @@ begin
   for i := 0 to self.ComponentCount - 1 do
   begin
     colon := nil;
-    if
-      (self.Components[i].ClassName = 'TcxTextEdit') or
-      (self.Components[i].ClassName = 'TcxButtonEdit') or
-      (self.Components[i].ClassName = 'TcxButtonEditKadir') or
-      (self.Components[i].ClassName = 'TcxComboBox') or
-      (self.Components[i].ClassName = 'TcxMemo') or
-      (self.Components[i].ClassName = 'TcxImageComboBox') or
-      (self.Components[i].ClassName = 'TcxImage') or
-      (self.Components[i].ClassName = 'TcxCheckBox') or
-      (self.Components[i].ClassName = 'TcxCurrencyEdit') or
-      (self.Components[i].ClassName = 'TcxRadioGroup') or
-      (self.Components[i].ClassName = 'TcxDateEdit')
+    if IsGridPropertyControl(Components [i])
     then begin
       colon := (cxGridGirisrisTableView as TcxGridDBTableView).CreateColumn;
       colon.DataBinding.FieldName := self.Components[i].Name;
@@ -1340,6 +1371,13 @@ begin
           ShowMessageSkin('Tc Hatalý','','','info');
         //  TcxTextEditKadir(sender).SetFocus;
     end;
+  end;
+
+  if IsPostControl (TComponent (Sender))
+    and TcxTextEditKadir(sender).EditModified
+    and (sqlRun.State = dsBrowse) then
+  begin
+    sqlRun.Edit;
   end;
 
 end;
@@ -1987,25 +2025,9 @@ begin
   Result := False;
   for i := 0 to self.ComponentCount - 1 do
   begin
-    if ((self.Components[i].ClassName = 'TcxTextEdit') or
-       (self.Components[i].ClassName = 'TcxTextEditKadir') or
-       (self.Components[i].ClassName = 'TcxButtonEdit') or
-       (self.Components[i].ClassName = 'TcxButtonEditKadir') or
-       (self.Components[i].ClassName = 'TcxComboBox') or
-       (self.Components[i].ClassName = 'TcxMemo') or
-       (self.Components[i].ClassName = 'TcxImageComboBox') or
-       (self.Components[i].ClassName = 'TcxImageComboKadir') or
-       (self.Components[i].ClassName = 'TcxCheckBox') or
-       (self.Components[i].ClassName = 'TcxCurrencyEdit') or
-       (self.Components[i].ClassName = 'TcxDateEdit') or
-       (self.Components[i].ClassName = 'TcxDateEditKadir') or
-       (self.Components[i].ClassName = 'TcxCheckGroup') or
-       (self.Components[i].ClassName = 'TcxCheckGroupKadir')
-
-       )
+    if IsPostSQLControl(Components [i])
        and (TcxTextEdit(self.Components[i]).Properties.ReadOnly = False)
     then begin
-     if TcxCustomEdit(self.Components[i]).Tag = -100 then Continue;
      if (self.Components[i].ClassName = 'TcxCurrencyEdit')
      then
       value :=  TcxCurrencyEdit(self.Components[i]).Text
@@ -2050,27 +2072,9 @@ begin
     if sqlRun.State <> dsNewValue then sqlRun.Edit;
     for i := 0 to self.ComponentCount - 1 do
     begin
-      if (self.Components[i].ClassName = 'TcxTextEdit') or
-         (self.Components[i].ClassName = 'TcxTextEditKadir') or
-         (self.Components[i].ClassName = 'TcxButtonEdit') or
-         (self.Components[i].ClassName = 'TcxButtonEditKadir') or
-         (self.Components[i].ClassName = 'TcxComboBox') or
-         (self.Components[i].ClassName = 'TcxMemo') or
-         (self.Components[i].ClassName = 'TcxImageComboBox') or
-         (self.Components[i].ClassName = 'TcxImageComboKadir') or
-         (self.Components[i].ClassName = 'TcxImage') or
-         (self.Components[i].ClassName = 'TcxCheckBox') or
-         (self.Components[i].ClassName = 'TcxCurrencyEdit') or
-         (self.Components[i].ClassName = 'TcxDateEdit') or
-         (self.Components[i].ClassName = 'TcxDateEditKadir') or
-         (self.Components[i].ClassName = 'TcxCheckGroup') or
-         (self.Components[i].ClassName = 'TcxCheckGroupKadir')
-
+      if IsPostControl (self.Components[i])
       then begin
         //_obje_ := nil;
-        if TcxCustomEdit(self.Components[i]).Name = 'txtSifreTekrar' then Continue;
-        if TcxCustomEdit(self.Components[i]).Tag = -100 then Continue;
-        if TcxImage(self.Components[i]).Tag = -1 then Continue;
 
         _obje_ := TcxCustomEdit(self.Components[i]);
 
@@ -2414,7 +2418,28 @@ end;
 
 procedure TGirisForm.FormClose(Sender: TObject; var Action: TCloseAction);
 begin
-  action := Cafree;
+  action := caFree;
+end;
+
+procedure TGirisForm.FormCloseQuery(Sender: TObject; var CanClose: Boolean);
+var
+  aModalResult : TModalResult;
+begin
+  CanClose := True;//þ
+  if sqlRun.State in [dsEdit, dsInsert] then
+  begin
+    aModalResult := dialogs.MessageDlg ('Kaydedilmemiþ Bilgiler var, kaydedilsin mi ?', mtConfirmation, [mbYes, mbNo, mbCancel], 0);
+    case aModalResult of
+      mrYes : begin
+        sqlRun.Post;
+        cxKaydetClick(cxKaydet);
+        Canclose := cxKaydetResult;
+      end;
+      mrNo : sqlRun.Cancel;
+    else
+      Canclose := False;
+    end;
+  end;
 end;
 
 procedure TGirisForm.FormCreate(Sender: TObject);

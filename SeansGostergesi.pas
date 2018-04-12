@@ -46,7 +46,7 @@ type
     procedure gridHastalarDblClick(Sender: TObject);
     procedure SeansIcmal;
     procedure FormCreate(Sender: TObject);
-    procedure cxKaydetClick(Sender: TObject);
+    procedure cxKaydetClick(Sender: TObject);override;
   private
     { Private declarations }
   public

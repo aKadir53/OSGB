@@ -4,7 +4,8 @@ GO
 ALTER
   PROCEDURE [dbo].[sp_RDS] @id int
 AS
-	select *,B.tanimi BolumTanim,K.tanimi TehlikeKAynakTanim,
+	select *,B.tanimi BolumTanim,K.tanimi TehlikeKAynakTanim,SB.calisanSayi SubeCalisanSayi,SB.Adres SubeAdres,
+	SRK.tanimi firmaAdi,TS.tanimi SirketTehlikeSinifi,SB.subeSiciNo,RDSM.tanimi DegerlendirmeMetod,
 
 	case grup 
 	when 2 then D.tanimi
@@ -17,6 +18,9 @@ AS
 	join RDS_RiskBolum B on B.kod = RD.Bolum
 	join RDS_TehlikeKaynak k on k.kod = RD.TehlikeKaynagi
 	join SIRKETLER_TNM SRK on SRK.sirketKod = R.sirketKod
+	join SIRKET_SUBE_TNM SB on SB.sirketKod = R.sirketKod and SB.subeKod = R.subeKod
+	join TehlikeSiniflari TS on Ts.TehlikeSinifi = SRK.tehlikeSinifi
+	left join RDS_Method RDSM on RDSM.kod = R.Method
 	left join Users U on U.kullanici = R.hazirlayan
 	left join DOKTORLART D on D.kod = U.doktor
 	left join IGU I on I.kod = U.IGU

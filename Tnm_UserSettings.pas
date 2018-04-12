@@ -76,11 +76,11 @@ type
     procedure cxEditEnter(Sender: TObject);
     procedure cxEditExit(Sender: TObject);
     procedure cxButtonEditPropertiesButtonClick(Sender: TObject;
-      AButtonIndex: Integer);
+      AButtonIndex: Integer);override;
     procedure UserSettingsBeforePost(DataSet: TDataSet);
     procedure cxTextEditBKeyDown(Sender: TObject; var Key: Word;
       Shift: TShiftState);
-    procedure cxKaydetClick(Sender: TObject);
+    procedure cxKaydetClick(Sender: TObject);override;
     function IslemveMenuGorunumSetEkle(Tip : userGroup): boolean;
     procedure formlarClick(Sender: TObject);
     procedure userSkinPropertiesChange(Sender: TObject);
@@ -92,7 +92,7 @@ type
     procedure UserGroupAfterPost(DataSet: TDataSet);
     procedure btnGrupEkleClick(Sender: TObject);
     procedure UserGroupBeforeDelete(DataSet: TDataSet);
-    procedure PropertiesEditValueChanged(Sender: TObject);
+    procedure PropertiesEditValueChanged(Sender: TObject);override;
     procedure UserGroupDeleteError(DataSet: TDataSet; E: EDatabaseError;
       var Action: TDataAction);
     procedure UserGroupAfterDelete(DataSet: TDataSet);

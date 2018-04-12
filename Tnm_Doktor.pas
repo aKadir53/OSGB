@@ -14,7 +14,7 @@ uses
 
 type
   TfrmDoktorlar = class(TGirisForm)
-    procedure cxKaydetClick(Sender: TObject);
+    procedure cxKaydetClick(Sender: TObject);override;
     procedure cxTextEditKeyDown(Sender: TObject; var Key: Word;
       Shift: TShiftState);
     procedure cxButtonEditPropertiesButtonClick(Sender: TObject;
@@ -43,10 +43,8 @@ implementation
 
 function TfrmDoktorlar.Init(Sender: TObject) : Boolean;
  var
-  index,i : integer;
-  Ts,Ts1 : TStringList;
-  List,List1,List3 : TListeAc;
-  bransKodu,calismaTipi,cardType,sirket,medulaGonderimTipi : TcxImageComboKadir;
+  List : TListeAc;
+  bransKodu,calismaTipi,cardType,medulaGonderimTipi : TcxImageComboKadir;
 begin
   Result := False;
 

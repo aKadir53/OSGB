@@ -175,7 +175,7 @@ end;
 
 procedure TfrmAnamnezListe.Tanilar(_tani , tip , doktor : string);
 var
-   sql ,grup , ara : string;
+   sql : string;
 begin
   modul := _tani;
   tani := _tani;
@@ -225,9 +225,6 @@ begin
 end;
 
 procedure TfrmAnamnezListe.Gruplar;
-var
-   sql : string;
-   x : integer;
 begin
  (*
     sql := 'select SLB,SLT from hizmet_gruplari';
@@ -269,8 +266,7 @@ end;
 procedure TfrmAnamnezListe.btnSendClick(Sender: TObject);
 var
    i : integer;
-   s , ifade : string;
-   x : integer;
+   s : string;
 begin
 
      Eklenenler.First;
@@ -311,9 +307,6 @@ begin
 end;
 
 procedure TfrmAnamnezListe.btnSikKullanClick(Sender: TObject);
-var
-  sql : string;
-  x : integer;
 begin
 (*
 
@@ -375,7 +368,7 @@ end;
 
 procedure TfrmAnamnezListe.SkKullanlanlardankar1Click(Sender: TObject);
 var
-  sql , doktor , kod ,sira : string;
+  sql ,sira : string;
 
 begin
    sira := ADO_SQL.fieldbyname('sira').AsString;

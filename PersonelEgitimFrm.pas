@@ -51,7 +51,7 @@ type
     miEgitimBilgisiniIBYSyeGonder: TMenuItem;
     procedure FormCreate(Sender: TObject);
     procedure ButtonClick(Sender: TObject);
-    procedure cxKaydetClick(Sender: TObject);
+    procedure cxKaydetClick(Sender: TObject);override;
     procedure cxTextEditKeyDown(Sender: TObject; var Key: Word;
       Shift: TShiftState);
     procedure cxButtonEditPropertiesButtonClick(Sender: TObject;
@@ -62,7 +62,7 @@ type
        var AllowChange: Boolean);
     procedure SayfalarChange(Sender: TObject);
     procedure cxButtonCClick(Sender: TObject);
-    procedure PropertiesEditValueChanged(Sender: TObject);
+    procedure PropertiesEditValueChanged(Sender: TObject);override;
   private
     { Private declarations }
   protected
@@ -601,10 +601,10 @@ end;
 procedure TfrmPersonelEgitim.cxKaydetClick(Sender: TObject);
 var
   xObj : TcxButtonEditKadir;
-  xTExtObj1, xTExtObj2 : TcxTextEditKadir;
-  xComboObj1, xComboObj2 : TcxImageComboKadir;
-  sSQL : String;
-  xEvt11, xEvt12, xEvt21, xEvt22 : TNotifyEvent;
+  //xTExtObj1, xTExtObj2 : TcxTextEditKadir;
+  //xComboObj1, xComboObj2 : TcxImageComboKadir;
+  //sSQL : String;
+  //xEvt11, xEvt12, xEvt21, xEvt22 : TNotifyEvent;
 begin
  (* xTExtObj1 := TcxTextEditKadir (FindComponent('EgitimciX'));
   xComboObj1 := TcxImageComboKadir (FindComponent ('Egitimci'));

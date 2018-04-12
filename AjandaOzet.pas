@@ -85,7 +85,7 @@ type
     procedure gridRaporCustomDrawGroupCell(Sender: TcxCustomGridTableView;
       ACanvas: TcxCanvas; AViewInfo: TcxGridTableCellViewInfo;
       var ADone: Boolean);
-    procedure cxKaydetClick(Sender: TObject);
+    procedure cxKaydetClick(Sender: TObject);override;
     procedure cxButtonEditPropertiesButtonClick(Sender: TObject;
                 AButtonIndex: Integer); override;
 
@@ -103,10 +103,6 @@ type
 
   private
     { Private declarations }
-    FImages : array of TcxImage;
-    FImageIds : array of Integer;
-    function findMethod(dllHandle: Cardinal; methodName: string): FARPROC;
-
   protected
     procedure GozlemYazdir (const GozlemID : integer);
 
@@ -124,12 +120,6 @@ implementation
 uses data_modul, StrUtils, Jpeg;
 
 {$R *.dfm}
-
-function TfrmAjandaOzet.findMethod(dllHandle: Cardinal;  methodName: string): FARPROC;
-begin
-  Result := GetProcAddress(dllHandle, pchar(methodName));
-end;
-
 
 procedure TfrmAjandaOzet.FaturaSatirTutarCustomDrawFooterCell(
   Sender: TcxGridTableView; ACanvas: TcxCanvas;
@@ -156,17 +146,12 @@ end;
 
 procedure TfrmAjandaOzet.cxButtonEditPropertiesButtonClick(Sender: TObject;
   AButtonIndex: Integer);
-var
-  list : ArrayListeSecimler;
-  where,prm : string;
 begin
     inherited;
     Enabled;
 end;
 
 function TfrmAjandaOzet.Init(Sender : TObject) : Boolean;
-var
-  _obje_ : TcxCustomEdit;
 begin
   AjandaGrid.Dataset.Active := False;
   AjandaGrid.Dataset.SQL.Text := 'exec sp_ajanda ' + QuotedStr(_ResourceID) + ',' +
@@ -179,12 +164,8 @@ end;
 
 procedure TfrmAjandaOzet.PropertiesButtonClick(Sender: TObject;
   AButtonIndex: Integer);
-var
- L : ArrayListeSecimler;
- i : integer;
- n : string;
-
 begin
+//
 end;
 
 procedure TfrmAjandaOzet.AfterScroll(DataSet: TDataSet);
@@ -193,10 +174,6 @@ begin
 end;
 
 procedure TfrmAjandaOzet.cxButtonCClick(Sender: TObject);
-var
-  GirisRecord : TGirisFormRecord;
-  aModalResult : TModalResult;
-  guid : string;
 begin
   inherited;
 
@@ -229,10 +206,8 @@ begin
 end;
 
 procedure TfrmAjandaOzet.ButtonClick(Sender: TObject);
-var
-  GirisRecord : TGirisFormRecord;
-  F : TGirisForm;
 begin
+//
 end;
 
 

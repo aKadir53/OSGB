@@ -31,7 +31,8 @@ type
     GridKasaHareketbakiye: TcxGridDBBandedColumn;
     GridKasaHareketaciklama: TcxGridDBBandedColumn;
     procedure FormCreate(Sender: TObject);
-    procedure cxKaydetClick(Sender: TObject);
+    procedure ButtonClick(Sender: TObject);
+    procedure cxKaydetClick(Sender: TObject);override;
     procedure cxTextEditKeyDown(Sender: TObject; var Key: Word;
       Shift: TShiftState);
     procedure cxButtonEditPropertiesButtonClick(Sender: TObject;
@@ -42,7 +43,7 @@ type
        var AllowChange: Boolean);
     procedure SayfalarChange(Sender: TObject);
     procedure cxButtonCClick(Sender: TObject);
-    procedure PropertiesEditValueChanged(Sender: TObject);
+    procedure PropertiesEditValueChanged(Sender: TObject);override;
   private
     { Private declarations }
   protected
@@ -100,8 +101,11 @@ end;
 
 
 procedure TfrmKasaBanka.PropertiesEditValueChanged(Sender: TObject);
-//var
-//  xDeger : String;
+begin
+//
+end;
+
+procedure TfrmKasaBanka.ButtonClick(Sender: TObject);
 begin
 //
 end;
