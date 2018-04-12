@@ -527,6 +527,7 @@ type
   TSifreDegistir = record
     KullaniciAdi : String;
     Sifre : String;
+    SifreyiDoldur : Boolean;
   end;
 
   TSahaDenetimler = record

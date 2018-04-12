@@ -61,7 +61,7 @@ type
     procedure SetDataTarih(Tarih : TDate);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure cxMemoPropertiesChange(Sender: TObject);
-    procedure PropertiesEditValueChanged(Sender: TObject);
+    procedure PropertiesEditValueChanged(Sender: TObject);override;
     procedure PropertiesButtonClick(Sender: TObject; AButtonIndex: Integer);
     procedure ButtonClick(Sender: TObject);
 
@@ -70,7 +70,6 @@ type
     Fislem_ : integer;
     Fcaption_ : string;
     Fvalue_ : string;
-    FTakipNo_ : string;
     FFormName_ : string;
 
   public
@@ -163,8 +162,6 @@ procedure TfrmPopup.PropertiesButtonClick(Sender: TObject;
   AButtonIndex: Integer);
 var
  L : ArrayListeSecimler;
- i : integer;
- n : string;
 
 begin
 
@@ -258,7 +255,6 @@ end;
 procedure TfrmPopup.FormClose(Sender: TObject; var Action: TCloseAction);
 var
   xSahaDenetimVeri : TSahaDenetimler;
-  Blob : TStream;
 begin
   if TfrmPopup(self).ModalResult = mrYes
   then
@@ -549,13 +545,12 @@ end;
 procedure TfrmPopup.FormShow(Sender: TObject);
 var
   ilacList : TlisteAc;
-  Doktorlar,kulYolList,uzuv : TcxImageComboKadir;
+  Doktorlar,kulYolList : TcxImageComboKadir;
   txtTetkikIstem : TcxCheckGroupKadir;
   TabCaption ,TahsilatOdemeTipCaption : string;
   Image1 : TcxImage;
-  List : TListeAc;
+  //Listx : TListeAc;
   ICombo : TcxImageComboKadir;
-  Tarih : TcxDateEditKadir;
 begin
 inherited;
 
@@ -852,9 +847,14 @@ inherited;
           TcxTextEdit(FindComponent('YeniSifre')).Properties.PasswordChar := '*';
           TcxTextEdit(FindComponent('YeniSifreTekrar')).Properties.EchoMode := eemPassword;
           TcxTextEdit(FindComponent('YeniSifreTekrar')).Properties.PasswordChar := '*';
-
+          if DATALAR.SifreDegistir.SifreyiDoldur then
+            TcxTextEdit(FindComponent('MevcutSifre')).Text := DATALAR.SifreDegistir.Sifre;
           ClientHeight := 250;
           ClientWidth := 400;
+          if DATALAR.SifreDegistir.SifreyiDoldur then
+            TcxTextEdit(FindComponent('YeniSifre')).SetFocus
+           else
+            TcxTextEdit(FindComponent('MevcutSifre')).SetFocus;
        end;
 
    yeniGozlem, GozlemDuzenle :
@@ -1381,7 +1381,8 @@ begin
     TcxImageComboKadir(FindComponent('Frekans_2')).EditValue*
     TcxImageComboKadir(FindComponent('Siddet_2')).EditValue;
   end
-  else begin
+  else if TcxImageComboKadir(sender).Tag = -100
+  then begin
     TcxCurrencyEdit(FindComponent('Risk')).EditValue :=
     TcxImageComboKadir(FindComponent('Olasilik')).EditValue *
     TcxImageComboKadir(FindComponent('Frekans')).EditValue*

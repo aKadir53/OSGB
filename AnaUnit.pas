@@ -778,7 +778,7 @@ begin
  case _Tag_ of
     9999 : close;
     83 : begin
-      SifreDegistir;
+      SifreDegistir (False);
     end;
     121 : begin
             DestekTalep;
