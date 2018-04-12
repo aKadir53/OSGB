@@ -102,6 +102,7 @@ type
     KKDSatirlarzararliVirus: TcxGridDBBandedColumn;
     KKDSatirlarmantar: TcxGridDBBandedColumn;
     KKDSatirlarantijen: TcxGridDBBandedColumn;
+    cxStyle10: TcxStyle;
     procedure cxButtonCClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure gridRaporCustomDrawGroupCell(Sender: TcxCustomGridTableView;
@@ -118,6 +119,12 @@ type
     procedure RDSSatirlarNavigatorButtonsButtonClick(Sender: TObject;
       AButtonIndex: Integer; var ADone: Boolean);
     procedure E3Click(Sender: TObject);
+    procedure KKDSatirlarCustomDrawCell(Sender: TcxCustomGridTableView;
+      ACanvas: TcxCanvas; AViewInfo: TcxGridTableDataCellViewInfo;
+      var ADone: Boolean);
+    procedure KKDSatirlarStylesGetContentStyle(Sender: TcxCustomGridTableView;
+      ARecord: TcxCustomGridRecord; AItem: TcxCustomGridTableItem;
+      out AStyle: TcxStyle);
  //   function EArsivGonder(FaturaId : string) : string;
  //   function EArsivIptal(FaturaGuid : string) : string;
  //   function EArsivPDF(FaturaGuid : string ; _tag_ : integer) : string;
@@ -247,6 +254,49 @@ begin
 end;
 
 
+procedure TfrmKKD.KKDSatirlarCustomDrawCell(Sender: TcxCustomGridTableView;
+  ACanvas: TcxCanvas; AViewInfo: TcxGridTableDataCellViewInfo;
+  var ADone: Boolean);
+begin
+ (*
+  if AViewInfo.Value = '1'
+  then begin
+   AViewInfo.Style.Color := clYellow;
+   AViewInfo.Style.Font.Style := AViewInfo.Style.Font.Style + [fsBold];
+  end
+  else
+  begin
+   AViewInfo.Style.Color := clWhite;
+   AViewInfo.Style.Font.Style := AViewInfo.Style.Font.Style - [fsBold];
+
+  end;
+
+
+  //ADone := True;
+   *)
+end;
+
+procedure TfrmKKD.KKDSatirlarStylesGetContentStyle(
+  Sender: TcxCustomGridTableView; ARecord: TcxCustomGridRecord;
+  AItem: TcxCustomGridTableItem; out AStyle: TcxStyle);
+var
+ value : string;
+begin
+  //value := vartostr(ARecord.Values[AItem.Index]);
+ try
+  if ARecord.Index = -1 then
+    Exit
+  else
+  if AItem.Index > 7
+  then begin
+     if vartostr(ARecord.Values[AItem.Index]) = '1'
+     then AStyle := cxStyle10 else AStyle := cxStyle2;
+  end;
+ except
+
+ end;
+end;
+
 procedure TfrmKKD.NewRecord(DataSet: TDataSet);
 begin
    KKDGrid.Dataset.FieldByName('SirketRiskID').AsString := datalar.KKD.SirketRiskID;
@@ -355,19 +405,13 @@ begin
   -1 : begin
 
        end;
+
   -20 : begin
           //ado := TADOQuery.Create(nil);
           try
             //datalar.QuerySelect(ado, sql);
-            TopluDataset.Dataset0 := datalar.QuerySelect('select * from RDS_OLASILIK where Metod = 1');
-            TopluDataset.Dataset1 := datalar.QuerySelect('select * from RDS_FREKANS');
-            TopluDataset.Dataset2 := datalar.QuerySelect('select * from RDS_SIDDET where Metod = 1');
-            TopluDataset.Dataset3 := datalar.QuerySelect('select * from RDS_Skor where Metod = 1');
-            TopluDataset.Dataset4 := datalar.QuerySelect('sp_RDS ' + TcxButtonEditKadir(FindComponent('id')).EditText);
-
-
-
-            PrintYap('RDS','Risk Deðerlendirme Raporu','',TopluDataset,pTNone)
+            TopluDataset.Dataset0 := datalar.QuerySelect('sp_KKD ' + datalar.KKD.SirketRiskID);
+            PrintYap('KKD','Kiþisel Koruyucu Donaným Risk Deðerlendirmesi','',TopluDataset,pTNone)
           finally
             //ado.free;
           end;
@@ -417,7 +461,7 @@ begin
   ICombo.Name := 'ICombo';
   ICombo.Tag := -100;
   ICombo.Conn := nil;
-  ICombo.ItemList := '1;Evet,0;Hayýr';
+  ICombo.ItemList := '1;E,0;H';
   ICombo.Filter := '';
 
 
@@ -470,10 +514,12 @@ begin
   end;
 
 
-
+  kolon2.Width := 0;
+  Kolon3.Width := 0;
+  Kolon4.Width := 0;
 
 //  setDataStringBLabel(self,'bosSatir',kolon1,'',1000,'Risk Kaynaklarý');
-  setDataStringKontrol(self,KKDGrid,'KKDGrid','',Kolon1,'',1250,480);
+ // setDataStringKontrol(self,KKDGrid,'KKDGrid','',Kolon1,'',1240,475);
 
   KKDGrid.Dataset.Connection := datalar.ADOConnection2;
 
@@ -481,11 +527,6 @@ begin
   KKDGrid.Dataset.AfterPost := AfterPost;
 //  KKDGrid.Dataset.BeforePost := BeforePost;
   KKDGrid.Dataset.AfterScroll := AfterScroll;
-
-
-  kolon2.Width := 0;
-  Kolon3.Width := 0;
-  Kolon4.Width := 0;
 
 
   //GridFaturalar.DataController.DataSource := DataSource;

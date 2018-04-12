@@ -409,6 +409,10 @@ procedure StretchImage(var Image1: TcxImage; StretchType: Byte; NewWidth, NewHei
 procedure HesapIsle(BorcHesap,AlacakHesap,Aciklama : string ; Tutar : Double ; Tarih ,cek,vadeTarihi,evrakTipi,evrakNo,cekdurum,cekId: string);
 procedure HesapIsleOdeme(BorcHesap,AlacakHesap,Aciklama : string ; Tutar : Double ; Tarih ,cek,vadeTarihi,evrakTipi,evrakNo,cekdurum,cekId: string);
 function SifreGecerliMi (const sSifre: String; const pMinKarakter, pMinHarf, pMinKucukHarf, pMinBuyukHarf, pMinRakam : Integer; pMsgGostrt : Boolean = True) : Boolean;
+procedure DokumanAc(Dataset : Tdataset;fieldName : string;fileName : string; Open : Boolean = True);
+procedure DokumanYukle(Dataset : Tdataset;field : string;fielName : string);
+function RTFSablonDataset(RTFKodu : string) : TDataset;
+
 
 
 function findMethod(dllHandle: Cardinal;  methodName: string): FARPROC;
@@ -507,6 +511,47 @@ function findMethod(dllHandle: Cardinal;  methodName: string): FARPROC;
 begin
   Result := GetProcAddress(dllHandle, pchar(methodName));
 end;
+
+function RTFSablonDataset(RTFKodu : string) : TDataset;
+begin
+ try
+  Result := datalar.QuerySelect('select RTFFile,RTFSablonTanim from RTFSablonlari where RTFKodu = ' + RTFKodu);
+ except
+  Result := nil;
+ end;
+end;
+
+
+procedure DokumanAc(Dataset : Tdataset;fieldName : string;fileName : string; Open : Boolean = True);
+var
+  Blob : TAdoBlobStream;
+begin
+    Blob := TADOBlobStream.Create((Dataset.FieldByName(fieldName) as TBlobField), bmRead);
+    try
+      Blob.SaveToFile(filename+'.rtf');
+    finally
+      Blob.Free;
+    end;
+    sleep(1000);
+    if open then ShellExecute(0, 'open', PChar(filename), nil, nil, SW_SHOWNORMAL);
+end;
+
+procedure DokumanYukle(Dataset : Tdataset;field : string;fielName : string);
+var
+  Blob : TADOBlobStream;
+begin
+      Dataset.Edit;
+      Blob := TADOBlobStream.Create(TBlobField(Dataset.FieldByName(field)),bmwrite);
+      try
+        Blob.LoadFromFile(fielName);
+        Blob.Position := 0;
+        TBlobField(Dataset.FieldByName(field)).LoadFromStream(Blob);
+        Dataset.Post;
+      finally
+        Blob.Free;
+      end;
+end;
+
 
 
 procedure HesapIsle(BorcHesap,AlacakHesap,Aciklama : string ; Tutar : Double ; Tarih,cek,vadeTarihi,evrakTipi,evrakNo,cekdurum,cekId : string );

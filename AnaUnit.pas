@@ -474,7 +474,7 @@ var
 begin
   if AEvent.TaskStatus = tsComplete
   Then Begin
-    FB := FirmaBilgileri(copy(AEvent.Location,1,6));
+    FB := FirmaBilgileri(copy(AEvent.Location,1,pos('-',AEvent.Location)-1));
     Application.CreateForm(TfrmEventDurumBildir, frmEventDurumBildir);
     try
       frmEventDurumBildir.EMail := FB.YetkiliMail;
