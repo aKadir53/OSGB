@@ -345,7 +345,7 @@ procedure GetBuildInfo(const AppName: string; var V1, V2, V3,V4: Word);
 procedure MedEczaneGit(user,pasword,Tc : string);
 procedure cxExceleGonder(grid : TcxGrid ; dosyaName : string);
 procedure SifreDegistir(newSifre : string ; sifreTip : integer);  overload;
-function SifreDegistir: Boolean;overload;
+function SifreDegistir (const bMevcutSifreyiKutuyaDoldur: Boolean): Boolean;overload;
 procedure HastaBilgiRecordSet(Adi,Soyadi,Tc,Yas : string);
 procedure HastaRapor(dosyaNo,gelisNo : string);
 procedure Son6AylikTetkikSonuc(dosyaNo,Tarih : string);
@@ -8980,12 +8980,13 @@ begin
   Result := doktorkod;
 end;
 
-function SifreDegistir: Boolean;
+function SifreDegistir (const bMevcutSifreyiKutuyaDoldur: Boolean): Boolean;
 var
   ado : TadoQuery;
 begin
   datalar.SifreDegistir.KullaniciAdi := DATALAR.username;
   datalar.SifreDegistir.Sifre := DATALAR.usersifre;
+  DATALAR.SifreDegistir.SifreyiDoldur := bMevcutSifreyiKutuyaDoldur;
   Result := False;
   if mrYes <> ShowPopupForm('Þifre Deðiþtirme',PrgSifre) then
   begin
@@ -9011,7 +9012,7 @@ begin
       begin
         CommitTrans(DATALAR.ADOConnection2);
         ShowMessageSkin('Þifreniz Deðiþtirildi','','','info');
-        DATALAR.usersifre := datalar.SifreDegistir.Sifre
+        DATALAR.usersifre := datalar.SifreDegistir.Sifre;
       end
       else
         RollBackTrans(DATALAR.ADOConnection2);

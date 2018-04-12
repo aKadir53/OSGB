@@ -527,7 +527,7 @@ object frmHastaKart: TfrmHastaKart
     Left = 512
     Top = 78
     Alignment = alCenterCenter
-    EditValue = '01100000'
+    EditValue = '011000000'
     Properties.Columns = 3
     Properties.EditValueFormat = cvfStatesString
     Properties.Items = <
@@ -554,6 +554,9 @@ object frmHastaKart: TfrmHastaKart
       end
       item
         Caption = 'Diabet(NIDDM)'
+      end
+      item
+        Caption = 'KOAH'
       end>
     Properties.OnEditValueChanged = seansGunleriPropertiesEditValueChanged
     TabOrder = 11
