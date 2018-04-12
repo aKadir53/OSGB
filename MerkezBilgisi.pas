@@ -38,7 +38,7 @@ type
     cxStyle2: TcxStyle;
     lemler1: TMenuItem;
     procedure FormCreate(Sender: TObject);
-    procedure cxKaydetClick(Sender: TObject);
+    procedure cxKaydetClick(Sender: TObject);override;
     procedure cxButtonEditPropertiesButtonClick(Sender: TObject;
       AButtonIndex: Integer);override;
 

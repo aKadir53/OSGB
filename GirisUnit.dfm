@@ -15,6 +15,7 @@ object GirisForm: TGirisForm
   OldCreateOrder = False
   Position = poMainFormCenter
   OnClose = FormClose
+  OnCloseQuery = FormCloseQuery
   OnCreate = FormCreate
   OnKeyDown = FormKeyDown
   OnResize = FormResize

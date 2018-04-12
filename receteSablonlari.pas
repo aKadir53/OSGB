@@ -42,7 +42,7 @@ type
     procedure TabloAc(doktor : string);
     procedure FormCreate(Sender: TObject);
     procedure S1Click(Sender: TObject);
-    procedure cxKaydetClick(Sender: TObject);
+    procedure cxKaydetClick(Sender: TObject);override;
   private
     { Private declarations }
   public

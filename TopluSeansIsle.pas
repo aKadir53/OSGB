@@ -327,7 +327,7 @@ type
     procedure SeansDetayToplamlarnGizle1Click(Sender: TObject);
     procedure PopupMenu1Popup(Sender: TObject);
     procedure ImageClick(Sender: TObject);
-    procedure cxKaydetClick(Sender: TObject);
+    procedure cxKaydetClick(Sender: TObject);override;
     procedure TopPanelPropertiesChange(Sender: TObject);
     procedure SeansOnay(sec : integer);
   private

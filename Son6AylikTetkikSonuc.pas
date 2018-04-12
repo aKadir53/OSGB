@@ -41,7 +41,7 @@ type
     DataSource6: TDataSource;
     ADO_Tetkikler: TADOQuery;
     procedure FormCreate(Sender: TObject);
-    procedure cxKaydetClick(Sender: TObject);
+    procedure cxKaydetClick(Sender: TObject);override;
     procedure Listele;
     procedure TetkikSonucGridKolonGizle;
   private

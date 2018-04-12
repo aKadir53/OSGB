@@ -39,7 +39,7 @@ type
     R2: TMenuItem;
     Y1: TMenuItem;
     R3: TMenuItem;
-    procedure cxKaydetClick(Sender: TObject);
+    procedure cxKaydetClick(Sender: TObject);override;
     procedure cxTextEditKeyDown(Sender: TObject; var Key: Word;
       Shift: TShiftState);
     procedure cxEditEnter(Sender: TObject);
@@ -143,10 +143,7 @@ end;
 
 function TfrmAnamnez.Init(Sender: TObject) : Boolean;
  var
-  index,i,_left_ : integer;
-  Ts,Ts1 : TStringList;
-  List,List1,List3 : TListeAc;
-  bransKodu,calismaTipi,cardType,sirket,medulaGonderimTipi,servisler : TcxImageComboKadir;
+  servisler : TcxImageComboKadir;
 begin
   Result := False;
 
@@ -215,9 +212,6 @@ end;
 
 procedure TfrmAnamnez.cxButtonCClick(Sender: TObject);
 var
- List : TListeAc;
- _L_ : ArrayListeSecimler;
- _name_, tel,msj : string;
  F : TGirisForm;
  GirisFormRecord : TGirisFormRecord;
 begin
@@ -253,8 +247,6 @@ end;
 
 
 procedure TfrmAnamnez.ButtonClick(Sender: TObject);
-var
-  tip : string;
 begin
   case TControl(sender).Tag  of
   1,2,4 : begin

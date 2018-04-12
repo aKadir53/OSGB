@@ -14,7 +14,7 @@ declare @borc float,@alacak float,@bakiye float,@bakiyetip varchar(1)
 select @borc = isnull(sum(borc),0),@alacak = isnull(sum(alacak),0),
 @bakiye = isnull(sum(borc-alacak),0),@bakiyetip = case when isnull(sum(borc-alacak),0)>0 then 'B' else 'A' end 
 from carihareketler 
-where convert(varchar,tarih,112)  < @tarih1
+where cariKod = @cariKod and convert(varchar,tarih,112)  < @tarih1
 
 
 select [iD], [TARiH],[evrakNo],[tanimi] evrakTipi,[BORC], [ALACAK],abs(Sum([BORC] - [ALACAK]) OVER (ORDER BY [TARiH], [iD])) AS [BAKIYE],

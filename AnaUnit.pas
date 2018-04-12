@@ -993,9 +993,9 @@ begin
    ACanClose := False;
  end
  else begin
-   ACanClose := True;
    Comp := Sayfalar.Pages[ATabIndex].Components[0];
-   TGirisForm(Comp).Close;
+   ACanClose := TGirisForm(Comp).CloseQuery;
+   if ACanClose then TGirisForm(Comp).Close;
  end;
 end;
 

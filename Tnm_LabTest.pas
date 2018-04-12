@@ -43,13 +43,13 @@ type
     cxButtonEditKadir1: TcxButtonEditKadir;
     cxImageComboBox3: TcxImageComboBox;
     procedure FormCreate(Sender: TObject);
-    procedure cxKaydetClick(Sender: TObject);
+    procedure cxKaydetClick(Sender: TObject);override;
     procedure cxTextEditKeyDown(Sender: TObject; var Key: Word;
       Shift: TShiftState);
     procedure cxEditEnter(Sender: TObject);
     procedure cxEditExit(Sender: TObject);
     procedure cxButtonEditPropertiesButtonClick(Sender: TObject;
-      AButtonIndex: Integer);
+      AButtonIndex: Integer);override;
     procedure NormalDegerBeforePost(DataSet: TDataSet);
     procedure cxTextEditBKeyDown(Sender: TObject; var Key: Word;
       Shift: TShiftState);
@@ -114,9 +114,7 @@ end;
 
 procedure TfrmLabTest.FormCreate(Sender: TObject);
 var
-  index,i : integer;
-  Ts : TStringList;
-  List,List1,List3 : TListeAc;
+  List,List1 : TListeAc;
 begin
   ClientHeight := formYukseklik;
   ClientWidth := formGenislik;

@@ -50,7 +50,7 @@ type
     cxGridLevel13: TcxGridLevel;
     cxBtnDegerlendir: TcxButtonKadir;
     procedure FormCreate(Sender: TObject);
-    procedure cxKaydetClick(Sender: TObject);
+    procedure cxKaydetClick(Sender: TObject);override;
     procedure Getir;
     procedure cxBtnDegerlendirClick(Sender: TObject);
     procedure cxButtonCClick(Sender: TObject);
