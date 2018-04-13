@@ -119,7 +119,7 @@ var
 
 begin
 
- KillTask('OSGB.exe');  z
+ KillTaskt('OSGB.exe');
 
  if ForceDirectories ('C:\OSGB') then
   begin
@@ -136,6 +136,13 @@ begin
       filename := 'NoktaDLL.dll';
       dosya := TFileStream.Create('C:\OSGB\NoktaDLL.dll',fmCreate);
       HTTP1.Get('http://www.noktayazilim.net/NoktaDLL.dll' ,TStream(dosya));
+   // end;
+
+      // if FileExists('C:\OSGB\NoktaDLL.dll') = False
+   // Then begin
+      filename := 'EFaturaDLL.dll';
+      dosya := TFileStream.Create('C:\OSGB\EFaturaDLL.dll',fmCreate);
+      HTTP1.Get('http://www.noktayazilim.net/EFaturaDLL.dll' ,TStream(dosya));
    // end;
 
       filename := 'SmsApi.dll';
@@ -171,12 +178,24 @@ begin
       HTTP1.Get('http://www.noktayazilim.net/Microsoft.Web.Services3.dll' ,TStream(dosya));
    // end;
 
+
+      filename := 'RDP.rtf';
+      dosya := TFileStream.Create('C:\OSGB\RDP.rtf',fmCreate);
+      HTTP1.Get('http://www.noktayazilim.net/RDP.rtf' ,TStream(dosya));
+
+      filename := 'SonucRaporu.rtf';
+      dosya := TFileStream.Create('C:\OSGB\RDP.SonucRaporu',fmCreate);
+      HTTP1.Get('http://www.noktayazilim.net/SonucRaporu.rtf' ,TStream(dosya));
+
+
    // if FileExists('C:\OSGB\OSGB.exe') = False
    // Then begin
       filename := 'OSGB.exe';
       dosya := TFileStream.Create('C:\OSGB\OSGB.exe',fmCreate);
       HTTP1.Get('http://www.noktayazilim.net/OSGB.exe' ,TStream(dosya));
   //  end;
+
+
 
     dosya.Free;
     filename := 'C:\OSGB\OSGB.exe';
@@ -186,7 +205,8 @@ begin
     p := DesktopPath;
     CreateLink('C:\OSGB\OSGB.exe','','', p+'\OSGB.lnk');
 
-    halt;x
+    halt;
+    //x
   end
 end;
 
