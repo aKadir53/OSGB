@@ -550,6 +550,7 @@ Const
   TagfrmBolum = 9010;
   TagfrmBirim = 9011;
   TagfrmSube = 9012;
+  TagfrmFirmaISGEkip = 9013;
   TagfrmRaporDetay = -20;
   TagfrmTakipNo = -10;
   TagfrmAsiKarti = 9020;
