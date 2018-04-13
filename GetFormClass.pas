@@ -37,7 +37,7 @@ function PopupFormCaption(islemTag : integer ; var TabCaption : string) : String
 implementation
 
 uses message,Data_Modul,AnaUnit,message_y,popupForm,rapor,TedaviKart,Son6AylikTetkikSonuc,
-             HastaRecete,sifreDegis,HastaTetkikEkle,DokumanYukle,
+             HastaRecete,sifreDegis,HastaTetkikEkle,DokumanYukle,RTFSablon,
              Receteler,Sorgulamalar,sorguRaporCalistir,CariHareketGiris,CariHesapExtresi,
              HastaKart,FirmaKart,hizliKayit,receteSablonlari,RDS,KKD,Tedarikci,Cekler,
              HastaListe,IsKazasi,Anamnez,GrupDetayTanim,Sozlesmeler,KasaBanka,
@@ -241,6 +241,7 @@ begin
    TagfrmTedarikci : Result := TfrmTedarikci;
    TagfrmSirketSahaGozetim : Result := TfrmSirketSahaGozetim;
    TagfrmISGKurulToplanti : Result := TfrmISGKurulToplanti;
+   TagfrmRTFSablon : Result := TfrmRTFSablon;
  //  TagfrmAjandaOzet : Result := TfrmAjandaOzet;
   end;
 end;
@@ -298,6 +299,7 @@ begin
    TagfrmTedarikci : Result := frmTedarikci;
    TagfrmSirketSahaGozetim : Result := frmSirketSahaGozetim;
    TagfrmISGKurulToplanti : Result := frmISGKurulToplanti;
+   TagfrmRTFSablon : Result := frmRTFSablon;
 
    TagfrmLabParametreleri : Result := frmLabParams;
    TagfrmLabKabul : Result := frmLabaratuvarKabul;
@@ -364,6 +366,8 @@ begin
      TagfrmSirketSahaGozetim: frmSirketSahaGozetim := TfrmSirketSahaGozetim.Create(Tab);
      TagfrmAjandaOzet : frmAjandaOzet := TfrmAjandaOzet.Create(Tab);
      TagfrmISGKurulToplanti : frmISGKurulToplanti := TfrmISGKurulToplanti.Create(Tab);
+     TagfrmRTFSablon : frmRTFSablon := TfrmRTFSablon.Create(Tab);
+
   end;
   try
     if not (Form is TGirisForm) then
@@ -508,6 +512,7 @@ begin
      TagfrmSirketSahaGozetim: frmSirketSahaGozetim := TfrmSirketSahaGozetim.Create(Tab);
      TagfrmAjandaOzet : TfrmAjandaOzet.Create(Tab);
      TagfrmISGKurulToplanti : frmISGKurulToplanti := TfrmISGKurulToplanti.Create(Tab);
+     TagfrmRTFSablon : frmRTFSablon := TfrmRTFSablon.Create(Tab);
   end;
   try
     Form := TGirisForm(FormClassType(abs(FormTag)));
@@ -612,6 +617,8 @@ begin
 
     TagfrmSirketSahaGozetim : Application.CreateForm(TfrmSirketSahaGozetim, frmSirketSahaGozetim);
     TagfrmISGKurulToplanti : Application.CreateForm(TfrmISGKurulToplanti, frmISGKurulToplanti);
+    TagfrmRTFSablon : Application.CreateForm(TfrmRTFSablon, frmRTFSablon);
+
 
   end;
   try
