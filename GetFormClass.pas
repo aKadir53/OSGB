@@ -253,7 +253,7 @@ begin
    TagfrmFirmaKart : Result := frmFirmaKart;
    TagfrmMerkezBilgisi : Result := frmMerkezBilgisi;
    TagfrmHizmetKart : Result := frmHizmetKart;
-   TagfrmPopupDBGridForm,TagfrmBolum,TagfrmBirim,TagfrmSube,TagFirmaCalismalari : Result := frmPopupDBGridForm;
+   TagfrmPopupDBGridForm,TagfrmBolum,TagfrmBirim,TagfrmSube,TagfrmFirmaISGEkip,TagFirmaCalismalari : Result := frmPopupDBGridForm;
    TagfrmPopupDBVerticalGridForm : Result := frmPopupDBVerticalGridForm;
    TagfrmHizliKayitPersonel, TagfrmHizliKayitDisAktarimlar : Result := frmHizliKayit;
    TagfrmReceteSablon : Result := frmReceteSablon;
@@ -547,7 +547,7 @@ begin
     TagfrmFirmaKart : Application.CreateForm(TfrmFirmaKart,frmFirmaKart);
     TagfrmMerkezBilgisi : Application.CreateForm(TfrmMerkezBilgisi,frmMerkezBilgisi);
     TagfrmHizmetKart : Application.CreateForm(TfrmHizmetKart,frmHizmetKart);
-    TagfrmPopupDBGridForm,TagfrmBolum,TagfrmBirim,TagfrmSube,TagFirmaCalismalari: Application.CreateForm(TfrmPopupDBGridForm , frmPopupDBGridForm);
+    TagfrmPopupDBGridForm,TagfrmBolum,TagfrmBirim,TagfrmSube,TagfrmFirmaISGEkip,TagFirmaCalismalari: Application.CreateForm(TfrmPopupDBGridForm , frmPopupDBGridForm);
     TagfrmPopup : Application.CreateForm(TfrmPopup , frmPopup);
     TagfrmDoktorlar,TagfrmIGU,TagfrmDigerSaglikPers :  Application.CreateForm(TfrmDoktorlar, frmDoktorlar);
     TagfrmAbout :  Application.CreateForm(TfrmAbout, frmAbout);

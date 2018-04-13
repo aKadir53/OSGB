@@ -982,8 +982,9 @@ var
   _Obje_ : TcxCustomEdit;
 begin
   _say := _form.ComponentCount - 1;
-
-  cxTopPanel.Enabled := false;
+  //ÜÖ 20180413 hacý kadir'in 5 nisan'daki push'unda eklenmiþ.
+  //            firma, personel, kullanýcý kartý gibi ekranlarda [Yeni] menüsü seçilemiyor diye geri kapattým
+  //cxTopPanel.Enabled := false;
 
   for x := 0 to _say do
   begin
