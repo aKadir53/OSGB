@@ -109,7 +109,7 @@ procedure TfrmPopupDBGridForm.ADOBeforePost(DataSet: TDataSet);
 begin
   inherited;
   case Tag of
-  TagfrmSube :
+  TagfrmSube, TagfrmFirmaISGEkip :
         begin
            cxGrid3.Dataset.FieldByName('SirketKod').AsString := _firmaKod_;
         end;
@@ -166,6 +166,31 @@ begin
         cxGrid3.Dataset.Connection := datalar.ADOConnection2;
         cxGrid3.Dataset.SQL.Text := 'Select sirketKod,subeKod,subeTanim,subeSiciNo,subeDoktor,IGU,DigerSaglikPers,BolgeMudurlukSicilNo,MuayeneProtokolNo,DoktorCalismaDakika,IGUCalismaDakika,DigerSaglikPersCalismaDakika,NaceKod,tehlikeSinifi,Pasif,SemtLokasyon,calisanSayi,Adres ' +
                                     ' from SIRKET_SUBE_TNM where sirketKod = ' + QuotedStr(_firmaKod_);
+        cxGrid3.Dataset.Open;
+        DBGrid.ClearItems;
+        DBGrid.DataController.CreateAllItems(True);
+        SetGrid;
+
+        SayfaCaption('','','','','');
+        Result := True;
+    end;
+
+    TagfrmFirmaISGEkip :
+    begin
+        ClientHeight := 300;
+        ClientWidth := 900;
+        TableName := 'SIRKET_SUBE_EKIP';
+        _fields_ := 'id,SirketKod,SubeKod,TCKimlikNo,AdiSoyadi,Telefon,eMail,ISGEkipId,ISGEkipGorevID';
+        _fieldBaslik_ := ',,SubeKod,TCKimlikNo,AdiSoyadi,Telefon,eMail,ISGEkipId,ISGEkipGorevID';
+        _fieldTips_ := 'int,string,IC,TCKimlikNo,AdiSoyadi,Telefon,eMail,IC,IC';
+        _ICParams_ := '0;0;SIRKET_SUBE_TNM,subeKod,subeTanim;0;0;0;0;FirmaISGEkipTnm,kod,tanimi;FirmaISGEkipGorevTnm,kod,tanimi';
+        indexFieldName := 'sirketKod = ' + QuotedStr(_firmaKod_);
+        cxPanel.Visible := false;
+        cxGroupDoktorlar.Caption := 'Þube Bilgileri';
+        cxGrid3.Dataset.BeforePost := ADOBeforePost;
+        cxGrid3.Dataset.Connection := datalar.ADOConnection2;
+        cxGrid3.Dataset.SQL.Text := 'Select id,SirketKod,SubeKod,TCKimlikNo,AdiSoyadi,Telefon,eMail,ISGEkipId,ISGEkipGorevID ' +
+                                    ' from SIRKET_SUBE_EKIP where sirketKod = ' + QuotedStr(_firmaKod_);
         cxGrid3.Dataset.Open;
         DBGrid.ClearItems;
         DBGrid.DataController.CreateAllItems(True);
