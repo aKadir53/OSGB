@@ -16,10 +16,11 @@ object frmKKD: TfrmKKD
   PixelsPerInch = 96
   TextHeight = 13
   object KKDGrid: TcxGridKadir
-    Left = -784
-    Top = 16
-    Width = 1785
-    Height = 321
+    Left = 0
+    Top = 0
+    Width = 1000
+    Height = 597
+    Align = alClient
     TabOrder = 0
     ExcelFileName = 'KKD'
     ExceleGonder = True
@@ -28,6 +29,7 @@ object frmKKD: TfrmKKD
       DataController.Summary.FooterSummaryItems = <>
       DataController.Summary.SummaryGroups = <>
       NewItemRow.Visible = True
+      OptionsSelection.InvertSelect = False
       OptionsView.NoDataToDisplayInfoText = 'Faturaya Eklenmi'#351' Sat'#305'r Yok'
       OptionsView.CellAutoHeight = True
       OptionsView.Footer = True
@@ -191,6 +193,7 @@ object frmKKD: TfrmKKD
       Navigator.Buttons.GotoBookmark.Visible = False
       Navigator.Buttons.Filter.Visible = False
       Navigator.Visible = True
+      OnCustomDrawCell = KKDSatirlarCustomDrawCell
       DataController.Summary.DefaultGroupSummaryItems = <>
       DataController.Summary.FooterSummaryItems = <>
       DataController.Summary.SummaryGroups = <>
@@ -200,90 +203,112 @@ object frmKKD: TfrmKKD
       OptionsView.GroupByBox = False
       OptionsView.HeaderAutoHeight = True
       OptionsView.Indicator = True
+      Styles.OnGetContentStyle = KKDSatirlarStylesGetContentStyle
       Bands = <
         item
           Caption = 'UYGULAMA'
           FixedKind = fkLeft
           Styles.Header = cxStyle8
-          Width = 485
+          Width = 512
         end
         item
           Caption = 'V'#252'cut'
           FixedKind = fkLeft
+          Options.Sizing = False
           Position.BandIndex = 0
           Position.ColIndex = 0
-          Width = 159
+          Styles.Header = cxStyle8
+          Width = 140
         end
         item
           FixedKind = fkLeft
           Position.BandIndex = 0
           Position.ColIndex = 1
-          Width = 283
+          Width = 326
         end
         item
           Caption = 'R'#304'SKLER'
           Styles.Header = cxStyle8
-          Width = 1158
+          Width = 879
         end
         item
           Caption = 'F'#304'Z'#304'KSEL'
           Position.BandIndex = 3
           Position.ColIndex = 0
-          Width = 773
+          Styles.Header = cxStyle8
+          Width = 524
         end
         item
           Caption = 'K'#304'MYASAL'
+          Options.Sizing = False
           Position.BandIndex = 3
           Position.ColIndex = 1
-          Width = 277
+          Styles.Header = cxStyle8
+          Width = 200
         end
         item
           Caption = 'MEKAN'#304'K'
+          Options.Sizing = False
           Position.BandIndex = 4
           Position.ColIndex = 0
-          Width = 363
+          Styles.Header = cxStyle8
+          Width = 225
         end
         item
           Caption = 'TERMAL'
+          Options.Sizing = False
           Position.BandIndex = 4
           Position.ColIndex = 1
-          Width = 141
+          Styles.Header = cxStyle8
+          Width = 85
         end
         item
           Caption = 'ELEKTR'#304'K'
+          Options.Sizing = False
           Position.BandIndex = 4
           Position.ColIndex = 2
-          Width = 67
+          Styles.Header = cxStyle8
+          Width = 59
         end
         item
           Caption = 'RADYASYON'
+          Options.Sizing = False
           Position.BandIndex = 4
           Position.ColIndex = 3
-          Width = 146
+          Styles.Header = cxStyle8
+          Width = 95
         end
         item
           Caption = 'G'#220'R'#220'LT'#220
+          Options.Sizing = False
           Position.BandIndex = 4
           Position.ColIndex = 4
+          Styles.Header = cxStyle8
           Width = 60
         end
         item
           Caption = 'AEROSOLLAR'
+          Options.Sizing = False
           Position.BandIndex = 5
           Position.ColIndex = 0
-          Width = 149
+          Styles.Header = cxStyle8
+          Width = 113
         end
         item
           Caption = 'SIVILAR'
+          Options.Sizing = False
           Position.BandIndex = 5
           Position.ColIndex = 1
-          Width = 128
+          Styles.Header = cxStyle8
+          Width = 88
         end
         item
           Caption = 'B'#304'YOLOJ'#304'K'
+          Options.Sizing = False
           Position.BandIndex = 3
           Position.ColIndex = 2
-          Width = 217
+          Styles.Header = cxStyle8
+          Width = 153
         end>
       object KKDSatirlarsirketRiskId: TcxGridDBBandedColumn
         DataBinding.FieldName = 'sirketRiskId'
@@ -304,6 +329,9 @@ object frmKKD: TfrmKKD
       object KKDSatirlarVucutKisim: TcxGridDBBandedColumn
         Caption = 'Vucut Kisim'
         DataBinding.FieldName = 'VucutKisim'
+        PropertiesClassName = 'TcxTextEditProperties'
+        Properties.Alignment.Horz = taCenter
+        Properties.Alignment.Vert = taVCenter
         HeaderAlignmentHorz = taCenter
         HeaderAlignmentVert = vaCenter
         Options.Editing = False
@@ -315,6 +343,9 @@ object frmKKD: TfrmKKD
       object KKDSatirlarVucutUzuv: TcxGridDBBandedColumn
         Caption = 'Uzuv'
         DataBinding.FieldName = 'VucutUzuv'
+        PropertiesClassName = 'TcxTextEditProperties'
+        Properties.Alignment.Horz = taCenter
+        Properties.Alignment.Vert = taVCenter
         HeaderAlignmentHorz = taCenter
         HeaderAlignmentVert = vaCenter
         Options.Editing = False
@@ -326,10 +357,13 @@ object frmKKD: TfrmKKD
       object KKDSatirlarKKD: TcxGridDBBandedColumn
         Caption = 'Kullan'#305'l'#305'cak KKD'
         DataBinding.FieldName = 'KKD'
+        PropertiesClassName = 'TcxTextEditProperties'
+        Properties.Alignment.Horz = taCenter
+        Properties.Alignment.Vert = taVCenter
         HeaderAlignmentHorz = taCenter
         HeaderAlignmentVert = vaCenter
         Options.Editing = False
-        Width = 118
+        Width = 83
         Position.BandIndex = 2
         Position.ColIndex = 0
         Position.RowIndex = 0
@@ -337,9 +371,13 @@ object frmKKD: TfrmKKD
       object KKDSatirlarStandart: TcxGridDBBandedColumn
         Caption = 'Ulusal Standart'
         DataBinding.FieldName = 'Standart'
+        PropertiesClassName = 'TcxTextEditProperties'
+        Properties.Alignment.Horz = taCenter
+        Properties.Alignment.Vert = taVCenter
         HeaderAlignmentHorz = taCenter
         HeaderAlignmentVert = vaCenter
         Options.Editing = False
+        Width = 79
         Position.BandIndex = 2
         Position.ColIndex = 1
         Position.RowIndex = 0
@@ -347,20 +385,26 @@ object frmKKD: TfrmKKD
       object KKDSatirlarKullanilacakIS: TcxGridDBBandedColumn
         Caption = 'Kullanilacak '#304#351'ler'
         DataBinding.FieldName = 'KullanilacakIS'
+        PropertiesClassName = 'TcxTextEditProperties'
+        Properties.Alignment.Horz = taCenter
+        Properties.Alignment.Vert = taVCenter
         HeaderAlignmentHorz = taCenter
         HeaderAlignmentVert = vaCenter
         Options.Editing = False
-        Width = 112
+        Width = 137
         Position.BandIndex = 2
         Position.ColIndex = 2
         Position.RowIndex = 0
       end
       object KKDSatirlarBolum: TcxGridDBBandedColumn
         DataBinding.FieldName = 'Bolum'
+        PropertiesClassName = 'TcxTextEditProperties'
+        Properties.Alignment.Horz = taCenter
+        Properties.Alignment.Vert = taVCenter
         HeaderAlignmentHorz = taCenter
         HeaderAlignmentVert = vaCenter
         Options.Editing = False
-        Width = 139
+        Width = 73
         Position.BandIndex = 2
         Position.ColIndex = 3
         Position.RowIndex = 0
@@ -369,19 +413,12 @@ object frmKKD: TfrmKKD
         Caption = 'Y'#252'ksekten D'#252#351'me'
         DataBinding.FieldName = 'YuksektenDusme'
         PropertiesClassName = 'TcxImageComboBoxProperties'
-        Properties.Items = <
-          item
-            Description = 'E'
-            ImageIndex = 0
-            Value = 1
-          end
-          item
-            Description = 'H'
-            Value = 0
-          end>
+        Properties.Alignment.Horz = taCenter
+        Properties.Alignment.Vert = taVCenter
+        Properties.Items = <>
         HeaderAlignmentHorz = taCenter
         HeaderAlignmentVert = vaCenter
-        Width = 50
+        Width = 58
         Position.BandIndex = 6
         Position.ColIndex = 2
         Position.RowIndex = 0
@@ -390,21 +427,26 @@ object frmKKD: TfrmKKD
         Caption = 'Darbe Kesik'
         DataBinding.FieldName = 'DarbeKesik'
         PropertiesClassName = 'TcxImageComboBoxProperties'
+        Properties.Alignment.Horz = taCenter
+        Properties.Alignment.Vert = taVCenter
         Properties.Items = <>
         HeaderAlignmentHorz = taCenter
         HeaderAlignmentVert = vaCenter
-        Width = 50
+        Width = 39
         Position.BandIndex = 6
         Position.ColIndex = 3
         Position.RowIndex = 0
       end
       object KKDSatirlarBatmaKesik: TcxGridDBBandedColumn
+        Caption = 'Batma Kesik'
         DataBinding.FieldName = 'BatmaKesik'
         PropertiesClassName = 'TcxImageComboBoxProperties'
+        Properties.Alignment.Horz = taCenter
+        Properties.Alignment.Vert = taVCenter
         Properties.Items = <>
         HeaderAlignmentHorz = taCenter
         HeaderAlignmentVert = vaCenter
-        Width = 50
+        Width = 39
         Position.BandIndex = 6
         Position.ColIndex = 4
         Position.RowIndex = 0
@@ -412,10 +454,12 @@ object frmKKD: TfrmKKD
       object KKDSatirlarTitresim: TcxGridDBBandedColumn
         DataBinding.FieldName = 'Titresim'
         PropertiesClassName = 'TcxImageComboBoxProperties'
+        Properties.Alignment.Horz = taCenter
+        Properties.Alignment.Vert = taVCenter
         Properties.Items = <>
         HeaderAlignmentHorz = taCenter
         HeaderAlignmentVert = vaCenter
-        Width = 50
+        Width = 41
         Position.BandIndex = 6
         Position.ColIndex = 5
         Position.RowIndex = 0
@@ -424,10 +468,12 @@ object frmKKD: TfrmKKD
         Caption = 'Kayma Dusme'
         DataBinding.FieldName = 'KaymaDusme'
         PropertiesClassName = 'TcxImageComboBoxProperties'
+        Properties.Alignment.Horz = taCenter
+        Properties.Alignment.Vert = taVCenter
         Properties.Items = <>
         HeaderAlignmentHorz = taCenter
         HeaderAlignmentVert = vaCenter
-        Width = 50
+        Width = 45
         Position.BandIndex = 6
         Position.ColIndex = 6
         Position.RowIndex = 0
@@ -436,10 +482,12 @@ object frmKKD: TfrmKKD
         Caption = 'Sicaklik Alev'
         DataBinding.FieldName = 'SicaklikAlev'
         PropertiesClassName = 'TcxImageComboBoxProperties'
+        Properties.Alignment.Horz = taCenter
+        Properties.Alignment.Vert = taVCenter
         Properties.Items = <>
         HeaderAlignmentHorz = taCenter
         HeaderAlignmentVert = vaCenter
-        Width = 50
+        Width = 82
         Position.BandIndex = 7
         Position.ColIndex = 0
         Position.RowIndex = 0
@@ -447,10 +495,12 @@ object frmKKD: TfrmKKD
       object KKDSatirlarSoguk: TcxGridDBBandedColumn
         DataBinding.FieldName = 'Soguk'
         PropertiesClassName = 'TcxImageComboBoxProperties'
+        Properties.Alignment.Horz = taCenter
+        Properties.Alignment.Vert = taVCenter
         Properties.Items = <>
         HeaderAlignmentHorz = taCenter
         HeaderAlignmentVert = vaCenter
-        Width = 50
+        Width = 80
         Position.BandIndex = 7
         Position.ColIndex = 1
         Position.RowIndex = 0
@@ -458,9 +508,11 @@ object frmKKD: TfrmKKD
       object KKDSatirlarElektrik: TcxGridDBBandedColumn
         DataBinding.FieldName = 'Elektrik'
         PropertiesClassName = 'TcxImageComboBoxProperties'
+        Properties.Alignment.Horz = taCenter
+        Properties.Alignment.Vert = taVCenter
         Properties.Items = <>
         HeaderAlignmentHorz = taCenter
-        Width = 50
+        Width = 78
         Position.BandIndex = 8
         Position.ColIndex = 0
         Position.RowIndex = 0
@@ -470,9 +522,12 @@ object frmKKD: TfrmKKD
         Caption = #304'yonize Olmayan'
         DataBinding.FieldName = 'iyonizeOlmayan'
         PropertiesClassName = 'TcxImageComboBoxProperties'
+        Properties.Alignment.Horz = taCenter
+        Properties.Alignment.Vert = taVCenter
         Properties.Items = <>
         HeaderAlignmentHorz = taCenter
         HeaderAlignmentVert = vaCenter
+        Width = 85
         Position.BandIndex = 9
         Position.ColIndex = 0
         Position.RowIndex = 0
@@ -481,9 +536,12 @@ object frmKKD: TfrmKKD
         Caption = #304'yonize'
         DataBinding.FieldName = 'iyonize'
         PropertiesClassName = 'TcxImageComboBoxProperties'
+        Properties.Alignment.Horz = taCenter
+        Properties.Alignment.Vert = taVCenter
         Properties.Items = <>
         HeaderAlignmentHorz = taCenter
         HeaderAlignmentVert = vaCenter
+        Width = 82
         Position.BandIndex = 9
         Position.ColIndex = 1
         Position.RowIndex = 0
@@ -491,7 +549,10 @@ object frmKKD: TfrmKKD
       object KKDSatirlargurultu: TcxGridDBBandedColumn
         DataBinding.FieldName = 'gurultu'
         PropertiesClassName = 'TcxImageComboBoxProperties'
+        Properties.Alignment.Horz = taCenter
+        Properties.Alignment.Vert = taVCenter
         Properties.Items = <>
+        Width = 70
         Position.BandIndex = 10
         Position.ColIndex = 0
         Position.RowIndex = 0
@@ -501,9 +562,12 @@ object frmKKD: TfrmKKD
         Caption = 'Tozlar Lifler'
         DataBinding.FieldName = 'tozlarLifler'
         PropertiesClassName = 'TcxImageComboBoxProperties'
+        Properties.Alignment.Horz = taCenter
+        Properties.Alignment.Vert = taVCenter
         Properties.Items = <>
         HeaderAlignmentHorz = taCenter
         HeaderAlignmentVert = vaCenter
+        Width = 70
         Position.BandIndex = 11
         Position.ColIndex = 0
         Position.RowIndex = 0
@@ -512,9 +576,12 @@ object frmKKD: TfrmKKD
         Caption = 'Duman'
         DataBinding.FieldName = 'duman'
         PropertiesClassName = 'TcxImageComboBoxProperties'
+        Properties.Alignment.Horz = taCenter
+        Properties.Alignment.Vert = taVCenter
         Properties.Items = <>
         HeaderAlignmentHorz = taCenter
         HeaderAlignmentVert = vaCenter
+        Width = 71
         Position.BandIndex = 11
         Position.ColIndex = 1
         Position.RowIndex = 0
@@ -523,9 +590,12 @@ object frmKKD: TfrmKKD
         Caption = 'Buhar'
         DataBinding.FieldName = 'buhar'
         PropertiesClassName = 'TcxImageComboBoxProperties'
+        Properties.Alignment.Horz = taCenter
+        Properties.Alignment.Vert = taVCenter
         Properties.Items = <>
         HeaderAlignmentHorz = taCenter
         HeaderAlignmentVert = vaCenter
+        Width = 70
         Position.BandIndex = 11
         Position.ColIndex = 2
         Position.RowIndex = 0
@@ -534,9 +604,12 @@ object frmKKD: TfrmKKD
         Caption = 'S'#305'v'#305'ya Batma'
         DataBinding.FieldName = 'siviyaBatma'
         PropertiesClassName = 'TcxImageComboBoxProperties'
+        Properties.Alignment.Horz = taCenter
+        Properties.Alignment.Vert = taVCenter
         Properties.Items = <>
         HeaderAlignmentHorz = taCenter
         HeaderAlignmentVert = vaCenter
+        Width = 65
         Position.BandIndex = 12
         Position.ColIndex = 0
         Position.RowIndex = 0
@@ -545,9 +618,12 @@ object frmKKD: TfrmKKD
         Caption = 'S'#305#231'rama'
         DataBinding.FieldName = 'sicrama'
         PropertiesClassName = 'TcxImageComboBoxProperties'
+        Properties.Alignment.Horz = taCenter
+        Properties.Alignment.Vert = taVCenter
         Properties.Items = <>
         HeaderAlignmentHorz = taCenter
         HeaderAlignmentVert = vaCenter
+        Width = 65
         Position.BandIndex = 12
         Position.ColIndex = 1
         Position.RowIndex = 0
@@ -556,9 +632,12 @@ object frmKKD: TfrmKKD
         Caption = 'Zararl'#305' Bakteri'
         DataBinding.FieldName = 'zararliBakteri'
         PropertiesClassName = 'TcxImageComboBoxProperties'
+        Properties.Alignment.Horz = taCenter
+        Properties.Alignment.Vert = taVCenter
         Properties.Items = <>
         HeaderAlignmentHorz = taCenter
         HeaderAlignmentVert = vaCenter
+        Width = 65
         Position.BandIndex = 13
         Position.ColIndex = 0
         Position.RowIndex = 0
@@ -567,9 +646,12 @@ object frmKKD: TfrmKKD
         Caption = 'Zararli Virus'
         DataBinding.FieldName = 'zararliVirus'
         PropertiesClassName = 'TcxImageComboBoxProperties'
+        Properties.Alignment.Horz = taCenter
+        Properties.Alignment.Vert = taVCenter
         Properties.Items = <>
         HeaderAlignmentHorz = taCenter
         HeaderAlignmentVert = vaCenter
+        Width = 60
         Position.BandIndex = 13
         Position.ColIndex = 1
         Position.RowIndex = 0
@@ -578,9 +660,12 @@ object frmKKD: TfrmKKD
         Caption = 'Mantar'
         DataBinding.FieldName = 'mantar'
         PropertiesClassName = 'TcxImageComboBoxProperties'
+        Properties.Alignment.Horz = taCenter
+        Properties.Alignment.Vert = taVCenter
         Properties.Items = <>
         HeaderAlignmentHorz = taCenter
         HeaderAlignmentVert = vaCenter
+        Width = 60
         Position.BandIndex = 13
         Position.ColIndex = 2
         Position.RowIndex = 0
@@ -589,9 +674,12 @@ object frmKKD: TfrmKKD
         Caption = 'Antijen'
         DataBinding.FieldName = 'antijen'
         PropertiesClassName = 'TcxImageComboBoxProperties'
+        Properties.Alignment.Horz = taCenter
+        Properties.Alignment.Vert = taVCenter
         Properties.Items = <>
         HeaderAlignmentHorz = taCenter
         HeaderAlignmentVert = vaCenter
+        Width = 60
         Position.BandIndex = 13
         Position.ColIndex = 3
         Position.RowIndex = 0
@@ -631,8 +719,8 @@ object frmKKD: TfrmKKD
     Top = 32
   end
   object cxStyleRepository1: TcxStyleRepository
-    Left = 8
-    Top = 224
+    Left = 112
+    Top = 232
     PixelsPerInch = 96
     object cxStyle1: TcxStyle
       AssignedValues = [svColor, svFont]
@@ -687,8 +775,8 @@ object frmKKD: TfrmKKD
     end
   end
   object cxStyleRepository2: TcxStyleRepository
-    Left = 65520
-    Top = 112
+    Left = 104
+    Top = 128
     PixelsPerInch = 96
     object cxStyle2: TcxStyle
       AssignedValues = [svColor, svFont]
@@ -697,6 +785,15 @@ object frmKKD: TfrmKKD
       Font.Color = clWindowText
       Font.Height = -11
       Font.Name = 'MS Sans Serif'
+      Font.Style = [fsBold]
+    end
+    object cxStyle10: TcxStyle
+      AssignedValues = [svColor, svFont]
+      Color = clYellow
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clBlack
+      Font.Height = -11
+      Font.Name = 'Tahoma'
       Font.Style = [fsBold]
     end
   end

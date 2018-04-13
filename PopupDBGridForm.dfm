@@ -80,6 +80,10 @@ object frmPopupDBGridForm: TfrmPopupDBGridForm
       LevelTabs.ImageBorder = 2
       LevelTabs.Style = 1
       ExceleGonder = False
+      ExplicitLeft = 2
+      ExplicitTop = 19
+      ExplicitWidth = 765
+      ExplicitHeight = 264
       object DBGrid: TcxGridDBTableView
         Navigator.Buttons.First.Visible = False
         Navigator.Buttons.PriorPage.Visible = False
@@ -330,6 +334,9 @@ object frmPopupDBGridForm: TfrmPopupDBGridForm
       TabOrder = 1
       Visible = False
       BosOlamaz = False
+      ExplicitLeft = 2
+      ExplicitTop = -2
+      ExplicitWidth = 765
       Width = 763
     end
   end
