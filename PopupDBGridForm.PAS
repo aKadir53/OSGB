@@ -156,8 +156,8 @@ begin
         ClientHeight := 300;
         ClientWidth := 900;
         TableName := 'SIRKET_SUBE_TNM';
-        _fields_ := 'sirketKod,subeKod,subeTanim,subeSiciNo,subeDoktor,IGU,DigerSaglikPers,BolgeMudurlukSicilNo,MuayeneProtokolNo,DoktorCalismaDakika,IGUCalismaDakika,DigerSaglikPersCalismaDakika,NaceKod,tehlikeSinifi,Pasif,Semt/Lokasyon,calisanSayi,Adres';
-        _fieldBaslik_ := ',ÞubeKodu,ÞubeTanimi,ÝþYeriSicilNo,Doktor,ÝþGüvenlikUzmaný,DiðerSaðlýkPers,BölgeMdSicilNo,MuayeneProtokolNo,DoktorCalismaDakika,IGUCalismaDakika,DiðerSaðPersÇDakika,NaceKodu,TehlikeSinifi,Pasif,SemtLokasyon,ÇalýþanSayý,Adres';
+        _fields_ := 'sirketKod,subeKod,subeTanim,subeSiciNo,subeDoktor,IGU,DigerSaglikPers,BolgeMudurlukSicilNo,MuayeneProtokolNo,DoktorCalismaDakika,IGUCalismaDakika,DigerSaglikPersCalismaDakika,NaceKod,tehlikeSinifi,Pasif,SemtLokasyon,calisanSayi,Adres';
+        _fieldBaslik_ := ',Þube Kodu,Þube Tanýmý,ÝþYeri Sicil No,Doktor,Ýþ Güvenlik Uzm.,Diðer Sað.Pers,Bölge Md.Scl.No,Muayene Protokol No,Doktor Çalýþma Dk.,Ýþ Gv.Uzm.Çalýsma Dk.,DiðerSaðPersÇDakika,Nace Kodu,TehlikeSinifi,Pasif,Semt/Lokasyon,ÇalýþanSayý,Adres';
         _fieldTips_ := 'string,string,string,string,ImageDoktorCombo,ImageDoktorCombo,ImageDoktorCombo,string,string,string,string,string,ButtonEdit,ImageDoktorCombo,CheckBit,string,string,string';
         indexFieldName := 'sirketKod = ' + QuotedStr(_firmaKod_);
         cxPanel.Visible := false;
@@ -277,7 +277,11 @@ begin
           for i := 0 to Columns.Count - 1 do
           begin
             DBGrid.Columns[i].Caption := Baslik[i];
-         //   DBgrid.Columns[i].Properties.ReadOnly := StrToBool(ifThen(Edits[i]='1','True','False'));
+            if IsNull (Baslik[i]) then
+            begin
+              DBgrid.Columns[i].Editing := False;
+              DBgrid.Columns[i].Visible := False;
+            end;
             DBgrid.Columns[i].HeaderAlignmentHorz := taCenter;
             if SameText (Tips[i], 'int') then
              begin
