@@ -515,9 +515,9 @@ end;
 function RTFSablonDataset(RTFKodu : string) : TDataset;
 begin
  try
-  Result := datalar.QuerySelect('select RTFFile,RTFSablonTanim from RTFSablonlari where RTFKodu = ' + RTFKodu);
+   Result := datalar.QuerySelect('select RTFFile,RTFSablonTanim from RTFSablonlari where RTFKodu = ' + RTFKodu);
  except
-x  Result := nil;
+   FreeAndNil (Result);
  end;
 end;
 
@@ -540,16 +540,21 @@ procedure DokumanYukle(Dataset : Tdataset;field : string;fielName : string);
 var
   Blob : TADOBlobStream;
 begin
-      Dataset.Edit;
+    Dataset.Edit;
+    try
       Blob := TADOBlobStream.Create(TBlobField(Dataset.FieldByName(field)),bmwrite);
       try
         Blob.LoadFromFile(fielName);
         Blob.Position := 0;
         TBlobField(Dataset.FieldByName(field)).LoadFromStream(Blob);
-        Dataset.Post;þ
+        Dataset.Post;
       finally
         Blob.Free;
       end;
+    except
+      Dataset.Cancel;
+      raise;
+    end;
 end;
 
 
