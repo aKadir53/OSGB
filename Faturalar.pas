@@ -152,8 +152,8 @@ type
                       url : PWideChar); stdcall;
 
 const
-  //LIB_DLL = 'EFaturaDLL.dll';
-  LIB_DLL = 'D:\Projeler\VS\c#\EFatura\EFaturaDLL\ClassLibrary1\bin\Debug\EFaturaDLL.dll';
+  LIB_DLL = 'EFaturaDLL.dll';
+ // LIB_DLL = 'D:\Projeler\VS\c#\EFatura\EFaturaDLL\ClassLibrary1\bin\Debug\EFaturaDLL.dll';
 
 //  test = 'https://efatura-test.uyumsoft.com.tr/Services/Integration';
 //  gercek = 'https://efatura.uyumsoft.com.tr/Services/Integration';

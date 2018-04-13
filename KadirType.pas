@@ -491,6 +491,7 @@ type
   TRiskRecord = Record
     RiskID : string;
     SirketRiskID : string;
+    Method : Variant;
     Bolum : Variant;
     TehlikeKaynagi : Variant;
     Tehlike : Variant;
@@ -639,6 +640,7 @@ Const
   TagfrmCekler = 910;
   TagfrmKasaBanka = 920;
   TagfrmCSGBveriGonder = 930;
+  TagfrmRTFSablon = 940;
 
 
   ExceleGonder = 9997;
@@ -698,6 +700,9 @@ Const
   FaturaTahsilatEkle = 49;
   CekTahsilat = 50;
   OdemeEkle = 51;
+  RDP_FineKenny = '10';
+  RDSonuc_FineKenny = '20';
+  RDEkipTutanagi = '30';
 
   sp_HastaGelis = 'exec sp_HastaGelisleri ';
 
