@@ -24,10 +24,6 @@ select @cihazTurKod = cihazTurKod , @kod= kod from inserted
 --end
 
 END
-
-
-
-	
 GO
 exec sp_vw_sys_upd 'TR', 'dbo', 'CihazEkle'
 GO
