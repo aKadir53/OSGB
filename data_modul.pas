@@ -498,6 +498,7 @@ type
    ReceteAciklama : TAck;
    YeniRecete : TYeniRecete;
    Risk : TRiskRecord;
+   SahaDenetim : TSahaDenetim;
    KKD : TKKDREcord;
    SeansOlusturPrm : TSeansOlusturPrm;
    TeleEkg : TTeleEKG;

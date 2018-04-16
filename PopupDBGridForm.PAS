@@ -85,7 +85,7 @@ var
 
 implementation
 
-uses message, data_modul;
+uses message, data_modul , anaUnit;
 
 {$R *.DFM}
 
@@ -181,7 +181,7 @@ begin
         ClientWidth := 900;
         TableName := 'SIRKET_SUBE_EKIP';
         _fields_ := 'id,SirketKod,SubeKod,TCKimlikNo,AdiSoyadi,Telefon,eMail,ISGEkipId,ISGEkipGorevID';
-        _fieldBaslik_ := ',,SubeKod,TCKimlikNo,AdiSoyadi,Telefon,eMail,ISGEkipId,ISGEkipGorevID';
+        _fieldBaslik_ := ',,Þube,TC Kimlik No,Adý Soyadý,Telefon,eMail,ISG Ekip,ISG Ekip Görev';
         _fieldTips_ := 'int,string,IC,TCKimlikNo,AdiSoyadi,Telefon,eMail,IC,IC';
         _ICParams_ := '0;0;SIRKET_SUBE_TNM,subeKod,subeTanim;0;0;0;0;FirmaISGEkipTnm,kod,tanimi;FirmaISGEkipGorevTnm,kod,tanimi';
         indexFieldName := 'sirketKod = ' + QuotedStr(_firmaKod_);
@@ -489,10 +489,41 @@ begin
     _fieldBaslik_ := ado.FieldByName('_fieldBaslik_').AsString;
     _fieldTips_ := ado.FieldByName('_fieldTips_').AsString;
     _ICParams_ :=  ado.FieldByName('IC_Params').AsString;
+
+    if txtTable.Text = 'Cihazlar'
+    then begin
+       TableName := '(select C.* from Cihaz C ' +
+                 //  ' join CihazDetay CD on C.kod = CD.cihazKod ' +
+                   ' where C.sirketkod = ' + QuotedStr(vartostr(TcxImageComboKadir(AnaForm.Sirketler).EditingValue)) + ') Cihaz';
+    end
+    else
+    if txtTable.Text = 'Cihaz Detaylarý'
+    then begin
+       TableName := '(select CD.* from Cihaz C ' +
+                    ' join CihazDetay CD on C.kod = CD.cihazKod ' +
+                    ' where C.sirketkod = ' + QuotedStr(vartostr(TcxImageComboKadir(AnaForm.Sirketler).EditingValue)) + ') Cihaz';
+    end;
+
+
     Yukle;
+
+    if txtTable.Text = 'Cihazlar'
+    then begin
+       TcxImageComboBoxProperties(DbGrid.Columns[3].Properties).Items :=
+       TcxImageComboBoxProperties(TcxImageComboKadir(AnaForm.Sirketler).Properties).Items;
+    end
+    else
+    if txtTable.Text = 'Cihaz Detaylarý'
+    then begin
+      DbGrid.Columns[0].Options.Editing := False;
+      DbGrid.Columns[1].Options.Editing := False;
+    end;
+
   finally
     ado.Free;
   end;
+
+
 end;
 
 procedure TfrmPopupDBGridForm.FormShow(Sender: TObject);

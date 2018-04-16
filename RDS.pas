@@ -96,55 +96,6 @@ type
     RDSSatirlarRDS_2: TcxGridDBBandedColumn;
     RDSSatirlaryasalDayanak: TcxGridDBBandedColumn;
     RDSGridLevel1: TcxGridLevel;
-    RDSGridMatris: TcxGridKadir;
-    cxGridDBTableView2: TcxGridDBTableView;
-    cxGridDBColumn23: TcxGridDBColumn;
-    cxGridDBColumn24: TcxGridDBColumn;
-    cxGridDBColumn25: TcxGridDBColumn;
-    cxGridDBColumn26: TcxGridDBColumn;
-    cxGridDBColumn27: TcxGridDBColumn;
-    cxGridDBColumn28: TcxGridDBColumn;
-    cxGridDBColumn29: TcxGridDBColumn;
-    cxGridDBColumn30: TcxGridDBColumn;
-    cxGridDBColumn31: TcxGridDBColumn;
-    cxGridDBColumn32: TcxGridDBColumn;
-    cxGridDBColumn33: TcxGridDBColumn;
-    cxGridDBColumn34: TcxGridDBColumn;
-    cxGridDBColumn35: TcxGridDBColumn;
-    cxGridDBColumn36: TcxGridDBColumn;
-    cxGridDBColumn37: TcxGridDBColumn;
-    cxGridDBColumn38: TcxGridDBColumn;
-    cxGridDBColumn39: TcxGridDBColumn;
-    cxGridDBColumn40: TcxGridDBColumn;
-    cxGridDBColumn41: TcxGridDBColumn;
-    cxGridDBColumn42: TcxGridDBColumn;
-    cxGridDBColumn43: TcxGridDBColumn;
-    cxGridDBColumn44: TcxGridDBColumn;
-    cxGridDBBandedTableView2: TcxGridDBBandedTableView;
-    RDSSatirlarMatris: TcxGridDBBandedTableView;
-    cxGridDBBandedColumn1: TcxGridDBBandedColumn;
-    cxGridDBBandedColumn2: TcxGridDBBandedColumn;
-    cxGridDBBandedColumn3: TcxGridDBBandedColumn;
-    cxGridDBBandedColumn4: TcxGridDBBandedColumn;
-    cxGridDBBandedColumn5: TcxGridDBBandedColumn;
-    cxGridDBBandedColumn6: TcxGridDBBandedColumn;
-    cxGridDBBandedColumn7: TcxGridDBBandedColumn;
-    cxGridDBBandedColumn8: TcxGridDBBandedColumn;
-    cxGridDBBandedColumn9: TcxGridDBBandedColumn;
-    cxGridDBBandedColumn10: TcxGridDBBandedColumn;
-    cxGridDBBandedColumn11: TcxGridDBBandedColumn;
-    cxGridDBBandedColumn12: TcxGridDBBandedColumn;
-    cxGridDBBandedColumn13: TcxGridDBBandedColumn;
-    cxGridDBBandedColumn14: TcxGridDBBandedColumn;
-    cxGridDBBandedColumn15: TcxGridDBBandedColumn;
-    cxGridDBBandedColumn16: TcxGridDBBandedColumn;
-    cxGridDBBandedColumn17: TcxGridDBBandedColumn;
-    cxGridDBBandedColumn18: TcxGridDBBandedColumn;
-    cxGridDBBandedColumn19: TcxGridDBBandedColumn;
-    cxGridDBBandedColumn20: TcxGridDBBandedColumn;
-    cxGridDBBandedColumn21: TcxGridDBBandedColumn;
-    cxGridDBBandedColumn22: TcxGridDBBandedColumn;
-    cxGridLevel1: TcxGridLevel;
     RDSSatirlarColumn1: TcxGridDBBandedColumn;
     R1: TMenuItem;
     N1: TMenuItem;
@@ -154,11 +105,12 @@ type
     EkRTF1: TEkRTF;
     R3: TMenuItem;
     RTFDialog: TOpenDialog;
-    S1: TMenuItem;
     R4: TMenuItem;
     RiskDeerlendirmeProsedr1: TMenuItem;
     F1: TMenuItem;
     Matris: TcxImageList;
+    RDSSatirlarColumn2: TcxGridDBBandedColumn;
+    D1: TMenuItem;
     procedure cxButtonCClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure gridRaporCustomDrawGroupCell(Sender: TcxCustomGridTableView;
@@ -781,6 +733,10 @@ end;
 procedure TfrmRDS.cxButtonCClick(Sender: TObject);
 var
   GirisRecord : TGirisFormRecord;
+  aModalResult : TModalResult;
+  guid : string;
+  ado : TADOQuery;
+  sql,Method : String;inc
   TopluDataset : TDataSetKadir;
   Dataset : TDataset;
   F : TGirisForm;
@@ -819,22 +775,39 @@ begin
            if F <> nil then F.ShowModal;
          end;
    -26 : begin
-             Dataset := datalar.QuerySelect('sp_RDS ' + TcxButtonEditKadir(FindComponent('id')).EditText);
-             DokumanAc(RTFSablonDataset(RDP_FineKenny),'RTFFile','RTFSablonTanim',False);
-             EkRTF1.InFile := 'RTFSablonTanim.rtf';
+             Method := ifThen(vartostr(TcxImageComboKadir(FindComponent('Method')).EditingValue) = '1',RDP_FineKenny,RDP_Matris);
+             Dataset := datalar.QuerySelect('sp_RDS ' + TcxButtonEditKadir(FindComponent('id')).EditText + ',' +
+                                            vartostr(TcxImageComboKadir(FindComponent('Method')).EditingValue));
+             DokumanAc(RTFSablonDataset(Method),'RTFFile',
+                       'RTFSablonTanim_'+TcxButtonEditKadir(FindComponent('id')).EditText + '.rtf'
+                       ,False);
+
+
+             EkRTF1.InFile := 'RTFSablonTanim_'+TcxButtonEditKadir(FindComponent('id')).EditText + '.rtf';
              EkRTF1.ClearVars;
              EkRTF1.CreateVar('kurumAdi',TcxImageComboKadir(FindComponent('sirketKod')).Text);
              EkRTF1.CreateVar('igu',TcxImageComboKadir(FindComponent('hazirlayan')).Text);
              EkRTF1.CreateVar('dr',TcxImageComboKadir(FindComponent('hazirlayanDoktor')).Text);
              EkRTF1.CreateVar('isveren',TcxTextEditKadir(FindComponent('isverenVekil')).Text);
              EkRTF1.CreateVar('adres',Dataset.FieldByName('SubeAdres').AsString);
+             EkRTF1.CreateVar('osgbfirma',Dataset.FieldByName('osgbfirma').AsString);
+             EkRTF1.CreateVar('bitistarih',Dataset.FieldByName('gecerlilik_date').AsString);
+             EkRTF1.CreateVar('firmaSicil',Dataset.FieldByName('subeSiciNo').AsString);
+             EkRTF1.CreateVar('firmanace',Dataset.FieldByName('NaceKod').AsString);
+             EkRTF1.CreateVar('tarih',TcxTextEditKadir(FindComponent('date_create')).Text);
+             EkRTF1.CreateVar('yildabir',Dataset.FieldByName('RiskDegerlendirmePeryot').AsString);
+             EkRTF1.CreateVar('tehlike',Dataset.FieldByName('SirketTehlikeSinifi').AsString);
+
+
 
              EkRtf1.ExecuteOpen([RDSGrid.Dataset],SW_SHOW);
          end;
 
    -27 : begin
+            (*
+             Method := ifThen(vartostr(TcxImageComboKadir(FindComponent('Method')).EditingValue) = '1',RDSonuc_FineKenny,RDSonuc_Matris);
              Dataset := datalar.QuerySelect('sp_RDS ' + TcxButtonEditKadir(FindComponent('id')).EditText);
-             DokumanAc(RTFSablonDataset(RDSonuc_FineKenny),'RTFFile','RTFSablonTanim',False);
+             DokumanAc(RTFSablonDataset(Method),'RTFFile','RTFSablonTanim',False);
              EkRTF1.InFile := 'RTFSablonTanim.rtf';
              EkRTF1.ClearVars;
              EkRTF1.CreateVar('kurumAdi',TcxImageComboKadir(FindComponent('sirketKod')).Text);
@@ -846,12 +819,15 @@ begin
              EkRTF1.CreateVar('adres',Dataset.FieldByName('SubeAdres').AsString);
 
              EkRtf1.ExecuteOpen([Dataset],SW_SHOW);
+             *)
          end;
 
    -28 : begin
-             Dataset := datalar.QuerySelect('sp_RDS ' + TcxButtonEditKadir(FindComponent('id')).EditText);
-             DokumanAc(RTFSablonDataset(RDEkipTutanagi),'RTFFile','RTFSablonTanim',False);
-             EkRTF1.InFile := 'RTFSablonTanim.rtf';
+             Method := ifThen(vartostr(TcxImageComboKadir(FindComponent('Method')).EditingValue) = '1',RDSonuc_FineKenny,RDSonuc_Matris);
+             Dataset := datalar.QuerySelect('sp_RDS ' + TcxButtonEditKadir(FindComponent('id')).EditText + ',' +
+                                            vartostr(TcxImageComboKadir(FindComponent('Method')).EditingValue));
+             DokumanAc(RTFSablonDataset(RDEkipTutanagi),'RTFFile','EkipTutanagi.rtf',False);
+             EkRTF1.InFile := 'EkipTutanagi.rtf';
              EkRTF1.ClearVars;
              EkRTF1.CreateVar('kurumAdi',TcxImageComboKadir(FindComponent('sirketKod')).Text);
              EkRTF1.CreateVar('igu',TcxImageComboKadir(FindComponent('hazirlayan')).Text);
@@ -867,7 +843,8 @@ begin
           //ado := TADOQuery.Create(nil);
           try
             //datalar.QuerySelect(ado, sql);
-            TopluDataset.Dataset0 := datalar.QuerySelect('sp_RDS ' + TcxButtonEditKadir(FindComponent('id')).EditText);
+            TopluDataset.Dataset0 := datalar.QuerySelect('sp_RDS ' + TcxButtonEditKadir(FindComponent('id')).EditText + ',' +
+                                                          vartostr(TcxImageComboKadir(FindComponent('Method')).EditingValue));
 
             PrintYap('FBL','Risk Deðerlendirme Raporu Firma Bilgileri','',TopluDataset,pTNone)
           finally
