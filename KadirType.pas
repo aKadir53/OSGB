@@ -521,9 +521,35 @@ type
     SSGFaliyetPlan: String;
     SSGUygulanacakFaliyetTarihi: String;
     SSGBolumYetkilisi : String;
-    SSGSonuc : Integer;
+    SSGSonuc : Variant;
     SSGYapilanFaliyet: String;
+    SSGFaliyetKapamaTarihi : String;
+    SSGTakipSüresi : String;
+    SSGKapamaOnayi : Variant;
   End;
+
+  TDOF = record
+    SSGBolum: integer;
+    SSGYapilacakFaliyetTuru: Integer;
+    SSGKokNeden: String;
+    SSGFaliyetPlan: String;
+    SSGUygulanacakFaliyetTarihi: String;
+    SSGBolumYetkilisi : String;
+    SSGSonuc : Variant;
+    SSGYapilanFaliyet: String;
+    SSGFaliyetKapamaTarihi : String;
+    SSGTakipSüresi : String;
+    SSGKapamaOnayi : Variant;
+  end;
+
+  TSahaDenetim = record
+    Bolum : integer;
+    TehlikeliDurum : String;
+    Yonetmelik : String;
+    IlgiliKisi : String;
+    isinDurumu : Variant;
+    Image : TcxImage;
+  end;
 
   TSifreDegistir = record
     KullaniciAdi : String;
@@ -640,6 +666,7 @@ Const
   TagfrmKasaBanka = 920;
   TagfrmCSGBveriGonder = 930;
   TagfrmRTFSablon = 940;
+  TagfrmSirketSahaDenetim = 950;
 
 
   ExceleGonder = 9997;
@@ -699,8 +726,12 @@ Const
   FaturaTahsilatEkle = 49;
   CekTahsilat = 50;
   OdemeEkle = 51;
+  yeniDenetim = 52;
+  denetimDuzenle = 53;
   RDP_FineKenny = '10';
+  RDP_Matris = '11';
   RDSonuc_FineKenny = '20';
+  RDSonuc_Matris = '21';
   RDEkipTutanagi = '30';
 
   sp_HastaGelis = 'exec sp_HastaGelisleri ';

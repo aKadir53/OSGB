@@ -16,9 +16,9 @@ object frmSirketSahaGozetim: TfrmSirketSahaGozetim
   PixelsPerInch = 96
   TextHeight = 13
   object SahaGozetimGrid: TcxGridKadir
-    Left = 24
-    Top = 192
-    Width = 729
+    Left = -136
+    Top = 32
+    Width = 1153
     Height = 169
     TabOrder = 0
     ExceleGonder = False
@@ -195,14 +195,14 @@ object frmSirketSahaGozetim: TfrmSirketSahaGozetim
       DataController.Summary.SummaryGroups = <>
       NewItemRow.SeparatorColor = 8454143
       OptionsView.CellAutoHeight = True
-      OptionsView.DataRowHeight = 190
+      OptionsView.DataRowHeight = 50
       OptionsView.GroupByBox = False
       Bands = <
         item
-          Caption = 'Saha G'#246'zetim Tespitleri'
+          Caption = 'D'#252'zeltici '#214'nleyici Faaliyetler'
           FixedKind = fkLeft
           Styles.Header = cxStyle8
-          Width = 716
+          Width = 1040
         end>
       object SatirlarsirketSahaGozetimId: TcxGridDBBandedColumn
         DataBinding.FieldName = 'sirketSahaGozetimId'
@@ -219,24 +219,23 @@ object frmSirketSahaGozetim: TfrmSirketSahaGozetim
         Position.RowIndex = 0
       end
       object SatirlarImage: TcxGridDBBandedColumn
-        Caption = 'Resim'
+        Caption = 'Dosya '
         DataBinding.FieldName = 'Image'
-        PropertiesClassName = 'TcxImageProperties'
-        Properties.GraphicClassName = 'TJPEGImage'
-        Properties.Stretch = True
         HeaderAlignmentHorz = taCenter
         Options.Editing = False
-        Width = 300
+        Width = 98
         Position.BandIndex = 0
         Position.ColIndex = 2
         Position.RowIndex = 0
       end
       object SatirlarTespitler: TcxGridDBBandedColumn
+        Caption = 'Uygunsuzluk'
         DataBinding.FieldName = 'Tespitler'
         PropertiesClassName = 'TcxMemoProperties'
         Properties.Alignment = taCenter
         HeaderAlignmentHorz = taCenter
-        Width = 391
+        Options.Editing = False
+        Width = 333
         Position.BandIndex = 0
         Position.ColIndex = 3
         Position.RowIndex = 0
@@ -245,6 +244,7 @@ object frmSirketSahaGozetim: TfrmSirketSahaGozetim
         Caption = 'B'#246'l'#252'm'
         DataBinding.FieldName = 'BolumTanimi'
         Options.Editing = False
+        Width = 64
         Position.BandIndex = 0
         Position.ColIndex = 4
         Position.RowIndex = 0
@@ -253,30 +253,42 @@ object frmSirketSahaGozetim: TfrmSirketSahaGozetim
         Caption = 'Faaliyet T'#252'r'#252
         DataBinding.FieldName = 'FaaliyetTanimi'
         Options.Editing = False
+        Width = 62
         Position.BandIndex = 0
         Position.ColIndex = 5
         Position.RowIndex = 0
       end
       object SatirlarKokNeden: TcxGridDBBandedColumn
+        Caption = 'K'#246'k Neden'
         DataBinding.FieldName = 'KokNeden'
+        Options.Editing = False
+        Width = 64
         Position.BandIndex = 0
         Position.ColIndex = 6
         Position.RowIndex = 0
       end
       object SatirlarFaliyetPlan: TcxGridDBBandedColumn
+        Caption = 'Faliyet Plan'
         DataBinding.FieldName = 'FaliyetPlan'
+        Options.Editing = False
+        Width = 61
         Position.BandIndex = 0
         Position.ColIndex = 7
         Position.RowIndex = 0
       end
       object SatirlarUygulanacakFaliyetTarihi: TcxGridDBBandedColumn
         DataBinding.FieldName = 'UygulanacakFaliyetTarihi'
+        Options.Editing = False
+        Width = 62
         Position.BandIndex = 0
         Position.ColIndex = 8
         Position.RowIndex = 0
       end
       object SatirlarBolumYetkilisi: TcxGridDBBandedColumn
+        Caption = 'Bolum Yetkilisi'
         DataBinding.FieldName = 'BolumYetkilisi'
+        Options.Editing = False
+        Width = 63
         Position.BandIndex = 0
         Position.ColIndex = 9
         Position.RowIndex = 0
@@ -285,14 +297,53 @@ object frmSirketSahaGozetim: TfrmSirketSahaGozetim
         Caption = 'Sonu'#231
         DataBinding.FieldName = 'SonucTanimi'
         Options.Editing = False
+        Width = 61
         Position.BandIndex = 0
         Position.ColIndex = 10
         Position.RowIndex = 0
       end
       object SatirlarYapilanFaliyet: TcxGridDBBandedColumn
+        Caption = 'Yapilan Faliyet'
         DataBinding.FieldName = 'YapilanFaliyet'
+        Options.Editing = False
+        Width = 64
         Position.BandIndex = 0
         Position.ColIndex = 11
+        Position.RowIndex = 0
+      end
+      object SatirlarKapamaTarihi: TcxGridDBBandedColumn
+        Caption = 'Kapatma Tarihi'
+        DataBinding.FieldName = 'FaliyetKapamaTarihi'
+        Options.Editing = False
+        Position.BandIndex = 0
+        Position.ColIndex = 12
+        Position.RowIndex = 0
+      end
+      object SatirlarTakipSuresi: TcxGridDBBandedColumn
+        Caption = 'Takip S'#252'resi'
+        DataBinding.FieldName = 'TakipS'#252'resi'
+        Options.Editing = False
+        Position.BandIndex = 0
+        Position.ColIndex = 13
+        Position.RowIndex = 0
+      end
+      object SatirlarKapamaOnayi: TcxGridDBBandedColumn
+        Caption = 'Kapama Onayi'
+        DataBinding.FieldName = 'KapamaOnayi'
+        PropertiesClassName = 'TcxImageComboBoxProperties'
+        Properties.Images = DATALAR.imag24png
+        Properties.Items = <
+          item
+            Value = 0
+          end
+          item
+            ImageIndex = 31
+            Value = 1
+          end>
+        Options.Editing = False
+        Width = 50
+        Position.BandIndex = 0
+        Position.ColIndex = 14
         Position.RowIndex = 0
       end
     end
@@ -326,8 +377,8 @@ object frmSirketSahaGozetim: TfrmSirketSahaGozetim
       '  and sst.SubeKod = SR.SubeKod'
       'where FirmaKodu = '#39'0001'#39
       'order by SR.ID')
-    Left = 104
-    Top = 208
+    Left = 48
+    Top = 144
   end
   object cxStyleRepository1: TcxStyleRepository
     Left = 8
@@ -411,8 +462,20 @@ object frmSirketSahaGozetim: TfrmSirketSahaGozetim
     end
     object E3: TMenuItem
       Tag = -24
-      Caption = 'Raporu Ba'#351'ka Bir Kullan'#305'c'#305' '#304'le Payla'#351
-      ImageIndex = 32
+      Caption = 'Belge Ekle'
+      ImageIndex = 113
+      OnClick = cxButtonCClick
+    end
+    object B1: TMenuItem
+      Tag = -25
+      Caption = 'Belge A'#231
+      ImageIndex = 114
+      OnClick = cxButtonCClick
+    end
+    object i1: TMenuItem
+      Tag = -30
+      Caption = #304#351'vereni Bilgilendir'
+      ImageIndex = 10
       OnClick = cxButtonCClick
     end
   end

@@ -1,0 +1,66 @@
+<Fatura>
+  <faturaId>46</faturaId>
+  <faturaNo>NYA2018000000049</faturaNo>
+  <Senaryo>2</Senaryo>
+  <CopyIndicator>false</CopyIndicator>
+  <UUID>EFDD39DA-5732-4D44-A482-160EAF480C78</UUID>
+  <faturaTarihi>2018-03-28</faturaTarihi>
+  <faturaSaati>00:00:00</faturaSaati>
+  <faturaTip>SATIS</faturaTip>
+  <paraBirimi>TRY</paraBirimi>
+  <faturaKalemSayisi>1</faturaKalemSayisi>
+  <Not>HESAP IBAN :</Not>
+  <saticiBilgisi>
+    <url />
+    <vergiNo>9000068418</vergiNo>
+    <saticiAdi>UZMAN OSGB</saticiAdi>
+    <adres>TÜRKMENBAŞI BLV.HUZUREVLERİ MH.128 SK.AKGÜL SİT C/BLOK NO:3 ÇUKUROAVA/ADANA</adres>
+    <kapiNo />
+    <Ilce>ÇUKUROVA</Ilce>
+    <Il>Adana</Il>
+    <PostaKodu>01360</PostaKodu>
+    <Ulke>Türkiye</Ulke>
+    <vergiDairesi>Adana</vergiDairesi>
+    <Tel>03222480240</Tel>
+    <fax>03222480450</fax>
+    <EMail>tibet.canpolat@rts.com.tr</EMail>
+  </saticiBilgisi>
+  <aliciBilgisi>
+    <url />
+    <vergiNo>6130798493</vergiNo>
+    <saticiAdi>YÖN İŞ SAĞLIĞI ve GÜVENLİĞİ </saticiAdi>
+    <adres />
+    <kapiNo />
+    <Ilce>TUZLA</Ilce>
+    <Il>İSTANBUL</Il>
+    <PostaKodu />
+    <Ulke>Türkiye</Ulke>
+    <vergiDairesi>Alemdağ</vergiDairesi>
+    <Tel />
+    <fax />
+    <EMail />
+  </aliciBilgisi>
+  <Vergiler>
+    <kdvTutar>180.000000</kdvTutar>
+    <faturaTutar>1000.0000</faturaTutar>
+    <CalculationSequenceNumeric>1.0</CalculationSequenceNumeric>
+    <kdvOran>18</kdvOran>
+    <vergiTanimi>Katma Deger Vergisi</vergiTanimi>
+    <vergiKodu>0015</vergiKodu>
+  </Vergiler>
+  <faturaToplamlari>
+    <faturaTutar>1000</faturaTutar>
+    <faturaGeneTutar>1180</faturaGeneTutar>
+    <indirimToplam>0</indirimToplam>
+  </faturaToplamlari>
+  <Satirlar>
+    <sira>1</sira>
+    <adet>100.00</adet>
+    <tutar>1000.0000</tutar>
+    <kdvtutar>180.000000</kdvtutar>
+    <kdv>18</kdv>
+    <satirtutar>1180.000000</satirtutar>
+    <Tanim>tetet</Tanim>
+    <fiyat>10.00</fiyat>
+  </Satirlar>
+</Fatura>

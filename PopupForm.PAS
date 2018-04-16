@@ -409,17 +409,31 @@ riskDuzenle,yeniRisk :
  gozetimDuzenle,yeniGozetim :
             begin
               datalar.Risk.Onlemler := TcxMemo(FindComponent('Tespitler')).Text;
-              datalar.Risk.SSGBolum := TcxImageComboKadir(FindComponent('Bolum')).EditValue;
-              datalar.Risk.SSGYapilacakFaliyetTuru := TcxImageComboKadir(FindComponent('YapilacakFaliyetTuru')).EditValue;
+              datalar.Risk.SSGBolum := (TcxImageComboKadir(FindComponent('Bolum')).EditValue);
+              datalar.Risk.SSGYapilacakFaliyetTuru := (TcxImageComboKadir(FindComponent('YapilacakFaliyetTuru')).EditValue);
               datalar.Risk.SSGKokNeden := TcxTextEdit(FindComponent('KokNeden')).Text;
               datalar.Risk.SSGFaliyetPlan := TcxTextEdit(FindComponent('FaliyetPlan')).Text;
               datalar.Risk.SSGUygulanacakFaliyetTarihi := VarToStr (TcxTextEdit(FindComponent('UygulanacakFaliyetTarihi')).EditValue);
               datalar.Risk.SSGBolumYetkilisi := TcxTextEdit(FindComponent('BolumYetkilisi')).Text;
-              datalar.Risk.SSGSonuc := TcxImageComboKadir(FindComponent('Sonuc')).EditValue;
+              datalar.Risk.SSGSonuc := (TcxImageComboKadir(FindComponent('Sonuc')).EditValue);
               datalar.Risk.SSGYapilanFaliyet := TcxTextEdit(FindComponent('YapilanFaliyet')).Text;
+              datalar.Risk.SSGFaliyetKapamaTarihi := VarToStr (TcxTextEdit(FindComponent('FaliyetKapamaTarihi')).EditValue);
+              datalar.Risk.SSGTakipSüresi := VarToStr (TcxTextEdit(FindComponent('TakipSüresi')).EditValue);
+              datalar.Risk.SSGKapamaOnayi := TcxImageComboKadir(FindComponent('KapamaOnayi')).EditValue;
               //datalar.Risk.Image := TcxImage.Create(nil);
-              datalar.Risk.Image.Picture := TcxImage(FindComponent('ImageResim')).Picture;
+             // datalar.Risk.Image.Picture := TcxImage(FindComponent('ImageResim')).Picture;
             end;
+ denetimDuzenle,yeniDenetim :
+            begin
+              datalar.SahaDenetim.TehlikeliDurum := TcxMemo(FindComponent('TehlikeliDurum')).Text;
+              datalar.SahaDenetim.Bolum := (TcxImageComboKadir(FindComponent('Bolum')).EditValue);
+              datalar.SahaDenetim.Yonetmelik := TcxTextEdit(FindComponent('Yonetmelik')).Text;
+              datalar.SahaDenetim.IlgiliKisi := TcxTextEdit(FindComponent('IlgiliKisi')).Text;
+              datalar.SahaDenetim.isinDurumu := TcxImageComboKadir(FindComponent('isinDurumu')).EditValue;
+             // datalar.SahaDenetim.Image := TcxImage.Create(nil);
+              datalar.SahaDenetim.Image.Picture := TcxImage(FindComponent('ImageResim')).Picture;
+            end;
+
  yeniKKD,KKDDuzenle :
             begin
               datalar.KKD.VucutKisim := TcxButtonEditKadir(FindComponent('VucutKisim')).Text;
@@ -1056,9 +1070,13 @@ ptPersonelTetkikleri :
 
                     setDataString(self,'Sorumlu','Sorumlu',Kolon1,'',120);
                     TcxTextEditKadir(FindComponent('Sorumlu')).EditValue := datalar.Risk.Sorumlu;
-                    setDataString(self,'Termin','Termin Tarihi',Kolon1,'',120);
+
+                    Tarih := TcxDateEditKadir.Create(self);
+                    setDataStringKontrol(self,Tarih, 'Termin','Termin Tarihi',Kolon1,'',100);
                     TcxTextEditKadir(FindComponent('Termin')).EditValue := datalar.Risk.Termin;
-                    setDataString(self,'Gercek','Gerçekleþme Tarihi',Kolon1,'',120);
+
+                    Tarih := TcxDateEditKadir.Create(self);
+                    setDataStringKontrol(self,Tarih, 'Gercek','Gerçekleþme Tarihi',Kolon1,'',100);
                     TcxTextEditKadir(FindComponent('Gercek')).EditValue := datalar.Risk.Gerceklesme;
 
                     ICombo := TcxImageComboKadir.Create(self);
@@ -1119,10 +1137,11 @@ ptPersonelTetkikleri :
                     setDataStringMemo(self,'Tespitler','Tespitler',Kolon1,'',250,80);
                     TcxMemo(FindComponent('Tespitler')).text := datalar.Risk.Onlemler;
 
+                    (*
                     Image1 := TcxImage.Create(self);
                     Image1.Properties.GraphicClassName := 'TJPEGImage';
                     setDataStringKontrol(self,Image1,'ImageResim','Image',Kolon1,'',300,300);
-
+                     *)
                     Doktorlar := TcxImageComboKadir.Create(self);
                     Doktorlar.Conn := Datalar.ADOConnection2;
                     Doktorlar.TableName := 'RDS_RiskBolum';
@@ -1143,9 +1162,10 @@ ptPersonelTetkikleri :
                     setDataStringKontrol(self,Doktorlar,'YapilacakFaliyetTuru','Yapýlacak Faaliyet Türü',Kolon1,'',150);
                     Doktorlar.EditValue := datalar.Risk.SSGYapilacakFaliyetTuru;
 
-                    setDataString(self, 'KokNeden', 'Kok Neden', kolon1, '', 200);
+                    setDataStringMemo(self, 'KokNeden', 'Kok Neden', kolon1, '', 250,50);
                     TcxTextEdit(FindComponent('KokNeden')).Text := datalar.Risk.SSGKokNeden;
-                    setDataString(self, 'FaliyetPlan', 'Faaliyet Plan', kolon1, '', 200);
+
+                    setDataStringMemo(self, 'FaliyetPlan', 'Faaliyet Plan', kolon1, '', 250,50);
                     TcxTextEdit(FindComponent('FaliyetPlan')).Text := datalar.Risk.SSGFaliyetPlan;
 
                     _Tarih_ := TcxDateEditKadir.Create(self);
@@ -1165,18 +1185,86 @@ ptPersonelTetkikleri :
                     setDataStringKontrol(self,Doktorlar,'Sonuc','Takip Tetkik Sonucu',Kolon1,'',150);
                     Doktorlar.EditValue := datalar.Risk.SSGSonuc;
 
-                    setDataString(self, 'YapilanFaliyet', 'Yapýlan Faaliyet', kolon1, '', 200);
+                    setDataStringMemo(self, 'YapilanFaliyet', 'Yapýlan Faaliyet', kolon1, '', 250,50);
                     TcxTextEdit(FindComponent('YapilanFaliyet')).Text := datalar.Risk.SSGYapilanFaliyet;
 
+                    _Tarih_ := TcxDateEditKadir.Create(self);
+                    _Tarih_.Name := 'FaliyetKapamaTarihi';
+                    setDataStringKontrol(self,_Tarih_, 'FaliyetKapamaTarihi','Kapatma Tarihi',Kolon1,'',100);
+                    TcxTextEdit(FindComponent('FaliyetKapamaTarihi')).Text := datalar.Risk.SSGFaliyetKapamaTarihi;
+
+                    _Tarih_ := TcxDateEditKadir.Create(self);
+                    _Tarih_.Name := 'TakipSüresi';
+                    setDataStringKontrol(self,_Tarih_, 'TakipSüresi','Takip Süresi',Kolon1,'',100);
+                    TcxTextEdit(FindComponent('TakipSüresi')).Text := datalar.Risk.SSGTakipSüresi;
+
+
+                    Doktorlar := TcxImageComboKadir.Create(self);
+                    Doktorlar.Name := 'KapamaOnayi';
+                    Doktorlar.Conn := nil;
+                    Doktorlar.ItemList := '1;Evet,0;Hayýr';
+                    Doktorlar.Filter := '';
+                    setDataStringKontrol(self,Doktorlar,'KapamaOnayi','Kapama Onayi',kolon1,'',50);
+                    Doktorlar.EditValue := datalar.Risk.SSGKapamaOnayi;
                   //  datalar.Risk.Image.Picture.SaveToFile('dd.jpg');
+                   (*
                     try
                      TcxImage(FindComponent('ImageResim')).Picture := datalar.Risk.Image.Picture;
+                    finally
+                    end;
+                     *)
+                   // addButton(self,nil,'btnResimEkle','','Resim Ekle',Kolon1,'',100,ButtonClick,99);
+
+               end;
+
+   yeniDenetim,denetimDuzenle :
+               begin
+                    ClientHeight := 500;
+                    ClientWidth := 500;
+                    setDataStringMemo(self,'TehlikeliDurum','Tehlikeli Durum',Kolon1,'',250,80);
+                    TcxMemo(FindComponent('TehlikeliDurum')).text := datalar.SahaDenetim.TehlikeliDurum;
+
+                    Doktorlar := TcxImageComboKadir.Create(self);
+                    Doktorlar.Conn := Datalar.ADOConnection2;
+                    Doktorlar.TableName := 'RDS_RiskBolum';
+                    Doktorlar.ValueField := 'kod';
+                    Doktorlar.DisplayField := 'tanimi';
+                    Doktorlar.BosOlamaz := True;
+                    Doktorlar.Filter := '';
+                    setDataStringKontrol(self,Doktorlar,'Bolum','Bölüm',Kolon1,'',150);
+                    Doktorlar.EditValue := datalar.SahaDenetim.Bolum;
+
+
+
+                    setDataStringMemo(self, 'Yonetmelik', 'Yonetmelik - Ek Açýklama', kolon1, '', 250,50);
+                    TcxTextEdit(FindComponent('Yonetmelik')).Text := datalar.SahaDenetim.Yonetmelik;
+
+                    setDataString(self, 'IlgiliKisi', 'Bolum Yetkilisi', kolon1, '', 200);
+                    TcxTextEdit(FindComponent('IlgiliKisi')).Text := datalar.SahaDenetim.IlgiliKisi;
+
+
+                    Doktorlar := TcxImageComboKadir.Create(self);
+                    Doktorlar.Name := 'KapamaOnayi';
+                    Doktorlar.Conn := nil;
+                    Doktorlar.ItemList := '1;Baþladý,2;Planlandý,3;Tamamlandý';
+                    Doktorlar.Filter := '';
+                    setDataStringKontrol(self,Doktorlar,'isinDurumu','Ýþin Durumu',kolon1,'',50);
+                    Doktorlar.EditValue := datalar.SahaDenetim.isinDurumu;
+                  //  datalar.Risk.Image.Picture.SaveToFile('dd.jpg');
+
+                    Image1 := TcxImage.Create(self);
+                    Image1.Properties.GraphicClassName := 'TJPEGImage';
+                    setDataStringKontrol(self,Image1,'ImageResim','Image',Kolon1,'',300,300);
+
+                    try
+                     TcxImage(FindComponent('ImageResim')).Picture := datalar.SahaDenetim.Image.Picture;
                     finally
                     end;
 
                     addButton(self,nil,'btnResimEkle','','Resim Ekle',Kolon1,'',100,ButtonClick,99);
 
                end;
+
     yeniKKD,KKDDuzenle :
                begin
                   ClientHeight := 500;

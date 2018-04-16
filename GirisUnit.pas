@@ -917,8 +917,9 @@ procedure TGirisForm.Yukle;
 var
   sql : string;
 begin
+  sqlRun.Active := False;
   sqlRun.SQL.Text := Format(_SqlSelect_,[ifThen(_fields_='','*',_fields_),Tablename,indexFieldName]);
-  sqlRun.Open;
+  sqlRun.Active := True;
   sql := Format(insertrecordViewLog,[QuotedStr(indexFieldName),QuotedStr(_fields_),QuotedStr(Tablename),QuotedStr(datalar.username)]);
   datalar.QueryExec(sql);
 end;

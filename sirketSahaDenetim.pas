@@ -1,4 +1,4 @@
-unit sirketSahaGozetim;
+unit sirketSahaDenetim;
 
 interface
 
@@ -26,7 +26,7 @@ uses
   cxImageComboBox, cxButtonEdit, cxColorComboBox, Vcl.ImgList;
 
 type
-  TfrmSirketSahaGozetim = class(TGirisForm)
+  TfrmSirketSahaDenetim = class(TGirisForm)
     DataSource1: TDataSource;
     ADO_RiskDetay: TADOQuery;
     cxStyleRepository1: TcxStyleRepository;
@@ -42,7 +42,6 @@ type
     cxStyle8: TcxStyle;
     tmr1: TTimer;
     E1: TMenuItem;
-    E3: TMenuItem;
     List: TListeAc;
     cxStyle9: TcxStyle;
     cxImageList1: TcxImageList;
@@ -73,23 +72,15 @@ type
     cxGridDBBandedTableView1: TcxGridDBBandedTableView;
     Satirlar: TcxGridDBBandedTableView;
     SahaGozetimGridLevel1: TcxGridLevel;
-    SatirlarsirketSahaGozetimId: TcxGridDBBandedColumn;
+    SatirlarsirketSahaDenetimId: TcxGridDBBandedColumn;
     Satirlarid: TcxGridDBBandedColumn;
-    SatirlarTespitler: TcxGridDBBandedColumn;
+    SatirlarTehlikeliDurum: TcxGridDBBandedColumn;
+    SatirlarYonetmelik: TcxGridDBBandedColumn;
+    SatirlarIlgiliKisi: TcxGridDBBandedColumn;
+    SatirlarisinDurumu: TcxGridDBBandedColumn;
     SatirlarImage: TcxGridDBBandedColumn;
-    SatirlarBolumTanimi: TcxGridDBBandedColumn;
-    SatirlarFaaliyetTanimi: TcxGridDBBandedColumn;
-    SatirlarKokNeden: TcxGridDBBandedColumn;
-    SatirlarFaliyetPlan: TcxGridDBBandedColumn;
-    SatirlarUygulanacakFaliyetTarihi: TcxGridDBBandedColumn;
-    SatirlarBolumYetkilisi: TcxGridDBBandedColumn;
-    SatirlarSonucTanimi: TcxGridDBBandedColumn;
-    SatirlarYapilanFaliyet: TcxGridDBBandedColumn;
-    B1: TMenuItem;
-    SatirlarKapamaTarihi: TcxGridDBBandedColumn;
-    SatirlarTakipSuresi: TcxGridDBBandedColumn;
-    SatirlarKapamaOnayi: TcxGridDBBandedColumn;
-    i1: TMenuItem;
+    SatirlarBolum: TcxGridDBBandedColumn;
+    N1: TMenuItem;
     procedure Fatura(islem: Integer);
     procedure cxButtonCClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
@@ -114,9 +105,6 @@ type
       AButtonIndex: Integer);
     procedure AfterScroll(DataSet: TDataSet);
     function CreateRotatedFont: HFONT;
-    procedure SatirlarRDSCustomDrawCell(Sender: TcxCustomGridTableView;
-      ACanvas: TcxCanvas; AViewInfo: TcxGridTableDataCellViewInfo;
-      var ADone: Boolean);
     procedure RDSSatirlarNavigatorButtonsButtonClick(Sender: TObject;
       AButtonIndex: Integer; var ADone: Boolean);
     procedure SirketlerPropertiesChange(Sender: TObject);
@@ -147,7 +135,7 @@ const
   test = 'https://efatura-test.uyumsoft.com.tr/Services/Integration';
   gercek = 'https://efatura.uyumsoft.com.tr/Services/Integration';
 var
-  frmSirketSahaGozetim: TfrmSirketSahaGozetim;
+  frmSirketSahaDenetim: TfrmSirketSahaDenetim;
 
 implementation
 
@@ -155,12 +143,12 @@ uses data_modul, StrUtils, Jpeg;
 
 {$R *.dfm}
 
-function TfrmSirketSahaGozetim.findMethod(dllHandle: Cardinal;  methodName: string): FARPROC;
+function TfrmSirketSahaDenetim.findMethod(dllHandle: Cardinal;  methodName: string): FARPROC;
 begin
   Result := GetProcAddress(dllHandle, pchar(methodName));
 end;
 
-function TfrmSirketSahaGozetim.CreateRotatedFont: HFONT;
+function TfrmSirketSahaDenetim.CreateRotatedFont: HFONT;
   var
     ALogFont: TLogFont;
 begin
@@ -171,37 +159,17 @@ begin
 end;
 
 
-procedure TfrmSirketSahaGozetim.SirketlerPropertiesChange(Sender: TObject);
-var
-  sql : string;
-  dataset : Tdataset;
-  sube : string;
-begin
- sube := ' and IGU = ' + QuotedStr(datalar.IGU);
-
-
- if Assigned(TcxImageComboKadir(FindComponent('subeKod')))
- Then
-  TcxImageComboKadir(FindComponent('subeKod')).Filter := ' sirketKod = ' +
-  QuotedStr(vartostr(TcxImageComboKadir(FindComponent('SirketKod')).EditingValue)) + sube;
-
-end;
-
-procedure TfrmSirketSahaGozetim.FaturaDetay;
+procedure TfrmSirketSahaDenetim.FaturaDetay;
 var
  sql : string;
 begin
 
 sql :=
-'SELECT sgd.sirketSahaGozetimId, sgd.id, sgd.Tespitler, sgd.Image, sgd.DokumanTip, sgd.Bolum,'+
-              ' rb.tanimi AS BolumTanimi,sgd.FaliyetKapamaTarihi,sgd.TakipSüresi,sgd.KapamaOnayi ,'+
-              ' sgd.YapilacakFaliyetTuru, sft.tanimi AS FaaliyetTanimi, sgd.KokNeden, sgd.FaliyetPlan,'+
-              ' sgd.UygulanacakFaliyetTarihi, sgd.BolumYetkilisi, sgd.Sonuc, sts.tanimi AS SonucTanimi, sgd.YapilanFaliyet'+
-' FROM dbo.SirketSahaGozetimDetay AS sgd LEFT OUTER JOIN '+
-                'dbo.RDS_RiskBolum AS rb ON rb.kod = sgd.Bolum LEFT OUTER JOIN  '+
-                'dbo.SahaGozetimFaaliyetTuru AS sft ON sft.kod = sgd.YapilacakFaliyetTuru LEFT OUTER JOIN '+
-                'dbo.SahaGozetimTakipTetkikSonuc AS sts ON sts.kod = sgd.Sonuc ' +
-     ' where sgd.sirketSahaGozetimId = ' + QuotedStr(TcxButtonEditKadir(FindComponent('id')).Text);
+     'SELECT * ' +
+     ' FROM dbo.SirketSahaDenetimDetay AS sgd LEFT OUTER JOIN '+
+                'dbo.RDS_RiskBolum AS rb ON rb.kod = sgd.Bolum ' +
+                ' where sirketSahaDenetimId = ' + QuotedStr(TcxButtonEditKadir(FindComponent('id')).Text);
+
 
      SahaGozetimGrid.Dataset.Active := False;
      SahaGozetimGrid.Dataset.SQL.Text := sql;
@@ -209,14 +177,14 @@ sql :=
 
 end;
 
-procedure TfrmSirketSahaGozetim.FaturaSatirTutarCustomDrawFooterCell(
+procedure TfrmSirketSahaDenetim.FaturaSatirTutarCustomDrawFooterCell(
   Sender: TcxGridTableView; ACanvas: TcxCanvas;
   AViewInfo: TcxGridColumnHeaderViewInfo; var ADone: Boolean);
 begin
 //  FaturaToplamlari;
 end;
 
-procedure TfrmSirketSahaGozetim.cxKaydetClick(Sender: TObject);
+procedure TfrmSirketSahaDenetim.cxKaydetClick(Sender: TObject);
 begin
   //SirketKodx.Text := datalar.AktifSirket; giriþ formuna eklendi.
   inherited;
@@ -235,7 +203,7 @@ begin
 end;
 
 
-procedure TfrmSirketSahaGozetim.cxButtonEditPropertiesButtonClick(Sender: TObject;
+procedure TfrmSirketSahaDenetim.cxButtonEditPropertiesButtonClick(Sender: TObject;
   AButtonIndex: Integer);
 var
   list : ArrayListeSecimler;
@@ -245,9 +213,9 @@ begin
     Enabled;
     FaturaDetay;
 
-    if (TcxImageComboKadir(FindComponent('hazirlayan')).EditValue <>
-       datalar.IGU) and
-       TcxImageComboKadir(FindComponent('Onay')).EditValue = 1
+    if (vartostr(TcxTextEditKadir(FindComponent('hazirlayan')).EditValue) <>
+       datalar.IGU)
+       //and TcxImageComboKadir(FindComponent('Onay')).EditValue = 1
     then begin
        Satirlar.OptionsData.Editing := False;
        Satirlar.OptionsData.Inserting := False;
@@ -257,7 +225,7 @@ begin
        TcxTextEditKadir(FindComponent('hazirlayan')).Enabled := False;
        TcxImageComboKadir(FindComponent('date_create')).Enabled := False;
        TcxImageComboKadir(FindComponent('isveren')).Enabled := False;
-       TcxImageComboKadir(FindComponent('Onay')).Enabled := False;
+      // TcxImageComboKadir(FindComponent('Onay')).Enabled := False;
 
     end
     else
@@ -270,13 +238,13 @@ begin
        TcxTextEditKadir(FindComponent('hazirlayan')).Enabled := True;
        TcxImageComboKadir(FindComponent('date_create')).Enabled := True;
        TcxImageComboKadir(FindComponent('isveren')).Enabled := True;
-       TcxImageComboKadir(FindComponent('Onay')).Enabled := True;
+    //   TcxImageComboKadir(FindComponent('Onay')).Enabled := True;
     end;
 
 
 end;
 
-function TfrmSirketSahaGozetim.Init(Sender : TObject) : Boolean;
+function TfrmSirketSahaDenetim.Init(Sender : TObject) : Boolean;
 var
   _obje_ : TcxCustomEdit;
 begin
@@ -284,7 +252,7 @@ begin
 end;
 
 
-procedure TfrmSirketSahaGozetim.Fatura(islem: Integer);
+procedure TfrmSirketSahaDenetim.Fatura(islem: Integer);
 var
   F : TForm;
   bBasarili: Boolean;
@@ -293,12 +261,12 @@ begin
   //
 end;
 
-procedure TfrmSirketSahaGozetim.NewRecord(DataSet: TDataSet);
+procedure TfrmSirketSahaDenetim.NewRecord(DataSet: TDataSet);
 begin
-   SahaGozetimGrid.Dataset.FieldByName('sirketSahaGozetimId').AsInteger := TcxButtonEditKadir(FindComponent('id')).EditingValue;
+   SahaGozetimGrid.Dataset.FieldByName('sirketSahaDenetimId').AsInteger := TcxButtonEditKadir(FindComponent('id')).EditingValue;
 end;
 
-procedure TfrmSirketSahaGozetim.RDSSatirlarNavigatorButtonsButtonClick(Sender: TObject;
+procedure TfrmSirketSahaDenetim.RDSSatirlarNavigatorButtonsButtonClick(Sender: TObject;
   AButtonIndex: Integer; var ADone: Boolean);
 
 var
@@ -308,120 +276,77 @@ procedure datawrite;
 var
   Blob : TADOBlobStream;
 begin
-   Satirlar.DataController.DataSet.FieldByName('Tespitler').AsString := datalar.Risk.Onlemler;
-   if datalar.Risk.SSGBolum <= 0 then
+   Satirlar.DataController.DataSet.FieldByName('TehlikeliDurum').AsString := datalar.SahaDenetim.TehlikeliDurum;
+
+   if datalar.SahaDenetim.Bolum <= 0 then
      Satirlar.DataController.DataSet.FieldByName('Bolum').Clear
     else
-     Satirlar.DataController.DataSet.FieldByName('Bolum').AsInteger := datalar.Risk.SSGBolum;
-   if datalar.Risk.SSGYapilacakFaliyetTuru <= 0 then
-     Satirlar.DataController.DataSet.FieldByName('YapilacakFaliyetTuru').Clear
+     Satirlar.DataController.DataSet.FieldByName('Bolum').AsInteger := datalar.SahaDenetim.Bolum;
+
+   Satirlar.DataController.DataSet.FieldByName('Yonetmelik').AsString := datalar.SahaDenetim.Yonetmelik;
+
+   Satirlar.DataController.DataSet.FieldByName('IlgiliKisi').AsString := datalar.SahaDenetim.IlgiliKisi;
+
+//   Satirlar.DataController.DataSet.FieldByName('BolumYetkilisi').AsString := datalar.Risk.SSGBolumYetkilisi;
+
+   if datalar.SahaDenetim.isinDurumu <= 0 then
+     Satirlar.DataController.DataSet.FieldByName('isinDurumu').Clear
     else
-     Satirlar.DataController.DataSet.FieldByName('YapilacakFaliyetTuru').AsInteger := datalar.Risk.SSGYapilacakFaliyetTuru;
-   Satirlar.DataController.DataSet.FieldByName('KokNeden').AsString := datalar.Risk.SSGKokNeden;
-   Satirlar.DataController.DataSet.FieldByName('FaliyetPlan').AsString := datalar.Risk.SSGFaliyetPlan;
-   if IsNull (datalar.Risk.SSGUygulanacakFaliyetTarihi) then
-     Satirlar.DataController.DataSet.FieldByName('UygulanacakFaliyetTarihi').Clear
-    else
-     Satirlar.DataController.DataSet.FieldByName('UygulanacakFaliyetTarihi').AsDateTime := StrToDate (datalar.Risk.SSGUygulanacakFaliyetTarihi);
-   Satirlar.DataController.DataSet.FieldByName('BolumYetkilisi').AsString := datalar.Risk.SSGBolumYetkilisi;
+     Satirlar.DataController.DataSet.FieldByName('isinDurumu').AsVariant := datalar.SahaDenetim.isinDurumu;
 
-   if datalar.Risk.SSGSonuc <= 0 then
-     Satirlar.DataController.DataSet.FieldByName('Sonuc').Clear
-    else
-     Satirlar.DataController.DataSet.FieldByName('Sonuc').AsVariant := datalar.Risk.SSGSonuc;
+  // Satirlar.DataController.DataSet.FieldByName('Image').AsVariant := datalar.SahaDenetim.Image;
 
-   Satirlar.DataController.DataSet.FieldByName('YapilanFaliyet').AsString := datalar.Risk.SSGYapilanFaliyet;
-
-
-   if IsNull (datalar.Risk.SSGFaliyetKapamaTarihi) then
-     Satirlar.DataController.DataSet.FieldByName('FaliyetKapamaTarihi').Clear
-    else
-     Satirlar.DataController.DataSet.FieldByName('FaliyetKapamaTarihi').AsDateTime := StrToDate (datalar.Risk.SSGFaliyetKapamaTarihi);
-
-
-   if IsNull (datalar.Risk.SSGTakipSüresi) then
-     Satirlar.DataController.DataSet.FieldByName('TakipSüresi').Clear
-    else
-     Satirlar.DataController.DataSet.FieldByName('TakipSüresi').AsDateTime := StrToDate (datalar.Risk.SSGTakipSüresi);
-
-   if datalar.Risk.SSGKapamaOnayi <= 0 then
-     Satirlar.DataController.DataSet.FieldByName('KapamaOnayi').Clear
-    else
-     Satirlar.DataController.DataSet.FieldByName('KapamaOnayi').AsVariant := datalar.Risk.SSGKapamaOnayi;
-
-
- //  Satirlar.DataController.DataSet.FieldByName('Image').AsVariant := datalar.Risk.Image;
-
- (*
-    Blob := TADOBlobStream.Create(TBlobField(Satirlar.DataController.DataSet.FieldByName('Image')),bmwrite);
-    try
-    //  datalar.Risk.Image.Picture.SaveToFile('dd.jpg');
-      datalar.Risk.Image.Picture.Graphic.SaveToStream(Blob);
-     // Blob.LoadFromStream(datalar.Risk.Stream);
-      Blob.Position := 0;
-      TBlobField(Satirlar.DataController.DataSet.FieldByName('Image')).LoadFromStream(Blob);
-    finally
-      Blob.Free;
+    if Assigned(datalar.SahaDenetim.Image.Picture.Graphic)
+    then begin
+      Blob := TADOBlobStream.Create(TBlobField(Satirlar.DataController.DataSet.FieldByName('Image')),bmwrite);
+      try
+      //  datalar.Risk.Image.Picture.SaveToFile('dd.jpg');
+        datalar.SahaDenetim.Image.Picture.Graphic.SaveToStream(Blob);
+       // Blob.LoadFromStream(datalar.Risk.Stream);
+        Blob.Position := 0;
+        TBlobField(Satirlar.DataController.DataSet.FieldByName('Image')).LoadFromStream(Blob);
+      finally
+        Blob.Free;
+      end;
     end;
-   *)
+
 end;
 
 procedure dataRead;
 var
   G : TGraphic;
 begin
-   (*
+
    g := TJpegimage.Create;
    try
       g.Assign(Satirlar.DataController.DataSet.FieldByName('Image'));
-      datalar.Risk.Image := TcxImage.Create(nil);
-      datalar.Risk.Image.Picture.Assign(g);
+      datalar.SahaDenetim.Image := TcxImage.Create(nil);
+      datalar.SahaDenetim.Image.Picture.Assign(g);
   //    datalar.Risk.Image.Picture.SaveToFile('dd.jpg');
    finally
      g.free;
    end;
-     *)
-   datalar.Risk.Onlemler := Satirlar.DataController.DataSet.FieldByName('Tespitler').AsString;
-   datalar.Risk.SSGBolum := Satirlar.DataController.DataSet.FieldByName('Bolum').AsInteger;
-   datalar.Risk.SSGYapilacakFaliyetTuru := Satirlar.DataController.DataSet.FieldByName('YapilacakFaliyetTuru').AsInteger;
-   datalar.Risk.SSGKokNeden := Satirlar.DataController.DataSet.FieldByName('KokNeden').AsString;
-   datalar.Risk.SSGFaliyetPlan := Satirlar.DataController.DataSet.FieldByName('FaliyetPlan').AsString;
-   if Satirlar.DataController.DataSet.FieldByName('UygulanacakFaliyetTarihi').IsNull then
-     datalar.Risk.SSGUygulanacakFaliyetTarihi := ''
-    else
-     datalar.Risk.SSGUygulanacakFaliyetTarihi := DateToStr (Satirlar.DataController.DataSet.FieldByName('UygulanacakFaliyetTarihi').AsDateTime);
-   datalar.Risk.SSGBolumYetkilisi := Satirlar.DataController.DataSet.FieldByName('BolumYetkilisi').AsString;
-   datalar.Risk.SSGSonuc := Satirlar.DataController.DataSet.FieldByName('Sonuc').AsInteger;
-   datalar.Risk.SSGYapilanFaliyet := Satirlar.DataController.DataSet.FieldByName('YapilanFaliyet').AsString;
 
-  if Satirlar.DataController.DataSet.FieldByName('FaliyetKapamaTarihi').IsNull then
-     datalar.Risk.SSGUygulanacakFaliyetTarihi := ''
-    else
-     datalar.Risk.SSGUygulanacakFaliyetTarihi := DateToStr (Satirlar.DataController.DataSet.FieldByName('FaliyetKapamaTarihi').AsDateTime);
-
-  if Satirlar.DataController.DataSet.FieldByName('TakipSüresi').IsNull then
-     datalar.Risk.SSGUygulanacakFaliyetTarihi := ''
-    else
-     datalar.Risk.SSGUygulanacakFaliyetTarihi := DateToStr (Satirlar.DataController.DataSet.FieldByName('TakipSüresi').AsDateTime);
-  datalar.Risk.SSGKapamaOnayi := Satirlar.DataController.DataSet.FieldByName('KapamaOnayi').AsInteger;
+   datalar.SahaDenetim.TehlikeliDurum := Satirlar.DataController.DataSet.FieldByName('TehlikeliDurum').AsString;
+   datalar.SahaDenetim.Bolum := Satirlar.DataController.DataSet.FieldByName('Bolum').AsInteger;
+   datalar.SahaDenetim.Yonetmelik := Satirlar.DataController.DataSet.FieldByName('Yonetmelik').AsString;
+   datalar.SahaDenetim.IlgiliKisi := Satirlar.DataController.DataSet.FieldByName('IlgiliKisi').AsString;
+   datalar.SahaDenetim.isinDurumu := Satirlar.DataController.DataSet.FieldByName('isinDurumu').AsInteger;
 end;
 
 begin
 
   case AButtonIndex of
    6 : begin
-        datalar.Risk.Onlemler := '';
-        datalar.Risk.SSGBolum := -1;
-        datalar.Risk.SSGYapilacakFaliyetTuru := -1;
-        datalar.Risk.SSGKokNeden := '';
-        datalar.Risk.SSGFaliyetPlan := '';
-        datalar.Risk.SSGUygulanacakFaliyetTarihi := '';
-        datalar.Risk.SSGBolumYetkilisi := '';
-        datalar.Risk.SSGSonuc := -1;
-        datalar.Risk.SSGYapilanFaliyet := '';
-        datalar.Risk.Image := TcxImage.Create(nil);
+        datalar.SahaDenetim.TehlikeliDurum  := '';
+        datalar.SahaDenetim.Bolum := -1;
+        datalar.SahaDenetim.Yonetmelik := '';
+        datalar.SahaDenetim.IlgiliKisi := '';
+        datalar.SahaDenetim.isinDurumu := -1;
+        datalar.SahaDenetim.Image := TcxImage.Create(nil);
 
-        if mrYes = ShowPopupForm('Saha Gözetim Ekle',yeniGozetim)
+
+        if mrYes = ShowPopupForm('Saha Gözetim Ekle',yeniDenetim)
         then begin
          try
           Satirlar.DataController.DataSet.Append;
@@ -429,7 +354,7 @@ begin
           Satirlar.DataController.DataSet.post;
           Satirlar.DataController.DataSet.Active := False;
           Satirlar.DataController.DataSet.Active := True;
-          datalar.Risk.Image := nil;
+         // datalar.SahaDenetim.Image := nil;
           ADone := True;
         except on e : Exception do
           begin
@@ -442,7 +367,7 @@ begin
 
    9 : begin
         dataRead;
-        if mrYes = ShowPopupForm('Risk Kaynaðý Ekle',gozetimDuzenle)
+        if mrYes = ShowPopupForm('Düzenle',denetimDuzenle)
         then begin
          try
           Book := Satirlar.DataController.DataSet.Bookmark;
@@ -467,7 +392,7 @@ begin
 
 end;
 
-procedure TfrmSirketSahaGozetim.RDSSatirlarOlasilikPropertiesEditValueChanged(
+procedure TfrmSirketSahaDenetim.RDSSatirlarOlasilikPropertiesEditValueChanged(
   Sender: TObject);
 begin
   if TcxImageComboKadir(sender).Name = 'Method'
@@ -477,47 +402,7 @@ begin
 //  RDSSatirlar.DataController.post;
 end;
 
-procedure TfrmSirketSahaGozetim.SatirlarRDSCustomDrawCell(Sender: TcxCustomGridTableView;
-  ACanvas: TcxCanvas; AViewInfo: TcxGridTableDataCellViewInfo;
-  var ADone: Boolean);
-var
-  lf: LOGFONT;
-begin
- (*
-  if AViewInfo.Value = 'TOLERANS GÖSTERÝLEMEZ RÝSK'
-  Then
-    ACanvas.Brush.Color := clRed
-  else
-  if AViewInfo.Value = 'ESASLI RÝSK'
-  Then ACanvas.Brush.Color := clCream
-  else
-  if AViewInfo.Value = 'ÖNEMLÝ RÝSK'
-  Then ACanvas.Brush.Color := clYellow
-  else
-  if AViewInfo.Value = 'OLASI RÝSK'
-  then ACanvas.Brush.Color := clActiveCaption
-  else
-  if AViewInfo.Value = 'ÖNEMSÝZ RÝSK'
-  then ACanvas.Brush.Color := clFuchsia;
-
-
-(*
-  ACanvas.Brush.Style := bsClear; // set the brush style to transparent
-  FillChar(lf, SizeOf(lf), Byte(0));
-  lf.lfHeight := 20;
-  lf.lfEscapement := 10 * 90; // degrees to rotate
-  lf.lfOrientation := -10 * 90;
-  lf.lfCharSet := DEFAULT_CHARSET;
-  lf.lfWidth := 150;
-
-  StrCopy(lf.lfFaceName, 'Tahoma');
-
-  ACanvas.Font.Handle := CreateFontIndirect(lf);
- // ACanvas. TextOut(10, 100, 'Rotated text');
- *)
-end;
-
-procedure TfrmSirketSahaGozetim.PropertiesButtonClick(Sender: TObject;
+procedure TfrmSirketSahaDenetim.PropertiesButtonClick(Sender: TObject;
   AButtonIndex: Integer);
 var
  L : ArrayListeSecimler;
@@ -546,12 +431,12 @@ begin
   *)
 end;
 
-procedure TfrmSirketSahaGozetim.AfterScroll(DataSet: TDataSet);
+procedure TfrmSirketSahaDenetim.AfterScroll(DataSet: TDataSet);
 begin
 //
 end;
 
-procedure TfrmSirketSahaGozetim.AfterPost(DataSet: TDataSet);
+procedure TfrmSirketSahaDenetim.AfterPost(DataSet: TDataSet);
 begin
      cxPanelButtonEnabled(false,True,false);
    //  Satirlar.DataController.Dataset.Refresh;
@@ -559,12 +444,12 @@ begin
 
 end;
 
-procedure TfrmSirketSahaGozetim.BeforeEdit(DataSet: TDataSet);
+procedure TfrmSirketSahaDenetim.BeforeEdit(DataSet: TDataSet);
 begin
   // Satirlar.DataController.Dataset.DataSource.DataSet.Properties['Unique Table'].Value := 'SirketSahaGozetimDetay';
 end;
 
-procedure TfrmSirketSahaGozetim.BeforePost(DataSet: TDataSet);
+procedure TfrmSirketSahaDenetim.BeforePost(DataSet: TDataSet);
 begin
 
 //  RDSSatirlar.DataController.DataSet.FieldByName('Risk').AsFloat :=
@@ -576,7 +461,23 @@ begin
  //   Skor(RDSSatirlar.DataController.DataSet.FieldByName('Risk').AsFloat);
 end;
 
-procedure TfrmSirketSahaGozetim.cxButtonCClick(Sender: TObject);
+procedure TfrmSirketSahaDenetim.SirketlerPropertiesChange(Sender: TObject);
+var
+  sql : string;
+  dataset : Tdataset;
+  sube : string;
+begin
+
+ sube := ' and IGU = ' + QuotedStr(datalar.IGU);
+
+ if Assigned(TcxImageComboKadir(FindComponent('subeKod')))
+ Then
+  TcxImageComboKadir(FindComponent('subeKod')).Filter := ' sirketKod = ' +
+  QuotedStr(vartostr(TcxImageComboKadir(FindComponent('SirketKod')).EditingValue)) + sube;
+
+end;
+
+procedure TfrmSirketSahaDenetim.cxButtonCClick(Sender: TObject);
 var
   GirisRecord : TGirisFormRecord;
   aModalResult : TModalResult;
@@ -589,42 +490,44 @@ begin
 
 
   case Tcontrol(sender).Tag of
-  -20 : begin
-          TopluDataset.Dataset0 := datalar.QuerySelect('select * from SirketSahaGozetim_view where id = ' +
+ -20 : begin
+          TopluDataset.Dataset0 := datalar.QuerySelect('select * from SirketSahaDenetim_view where id = ' +
                                                         varTostr(TcxButtonEditKadir(FindComponent('id')).EditValue));
           TopluDataset.Dataset1 := SahaGozetimGrid.Dataset;
 
-          PrintYap('DOF','Duzeltici Önleyici Faliyet','',TopluDataset);
+          PrintYap('SDF','Saha Denetim','',TopluDataset);
         end;
+
   -30 : begin
           FB := FirmaBilgileri(vartostr(TcxImageComboKadir(FindComponent('sirketKod')).EditValue));
-          cxExceleGonder(SahaGozetimGrid,'DOF.xls');
-          if (mailGonder(FB.YetkiliMail,'DÖF',
-                        'Düzenlenen DÖF ler , ekteki dosyada bilginize sunulmuþtur',
-                        'DOF.xls')
+          cxExceleGonder(SahaGozetimGrid,'SahaGozetim.xls');
+          if (mailGonder(FB.YetkiliMail,'Saha Denetim',
+                        'Yapýlan Saha Denetim Sonucu , ekteki dosyada bilginize sunulmuþtur',
+                        'SahaGozetim.xls')
                = '0000')
              Then ShowMessageSkin('Email Bilgilendirmesi Yapýldý','','','info')
               else ShowMessageSkin('Email Bilgilendirmesi Yapýlamadý','','','info')
 
 
         end;
+
   -24:begin
        dosya := TOpenDialog.Create(nil);
        try
          if not dosya.Execute then Exit;
-         DokumanYukle(Satirlar.DataController.Dataset,'Image',dosya.FileName);
+        // DokumanYukle(Satirlar.DataController.Dataset,'Image',dosya.FileName);
        finally
          dosya.free;
        end;
 
       end;
   -25 : begin
-          DokumanAc(Satirlar.DataController.Dataset,'Image','DOFBelge');
+          //DokumanAc(Satirlar.DataController.Dataset,'Image','DOFBelge');
         end;
   end;
 end;
 
-procedure TfrmSirketSahaGozetim.ButtonClick(Sender: TObject);
+procedure TfrmSirketSahaDenetim.ButtonClick(Sender: TObject);
 var
   GirisRecord : TGirisFormRecord;
   F : TGirisForm;
@@ -634,10 +537,10 @@ begin
 end;
 
 
-procedure TfrmSirketSahaGozetim.FormCreate(Sender: TObject);
+procedure TfrmSirketSahaDenetim.FormCreate(Sender: TObject);
 var
   List,Faturalar : TListeAc;
-  sirketlerx,subeler ,Onay,IGU : TcxImageComboKadir;
+  sirketlerx,subeler ,Onay ,RiskBolum , isinDurumu , IGU : TcxImageComboKadir;
   FaturaTarihi : TcxDateEditKadir;
   SirketAdi : TcxTextEditKadir;
   item : TcxRadioGroupItem;
@@ -650,12 +553,12 @@ begin
   cxPanel.Visible := True;
   Menu := PopupMenu1;
   indexFieldName := 'id';
-  TableName := 'SirketSahaGozetim';
+  TableName := 'SirketSahaDenetim';
  // TopPanel.Visible := true;
 
   where := ' hazirlayan = ' + QuotedStr(datalar.IGU);
 
-  Faturalar := ListeAcCreate('SirketSahaGozetim_view','id,sirketKod,sirketAdi,date_create',
+  Faturalar := ListeAcCreate('SirketSahaDenetim_view','id,sirketKod,sirketAdi,date_create',
                        'ID,ÞirketKodu,ÞirketAdý,Tarihi',
                        '40,60,250,80','ID','Saha Gözetimleri',where,5,True);
 
@@ -679,7 +582,6 @@ begin
 
   sube := ' and IGU = ' + QuotedStr(datalar.IGU);
 
-
   Subeler := TcxImageComboKadir.Create(self);
   Subeler.Conn := Datalar.ADOConnection2;
   Subeler.TableName := 'SIRKET_SUBE_TNM';
@@ -687,6 +589,7 @@ begin
   Subeler.DisplayField := 'subeTanim';
   Subeler.Filter := ' SirketKod = ' + QuotedStr(vartostr(TcxImageComboKadir(FindComponent('SirketKod')).EditValue)) + sube + ' and (Pasif = 0 or Pasif is Null)';
   setDataStringKontrol(self,Subeler,'SubeKod','Þube',Kolon1,'trh',100,0,alNone,'');
+
 
   IGU := TcxImageComboKadir.Create(self);
   IGU.Conn := Datalar.ADOConnection2;
@@ -700,29 +603,39 @@ begin
 //  setDataString(self,'hazirlayan','Hazýrlayan',Kolon1,'trh',80,false,'',True);
   setDataString(self,'isveren','Isveren',Kolon1,'trh',150,false,'',False);
 
+  (*
   Onay := TcxImageComboKadir.Create(self);
   Onay.Conn := nil;
   Onay.ItemList := '1;Evet,0;Hayýr';
   Onay.Filter := '';
   setDataStringKontrol(self,Onay,'Onay','Onay',kolon4,'trh',50);
   OrtakEventAta(Onay);
+    *)
 
 
-(*
+  RiskBolum := TcxImageComboKadir.Create(self);
+  RiskBolum.Name := 'RiskBolum';
+  RiskBolum.Tag := -100;
+  RiskBolum.Conn := datalar.ADOConnection2;
+  RiskBolum.TableName := 'RDS_RiskBolum';
+  RiskBolum.ValueField := 'Kod';
+  RiskBolum.DisplayField := 'tanimi';
+  RiskBolum.Filter := '';
+
+
+
   try
-     TcxImageComboBoxProperties(RDSSatirlarBolum.Properties).Items :=
+     TcxImageComboBoxProperties(SatirlarBolum.Properties).Items :=
      TcxImageComboBoxProperties(TcxImageComboKadir(FindComponent('RiskBolum')).Properties).Items;
-     TcxImageComboBoxProperties(RDSSatirlarTehlikeKaynagi.Properties).Items :=
-     TcxImageComboBoxProperties(TcxImageComboKadir(FindComponent('TehlikeKaynak')).Properties).Items;
-     RDSSatirlarTehlike.Properties.OnButtonClick := PropertiesButtonClick;
+
   finally
   end;
-*)
+
 
 
 
 //  setDataStringBLabel(self,'bosSatir',kolon1,'',1000,'Risk Kaynaklarý');
-  setDataStringKontrol(self,SahaGozetimGrid,'SahaGozetimGrid','',Kolon1,'',1050,450);
+  setDataStringKontrol(self,SahaGozetimGrid,'SahaGozetimGrid','',Kolon1,'',1070,450);
 
 
   SahaGozetimGrid.Dataset.Connection := datalar.ADOConnection2;
@@ -745,7 +658,7 @@ begin
   Disabled(self,True);
 end;
 
-procedure TfrmSirketSahaGozetim.GozlemYazdir(const GozlemID: integer);
+procedure TfrmSirketSahaDenetim.GozlemYazdir(const GozlemID: integer);
 var
   ado : TADOQuery;
   sql : String;
@@ -766,7 +679,7 @@ begin
   end;
 end;
 
-procedure TfrmSirketSahaGozetim.gridRaporCustomDrawGroupCell(
+procedure TfrmSirketSahaDenetim.gridRaporCustomDrawGroupCell(
   Sender: TcxCustomGridTableView; ACanvas: TcxCanvas;
   AViewInfo: TcxGridTableCellViewInfo; var ADone: Boolean);
 begin

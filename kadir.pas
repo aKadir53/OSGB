@@ -409,7 +409,7 @@ procedure StretchImage(var Image1: TcxImage; StretchType: Byte; NewWidth, NewHei
 procedure HesapIsle(BorcHesap,AlacakHesap,Aciklama : string ; Tutar : Double ; Tarih ,cek,vadeTarihi,evrakTipi,evrakNo,cekdurum,cekId: string);
 procedure HesapIsleOdeme(BorcHesap,AlacakHesap,Aciklama : string ; Tutar : Double ; Tarih ,cek,vadeTarihi,evrakTipi,evrakNo,cekdurum,cekId: string);
 function SifreGecerliMi (const sSifre: String; const pMinKarakter, pMinHarf, pMinKucukHarf, pMinBuyukHarf, pMinRakam : Integer; pMsgGostrt : Boolean = True) : Boolean;
-procedure DokumanAc(Dataset : Tdataset;fieldName : string;fileName : string; Open : Boolean = True);
+procedure DokumanAc(Dataset : Tdataset;fieldName : string;fileName : string; Open : Boolean = True ; DokumanTip : string = 'rtf');
 procedure DokumanYukle(Dataset : Tdataset;field : string;fielName : string);
 function RTFSablonDataset(RTFKodu : string) : TDataset;
 
@@ -522,13 +522,23 @@ begin
 end;
 
 
-procedure DokumanAc(Dataset : Tdataset;fieldName : string;fileName : string; Open : Boolean = True);
+procedure DokumanAc(Dataset : Tdataset;fieldName : string;fileName : string; Open : Boolean = True ; DokumanTip : string = 'rtf');
 var
   Blob : TAdoBlobStream;
+  id : string;
 begin
+  (*
+    try
+     id := Dataset.FieldByName('id').AsString;
+     DokumanTip := Dataset.FieldByName('DokumanTip').AsString;
+    except
+    end;
+    *)
+
     Blob := TADOBlobStream.Create((Dataset.FieldByName(fieldName) as TBlobField), bmRead);
     try
-      Blob.SaveToFile(filename+'.rtf');
+     // filename := filename;
+      Blob.SaveToFile(filename);
     finally
       Blob.Free;
     end;
@@ -539,16 +549,21 @@ end;
 procedure DokumanYukle(Dataset : Tdataset;field : string;fielName : string);
 var
   Blob : TADOBlobStream;
+  dosyaTip : string;
 begin
+      dosyaTip := ExtractFileExt(fielName);
+      dosyaTip := StringReplace(dosyaTip,'.','',[rfReplaceAll]);
       Dataset.Edit;
       Blob := TADOBlobStream.Create(TBlobField(Dataset.FieldByName(field)),bmwrite);
       try
         Blob.LoadFromFile(fielName);
         Blob.Position := 0;
         TBlobField(Dataset.FieldByName(field)).LoadFromStream(Blob);
-        Dataset.Post;
-      finally
+        Dataset.FieldByName('DokumanTip').AsString := dosyaTip;
         Blob.Free;
+        Dataset.Post;
+      except
+        Dataset.Cancel;
       end;
 end;
 
@@ -1613,9 +1628,13 @@ var
 begin
   SaveDlg := TSaveDialog.Create(nil);
   try
-    SaveDlg.FileName := dosyaName;
-    if not SaveDlg.Execute Then Exit;
-    DosyaName := SaveDlg.FileName;
+    if dosyaname = ''
+    then begin
+      SaveDlg.FileName := dosyaName;
+      if not SaveDlg.Execute Then Exit;
+      DosyaName := SaveDlg.FileName;
+    end;
+
     try
       ExportGridToExcel(dosyaName,grid,False,True);
     except on e : Exception do

@@ -85,7 +85,7 @@ var
 
 implementation
 
-uses message, data_modul;
+uses message, data_modul , anaUnit;
 
 {$R *.DFM}
 
@@ -460,10 +460,41 @@ begin
     _fieldBaslik_ := ado.FieldByName('_fieldBaslik_').AsString;
     _fieldTips_ := ado.FieldByName('_fieldTips_').AsString;
     _ICParams_ :=  ado.FieldByName('IC_Params').AsString;
+
+    if txtTable.Text = 'Cihazlar'
+    then begin
+       TableName := '(select C.* from Cihaz C ' +
+                 //  ' join CihazDetay CD on C.kod = CD.cihazKod ' +
+                   ' where C.sirketkod = ' + QuotedStr(vartostr(TcxImageComboKadir(AnaForm.Sirketler).EditingValue)) + ') Cihaz';
+    end
+    else
+    if txtTable.Text = 'Cihaz Detaylarý'
+    then begin
+       TableName := '(select CD.* from Cihaz C ' +
+                    ' join CihazDetay CD on C.kod = CD.cihazKod ' +
+                    ' where C.sirketkod = ' + QuotedStr(vartostr(TcxImageComboKadir(AnaForm.Sirketler).EditingValue)) + ') Cihaz';
+    end;
+
+
     Yukle;
+
+    if txtTable.Text = 'Cihazlar'
+    then begin
+       TcxImageComboBoxProperties(DbGrid.Columns[3].Properties).Items :=
+       TcxImageComboBoxProperties(TcxImageComboKadir(AnaForm.Sirketler).Properties).Items;
+    end
+    else
+    if txtTable.Text = 'Cihaz Detaylarý'
+    then begin
+      DbGrid.Columns[0].Options.Editing := False;
+      DbGrid.Columns[1].Options.Editing := False;
+    end;
+
   finally
     ado.Free;
   end;
+
+
 end;
 
 procedure TfrmPopupDBGridForm.FormShow(Sender: TObject);
