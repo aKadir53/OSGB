@@ -165,8 +165,6 @@ end;
 
 procedure TfrmSirketSahaGozetim.SirketlerPropertiesChange(Sender: TObject);
 var
-  sql : string;
-  dataset : Tdataset;
   sube : string;
 begin
  sube := ' and IGU = ' + QuotedStr(datalar.IGU);
@@ -289,8 +287,6 @@ var
   Book : TBookmark;
 
 procedure datawrite;
-var
-  Blob : TADOBlobStream;
 begin
    Satirlar.DataController.DataSet.FieldByName('Tespitler').AsString := datalar.Risk.Onlemler;
    if datalar.Risk.SSGBolum <= 0 then
@@ -351,8 +347,6 @@ begin
 end;
 
 procedure dataRead;
-var
-  G : TGraphic;
 begin
    (*
    g := TJpegimage.Create;
@@ -556,11 +550,8 @@ end;
 
 procedure TfrmSirketSahaGozetim.cxButtonCClick(Sender: TObject);
 var
-  GirisRecord : TGirisFormRecord;
-  aModalResult : TModalResult;
-  guid,dosyaTip : string;
   dosya : TOpenDialog;
-  TopluDataset : TDataSetKadir;inc
+  TopluDataset : TDataSetKadir;
   FB : TFirmaBilgi;
 begin
   inherited;

@@ -733,10 +733,7 @@ end;
 procedure TfrmRDS.cxButtonCClick(Sender: TObject);
 var
   GirisRecord : TGirisFormRecord;
-  aModalResult : TModalResult;
-  guid : string;
-  ado : TADOQuery;
-  sql,Method : String;inc
+  Method : String;
   TopluDataset : TDataSetKadir;
   Dataset : TDataset;
   F : TGirisForm;
