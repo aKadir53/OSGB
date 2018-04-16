@@ -59,7 +59,7 @@ type
     procedure cxButtonCClick(Sender: TObject);
     procedure Yazdir(tag : integer);
     procedure FormCreate(Sender: TObject);
-    procedure cxKaydetClick(Sender: TObject);
+    procedure cxKaydetClick(Sender: TObject);override;
 
 
   private

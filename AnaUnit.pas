@@ -778,7 +778,7 @@ begin
  case _Tag_ of
     9999 : close;
     83 : begin
-      SifreDegistir;
+      SifreDegistir (False);
     end;
     121 : begin
             DestekTalep;
@@ -993,9 +993,9 @@ begin
    ACanClose := False;
  end
  else begin
-   ACanClose := True;
    Comp := Sayfalar.Pages[ATabIndex].Components[0];
-   TGirisForm(Comp).Close;
+   ACanClose := TGirisForm(Comp).CloseQuery;
+   if ACanClose then TGirisForm(Comp).Close;
  end;
 end;
 

@@ -35,7 +35,7 @@ type
     GridListBAKIYETIPI: TcxGridDBBandedColumn;
     procedure FormCreate(Sender: TObject);
     procedure ButtonClick(Sender: TObject);
-    procedure cxKaydetClick(Sender: TObject);
+    procedure cxKaydetClick(Sender: TObject);override;
     procedure cxTextEditKeyDown(Sender: TObject; var Key: Word;
       Shift: TShiftState);
     procedure cxButtonEditPropertiesButtonClick(Sender: TObject;
@@ -46,7 +46,7 @@ type
        var AllowChange: Boolean);
     procedure SayfalarChange(Sender: TObject);
     procedure cxButtonCClick(Sender: TObject);
-    procedure PropertiesEditValueChanged(Sender: TObject);
+    procedure PropertiesEditValueChanged(Sender: TObject);override;
   private
     { Private declarations }
   protected
@@ -84,21 +84,14 @@ begin
 end;
 
 procedure TfrmCariHesapEkstre.ButtonClick(Sender: TObject);
-var
-  i : Integer;
-  sTmp: String;
-  ado : TADOQuery;
 begin
+//
 end;
 
 procedure TfrmCariHesapEkstre.cxButtonCClick(Sender: TObject);
-var
-  Ado,ado1 : TADOQuery;
-  sql : string;
-  TopluDataset : TDataSetKadir;
 begin
   inherited;
-
+  //
 end;
 
 procedure TfrmCariHesapEkstre.cxButtonEditPropertiesButtonClick(Sender: TObject;
@@ -138,11 +131,6 @@ begin
 end;
 
 procedure TfrmCariHesapEkstre.FormCreate(Sender: TObject);
-var
-  List : TListeAc;
-  kombo , kombo1 ,sirketlerx ,sirketlerxx , EvrakTip: TcxImageComboKadir;
-  dateEdit: TcxDateEditKadir;
-  Egitimler : TcxCheckGroupKadir;
 begin
   cxPanel.Visible := false;
   TopPanel.Visible := true;

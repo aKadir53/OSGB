@@ -90,7 +90,7 @@ type
     procedure HTTPRIO1AfterExecute(const MethodName: string;
       SOAPResponse: TStream);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
-    procedure cxKaydetClick(Sender: TObject);
+    procedure cxKaydetClick(Sender: TObject);override;
     procedure cxListeleClick(Sender : TObject);
     procedure VeriSil;
     procedure VeriGonder;

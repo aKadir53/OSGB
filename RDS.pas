@@ -116,7 +116,7 @@ type
     procedure gridRaporCustomDrawGroupCell(Sender: TcxCustomGridTableView;
       ACanvas: TcxCanvas; AViewInfo: TcxGridTableCellViewInfo;
       var ADone: Boolean);
-    procedure cxKaydetClick(Sender: TObject);
+    procedure cxKaydetClick(Sender: TObject);override;
     procedure cxButtonEditPropertiesButtonClick(Sender: TObject;
                 AButtonIndex: Integer); override;
     procedure FaturaDetay;
@@ -142,9 +142,6 @@ type
 
   private
     { Private declarations }
-    FImages : array of TcxImage;
-    FImageIds : array of Integer;
-    function findMethod(dllHandle: Cardinal; methodName: string): FARPROC;
 
   protected
     procedure GozlemYazdir (const GozlemID : integer);
@@ -197,21 +194,12 @@ begin
  End;
 end;
 
-function TfrmRDS.findMethod(dllHandle: Cardinal;  methodName: string): FARPROC;
-begin
-  Result := GetProcAddress(dllHandle, pchar(methodName));
-end;
-
 function TfrmRDS.Skor(risk : double ; Method : string = '1') : integer;
 var
  sql : string;
 begin
-  Skor := 0;
-  try
    sql := 'exec sp_RDSSkor ' + floattostr(risk) + ',' + Method;
    skor := datalar.QuerySelect(sql).FieldByName('kod').AsInteger;
-  finally
-  end;
 end;
 
 procedure TfrmRDS.FaturaDetay;
@@ -363,8 +351,7 @@ end;
 procedure TfrmRDS.cxButtonEditPropertiesButtonClick(Sender: TObject;
   AButtonIndex: Integer);
 var
-  list : ArrayListeSecimler;
-  where,prm : string;
+  where : string;
 
 begin
     if datalar.UserGroup = '1'
@@ -436,8 +423,6 @@ begin
 end;
 
 function TfrmRDS.Init(Sender : TObject) : Boolean;
-var
-  _obje_ : TcxCustomEdit;
 begin
   Result := True;
 end;
@@ -686,8 +671,6 @@ procedure TfrmRDS.PropertiesButtonClick(Sender: TObject;
   AButtonIndex: Integer);
 var
  L : ArrayListeSecimler;
- i : integer;
- n : string;
 
 begin
 
@@ -885,15 +868,11 @@ end;
 procedure TfrmRDS.FormCreate(Sender: TObject);
 var
   RiskBolum,sirketlerx,TehlikeKaynak ,Tehlike , Risk ,
-  Olasilik,Frekans,Siddet,Skor ,Method,Onay,subeler  : TcxImageComboKadir;
+  Olasilik,Frekans,Siddet,Method,Onay,subeler  : TcxImageComboKadir;
   FaturaTarihi : TcxDateEditKadir;
-  SirketAdi : TcxTextEditKadir;
-  item : TcxRadioGroupItem;
-  i : TcxImageComboBoxItem;
   where : string;
   r : integer;
   SubItem : TMenuItem;
-  pmenu : TPopupMenu;
 begin
   inherited;
 

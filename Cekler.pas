@@ -42,7 +42,7 @@ type
     T1: TMenuItem;
     procedure FormCreate(Sender: TObject);
     procedure ButtonClick(Sender: TObject);
-    procedure cxKaydetClick(Sender: TObject);
+    procedure cxKaydetClick(Sender: TObject);override;
     procedure cxTextEditKeyDown(Sender: TObject; var Key: Word;
       Shift: TShiftState);
     procedure cxButtonEditPropertiesButtonClick(Sender: TObject;
@@ -53,7 +53,7 @@ type
        var AllowChange: Boolean);
     procedure SayfalarChange(Sender: TObject);
     procedure cxButtonCClick(Sender: TObject);
-    procedure PropertiesEditValueChanged(Sender: TObject);
+    procedure PropertiesEditValueChanged(Sender: TObject);override;
   private
     { Private declarations }
   protected
@@ -75,54 +75,52 @@ var
 
 implementation
 
-uses StrUtils;
+uses StrUtils, TransUtils;
 
 {$R *.dfm}
 
 procedure TfrmCekler.CekTahsilatIptal(id,carid : string);
 var
   sql : string;
+  bTmm : Boolean;
 begin
-   datalar.ADOConnection2.BeginTrans;
-   try
+  try
+    bTmm := False;
+    BeginTrans (datalar.ADOConnection2);
+    try
       sql := 'update cari_cekler set durum = 1 where id  = ' + id;
       datalar.QueryExec(sql);
 
       sql := 'delete from cariHareketler where id = ' + carid;
       datalar.QueryExec(sql);
-
-      datalar.ADOConnection2.CommitTrans;
-   except on e : Exception do
-    begin
-     datalar.ADOConnection2.RollbackTrans;
-     ShowMessageSkin(e.Message,'','','info');
+      bTmm := True;
+    finally
+      if bTmm then
+        CommitTrans (datalar.ADOConnection2)
+       else
+        RollbackTrans (datalar.ADOConnection2);
     end;
-
-   end;
-
+  except on e : Exception do
+  begin
+    ShowMessageSkin(e.Message,'','','info');
+  end;
+  end;
 end;
 
 
 procedure TfrmCekler.PropertiesEditValueChanged(Sender: TObject);
-var
-  xDeger : String;
 begin
 //
 end;
 
 procedure TfrmCekler.ButtonClick(Sender: TObject);
-var
-  i : Integer;
-  sTmp: String;
-  ado : TADOQuery;
 begin
+//
 end;
 
 procedure TfrmCekler.cxButtonCClick(Sender: TObject);
 var
-  Ado,ado1 : TADOQuery;
-  sql,fID : string;
-  TopluDataset : TDataSetKadir;
+  fID : string;
 begin
   inherited;
 
@@ -177,11 +175,6 @@ begin
 end;
 
 procedure TfrmCekler.FormCreate(Sender: TObject);
-var
-  List : TListeAc;
-  kombo , kombo1 ,sirketlerx ,sirketlerxx , EvrakTip: TcxImageComboKadir;
-  dateEdit: TcxDateEditKadir;
-  Egitimler : TcxCheckGroupKadir;
 begin
   cxPanel.Visible := false;
   TopPanel.Visible := true;

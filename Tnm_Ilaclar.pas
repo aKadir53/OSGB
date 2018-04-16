@@ -40,7 +40,7 @@ type
     cxGridTetkikSonucreceteEklenir: TcxGridDBColumn;
     DataSource1: TDataSource;
     cxGroupBox1: TcxGroupBox;
-    procedure cxKaydetClick(Sender: TObject);
+    procedure cxKaydetClick(Sender: TObject);override;
     procedure cxButtonCClick(Sender: TObject);
     procedure cxTextEditKeyDown(Sender: TObject; var Key: Word;
       Shift: TShiftState);

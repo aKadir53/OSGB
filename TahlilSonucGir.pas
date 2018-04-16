@@ -131,7 +131,7 @@ type
     procedure FormCreate(Sender: TObject);
     procedure Button2Click(Sender: TObject);
     procedure Yazdir;
-    procedure cxKaydetClick(Sender: TObject);
+    procedure cxKaydetClick(Sender: TObject);override;
   private
     { Private declarations }
   public

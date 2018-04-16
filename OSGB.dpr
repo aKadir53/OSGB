@@ -62,6 +62,9 @@ uses
   EventCompletDurumBildir in 'EventCompletDurumBildir.pas' {frmEventDurumBildir},
   FaturaDetay in 'FaturaDetay.pas' {frmFaturaDetay},
   Faturalar in 'Faturalar.pas' {frmFaturalar},
+  Tedarikci in 'Tedarikci.pas' {frmTedarikci},
+  Cekler in 'Cekler.pas' {frmCekler},
+  KasaBanka in 'KasaBanka.pas' {frmKasaBanka},
   RDS in 'RDS.pas' {frmRDS},
   sirketISGKurulToplanti in 'sirketISGKurulToplanti.pas' {frmISGKurulToplanti},
   sirketSahaGozetim in 'sirketSahaGozetim.pas' {frmSirketSahaGozetim},
@@ -79,7 +82,7 @@ uses
 // KadirMedula3 in '..\..\medula3wsdl\KadirMedula3.pas';
 
 const
-  AppalicationVer : integer = 1058;
+  AppalicationVer : integer = 1059;
   // Versiyon info kontrol etmeyi unutma
 
 {$R *.res}

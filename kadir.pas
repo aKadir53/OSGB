@@ -345,7 +345,7 @@ procedure GetBuildInfo(const AppName: string; var V1, V2, V3,V4: Word);
 procedure MedEczaneGit(user,pasword,Tc : string);
 procedure cxExceleGonder(grid : TcxGrid ; dosyaName : string);
 procedure SifreDegistir(newSifre : string ; sifreTip : integer);  overload;
-function SifreDegistir: Boolean;overload;
+function SifreDegistir (const bMevcutSifreyiKutuyaDoldur: Boolean): Boolean;overload;
 procedure HastaBilgiRecordSet(Adi,Soyadi,Tc,Yas : string);
 procedure HastaRapor(dosyaNo,gelisNo : string);
 procedure Son6AylikTetkikSonuc(dosyaNo,Tarih : string);
@@ -517,7 +517,7 @@ begin
  try
   Result := datalar.QuerySelect('select RTFFile,RTFSablonTanim from RTFSablonlari where RTFKodu = ' + RTFKodu);
  except
-  Result := nil;
+   FreeAndNil (Result);
  end;
 end;
 
@@ -554,6 +554,7 @@ begin
       dosyaTip := ExtractFileExt(fielName);
       dosyaTip := StringReplace(dosyaTip,'.','',[rfReplaceAll]);
       Dataset.Edit;
+    try
       Blob := TADOBlobStream.Create(TBlobField(Dataset.FieldByName(field)),bmwrite);
       try
         Blob.LoadFromFile(fielName);
@@ -565,6 +566,10 @@ begin
       except
         Dataset.Cancel;
       end;
+    except
+      Dataset.Cancel;
+      raise;
+    end;
 end;
 
 
@@ -573,7 +578,7 @@ procedure HesapIsle(BorcHesap,AlacakHesap,Aciklama : string ; Tutar : Double ; T
 var
  Sql : string;
 begin
-   datalar.ADOConnection2.BeginTrans;
+   BeginTrans (datalar.ADOConnection2);
    try
      sql := 'exec sp_FaturaTahsilat ' +
                        QuotedStr(BorcHesap) + ',' +
@@ -590,10 +595,10 @@ begin
 
      datalar.QueryExec('set nocount on ' +  Sql + ' set nocount off ');
 
-     datalar.ADOConnection2.CommitTrans;
+     CommitTrans (datalar.ADOConnection2);
    except on e : Exception do
     begin
-     datalar.ADOConnection2.RollbackTrans;
+     RollbackTrans (datalar.ADOConnection2);
      ShowMessageSkin(e.Message,'','','info');
     end;
    end;
@@ -604,7 +609,7 @@ procedure HesapIsleOdeme(BorcHesap,AlacakHesap,Aciklama : string ; Tutar : Doubl
 var
  Sql : string;
 begin
-   datalar.ADOConnection2.BeginTrans;
+   BeginTrans (datalar.ADOConnection2);
    try
      sql := 'exec sp_FaturaOdeme ' +
                        QuotedStr(BorcHesap) + ',' +
@@ -621,10 +626,10 @@ begin
 
      datalar.QueryExec('set nocount on ' +  Sql + ' set nocount off ');
 
-     datalar.ADOConnection2.CommitTrans;
+     CommitTrans (datalar.ADOConnection2);
    except on e : Exception do
     begin
-     datalar.ADOConnection2.RollbackTrans;
+     RollbackTrans (datalar.ADOConnection2);
      ShowMessageSkin(e.Message,'','','info');
     end;
    end;
@@ -633,7 +638,6 @@ end;
 
 procedure StretchImage(var Image1: TImage; StretchType: Byte; NewWidth, NewHeight: Word);
 var
-  Jpeg1: TJpegImage;
   CompressedImage: TImage;
   Oran, OranW, OranH: Real;
 begin
@@ -698,7 +702,6 @@ end;
 
 procedure StretchImage(var Image1: TcxImage; StretchType: Byte; NewWidth, NewHeight: Word);
 var
-  Jpeg1: TJpegImage;
   CompressedImage: TImage;
   Oran, OranW, OranH: Real;
 begin
@@ -766,19 +769,19 @@ function FaturaSilIptal(FID : string) : Boolean;
 var
   sql : string;
 begin
-  datalar.ADOConnection2.BeginTrans;
+  BeginTrans (datalar.ADOConnection2);
   try
    sql := 'delete from faturaHareket where faturaId = ' + FID;
    datalar.QueryExec(sql);
    sql := 'delete from faturalar where sira = ' + FID;
    datalar.QueryExec(sql);
-   datalar.ADOConnection2.CommitTrans;
+   CommitTrans (datalar.ADOConnection2);
    ShowMessageSkin('Fatura Silindi','','','info');
    FaturaSilIptal := True;
   except on e : Exception do
    begin
+    RollbackTrans (datalar.ADOConnection2);
     ShowMessageSkin(E.Message,'','','info');
-    datalar.ADOConnection2.RollbackTrans;
     FaturaSilIptal := False;
    end;
   end;
@@ -790,12 +793,9 @@ function mailGonder (alici , konu , mesaj : string ; filename : string = ''): st
 var
   Mail : TEmailSend;
   dllHandle: Cardinal;
-  TesisKodu: integer;
-  faturaXML,doktorKullanici,doktorsifre,pin,url,cardType : string;
   username,password,mailserver : string;
-  doktorTc : string;
   ss : PWideChar;
-  sql,sonucStr : string;
+  sonucStr : string;
   Sonuc : TStringList;
 begin
   mailserver := datalar.SMTPSunucu;
@@ -905,10 +905,7 @@ end;
 procedure YeniRecete(islem: Integer ; _dosyaNo_,_gelisNo_,_MuayeneProtokolNo_ : string);
 var
     sql : string;
-    ado , adoD : TADOQuery;
-    receteNo , songel : string;
-    ack : TStringList;
-    j : integer;
+    ado : TADOQuery;
     bBasari : Boolean;
 begin
   datalar.YeniRecete.doktor := datalar.doktorKodu;
@@ -1071,8 +1068,8 @@ end;
 procedure ExceldenPersonelYukle;
 var
   openD : TOpenDialog;
-  dosya ,sql : string;
-  sonsatir , x : integer;
+  dosya : string;
+  sonsatir : integer;
 begin
   openD := TOpenDialog.Create(nil);
   try
@@ -1872,9 +1869,6 @@ end;
 procedure PopupMenuEnabled(AOwner : TComponent ; Menu : TPopupMenu ; Enableded : Boolean = True);
 var
   mi : TMenuItem;
-  TBBDown : TMenuItem;
-  TBB : TToolButton;
-  i,r : integer;
 begin
   for mi in Menu.Items do
   begin
@@ -7842,8 +7836,8 @@ end;
 
 function seciliSatirlarColumData(Grid: TcxGridTableView; col: integer): string;
 var
-  x, r, seciliadet: integer;
-  ss,columName : string;
+  x: integer;
+  ss : string;
 begin
   seciliSatirlarColumData := '';
  // columName := Grid.Columns[col].DataBinding.
@@ -9055,12 +9049,13 @@ begin
   Result := doktorkod;
 end;
 
-function SifreDegistir: Boolean;
+function SifreDegistir (const bMevcutSifreyiKutuyaDoldur: Boolean): Boolean;
 var
   ado : TadoQuery;
 begin
   datalar.SifreDegistir.KullaniciAdi := DATALAR.username;
   datalar.SifreDegistir.Sifre := DATALAR.usersifre;
+  DATALAR.SifreDegistir.SifreyiDoldur := bMevcutSifreyiKutuyaDoldur;
   Result := False;
   if mrYes <> ShowPopupForm('Þifre Deðiþtirme',PrgSifre) then
   begin
@@ -9086,7 +9081,7 @@ begin
       begin
         CommitTrans(DATALAR.ADOConnection2);
         ShowMessageSkin('Þifreniz Deðiþtirildi','','','info');
-        DATALAR.usersifre := datalar.SifreDegistir.Sifre
+        DATALAR.usersifre := datalar.SifreDegistir.Sifre;
       end
       else
         RollBackTrans(DATALAR.ADOConnection2);

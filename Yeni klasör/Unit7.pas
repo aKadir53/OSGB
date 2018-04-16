@@ -149,7 +149,7 @@ type
       const AStatus: TIdStatus; const AStatusText: string);
     procedure cxRadioGroup1PropertiesChange(Sender: TObject);
 
-    procedure cxKaydetClick(Sender: TObject);
+    procedure cxKaydetClick(Sender: TObject);override;
  //   procedure Olustur(sender : TObject;Table : string);
   private
       procedure ButonClick(sender : TObject ; key : char);
