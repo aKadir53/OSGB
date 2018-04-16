@@ -41,7 +41,7 @@ uses message,Data_Modul,AnaUnit,message_y,popupForm,rapor,TedaviKart,Son6AylikTe
              Receteler,Sorgulamalar,sorguRaporCalistir,CariHareketGiris,CariHesapExtresi,
              HastaKart,FirmaKart,hizliKayit,receteSablonlari,RDS,KKD,Tedarikci,Cekler,
              HastaListe,IsKazasi,Anamnez,GrupDetayTanim,Sozlesmeler,KasaBanka,
-             Tnm_UserSettings,HastaAsiKarti,HastaTaniKart,sirketSahaGozetim,
+             Tnm_UserSettings,HastaAsiKarti,HastaTaniKart,sirketSahaGozetim, sirketSahaDenetim,
              KurumLogin,Update_G, labaratuvarKabul,Faturalar,FaturaDetay,
              MedulaKurumSifreDegis,labParametreleri,SirketSozlesme,
              Tnm_Doktor,LabTestAyarlari,SahaSaglikGozetim, CariHesapBorcAlacakToplam,
@@ -240,6 +240,7 @@ begin
    TagfrmKasaBanka : Result := TfrmKasaBanka;
    TagfrmTedarikci : Result := TfrmTedarikci;
    TagfrmSirketSahaGozetim : Result := TfrmSirketSahaGozetim;
+   TagfrmSirketSahaDenetim : Result := TfrmSirketSahaDenetim;
    TagfrmISGKurulToplanti : Result := TfrmISGKurulToplanti;
    TagfrmRTFSablon : Result := TfrmRTFSablon;
  //  TagfrmAjandaOzet : Result := TfrmAjandaOzet;
@@ -298,6 +299,7 @@ begin
    TagfrmKasaBanka : Result := frmKasaBanka;
    TagfrmTedarikci : Result := frmTedarikci;
    TagfrmSirketSahaGozetim : Result := frmSirketSahaGozetim;
+   TagfrmSirketSahaDenetim : Result := frmSirketSahaDenetim;
    TagfrmISGKurulToplanti : Result := frmISGKurulToplanti;
    TagfrmRTFSablon : Result := frmRTFSablon;
 
@@ -364,6 +366,7 @@ begin
 
      TagfrmTedarikci: frmTedarikci := TfrmTedarikci.Create(Tab);
      TagfrmSirketSahaGozetim: frmSirketSahaGozetim := TfrmSirketSahaGozetim.Create(Tab);
+     TagfrmSirketSahaDenetim: frmSirketSahaDenetim := TfrmSirketSahaDenetim.Create(Tab);
      TagfrmAjandaOzet : frmAjandaOzet := TfrmAjandaOzet.Create(Tab);
      TagfrmISGKurulToplanti : frmISGKurulToplanti := TfrmISGKurulToplanti.Create(Tab);
      TagfrmRTFSablon : frmRTFSablon := TfrmRTFSablon.Create(Tab);
@@ -510,6 +513,7 @@ begin
      TagfrmKasaBanka: frmKasaBanka := TfrmKasaBanka.Create(Tab);
      TagfrmTedarikci: frmTedarikci := TfrmTedarikci.Create(Tab);
      TagfrmSirketSahaGozetim: frmSirketSahaGozetim := TfrmSirketSahaGozetim.Create(Tab);
+     TagfrmSirketSahaDenetim: frmSirketSahaDenetim := TfrmSirketSahaDenetim.Create(Tab);
      TagfrmAjandaOzet : TfrmAjandaOzet.Create(Tab);
      TagfrmISGKurulToplanti : frmISGKurulToplanti := TfrmISGKurulToplanti.Create(Tab);
      TagfrmRTFSablon : frmRTFSablon := TfrmRTFSablon.Create(Tab);
@@ -616,6 +620,7 @@ begin
     TagfrmTedarikci : Application.CreateForm(TfrmTedarikci, frmTedarikci);
 
     TagfrmSirketSahaGozetim : Application.CreateForm(TfrmSirketSahaGozetim, frmSirketSahaGozetim);
+    TagfrmSirketSahaDenetim : Application.CreateForm(TfrmSirketSahaDenetim, frmSirketSahaDenetim);
     TagfrmISGKurulToplanti : Application.CreateForm(TfrmISGKurulToplanti, frmISGKurulToplanti);
     TagfrmRTFSablon : Application.CreateForm(TfrmRTFSablon, frmRTFSablon);
 
