@@ -181,7 +181,7 @@ begin
         ClientWidth := 900;
         TableName := 'SIRKET_SUBE_EKIP';
         _fields_ := 'id,SirketKod,SubeKod,TCKimlikNo,AdiSoyadi,Telefon,eMail,ISGEkipId,ISGEkipGorevID';
-        _fieldBaslik_ := ',,SubeKod,TCKimlikNo,AdiSoyadi,Telefon,eMail,ISGEkipId,ISGEkipGorevID';
+        _fieldBaslik_ := ',,Þube,TC Kimlik No,Adý Soyadý,Telefon,eMail,ISG Ekip,ISG Ekip Görev';
         _fieldTips_ := 'int,string,IC,TCKimlikNo,AdiSoyadi,Telefon,eMail,IC,IC';
         _ICParams_ := '0;0;SIRKET_SUBE_TNM,subeKod,subeTanim;0;0;0;0;FirmaISGEkipTnm,kod,tanimi;FirmaISGEkipGorevTnm,kod,tanimi';
         indexFieldName := 'sirketKod = ' + QuotedStr(_firmaKod_);
