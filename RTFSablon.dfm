@@ -22,8 +22,6 @@ object frmRTFSablon: TfrmRTFSablon
     Align = alClient
     TabOrder = 0
     ExceleGonder = False
-    ExplicitTop = 49
-    ExplicitHeight = 429
     object gridDokuman: TcxGridDBTableView
       PopupMenu = PopupMenu1
       DataController.Summary.DefaultGroupSummaryItems = <>
@@ -39,7 +37,7 @@ object frmRTFSablon: TfrmRTFSablon
       end
       object gridDokumanRTFSablonKodu: TcxGridDBColumn
         Caption = 'Kodu'
-        DataBinding.FieldName = 'RTFSablonKodu'
+        DataBinding.FieldName = 'RTFKodu'
       end
       object gridDokumanRTFSablonTanim: TcxGridDBColumn
         Caption = 'RTF '#350'ablon Tanim'
@@ -62,7 +60,6 @@ object frmRTFSablon: TfrmRTFSablon
     Align = alTop
     Caption = 'RTF Sablon Y'#252'kle'
     TabOrder = 1
-    ExplicitTop = -6
     Height = 25
     Width = 790
   end
