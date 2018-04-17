@@ -399,7 +399,7 @@ function SQLValue (const sValue: String): String;
 function PersonelPeriyodikTetkikIstemleri(grup : string) : string;
 procedure PersonelTetkikIstemleri(tarih,tarih2 : string);
 procedure YeniRecete(islem: Integer ; _dosyaNo_,_gelisNo_,_MuayeneProtokolNo_ : string);
-function FirmaBilgileri(sirketKodu : string) : TFirmaBilgi;
+function FirmaBilgileri(sirketKodu : stringþ) : TFirmaBilgi;
 function mailGonder (alici , konu , mesaj : string ;  filename : string = ''): string;
 procedure UyumSoftPortalGit(user,pasword,url : string);
 function FaturaSilIptal(FID : string) : Boolean;
