@@ -87,7 +87,7 @@ type
     procedure gridRaporCustomDrawGroupCell(Sender: TcxCustomGridTableView;
       ACanvas: TcxCanvas; AViewInfo: TcxGridTableCellViewInfo;
       var ADone: Boolean);
-    procedure cxKaydetClick(Sender: TObject);
+    procedure cxKaydetClick(Sender: TObject);override;
     procedure cxButtonEditPropertiesButtonClick(Sender: TObject;
                 AButtonIndex: Integer); override;
     procedure FaturaDetay;
@@ -115,9 +115,6 @@ type
 
   private
     { Private declarations }
-    FImages : array of TcxImage;
-    FImageIds : array of Integer;
-    function findMethod(dllHandle: Cardinal; methodName: string): FARPROC;
 
   protected
     procedure GozlemYazdir (const GozlemID : integer);
@@ -142,11 +139,6 @@ implementation
 uses data_modul, StrUtils, Jpeg;
 
 {$R *.dfm}
-
-function TfrmSirketSahaDenetim.findMethod(dllHandle: Cardinal;  methodName: string): FARPROC;
-begin
-  Result := GetProcAddress(dllHandle, pchar(methodName));
-end;
 
 function TfrmSirketSahaDenetim.CreateRotatedFont: HFONT;
   var
@@ -205,9 +197,6 @@ end;
 
 procedure TfrmSirketSahaDenetim.cxButtonEditPropertiesButtonClick(Sender: TObject;
   AButtonIndex: Integer);
-var
-  list : ArrayListeSecimler;
-  where,prm : string;
 begin
     inherited;
     Enabled;
@@ -245,18 +234,12 @@ begin
 end;
 
 function TfrmSirketSahaDenetim.Init(Sender : TObject) : Boolean;
-var
-  _obje_ : TcxCustomEdit;
 begin
   Result := True;
 end;
 
 
 procedure TfrmSirketSahaDenetim.Fatura(islem: Integer);
-var
-  F : TForm;
-  bBasarili: Boolean;
-
 begin
   //
 end;
@@ -404,10 +387,6 @@ end;
 
 procedure TfrmSirketSahaDenetim.PropertiesButtonClick(Sender: TObject;
   AButtonIndex: Integer);
-var
- L : ArrayListeSecimler;
- i : integer;
- n : string;
 
 begin
 (*
@@ -463,8 +442,6 @@ end;
 
 procedure TfrmSirketSahaDenetim.SirketlerPropertiesChange(Sender: TObject);
 var
-  sql : string;
-  dataset : Tdataset;
   sube : string;
 begin
 
@@ -479,9 +456,6 @@ end;
 
 procedure TfrmSirketSahaDenetim.cxButtonCClick(Sender: TObject);
 var
-  GirisRecord : TGirisFormRecord;
-  aModalResult : TModalResult;
-  guid,dosyaTip : string;
   dosya : TOpenDialog;
   TopluDataset : TDataSetKadir;
   FB : TFirmaBilgi;
@@ -539,12 +513,9 @@ end;
 
 procedure TfrmSirketSahaDenetim.FormCreate(Sender: TObject);
 var
-  List,Faturalar : TListeAc;
-  sirketlerx,subeler ,Onay ,RiskBolum , isinDurumu , IGU : TcxImageComboKadir;
+  Faturalar : TListeAc;
+  sirketlerx,subeler ,RiskBolum , IGU : TcxImageComboKadir;
   FaturaTarihi : TcxDateEditKadir;
-  SirketAdi : TcxTextEditKadir;
-  item : TcxRadioGroupItem;
-  i : TcxImageComboBoxItem;
   where , sube : string;
 begin
   inherited;

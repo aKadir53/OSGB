@@ -47,7 +47,7 @@ uses message,Data_Modul,AnaUnit,message_y,popupForm,rapor,TedaviKart,Son6AylikTe
              Tnm_Doktor,LabTestAyarlari,SahaSaglikGozetim, CariHesapBorcAlacakToplam,
              PopupDBGridForm,PopupDBVerticalGridForm,AjandaOzet,sirketISGKurulToplanti,
              Tnm_Ilaclar, PersonelEgitimFrm, About_Frm, MerkezBilgisi,
-  HizmetKart;
+  HizmetKart, CihazKontrol;
 
 
 
@@ -234,6 +234,7 @@ begin
    TagfrmCariHesapEkstre : Result := TfrmCariHesapEkstre;
    TagfrmCariHesapBorcAlacakToplam : Result := TfrmCariHesapBorcAlacakToplam;
    TagfrmSahaSaglikGozetim : Result := TfrmSahaSaglikGozetim;
+   TagfrmCihazKontrol : Result := TfrmCihazKontrol;
    TagfrmRDS : Result := TfrmRDS;
    TagfrmKKD : Result := TfrmKKD;
    TagfrmCekler : Result := TfrmCekler;
@@ -284,6 +285,7 @@ begin
    TagfrmSon6AylikTetkikSonuc : Result := frmSon6AylikTetkikSonuc;
    TagfrmReceteler : Result := frmReceteler;
    TagfrmSahaSaglikGozetim : Result := frmSahaSaglikGozetim;
+   TagfrmCihazKontrol : Result := frmCihazKontrol;
    TagfrmUpdate : Result := frmUpdate;þ
    TagfrmFaturalar : Result := frmFaturalar;
    TagfrmFatura : Result := frmFaturaDetay;
@@ -346,6 +348,7 @@ begin
      TagfrmSon6AylikTetkikSonuc : frmSon6AylikTetkikSonuc := TfrmSon6AylikTetkikSonuc.Create(Tab);
      TagfrmReceteler : frmReceteler := TfrmReceteler.Create(Tab);
      TagfrmSahaSaglikGozetim : frmSahaSaglikGozetim := TfrmSahaSaglikGozetim.Create(Tab);
+     TagfrmCihazKontrol : frmCihazKontrol := TfrmCihazKontrol.Create(Tab);
 
      TagfrmLabParametreleri : frmLabParams:= TfrmLabParams.Create(Tab);
      TagfrmLabKabul : frmLabaratuvarKabul := TfrmLabaratuvarKabul.Create(Tab);
@@ -494,6 +497,7 @@ begin
      TagfrmSon6AylikTetkikSonuc : frmSon6AylikTetkikSonuc := TfrmSon6AylikTetkikSonuc.Create(Tab);
      TagfrmReceteler : frmReceteler := TfrmReceteler.Create(Tab);
      TagfrmSahaSaglikGozetim : frmSahaSaglikGozetim := TfrmSahaSaglikGozetim.Create(Tab);
+     TagfrmCihazKontrol : frmCihazKontrol := TfrmCihazKontrol.Create(Tab);
 
      TagfrmLabParametreleri : frmLabParams := TfrmLabParams.Create(Tab);
      TagfrmLabKabul : frmLabaratuvarKabul := TfrmLabaratuvarKabul.Create(Tab);
@@ -604,6 +608,7 @@ begin
     TagfrmIlaclar,TagfrmIlacAnaGrup,TagfrmIlacEtkenMadde : Application.CreateForm(TfrmIlaclar , frmIlaclar);
     TagfrmSon6AylikTetkikSonuc : Application.CreateForm(TfrmSon6AylikTetkikSonuc , frmSon6AylikTetkikSonuc);
     TagfrmSahaSaglikGozetim : Application.CreateForm(TfrmSahaSaglikGozetim, frmSahaSaglikGozetim);
+    TagfrmCihazKontrol : Application.CreateForm(TfrmCihazKontrol, frmCihazKontrol);
     TagfrmFaturalar : Application.CreateForm(TfrmFaturalar, frmFaturalar);
     TagfrmFatura : Application.CreateForm(TfrmFaturaDetay, frmFaturaDetay);
     TagfrmSirketSozlesme : Application.CreateForm(TfrmSirketSozlesme , frmSirketSozlesme);

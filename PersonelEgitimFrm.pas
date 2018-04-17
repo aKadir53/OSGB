@@ -92,9 +92,10 @@ procedure TfrmPersonelEgitim.PropertiesEditValueChanged(Sender: TObject);
 var
   xDeger : String;
 begin
+  if not sametext (TcxImageComboKadir(Sender).name, 'EgitimTuru') then Exit;
   TcxCheckGroupKadir(FindComponent('Egitimkod')).Clear;
   xDeger := vartoStr(TcxImageComboKadir(FindComponent('EgitimTuru')).EditValue);
-  if not (xDeger = '5') then
+  if (xDeger <> '5') and (not IsNull (xDeger)) then
     TcxCheckGroupKadir(FindComponent('Egitimkod')).Filter := ' grup = ' + xDeger
    else
     TcxCheckGroupKadir(FindComponent('Egitimkod')).Filter := '';
@@ -497,7 +498,7 @@ begin
   setDataString(self,'EgitimciTc','Tc',Sayfa3_Kolon1,'ad',100,false,'',false,-1);
   setDataString(self,'egitimciAdiSoyadi','Adý Soyadý',Sayfa3_Kolon1,'ad',150,false,'',false,-1);
   addButton(self,nil,'btnEgitimciEkle','','Ekle',Sayfa3_Kolon1,'ad',50,ButtonClick,20);
-  addButton(self,nil,'btnEgitimciSil','','Ekle',Sayfa3_Kolon1,'ad',50,ButtonClick,20);
+  addButton(self,nil,'btnEgitimciSil','','Sil',Sayfa3_Kolon1,'ad',50,ButtonClick,20);
 
   addButton(self,nil,'btnEgitimciListesi','','Listeden Ekle',Sayfa3_Kolon1,'',100,ButtonClick,21);
 
