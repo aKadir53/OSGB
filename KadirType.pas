@@ -434,9 +434,21 @@ type
 type
   TFirmaBilgi = Record
     SirketKodu : String;
+    SubeKodu : string;
     SirketAdi : String;
+    Yetkili : string;
     YetkiliMail : String;
     YetkiliMobil : String;
+    IGU : string;
+    IGUMail : string;
+    doktor : string;
+    doktorMail : string;
+    calisanTemsilci : string;
+    calisanTemsilciMail : string;
+    destekElemani : string;
+    destekElemaniMail : string;
+    isveren : string;
+    ilgiliMailBilgileri : string;
   End;
 
 type
@@ -638,6 +650,7 @@ Const
   TagfrmIsKazasi = 610;
   TagfrmAbout = 620;
   TagfrmSahaSaglikGozetim = 630;
+  TagfrmCihazKontrol = 635;
   TagfrmIGU = 640;
   TagFirmaCalismalari = 650;
   TagfrmPersonelTetkikIstem = 660;

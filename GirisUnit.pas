@@ -1121,7 +1121,11 @@ begin
        else
        begin
          try TcxImageComboKadir(_obje_).EditValue := sqlRun.FieldByName(_Obje_.Name).AsVariant;
-         except end;
+         except on e : exception do
+          begin
+           //ShowMessageSkin(e.Message,'','','info');
+          end;
+         end;
        end;
        if (self.Components[i].ClassName = 'TcxImage')
        Then Begin

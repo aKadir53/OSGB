@@ -4,17 +4,17 @@ ALTER -- CREATE -- DROP
   VIEW dbo.SirketSahaGozetimDetay_view
 with schemabinding 
 AS
-select sirketSahaGozetimId, sgd.id, sgd.Tespitler, sgd.Image, 
-  sgd.Bolum, rb.Tanimi BolumTanimi,
-  sgd.YapilacakFaliyetTuru, sft.Tanimi FaaliyetTanimi,
+SELECT sgd.sirketSahaGozetimId, sgd.id, sgd.Tespitler, sgd.Image, sgd.DokumanTip, 
+  sgd.Bolum, rb.tanimi AS BolumTanimi, 
+  sgd.YapilacakFaliyetTuru, sft.tanimi AS FaaliyetTanimi, 
   sgd.KokNeden, sgd.FaliyetPlan, 
   sgd.UygulanacakFaliyetTarihi, sgd.BolumYetkilisi, 
-  sgd.Sonuc, sts.tanimi SonucTanimi,
+  sgd.Sonuc, sts.tanimi AS SonucTanimi, 
   sgd.YapilanFaliyet
-from dbo.SirketSahaGozetimDetay sgd
-left outer join dbo.RDS_RiskBolum rb on rb.kod = sgd.Bolum
-left outer join dbo.SahaGozetimFaaliyetTuru sft on sft.kod = sgd.YapilacakFaliyetTuru
-left outer join dbo.SahaGozetimTakipTetkikSonuc sts on sts.kod = sgd.Sonuc
+FROM dbo.SirketSahaGozetimDetay AS sgd 
+LEFT OUTER JOIN dbo.RDS_RiskBolum AS rb ON rb.kod = sgd.Bolum 
+LEFT OUTER JOIN dbo.SahaGozetimFaaliyetTuru AS sft ON sft.kod = sgd.YapilacakFaliyetTuru 
+LEFT OUTER JOIN dbo.SahaGozetimTakipTetkikSonuc AS sts ON sts.kod = sgd.Sonuc
 GO
 exec sp_vw_sys_upd 'V ', 'dbo', 'SirketSahaGozetimDetay_view'
 GO

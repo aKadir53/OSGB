@@ -399,7 +399,7 @@ function SQLValue (const sValue: String): String;
 function PersonelPeriyodikTetkikIstemleri(grup : string) : string;
 procedure PersonelTetkikIstemleri(tarih,tarih2 : string);
 procedure YeniRecete(islem: Integer ; _dosyaNo_,_gelisNo_,_MuayeneProtokolNo_ : string);
-function FirmaBilgileri(sirketKodu : stringþ) : TFirmaBilgi;
+function FirmaBilgileri(sirketKodu : string ; subeKodu  : string = '00') : TFirmaBilgi;
 function mailGonder (alici , konu , mesaj : string ;  filename : string = ''): string;
 procedure UyumSoftPortalGit(user,pasword,url : string);
 function FaturaSilIptal(FID : string) : Boolean;
@@ -839,19 +839,34 @@ begin
 end;
 
 
-function FirmaBilgileri(sirketKodu : string) : TFirmaBilgi;
+function FirmaBilgileri(sirketKodu : string ; subeKodu  : string = '00') : TFirmaBilgi;
 var
   sql: string;
   ado: TADOQuery;
+  Dataset : TDataset;
 begin
   ado := TADOQuery.Create(nil);
   try
     ado.Connection := datalar.ADOConnection2;
     sql :=
-      'select yetkilimail,yetkiliTel from SIRKETLER_TNM where SirketKod = ' + QuotedStr(sirketKodu);
+      'select yetkili,yetkilimail,yetkiliTel from SIRKETLER_TNM ' +
+      ' where SirketKod = ' + QuotedStr(sirketKodu);
     datalar.QuerySelect(ado, sql);
-    FirmaBilgileri.YetkiliMail := ado.Fields[0].AsString;
-    FirmaBilgileri.YetkiliMobil := ado.Fields[1].AsString;
+    FirmaBilgileri.Yetkili := ado.Fields[0].AsString;
+    FirmaBilgileri.YetkiliMail := ado.Fields[1].AsString;
+    FirmaBilgileri.YetkiliMobil := ado.Fields[2].AsString;
+
+
+    sql := 'declare @mail varchar(max) ' +
+           ' set @mail = ''''' +
+           'select @mail = case when isnull(eMail,'''') <> '''' then  @mail + case when  @mail = '''' then '''' else '','' end  + eMail else @mail end  from SIRKET_SUBE_EKIP SE ' +
+           ' where SE.SirketKod = '+ QuotedStr(sirketKodu) +
+           ' and SubeKod = ' + QuotedStr(subeKodu) + ' and SE.ISGEkipId = 1 ' +
+           ' select @mail ' ;
+
+    datalar.QuerySelect(ado,sql);
+    FirmaBilgileri.ilgiliMailBilgileri := ado.Fields[0].AsString;
+
   finally
     ado.Free;
   end;
