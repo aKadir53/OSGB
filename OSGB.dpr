@@ -53,6 +53,7 @@ uses
   LisansUzat in 'LisansUzat.pas' {frmLisansBilgisi},
   About_Frm in 'About_Frm.pas' {frmAbout},
   SahaSaglikGozetim in 'SahaSaglikGozetim.pas' {frmSahaSaglikGozetim},
+  CihazKontrol in 'CihazKontrol.pas' {frmCihazKontrol},
   labParametreleri in 'labParametreleri.pas' {frmLabParams},
   labaratuvarKabul in 'labaratuvarKabul.pas' {frmLabaratuvarKabul},
   LabSonucGir in 'LabSonucGir.pas' {frmLabSonucGir},
@@ -82,7 +83,7 @@ uses
 // KadirMedula3 in '..\..\medula3wsdl\KadirMedula3.pas';
 
 const
-  AppalicationVer : integer = 1059;
+  AppalicationVer : integer = 1060;
   // Versiyon info kontrol etmeyi unutma
 
 {$R *.res}

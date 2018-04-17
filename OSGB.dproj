@@ -226,6 +226,9 @@
 			<DCCReference Include="SahaSaglikGozetim.pas">
 				<Form>frmSahaSaglikGozetim</Form>
 			</DCCReference>
+			<DCCReference Include="CihazKontrol.pas">
+				<Form>frmCihazKontrol</Form>
+			</DCCReference>
 			<DCCReference Include="labParametreleri.pas">
 				<Form>frmLabParams</Form>
 			</DCCReference>
@@ -235,17 +238,14 @@
 			<DCCReference Include="LabSonucGir.pas">
 				<Form>frmLabSonucGir</Form>
 			</DCCReference>
-			<DCCReference Include="AjandaOzet.pas">
-				<Form>frmAjandaOzet</Form>
+			<DCCReference Include="HastaListe.pas">
+				<Form>frmHastaListe</Form>
 			</DCCReference>
-			<DCCReference Include="CariHareketGiris.pas">
-				<Form>frmCariHareket</Form>
+			<DCCReference Include="GrupDetayTanim.pas">
+				<Form>frmGrupDetayTanim</Form>
 			</DCCReference>
-			<DCCReference Include="CariHesapBorcAlacakToplam.pas">
-				<Form>frmCariHesapBorcAlacakToplam</Form>
-			</DCCReference>
-			<DCCReference Include="CariHesapExtresi.pas">
-				<Form>frmCariHesapEkstre</Form>
+			<DCCReference Include="MESSAGE_y.PAS">
+				<Form>frmMessage_y</Form>
 			</DCCReference>
 			<DCCReference Include="EventCompletDurumBildir.pas">
 				<Form>frmEventDurumBildir</Form>
@@ -283,14 +283,17 @@
 			<DCCReference Include="UyumSoftPortal.pas">
 				<Form>frmPortal</Form>
 			</DCCReference>
-			<DCCReference Include="HastaListe.pas">
-				<Form>frmHastaListe</Form>
+			<DCCReference Include="AjandaOzet.pas">
+				<Form>frmAjandaOzet</Form>
 			</DCCReference>
-			<DCCReference Include="GrupDetayTanim.pas">
-				<Form>frmGrupDetayTanim</Form>
+			<DCCReference Include="CariHareketGiris.pas">
+				<Form>frmCariHareket</Form>
 			</DCCReference>
-			<DCCReference Include="MESSAGE_y.PAS">
-				<Form>frmMessage_y</Form>
+			<DCCReference Include="CariHesapBorcAlacakToplam.pas">
+				<Form>frmCariHesapBorcAlacakToplam</Form>
+			</DCCReference>
+			<DCCReference Include="CariHesapExtresi.pas">
+				<Form>frmCariHesapEkstre</Form>
 			</DCCReference>
 			<DCCReference Include="DokumanYukle.pas">
 				<Form>frmDokumanYonetim</Form>
