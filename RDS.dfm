@@ -669,6 +669,12 @@ object frmRDS: TfrmRDS
       ImageIndex = 75
       OnClick = cxButtonCClick
     end
+    object M1: TMenuItem
+      Tag = -30
+      Caption = #304'lgililere Mail Olarak G'#246'nder'
+      ImageIndex = 10
+      OnClick = cxButtonCClick
+    end
     object K1: TMenuItem
       Tag = -25
       Caption = 
