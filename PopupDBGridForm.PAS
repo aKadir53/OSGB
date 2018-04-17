@@ -63,6 +63,8 @@ type
     procedure ADOBeforePost(DataSet: TDataSet);
     procedure NaceKodPropertiesButtonClick(Sender: TObject;
       AButtonIndex: Integer);
+
+    procedure PropertiesEditValueChanged(Sender: TObject);
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
   private
     { Private declarations }
@@ -88,6 +90,56 @@ implementation
 uses message, data_modul , anaUnit;
 
 {$R *.DFM}
+
+procedure TfrmPopupDBGridForm.PropertiesEditValueChanged(Sender: TObject);
+var
+  subeler : TcxImageComboKadir;
+  _v_ : Variant;
+begin
+  inherited;
+  DBGrid.DataController.DataSet.Post;
+  if DBGrid.Controller.FocusedColumnIndex = 5
+  then begin
+    DBgrid.Columns[8].PropertiesClassName := 'TcxImageComboBoxProperties';
+    _v_ := DBgrid.GetColumnByFieldName('ISGEkipId').EditValue;
+    if _v_ = 1
+    Then begin
+       subeler := TcxImageComboKadir.Create(self);
+       subeler.Tag := -100;
+       subeler.Name := 'subeler';
+       subeler.Conn := datalar.ADOConnection2;
+       subeler.Conn := Datalar.ADOConnection2;
+       subeler.TableName := 'FirmaISGEkipGorevTnm';
+       subeler.ValueField := 'Kod';
+       subeler.DisplayField := 'Tanimi';
+       subeler.Filter := '';
+
+       TcxImageComboBoxProperties(DBGrid.Columns[8].Properties).Items :=
+         TcxImageComboBoxProperties(TcxImageComboKadir(FindComponent('subeler')).Properties).Items;
+       subeler.Free;
+    end
+    else begin
+     DBgrid.GetColumnByFieldName('ISGEkipGorevID').EditValue := null;
+     DBGrid.DataController.DataSet.Post;
+    end;
+  end;
+
+    if DBGrid.Controller.FocusedColumnIndex = 6
+    then begin
+        _v_ := DBgrid.GetColumnByFieldName('ISGEkipId').EditValue;
+        if _v_ <> 1
+        then begin
+          DBgrid.GetColumnByFieldName('ISGEkipGorevID').EditValue := null;
+          DBGrid.DataController.DataSet.Post;
+        end;
+    end;
+
+ //
+end;
+
+
+
+
 
 procedure TfrmPopupDBGridForm.NaceKodPropertiesButtonClick(Sender: TObject;
   AButtonIndex: Integer);
@@ -177,16 +229,21 @@ begin
 
     TagfrmFirmaISGEkip :
     begin
-        ClientHeight := 300;
+        ClientHeight := 500;
         ClientWidth := 900;
         TableName := 'SIRKET_SUBE_EKIP';
         _fields_ := 'id,SirketKod,SubeKod,TCKimlikNo,AdiSoyadi,Telefon,eMail,ISGEkipId,ISGEkipGorevID';
         _fieldBaslik_ := ',,Þube,TC Kimlik No,Adý Soyadý,Telefon,eMail,ISG Ekip,ISG Ekip Görev';
-        _fieldTips_ := 'int,string,IC,TCKimlikNo,AdiSoyadi,Telefon,eMail,IC,IC';
-        _ICParams_ := '0;0;SIRKET_SUBE_TNM,subeKod,subeTanim;0;0;0;0;FirmaISGEkipTnm,kod,tanimi;FirmaISGEkipGorevTnm,kod,tanimi';
+        _fieldTips_ := 'int,string,IC,string,string,string,string,IC,IC';
+
+        _ICParams_ := '0;0;' +
+                         '(select subeKod|subeTanim from SIRKET_SUBE_TNM where sirketKod = ' + QuotedStr(_firmaKod_) + ') subeler'+
+                         ',subeKod,subeTanim;0;0;0;0;FirmaISGEkipTnm,kod,tanimi;FirmaISGEkipGorevTnm,kod,tanimi';
+
         indexFieldName := 'sirketKod = ' + QuotedStr(_firmaKod_);
         cxPanel.Visible := false;
-        cxGroupDoktorlar.Caption := 'Þube Bilgileri';
+        cxGroupDoktorlar.Caption := 'Ekip Bilgileri';
+
         cxGrid3.Dataset.BeforePost := ADOBeforePost;
         cxGrid3.Dataset.Connection := datalar.ADOConnection2;
         cxGrid3.Dataset.SQL.Text := 'Select id,SirketKod,SubeKod,TCKimlikNo,AdiSoyadi,Telefon,eMail,ISGEkipId,ISGEkipGorevID ' +
@@ -325,13 +382,16 @@ begin
                 DBgrid.Columns[i].PropertiesClassName := 'TcxImageComboBoxProperties';
                 TcxImageComboBoxProperties(DBgrid.Columns[i].Properties).Items.Clear;
                 DBgrid.Columns[i].Properties.Alignment.Horz := taLeftJustify;
+                DBgrid.Columns[i].Properties.OnEditValueChanged := PropertiesEditValueChanged;
+                TcxImageComboBoxProperties(DBgrid.Columns[i].Properties).ClearKey := VK_DELETE;
                 ado := TADOQuery.Create(nil);
                 ado.Connection := datalar.ADOConnection2;
                 try
-                   Split(',',IC_Params[i],IC_Param);
+                   IC_Param.Clear;
+                   ExtractStrings([','],[],pchar(IC_Params[i]),IC_Param);
                    if IC_Params.Count > 0 then
                    begin
-                     table := IC_Param[0];
+                     table := StringReplace(IC_Param[0],'|',',', [rfReplaceAll]);
                      field1 := IC_Param[1];
                      field2 := IC_Param[2];
                      datalar.QuerySelect(ado,'select * from ' + table);

@@ -565,6 +565,7 @@ var
   Image1 : TcxImage;
   //Listx : TListeAc;
   ICombo : TcxImageComboKadir;
+  Tarih : TcxDateEditKadir;
 begin
 inherited;
 
