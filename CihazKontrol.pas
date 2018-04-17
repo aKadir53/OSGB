@@ -417,5 +417,16 @@ begin
   tmr1.Enabled := True;
   AdjustMasterControls;
 end;
-
+select * from CihazKontrol_view
+go
+select * from cihazdetay_view
+go
+select id, KontrolSoru, KontrolSoruCvp, KontrolSoruCvpAciklama
+from cihazkontroldetay
+where kontrolid = 5
+  and tip = 'CKS'
+go
+select *
+from cihazkontrolsorulari
 end.
+
