@@ -650,6 +650,7 @@ Const
   TagfrmIsKazasi = 610;
   TagfrmAbout = 620;
   TagfrmSahaSaglikGozetim = 630;
+  TagfrmCihazKontrol = 635;
   TagfrmIGU = 640;
   TagFirmaCalismalari = 650;
   TagfrmPersonelTetkikIstem = 660;

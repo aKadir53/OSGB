@@ -25,7 +25,7 @@ BEGIN
 
   insert into dbo.egitimler_Log (
     LogTime, LogKullanici, LogHostName, LogSPID, LogType, 
-    id, SirketKod, BaslamaTarihi, BitisTarihi, Sure, Egitimci, EgitimTuru, EgitimYeri, SertifikaNo, EgitimIcerigi, EgitimUcreti, EgitimUcretParaBirimi, EgitimUcretiOdendi, EgitimKod, EgitimCSGBGonderimSonuc, GecerlilikTarihi, Egitimci2)
+    id, SirketKod, BaslamaTarihi, BitisTarihi, Sure, Egitimci, EgitimTuru, EgitimYeri, SertifikaNo, EgitimIcerigi, EgitimUcreti, EgitimUcretParaBirimi, EgitimUcretiOdendi, EgitimKod, EgitimCSGBGonderimSonuc, GecerlilikTarihi, EgitimTip, Egitimci2)
   Select 
     @LogTime LogTime, 
     (select top 1 Kullanici 
@@ -35,12 +35,12 @@ BEGIN
        and l.date_create > sp.login_time 
      order by L.Date_create desc) LogKullanici, 
     HOST_NAME () LogHostName, @@SPID LogSPID, case when @Tip = 'U' then 'O' else @Tip end LogType, 
-    id, SirketKod, BaslamaTarihi, BitisTarihi, Sure, Egitimci, EgitimTuru, EgitimYeri, SertifikaNo, EgitimIcerigi, EgitimUcreti, EgitimUcretParaBirimi, EgitimUcretiOdendi, EgitimKod, EgitimCSGBGonderimSonuc, GecerlilikTarihi, Egitimci2
+    id, SirketKod, BaslamaTarihi, BitisTarihi, Sure, Egitimci, EgitimTuru, EgitimYeri, SertifikaNo, EgitimIcerigi, EgitimUcreti, EgitimUcretParaBirimi, EgitimUcretiOdendi, EgitimKod, EgitimCSGBGonderimSonuc, GecerlilikTarihi, EgitimTip, Egitimci2
   from deleted
 
   insert into dbo.egitimler_Log (
     LogTime, LogKullanici, LogHostName, LogSPID, LogType, 
-    id, SirketKod, BaslamaTarihi, BitisTarihi, Sure, Egitimci, EgitimTuru, EgitimYeri, SertifikaNo, EgitimIcerigi, EgitimUcreti, EgitimUcretParaBirimi, EgitimUcretiOdendi, EgitimKod, EgitimCSGBGonderimSonuc, GecerlilikTarihi, Egitimci2)
+    id, SirketKod, BaslamaTarihi, BitisTarihi, Sure, Egitimci, EgitimTuru, EgitimYeri, SertifikaNo, EgitimIcerigi, EgitimUcreti, EgitimUcretParaBirimi, EgitimUcretiOdendi, EgitimKod, EgitimCSGBGonderimSonuc, GecerlilikTarihi, EgitimTip, Egitimci2)
   Select 
     @LogTime LogTime, 
     (select top 1 Kullanici 
@@ -50,7 +50,7 @@ BEGIN
        and l.date_create > sp.login_time 
      order by L.Date_create desc) LogKullanici, 
     HOST_NAME () LogHostName, @@SPID LogSPID, case when @Tip = 'U' then 'N' else @Tip end LogType, 
-    id, SirketKod, BaslamaTarihi, BitisTarihi, Sure, Egitimci, EgitimTuru, EgitimYeri, SertifikaNo, EgitimIcerigi, EgitimUcreti, EgitimUcretParaBirimi, EgitimUcretiOdendi, EgitimKod, EgitimCSGBGonderimSonuc, GecerlilikTarihi, Egitimci2
+    id, SirketKod, BaslamaTarihi, BitisTarihi, Sure, Egitimci, EgitimTuru, EgitimYeri, SertifikaNo, EgitimIcerigi, EgitimUcreti, EgitimUcretParaBirimi, EgitimUcretiOdendi, EgitimKod, EgitimCSGBGonderimSonuc, GecerlilikTarihi, EgitimTip, Egitimci2
   from inserted
 
   set nocount off

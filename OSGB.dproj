@@ -215,6 +215,9 @@
 			<DCCReference Include="SahaSaglikGozetim.pas">
 				<Form>frmSahaSaglikGozetim</Form>
 			</DCCReference>
+			<DCCReference Include="CihazKontrol.pas">
+				<Form>frmCihazKontrol</Form>
+			</DCCReference>
 			<DCCReference Include="labParametreleri.pas">
 				<Form>frmLabParams</Form>
 			</DCCReference>
