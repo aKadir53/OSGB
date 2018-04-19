@@ -349,9 +349,9 @@ begin
     update ssb set subeDoktor = dt.kod, DoktorCalismaDakika = AylikCalismaDakika
     from dbo.ISGKatipExcelAktarim pa
     inner join dbo.doktorlarT dt on dt.TCKimlikNo = pa.TCKimlikNo
-    inner join SIRKETLER_TNM srk on srk.Tanimi = substring (LTRIM (RTRIM (ISNULL (pa.HizmetAlanKurumUnvan, pa.HizmetAlanKurum))), 1, 100)
-    inner join SIRKET_SUBE_TNM ssb on ssb.sirketKod = srk.sirketKod
-      and ssb.subeSiciNo = pa.HizmetAlanKurumSGKSicilNo
+    --inner join SIRKETLER_TNM srk on srk.Tanimi = substring (LTRIM (RTRIM (ISNULL (pa.HizmetAlanKurumUnvan, pa.HizmetAlanKurum))), 1, 100)
+    inner join SIRKET_SUBE_TNM ssb on --ssb.sirketKod = srk.sirketKod
+      /*and */ssb.subeSiciNo = pa.HizmetAlanKurumSGKSicilNo
     where IsNull (subeDoktor, '') <> IsNull (dt.kod, '')
       or IsNull (DoktorCalismaDakika, 0) <> IsNull (AylikCalismaDakika, 0)
   end
@@ -364,9 +364,9 @@ begin
     update ssb set IGU = dt.kod, IGUCalismaDakika = AylikCalismaDakika
     from dbo.ISGKatipExcelAktarim pa
     inner join dbo.IGU dt on dt.TCKimlikNo = pa.TCKimlikNo
-    inner join SIRKETLER_TNM srk on srk.Tanimi = substring (LTRIM (RTRIM (ISNULL (pa.HizmetAlanKurumUnvan, pa.HizmetAlanKurum))), 1, 100)
-    inner join SIRKET_SUBE_TNM ssb on ssb.sirketKod = srk.sirketKod
-      and ssb.subeSiciNo = pa.HizmetAlanKurumSGKSicilNo
+    --inner join SIRKETLER_TNM srk on srk.Tanimi = substring (LTRIM (RTRIM (ISNULL (pa.HizmetAlanKurumUnvan, pa.HizmetAlanKurum))), 1, 100)
+    inner join SIRKET_SUBE_TNM ssb on --ssb.sirketKod = srk.sirketKod
+      /*and */ssb.subeSiciNo = pa.HizmetAlanKurumSGKSicilNo
     where IsNull (IGU, '') <> IsNull (dt.kod, '')
       or IsNull (IGUCalismaDakika, 0) <> IsNull (AylikCalismaDakika, 0)
   end
@@ -379,9 +379,9 @@ begin
     update ssb set DigerSaglikPers = dt.kod, DigerSaglikPersCalismaDakika = AylikCalismaDakika
     from dbo.ISGKatipExcelAktarim pa
     inner join dbo.DigerSaglikPersonel dt on dt.TCKimlikNo = pa.TCKimlikNo
-    inner join SIRKETLER_TNM srk on srk.Tanimi = substring (LTRIM (RTRIM (ISNULL (pa.HizmetAlanKurumUnvan, pa.HizmetAlanKurum))), 1, 100)
-    inner join SIRKET_SUBE_TNM ssb on ssb.sirketKod = srk.sirketKod
-      and ssb.subeSiciNo = pa.HizmetAlanKurumSGKSicilNo
+    --inner join SIRKETLER_TNM srk on srk.Tanimi = substring (LTRIM (RTRIM (ISNULL (pa.HizmetAlanKurumUnvan, pa.HizmetAlanKurum))), 1, 100)
+    inner join SIRKET_SUBE_TNM ssb on --ssb.sirketKod = srk.sirketKod
+      /*and */ssb.subeSiciNo = pa.HizmetAlanKurumSGKSicilNo
     where IsNull (DigerSaglikPers, '') <> IsNull (dt.kod, '')
       or IsNull (DigerSaglikPersCalismaDakika, 0) <> IsNull (AylikCalismaDakika, 0)
   end
