@@ -13,7 +13,10 @@ begin
 
   set nocount on
 
-  declare @iTipInt int = 0
+  declare 
+    @iTipInt int = 0,
+    @dn varchar (10)
+
 
   if @iTip = 0
   begin
@@ -54,6 +57,12 @@ begin
     Select 0 RowsetHata, 0 Rowset, 'Firma Tanýmlarý Tablosu iþlemleri Tamamlanýyor' Aciklama, null HataMesaji
     insert into #t (RowsetHata, Rowset, Aciklama, HataMesaji) 
     Select 0 RowsetHata, 0 Rowset, 'Firma kartlarý numaratörü güncelleniyor' Aciklama, null HataMesaji
+    insert into #t (RowsetHata, Rowset, Aciklama, HataMesaji) 
+    Select 0 RowsetHata, 0 Rowset, 'Doktor kartlarý numaratörü güncelleniyor' Aciklama, null HataMesaji
+    insert into #t (RowsetHata, Rowset, Aciklama, HataMesaji) 
+    Select 0 RowsetHata, 0 Rowset, 'Ýþ Güvenlik Uzmaný kartlarý numaratörü güncelleniyor' Aciklama, null HataMesaji
+    insert into #t (RowsetHata, Rowset, Aciklama, HataMesaji) 
+    Select 0 RowsetHata, 0 Rowset, 'Diðer Saðlýk Personeli kartlarý numaratörü güncelleniyor' Aciklama, null HataMesaji
     insert into #t (RowsetHata, Rowset, Aciklama, HataMesaji) 
     Select 0 RowsetHata, 0 Rowset, 'Firma þubeleri SGK Sicilleri üzerinden oluþturuluyor' Aciklama, null HataMesaji
     insert into #t (RowsetHata, Rowset, Aciklama, HataMesaji) 
@@ -303,9 +312,35 @@ begin
   if @iTip = @iTipInt or @iTip is Null
   begin
     -- son þirketin koduna göre numaratörü güncelle
-    declare @dn varchar (10)
-    select @dn = max (cast (SirketKod as int)) from SIRKETLER_TNM where IsNumeric (SirketKod) = 1
+    select @dn = max (cast (SirketKod as int)) from dbo.SIRKETLER_TNM where IsNumeric (SirketKod) = 1
     exec sp_DosyaNoYaz @dn, 'FN'
+  end
+
+  set @iTipInt = @iTipInt + 1
+  
+  if @iTip = @iTipInt or @iTip is Null
+  begin
+    -- son doktorun koduna göre numaratörü güncelle
+    select @dn = max (cast (Kod as int)) from dbo.DoktorlarT where IsNumeric (Kod) = 1
+    exec sp_DosyaNoYaz @dn, 'DR'
+  end
+
+  set @iTipInt = @iTipInt + 1
+  
+  if @iTip = @iTipInt or @iTip is Null
+  begin
+    -- son iþ güv. uzm koduna göre numaratörü güncelle
+    select @dn = max (cast (Kod as int)) from dbo.IGU where IsNumeric (Kod) = 1
+    exec sp_DosyaNoYaz @dn, 'IG'
+  end
+
+  set @iTipInt = @iTipInt + 1
+  
+  if @iTip = @iTipInt or @iTip is Null
+  begin
+    -- son þirketin koduna göre numaratörü güncelle
+    select @dn = max (cast (kod as int)) from dbo.DigerSaglikPersonel where IsNumeric (kod) = 1
+    exec sp_DosyaNoYaz @dn, 'DS'
   end
 
   set @iTipInt = @iTipInt + 1
@@ -349,9 +384,9 @@ begin
     update ssb set subeDoktor = dt.kod, DoktorCalismaDakika = AylikCalismaDakika
     from dbo.ISGKatipExcelAktarim pa
     inner join dbo.doktorlarT dt on dt.TCKimlikNo = pa.TCKimlikNo
-    inner join SIRKETLER_TNM srk on srk.Tanimi = substring (LTRIM (RTRIM (ISNULL (pa.HizmetAlanKurumUnvan, pa.HizmetAlanKurum))), 1, 100)
-    inner join SIRKET_SUBE_TNM ssb on ssb.sirketKod = srk.sirketKod
-      and ssb.subeSiciNo = pa.HizmetAlanKurumSGKSicilNo
+    --inner join SIRKETLER_TNM srk on srk.Tanimi = substring (LTRIM (RTRIM (ISNULL (pa.HizmetAlanKurumUnvan, pa.HizmetAlanKurum))), 1, 100)
+    inner join SIRKET_SUBE_TNM ssb on --ssb.sirketKod = srk.sirketKod
+      /*and */ssb.subeSiciNo = pa.HizmetAlanKurumSGKSicilNo
     where IsNull (subeDoktor, '') <> IsNull (dt.kod, '')
       or IsNull (DoktorCalismaDakika, 0) <> IsNull (AylikCalismaDakika, 0)
   end
@@ -364,9 +399,9 @@ begin
     update ssb set IGU = dt.kod, IGUCalismaDakika = AylikCalismaDakika
     from dbo.ISGKatipExcelAktarim pa
     inner join dbo.IGU dt on dt.TCKimlikNo = pa.TCKimlikNo
-    inner join SIRKETLER_TNM srk on srk.Tanimi = substring (LTRIM (RTRIM (ISNULL (pa.HizmetAlanKurumUnvan, pa.HizmetAlanKurum))), 1, 100)
-    inner join SIRKET_SUBE_TNM ssb on ssb.sirketKod = srk.sirketKod
-      and ssb.subeSiciNo = pa.HizmetAlanKurumSGKSicilNo
+    --inner join SIRKETLER_TNM srk on srk.Tanimi = substring (LTRIM (RTRIM (ISNULL (pa.HizmetAlanKurumUnvan, pa.HizmetAlanKurum))), 1, 100)
+    inner join SIRKET_SUBE_TNM ssb on --ssb.sirketKod = srk.sirketKod
+      /*and */ssb.subeSiciNo = pa.HizmetAlanKurumSGKSicilNo
     where IsNull (IGU, '') <> IsNull (dt.kod, '')
       or IsNull (IGUCalismaDakika, 0) <> IsNull (AylikCalismaDakika, 0)
   end
@@ -379,9 +414,9 @@ begin
     update ssb set DigerSaglikPers = dt.kod, DigerSaglikPersCalismaDakika = AylikCalismaDakika
     from dbo.ISGKatipExcelAktarim pa
     inner join dbo.DigerSaglikPersonel dt on dt.TCKimlikNo = pa.TCKimlikNo
-    inner join SIRKETLER_TNM srk on srk.Tanimi = substring (LTRIM (RTRIM (ISNULL (pa.HizmetAlanKurumUnvan, pa.HizmetAlanKurum))), 1, 100)
-    inner join SIRKET_SUBE_TNM ssb on ssb.sirketKod = srk.sirketKod
-      and ssb.subeSiciNo = pa.HizmetAlanKurumSGKSicilNo
+    --inner join SIRKETLER_TNM srk on srk.Tanimi = substring (LTRIM (RTRIM (ISNULL (pa.HizmetAlanKurumUnvan, pa.HizmetAlanKurum))), 1, 100)
+    inner join SIRKET_SUBE_TNM ssb on --ssb.sirketKod = srk.sirketKod
+      /*and */ssb.subeSiciNo = pa.HizmetAlanKurumSGKSicilNo
     where IsNull (DigerSaglikPers, '') <> IsNull (dt.kod, '')
       or IsNull (DigerSaglikPersCalismaDakika, 0) <> IsNull (AylikCalismaDakika, 0)
   end
