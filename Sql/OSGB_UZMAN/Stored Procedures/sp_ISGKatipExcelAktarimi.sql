@@ -13,7 +13,10 @@ begin
 
   set nocount on
 
-  declare @iTipInt int = 0
+  declare 
+    @iTipInt int = 0,
+    @dn varchar (10)
+
 
   if @iTip = 0
   begin
@@ -54,6 +57,12 @@ begin
     Select 0 RowsetHata, 0 Rowset, 'Firma Tanýmlarý Tablosu iþlemleri Tamamlanýyor' Aciklama, null HataMesaji
     insert into #t (RowsetHata, Rowset, Aciklama, HataMesaji) 
     Select 0 RowsetHata, 0 Rowset, 'Firma kartlarý numaratörü güncelleniyor' Aciklama, null HataMesaji
+    insert into #t (RowsetHata, Rowset, Aciklama, HataMesaji) 
+    Select 0 RowsetHata, 0 Rowset, 'Doktor kartlarý numaratörü güncelleniyor' Aciklama, null HataMesaji
+    insert into #t (RowsetHata, Rowset, Aciklama, HataMesaji) 
+    Select 0 RowsetHata, 0 Rowset, 'Ýþ Güvenlik Uzmaný kartlarý numaratörü güncelleniyor' Aciklama, null HataMesaji
+    insert into #t (RowsetHata, Rowset, Aciklama, HataMesaji) 
+    Select 0 RowsetHata, 0 Rowset, 'Diðer Saðlýk Personeli kartlarý numaratörü güncelleniyor' Aciklama, null HataMesaji
     insert into #t (RowsetHata, Rowset, Aciklama, HataMesaji) 
     Select 0 RowsetHata, 0 Rowset, 'Firma þubeleri SGK Sicilleri üzerinden oluþturuluyor' Aciklama, null HataMesaji
     insert into #t (RowsetHata, Rowset, Aciklama, HataMesaji) 
@@ -303,9 +312,35 @@ begin
   if @iTip = @iTipInt or @iTip is Null
   begin
     -- son þirketin koduna göre numaratörü güncelle
-    declare @dn varchar (10)
-    select @dn = max (cast (SirketKod as int)) from SIRKETLER_TNM where IsNumeric (SirketKod) = 1
+    select @dn = max (cast (SirketKod as int)) from dbo.SIRKETLER_TNM where IsNumeric (SirketKod) = 1
     exec sp_DosyaNoYaz @dn, 'FN'
+  end
+
+  set @iTipInt = @iTipInt + 1
+  
+  if @iTip = @iTipInt or @iTip is Null
+  begin
+    -- son doktorun koduna göre numaratörü güncelle
+    select @dn = max (cast (Kod as int)) from dbo.DoktorlarT where IsNumeric (Kod) = 1
+    exec sp_DosyaNoYaz @dn, 'DR'
+  end
+
+  set @iTipInt = @iTipInt + 1
+  
+  if @iTip = @iTipInt or @iTip is Null
+  begin
+    -- son iþ güv. uzm koduna göre numaratörü güncelle
+    select @dn = max (cast (Kod as int)) from dbo.IGU where IsNumeric (Kod) = 1
+    exec sp_DosyaNoYaz @dn, 'IG'
+  end
+
+  set @iTipInt = @iTipInt + 1
+  
+  if @iTip = @iTipInt or @iTip is Null
+  begin
+    -- son þirketin koduna göre numaratörü güncelle
+    select @dn = max (cast (kod as int)) from dbo.DigerSaglikPersonel where IsNumeric (kod) = 1
+    exec sp_DosyaNoYaz @dn, 'DS'
   end
 
   set @iTipInt = @iTipInt + 1
