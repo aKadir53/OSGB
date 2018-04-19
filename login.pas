@@ -217,9 +217,11 @@ var
   aSL1 : TStringList;
   sTmp : String;
   bLoginLog : Boolean;
+  bOtomatikGiris : Boolean;
   iThermo : Integer;
 begin
   bloginLog := False;
+  bOtomatikGiris := False;
   try
     if IsNull (Edit2.Text) then
     begin
@@ -234,6 +236,7 @@ begin
             txtOsgbKodu.EditingText := Copy (sTmp, 1, pos (#9, sTmp) - 1);
             Edit2.EditingText := Copy (sTmp, pos (#9, sTmp) + 1, Length (sTmp));
             btnBaglanClick(btnBaglan);
+            bOtomatikGiris := True;
             aSL1.Delete (0);
             Clipboard.AsText := aSL1.Text;
             if not IsNull (aSL1.Text) then
@@ -282,7 +285,7 @@ begin
       DATALAR.usersifre := edit2.Text;
 
       //þifre deðiþtirme gerekliyse...
-      if Login.FieldByName ('SifreDegismeli').AsBoolean then
+      if not bOtomatikGiris and Login.FieldByName ('SifreDegismeli').AsBoolean then
       begin
         ShowMessageSkin('Þifrenizi Deðiþtirmeniz Gerekmektedir...', '', '', 'info');
         if not SifreDegistir (True) then Exit;
