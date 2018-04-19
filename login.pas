@@ -180,10 +180,36 @@ begin
 end;
 
 procedure TfrmLogin.FormActivate(Sender: TObject);
-VAR
-   Arect:Trect;
+var
+  i : Integer;
+  sParams: String;
+  aStringList : TStringList;
+  Arect:Trect;
 begin
-     INVALIDATERECT(HANDLE,@ARect,False);
+  INVALIDATERECT(HANDLE,@ARect,False);
+  aStringList := TStringList.Create;
+  try
+    sParams := '';
+    for i := 1 to ParamCount do
+      sParams := sParams + ParamStr(i) + ' ';
+    Split('/', sParams, aStringList);
+    for i := 0 to aStringList.Count - 1 do
+    begin
+      sParams := aStringList [i];
+      if SameText (Copy (sParams, 1, 2), 'L:') then
+      begin
+        Delete (sParams, 1, 2);
+        Left := StrToIntDef (sParams, 0);
+      end;
+      if SameText (Copy (sParams, 1, 2), 'T:') then
+      begin
+        Delete (sParams, 1, 2);
+        Top := StrToIntDef (sParams, 0);
+      end;
+    end;
+  finally
+    aStringList.Free;
+  end;
 end;
 
 procedure TfrmLogin.Image1Click(Sender: TObject);
@@ -210,10 +236,10 @@ begin
             btnBaglanClick(btnBaglan);
             aSL1.Delete (0);
             Clipboard.AsText := aSL1.Text;
+            if not IsNull (aSL1.Text) then
+              WinExec(PAnsiChar (AnsiString (ParamStr (0) + ' /L:'+IntToStr (Left) + '/T:'+IntToStr (Top))),SW_SHOW);
             Left := aSL1.Count * 3;
             Top := aSL1.Count * 3;
-            if not IsNull (aSL1.Text) then
-              WinExec(PAnsiChar (AnsiString (ParamStr (0))),SW_SHOW);
           end;
         end;
       finally
