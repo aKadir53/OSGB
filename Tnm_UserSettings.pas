@@ -628,7 +628,8 @@ begin
       ShowMessageSkin('Þifre Tekrarý Hatalý','','','info');
       exit;
     end;
-    if FEskiSifre <> TcxTextEditKadir (FindComponent ('password')).Text then
+    if (FEskiSifre <> TcxTextEditKadir (FindComponent ('password')).Text)
+      and not isNull (TcxTextEditKadir (FindComponent ('password')).Text) then
       if not SifreGecerliMi (TcxTextEditKadir (FindComponent ('password')).Text, 6, 1, 0, 0, 1) then Exit;
   end;
   BeginTrans (DATALAR.ADOConnection2);
@@ -637,6 +638,7 @@ begin
     begin
       DATALAR.QueryExec('delete from UserMenuSettings where Kullanici = ' + QuotedStr(TcxButtonEditKadir (FindComponent('Kullanici')).Text));
       DATALAR.QueryExec('delete from UserSettings where Kullanici = ' + QuotedStr(TcxButtonEditKadir (FindComponent('Kullanici')).Text));
+      DATALAR.QueryExec('delete from UserPasswordHistory where Kullanici = ' + QuotedStr(TcxButtonEditKadir (FindComponent('Kullanici')).Text));
     end
     else
     if TcxButton(sender).Tag = 0 then
