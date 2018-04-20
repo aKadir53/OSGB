@@ -6,7 +6,7 @@ ALTER -- create
 as 
 begin
   select st.tanimi SirketAdi, pk.HASTAADI + ' ' + pk.HASTASOYADI PersonelAdiSoyadi, cast (convert (varchar, E.BaslamaTarihi, 112) as datetime) BaslamaTarihi, 
-    cast (E.Sure as varchar) + ' Saat' Sure, E.EgitimYeri, E.EgitimIcerigi, e.Egitimci EgitimiVeren, e.Egitimci2 EgitimiVeren2, 
+    cast (E.Sure as varchar) + ' Saat' Sure, E.EgitimYeri, E.EgitimIcerigi, null EgitimiVeren, null EgitimiVeren2, 
 	IsNull (e.SertifikaNo + '/', '') + pe.PersonelDosyaNo SertifikaNo,
     left (convert (varchar, E.BaslamaTarihi, 108),5) BaslamaSaati,
     st.Adres Adresi, st.Tel1, st.Tel2, st.Fax, st.yetkilimail EPosta, e.EgitimTuru, 
