@@ -480,7 +480,7 @@ begin
        'Kayýtlý kullanýcý iseniz [Hayýr] seçip firma kodunuzu girerek devam ediniz', '', '', 'conf') = mrYes then
      begin
        txtOsgbKodu.Text := '1001';
-       Edit1.Text := 'demo';
+       Edit1.Text := 'admin';
      end
      else begin
        LoginSayfalar.ActivePageIndex := 1;
