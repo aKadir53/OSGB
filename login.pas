@@ -180,10 +180,36 @@ begin
 end;
 
 procedure TfrmLogin.FormActivate(Sender: TObject);
-VAR
-   Arect:Trect;
+var
+  i : Integer;
+  sParams: String;
+  aStringList : TStringList;
+  Arect:Trect;
 begin
-     INVALIDATERECT(HANDLE,@ARect,False);
+  INVALIDATERECT(HANDLE,@ARect,False);
+  aStringList := TStringList.Create;
+  try
+    sParams := '';
+    for i := 1 to ParamCount do
+      sParams := sParams + ParamStr(i) + ' ';
+    Split('/', sParams, aStringList);
+    for i := 0 to aStringList.Count - 1 do
+    begin
+      sParams := aStringList [i];
+      if SameText (Copy (sParams, 1, 2), 'L:') then
+      begin
+        Delete (sParams, 1, 2);
+        Left := StrToIntDef (sParams, 0);
+      end;
+      if SameText (Copy (sParams, 1, 2), 'T:') then
+      begin
+        Delete (sParams, 1, 2);
+        Top := StrToIntDef (sParams, 0);
+      end;
+    end;
+  finally
+    aStringList.Free;
+  end;
 end;
 
 procedure TfrmLogin.Image1Click(Sender: TObject);
@@ -191,9 +217,11 @@ var
   aSL1 : TStringList;
   sTmp : String;
   bLoginLog : Boolean;
+  bOtomatikGiris : Boolean;
   iThermo : Integer;
 begin
   bloginLog := False;
+  bOtomatikGiris := False;
   try
     if IsNull (Edit2.Text) then
     begin
@@ -208,12 +236,13 @@ begin
             txtOsgbKodu.EditingText := Copy (sTmp, 1, pos (#9, sTmp) - 1);
             Edit2.EditingText := Copy (sTmp, pos (#9, sTmp) + 1, Length (sTmp));
             btnBaglanClick(btnBaglan);
+            bOtomatikGiris := True;
             aSL1.Delete (0);
             Clipboard.AsText := aSL1.Text;
+            if not IsNull (aSL1.Text) then
+              WinExec(PAnsiChar (AnsiString (ParamStr (0) + ' /L:'+IntToStr (Left) + '/T:'+IntToStr (Top))),SW_SHOW);
             Left := aSL1.Count * 3;
             Top := aSL1.Count * 3;
-            if not IsNull (aSL1.Text) then
-              WinExec(PAnsiChar (AnsiString (ParamStr (0))),SW_SHOW);
           end;
         end;
       finally
@@ -256,7 +285,7 @@ begin
       DATALAR.usersifre := edit2.Text;
 
       //þifre deðiþtirme gerekliyse...
-      if Login.FieldByName ('SifreDegismeli').AsBoolean then
+      if not bOtomatikGiris and Login.FieldByName ('SifreDegismeli').AsBoolean then
       begin
         ShowMessageSkin('Þifrenizi Deðiþtirmeniz Gerekmektedir...', '', '', 'info');
         if not SifreDegistir (True) then Exit;
@@ -451,7 +480,7 @@ begin
        'Kayýtlý kullanýcý iseniz [Hayýr] seçip firma kodunuzu girerek devam ediniz', '', '', 'conf') = mrYes then
      begin
        txtOsgbKodu.Text := '1001';
-       Edit1.Text := 'demo';
+       Edit1.Text := 'admin';
      end
      else begin
        LoginSayfalar.ActivePageIndex := 1;
