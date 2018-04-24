@@ -17,6 +17,7 @@ BEGIN
     'DELETE FROM dbo.Parametreler where SLK' + dbo.fn_SQLStrValueForString (SLK, 1) + ' and SLB' + dbo.fn_SQLStrValueForString (SLB, 1) + ' and SLT' + dbo.fn_SQLStrValueForString (SLT, 1) 
   from deleted d
   where not exists (select 1 from inserted i where d.SLK = i.SLK and d.SLB = i.SLB and d.SLT = i.SLT)
+    and not (SLK = 'GT' and SLB = '0000')
 
   Insert into dbo.GuncellemeTakipScript (TableName, KeyFields, KeyValues, Mode, IdentityInsert, Script)
   select 
@@ -28,6 +29,7 @@ BEGIN
     dbo.fn_SQLStrValueForString (SLT, 0)
   from inserted i
   where not exists (select 1 from deleted d where d.SLK = i.SLK and d.SLB = i.SLB and d.SLT = i.SLT)
+    and not (SLK = 'GT' and SLB = '0000')
 
   set nocount off
 END
