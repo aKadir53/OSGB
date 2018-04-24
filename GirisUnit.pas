@@ -2320,7 +2320,7 @@ begin
   DurumGoster();
   try
     case TControl(sender).Tag  of
-      0 : begin
+ Kaydet : begin
            try
              if FormInputZorunluKontrol(self) Then Abort;
              if sqlTip = sql_Select
@@ -2349,7 +2349,7 @@ begin
            end;
 
           end;
-      1 : begin
+    Sil : begin
 
 
            if MrYes = ShowMessageSkin('Silmek Ýstediðinizden Emin misiniz ?','','','msg')
@@ -2378,7 +2378,7 @@ begin
 
          end;
 
-      2 : begin
+  Yeni : begin
            Enabled;
            _SQLRUN_ := _SqlInsert_;
            indexKaydiBul(dosyaNo,'');
