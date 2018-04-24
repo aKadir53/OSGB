@@ -1250,8 +1250,8 @@ object GirisForm: TGirisForm
     Width = 501
     object pnlDurumImage: TcxImage
       Tag = -100
-      Left = 2
-      Top = 2
+      Left = 3
+      Top = 3
       Align = alLeft
       Picture.Data = {
         0B546478504E47496D61676589504E470D0A1A0A0000000D4948445200000030
@@ -1404,15 +1404,15 @@ object GirisForm: TGirisForm
         7935AE55479994CB0000000049454E44AE426082}
       Properties.GraphicClassName = 'TdxPNGImage'
       TabOrder = 0
-      ExplicitLeft = 3
-      ExplicitTop = 3
-      ExplicitHeight = 58
-      Height = 60
+      ExplicitLeft = 2
+      ExplicitTop = 2
+      ExplicitHeight = 60
+      Height = 58
       Width = 65
     end
     object pnlDurumDurum: TcxGroupBox
-      Left = 67
-      Top = 2
+      Left = 68
+      Top = 3
       Align = alClient
       Alignment = alCenterCenter
       Caption = #304#351'leminiz Yap'#305'l'#305'yor , l'#252'tfen bekleyiniz...'
@@ -1430,20 +1430,21 @@ object GirisForm: TGirisForm
       StyleFocused.LookAndFeel.NativeStyle = True
       StyleHot.LookAndFeel.NativeStyle = True
       TabOrder = 1
-      ExplicitLeft = 68
-      ExplicitTop = 3
-      ExplicitWidth = 430
-      ExplicitHeight = 58
-      Height = 60
-      Width = 432
+      ExplicitLeft = 67
+      ExplicitTop = 2
+      ExplicitWidth = 432
+      ExplicitHeight = 60
+      Height = 58
+      Width = 430
       object pBar: TcxProgressBar
         Left = 2
-        Top = 37
+        Top = 35
         Align = alBottom
         TabOrder = 0
         Visible = False
-        ExplicitWidth = 426
-        Width = 428
+        ExplicitTop = 37
+        ExplicitWidth = 428
+        Width = 426
       end
     end
   end

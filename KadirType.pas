@@ -589,6 +589,8 @@ Const
   TagfrmBirim = 9011;
   TagfrmSube = 9012;
   TagfrmFirmaISGEkip = 9013;
+  TagfrmEkipmanTuru = 9014;
+  TagfrmEkipmanTuruOzellik = 9015;
   TagfrmRaporDetay = -20;
   TagfrmTakipNo = -10;
   TagfrmAsiKarti = 9020;
@@ -651,6 +653,7 @@ Const
   TagfrmAbout = 620;
   TagfrmSahaSaglikGozetim = 630;
   TagfrmCihazKontrol = 635;
+  TagfrmFirmaKontrol = 636;
   TagfrmIGU = 640;
   TagFirmaCalismalari = 650;
   TagfrmPersonelTetkikIstem = 660;
@@ -682,7 +685,12 @@ Const
   TagfrmCSGBveriGonder = 930;
   TagfrmRTFSablon = 940;
   TagfrmSirketSahaDenetim = 950;
+  TagfrmSirketEkipmanList = 960;
 
+
+  Kaydet = 0;
+  Sil = 1;
+  Yeni = 2;
 
   ExceleGonder = 9997;
   SeansTarihiUpdate = 0;

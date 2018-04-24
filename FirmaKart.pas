@@ -138,7 +138,10 @@ begin
     F := FormINIT(TagfrmFirmaISGEkip,GirisRecord,ikHayir,'')
   else if TcxButtonKadir(sender).ButtonName = 'btnCalismalar' then
     F := FormINIT(TagFirmaCalismalari,GirisRecord,ikHayir,'')
-  else if TcxButtonKadir(sender).ButtonName = 'btnSubeGetir' then
+  else if TcxButtonKadir(sender).ButtonName = 'btnEkipmanList' then
+    F := FormINIT(TagfrmSirketEkipmanList,GirisRecord,ikHayir,'')
+  else
+  if TcxButtonKadir(sender).ButtonName = 'btnSubeGetir' then
   begin
     FirmaSubeBirlestir;
   end;
@@ -719,6 +722,7 @@ begin
   addButton(self,nil,'btnCalismalar','','Firma Çalýþmalarý',Kolon3,'',230,ButtonClick);
   addButton(self,nil,'btnSozlesmeler','','Firma Sözleþmeleri',Kolon3,'',230,ButtonClick);
   addButton(self,nil,'btnISGEkipleri','','Ýþ Saðlýðý ve Güvenliði Ekipleri',Kolon3,'',230,ButtonClick);
+  addButton(self,nil,'btnEkipmanList','','Firma Ekipman Listesi',Kolon3,'',230,ButtonClick);
 
 
   tableColumnDescCreate;
