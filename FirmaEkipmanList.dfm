@@ -1,9 +1,9 @@
-object frmCihazKontrol: TfrmCihazKontrol
+object frmFirmaEkipmanList: TfrmFirmaEkipmanList
   Left = 1
   Top = 1
   Caption = 'Saha G'#246'zetim'
-  ClientHeight = 597
-  ClientWidth = 672
+  ClientHeight = 561
+  ClientWidth = 834
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -16,11 +16,11 @@ object frmCihazKontrol: TfrmCihazKontrol
   OnCreate = FormCreate
   PixelsPerInch = 96
   TextHeight = 13
-  object CihazGrid: TcxGridKadir
-    Left = 204
-    Top = -8
-    Width = 430
-    Height = 200
+  object EkipmanListGrid: TcxGridKadir
+    Left = 8
+    Top = 56
+    Width = 440
+    Height = 297
     TabOrder = 0
     ExcelFileName = 'RiskDegerlendirme'
     ExceleGonder = True
@@ -177,7 +177,7 @@ object frmCihazKontrol: TfrmCihazKontrol
         item
         end>
     end
-    object CihazSatirlar: TcxGridDBBandedTableView
+    object EkipmanListGridSatir: TcxGridDBBandedTableView
       PopupMenu = PopupMenu1
       Navigator.Buttons.First.Visible = False
       Navigator.Buttons.PriorPage.Visible = False
@@ -193,87 +193,75 @@ object frmCihazKontrol: TfrmCihazKontrol
       DataController.Summary.DefaultGroupSummaryItems = <>
       DataController.Summary.FooterSummaryItems = <>
       DataController.Summary.SummaryGroups = <>
-      NewItemRow.SeparatorColor = 8454143
+      NewItemRow.InfoText = 'Yeni Sat'#305'r Ekle'
+      NewItemRow.SeparatorColor = clBlack
+      NewItemRow.Visible = True
       OptionsCustomize.DataRowSizing = True
       OptionsView.CellAutoHeight = True
       OptionsView.GroupByBox = False
+      Styles.NewItemRowInfoText = cxStyle9
       Bands = <
         item
-          Caption = 'Ekipman Bilgileri'
+          Caption = 'Firma Ekipman Listesi'
           FixedKind = fkLeft
           Styles.Header = cxStyle8
-          Width = 404
+          Width = 426
         end>
-      object CihazSatirlartanimi: TcxGridDBBandedColumn
-        DataBinding.FieldName = 'tanimi'
-        Visible = False
-        Width = 114
+      object EkipmanListGridSatirkod: TcxGridDBBandedColumn
+        Caption = 'Kod'
+        DataBinding.FieldName = 'kod'
+        Options.Editing = False
+        Width = 61
         Position.BandIndex = 0
         Position.ColIndex = 0
         Position.RowIndex = 0
       end
-      object CihazSatirlarsirketKod: TcxGridDBBandedColumn
-        DataBinding.FieldName = 'sirketKod'
-        Visible = False
-        Width = 26
+      object EkipmanListGridSatirtanimi: TcxGridDBBandedColumn
+        Caption = 'Ekipman Tan'#305'm'#305
+        DataBinding.FieldName = 'tanimi'
+        HeaderAlignmentHorz = taCenter
+        Width = 236
         Position.BandIndex = 0
         Position.ColIndex = 1
         Position.RowIndex = 0
       end
-      object CihazSatirlarsubeKod: TcxGridDBBandedColumn
-        DataBinding.FieldName = 'subeKod'
-        Visible = False
-        Width = 30
+      object EkipmanListGridSatircihazTurKod: TcxGridDBBandedColumn
+        Caption = 'Ekipman T'#252'r'#252
+        DataBinding.FieldName = 'cihazTurKod'
+        PropertiesClassName = 'TcxImageComboBoxProperties'
+        Properties.Items = <>
+        HeaderAlignmentHorz = taCenter
+        Width = 129
         Position.BandIndex = 0
         Position.ColIndex = 2
         Position.RowIndex = 0
       end
-      object CihazSatirlarKontrolCihaz: TcxGridDBBandedColumn
-        DataBinding.FieldName = 'KontrolCihaz'
+      object EkipmanListGridSatirsirketKod: TcxGridDBBandedColumn
+        DataBinding.FieldName = 'sirketKod'
         Visible = False
-        Width = 36
+        Width = 105
         Position.BandIndex = 0
         Position.ColIndex = 3
         Position.RowIndex = 0
       end
-      object CihazSatirlarOzellik: TcxGridDBBandedColumn
-        Caption = #214'zelli'#287'i'
-        DataBinding.FieldName = 'Ozellik'
-        PropertiesClassName = 'TcxTextEditProperties'
-        HeaderAlignmentHorz = taCenter
-        Options.Editing = False
-        Styles.Content = cxStyle8
-        Styles.Header = cxStyle3
-        Width = 100
+      object EkipmanListGridSatirsubeKod: TcxGridDBBandedColumn
+        DataBinding.FieldName = 'subeKod'
+        Visible = False
+        Width = 49
         Position.BandIndex = 0
         Position.ColIndex = 4
         Position.RowIndex = 0
       end
-      object CihazSatirlarOzellikDeger: TcxGridDBBandedColumn
-        Caption = 'Bilgisi'
-        DataBinding.FieldName = 'OzellikDeger'
-        PropertiesClassName = 'TcxTextEditProperties'
-        Properties.Alignment.Horz = taCenter
-        Properties.Alignment.Vert = taVCenter
-        HeaderAlignmentHorz = taCenter
-        Options.Editing = False
-        Styles.Content = cxStyle2
-        Styles.Header = cxStyle3
-        Width = 98
-        Position.BandIndex = 0
-        Position.ColIndex = 5
-        Position.RowIndex = 0
-      end
     end
-    object CihazGridLevel1: TcxGridLevel
-      GridView = CihazSatirlar
+    object EkipmanListGridLevel1: TcxGridLevel
+      GridView = EkipmanListGridSatir
     end
   end
-  object CihazSoruGrid: TcxGridKadir
-    Left = 20
-    Top = 198
-    Width = 500
-    Height = 321
+  object EkipmanDetay: TcxGridKadir
+    Left = 447
+    Top = 8
+    Width = 377
+    Height = 155
     TabOrder = 1
     ExcelFileName = 'RiskDegerlendirme'
     ExceleGonder = True
@@ -430,7 +418,7 @@ object frmCihazKontrol: TfrmCihazKontrol
         item
         end>
     end
-    object CihazSoruSatir: TcxGridDBBandedTableView
+    object EkipmanDetaySatir: TcxGridDBBandedTableView
       PopupMenu = PopupMenu1
       Navigator.Buttons.First.Visible = False
       Navigator.Buttons.PriorPage.Visible = False
@@ -448,79 +436,61 @@ object frmCihazKontrol: TfrmCihazKontrol
       DataController.Summary.SummaryGroups = <>
       NewItemRow.SeparatorColor = 8454143
       OptionsCustomize.DataRowSizing = True
+      OptionsData.Deleting = False
+      OptionsData.Inserting = False
       OptionsView.CellAutoHeight = True
       OptionsView.GroupByBox = False
       Bands = <
         item
-          Caption = #304#351' Ekipman Kontrol Sorular'#305
+          Caption = #304#351' Ekipman '#214'zellik'
           FixedKind = fkLeft
           Styles.Header = cxStyle8
-          Width = 476
+          Width = 349
         end>
-      object CihazSoruSatirid: TcxGridDBBandedColumn
+      object EkipmanDetaySatirid: TcxGridDBBandedColumn
         DataBinding.FieldName = 'id'
         Visible = False
         Position.BandIndex = 0
         Position.ColIndex = 0
         Position.RowIndex = 0
       end
-      object CihazSoruSatirkontrolid: TcxGridDBBandedColumn
-        DataBinding.FieldName = 'kontrolid'
+      object EkipmanDetaySatircihazKod: TcxGridDBBandedColumn
+        DataBinding.FieldName = 'cihazKod'
         Visible = False
         Position.BandIndex = 0
         Position.ColIndex = 1
         Position.RowIndex = 0
       end
-      object CihazSoruSatirKontrolSoru: TcxGridDBBandedColumn
-        Caption = 'Kontrol '#304#351'lemi'
-        DataBinding.FieldName = 'KontrolSoru'
-        HeaderAlignmentHorz = taCenter
-        Options.Editing = False
-        Styles.Content = cxStyle8
-        Styles.Header = cxStyle3
-        Width = 323
+      object EkipmanDetaySatirOzellikKod: TcxGridDBBandedColumn
+        DataBinding.FieldName = 'OzellikKod'
+        Visible = False
         Position.BandIndex = 0
         Position.ColIndex = 2
         Position.RowIndex = 0
       end
-      object CihazSoruSatirKontrolSoruCvp: TcxGridDBBandedColumn
-        Caption = 'Cevap'
-        DataBinding.FieldName = 'KontrolSoruCvp'
-        PropertiesClassName = 'TcxImageComboBoxProperties'
-        Properties.Alignment.Horz = taCenter
-        Properties.Alignment.Vert = taVCenter
-        Properties.Items = <
-          item
-            Description = 'Evet'
-            ImageIndex = 0
-            Value = 1
-          end
-          item
-            Description = 'Hay'#305'r'
-            Value = 0
-          end
-          item
-          end>
+      object EkipmanDetaySatirOzellik: TcxGridDBBandedColumn
+        Caption = 'Ozelli'#287'i'
+        DataBinding.FieldName = 'Ozellik'
         HeaderAlignmentHorz = taCenter
-        Styles.Content = cxStyle3
-        Width = 36
+        Options.Editing = False
+        Styles.Content = cxStyle8
+        Width = 207
         Position.BandIndex = 0
         Position.ColIndex = 3
         Position.RowIndex = 0
       end
-      object CihazSoruSatirKontrolSoruCvpAciklama: TcxGridDBBandedColumn
-        Caption = 'A'#231#305'klama'
-        DataBinding.FieldName = 'KontrolSoruCvpAciklama'
-        PropertiesClassName = 'TcxMemoProperties'
+      object EkipmanDetaySatirOzellikDeger: TcxGridDBBandedColumn
+        Caption = 'Ozellik Bilgisi'
+        DataBinding.FieldName = 'OzellikDeger'
         HeaderAlignmentHorz = taCenter
-        Width = 117
+        Width = 142
         Position.BandIndex = 0
         Position.ColIndex = 4
         Position.RowIndex = 0
       end
     end
     object cxGridLevel1: TcxGridLevel
-      GridView = CihazSoruSatir
+      GridView = EkipmanDetaySatir
     end
   end
   object cxStyleRepository1: TcxStyleRepository
@@ -578,8 +548,7 @@ object frmCihazKontrol: TfrmCihazKontrol
     end
   end
   object cxStyleRepository2: TcxStyleRepository
-    Left = 16
-    Top = 56
+    Top = 128
     PixelsPerInch = 96
     object cxStyle2: TcxStyle
       AssignedValues = [svColor, svFont]
@@ -597,13 +566,32 @@ object frmCihazKontrol: TfrmCihazKontrol
     Top = 256
     object miGozetimYazdir: TMenuItem
       Tag = -27
-      Caption = 'Yazd'#305'r'
-      ImageIndex = 28
+      Caption = 'Ekipman T'#252'r'#252' Tan'#305'mla'
+      ImageIndex = 115
+      OnClick = cxButtonCClick
+    end
+    object E1: TMenuItem
+      Tag = -28
+      Caption = 'Ekipman T'#252'r'#252' '#214'zellik Tan'#305'mla'
+      ImageIndex = 108
       OnClick = cxButtonCClick
     end
   end
   object tmr1: TTimer
     Enabled = False
     Interval = 100
+  end
+  object cxStyleRepository3: TcxStyleRepository
+    PixelsPerInch = 96
+    object cxStyle9: TcxStyle
+      AssignedValues = [svColor, svFont, svTextColor]
+      Color = clYellow
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -16
+      Font.Name = 'Tahoma'
+      Font.Style = [fsBold]
+      TextColor = clBlack
+    end
   end
 end

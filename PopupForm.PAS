@@ -385,7 +385,9 @@ riskDuzenle,yeniRisk :
               datalar.Risk.Risk_tanim := TcxImageComboKadir(FindComponent('Risk_tanimi')).Text;
               datalar.Risk.Onlemler := TcxMemo(FindComponent('Onlemler')).Text;
               datalar.Risk.Olasilik := TcxImageComboKadir(FindComponent('Olasilik')).EditValue;
-              if datalar.Risk.Method = 1 then datalar.Risk.Frekans := TcxImageComboKadir(FindComponent('Frekans')).EditValue;
+              if (datalar.Risk.Method = 1) or (datalar.Risk.Method = 3)
+              then datalar.Risk.Frekans := TcxImageComboKadir(FindComponent('Frekans')).EditValue;
+
               datalar.Risk.Siddet := TcxImageComboKadir(FindComponent('Siddet')).EditValue;
               datalar.Risk.Risk := TcxCurrencyEdit(FindComponent('Risk')).EditValue;
 
@@ -394,7 +396,8 @@ riskDuzenle,yeniRisk :
               datalar.Risk.Termin := TcxTextEditKadir(FindComponent('Termin')).Text;
               datalar.Risk.Gerceklesme := TcxTextEditKadir(FindComponent('Gercek')).Text;
               datalar.Risk.Olasilik_2 := TcxImageComboKadir(FindComponent('Olasilik_2')).EditValue;
-              if datalar.Risk.Method = 1 then datalar.Risk.Frekans_2 := TcxImageComboKadir(FindComponent('Frekans_2')).EditValue;
+              if (datalar.Risk.Method = 1) or (datalar.Risk.Method = 3)
+              then datalar.Risk.Frekans_2 := TcxImageComboKadir(FindComponent('Frekans_2')).EditValue;
               datalar.Risk.Siddet_2 := TcxImageComboKadir(FindComponent('Siddet_2')).EditValue;
               datalar.Risk.Risk_2 := TcxCurrencyEdit(FindComponent('Risk_2')).EditValue;
               datalar.Risk.RDS_2 := Null;
@@ -955,7 +958,7 @@ ptPersonelTetkikleri :
 
                     ICombo := TcxImageComboKadir.Create(self);
                     ICombo.Name := 'RiskBolum';
-                    ICombo.Tag := -100;
+                    ICombo.Tag := -1;
                     ICombo.Conn := datalar.ADOConnection2;
                     ICombo.TableName := 'RDS_RiskBolum';
                     ICombo.ValueField := 'Kod';
@@ -968,21 +971,31 @@ ptPersonelTetkikleri :
 
                     ICombo := TcxImageComboKadir.Create(self);
                     ICombo.Name := 'TehlikeKaynak';
-                    ICombo.Tag := -100;
+                    ICombo.Tag := -1;
                     ICombo.Properties.DropDownRows := 20;
                     ICombo.Conn := datalar.ADOConnection2;
 
-                    if datalar.Risk.SektorId = ''
-                    then
-                     ICombo.TableName := 'RDS_TehlikeKaynak'
-                    else
-                    ICombo.TableName := '(select * from RDS_RiskKaynakSektorEslesmeTablosu ES ' +
-                                        ' join RDS_TehlikeKaynak TK on TK.kod = ES.TehlikeKaynagi ' +
-                                        ' where sektorid = ' + datalar.Risk.SektorId+ ') T ';
+                    case datalar.Risk.Method of
+                     1,2 : begin
+                              if datalar.Risk.SektorId = ''
+                              then
+                               ICombo.TableName := 'RDS_TehlikeKaynak'
+                              else
+                              ICombo.TableName := '(select * from RDS_RiskKaynakSektorEslesmeTablosu ES ' +
+                                                  ' join RDS_TehlikeKaynak TK on TK.kod = ES.TehlikeKaynagi ' +
+                                                  ' where sektorid = ' + datalar.Risk.SektorId+ ') T ';
 
-                    ICombo.ValueField := 'Kod';
-                    ICombo.DisplayField := 'tanimi';
-                    ICombo.Filter := '';
+                              ICombo.ValueField := 'Kod';
+                              ICombo.DisplayField := 'tanimi';
+                              ICombo.Filter := ' Method is null';
+                     end;
+                        3 : begin
+                              ICombo.TableName := 'RDS_TehlikeKaynak';
+                              ICombo.ValueField := 'Kod';
+                              ICombo.DisplayField := 'tanimi';
+                              ICombo.Filter := ' Method = ' + vartostr(datalar.Risk.Method);
+                            end;
+                    end;
 
 
                     setDataStringKontrol(self,ICombo,'TehlikeKaynak','Tehlike Kaynaðý',Kolon1,'TK',250);
@@ -1029,13 +1042,13 @@ ptPersonelTetkikleri :
                     ICombo.TableName := 'RDS_OLASILIK';
                     ICombo.ValueField := 'degeri';
                     ICombo.DisplayField := 'tanimi';
-                    ICombo.Filter := 'Metod = ' + vartostr(datalar.Risk.Method);
+                    ICombo.Filter := ' Metod = ' + vartostr(datalar.Risk.Method);
 
                     setDataStringKontrol(self,ICombo,'Olasilik','Olasýlýk',Kolon1,'',250);
                     TcxImageComboKadir(FindComponent('Olasilik')).Properties.OnEditValueChanged := PropertiesEditValueChanged;
 
-                    if datalar.Risk.Method = 1  // FineKenny
-                    then begin
+                  //  if datalar.Risk.Method = 1  // FineKenny
+                //    then begin
                      ICombo := TcxImageComboKadir.Create(self);
                      ICombo.Name := 'Frekans';
                      ICombo.Tag := -100;
@@ -1043,10 +1056,16 @@ ptPersonelTetkikleri :
                      ICombo.TableName := 'RDS_Frekans';
                      ICombo.ValueField := 'degeri';
                      ICombo.DisplayField := 'tanimi';
-                     ICombo.Filter := '';
-                     setDataStringKontrol(self,ICombo,'Frekans','Frekans',Kolon1,'',250);
+                     ICombo.Filter := ' Method = ' + vartostr(datalar.Risk.Method);
+
+                     case datalar.Risk.Method of
+                       3 : setDataStringKontrol(self,ICombo,'Frekans','Saptanabilirlik',Kolon1,'',250);
+                       1 : setDataStringKontrol(self,ICombo,'Frekans','Frekans',Kolon1,'',250);
+                     end;
+
+
                      TcxImageComboKadir(FindComponent('Frekans')).Properties.OnEditValueChanged := PropertiesEditValueChanged;
-                    end;
+                 //   end;
 
                     ICombo := TcxImageComboKadir.Create(self);
                     ICombo.Name := 'Siddet';
@@ -1062,7 +1081,9 @@ ptPersonelTetkikleri :
                     setDataStringCurr(self,'Risk','Risk',Kolon1,'',80);
 
                     TcxImageComboKadir(FindComponent('Olasilik')).EditValue := datalar.Risk.Olasilik;
-                    if datalar.Risk.Method = 1 then TcxImageComboKadir(FindComponent('Frekans')).EditValue := datalar.Risk.Frekans;
+                    case datalar.Risk.Method of
+                     1,3 :  TcxImageComboKadir(FindComponent('Frekans')).EditValue := datalar.Risk.Frekans;
+                    end;
                     TcxImageComboKadir(FindComponent('Siddet')).EditValue := datalar.Risk.Siddet;
 
 
@@ -1089,14 +1110,17 @@ ptPersonelTetkikleri :
                     TcxImageComboKadir(FindComponent('Olasilik_2')).Tag := -2;
                     TcxImageComboKadir(FindComponent('Olasilik_2')).Properties.OnEditValueChanged := PropertiesEditValueChanged;
 
-                    if datalar.Risk.Method = 1
+                    if (datalar.Risk.Method = 1) or (datalar.Risk.Method = 3)
                     then begin
                       ICombo := TcxImageComboKadir.Create(self);
                       ICombo.Name := 'Frekans_2';
                       ICombo.Tag := -2;
                       TcxImageComboKadir(FindComponent('Frekans_2')).Properties.Items :=
                       TcxImageComboKadir(FindComponent('Frekans')).Properties.Items;
-                      setDataStringKontrol(self,ICombo,'Frekans_2','Frekans',Kolon1,'',250);
+                      case datalar.Risk.Method of
+                        3 : setDataStringKontrol(self,ICombo,'Frekans_2','Saptanabilirlik',Kolon1,'',250);
+                        1 : setDataStringKontrol(self,ICombo,'Frekans_2','Frekans',Kolon1,'',250);
+                      end;
                       TcxImageComboKadir(FindComponent('Frekans_2')).Tag := -2;
                       TcxImageComboKadir(FindComponent('Frekans_2')).Properties.OnEditValueChanged := PropertiesEditValueChanged;
                     end;
@@ -1113,7 +1137,8 @@ ptPersonelTetkikleri :
                     setDataStringCurr(self,'Risk_2','Risk',Kolon1,'',80);
 
                     TcxImageComboKadir(FindComponent('Olasilik_2')).EditValue := datalar.Risk.Olasilik_2;
-                    if datalar.Risk.Method = 1 Then TcxImageComboKadir(FindComponent('Frekans_2')).EditValue := datalar.Risk.Frekans_2;
+                    if (datalar.Risk.Method = 1) or (datalar.Risk.Method = 3)
+                    Then TcxImageComboKadir(FindComponent('Frekans_2')).EditValue := datalar.Risk.Frekans_2;
                     TcxImageComboKadir(FindComponent('Siddet_2')).EditValue := datalar.Risk.Siddet_2;
 
                     setDataStringMemo(self,'yasalDayanak','Yasal Dayanak',Kolon1,'',250,80);
@@ -1472,7 +1497,7 @@ begin
   if TcxImageComboKadir(sender).Tag = -2
   Then begin
    case  datalar.Risk.Method of
-     1 : TcxCurrencyEdit(FindComponent('Risk_2')).EditValue :=
+     1,3 : TcxCurrencyEdit(FindComponent('Risk_2')).EditValue :=
           TcxImageComboKadir(FindComponent('Olasilik_2')).EditValue *
           TcxImageComboKadir(FindComponent('Frekans_2')).EditValue*
           TcxImageComboKadir(FindComponent('Siddet_2')).EditValue;
@@ -1484,7 +1509,7 @@ begin
   else if TcxImageComboKadir(sender).Tag = -100
   then begin
    case  datalar.Risk.Method of
-     1 : TcxCurrencyEdit(FindComponent('Risk')).EditValue :=
+     1,3 : TcxCurrencyEdit(FindComponent('Risk')).EditValue :=
           TcxImageComboKadir(FindComponent('Olasilik')).EditValue *
           TcxImageComboKadir(FindComponent('Frekans')).EditValue*
           TcxImageComboKadir(FindComponent('Siddet')).EditValue;

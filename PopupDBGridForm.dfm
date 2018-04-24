@@ -116,7 +116,7 @@ object frmPopupDBGridForm: TfrmPopupDBGridForm
         FilterRow.SeparatorWidth = 2
         FilterRow.ApplyChanges = fracImmediately
         NewItemRow.InfoText = 'Yeni Sat'#305'r Ekle'
-        NewItemRow.SeparatorColor = 16744448
+        NewItemRow.SeparatorColor = clYellow
         NewItemRow.Visible = True
         OptionsBehavior.AlwaysShowEditor = True
         OptionsBehavior.FocusCellOnTab = True
@@ -127,10 +127,11 @@ object frmPopupDBGridForm: TfrmPopupDBGridForm
         OptionsData.DeletingConfirmation = False
         OptionsView.NoDataToDisplayInfoText = 'Kay'#305't Yok'
         OptionsView.CellAutoHeight = True
-        OptionsView.ColumnAutoWidth = True
+        OptionsView.DataRowHeight = 25
         OptionsView.GroupByBox = False
         OptionsView.Indicator = True
         OptionsView.RowSeparatorColor = clBlack
+        Styles.NewItemRowInfoText = cxStyle1
       end
       object cxGridDBBandedTableView5: TcxGridDBBandedTableView
         DataController.DataModeController.DetailInSQLMode = True
@@ -329,6 +330,7 @@ object frmPopupDBGridForm: TfrmPopupDBGridForm
       Top = 15
       Align = alTop
       Properties.ClearKey = 46
+      Properties.DropDownRows = 20
       Properties.Items = <>
       Properties.OnChange = txtTablePropertiesChange
       TabOrder = 1
@@ -377,5 +379,17 @@ object frmPopupDBGridForm: TfrmPopupDBGridForm
     GrupCol = 2
     Left = 232
     Top = 93
+  end
+  object cxStyleRepository1: TcxStyleRepository
+    PixelsPerInch = 96
+    object cxStyle1: TcxStyle
+      AssignedValues = [svColor, svFont]
+      Color = clYellow
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -16
+      Font.Name = 'Tahoma'
+      Font.Style = [fsBold]
+    end
   end
 end
