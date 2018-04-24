@@ -235,10 +235,10 @@ begin
           begin
             txtOsgbKodu.EditingText := Copy (sTmp, 1, pos (#9, sTmp) - 1);
             Edit2.EditingText := Copy (sTmp, pos (#9, sTmp) + 1, Length (sTmp));
-            btnBaglanClick(btnBaglan);
-            bOtomatikGiris := True;
             aSL1.Delete (0);
             Clipboard.AsText := aSL1.Text;
+            btnBaglanClick(btnBaglan);
+            bOtomatikGiris := True;
             if not IsNull (aSL1.Text) then
               WinExec(PAnsiChar (AnsiString (ParamStr (0) + ' /L:'+IntToStr (Left) + '/T:'+IntToStr (Top))),SW_SHOW);
             Left := aSL1.Count * 3;
