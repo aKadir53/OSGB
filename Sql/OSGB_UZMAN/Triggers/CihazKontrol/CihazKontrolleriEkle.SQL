@@ -13,15 +13,15 @@ if not exists(select * from CihazKontrolDetay where kontrolid = @kontrolid)
 begin 
     set nocount on
 	
-	insert into CihazKontrolDetay(kontrolid,CihazBilgisiOzellik,tip)
-	select @kontrolid,Ozellik,'CB' from CihazTurleri CT
-	join Cihaz C on C.kod = CT.kod
-	join CihazDetay CD on CD.cihazKod = CT.kod
-	where C.kod = @cihazKod
+	--insert into CihazKontrolDetay(kontrolid,CihazBilgisiOzellik,tip)
+	--select @kontrolid,Ozellik,'CB' from CihazTurleri CT
+	--join Cihaz C on C.kod = CT.kod
+	--join CihazDetay CD on CD.cihazKod = CT.kod
+	--where C.kod = @cihazKod
 	
 
-	insert into CihazKontrolDetay(kontrolid,KontrolSoru,tip)
-	select @kontrolid,CKS.Soru,'CKS' from Cihaz C
+	insert into CihazKontrolDetay(kontrolid,Soruid,KontrolSoru)
+	select @kontrolid,CKS.id,CKS.Soru from Cihaz C
 	join CihazTurleri CT on C.cihazturKod = CT.kod
 	join CihazKontrolSorulari CKS on CKS.cihazTurKod = CT.kod
 	where C.Kod = @cihazKod

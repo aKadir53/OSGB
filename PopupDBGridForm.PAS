@@ -53,6 +53,8 @@ type
     H1: TMenuItem;
     txtTable: TcxImageComboKadir;
     ListeNaceKods: TListeAc;
+    cxStyleRepository1: TcxStyleRepository;
+    cxStyle1: TcxStyle;
     procedure FormCreate(Sender: TObject);
     procedure txtMsgEnter(Sender: TObject);
     procedure FormShow(Sender: TObject);
@@ -203,6 +205,23 @@ begin
       Result := True;
     end;
 
+  TagfrmEkipmanTuru  :
+                 begin
+                   cxPanel.Visible := false;
+                   indexFieldName := ' Kod is not null';
+                   txtTable.EditValue := 27;
+                   txtTable.Enabled := False;
+                   Result := True;
+                 end;
+  TagfrmEkipmanTuruOzellik  :
+                 begin
+                   cxPanel.Visible := false;
+                   indexFieldName := ' Kod is not null';
+                   txtTable.EditValue := 29;
+                   txtTable.Enabled := False;
+                   Result := True;
+                 end;
+
     TagfrmSube :
     begin
         ClientHeight := 300;
@@ -305,7 +324,7 @@ end;
 
 procedure TfrmPopupDBGridForm.SetGrid;
 var
- i : integer;
+ i,colswidth : integer;
  Columns,Baslik,Tips,Edits,IC_Params,IC_Param : TstringList;
  FItem : TcxImageComboBoxItem;
  ado : TADOQuery;
@@ -345,10 +364,14 @@ begin
               DBgrid.Columns[i].PropertiesClassName := 'TcxCurrencyEditProperties';
               DBgrid.Columns[i].Properties.Alignment.Horz := taRightJustify;
               TcxCurrencyEditProperties(DBgrid.Columns[i].Properties).DisplayFormat := '#,###.##';
+             // DBgrid.Columns[i].Width := DBgrid.Columns[i].BestFitMaxWidth;
              end;
             if SameText (Tips[i], 'string') then
              begin
               DBgrid.Columns[i].PropertiesClassName := 'TcxTextEditProperties';
+              TcxTextEditProperties(DBgrid.Columns[i].Properties).Alignment.Vert := taVCenter;
+           //   TcxTextEditProperties(DBgrid.Columns[i].Properties).Alignment.Horz := taCenter;
+            //  DBgrid.Columns[i].Width := DBgrid.Columns[i].BestFitMaxWidth;
              end;
 
             if SameText (Tips[i], 'Check') then
@@ -380,10 +403,12 @@ begin
             if SameText (Tips[i], 'IC')
             then begin
                 DBgrid.Columns[i].PropertiesClassName := 'TcxImageComboBoxProperties';
+                TcxImageComboBoxProperties(DBgrid.Columns[i].Properties).Alignment.Vert := taVCenter;
                 TcxImageComboBoxProperties(DBgrid.Columns[i].Properties).Items.Clear;
                 DBgrid.Columns[i].Properties.Alignment.Horz := taLeftJustify;
                 DBgrid.Columns[i].Properties.OnEditValueChanged := PropertiesEditValueChanged;
                 TcxImageComboBoxProperties(DBgrid.Columns[i].Properties).ClearKey := VK_DELETE;
+
                 ado := TADOQuery.Create(nil);
                 ado.Connection := datalar.ADOConnection2;
                 try
@@ -495,6 +520,15 @@ begin
   finally
     Columns.Free;
   end;
+  DBgrid.ApplyBestFit;
+  colswidth := 0;
+  for i := 0 to DBgrid.ColumnCount - 1 do
+  begin
+    colswidth := colswidth + DBgrid.Columns[i].Width;
+  end;
+  if colswidth > 170 then ClientWidth := colswidth + 40 else ClientWidth := 170;
+
+
 end;
 
 procedure TfrmPopupDBGridForm.Yukle;
@@ -550,35 +584,36 @@ begin
     _fieldTips_ := ado.FieldByName('_fieldTips_').AsString;
     _ICParams_ :=  ado.FieldByName('IC_Params').AsString;
 
-    if txtTable.Text = 'Cihazlar'
+  (*
+    if txtTable.Text = 'Ýþ Ekipmaný Tanýmla'
     then begin
        TableName := '(select C.* from Cihaz C ' +
                  //  ' join CihazDetay CD on C.kod = CD.cihazKod ' +
-                   ' where C.sirketkod = ' + QuotedStr(vartostr(TcxImageComboKadir(AnaForm.Sirketler).EditingValue)) + ') Cihaz';
+                   ' where C.sirketKod is null or C.sirketkod = ' + QuotedStr(vartostr(TcxImageComboKadir(AnaForm.Sirketler).EditingValue)) + ') Cihaz';
     end
     else
-    if txtTable.Text = 'Cihaz Detaylarý'
+    if txtTable.Text = 'Ýþ Ekipmaný Özellik Bilgisi Gir'
     then begin
        TableName := '(select CD.* from Cihaz C ' +
                     ' join CihazDetay CD on C.kod = CD.cihazKod ' +
-                    ' where C.sirketkod = ' + QuotedStr(vartostr(TcxImageComboKadir(AnaForm.Sirketler).EditingValue)) + ') Cihaz';
+                    ' where C.sirketkod is null or C.sirketkod = ' + QuotedStr(vartostr(TcxImageComboKadir(AnaForm.Sirketler).EditingValue)) + ') Cihaz';
     end;
-
+    *)
 
     Yukle;
-
-    if txtTable.Text = 'Cihazlar'
+  (*
+    if txtTable.Text = 'Ýþ Ekipmaný Tanýmla'
     then begin
        TcxImageComboBoxProperties(DbGrid.Columns[3].Properties).Items :=
        TcxImageComboBoxProperties(TcxImageComboKadir(AnaForm.Sirketler).Properties).Items;
     end
     else
-    if txtTable.Text = 'Cihaz Detaylarý'
+    if txtTable.Text = 'Ýþ Ekipmaný Özellik Bilgisi Gir'
     then begin
       DbGrid.Columns[0].Options.Editing := False;
       DbGrid.Columns[1].Options.Editing := False;
     end;
-
+              *)
   finally
     ado.Free;
   end;
