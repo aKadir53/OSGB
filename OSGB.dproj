@@ -251,6 +251,12 @@
 			<DCCReference Include="Cekler.pas">
 				<Form>frmCekler</Form>
 			</DCCReference>
+			<DCCReference Include="FirmaKontrol.pas">
+				<Form>frmFirmaKontrol</Form>
+			</DCCReference>
+			<DCCReference Include="FirmaEkipmanList.pas">
+				<Form>frmFirmaEkipmanList</Form>
+			</DCCReference>
 			<DCCReference Include="KasaBanka.pas">
 				<Form>frmKasaBanka</Form>
 			</DCCReference>

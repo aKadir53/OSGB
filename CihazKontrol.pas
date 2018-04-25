@@ -1,7 +1,7 @@
 unit CihazKontrol;
 
 interface
-incele
+
 uses
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
   Dialogs, cxGraphics, cxControls, cxLookAndFeels, cxLookAndFeelPainters,
@@ -111,14 +111,11 @@ type
       ACanvas: TcxCanvas; AViewInfo: TcxGridTableCellViewInfo;
       var ADone: Boolean);
     procedure SirketlerPropertiesChange(Sender: TObject);
-    procedure cxKaydetClick(Sender: TObject);
+    procedure cxKaydetClick(Sender: TObject);override;
     procedure ButtonClick(Sender: TObject);
 
   private
     { Private declarations }
-    FImages : array of TcxImage;
-    FImageIds : array of Integer;
-
   protected
     procedure GozlemYazdir (const GozlemID : integer);
     procedure AdjustMasterControls;
@@ -239,9 +236,6 @@ begin
 end;
 
 procedure TfrmCihazKontrol.cxButtonCClick(Sender: TObject);
-var
-  GirisRecord : TGirisFormRecord;
-  aModalResult : TModalResult;
 begin
   inherited;
 
@@ -272,9 +266,6 @@ end;
 
 
 procedure TfrmCihazKontrol.SirketlerPropertiesChange(Sender: TObject);
-var
-  sql , value : string;
-  dataset : Tdataset;
 begin
   cxPanelButtonEnabled(false,True,false);
   if TcxImageComboKadir(Sender).Name = 'SirketKod'
@@ -322,7 +313,6 @@ var
   Kontroler : TListeAc;
   sirketlerx : TcxImageComboKadir;
   where : string;
-  r : integer;
 begin
   cxPanel.Visible := True;
 
@@ -399,8 +389,6 @@ end;
 
 
 procedure TfrmCihazKontrol.cxKaydetClick(Sender: TObject);
-var
-  sql , id : string;
 begin
 
   inherited;
