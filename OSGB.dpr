@@ -65,6 +65,8 @@ uses
   Faturalar in 'Faturalar.pas' {frmFaturalar},
   Tedarikci in 'Tedarikci.pas' {frmTedarikci},
   Cekler in 'Cekler.pas' {frmCekler},
+  FirmaKontrol in 'FirmaKontrol.pas' {frmFirmaKontrol},
+  FirmaEkipmanList in 'FirmaEkipmanList.pas' {frmFirmaEkipmanList},
   KasaBanka in 'KasaBanka.pas' {frmKasaBanka},
   RDS in 'RDS.pas' {frmRDS},
   sirketISGKurulToplanti in 'sirketISGKurulToplanti.pas' {frmISGKurulToplanti},
@@ -83,7 +85,7 @@ uses
 // KadirMedula3 in '..\..\medula3wsdl\KadirMedula3.pas';
 
 const
-  AppalicationVer : integer = 1061;
+  AppalicationVer : integer = 1062;
   // Versiyon info kontrol etmeyi unutma
 
 {$R *.res}

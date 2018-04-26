@@ -15,6 +15,9 @@ select CAST (1 as int) x, xtype, Returns, OwnerName, name, OwnerID, AllText, cas
       when 'P' then 'Sql\' + case when DB_Name () = 'ERP_DB' then 'Erp' else DB_NAME () end + '\Stored Procedures'
       when 'V' then 'Sql\' + case when DB_Name () = 'ERP_DB' then 'Erp' else DB_NAME () end + '\views'
       when 'TR' then 'Sql\' + case when DB_Name () = 'ERP_DB' then 'Erp' else DB_NAME () end + '\Triggers\'+ParentObjName
+      when 'C ' then 'Sql\' + case when DB_Name () = 'ERP_DB' then 'Erp' else DB_NAME () end + '\Constraints\'+ParentObjName+'\Check'
+      when 'D ' then 'Sql\' + case when DB_Name () = 'ERP_DB' then 'Erp' else DB_NAME () end + '\Constraints\'+ParentObjName+'\Default'
+      when 'F ' then 'Sql\' + case when DB_Name () = 'ERP_DB' then 'Erp' else DB_NAME () end + '\Constraints\'+ParentObjName+'\ForeignKey'
       else null 
     end as varchar (2000)) Folder,
   case when not w.Sayi is null and xx.OwnerName <> 'dbo' then xx.OwnerName else null end as FileNameOwner
@@ -36,6 +39,9 @@ select CAST (-1 as int) x, xx.xtype, Returns, OwnerName, xx.name, OwnerID, AllTe
       when 'P' then 'Sql\' + case when DB_Name () = 'ERP_DB' then 'Erp' else DB_NAME () end + '\Stored Procedures'
       when 'V' then 'Sql\' + case when DB_Name () = 'ERP_DB' then 'Erp' else DB_NAME () end + '\views'
       when 'TR' then 'Sql\' + case when DB_Name () = 'ERP_DB' then 'Erp' else DB_NAME () end + '\Triggers\'+ParentObjName
+      when 'C ' then 'Sql\' + case when DB_Name () = 'ERP_DB' then 'Erp' else DB_NAME () end + '\Constraints\'+ParentObjName+'\Check'
+      when 'D ' then 'Sql\' + case when DB_Name () = 'ERP_DB' then 'Erp' else DB_NAME () end + '\Constraints\'+ParentObjName+'\Default'
+      when 'F ' then 'Sql\' + case when DB_Name () = 'ERP_DB' then 'Erp' else DB_NAME () end + '\Constraints\'+ParentObjName+'\ForeignKey'
       else null 
     end as varchar (2000)) Folder,
   case when not w.Sayi is null and xx.OwnerName <> 'dbo' then xx.OwnerName else null end as FileNameOwner
