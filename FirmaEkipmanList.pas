@@ -113,14 +113,12 @@ type
       ACanvas: TcxCanvas; AViewInfo: TcxGridTableCellViewInfo;
       var ADone: Boolean);
     procedure SirketlerPropertiesChange(Sender: TObject);
-    procedure cxKaydetClick(Sender: TObject);
+    procedure cxKaydetClick(Sender: TObject);override;
     procedure NewRecord(DataSet: TDataSet);
     procedure AfterScroll(DataSet: TDataSet);
 
   private
     { Private declarations }
-    FImages : array of TcxImage;
-    FImageIds : array of Integer;
 
   protected
     procedure GozlemYazdir (const GozlemID : integer);
@@ -190,7 +188,6 @@ end;
 procedure TfrmFirmaEkipmanList.cxButtonCClick(Sender: TObject);
 var
   GirisRecord : TGirisFormRecord;
-  aModalResult : TModalResult;
   F : TGirisForm;
 begin
   inherited;
@@ -209,20 +206,13 @@ end;
 
 
 procedure TfrmFirmaEkipmanList.SirketlerPropertiesChange(Sender: TObject);
-var
-  sql , value : string;
-  dataset : Tdataset;
 begin
  //
 end;
 
 procedure TfrmFirmaEkipmanList.FormCreate(Sender: TObject);
 var
-  FaturaTarihi : TcxDateEditKadir;
-  Kontroler : TListeAc;
   sirketlerx : TcxImageComboKadir;
-  where : string;
-  r : integer;
 begin
   ClientWidth := 860;
   ClientHeight := 600;
@@ -275,8 +265,6 @@ end;
 
 
 procedure TfrmFirmaEkipmanList.cxKaydetClick(Sender: TObject);
-var
-  sql , id : string;
 begin
 
   inherited;
