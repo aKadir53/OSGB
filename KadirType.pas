@@ -753,6 +753,7 @@ Const
   denetimDuzenle = 53;
   RDP_FineKenny = '10';
   RDP_Matris = '11';
+  RDP_Fmea = '12';
   RDSonuc_FineKenny = '20';
   RDSonuc_Matris = '21';
   RDEkipTutanagi = '30';

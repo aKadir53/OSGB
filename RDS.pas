@@ -178,6 +178,9 @@ begin
 
  if TcxImageComboKadir(Sender).Name = 'subeKod'
  Then Begin
+
+   TcxImageComboKadir(FindComponent('IGU')).Filter := '';
+
    sql :=
       ' select I.kod IGUKod,I.tanimi IGUAdi,D.kod DoktorKod,D.tanimi DoktorAdi from SIRKETLER_TNM S ' +
       ' join SIRKET_SUBE_TNM SB on SB.sirketKod = S.sirketKod ' +
@@ -271,13 +274,13 @@ begin
   inherited;
 
   case TControl(sender).Tag  of
-    0 : begin
+Kaydet : begin
           RDSGrid.Enabled := True;
           PopupMenuEnabled(Self,PopupMenu1,True);
           ToolBar1.Enabled := True;
           //PopupMenuToToolBarEnabled(Self,ToolBar1,PopupMenu1);
         end;
-    2 : begin
+ Yeni : begin
           TcxDateEditKadir(FindComponent('date_create')).EditValue := date;
           if datalar.IGU <> '' then
            TcxTextEditKadir(FindComponent('hazirlayan')).EditValue := datalar.IGU;
@@ -853,7 +856,15 @@ begin
            if F <> nil then F.ShowModal;
          end;
    -26 : begin
-             Method := ifThen(vartostr(TcxImageComboKadir(FindComponent('Method')).EditingValue) = '1',RDP_FineKenny,RDP_Matris);
+
+             case TcxImageComboKadir(FindComponent('Method')).EditingValue of
+              1 : Method := RDP_FineKenny;
+              2 : Method := RDP_Matris;
+              3 : Method := RDP_Fmea;
+             end;
+            // Method := ifThen(vartostr(TcxImageComboKadir(FindComponent('Method')).EditingValue) = '1',RDP_FineKenny,RDP_Matris);
+
+
              Dataset := datalar.QuerySelect('sp_RDS ' + TcxButtonEditKadir(FindComponent('id')).EditText + ',' +
                                             vartostr(TcxImageComboKadir(FindComponent('Method')).EditingValue));
              DokumanAc(RTFSablonDataset(Method),'RTFFile',
@@ -901,7 +912,11 @@ begin
          end;
 
    -28 : begin
-             Method := ifThen(vartostr(TcxImageComboKadir(FindComponent('Method')).EditingValue) = '1',RDSonuc_FineKenny,RDSonuc_Matris);
+             case TcxImageComboKadir(FindComponent('Method')).EditingValue of
+              1 : Method := RDP_FineKenny;
+              2 : Method := RDP_Matris;
+              3 : Method := RDP_Fmea;
+             end;
              Dataset := datalar.QuerySelect('sp_RDS ' + TcxButtonEditKadir(FindComponent('id')).EditText + ',' +
                                             vartostr(TcxImageComboKadir(FindComponent('Method')).EditingValue));
              DokumanAc(RTFSablonDataset(RDEkipTutanagi),'RTFFile','EkipTutanagi.rtf',False);
@@ -1068,6 +1083,7 @@ begin
   Method.ValueField := 'kod';
   Method.DisplayField := 'Tanimi';
   Method.BosOlamaz := False;
+  Method.Enabled := False;
   Method.Filter := '';
   setDataStringKontrol(self,Method,'hazirlayan','Ýþ Güvenlik Uzm',Kolon1,'',120,0,alNone,'');
 
@@ -1081,6 +1097,7 @@ begin
   Method.DisplayField := 'Tanimi';
   Method.BosOlamaz := False;
   Method.Filter := '';
+  Method.Enabled := False;
   setDataStringKontrol(self,Method,'hazirlayanDoktor','Ýþyeri Hekimi',Kolon1,'',120,0,alNone,'');
 
 //  setDataString(self,'hazirlayanDoktor','Ýþyeri Hekimi ',Kolon1,'hz',120,false,'',True);
