@@ -118,11 +118,11 @@ begin
 
        TcxImageComboBoxProperties(DBGrid.Columns[8].Properties).Items :=
          TcxImageComboBoxProperties(TcxImageComboKadir(FindComponent('subeler')).Properties).Items;
-       subeler.Free;þ where ile bak
+       subeler.Free;
     end
     else begin
      DBgrid.GetColumnByFieldName('ISGEkipGorevID').EditValue := null;
-     DBGrid.DataController.DataSet.Post; þ where ile bak
+     DBGrid.DataController.DataSet.Post;
     end;
   end;
 
