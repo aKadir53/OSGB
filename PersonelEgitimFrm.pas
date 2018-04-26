@@ -132,6 +132,24 @@ begin
   else
   if TcxButtonKadir (Sender).ButtonName = 'btnEgitimciEkle' then
   begin
+    if IsNull (vartostr(TcxTextEditKadir(FindComponent('EgitimciTc')).EditingValue)) then
+    begin
+      ShowMessageSkin('TC Kimlik No Boþ Olamaz','Lütfen Kontrol Ediniz','','info');
+      TcxCustomEdit(FindComponent('EgitimciTc')).SetFocus;
+      Exit;
+    end;
+    if IsNull (vartostr(TcxTextEditKadir(FindComponent('egitimciAdiSoyadi')).EditingValue)) then
+    begin
+      ShowMessageSkin('Ad / Soyad bilgisi boþ olamaz','Lütfen Kontrol Ediniz','','info');
+      TcxCustomEdit(FindComponent('egitimciAdiSoyadi')).SetFocus;
+      exit;
+    end;
+    if not TCKontrol(vartoStr(TcxTextEditKadir(FindComponent('EgitimciTc')).EditingValue)) Then
+    begin
+      ShowMessageSkin('TC Kimlik No Hatalý','Lütfen Kontrol Ediniz','','info');
+      TcxCustomEdit(FindComponent('EgitimciTc')).SetFocus;
+      exit;
+    end;
       Egitimci.Dataset.Append;
       try
         Egitimci.Dataset.FieldByName('egitimciUnvan').AsString := vartostr(TcxTextEditKadir(FindComponent('EgitimciUnvan')).EditingValue);
@@ -146,6 +164,7 @@ begin
         Egitimci.Dataset.FieldByName('Egitimid').AsString := TcxButtonEditKadir (FindComponent('id')).Text;
         Egitimci.Dataset.FieldByName('egitimciTuru').AsString := '2';
         Egitimci.Dataset.Post;
+        ShowMessageSkin('Eðitimci listeye eklendi. Ayný eðitimciyi artýk listeden seçebilirsiniz.', '', '', 'info');
      except
         Egitimci.Dataset.Cancel;
         raise;
@@ -584,7 +603,6 @@ end;
 function TfrmPersonelEgitim.Init(Sender: TObject): Boolean;
 begin
   result := inherited;
-  result := True;
 end;
 
 procedure TfrmPersonelEgitim.ResetDetayDataset;
