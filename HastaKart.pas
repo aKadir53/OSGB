@@ -405,6 +405,13 @@ begin
      exit;
    end;
 
+   if DATALAR.UserGroup <> '2' then
+   begin
+     ShowMessageSkin('Bu Ýþlem Sadece Doktor Kullanýcý Tarafýndan Yapýlabilir','','','info');
+     exit;
+   end;
+
+
    ado := TADOQuery.Create(nil);
    try
      ado.Connection := datalar.ADOConnection2;
@@ -1286,7 +1293,7 @@ begin
 
   risk := TcxImageComboKadir.Create(self);
   risk.Conn := nil;
-  risk.ItemList := '1;Birinci Derece,2;Ýkinci Derece,3;Üçüncü Derece';
+  risk.ItemList := '1;Az Tehlikeli,2;Tehlikeli,3;Çok Tehlikeli';
   risk.Filter := '';
   risk.BosOlamaz := True;
   setDataStringKontrol(self,risk,'risk','Risk Grubu',kolon3,'',100);

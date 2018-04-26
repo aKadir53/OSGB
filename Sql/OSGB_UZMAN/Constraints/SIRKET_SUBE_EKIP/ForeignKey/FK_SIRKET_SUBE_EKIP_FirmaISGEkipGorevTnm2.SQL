@@ -1,0 +1,8 @@
+BEGIN TRAN
+GO
+ALTER TABLE [dbo].[SIRKET_SUBE_EKIP] ADD CONSTRAINT [FK_SIRKET_SUBE_EKIP_FirmaISGEkipGorevTnm2] FOREIGN KEY ([ISGEkipId],[ISGEkipGorevID]) REFERENCES [dbo].[FirmaISGEkipGorevTnm]([ISGEkipId],[kod])
+GO
+exec sp_vw_sys_upd 'F ', 'dbo', 'FK_SIRKET_SUBE_EKIP_FirmaISGEkipGorevTnm2'
+GO
+COMMIT
+GO
