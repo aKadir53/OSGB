@@ -46,7 +46,7 @@ uses message,Data_Modul,AnaUnit,message_y,popupForm,rapor,TedaviKart,Son6AylikTe
              MedulaKurumSifreDegis,labParametreleri,SirketSozlesme,FirmaEkipmanList,
              Tnm_Doktor,LabTestAyarlari,SahaSaglikGozetim, CariHesapBorcAlacakToplam,
              PopupDBGridForm,PopupDBVerticalGridForm,AjandaOzet,sirketISGKurulToplanti,
-             Tnm_Ilaclar, PersonelEgitimFrm, About_Frm, MerkezBilgisi,
+             Tnm_Ilaclar, PersonelEgitimFrm, About_Frm, MerkezBilgisi,sirketYillikCalismaPlan,
   HizmetKart, CihazKontrol;
 
 
@@ -246,6 +246,7 @@ begin
    TagfrmISGKurulToplanti : Result := TfrmISGKurulToplanti;
    TagfrmRTFSablon : Result := TfrmRTFSablon;
    TagfrmSirketEkipmanList : Result := TfrmFirmaEkipmanList;
+   TagfrmSirketYillikCalismaPlan : Result := TfrmSirketYillikCalismaPlan;
  //  TagfrmAjandaOzet : Result := TfrmAjandaOzet;
   end;
 end;
@@ -308,6 +309,7 @@ begin
    TagfrmISGKurulToplanti : Result := frmISGKurulToplanti;
    TagfrmRTFSablon : Result := frmRTFSablon;
    TagfrmSirketEkipmanList : Result := frmFirmaEkipmanList;
+   TagfrmSirketYillikCalismaPlan : Result := frmSirketYillikCalismaPlan;
 
    TagfrmLabParametreleri : Result := frmLabParams;
    TagfrmLabKabul : Result := frmLabaratuvarKabul;
@@ -379,6 +381,7 @@ begin
      TagfrmISGKurulToplanti : frmISGKurulToplanti := TfrmISGKurulToplanti.Create(Tab);
      TagfrmRTFSablon : frmRTFSablon := TfrmRTFSablon.Create(Tab);
      TagfrmSirketEkipmanList : frmFirmaEkipmanList := TfrmFirmaEkipmanList.Create(Tab);
+     TagfrmSirketYillikCalismaPlan : frmSirketYillikCalismaPlan  := TfrmSirketYillikCalismaPlan.Create(Tab);
   end;
   try
     if not (Form is TGirisForm) then
@@ -507,6 +510,8 @@ begin
      TagfrmISGKurulToplanti : frmISGKurulToplanti := TfrmISGKurulToplanti.Create(Tab);
      TagfrmRTFSablon : frmRTFSablon := TfrmRTFSablon.Create(Tab);
      TagfrmSirketEkipmanList : frmFirmaEkipmanList := TfrmFirmaEkipmanList.Create(Tab);
+     TagfrmSirketYillikCalismaPlan : frmSirketYillikCalismaPlan  := TfrmSirketYillikCalismaPlan.Create(Tab);
+
   end;
   try
     Form := TGirisForm(FormClassType(abs(FormTag)));
@@ -617,6 +622,7 @@ begin
     TagfrmISGKurulToplanti : Application.CreateForm(TfrmISGKurulToplanti, frmISGKurulToplanti);
     TagfrmRTFSablon : Application.CreateForm(TfrmRTFSablon, frmRTFSablon);
     TagfrmSirketEkipmanList : Application.CreateForm(TfrmFirmaEkipmanList, frmFirmaEkipmanList);
+    TagfrmSirketYillikCalismaPlan : Application.CreateForm(TfrmSirketYillikCalismaPlan , frmSirketYillikCalismaPlan);
 
   end;
   try

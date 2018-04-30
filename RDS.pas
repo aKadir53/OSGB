@@ -396,9 +396,13 @@ begin
     if datalar.UserGroup = '1'
     then
       where := ''
-     else
-  where := ' hazirlayan = ' + QuotedStr(datalar.IGU) + ' or paylasilan = ' + QuotedStr(datalar.IGU) +
-           ' or hazirlayanDoktor = ' + QuotedStr(datalar.doktorKodu) + ' or paylasilan = ' + QuotedStr(datalar.doktorKodu);
+    else
+    if datalar.UserGroup = '10'
+    then
+      where := ' sirketKod = ' + QuotedStr(datalar.sirketKodu)
+    else
+      where := ' hazirlayan = ' + QuotedStr(datalar.IGU) + ' or paylasilan = ' + QuotedStr(datalar.IGU) +
+               ' or hazirlayanDoktor = ' + QuotedStr(datalar.doktorKodu) + ' or paylasilan = ' + QuotedStr(datalar.doktorKodu);
 
     TListeAc(FindComponent('RDSList')).Where := where;
 

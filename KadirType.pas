@@ -686,6 +686,7 @@ Const
   TagfrmRTFSablon = 940;
   TagfrmSirketSahaDenetim = 950;
   TagfrmSirketEkipmanList = 960;
+  TagfrmSirketYillikCalismaPlan = 970;
 
 
   Kaydet = 0;
