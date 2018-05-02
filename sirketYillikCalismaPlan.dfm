@@ -16,10 +16,10 @@ object frmSirketYillikCalismaPlan: TfrmSirketYillikCalismaPlan
   PixelsPerInch = 96
   TextHeight = 13
   object YillikPlanGrid: TcxGridKadir
-    Left = 96
-    Top = 8
-    Width = 1070
-    Height = 417
+    Left = -72
+    Top = 24
+    Width = 1161
+    Height = 297
     TabOrder = 0
     LookAndFeel.NativeStyle = False
     ExceleGonder = False
@@ -51,388 +51,583 @@ object frmSirketYillikCalismaPlan: TfrmSirketYillikCalismaPlan
       Navigator.Buttons.SaveBookmark.Visible = False
       Navigator.Buttons.GotoBookmark.Visible = False
       Navigator.Buttons.Filter.Visible = False
-      Navigator.Visible = True
       DataController.Summary.DefaultGroupSummaryItems = <>
       DataController.Summary.FooterSummaryItems = <>
       DataController.Summary.SummaryGroups = <>
       NewItemRow.SeparatorColor = 8454143
+      NewItemRow.Visible = True
+      OptionsSelection.InvertSelect = False
       OptionsView.CellAutoHeight = True
-      OptionsView.DataRowHeight = 180
+      OptionsView.DataRowHeight = 23
       OptionsView.GroupByBox = False
+      Styles.NewItemRowInfoText = cxStyle10
       Bands = <
         item
-          Caption = 'Y'#305'll'#305'k '#199'al'#305#351'ma Plan'#305
-          FixedKind = fkLeft
-          Styles.Header = cxStyle8
-          Width = 438
-        end
-        item
           Caption = 'Planlama'
-          Styles.Background = cxStyle6
-          Width = 531
+          Styles.Header = cxStyle7
+          Width = 240
         end
         item
           Caption = 'Ger'#231'ekle'#351'me'
-          Position.BandIndex = 1
-          Position.ColIndex = 0
           Styles.Background = cxStyle11
+          Styles.Header = cxStyle9
+          Width = 240
+        end
+        item
+          Caption = 'Y'#305'll'#305'k '#199'al'#305#351'ma Plan'#305' Faaliyetleri'
+          FixedKind = fkLeft
+          Styles.Header = cxStyle8
+          Width = 340
+        end
+        item
+          Caption = 'Sorumluluk'
+        end
+        item
+          Caption = 'Sorumluluk'
         end>
       object YillikPlanSatirlarFirmaYillikCalismaPlanID: TcxGridDBBandedColumn
         DataBinding.FieldName = 'FirmaYillikCalismaPlanID'
+        Visible = False
         Width = 20
-        Position.BandIndex = 0
+        Position.BandIndex = 2
         Position.ColIndex = 0
         Position.RowIndex = 0
       end
       object YillikPlanSatirlarid: TcxGridDBBandedColumn
         DataBinding.FieldName = 'id'
+        Visible = False
         Width = 20
-        Position.BandIndex = 0
+        Position.BandIndex = 2
         Position.ColIndex = 1
         Position.RowIndex = 0
       end
       object YillikPlanSatirlarfaliyetid: TcxGridDBBandedColumn
+        Caption = 'Faaliyet Konular'#305
         DataBinding.FieldName = 'faliyetid'
         PropertiesClassName = 'TcxImageComboBoxProperties'
-        Properties.Items = <>
-        Width = 131
-        Position.BandIndex = 0
+        Properties.Alignment.Horz = taLeftJustify
+        Properties.Alignment.Vert = taVCenter
+        Properties.DropDownRows = 20
+        Properties.Items = <
+          item
+            ImageIndex = 0
+          end>
+        Properties.MultiLineText = True
+        Width = 282
+        Position.BandIndex = 2
         Position.ColIndex = 2
         Position.RowIndex = 0
       end
       object YillikPlanSatirlarperyod: TcxGridDBBandedColumn
+        Caption = 'Peryot'
         DataBinding.FieldName = 'peryod'
-        Width = 67
-        Position.BandIndex = 0
+        PropertiesClassName = 'TcxImageComboBoxProperties'
+        Properties.Alignment.Horz = taCenter
+        Properties.Alignment.Vert = taVCenter
+        Properties.DropDownRows = 15
+        Properties.ImageAlign = iaRight
+        Properties.Items = <
+          item
+            Description = '3 AY'
+            ImageIndex = 0
+            Value = 1
+          end
+          item
+            Description = '1 YIL'
+            Value = 2
+          end
+          item
+            Description = 'HER YEN'#304' MAK'#304'NA ALIMINDA'
+            Value = 3
+          end
+          item
+            Description = 'UYGUN G'#214'R'#220'LD'#220#286#220'NDE'
+            Value = 4
+          end
+          item
+            Description = 'M'#304'N.1/ YIL'
+            Value = 5
+          end
+          item
+            Description = 'GEREKT'#304#286#304'NDE'
+            Value = 6
+          end
+          item
+            Description = 'AC'#304'L DURUM EK'#304'B'#304'N'#304'N DE'#286#304#350'MES'#304' DURUMUNDA'
+            Value = 7
+          end
+          item
+            Description = '1 YI VE '#304#350'E YEN'#304' BA'#350'LAYANLAR '#304#199#304'N.'
+            Value = 8
+          end
+          item
+            Description = #304#350'E G'#304'R'#304#350' S'#220'REC'#304'NDE'
+            Value = 9
+          end
+          item
+            Description = #304'LG'#304'L'#304' MEVZUAT GEREKL'#304'L'#350#304'KLER'#304'NDE'
+            Value = 10
+          end
+          item
+            Description = 'R'#304'SK DE'#286'ERLEND'#304'RME SONRASI'
+            Value = 11
+          end
+          item
+            Description = 'HER Z'#304'YARETTE'
+            Value = 12
+          end>
+        Width = 58
+        Position.BandIndex = 2
         Position.ColIndex = 3
         Position.RowIndex = 0
       end
       object YillikPlanSatirlarocak: TcxGridDBBandedColumn
-        Caption = 'OCAK'
+        Caption = '01'
         DataBinding.FieldName = 'ocak'
         PropertiesClassName = 'TcxImageComboBoxProperties'
         Properties.Alignment.Horz = taCenter
         Properties.Alignment.Vert = taVCenter
-        Properties.Images = DATALAR.imag24png
+        Properties.ImageAlign = iaRight
         Properties.Items = <
           item
-            ImageIndex = 0
+            Description = 'P'
             Value = 1
           end
           item
             Value = 0
           end>
-        Styles.Content = cxStyle10
-        Styles.Header = cxStyle10
-        Width = 40
-        Position.BandIndex = 2
+        Styles.Content = cxStyle7
+        Width = 42
+        Position.BandIndex = 0
         Position.ColIndex = 0
         Position.RowIndex = 0
       end
       object YillikPlanSatirlarsubat: TcxGridDBBandedColumn
-        Caption = #350'UBAT'
+        Caption = '02'
         DataBinding.FieldName = 'subat'
         PropertiesClassName = 'TcxImageComboBoxProperties'
         Properties.Alignment.Horz = taCenter
         Properties.Alignment.Vert = taVCenter
         Properties.Items = <>
-        Width = 40
-        Position.BandIndex = 2
+        Styles.Content = cxStyle7
+        Width = 20
+        Position.BandIndex = 0
         Position.ColIndex = 1
         Position.RowIndex = 0
       end
       object YillikPlanSatirlarmart: TcxGridDBBandedColumn
-        Caption = 'MART'
+        Caption = '03'
         DataBinding.FieldName = 'mart'
         PropertiesClassName = 'TcxImageComboBoxProperties'
         Properties.Alignment.Horz = taCenter
         Properties.Alignment.Vert = taVCenter
         Properties.Items = <>
-        Width = 40
-        Position.BandIndex = 2
+        Styles.Content = cxStyle7
+        Width = 20
+        Position.BandIndex = 0
         Position.ColIndex = 2
         Position.RowIndex = 0
       end
       object YillikPlanSatirlarnisan: TcxGridDBBandedColumn
-        Caption = 'N'#304'SAN'
+        Caption = '04'
         DataBinding.FieldName = 'nisan'
         PropertiesClassName = 'TcxImageComboBoxProperties'
         Properties.Alignment.Horz = taCenter
         Properties.Alignment.Vert = taVCenter
         Properties.Items = <>
-        Width = 40
-        Position.BandIndex = 2
+        Styles.Content = cxStyle7
+        Width = 20
+        Position.BandIndex = 0
         Position.ColIndex = 3
         Position.RowIndex = 0
       end
       object YillikPlanSatirlarmayis: TcxGridDBBandedColumn
-        Caption = 'MAYIS'
+        Caption = '05'
         DataBinding.FieldName = 'mayis'
         PropertiesClassName = 'TcxImageComboBoxProperties'
         Properties.Alignment.Horz = taCenter
         Properties.Alignment.Vert = taVCenter
         Properties.Items = <>
-        Width = 40
-        Position.BandIndex = 2
+        Styles.Content = cxStyle7
+        Width = 20
+        Position.BandIndex = 0
         Position.ColIndex = 4
         Position.RowIndex = 0
       end
       object YillikPlanSatirlarhaziran: TcxGridDBBandedColumn
-        Caption = 'HAZ'#304'RAN'
+        Caption = '06'
         DataBinding.FieldName = 'haziran'
         PropertiesClassName = 'TcxImageComboBoxProperties'
         Properties.Alignment.Horz = taCenter
         Properties.Alignment.Vert = taVCenter
         Properties.Items = <>
-        Width = 40
-        Position.BandIndex = 2
+        Styles.Content = cxStyle7
+        Width = 20
+        Position.BandIndex = 0
         Position.ColIndex = 5
         Position.RowIndex = 0
       end
       object YillikPlanSatirlartemmuz: TcxGridDBBandedColumn
-        Caption = 'TEMMUZ'
+        Caption = '07'
         DataBinding.FieldName = 'temmuz'
         PropertiesClassName = 'TcxImageComboBoxProperties'
         Properties.Alignment.Horz = taCenter
         Properties.Alignment.Vert = taVCenter
         Properties.Items = <>
-        Width = 40
-        Position.BandIndex = 2
+        Styles.Content = cxStyle7
+        Width = 21
+        Position.BandIndex = 0
         Position.ColIndex = 6
         Position.RowIndex = 0
       end
       object YillikPlanSatirlaragustos: TcxGridDBBandedColumn
-        Caption = 'A'#286'USTOS'
+        Caption = '08'
         DataBinding.FieldName = 'agustos'
         PropertiesClassName = 'TcxImageComboBoxProperties'
         Properties.Alignment.Horz = taCenter
         Properties.Alignment.Vert = taVCenter
         Properties.Items = <>
-        Width = 40
-        Position.BandIndex = 2
+        Styles.Content = cxStyle7
+        Width = 20
+        Position.BandIndex = 0
         Position.ColIndex = 7
         Position.RowIndex = 0
       end
       object YillikPlanSatirlareylul: TcxGridDBBandedColumn
-        Caption = 'EYL'#220'L'
+        Caption = '09'
         DataBinding.FieldName = 'eylul'
         PropertiesClassName = 'TcxImageComboBoxProperties'
         Properties.Alignment.Horz = taCenter
         Properties.Alignment.Vert = taVCenter
         Properties.Items = <>
-        Width = 40
-        Position.BandIndex = 2
+        Styles.Content = cxStyle7
+        Width = 20
+        Position.BandIndex = 0
         Position.ColIndex = 8
         Position.RowIndex = 0
       end
       object YillikPlanSatirlarekim: TcxGridDBBandedColumn
-        Caption = 'EK'#304'M'
+        Caption = '10'
         DataBinding.FieldName = 'ekim'
         PropertiesClassName = 'TcxImageComboBoxProperties'
         Properties.Alignment.Horz = taCenter
         Properties.Alignment.Vert = taVCenter
         Properties.Items = <>
-        Width = 40
-        Position.BandIndex = 2
+        Styles.Content = cxStyle7
+        Width = 20
+        Position.BandIndex = 0
         Position.ColIndex = 9
         Position.RowIndex = 0
       end
       object YillikPlanSatirlarkasim: TcxGridDBBandedColumn
-        Caption = 'KASIM'
+        Caption = '11'
         DataBinding.FieldName = 'kasim'
         PropertiesClassName = 'TcxImageComboBoxProperties'
         Properties.Alignment.Horz = taCenter
         Properties.Alignment.Vert = taVCenter
         Properties.Items = <>
-        Width = 40
-        Position.BandIndex = 2
+        Styles.Content = cxStyle7
+        Width = 20
+        Position.BandIndex = 0
         Position.ColIndex = 10
         Position.RowIndex = 0
       end
       object YillikPlanSatirlararalik: TcxGridDBBandedColumn
-        Caption = 'ARALIK'
+        Caption = '12'
         DataBinding.FieldName = 'aralik'
         PropertiesClassName = 'TcxImageComboBoxProperties'
         Properties.Alignment.Horz = taCenter
         Properties.Alignment.Vert = taVCenter
         Properties.Items = <>
-        Width = 40
-        Position.BandIndex = 2
+        Styles.Content = cxStyle7
+        Width = 20
+        Position.BandIndex = 0
         Position.ColIndex = 11
         Position.RowIndex = 0
       end
       object YillikPlanSatirlarocak_R: TcxGridDBBandedColumn
+        Caption = '01'
         DataBinding.FieldName = 'ocak_R'
         PropertiesClassName = 'TcxImageComboBoxProperties'
         Properties.Alignment.Horz = taCenter
         Properties.Alignment.Vert = taVCenter
-        Properties.Items = <>
-        Styles.Content = cxStyle11
-        Styles.Header = cxStyle11
-        Width = 40
-        Position.BandIndex = 2
+        Properties.Items = <
+          item
+            Description = 'G'
+            Value = 1
+          end
+          item
+            Value = 0
+          end>
+        Styles.Content = cxStyle9
+        Width = 20
+        Position.BandIndex = 1
         Position.ColIndex = 0
-        Position.RowIndex = 1
-        IsCaptionAssigned = True
+        Position.RowIndex = 0
       end
       object YillikPlanSatirlarsubat_R: TcxGridDBBandedColumn
+        Caption = '02'
         DataBinding.FieldName = 'subat_R'
         PropertiesClassName = 'TcxImageComboBoxProperties'
         Properties.Alignment.Horz = taCenter
         Properties.Alignment.Vert = taVCenter
         Properties.Items = <>
-        Width = 40
-        Position.BandIndex = 2
+        Styles.Content = cxStyle9
+        Width = 20
+        Position.BandIndex = 1
         Position.ColIndex = 1
-        Position.RowIndex = 1
-        IsCaptionAssigned = True
+        Position.RowIndex = 0
       end
       object YillikPlanSatirlarmart_R: TcxGridDBBandedColumn
+        Caption = '03'
         DataBinding.FieldName = 'mart_R'
         PropertiesClassName = 'TcxImageComboBoxProperties'
         Properties.Alignment.Horz = taCenter
         Properties.Alignment.Vert = taVCenter
         Properties.Items = <>
-        Width = 40
-        Position.BandIndex = 2
+        Styles.Content = cxStyle9
+        Width = 20
+        Position.BandIndex = 1
         Position.ColIndex = 2
-        Position.RowIndex = 1
-        IsCaptionAssigned = True
+        Position.RowIndex = 0
       end
       object YillikPlanSatirlarnisan_R: TcxGridDBBandedColumn
+        Caption = '04'
         DataBinding.FieldName = 'nisan_R'
         PropertiesClassName = 'TcxImageComboBoxProperties'
         Properties.Alignment.Horz = taCenter
         Properties.Alignment.Vert = taVCenter
         Properties.Items = <>
-        Width = 40
-        Position.BandIndex = 2
+        Styles.Content = cxStyle9
+        Width = 20
+        Position.BandIndex = 1
         Position.ColIndex = 3
-        Position.RowIndex = 1
-        IsCaptionAssigned = True
+        Position.RowIndex = 0
       end
       object YillikPlanSatirlarmayis_R: TcxGridDBBandedColumn
+        Caption = '05'
         DataBinding.FieldName = 'mayis_R'
         PropertiesClassName = 'TcxImageComboBoxProperties'
         Properties.Alignment.Horz = taCenter
         Properties.Alignment.Vert = taVCenter
         Properties.Items = <>
-        Width = 40
-        Position.BandIndex = 2
+        Styles.Content = cxStyle9
+        Width = 20
+        Position.BandIndex = 1
         Position.ColIndex = 4
-        Position.RowIndex = 1
-        IsCaptionAssigned = True
+        Position.RowIndex = 0
       end
       object YillikPlanSatirlarhaziran_R: TcxGridDBBandedColumn
+        Caption = '06'
         DataBinding.FieldName = 'haziran_R'
         PropertiesClassName = 'TcxImageComboBoxProperties'
         Properties.Alignment.Horz = taCenter
         Properties.Alignment.Vert = taVCenter
         Properties.Items = <>
-        Width = 40
-        Position.BandIndex = 2
+        Styles.Content = cxStyle9
+        Width = 20
+        Position.BandIndex = 1
         Position.ColIndex = 5
-        Position.RowIndex = 1
-        IsCaptionAssigned = True
+        Position.RowIndex = 0
       end
       object YillikPlanSatirlartemmuz_R: TcxGridDBBandedColumn
+        Caption = '07'
         DataBinding.FieldName = 'temmuz_R'
         PropertiesClassName = 'TcxImageComboBoxProperties'
         Properties.Alignment.Horz = taCenter
         Properties.Alignment.Vert = taVCenter
         Properties.Items = <>
-        Width = 40
-        Position.BandIndex = 2
+        Styles.Content = cxStyle9
+        Width = 20
+        Position.BandIndex = 1
         Position.ColIndex = 6
-        Position.RowIndex = 1
-        IsCaptionAssigned = True
+        Position.RowIndex = 0
       end
       object YillikPlanSatirlaragustos_R: TcxGridDBBandedColumn
+        Caption = '08'
         DataBinding.FieldName = 'agustos_R'
         PropertiesClassName = 'TcxImageComboBoxProperties'
         Properties.Alignment.Horz = taCenter
         Properties.Alignment.Vert = taVCenter
         Properties.Items = <>
-        Width = 40
-        Position.BandIndex = 2
+        Styles.Content = cxStyle9
+        Width = 20
+        Position.BandIndex = 1
         Position.ColIndex = 7
-        Position.RowIndex = 1
-        IsCaptionAssigned = True
+        Position.RowIndex = 0
       end
       object YillikPlanSatirlareylul_R: TcxGridDBBandedColumn
+        Caption = '09'
         DataBinding.FieldName = 'eylul_R'
         PropertiesClassName = 'TcxImageComboBoxProperties'
         Properties.Alignment.Horz = taCenter
         Properties.Alignment.Vert = taVCenter
         Properties.Items = <>
-        Width = 40
-        Position.BandIndex = 2
+        Styles.Content = cxStyle9
+        Width = 20
+        Position.BandIndex = 1
         Position.ColIndex = 8
-        Position.RowIndex = 1
-        IsCaptionAssigned = True
+        Position.RowIndex = 0
       end
       object YillikPlanSatirlarekim_R: TcxGridDBBandedColumn
+        Caption = '10'
         DataBinding.FieldName = 'ekim_R'
         PropertiesClassName = 'TcxImageComboBoxProperties'
         Properties.Alignment.Horz = taCenter
         Properties.Alignment.Vert = taVCenter
         Properties.Items = <>
-        Width = 40
-        Position.BandIndex = 2
+        Styles.Content = cxStyle9
+        Width = 20
+        Position.BandIndex = 1
         Position.ColIndex = 9
-        Position.RowIndex = 1
-        IsCaptionAssigned = True
+        Position.RowIndex = 0
       end
       object YillikPlanSatirlarkasim_R: TcxGridDBBandedColumn
+        Caption = '11'
         DataBinding.FieldName = 'kasim_R'
         PropertiesClassName = 'TcxImageComboBoxProperties'
         Properties.Alignment.Horz = taCenter
         Properties.Alignment.Vert = taVCenter
         Properties.Items = <>
-        Width = 40
-        Position.BandIndex = 2
+        Styles.Content = cxStyle9
+        Width = 20
+        Position.BandIndex = 1
         Position.ColIndex = 10
-        Position.RowIndex = 1
-        IsCaptionAssigned = True
+        Position.RowIndex = 0
       end
       object YillikPlanSatirlararalik_R: TcxGridDBBandedColumn
+        Caption = '12'
         DataBinding.FieldName = 'aralik_R'
         PropertiesClassName = 'TcxImageComboBoxProperties'
         Properties.Alignment.Horz = taCenter
         Properties.Alignment.Vert = taVCenter
         Properties.Items = <>
-        Width = 40
-        Position.BandIndex = 2
+        Styles.Content = cxStyle9
+        Width = 20
+        Position.BandIndex = 1
         Position.ColIndex = 11
-        Position.RowIndex = 1
-        IsCaptionAssigned = True
+        Position.RowIndex = 0
       end
       object YillikPlanSatirlarsorumlu1: TcxGridDBBandedColumn
+        Caption = 'Sorumlu'
         DataBinding.FieldName = 'sorumlu1'
-        Width = 50
-        Position.BandIndex = 0
-        Position.ColIndex = 4
+        PropertiesClassName = 'TcxImageComboBoxProperties'
+        Properties.Alignment.Horz = taCenter
+        Properties.Alignment.Vert = taVCenter
+        Properties.Items = <
+          item
+            Description = #304#351'yeri Hekimi'
+            ImageIndex = 0
+            Value = 1
+          end
+          item
+            Description = #304#351' G'#252'venli'#287'i Uzm.'
+            Value = 2
+          end
+          item
+            Description = #304#350' G'#220'VENL'#304#286#304' UZMANI/'#304#350' YER'#304' HEK'#304'M'#304
+            Value = 3
+          end
+          item
+            Description = #304#350'VEREN'
+            Value = 4
+          end
+          item
+            Description = #304#350' G'#220'VENL'#304#286#304' UZMANI/'#304#350'VEREN '
+            Value = 5
+          end>
+        HeaderAlignmentHorz = taCenter
+        Width = 82
+        Position.BandIndex = 3
+        Position.ColIndex = 0
         Position.RowIndex = 0
       end
       object YillikPlanSatirlarsorumlu1Konu: TcxGridDBBandedColumn
+        Caption = 'Konu'
         DataBinding.FieldName = 'sorumlu1Konu'
-        Width = 50
-        Position.BandIndex = 0
-        Position.ColIndex = 5
+        PropertiesClassName = 'TcxImageComboBoxProperties'
+        Properties.Alignment.Horz = taCenter
+        Properties.Alignment.Vert = taVCenter
+        Properties.Items = <
+          item
+            Description = 'TAK'#304'P'
+            ImageIndex = 0
+            Value = 1
+          end
+          item
+            Description = 'KATILIM'
+            Value = 2
+          end
+          item
+            Description = 'TESP'#304'T'
+            Value = 3
+          end
+          item
+            Description = #214'NER'#304
+            Value = 4
+          end
+          item
+            Description = 'KATILIM VE '#214'NER'#304
+            Value = 5
+          end
+          item
+            Description = 'PLANLAMAVE TAK'#304'B'#304
+            Value = 6
+          end
+          item
+            Description = 'UYGULAMA'
+            Value = 7
+          end
+          item
+            Description = #214'NER'#304' VE PLANLAMA'
+            Value = 8
+          end
+          item
+            Description = 'E'#286#304'T'#304'M '#214'NER'#304
+            Value = 9
+          end
+          item
+            Description = 'KONTROL VE HAZIRLIK'
+            Value = 10
+          end
+          item
+            Description = 'E'#286#304'T'#304'M ALINMASI'
+            Value = 11
+          end
+          item
+            Description = 'E'#286#304'T'#304'M UYGULAMASI'
+            Value = 12
+          end>
+        HeaderAlignmentHorz = taCenter
+        Width = 83
+        Position.BandIndex = 3
+        Position.ColIndex = 1
         Position.RowIndex = 0
       end
       object YillikPlanSatirlarsorumlu2: TcxGridDBBandedColumn
+        Caption = 'Sorumlu'
         DataBinding.FieldName = 'sorumlu2'
-        Width = 50
-        Position.BandIndex = 0
-        Position.ColIndex = 6
+        PropertiesClassName = 'TcxImageComboBoxProperties'
+        Properties.Alignment.Horz = taCenter
+        Properties.Alignment.Vert = taVCenter
+        Properties.Items = <>
+        HeaderAlignmentHorz = taCenter
+        Width = 80
+        Position.BandIndex = 4
+        Position.ColIndex = 0
         Position.RowIndex = 0
       end
       object YillikPlanSatirlarsorumlu2Konu: TcxGridDBBandedColumn
+        Caption = 'Konu'
         DataBinding.FieldName = 'sorumlu2Konu'
-        Width = 50
-        Position.BandIndex = 0
-        Position.ColIndex = 7
+        PropertiesClassName = 'TcxImageComboBoxProperties'
+        Properties.Alignment.Horz = taCenter
+        Properties.Alignment.Vert = taVCenter
+        Properties.Items = <>
+        HeaderAlignmentHorz = taCenter
+        Width = 82
+        Position.BandIndex = 4
+        Position.ColIndex = 1
         Position.RowIndex = 0
       end
     end
@@ -483,6 +678,13 @@ object frmSirketYillikCalismaPlan: TfrmSirketYillikCalismaPlan
       Color = 8454143
     end
     object cxStyle7: TcxStyle
+      AssignedValues = [svFont, svTextColor]
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -11
+      Font.Name = 'Tahoma'
+      Font.Style = [fsBold]
+      TextColor = clBlue
     end
     object cxStyle8: TcxStyle
       AssignedValues = [svFont, svTextColor]
@@ -494,6 +696,13 @@ object frmSirketYillikCalismaPlan: TfrmSirketYillikCalismaPlan
       TextColor = clMaroon
     end
     object cxStyle9: TcxStyle
+      AssignedValues = [svFont, svTextColor]
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -11
+      Font.Name = 'Tahoma'
+      Font.Style = [fsBold]
+      TextColor = clGreen
     end
   end
   object cxStyleRepository2: TcxStyleRepository

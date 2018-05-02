@@ -222,8 +222,6 @@ begin
        TcxImageComboKadir(FindComponent('SirketKod')).Enabled := False;
        TcxTextEditKadir(FindComponent('hazirlayan')).Enabled := False;
        TcxImageComboKadir(FindComponent('date_create')).Enabled := False;
-       TcxImageComboKadir(FindComponent('isveren')).Enabled := False;
-      // TcxImageComboKadir(FindComponent('Onay')).Enabled := False;
 
     end
     else
@@ -235,8 +233,7 @@ begin
        TcxImageComboKadir(FindComponent('SirketKod')).Enabled := True;
        TcxTextEditKadir(FindComponent('hazirlayan')).Enabled := True;
        TcxImageComboKadir(FindComponent('date_create')).Enabled := True;
-       TcxImageComboKadir(FindComponent('isveren')).Enabled := True;
-    //   TcxImageComboKadir(FindComponent('Onay')).Enabled := True;
+
     end;
 
 
@@ -255,7 +252,7 @@ end;
 
 procedure TfrmSirketYillikCalismaPlan.NewRecord(DataSet: TDataSet);
 begin
-   YillikPlanGrid.Dataset.FieldByName('sirketSahaDenetimId').AsInteger := TcxButtonEditKadir(FindComponent('id')).EditingValue;
+   YillikPlanGrid.Dataset.FieldByName('FirmaYillikCalismaPlanID').AsInteger := TcxButtonEditKadir(FindComponent('id')).EditingValue;
 end;
 
 procedure TfrmSirketYillikCalismaPlan.RDSSatirlarNavigatorButtonsButtonClick(Sender: TObject;
@@ -268,77 +265,78 @@ procedure datawrite;
 var
   Blob : TADOBlobStream;
 begin
-   YillikPlanSatirlar.DataController.DataSet.FieldByName('TehlikeliDurum').AsString := datalar.SahaDenetim.TehlikeliDurum;
-
-   if datalar.SahaDenetim.Bolum <= 0 then
-     YillikPlanSatirlar.DataController.DataSet.FieldByName('Bolum').Clear
-    else
-     YillikPlanSatirlar.DataController.DataSet.FieldByName('Bolum').AsInteger := datalar.SahaDenetim.Bolum;
-
-   YillikPlanSatirlar.DataController.DataSet.FieldByName('Yonetmelik').AsString := datalar.SahaDenetim.Yonetmelik;
-
-   YillikPlanSatirlar.DataController.DataSet.FieldByName('IlgiliKisi').AsString := datalar.SahaDenetim.IlgiliKisi;
-
-//   Satirlar.DataController.DataSet.FieldByName('BolumYetkilisi').AsString := datalar.Risk.SSGBolumYetkilisi;
-
-   if datalar.SahaDenetim.isinDurumu <= 0 then
-     YillikPlanSatirlar.DataController.DataSet.FieldByName('isinDurumu').Clear
-    else
-     YillikPlanSatirlar.DataController.DataSet.FieldByName('isinDurumu').AsVariant := datalar.SahaDenetim.isinDurumu;
-
-  // Satirlar.DataController.DataSet.FieldByName('Image').AsVariant := datalar.SahaDenetim.Image;
-
-    if Assigned(datalar.SahaDenetim.Image.Picture.Graphic)
-    then begin
-      Blob := TADOBlobStream.Create(TBlobField(YillikPlanSatirlar.DataController.DataSet.FieldByName('Image')),bmwrite);
-      try
-      //  datalar.Risk.Image.Picture.SaveToFile('dd.jpg');
-        datalar.SahaDenetim.Image.Picture.Graphic.SaveToStream(Blob);
-       // Blob.LoadFromStream(datalar.Risk.Stream);
-        Blob.Position := 0;
-        TBlobField(YillikPlanSatirlar.DataController.DataSet.FieldByName('Image')).LoadFromStream(Blob);
-      finally
-        Blob.Free;
-      end;
-    end;
-
+   YillikPlanSatirlar.DataController.DataSet.FieldByName('faliyetid').AsInteger := datalar.YillikCalismaPlan.faliyetid;
+   YillikPlanSatirlar.DataController.DataSet.FieldByName('peryod').AsInteger := datalar.YillikCalismaPlan.peryod;
+   YillikPlanSatirlar.DataController.DataSet.FieldByName('ocak').AsInteger := datalar.YillikCalismaPlan.ocak;
+   YillikPlanSatirlar.DataController.DataSet.FieldByName('subat').AsInteger := datalar.YillikCalismaPlan.subat;
+   YillikPlanSatirlar.DataController.DataSet.FieldByName('mart').AsInteger := datalar.YillikCalismaPlan.mart;
+   YillikPlanSatirlar.DataController.DataSet.FieldByName('nisan').AsInteger := datalar.YillikCalismaPlan.nisan;
+   YillikPlanSatirlar.DataController.DataSet.FieldByName('mayis').AsInteger := datalar.YillikCalismaPlan.mayis;
+   YillikPlanSatirlar.DataController.DataSet.FieldByName('haziran').AsInteger := datalar.YillikCalismaPlan.haziran;
+   YillikPlanSatirlar.DataController.DataSet.FieldByName('temmuz').AsInteger := datalar.YillikCalismaPlan.temmuz;
+   YillikPlanSatirlar.DataController.DataSet.FieldByName('agustos').AsInteger := datalar.YillikCalismaPlan.agustos;
+   YillikPlanSatirlar.DataController.DataSet.FieldByName('eylul').AsInteger := datalar.YillikCalismaPlan.eylul;
+   YillikPlanSatirlar.DataController.DataSet.FieldByName('ekim').AsInteger := datalar.YillikCalismaPlan.ekim;
+   YillikPlanSatirlar.DataController.DataSet.FieldByName('kasim').AsInteger := datalar.YillikCalismaPlan.kasim;
+   YillikPlanSatirlar.DataController.DataSet.FieldByName('aralik').AsInteger := datalar.YillikCalismaPlan.aralik;
+   YillikPlanSatirlar.DataController.DataSet.FieldByName('ocak_R').AsInteger := datalar.YillikCalismaPlan.ocakR;
+   YillikPlanSatirlar.DataController.DataSet.FieldByName('subat_R').AsInteger := datalar.YillikCalismaPlan.subatR;
+   YillikPlanSatirlar.DataController.DataSet.FieldByName('mart_R').AsInteger := datalar.YillikCalismaPlan.martR;
+   YillikPlanSatirlar.DataController.DataSet.FieldByName('nisan_R').AsInteger := datalar.YillikCalismaPlan.nisanR;
+   YillikPlanSatirlar.DataController.DataSet.FieldByName('mayis_R').AsInteger := datalar.YillikCalismaPlan.mayisR;
+   YillikPlanSatirlar.DataController.DataSet.FieldByName('haziran_R').AsInteger := datalar.YillikCalismaPlan.haziranR;
+   YillikPlanSatirlar.DataController.DataSet.FieldByName('temmuz_R').AsInteger := datalar.YillikCalismaPlan.temmuzR;
+   YillikPlanSatirlar.DataController.DataSet.FieldByName('agustos_R').AsInteger := datalar.YillikCalismaPlan.agustosR;
+   YillikPlanSatirlar.DataController.DataSet.FieldByName('eylul_R').AsInteger := datalar.YillikCalismaPlan.eylulR;
+   YillikPlanSatirlar.DataController.DataSet.FieldByName('ekim_R').AsInteger := datalar.YillikCalismaPlan.ekimR;
+   YillikPlanSatirlar.DataController.DataSet.FieldByName('kasim_R').AsInteger := datalar.YillikCalismaPlan.kasimR;
+   YillikPlanSatirlar.DataController.DataSet.FieldByName('aralik_R').AsInteger := datalar.YillikCalismaPlan.aralikR;
+   YillikPlanSatirlar.DataController.DataSet.FieldByName('sorumlu1').AsInteger := datalar.YillikCalismaPlan.sorumlu1;
+   YillikPlanSatirlar.DataController.DataSet.FieldByName('sorumlu2').AsInteger := datalar.YillikCalismaPlan.sorumlu2;
+   YillikPlanSatirlar.DataController.DataSet.FieldByName('sorumlu1Konu').AsInteger := datalar.YillikCalismaPlan.konu1;
+   YillikPlanSatirlar.DataController.DataSet.FieldByName('sorumlu2Konu').AsInteger := datalar.YillikCalismaPlan.konu2;
 end;
 
 procedure dataRead;
-var
-  G : TGraphic;
 begin
-
-   g := TJpegimage.Create;
-   try
-      g.Assign(YillikPlanSatirlar.DataController.DataSet.FieldByName('Image'));
-      datalar.SahaDenetim.Image := TcxImage.Create(nil);
-      datalar.SahaDenetim.Image.Picture.Assign(g);
-  //    datalar.Risk.Image.Picture.SaveToFile('dd.jpg');
-   finally
-     g.free;
-   end;
-
-   datalar.SahaDenetim.TehlikeliDurum := YillikPlanSatirlar.DataController.DataSet.FieldByName('TehlikeliDurum').AsString;
-   datalar.SahaDenetim.Bolum := YillikPlanSatirlar.DataController.DataSet.FieldByName('Bolum').AsInteger;
-   datalar.SahaDenetim.Yonetmelik := YillikPlanSatirlar.DataController.DataSet.FieldByName('Yonetmelik').AsString;
-   datalar.SahaDenetim.IlgiliKisi := YillikPlanSatirlar.DataController.DataSet.FieldByName('IlgiliKisi').AsString;
-   datalar.SahaDenetim.isinDurumu := YillikPlanSatirlar.DataController.DataSet.FieldByName('isinDurumu').AsInteger;
+   datalar.YillikCalismaPlan.faliyetid := YillikPlanSatirlar.DataController.DataSet.FieldByName('faliyetid').AsInteger;
+   datalar.YillikCalismaPlan.peryod := YillikPlanSatirlar.DataController.DataSet.FieldByName('peryod').AsInteger;
+   datalar.YillikCalismaPlan.ocak := YillikPlanSatirlar.DataController.DataSet.FieldByName('ocak').AsInteger;
+   datalar.YillikCalismaPlan.subat := YillikPlanSatirlar.DataController.DataSet.FieldByName('subat').AsInteger;
+   datalar.YillikCalismaPlan.mart := YillikPlanSatirlar.DataController.DataSet.FieldByName('mart').AsInteger;
+   datalar.YillikCalismaPlan.nisan := YillikPlanSatirlar.DataController.DataSet.FieldByName('nisan').AsInteger;
+   datalar.YillikCalismaPlan.mayis := YillikPlanSatirlar.DataController.DataSet.FieldByName('mayis').AsInteger;
+   datalar.YillikCalismaPlan.haziran := YillikPlanSatirlar.DataController.DataSet.FieldByName('haziran').AsInteger;
+   datalar.YillikCalismaPlan.temmuz := YillikPlanSatirlar.DataController.DataSet.FieldByName('temmuz').AsInteger;
+   datalar.YillikCalismaPlan.agustos := YillikPlanSatirlar.DataController.DataSet.FieldByName('agustos').AsInteger;
+   datalar.YillikCalismaPlan.eylul := YillikPlanSatirlar.DataController.DataSet.FieldByName('eylul').AsInteger;
+   datalar.YillikCalismaPlan.ekim := YillikPlanSatirlar.DataController.DataSet.FieldByName('ekim').AsInteger;
+   datalar.YillikCalismaPlan.kasim := YillikPlanSatirlar.DataController.DataSet.FieldByName('kasim').AsInteger;
+   datalar.YillikCalismaPlan.aralik := YillikPlanSatirlar.DataController.DataSet.FieldByName('aralik').AsInteger;
+   datalar.YillikCalismaPlan.ocakR := YillikPlanSatirlar.DataController.DataSet.FieldByName('ocak_R').AsInteger;
+   datalar.YillikCalismaPlan.subatR := YillikPlanSatirlar.DataController.DataSet.FieldByName('subat_R').AsInteger;
+   datalar.YillikCalismaPlan.martR := YillikPlanSatirlar.DataController.DataSet.FieldByName('mart_R').AsInteger;
+   datalar.YillikCalismaPlan.nisanR := YillikPlanSatirlar.DataController.DataSet.FieldByName('nisan_R').AsInteger;
+   datalar.YillikCalismaPlan.mayisR := YillikPlanSatirlar.DataController.DataSet.FieldByName('mayis_R').AsInteger;
+   datalar.YillikCalismaPlan.haziranR := YillikPlanSatirlar.DataController.DataSet.FieldByName('haziran_R').AsInteger;
+   datalar.YillikCalismaPlan.temmuzR := YillikPlanSatirlar.DataController.DataSet.FieldByName('temmuz_R').AsInteger;
+   datalar.YillikCalismaPlan.agustosR := YillikPlanSatirlar.DataController.DataSet.FieldByName('agustos_R').AsInteger;
+   datalar.YillikCalismaPlan.eylulR := YillikPlanSatirlar.DataController.DataSet.FieldByName('eylul_R').AsInteger;
+   datalar.YillikCalismaPlan.ekimR := YillikPlanSatirlar.DataController.DataSet.FieldByName('ekim_R').AsInteger;
+   datalar.YillikCalismaPlan.kasimR := YillikPlanSatirlar.DataController.DataSet.FieldByName('kasim_R').AsInteger;
+   datalar.YillikCalismaPlan.aralikR := YillikPlanSatirlar.DataController.DataSet.FieldByName('aralik_R').AsInteger;
+   datalar.YillikCalismaPlan.sorumlu1 := YillikPlanSatirlar.DataController.DataSet.FieldByName('sorumlu1').AsInteger;
+   datalar.YillikCalismaPlan.sorumlu2 := YillikPlanSatirlar.DataController.DataSet.FieldByName('sorumlu2').AsInteger;
+   datalar.YillikCalismaPlan.konu1 := YillikPlanSatirlar.DataController.DataSet.FieldByName('sorumlu1Konu').AsInteger;
+   datalar.YillikCalismaPlan.konu2 := YillikPlanSatirlar.DataController.DataSet.FieldByName('sorumlu2Konu').AsInteger;
 end;
 
 begin
 
   case AButtonIndex of
    6 : begin
-        datalar.SahaDenetim.TehlikeliDurum  := '';
-        datalar.SahaDenetim.Bolum := -1;
-        datalar.SahaDenetim.Yonetmelik := '';
-        datalar.SahaDenetim.IlgiliKisi := '';
-        datalar.SahaDenetim.isinDurumu := -1;
-        datalar.SahaDenetim.Image := TcxImage.Create(nil);
 
-
-        if mrYes = ShowPopupForm('Saha Gözetim Ekle',yeniDenetim)
+        if mrYes = ShowPopupForm('Faaliyet Ekle',yeniFaaliyet)
         then begin
          try
           YillikPlanSatirlar.DataController.DataSet.Append;
@@ -359,7 +357,7 @@ begin
 
    9 : begin
         dataRead;
-        if mrYes = ShowPopupForm('Düzenle',denetimDuzenle)
+        if mrYes = ShowPopupForm('Düzenle',FaaliyetDuzenle)
         then begin
          try
           Book := YillikPlanSatirlar.DataController.DataSet.Bookmark;
@@ -610,13 +608,34 @@ begin
      TcxImageComboBoxProperties(YillikPlanSatirlarfaliyetid.Properties).Items :=
      TcxImageComboBoxProperties(TcxImageComboKadir(FindComponent('FaaliyetKonulari')).Properties).Items;
 
-     TcxImageComboBoxProperties(YillikPlanSatirlarocak_R.Properties).Items :=
-     TcxImageComboBoxProperties(YillikPlanSatirlarocak.Properties).Items;
-     TcxImageComboBoxProperties(YillikPlanSatirlarsubat.Properties).Items :=
-     TcxImageComboBoxProperties(YillikPlanSatirlarocak.Properties).Items;
-     TcxImageComboBoxProperties(YillikPlanSatirlarsubat_R.Properties).Items :=
-     TcxImageComboBoxProperties(YillikPlanSatirlarocak.Properties).Items;
+  //   TcxImageComboBoxProperties(YillikPlanSatirlarocak.Properties).Items := TcxImageComboBoxProperties(YillikPlanSatirlarocak.Properties).Items;
+     TcxImageComboBoxProperties(YillikPlanSatirlarsubat.Properties).Items := TcxImageComboBoxProperties(YillikPlanSatirlarocak.Properties).Items;
+     TcxImageComboBoxProperties(YillikPlanSatirlarmart.Properties).Items := TcxImageComboBoxProperties(YillikPlanSatirlarocak.Properties).Items;
+     TcxImageComboBoxProperties(YillikPlanSatirlarnisan.Properties).Items := TcxImageComboBoxProperties(YillikPlanSatirlarocak.Properties).Items;
+     TcxImageComboBoxProperties(YillikPlanSatirlarmayis.Properties).Items := TcxImageComboBoxProperties(YillikPlanSatirlarocak.Properties).Items;
+     TcxImageComboBoxProperties(YillikPlanSatirlarhaziran.Properties).Items := TcxImageComboBoxProperties(YillikPlanSatirlarocak.Properties).Items;
+     TcxImageComboBoxProperties(YillikPlanSatirlartemmuz.Properties).Items := TcxImageComboBoxProperties(YillikPlanSatirlarocak.Properties).Items;
+     TcxImageComboBoxProperties(YillikPlanSatirlaragustos.Properties).Items := TcxImageComboBoxProperties(YillikPlanSatirlarocak.Properties).Items;
+     TcxImageComboBoxProperties(YillikPlanSatirlareylul.Properties).Items := TcxImageComboBoxProperties(YillikPlanSatirlarocak.Properties).Items;
+     TcxImageComboBoxProperties(YillikPlanSatirlarekim.Properties).Items := TcxImageComboBoxProperties(YillikPlanSatirlarocak.Properties).Items;
+     TcxImageComboBoxProperties(YillikPlanSatirlarkasim.Properties).Items := TcxImageComboBoxProperties(YillikPlanSatirlarocak.Properties).Items;
+     TcxImageComboBoxProperties(YillikPlanSatirlararalik.Properties).Items := TcxImageComboBoxProperties(YillikPlanSatirlarocak.Properties).Items;
 
+//     TcxImageComboBoxProperties(YillikPlanSatirlarocak.Properties).Items := TcxImageComboBoxProperties(YillikPlanSatirlarocak.Properties).Items;
+     TcxImageComboBoxProperties(YillikPlanSatirlarsubat_R.Properties).Items := TcxImageComboBoxProperties(YillikPlanSatirlarocak_R.Properties).Items;
+     TcxImageComboBoxProperties(YillikPlanSatirlarmart_R.Properties).Items := TcxImageComboBoxProperties(YillikPlanSatirlarocak_R.Properties).Items;
+     TcxImageComboBoxProperties(YillikPlanSatirlarnisan_R.Properties).Items := TcxImageComboBoxProperties(YillikPlanSatirlarocak_R.Properties).Items;
+     TcxImageComboBoxProperties(YillikPlanSatirlarmayis_R.Properties).Items := TcxImageComboBoxProperties(YillikPlanSatirlarocak_R.Properties).Items;
+     TcxImageComboBoxProperties(YillikPlanSatirlarhaziran_R.Properties).Items := TcxImageComboBoxProperties(YillikPlanSatirlarocak_R.Properties).Items;
+     TcxImageComboBoxProperties(YillikPlanSatirlartemmuz_R.Properties).Items := TcxImageComboBoxProperties(YillikPlanSatirlarocak_R.Properties).Items;
+     TcxImageComboBoxProperties(YillikPlanSatirlaragustos_R.Properties).Items := TcxImageComboBoxProperties(YillikPlanSatirlarocak_R.Properties).Items;
+     TcxImageComboBoxProperties(YillikPlanSatirlareylul_R.Properties).Items := TcxImageComboBoxProperties(YillikPlanSatirlarocak_R.Properties).Items;
+     TcxImageComboBoxProperties(YillikPlanSatirlarekim_R.Properties).Items := TcxImageComboBoxProperties(YillikPlanSatirlarocak_R.Properties).Items;
+     TcxImageComboBoxProperties(YillikPlanSatirlarkasim_R.Properties).Items := TcxImageComboBoxProperties(YillikPlanSatirlarocak_R.Properties).Items;
+     TcxImageComboBoxProperties(YillikPlanSatirlararalik_R.Properties).Items := TcxImageComboBoxProperties(YillikPlanSatirlarocak_R.Properties).Items;
+
+     TcxImageComboBoxProperties(YillikPlanSatirlarsorumlu2.Properties).Items := TcxImageComboBoxProperties(YillikPlanSatirlarsorumlu1.Properties).Items;
+     TcxImageComboBoxProperties(YillikPlanSatirlarsorumlu2Konu.Properties).Items := TcxImageComboBoxProperties(YillikPlanSatirlarsorumlu1Konu.Properties).Items;
 
 
   finally
@@ -626,7 +645,7 @@ begin
 
 
 //  setDataStringBLabel(self,'bosSatir',kolon1,'',1000,'Risk Kaynaklarý');
-  setDataStringKontrol(self,YillikPlanGrid,'YillikPlanGrid','',Kolon1,'',1070,450);
+  setDataStringKontrol(self,YillikPlanGrid,'YillikPlanGrid','',Kolon1,'',1161,400);
 
 
   YillikPlanGrid.Dataset.Connection := datalar.ADOConnection2;
@@ -645,7 +664,7 @@ begin
 
 
   //GridFaturalar.DataController.DataSource := DataSource;
-  SayfaCaption('','','','','');
+  SayfaCaption('Plan','','','','');
   Disabled(self,True);
 end;
 

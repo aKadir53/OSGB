@@ -507,6 +507,7 @@ type
     Bolum : Variant;
     TehlikeKaynagi : Variant;
     Tehlike : Variant;
+    Etkilenecekler : Variant;
     Risk_tanim : Variant;
     Onlemler : string;
     Olasilik : Variant;
@@ -577,6 +578,40 @@ type
     DenetimTarihi : String;
     DenetimDefterNo : String;
   end;
+
+  TYillikCalismaPlani = record
+    faliyetid : integer;
+    peryod : integer;
+    ocak : integer;
+    subat : integer;
+    mart : integer;
+    nisan : integer;
+    mayis : integer;
+    haziran : integer;
+    temmuz : integer;
+    agustos : integer;
+    eylul : integer;
+    ekim : integer;
+    kasim : integer;
+    aralik : integer;
+    ocakR : integer;
+    subatR : integer;
+    martR : integer;
+    nisanR : integer;
+    mayisR : integer;
+    haziranR : integer;
+    temmuzR : integer;
+    agustosR : integer;
+    eylulR : integer;
+    ekimR : integer;
+    kasimR : integer;
+    aralikR : integer;
+    sorumlu1 : integer;
+    konu1 : integer;
+    sorumlu2 : integer;
+    konu2 : integer;
+  end;
+
 
   TIntegerArray = array of Integer;
 Const
@@ -687,6 +722,7 @@ Const
   TagfrmSirketSahaDenetim = 950;
   TagfrmSirketEkipmanList = 960;
   TagfrmSirketYillikCalismaPlan = 970;
+  TagfrmFirmaYetkili = 980;
 
 
   Kaydet = 0;
@@ -758,6 +794,9 @@ Const
   RDSonuc_FineKenny = '20';
   RDSonuc_Matris = '21';
   RDEkipTutanagi = '30';
+  yeniFaaliyet = 54;
+  FaaliyetDuzenle = 55;
+
 
   sp_HastaGelis = 'exec sp_HastaGelisleri ';
 

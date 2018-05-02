@@ -16,8 +16,8 @@ object frmSirketSahaDenetim: TfrmSirketSahaDenetim
   PixelsPerInch = 96
   TextHeight = 13
   object SahaGozetimGrid: TcxGridKadir
-    Left = -312
-    Top = 0
+    Left = -56
+    Top = -16
     Width = 1070
     Height = 417
     TabOrder = 0
