@@ -16,9 +16,9 @@ object frmRDS: TfrmRDS
   PixelsPerInch = 96
   TextHeight = 13
   object RDSGrid: TcxGridKadir
-    Left = -506
-    Top = 72
-    Width = 1235
+    Left = -184
+    Top = 40
+    Width = 1891
     Height = 169
     TabOrder = 0
     ExcelFileName = 'RiskDegerlendirme'
@@ -207,11 +207,12 @@ object frmRDS: TfrmRDS
           Caption = 'Risk Tan'#305'm Bilgisi'
           FixedKind = fkLeft
           Styles.Header = cxStyle8
+          Width = 529
         end
         item
           Caption = 'Risk De'#287'erlendirme Bilgileri'
           Styles.Header = cxStyle8
-          Width = 1240
+          Width = 1356
         end>
       object RDSSatirlarSirketRiskID: TcxGridDBBandedColumn
         DataBinding.FieldName = 'SirketRiskID'
@@ -238,7 +239,7 @@ object frmRDS: TfrmRDS
         Properties.Items = <>
         HeaderAlignmentHorz = taCenter
         Options.Editing = False
-        Width = 100
+        Width = 125
         Position.BandIndex = 0
         Position.ColIndex = 0
         Position.RowIndex = 0
@@ -252,7 +253,7 @@ object frmRDS: TfrmRDS
         Properties.Items = <>
         HeaderAlignmentHorz = taCenter
         Options.Editing = False
-        Width = 110
+        Width = 136
         Position.BandIndex = 0
         Position.ColIndex = 1
         Position.RowIndex = 0
@@ -269,9 +270,21 @@ object frmRDS: TfrmRDS
           end>
         HeaderAlignmentHorz = taCenter
         Options.Editing = False
-        Width = 67
+        Width = 95
         Position.BandIndex = 0
         Position.ColIndex = 2
+        Position.RowIndex = 0
+      end
+      object RDSSatirlarColumn3: TcxGridDBBandedColumn
+        DataBinding.FieldName = 'Etkilenecekler'
+        PropertiesClassName = 'TcxImageComboBoxProperties'
+        Properties.Alignment.Horz = taCenter
+        Properties.Alignment.Vert = taVCenter
+        Properties.Items = <>
+        Options.Editing = False
+        Width = 75
+        Position.BandIndex = 0
+        Position.ColIndex = 3
         Position.RowIndex = 0
       end
       object RDSSatirlarRisk_tanim: TcxGridDBBandedColumn
@@ -288,9 +301,9 @@ object frmRDS: TfrmRDS
         Properties.OnButtonClick = PropertiesButtonClick
         HeaderAlignmentHorz = taCenter
         Options.Editing = False
-        Width = 85
+        Width = 98
         Position.BandIndex = 0
-        Position.ColIndex = 3
+        Position.ColIndex = 4
         Position.RowIndex = 0
       end
       object RDSSatirlarOnlemler: TcxGridDBBandedColumn
