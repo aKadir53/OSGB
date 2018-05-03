@@ -163,7 +163,7 @@ procedure TfrmPopupDBGridForm.ADOBeforePost(DataSet: TDataSet);
 begin
   inherited;
   case Tag of
-  TagfrmSube, TagfrmFirmaISGEkip :
+  TagfrmSube, TagfrmFirmaISGEkip ,TagfrmFirmaYetkili,TagFirmaCalismalari:
         begin
            cxGrid3.Dataset.FieldByName('SirketKod').AsString := _firmaKod_;
         end;
@@ -267,6 +267,33 @@ begin
         cxGrid3.Dataset.Connection := datalar.ADOConnection2;
         cxGrid3.Dataset.SQL.Text := 'Select id,SirketKod,SubeKod,TCKimlikNo,AdiSoyadi,Telefon,eMail,ISGEkipId,ISGEkipGorevID ' +
                                     ' from SIRKET_SUBE_EKIP where sirketKod = ' + QuotedStr(_firmaKod_);
+        cxGrid3.Dataset.Open;
+        DBGrid.ClearItems;
+        DBGrid.DataController.CreateAllItems(True);
+        SetGrid;
+
+        SayfaCaption('','','','','');
+        Result := True;
+    end;
+
+    TagfrmFirmaYetkili :
+    begin
+        ClientHeight := 500;
+        ClientWidth := 500;
+        TableName := 'ISGFirmaYetkilileri';
+        _fields_ := 'id,SirketKod,AdiSoyadi,Tc,eMail,mobil,Bolum,Aciklama';
+        _fieldBaslik_ := ',,Adý Soyadý,TC,eMail,Telefon,Bölüm,Açýklama';
+        _fieldTips_ := 'int,string,string,string,string,string,string,string';
+
+        _ICParams_ := '';
+        indexFieldName := 'sirketKod = ' + QuotedStr(_firmaKod_);
+        cxPanel.Visible := false;
+        cxGroupDoktorlar.Caption := 'Yetkili Bilgileri';
+
+        cxGrid3.Dataset.BeforePost := ADOBeforePost;
+        cxGrid3.Dataset.Connection := datalar.ADOConnection2;
+        cxGrid3.Dataset.SQL.Text := 'Select id,SirketKod,AdiSoyadi,Tc,eMail,mobil,Bolum,Aciklama ' +
+                                    ' from ISGFirmaYetkilileri where sirketKod = ' + QuotedStr(_firmaKod_);
         cxGrid3.Dataset.Open;
         DBGrid.ClearItems;
         DBGrid.DataController.CreateAllItems(True);
@@ -522,11 +549,12 @@ begin
   end;
   DBgrid.ApplyBestFit;
   colswidth := 0;
+
   for i := 0 to DBgrid.ColumnCount - 1 do
   begin
     colswidth := colswidth + DBgrid.Columns[i].Width;
   end;
-  if colswidth > 170 then ClientWidth := colswidth + 40 else ClientWidth := 170;
+  if colswidth < ClientWidth then ClientWidth := colswidth;
 
 
 end;

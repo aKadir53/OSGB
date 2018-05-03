@@ -186,10 +186,16 @@ begin
          SahaGozetimGrid.Enabled := True;
         end;
     2 : begin
-          TcxImageComboKadir(FindComponent('hazirlayan')).EditValue := datalar.IGU;
-          TcxDateEditKadir(FindComponent('date_create')).EditValue := date;
-          SahaGozetimGrid.Enabled := False;
-          FaturaDetay;
+           if datalar.IGU <> ''
+           then begin
+             TcxImageComboKadir(FindComponent('hazirlayan')).EditValue := datalar.IGU;
+             TcxImageComboKadir(FindComponent('hazirlayan')).Enabled := False;
+           end
+           else
+             TcxImageComboKadir(FindComponent('hazirlayan')).Enabled := True;
+           TcxDateEditKadir(FindComponent('date_create')).EditValue := date;
+           SahaGozetimGrid.Enabled := False;
+           FaturaDetay;
         end;
   end;
 end;
@@ -527,7 +533,17 @@ begin
   TableName := 'SirketSahaDenetim';
  // TopPanel.Visible := true;
 
-  where := ' hazirlayan = ' + QuotedStr(datalar.IGU);
+  if datalar.UserGroup = '1'
+  then
+    where := ''
+  else
+  if datalar.UserGroup = '10'
+  then
+    where := ' sirketKod = ' + QuotedStr(datalar.sirketKodu)
+  else
+    where := ' hazirlayan = ' + QuotedStr(datalar.IGU);
+
+
 
   Faturalar := ListeAcCreate('SirketSahaDenetim_view','id,sirketKod,sirketAdi,date_create',
                        'ID,ÞirketKodu,ÞirketAdý,Tarihi',

@@ -246,3 +246,5 @@ eðitimci 2 gibi bazý alanlarýn baskýya eklenmesi
 3 kullanýcý - yetkileri...
 diðer kullanýcýlar silinecek
 son kaç þifre geçerli olamayacak ?
+
+- giriþte logo ve firma ünvaný. iþ yeri hekimliði e-reçete vs

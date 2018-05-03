@@ -506,6 +506,7 @@ type
    DigerIslemTalebi : TDigerIslemTalep;
    ProgTarih : string;
    HastaBil : THasta;
+   YillikCalismaPlan : TYillikCalismaPlani;
    VeriSeti : THizmetVeriSeti;
    islemSiralari : Array_Of_string;
    _Program_ : string;

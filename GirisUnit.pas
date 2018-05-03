@@ -53,6 +53,7 @@ type
     cxKaydet: TcxButton;
     cxIptal: TcxButton;
     cxButton5: TcxButton;
+    cxKapat : TcxButton;
     dxStatusBar1: TdxStatusBar;
     cxTopPanel: TcxGroupBox;
     cxTab: TcxTabControl;
@@ -138,7 +139,7 @@ type
     procedure TopPanelButonClick(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure cxPanelButtonEnabled(yeni,kaydet,sil : boolean);
-    procedure cxPanelButtonVisible(yeni,kaydet,sil : boolean);
+    procedure cxPanelButtonVisible(yeni,kaydet,sil : boolean ; kapat : boolean = True);
     procedure Image2Click(Sender: TObject);
     procedure PropertiesEditValueChanged(Sender: TObject);virtual;
     procedure SayfaCaption(s1,s2,s3,s4,s5 : string;ActivePage : integer = 0);
@@ -826,11 +827,12 @@ begin
   cxPanelButtonEnabled(false,True,false);
 end;
 
-procedure TGirisForm.cxPanelButtonVisible(yeni,kaydet,sil : boolean);
+procedure TGirisForm.cxPanelButtonVisible(yeni,kaydet,sil : boolean ;  kapat : boolean = True);
 begin
   cxYeni.Visible := yeni;
   cxKaydet.Visible := kaydet;
   cxIptal.Visible := sil;
+  cxKapat.Visible := kapat;
 end;
 
 procedure TGirisForm.cxPanelButtonEnabled(yeni,kaydet,sil : boolean);
