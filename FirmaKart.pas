@@ -809,13 +809,13 @@ begin
 
   addButton(self,nil,'btnSubeler','','Þube Tanýmla / Görüntüle',Kolon3,'',230,ButtonClick);
   addButton(self,nil,'btnSubeGetir','','Baþka Firmadan Þube Taþý (Firma Birleþtir)',Kolon3,'',230,ButtonClick);
-  addButton(self,nil,'btnTopluAktif','','Firma Personeli Toplu Aktif Yap',Kolon3,'',230,ButtonClick);
-  addButton(self,nil,'btnTopluPasif','','Firma Personeli Toplu Pasif Yap',Kolon3,'',230,ButtonClick);
   addButton(self,nil,'btnCalismalar','','Firma Çalýþmalarý',Kolon3,'',230,ButtonClick);
   addButton(self,nil,'btnSozlesmeler','','Firma Sözleþmeleri',Kolon3,'',230,ButtonClick);
   addButton(self,nil,'btnISGEkipleri','','Ýþ Saðlýðý ve Güvenliði Ekipleri',Kolon3,'',230,ButtonClick);
   addButton(self,nil,'btnEkipmanList','','Firma Ekipman Listesi',Kolon3,'',230,ButtonClick);
   addButton(self,nil,'btnFirmaYetkili','','Firma Yetkili Listesi',Kolon3,'',230,ButtonClick);
+  addButton(self,nil,'btnTopluAktif','','Firma Personeli Toplu Aktif Yap',Kolon3,'',230,ButtonClick);
+  addButton(self,nil,'btnTopluPasif','','Firma Personeli Toplu Pasif Yap',Kolon3,'',230,ButtonClick);
 
 
   tableColumnDescCreate;
