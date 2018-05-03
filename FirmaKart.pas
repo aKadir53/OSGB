@@ -91,7 +91,7 @@ type
     { Private declarations }
   protected
     procedure FirmaSubeBirlestir;
-    procedure TopluPasifYap (const bx : boolean);
+    procedure TopluPasifYap (const bPasif : boolean);
   public
     { Public declarations }
     procedure OrtakEventAta(Sender : TObject);overload;
@@ -115,7 +115,7 @@ var
   kart : sqlType;
 
 implementation
-    uses AnaUnit,SMS, TransUtils;
+uses AnaUnit,SMS, TransUtils, StrUtils, nThermo;
 {$R *.dfm}
 
 procedure TfrmFirmaKart.ButtonClick(Sender: TObject);
@@ -566,34 +566,16 @@ begin
   end;
 end;
 
-procedure TfrmFirmaKart.TopluPasifYap (const bx : boolean);
+procedure TfrmFirmaKart.TopluPasifYap (const bPasif : boolean);
 var
   List: TListeAc;
-  sKaynakSirketKod, sKaynakSubeKod, sHedefSirketKod, sHedefSubeKod, sTmp1, sTmp2 : String;
+  sSirketKod, sSubeKod : String;
   aQuery : TADOQuery;
-  iMaxSubeNo: Integer;
+  iThermo, i : Integer;
+  bTamam : Boolean;
 begin
-  sHedefSirketKod := TcxButtonEditKadir(FindComponent('SirketKod')).EditingValue;
-  if IsNull (sHedefSirketKod) then Exit;
-  //o þirket dýþýndaki ve þubesi olan þirketler
-  List :=
-    ListeAcCreate
-      ('SIRKETLER_TNM',
-       'sirketKod,tanimi,Aktif',
-       'SirketKod,Sirket,Durum',
-       '50,250,50',
-       'SirketKodList',
-       'Þubenin Olduðu Kaynak Firma Seçimi',
-       'SirketKod <> ' + SQLValue (sHedefSirketKod)+
-       ' and Exists (Select 1 from SIRKET_SUBE_TNM sss where sss.SirketKod = SIRKETLER_TNM.SirketKod)',3,True);
-  try
-    datalar.ButtonEditSecimlist := List.ListeGetir;
-    if length (datalar.ButtonEditSecimlist) <= 0 then Exit;
-    sKaynakSirketKod := DATALAR.ButtonEditSecimlist [0].kolon1;
-    sTmp1 := DATALAR.ButtonEditSecimlist [0].kolon2;
-  finally
-    List.Free;
-  end;
+  sSirketKod := TcxButtonEditKadir(FindComponent('SirketKod')).EditingValue;
+  if IsNull (sSirketKod) then Exit;
   //seçilen kaynak þirketin þubeleri
   List :=
     ListeAcCreate
@@ -602,32 +584,62 @@ begin
        'Þube Kodu,Þube,Sicil No',
        '10,80,250',
        'SubeKodList',
-       'Taþýnýp Birleþtirilecek Þube Seçimi',
-       'SirketKod = ' + SQLValue (sKaynakSirketKod),3,True);
+       'Personeli Pasif Hale Getirilecek Þube Seçimi',
+       'SirketKod = ' + SQLValue (sSirketKod),3,True);
   try
     datalar.ButtonEditSecimlist := List.ListeGetir;
     if length (datalar.ButtonEditSecimlist) <= 0 then Exit;
-    sKaynakSubeKod := DATALAR.ButtonEditSecimlist [0].kolon1;
-    sTmp2 := DATALAR.ButtonEditSecimlist [0].kolon2;
+    sSubeKod := DATALAR.ButtonEditSecimlist [0].kolon1;
   finally
     List.Free;
   end;
-  if ShowMessageSkin (
-       '"' + sTmp1 + '" þirketinin'#13#10+
-       '"' + sTmp2 + '" þubesi'#13#10+
-       '"' + TcxTextEditKadir(FindComponent('tanimi')).EditValue + '" þirketi altýna taþýnacak!'#13#10#13#10+
-       'Emin Misiniz ?', '', '', 'conf') <> mrYes then Exit;
-
-  aQuery := TADOQuery.Create (Self);
+  //o þirket dýþýndaki ve þubesi olan þirketler
+  List :=
+    ListeAcCreate
+      ('PersonelKart',
+       'DosyaNo,HASTAADI,HASTASOYADI,TCKIMLIKNO,Aktif',
+       'DosyaNo,Adý,Soyadý,TCKimlik No,Aktif',
+       '50,150,150,100,20',
+       'PersonelList',
+       'Þubenin Personel Seçimi',
+       'SirketKod = ' + SQLValue (sSirketKod)+
+       ' and Sube = ' + SQLValue (sSubeKod)+
+       ' and IsNull (Aktif, -1) <> ' + IfThen (bPasif, '0', '1'),3,True);
   try
-    aQuery.Connection := DATALAR.ADOConnection2;
-    aQuery.SQL.Text := 'Select IsNull ((select max (cast (SubeKod as int)) from SIRKET_SUBE_TNM sb where sb.SirketKod = ' + SQLValue (sHedefSirketKod) + ' and IsNumeric (SubeKod) = 1), -1) + 1 XX';
-    aQuery.Open;
-    iMaxSubeNo := aQuery.FieldByName('XX').AsInteger;
-    sHedefSubeKod := FormatFloat('00', iMaxSubeNo);
-    KademeliStoredProcCalistir('sp_SubeSirketiniDegistir', ', ' + SQLValue(sKaynakSirketKod) + ', ' + SQLValue(sKaynakSubeKod) + ', ' + SQLValue(sHedefSirketKod) + ', ' + SQLValue(sHedefSubeKod));
+    datalar.ButtonEditSecimlist := List.ListeGetir;
+    if length (datalar.ButtonEditSecimlist) <= 0 then Exit;
+    aQuery := TADOQuery.Create (Self);
+    try
+      aQuery.Connection := DATALAR.ADOConnection2;
+      ShowThermo (iThermo, 'Personel kartlarý '+IfThen (bPasif, 'PASÝF', 'AKTÝF')+' hale getiriliyor', 0, High (datalar.ButtonEditSecimlist) + 1, 0, True);
+      try
+        bTamam := False;
+        BeginTrans(DATALAR.ADOConnection2);
+        try
+          for i := 0 to High (datalar.ButtonEditSecimlist) do
+          begin
+            if not UpdateThermo (i, iThermo, 'Dosya No: ' + DATALAR.ButtonEditSecimlist [i].kolon1) then Exit;
+            aQuery.SQL.Text := 'Update PersonelKart set Aktif = '+IfThen (bPasif, '0', '1')+' where DosyaNo = ' + SQLValue (DATALAR.ButtonEditSecimlist [i].kolon1);
+            aQuery.ExecSQL;
+          end;
+          bTamam := True;
+        finally
+          if bTamam then
+          begin
+            CommitTrans(DATALAR.ADOConnection2);
+            ShowMessageSkin('Personel Güncelleme Ýþlemi Üstün Baþarý Ýle Tamamlandý', '', '', 'info');
+          end
+           else
+            RollBackTrans (DATALAR.ADOConnection2);
+        end;
+      finally
+        FreeThermo(iThermo);
+      end;
+    finally
+      aQuery.Free;
+    end;
   finally
-    aQuery.Free;
+    List.Free;
   end;
 end;
 
