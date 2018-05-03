@@ -277,11 +277,17 @@ begin
   indexFieldName := 'id';
   TableName := 'Kontrol_Islem';
 
+  if datalar.UserGroup = '1'
+  then
+    where := ''
+  else
+  if datalar.UserGroup = '10'
+  then
+    where := ' sirketKod = ' + QuotedStr(datalar.sirketKodu)
+  else
+    where := ' IGU = ' + QuotedStr(datalar.IGU);
 
- (*
-  where := ' hazirlayan = ' + QuotedStr(datalar.IGU) + ' or paylasilan = ' + QuotedStr(datalar.IGU) +
-           ' or hazirlayanDoktor = ' + QuotedStr(datalar.doktorKodu) + ' or paylasilan = ' + QuotedStr(datalar.doktorKodu);
-  *)
+
 
   Kontroler := ListeAcCreate('FirmaKontrol_view','id,sirket,Tarih',
                        'ID,ÞirketAdý,Ýþlem Tarihi',
@@ -366,7 +372,13 @@ begin
            end;
   Yeni : begin
            TcxImageComboKadir(FindComponent('KontrolTuru')).Enabled := False;
-
+           if datalar.IGU <> ''
+           then begin
+             TcxImageComboKadir(FindComponent('IGU')).EditValue := datalar.IGU;
+             TcxImageComboKadir(FindComponent('IGU')).Enabled := False;
+           end
+           else
+             TcxImageComboKadir(FindComponent('IGU')).Enabled := True;
          end;
   end;
 end;
