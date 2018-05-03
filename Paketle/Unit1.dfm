@@ -211,6 +211,15 @@ object frmPaket: TfrmPaket
       Caption = 'ID Art'#305#351' miktar'#305
       FocusControl = SpinEdit1
     end
+    object SpeedButton5: TSpeedButton
+      Left = 4
+      Top = 27
+      Width = 97
+      Height = 26
+      Caption = 'Git....'
+      Enabled = False
+      OnClick = SpeedButton5Click
+    end
     object ComboBox1: TComboBox
       Left = 380
       Top = 4
