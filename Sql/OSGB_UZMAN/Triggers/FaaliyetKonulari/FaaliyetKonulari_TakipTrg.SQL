@@ -1,6 +1,6 @@
 BEGIN TRAN
 GO
-CREATE -- create -- drop
+ALTER -- create -- drop
  TRIGGER [dbo].[FaaliyetKonulari_TakipTrg]
    ON  [dbo].[FaaliyetKonulari]
    AFTER DELETE,INSERT, UPDATE
