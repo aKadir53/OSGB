@@ -91,6 +91,7 @@ type
     { Private declarations }
   protected
     procedure FirmaSubeBirlestir;
+    procedure TopluPasifYap (const bPasif : boolean);
   public
     { Public declarations }
     procedure OrtakEventAta(Sender : TObject);overload;
@@ -114,7 +115,7 @@ var
   kart : sqlType;
 
 implementation
-    uses AnaUnit,SMS, TransUtils;
+uses AnaUnit,SMS, TransUtils, StrUtils, nThermo;
 {$R *.dfm}
 
 procedure TfrmFirmaKart.ButtonClick(Sender: TObject);
@@ -146,6 +147,16 @@ begin
   if TcxButtonKadir(sender).ButtonName = 'btnSubeGetir' then
   begin
     FirmaSubeBirlestir;
+  end
+  else
+  if TcxButtonKadir(sender).ButtonName = 'btnTopluPasif' then
+  begin
+    TopluPasifYap (True);
+  end
+  else
+  if TcxButtonKadir(sender).ButtonName = 'btnTopluAktif' then
+  begin
+    TopluPasifYap (False);
   end;
   if F <> nil then F.ShowModal;
 end;
@@ -555,6 +566,83 @@ begin
   end;
 end;
 
+procedure TfrmFirmaKart.TopluPasifYap (const bPasif : boolean);
+var
+  List: TListeAc;
+  sSirketKod, sSubeKod : String;
+  aQuery : TADOQuery;
+  iThermo, i : Integer;
+  bTamam : Boolean;
+begin
+  sSirketKod := TcxButtonEditKadir(FindComponent('SirketKod')).EditingValue;
+  if IsNull (sSirketKod) then Exit;
+  //seçilen kaynak þirketin þubeleri
+  List :=
+    ListeAcCreate
+      ('SIRKET_SUBE_TNM',
+       'subeKod,subeTanim,subeSiciNo',
+       'Þube Kodu,Þube,Sicil No',
+       '10,80,250',
+       'SubeKodList',
+       'Personeli Pasif Hale Getirilecek Þube Seçimi',
+       'SirketKod = ' + SQLValue (sSirketKod),3,True);
+  try
+    datalar.ButtonEditSecimlist := List.ListeGetir;
+    if length (datalar.ButtonEditSecimlist) <= 0 then Exit;
+    sSubeKod := DATALAR.ButtonEditSecimlist [0].kolon1;
+  finally
+    List.Free;
+  end;
+  //o þirket dýþýndaki ve þubesi olan þirketler
+  List :=
+    ListeAcCreate
+      ('PersonelKart',
+       'DosyaNo,HASTAADI,HASTASOYADI,TCKIMLIKNO,Aktif',
+       'DosyaNo,Adý,Soyadý,TCKimlik No,Aktif',
+       '50,150,150,100,20',
+       'PersonelList',
+       'Þubenin Personel Seçimi',
+       'SirketKod = ' + SQLValue (sSirketKod)+
+       ' and Sube = ' + SQLValue (sSubeKod)+
+       ' and IsNull (Aktif, -1) <> ' + IfThen (bPasif, '0', '1'),3,True);
+  try
+    datalar.ButtonEditSecimlist := List.ListeGetir;
+    if length (datalar.ButtonEditSecimlist) <= 0 then Exit;
+    aQuery := TADOQuery.Create (Self);
+    try
+      aQuery.Connection := DATALAR.ADOConnection2;
+      ShowThermo (iThermo, 'Personel kartlarý '+IfThen (bPasif, 'PASÝF', 'AKTÝF')+' hale getiriliyor', 0, High (datalar.ButtonEditSecimlist) + 1, 0, True);
+      try
+        bTamam := False;
+        BeginTrans(DATALAR.ADOConnection2);
+        try
+          for i := 0 to High (datalar.ButtonEditSecimlist) do
+          begin
+            if not UpdateThermo (i, iThermo, 'Dosya No: ' + DATALAR.ButtonEditSecimlist [i].kolon1) then Exit;
+            aQuery.SQL.Text := 'Update PersonelKart set Aktif = '+IfThen (bPasif, '0', '1')+' where DosyaNo = ' + SQLValue (DATALAR.ButtonEditSecimlist [i].kolon1);
+            aQuery.ExecSQL;
+          end;
+          bTamam := True;
+        finally
+          if bTamam then
+          begin
+            CommitTrans(DATALAR.ADOConnection2);
+            ShowMessageSkin('Personel Güncelleme Ýþlemi Üstün Baþarý Ýle Tamamlandý', '', '', 'info');
+          end
+           else
+            RollBackTrans (DATALAR.ADOConnection2);
+        end;
+      finally
+        FreeThermo(iThermo);
+      end;
+    finally
+      aQuery.Free;
+    end;
+  finally
+    List.Free;
+  end;
+end;
+
 procedure TfrmFirmaKart.FormCreate(Sender: TObject);
 var
   List : TListeAc;
@@ -726,6 +814,8 @@ begin
   addButton(self,nil,'btnISGEkipleri','','Ýþ Saðlýðý ve Güvenliði Ekipleri',Kolon3,'',230,ButtonClick);
   addButton(self,nil,'btnEkipmanList','','Firma Ekipman Listesi',Kolon3,'',230,ButtonClick);
   addButton(self,nil,'btnFirmaYetkili','','Firma Yetkili Listesi',Kolon3,'',230,ButtonClick);
+  addButton(self,nil,'btnTopluAktif','','Firma Personeli Toplu Aktif Yap',Kolon3,'',230,ButtonClick);
+  addButton(self,nil,'btnTopluPasif','','Firma Personeli Toplu Pasif Yap',Kolon3,'',230,ButtonClick);
 
 
   tableColumnDescCreate;

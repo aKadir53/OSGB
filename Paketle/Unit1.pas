@@ -51,6 +51,7 @@ type
     btPanodanYapistir: TSpeedButton;
     SpinEdit1: TSpinEdit;
     label111: TLabel;
+    SpeedButton5: TSpeedButton;
     procedure SpeedButton2Click(Sender: TObject);
     procedure SpeedButton1Click(Sender: TObject);
     Function  DosyaKopyala(sSrc : string;sDest : string) : integer;
@@ -71,6 +72,7 @@ type
     procedure table1NewRecord(DataSet: TDataSet);
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
     procedure btPanodanYapistirClick(Sender: TObject);
+    procedure SpeedButton5Click(Sender: TObject);
 
   private
     { Private declarations }
@@ -382,8 +384,18 @@ begin
 
   SpeedButton1.Enabled := true;
   btPanodanYapistir.Enabled := True;
+  SpeedButton5.Enabled := True;
 
 
+end;
+
+procedure TfrmPaket.SpeedButton5Click(Sender: TObject);
+var
+  sID : String;
+begin
+  if not InputQuery ('ID''ye Git...', 'Gidilecek ID', sID) then Exit;
+  if Trim (sID) = '' then Exit;
+  if not table1.Locate ('ID', sID, [loCaseInsensitive]) then Dialogs.ShowMessage('Bulunamadý');
 end;
 
 procedure TfrmPaket.ComboBox1Change(Sender: TObject);
