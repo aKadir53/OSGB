@@ -269,9 +269,12 @@ procedure TfrmCihazKontrol.SirketlerPropertiesChange(Sender: TObject);
 begin
   cxPanelButtonEnabled(false,True,false);
   if TcxImageComboKadir(Sender).Name = 'SirketKod'
-  Then
-   TcxImageComboKadir(FindComponent('KontrolCihaz')).Filter := ' sirketKod is null or sirketKod = ' + vartostr(TcxImageComboKadir(FindComponent('SirketKod')).EditingValue);
+  Then begin
+   TcxImageComboKadir(FindComponent('KontrolCihaz')).Filter := ' sirketKod = ' + vartostr(TcxImageComboKadir(FindComponent('SirketKod')).EditingValue);
+   TcxImageComboKadir(FindComponent('IGU')).TableName := SirketIGUToSQLStr(TcxImageComboKadir(FindComponent('sirketKod')).EditingValue);
+   TcxImageComboKadir(FindComponent('IGU')).Filter := '';
 
+  end;
 
   if TcxImageComboKadir(Sender).Name = 'KontrolCihaz'
   Then begin

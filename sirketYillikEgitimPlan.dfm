@@ -1,7 +1,7 @@
-object frmISGKurulToplanti: TfrmISGKurulToplanti
+object frmSirketYillikEgitimPlan: TfrmSirketYillikEgitimPlan
   Left = 1
   Top = 1
-  Caption = 'ISG Kurul Toplant'#305
+  Caption = 'Saha G'#246'zetim'
   ClientHeight = 597
   ClientWidth = 1000
   Color = clBtnFace
@@ -13,36 +13,195 @@ object frmISGKurulToplanti: TfrmISGKurulToplanti
   OldCreateOrder = False
   Position = poMainFormCenter
   OnCreate = FormCreate
+  OnShow = FormShow
   PixelsPerInch = 96
   TextHeight = 13
-  object DataSource1: TDataSource
-    DataSet = ADO_RiskDetay
-    Left = 104
-    Top = 146
-  end
-  object ADO_RiskDetay: TADOQuery
-    Connection = DATALAR.ADOConnection2
-    CursorType = ctStatic
-    CommandTimeout = 0
-    Parameters = <>
-    SQL.Strings = (
-      
-        'select SR.ID, sst.subeTanim SubeTanimi, DenetimiYapanKullanici, ' +
-        'DenetimTarihi, Date_Create, GozetimDefterNo, FirmaKodu, cast (ca' +
-        'se when Image Is NULL then 0 else 1 end as bit) ImageVar, SR.Goz' +
-        'lemGrup, SGR.Tanimi GozlemGrupTanim'
-      'from SahaGozlemRaporlari SR'
-      
-        'inner join SahaGozlemSoruGrup SGR on SGR.GozlemGrup = SR.GozlemG' +
-        'rup'
-      
-        'left outer join SIRKET_SUBE_TNM sst on sst.SirketKod = SR.FirmaK' +
-        'odu'
-      '  and sst.SubeKod = SR.SubeKod'
-      'where FirmaKodu = '#39'0001'#39
-      'order by SR.ID')
-    Left = 104
-    Top = 208
+  object YillikEgitimPlanGrid: TcxGridKadir
+    Left = 88
+    Top = 8
+    Width = 1161
+    Height = 297
+    TabOrder = 0
+    LookAndFeel.NativeStyle = False
+    ExceleGonder = False
+    object cxGridDBBandedTableView1: TcxGridDBBandedTableView
+      DataController.Summary.DefaultGroupSummaryItems = <>
+      DataController.Summary.FooterSummaryItems = <>
+      DataController.Summary.SummaryGroups = <>
+      NewItemRow.Visible = True
+      OptionsView.NoDataToDisplayInfoText = 'Faturaya Eklenmi'#351' Sat'#305'r Yok'
+      OptionsView.CellAutoHeight = True
+      OptionsView.Footer = True
+      OptionsView.FooterMultiSummaries = True
+      OptionsView.GroupByBox = False
+      OptionsView.GroupFooterMultiSummaries = True
+      Bands = <
+        item
+        end>
+    end
+    object YillikEgitimPlanSatirlar: TcxGridDBBandedTableView
+      Navigator.Buttons.OnButtonClick = RDSSatirlarNavigatorButtonsButtonClick
+      Navigator.Buttons.First.Visible = False
+      Navigator.Buttons.PriorPage.Visible = False
+      Navigator.Buttons.Prior.Visible = False
+      Navigator.Buttons.Next.Visible = False
+      Navigator.Buttons.NextPage.Visible = False
+      Navigator.Buttons.Last.Visible = False
+      Navigator.Buttons.Insert.Visible = True
+      Navigator.Buttons.Append.Visible = False
+      Navigator.Buttons.SaveBookmark.Visible = False
+      Navigator.Buttons.GotoBookmark.Visible = False
+      Navigator.Buttons.Filter.Visible = False
+      DataController.Summary.DefaultGroupSummaryItems = <>
+      DataController.Summary.FooterSummaryItems = <>
+      DataController.Summary.SummaryGroups = <>
+      NewItemRow.SeparatorColor = 8454143
+      NewItemRow.Visible = True
+      OptionsSelection.InvertSelect = False
+      OptionsView.CellAutoHeight = True
+      OptionsView.GroupByBox = False
+      OptionsView.HeaderAutoHeight = True
+      Styles.NewItemRowInfoText = cxStyle10
+      Bands = <
+        item
+          Caption = 'Planlama'
+          Styles.Header = cxStyle7
+          Width = 1118
+        end>
+      object YillikEgitimPlanSatirlarFirmaYillikEgitimPlanID: TcxGridDBBandedColumn
+        DataBinding.FieldName = 'FirmaYillikEgitimPlanID'
+        Visible = False
+        HeaderAlignmentHorz = taCenter
+        HeaderAlignmentVert = vaCenter
+        Position.BandIndex = 0
+        Position.ColIndex = 0
+        Position.RowIndex = 0
+      end
+      object YillikEgitimPlanSatirlarid: TcxGridDBBandedColumn
+        DataBinding.FieldName = 'id'
+        Visible = False
+        HeaderAlignmentHorz = taCenter
+        HeaderAlignmentVert = vaCenter
+        Position.BandIndex = 0
+        Position.ColIndex = 1
+        Position.RowIndex = 0
+      end
+      object YillikEgitimPlanSatirlaregitimTanimi: TcxGridDBBandedColumn
+        Caption = 'Egitim Tanimi'
+        DataBinding.FieldName = 'egitimTanimi'
+        PropertiesClassName = 'TcxMemoProperties'
+        Properties.Alignment = taCenter
+        HeaderAlignmentHorz = taCenter
+        HeaderAlignmentVert = vaCenter
+        Width = 200
+        Position.BandIndex = 0
+        Position.ColIndex = 2
+        Position.RowIndex = 0
+      end
+      object YillikEgitimPlanSatirlaregitimKonulari: TcxGridDBBandedColumn
+        Caption = 'Egitim Konulari'
+        DataBinding.FieldName = 'egitimKonulari'
+        PropertiesClassName = 'TcxMemoProperties'
+        Properties.Alignment = taLeftJustify
+        HeaderAlignmentHorz = taCenter
+        HeaderAlignmentVert = vaCenter
+        Width = 220
+        Position.BandIndex = 0
+        Position.ColIndex = 3
+        Position.RowIndex = 0
+      end
+      object YillikEgitimPlanSatirlaregitimeKatilacaklar: TcxGridDBBandedColumn
+        Caption = 'Egitime Katilacaklar'
+        DataBinding.FieldName = 'egitimeKatilacaklar'
+        PropertiesClassName = 'TcxMemoProperties'
+        Properties.Alignment = taCenter
+        HeaderAlignmentHorz = taCenter
+        HeaderAlignmentVert = vaCenter
+        Width = 127
+        Position.BandIndex = 0
+        Position.ColIndex = 4
+        Position.RowIndex = 0
+      end
+      object YillikEgitimPlanSatirlarsure: TcxGridDBBandedColumn
+        Caption = 'S'#252're (Saat)'
+        DataBinding.FieldName = 'sure'
+        HeaderAlignmentHorz = taCenter
+        HeaderAlignmentVert = vaCenter
+        Width = 45
+        Position.BandIndex = 0
+        Position.ColIndex = 5
+        Position.RowIndex = 0
+      end
+      object YillikEgitimPlanSatirlarPTarih: TcxGridDBBandedColumn
+        Caption = 'Planlanan Tarih'
+        DataBinding.FieldName = 'PTarih'
+        PropertiesClassName = 'TcxDateEditProperties'
+        Properties.Alignment.Horz = taCenter
+        Properties.Alignment.Vert = taVCenter
+        HeaderAlignmentHorz = taCenter
+        HeaderAlignmentVert = vaCenter
+        Width = 79
+        Position.BandIndex = 0
+        Position.ColIndex = 6
+        Position.RowIndex = 0
+      end
+      object YillikEgitimPlanSatirlarGTarih: TcxGridDBBandedColumn
+        Caption = 'Ger'#231'ekle'#351'me Tarih'
+        DataBinding.FieldName = 'GTarih'
+        PropertiesClassName = 'TcxDateEditProperties'
+        Properties.Alignment.Horz = taCenter
+        Properties.Alignment.Vert = taVCenter
+        HeaderAlignmentHorz = taCenter
+        HeaderAlignmentVert = vaCenter
+        Width = 80
+        Position.BandIndex = 0
+        Position.ColIndex = 7
+        Position.RowIndex = 0
+      end
+      object YillikEgitimPlanSatirlaregitimVeren: TcxGridDBBandedColumn
+        Caption = 'Egitim Veren IGU'
+        DataBinding.FieldName = 'egitimVerenIGU'
+        PropertiesClassName = 'TcxImageComboBoxProperties'
+        Properties.Alignment.Horz = taCenter
+        Properties.Alignment.Vert = taVCenter
+        Properties.Items = <>
+        HeaderAlignmentHorz = taCenter
+        HeaderAlignmentVert = vaCenter
+        Width = 90
+        Position.BandIndex = 0
+        Position.ColIndex = 8
+        Position.RowIndex = 0
+      end
+      object YillikEgitimPlanSatirlaraciklama: TcxGridDBBandedColumn
+        Caption = 'Aciklama'
+        DataBinding.FieldName = 'aciklama'
+        PropertiesClassName = 'TcxMemoProperties'
+        Properties.Alignment = taCenter
+        HeaderAlignmentHorz = taCenter
+        HeaderAlignmentVert = vaCenter
+        Width = 138
+        Position.BandIndex = 0
+        Position.ColIndex = 10
+        Position.RowIndex = 0
+      end
+      object YillikEgitimPlanSatirlaregitimVerenDoktor: TcxGridDBBandedColumn
+        Caption = 'Egitim Veren Doktor'
+        DataBinding.FieldName = 'egitimVerenDoktor'
+        PropertiesClassName = 'TcxImageComboBoxProperties'
+        Properties.Alignment.Horz = taCenter
+        Properties.Alignment.Vert = taVCenter
+        Properties.Items = <>
+        HeaderAlignmentHorz = taCenter
+        HeaderAlignmentVert = vaCenter
+        Width = 90
+        Position.BandIndex = 0
+        Position.ColIndex = 9
+        Position.RowIndex = 0
+      end
+    end
+    object YillikEgitimPlanGridLevel1: TcxGridLevel
+      GridView = YillikEgitimPlanSatirlar
+    end
   end
   object cxStyleRepository1: TcxStyleRepository
     Left = 8
@@ -87,6 +246,13 @@ object frmISGKurulToplanti: TfrmISGKurulToplanti
       Color = 8454143
     end
     object cxStyle7: TcxStyle
+      AssignedValues = [svFont, svTextColor]
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -11
+      Font.Name = 'Tahoma'
+      Font.Style = [fsBold]
+      TextColor = clBlue
     end
     object cxStyle8: TcxStyle
       AssignedValues = [svFont, svTextColor]
@@ -98,11 +264,18 @@ object frmISGKurulToplanti: TfrmISGKurulToplanti
       TextColor = clMaroon
     end
     object cxStyle9: TcxStyle
+      AssignedValues = [svFont, svTextColor]
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -11
+      Font.Name = 'Tahoma'
+      Font.Style = [fsBold]
+      TextColor = clGreen
     end
   end
   object cxStyleRepository2: TcxStyleRepository
     Left = 16
-    Top = 56
+    Top = 32
     PixelsPerInch = 96
     object cxStyle2: TcxStyle
       AssignedValues = [svColor, svFont]
@@ -118,23 +291,15 @@ object frmISGKurulToplanti: TfrmISGKurulToplanti
     Images = DATALAR.imag24png
     Left = 232
     Top = 176
-    object Y1: TMenuItem
+    object E1: TMenuItem
+      Tag = -20
       Caption = 'Yazd'#305'r'
       ImageIndex = 28
-      object E1: TMenuItem
-        Tag = -20
-        Caption = 'Toplant'#305' '#199'a'#287'r'#305' Formu'
-        OnClick = cxButtonCClick
-      end
-      object T1: TMenuItem
-        Tag = -21
-        Caption = 'Toplant'#305' Tutana'#287#305
-        OnClick = cxButtonCClick
-      end
+      OnClick = cxButtonCClick
     end
-    object M1: TMenuItem
+    object N1: TMenuItem
       Tag = -30
-      Caption = #304'lgililere Mail'
+      Caption = #304#351'veren Bilgilendir'
       ImageIndex = 10
       OnClick = cxButtonCClick
     end
@@ -2309,5 +2474,20 @@ object frmISGKurulToplanti: TfrmISGKurulToplanti
           EDFF241CEDFF241CEDFF241CEDFF241CEDFF241CEDFF241CEDFF241CEDFF241C
           EDFF241CEDFF241CEDFF241CEDFF241CEDFF241CEDFF241CEDFF}
       end>
+  end
+  object cxStyleRepository3: TcxStyleRepository
+    PixelsPerInch = 96
+    object cxStyle10: TcxStyle
+      AssignedValues = [svColor, svTextColor]
+      Color = clYellow
+      TextColor = clBlack
+    end
+  end
+  object cxStyleRepository4: TcxStyleRepository
+    PixelsPerInch = 96
+    object cxStyle11: TcxStyle
+      AssignedValues = [svColor]
+      Color = clLime
+    end
   end
 end

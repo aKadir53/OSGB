@@ -6,7 +6,7 @@ interface
 uses HizmetKayitIslemleriWS,DB,sysUtils,XSBuiltIns,Classes,cxImage,ADODB,
      Vcl.Graphics,jpeg,ExtCtrls;
 
-type TprintTip = (pTYazdir,pTOnIzle,pTDizayn,pTNone);
+type TprintTip = (pTYazdir,pTOnIzle,pTDizayn,pTNone,pTPDF);
 type sqlType = (sql_Select,sql_Exec,sql_sp,sql_fn,sql_new,sql_edit,sql_delete,sql_none);
 type showDialog = (OFShow,OFShowModal);
 type userGroup = (ugUser,ugGroup);
@@ -445,6 +445,8 @@ type
     doktorMail : string;
     calisanTemsilci : string;
     calisanTemsilciMail : string;
+    BascalisanTemsilci : string;
+    BascalisanTemsilciMail : string;
     destekElemani : string;
     destekElemaniMail : string;
     isveren : string;
@@ -507,7 +509,7 @@ type
     Bolum : Variant;
     TehlikeKaynagi : Variant;
     Tehlike : Variant;
-    Etkilenecekler : Variant;
+    Etkilenecek : Variant;
     Risk_tanim : Variant;
     Onlemler : string;
     Olasilik : Variant;
@@ -723,6 +725,7 @@ Const
   TagfrmSirketEkipmanList = 960;
   TagfrmSirketYillikCalismaPlan = 970;
   TagfrmFirmaYetkili = 980;
+  TagfrmSirketYillikEgitimPlan = 990;
 
 
   Kaydet = 0;

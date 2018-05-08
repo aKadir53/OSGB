@@ -1357,12 +1357,23 @@ begin
   addButton(self,nil,'btnSertifikaP','','Yazdýr',sayfa2_Kolon1,'',50,ButtonClick,-50);
 
 
+
  // tableColumnDescCreate;
+  cxpnlHastaGelisler.Parent := sayfa1;
   cxpnlHastaGelisler.Align := alBottom;
 
   SayfaCaption('Kimlik Bilgileri','Eðitim Bilgileri','Öz Geçmiþ','','');
 
+  if datalar.UserGroup <> '1'
+  then begin
+    sayfa3.TabVisible := False;
+  end;
+
+
   Disabled(self,True);
+
+
+
 
  end;
 

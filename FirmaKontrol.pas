@@ -231,6 +231,9 @@ end;
 
 
 procedure TfrmFirmaKontrol.SirketlerPropertiesChange(Sender: TObject);
+var
+ sql : string;
+ dataset : Tdataset;
 begin
   cxPanelButtonEnabled(false,True,false);
 
@@ -261,13 +264,32 @@ begin
      FirmaSoruGrid.Dataset.Active := True;
   end;
 
+  if TcxImageComboKadir(Sender).Name = 'SirketKod'
+  Then begin
+     sql :=
+      ' select I.kod IGUKod,I.tanimi IGUAdi,D.kod DoktorKod,D.tanimi DoktorAdi from SIRKETLER_TNM S ' +
+      ' join SIRKET_SUBE_TNM SB on SB.sirketKod = S.sirketKod ' +
+      ' left join IGU I on I.kod = SB.IGU ' +
+      ' left join DoktorlarT D on D.kod = SB.subeDoktor ' +
+      ' where S.sirketKod = ' +
+       QuotedStr(vartostr(TcxImageComboKadir(FindComponent('SirketKod')).EditingValue)) +
+      ' and SB.subeKod = ' + QuotedStr('00');
+      // QuotedStr(vartostr(TcxImageComboKadir(FindComponent('subeKod')).EditingValue));
+
+       dataset := datalar.QuerySelect(sql);
+
+      TcxImageComboKadir(FindComponent('doktor')).EditValue := dataset.FieldByName('DoktorKod').AsString;
+      TcxImageComboKadir(FindComponent('IGU')).EditValue := dataset.FieldByName('IGUKod').AsString;
+
+  end;
+
 end;
 
 procedure TfrmFirmaKontrol.FormCreate(Sender: TObject);
 var
   FaturaTarihi : TcxDateEditKadir;
   Kontroler : TListeAc;
-  sirketlerx : TcxImageComboKadir;
+  sirketlerx,IGU,doktor : TcxImageComboKadir;
   where : string;
 begin
   cxPanel.Visible := True;
@@ -349,13 +371,42 @@ begin
   sirketlerx.BosOlamaz := False;
   sirketlerx.Filter := '';
 
+
+  IGU := TcxImageComboKadir.Create(self);
+  IGU.Conn := Datalar.ADOConnection2;
+  IGU.TableName := 'IGU';
+  IGU.ValueField := 'kod';
+  IGU.DisplayField := 'Tanimi';
+  IGU.BosOlamaz := False;
+  IGU.Enabled := False;
+  IGU.Filter := '';
+  setDataStringKontrol(self,IGU,'IGU','Ýþ Güvenlik Uzm',Kolon1,'xxid',120,0,alNone,'');
+
+
+//  setDataString(self,'hazirlayan','Ýþ Güvenlik Uzm',Kolon1,'hz',120,false,'',True);
+
+  doktor := TcxImageComboKadir.Create(self);
+  doktor.Conn := Datalar.ADOConnection2;
+  doktor.TableName := 'DoktorlarT';
+  doktor.ValueField := 'kod';
+  doktor.DisplayField := 'Tanimi';
+  doktor.BosOlamaz := False;
+  doktor.Filter := '';
+  doktor.Enabled := False;
+  setDataStringKontrol(self,doktor,'doktor','Ýþyeri Hekimi',Kolon1,'xxid',120,0,alNone,'');
+
+
+
+
   TcxImageComboBoxProperties(FirmaSoruSatirpuan.Properties).Items :=
   TcxImageComboBoxProperties(TcxImageComboKadir(FindComponent('Puan')).Properties).Items;
 
 
-  setDataStringKontrol(self,FirmaSoruGrid,'FirmaSoruGrid','',Kolon1,'',900,440,alNone,'');
+  setDataStringKontrol(self,FirmaSoruGrid,'FirmaSoruGrid','',Kolon1,'',900,1,alClient,'');
 
-
+  kolon2.Visible := false;
+  kolon3.Visible := false;
+  kolon4.Visible := false;
 
   SayfaCaption('Firma Kontrol','','','','');
 end;
@@ -374,11 +425,11 @@ begin
            TcxImageComboKadir(FindComponent('KontrolTuru')).Enabled := False;
            if datalar.IGU <> ''
            then begin
-             TcxImageComboKadir(FindComponent('IGU')).EditValue := datalar.IGU;
-             TcxImageComboKadir(FindComponent('IGU')).Enabled := False;
+           //  TcxImageComboKadir(FindComponent('IGU')).EditValue := datalar.IGU;
+           //  TcxImageComboKadir(FindComponent('IGU')).Enabled := False;
            end
            else
-             TcxImageComboKadir(FindComponent('IGU')).Enabled := True;
+           //  TcxImageComboKadir(FindComponent('IGU')).Enabled := True;
          end;
   end;
 end;
