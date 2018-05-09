@@ -500,6 +500,10 @@ object frmCihazKontrol: TfrmCihazKontrol
             Value = 0
           end
           item
+            Description = 'Konu Hakk'#305'nda Bilgi Yok'
+            Value = -1
+          end
+          item
           end>
         HeaderAlignmentHorz = taCenter
         Styles.Content = cxStyle3

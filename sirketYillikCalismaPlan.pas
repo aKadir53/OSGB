@@ -111,6 +111,7 @@ type
     procedure RDSSatirlarNavigatorButtonsButtonClick(Sender: TObject;
       AButtonIndex: Integer; var ADone: Boolean);
     procedure SirketlerPropertiesChange(Sender: TObject);
+    procedure FormShow(Sender: TObject);
  //   function EArsivGonder(FaturaId : string) : string;
  //   function EArsivIptal(FaturaGuid : string) : string;
  //   function EArsivPDF(FaturaGuid : string ; _tag_ : integer) : string;
@@ -208,6 +209,8 @@ procedure TfrmSirketYillikCalismaPlan.cxButtonEditPropertiesButtonClick(Sender: 
   AButtonIndex: Integer);
 begin
     inherited;
+    if TcxButtonEditKadir(FindComponent('id')).Text = '' then exit;
+
     Enabled;
     FaturaDetay;
 
@@ -221,6 +224,7 @@ begin
 
        TcxImageComboKadir(FindComponent('SirketKod')).Enabled := False;
        TcxTextEditKadir(FindComponent('hazirlayan')).Enabled := False;
+       TcxTextEditKadir(FindComponent('doktor')).Enabled := False;
        TcxImageComboKadir(FindComponent('date_create')).Enabled := False;
 
     end
@@ -232,6 +236,7 @@ begin
 
        TcxImageComboKadir(FindComponent('SirketKod')).Enabled := True;
        TcxTextEditKadir(FindComponent('hazirlayan')).Enabled := True;
+       TcxTextEditKadir(FindComponent('doktor')).Enabled := true;
        TcxImageComboKadir(FindComponent('date_create')).Enabled := True;
 
     end;
@@ -454,6 +459,11 @@ begin
 
  sube := ' and IGU = ' + QuotedStr(datalar.IGU);
 
+ TcxImageComboKadir(FindComponent('hazirlayan')).TableName := SirketIGUToSQLStr(TcxImageComboKadir(FindComponent('sirketKod')).EditingValue);
+ TcxImageComboKadir(FindComponent('hazirlayan')).Filter := '';
+ TcxImageComboKadir(FindComponent('doktor')).TableName := SirketDoktorToSQLStr(TcxImageComboKadir(FindComponent('sirketKod')).EditingValue);
+ TcxImageComboKadir(FindComponent('doktor')).Filter := '';
+
 (*
  if Assigned(TcxImageComboKadir(FindComponent('subeKod')))
  Then
@@ -473,19 +483,18 @@ begin
 
   case Tcontrol(sender).Tag of
  -20 : begin
-          TopluDataset.Dataset0 := datalar.QuerySelect('select * from SirketSahaDenetim_view where id = ' +
+          TopluDataset.Dataset0 := datalar.QuerySelect('select * from firmaYillikCalismaPlani_View where id = ' +
                                                         varTostr(TcxButtonEditKadir(FindComponent('id')).EditValue));
-          TopluDataset.Dataset1 := YillikPlanGrid.Dataset;
 
-          PrintYap('SDF','Saha Denetim','',TopluDataset);
+          PrintYap('YCP','Çalýþma Planý','',TopluDataset);
         end;
 
   -30 : begin
           FB := FirmaBilgileri(vartostr(TcxImageComboKadir(FindComponent('sirketKod')).EditValue));
-          cxExceleGonder(YillikPlanGrid,'SahaGozetim.xls');
-          if (mailGonder(FB.YetkiliMail,'Saha Denetim',
-                        'Yapýlan Saha Denetim Sonucu , ekteki dosyada bilginize sunulmuþtur',
-                        'SahaGozetim.xls')
+          cxExceleGonder(YillikPlanGrid,'YillikPlan.xls');
+          if (mailGonder(FB.YetkiliMail,'Ýþ Planý',
+                        'Firmanýzda Yýl içersinde Yapýlacak Olan Çalýþmalar, ekteki Ýþ Planý dosyasý ile bilginize sunulmuþtur',
+                        'YillikPlan.xls')
                = '0000')
              Then ShowMessageSkin('Email Bilgilendirmesi Yapýldý','','','info')
               else ShowMessageSkin('Email Bilgilendirmesi Yapýlamadý','','','info')
@@ -522,7 +531,7 @@ end;
 procedure TfrmSirketYillikCalismaPlan.FormCreate(Sender: TObject);
 var
   Faturalar : TListeAc;
-  sirketlerx,subeler ,RiskBolum , IGU : TcxImageComboKadir;
+  sirketlerx,subeler ,RiskBolum , IGU ,doktor : TcxImageComboKadir;
   FaturaTarihi : TcxDateEditKadir;
   where , sube : string;
 begin
@@ -587,9 +596,17 @@ begin
   IGU.ValueField := 'kod';
   IGU.DisplayField := 'Tanimi';
   IGU.BosOlamaz := False;
-  IGU.Filter := '';
+  //IGU.Filter := '';
   setDataStringKontrol(self,IGU,'hazirlayan','Ýþ Güvenlik Uzm',Kolon1,'trh',120,0,alNone,'');
 
+  doktor := TcxImageComboKadir.Create(self);
+  doktor.Conn := Datalar.ADOConnection2;
+  doktor.TableName := 'DoktorlarT';
+  doktor.ValueField := 'kod';
+  doktor.DisplayField := 'Tanimi';
+  doktor.BosOlamaz := False;
+  //doktor.Filter := '';
+  setDataStringKontrol(self,doktor,'doktor','Doktor',Kolon1,'trh',120,0,alNone,'');
 
 
 
@@ -645,7 +662,7 @@ begin
 
 
 //  setDataStringBLabel(self,'bosSatir',kolon1,'',1000,'Risk Kaynaklarý');
-  setDataStringKontrol(self,YillikPlanGrid,'YillikPlanGrid','',Kolon1,'',1161,400);
+  setDataStringKontrol(self,YillikPlanGrid,'YillikPlanGrid','',Kolon1,'',1,1,alClient);
 
 
   YillikPlanGrid.Dataset.Connection := datalar.ADOConnection2;
@@ -658,14 +675,22 @@ begin
   YillikPlanGrid.Dataset.BeforeEdit := BeforeEdit;
 
 
-  kolon2.Width := 0;
-  Kolon3.Width := 0;
-  Kolon4.Width := 0;
+  kolon2.Visible := false;
+  kolon3.Visible := false;
+  kolon4.Visible := false;
 
 
   //GridFaturalar.DataController.DataSource := DataSource;
   SayfaCaption('Plan','','','','');
   Disabled(self,True);
+end;
+
+procedure TfrmSirketYillikCalismaPlan.FormShow(Sender: TObject);
+begin
+  inherited;
+//  GridToSayfaClient('YillikPlanGrid',self);
+  // TcxGrid(FindComponent('YillikPlanGrid')).Width := sayfa1.Width - 20;
+//   TcxGrid(FindComponent('YillikPlanGrid')).Height := sayfa1.Height - 45;
 end;
 
 procedure TfrmSirketYillikCalismaPlan.GozlemYazdir(const GozlemID: integer);
