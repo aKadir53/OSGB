@@ -137,6 +137,7 @@ type
       AButtonIndex: Integer; var ADone: Boolean);
     procedure E3Click(Sender: TObject);
     procedure SirketlerPropertiesChange(Sender: TObject);
+    procedure FormShow(Sender: TObject);
 
  //   function EArsivGonder(FaturaId : string) : string;
  //   function EArsivIptal(FaturaGuid : string) : string;
@@ -520,7 +521,7 @@ procedure TfrmRDS.RDSSatirlarNavigatorButtonsButtonClick(Sender: TObject;
     RDSSatirlar.DataController.DataSet.FieldByName('Bolum').AsString := datalar.Risk.Bolum;
     RDSSatirlar.DataController.DataSet.FieldByName('TehlikeKaynagi').AsString := datalar.Risk.TehlikeKaynagi;
     RDSSatirlar.DataController.DataSet.FieldByName('Tehlike').AsString := datalar.Risk.Tehlike;
-    RDSSatirlar.DataController.DataSet.FieldByName('Etkilenecekler').AsVariant := datalar.Risk.Etkilenecekler;
+    RDSSatirlar.DataController.DataSet.FieldByName('Etkilenecekler').AsVariant := datalar.Risk.Etkilenecek;
     RDSSatirlar.DataController.DataSet.FieldByName('Risk_tanim').AsString := datalar.Risk.Risk_tanim;
     RDSSatirlar.DataController.DataSet.FieldByName('Onlemler').AsString := datalar.Risk.Onlemler;
     RDSSatirlar.DataController.DataSet.FieldByName('Olasilik').AsVariant := datalar.Risk.Olasilik;
@@ -560,7 +561,7 @@ procedure TfrmRDS.RDSSatirlarNavigatorButtonsButtonClick(Sender: TObject;
     datalar.Risk.Bolum := RDSSatirlar.DataController.DataSet.FieldByName('Bolum').AsVariant;
     datalar.Risk.TehlikeKaynagi := RDSSatirlar.DataController.DataSet.FieldByName('TehlikeKaynagi').AsVariant;
     datalar.Risk.Tehlike := RDSSatirlar.DataController.DataSet.FieldByName('Tehlike').AsVariant;
-    datalar.Risk.Etkilenecekler := RDSSatirlar.DataController.DataSet.FieldByName('Etkilenecekler').AsVariant;
+    datalar.Risk.Etkilenecek := RDSSatirlar.DataController.DataSet.FieldByName('Etkilenecekler').AsVariant;
     datalar.Risk.Risk_tanim := RDSSatirlar.DataController.DataSet.FieldByName('Risk_tanim').AsVariant;
     datalar.Risk.Onlemler := RDSSatirlar.DataController.DataSet.FieldByName('Onlemler').AsString;
     datalar.Risk.Olasilik := RDSSatirlar.DataController.DataSet.FieldByName('Olasilik').AsVariant;;
@@ -591,35 +592,39 @@ procedure TfrmRDS.RDSSatirlarNavigatorButtonsButtonClick(Sender: TObject;
 var
   Dataset : Tdataset;
 begin
+ case AButtonIndex of
+   6 ,9: begin
+            datalar.Risk.Bolum := Null;
+            datalar.Risk.TehlikeKaynagi := Null;
+            datalar.Risk.Tehlike := Null;
+            datalar.Risk.Etkilenecek := Null;
+            datalar.Risk.Risk_tanim := Null;
+            datalar.Risk.Onlemler := '';
+            datalar.Risk.Olasilik := Null;
+            datalar.Risk.Frekans := Null;
+            datalar.Risk.Siddet := Null;
+            datalar.Risk.RDS := Null;
+            datalar.Risk.MevcutOnlem := '';
+            datalar.Risk.Sorumlu := '';
+            datalar.Risk.Termin := '';
+            datalar.Risk.Gerceklesme := Null;
+            datalar.Risk.Olasilik_2 := Null;
+            datalar.Risk.Frekans_2 := Null;
+            datalar.Risk.Siddet_2 := Null;
+            datalar.Risk.Risk_2 := Null;
+            datalar.Risk.RDS_2 := Null;
+            datalar.Risk.yasalDayanak := '';
+            datalar.Risk.SektorId := vartostr(TcxImageComboKadir(FindComponent('Sektor')).EditingValue);
+            datalar.Risk.Image := TcxImage.Create(nil);
+        end;
+   end;
+
   case AButtonIndex of
    6 : begin
-        datalar.Risk.Bolum := Null;
-        datalar.Risk.TehlikeKaynagi := Null;
-        datalar.Risk.Tehlike := Null;
-        datalar.Risk.Risk_tanim := Null;
-        datalar.Risk.Onlemler := '';
-        datalar.Risk.Olasilik := Null;
-        datalar.Risk.Frekans := Null;
-        datalar.Risk.Siddet := Null;
-        datalar.Risk.RDS := Null;
-        datalar.Risk.MevcutOnlem := '';
-        datalar.Risk.Sorumlu := '';
-        datalar.Risk.Termin := '';
-        datalar.Risk.Gerceklesme := Null;
-        datalar.Risk.Olasilik_2 := Null;
-        datalar.Risk.Frekans_2 := Null;
-        datalar.Risk.Siddet_2 := Null;
-        datalar.Risk.Risk_2 := Null;
-        datalar.Risk.RDS_2 := Null;
-        datalar.Risk.yasalDayanak := '';
-        datalar.Risk.SektorId := vartostr(TcxImageComboKadir(FindComponent('Sektor')).EditingValue);
-        datalar.Risk.Image := TcxImage.Create(nil);
 
         if mrYes = ShowPopupForm('Risk Kaynaðý Ekle',yeniRisk)
         then begin
          try
-
-
           if datalar.Risk.Tehlike <> ''
           then begin
            RDSSatirlar.DataController.DataSet.Append;
@@ -861,6 +866,9 @@ begin
           try
             Method := vartostr(TcxImageComboKadir(FindComponent('Method')).EditingValue);
 
+            DurumGoster(True,False,'Raporunuz Hazýrlanýyor, Lütfen Bekleyiniz');
+            Application.ProcessMessages;
+
             //datalar.QuerySelect(ado, sql);
             TopluDataset.Dataset0 := datalar.QuerySelect('select * from RDS_OLASILIK where Metod = ' + Method);
             TopluDataset.Dataset1 := datalar.QuerySelect('select * from RDS_FREKANS where Method = ' +  Method);
@@ -868,7 +876,8 @@ begin
             TopluDataset.Dataset3 := datalar.QuerySelect('select * from RDS_Skor where Metod = ' +  Method);
             TopluDataset.Dataset4 := datalar.QuerySelect('sp_RDS ' + TcxButtonEditKadir(FindComponent('id')).EditText + ',' + Method);
 
-            PrintYap('RDS','Risk Deðerlendirme Raporu','',TopluDataset,pTNone)
+            PrintYap('RD'+Method,'Risk Deðerlendirme Raporu','',TopluDataset,pTNone,self);
+          //  DurumGoster(False);
           finally
             //ado.free;
           end;
@@ -1349,7 +1358,7 @@ begin
 
 
 //  setDataStringBLabel(self,'bosSatir',kolon1,'',1000,'Risk Kaynaklarý');
-  setDataStringKontrol(self,RDSGrid,'RDSGrid','',sayfa2_Kolon1,'',1130,430);
+  setDataStringKontrol(self,RDSGrid,'RDSGrid','',sayfa2_Kolon1,'',1,1,alClient);
  // setDataStringKontrol(self,RDSGridMatris,'RDSGridMatris','',Kolon1,'',1050,450);
 
   RDSGrid.Dataset.Connection := datalar.ADOConnection2;
@@ -1368,11 +1377,22 @@ begin
   kolon2.Width := 0;
   Kolon3.Width := 0;
   Kolon4.Width := 0;
+  sayfa2_kolon2.Visible := false;
+  sayfa2_kolon3.Visible := false;
 
 
   //GridFaturalar.DataController.DataSource := DataSource;
   SayfaCaption('Rapor Bilgileri','Risk Kaynaklarý','','','');
   Disabled(self,True);
+end;
+
+procedure TfrmRDS.FormShow(Sender: TObject);
+begin
+  inherited;
+ //  TcxGrid(FindComponent('RDSGrid')).Width := sayfa1.Width - 20;
+ //  TcxGrid(FindComponent('RDSGrid')).Height := sayfa1.Height - 50;
+
+
 end;
 
 procedure TfrmRDS.GozlemYazdir(const GozlemID: integer);

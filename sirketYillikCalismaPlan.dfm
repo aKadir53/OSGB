@@ -13,6 +13,7 @@ object frmSirketYillikCalismaPlan: TfrmSirketYillikCalismaPlan
   OldCreateOrder = False
   Position = poMainFormCenter
   OnCreate = FormCreate
+  OnShow = FormShow
   PixelsPerInch = 96
   TextHeight = 13
   object YillikPlanGrid: TcxGridKadir
@@ -113,6 +114,8 @@ object frmSirketYillikCalismaPlan: TfrmSirketYillikCalismaPlan
             ImageIndex = 0
           end>
         Properties.MultiLineText = True
+        Options.Editing = False
+        Styles.Content = cxStyle8
         Width = 282
         Position.BandIndex = 2
         Position.ColIndex = 2
@@ -518,23 +521,23 @@ object frmSirketYillikCalismaPlan: TfrmSirketYillikCalismaPlan
           item
             Description = #304#351'yeri Hekimi'
             ImageIndex = 0
-            Value = 1
+            Value = #304#351'yeri Hekimi'
           end
           item
             Description = #304#351' G'#252'venli'#287'i Uzm.'
-            Value = 2
+            Value = #304#351' G'#252'venli'#287'i Uzm.'
           end
           item
             Description = #304#350' G'#220'VENL'#304#286#304' UZMANI/'#304#350' YER'#304' HEK'#304'M'#304
-            Value = 3
+            Value = #304#350' G'#220'VENL'#304#286#304' UZMANI/'#304#350' YER'#304' HEK'#304'M'#304
           end
           item
             Description = #304#350'VEREN'
-            Value = 4
+            Value = #304#350'VEREN'
           end
           item
             Description = #304#350' G'#220'VENL'#304#286#304' UZMANI/'#304#350'VEREN '
-            Value = 5
+            Value = #304#350' G'#220'VENL'#304#286#304' UZMANI/'#304#350'VEREN'
           end>
         HeaderAlignmentHorz = taCenter
         Width = 82
@@ -552,51 +555,51 @@ object frmSirketYillikCalismaPlan: TfrmSirketYillikCalismaPlan
           item
             Description = 'TAK'#304'P'
             ImageIndex = 0
-            Value = 1
+            Value = 'TAK'#304'P'
           end
           item
             Description = 'KATILIM'
-            Value = 2
+            Value = 'KATILIM'
           end
           item
             Description = 'TESP'#304'T'
-            Value = 3
+            Value = 'TESP'#304'T'
           end
           item
             Description = #214'NER'#304
-            Value = 4
+            Value = #214'NER'#304
           end
           item
             Description = 'KATILIM VE '#214'NER'#304
-            Value = 5
+            Value = 'KATILIM VE '#214'NER'#304
           end
           item
             Description = 'PLANLAMAVE TAK'#304'B'#304
-            Value = 6
+            Value = 'PLANLAMAVE TAK'#304'B'#304
           end
           item
             Description = 'UYGULAMA'
-            Value = 7
+            Value = 'UYGULAMA'
           end
           item
             Description = #214'NER'#304' VE PLANLAMA'
-            Value = 8
+            Value = #214'NER'#304' VE PLANLAMA'
           end
           item
             Description = 'E'#286#304'T'#304'M '#214'NER'#304
-            Value = 9
+            Value = 'E'#286#304'T'#304'M '#214'NER'#304
           end
           item
             Description = 'KONTROL VE HAZIRLIK'
-            Value = 10
+            Value = 'KONTROL VE HAZIRLIK'
           end
           item
             Description = 'E'#286#304'T'#304'M ALINMASI'
-            Value = 11
+            Value = 'E'#286#304'T'#304'M ALINMASI'
           end
           item
             Description = 'E'#286#304'T'#304'M UYGULAMASI'
-            Value = 12
+            Value = 'E'#286#304'T'#304'M UYGULAMASI'
           end>
         HeaderAlignmentHorz = taCenter
         Width = 83

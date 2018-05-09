@@ -538,7 +538,7 @@ riskDuzenle,yeniRisk :
               datalar.Risk.Bolum := TcxImageComboKadir(FindComponent('RiskBolum')).EditValue;
               datalar.Risk.TehlikeKaynagi := TcxImageComboKadir(FindComponent('TehlikeKaynak')).EditValue;
               datalar.Risk.Tehlike := TcxImageComboKadir(FindComponent('Tehlike')).Text;
-              datalar.Risk.Etkilenecekler := TcxImageComboKadir(FindComponent('Etkilenecekler')).EditValue;
+              datalar.Risk.Etkilenecek := TcxImageComboKadir(FindComponent('Etkilenecekler')).EditValue;
               datalar.Risk.Risk_tanim := TcxImageComboKadir(FindComponent('Risk_tanimi')).Text;
               datalar.Risk.Onlemler := TcxMemo(FindComponent('Onlemler')).Text;
               datalar.Risk.Olasilik := TcxImageComboKadir(FindComponent('Olasilik')).EditValue;
@@ -1211,14 +1211,14 @@ ptPersonelTetkikleri :
 
                     ICombo := TcxImageComboKadir.Create(self);
                     ICombo.Name := 'Etkilenecekler';
-                    ICombo.Tag := -100;
+                 //   ICombo.Tag := 100;
                     ICombo.Conn := datalar.ADOConnection2;
                     ICombo.TableName := 'RDS_Etkilenecekler';
                     ICombo.ValueField := 'Kod';
                     ICombo.DisplayField := 'tanimi';
                     ICombo.Filter := '';
                     setDataStringKontrol(self,ICombo,'Etkilenecekler','Etkilenecekler',Kolon1,'',250);
-                    TcxImageComboKadir(FindComponent('Etkilenecekler')).EditValue := datalar.Risk.Etkilenecekler;
+                    TcxImageComboKadir(FindComponent('Etkilenecekler')).EditValue := datalar.Risk.Etkilenecek;
 
                     setDataStringB(self,'Risk_tanimi','Risk Taným',Kolon1,'',250,List,False,nil,'','',False,True,-100);
                     TcxButtonEditKadir(FindComponent('Risk_tanimi')).Properties.OnButtonClick := PropertiesButtonClick;
