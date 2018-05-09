@@ -47,7 +47,7 @@ uses message,Data_Modul,AnaUnit,message_y,popupForm,rapor,TedaviKart,Son6AylikTe
              Tnm_Doktor,LabTestAyarlari,SahaSaglikGozetim, CariHesapBorcAlacakToplam,
              PopupDBGridForm,PopupDBVerticalGridForm,AjandaOzet,sirketISGKurulToplanti,
              Tnm_Ilaclar, PersonelEgitimFrm, About_Frm, MerkezBilgisi,sirketYillikCalismaPlan,
-  HizmetKart, CihazKontrol;
+             sirketYillikEgitimPlan,HizmetKart, CihazKontrol;
 
 
 
@@ -248,6 +248,7 @@ begin
    TagfrmRTFSablon : Result := TfrmRTFSablon;
    TagfrmSirketEkipmanList : Result := TfrmFirmaEkipmanList;
    TagfrmSirketYillikCalismaPlan : Result := TfrmSirketYillikCalismaPlan;
+   TagfrmSirketYillikEgitimPlan : Result := TfrmSirketYillikEgitimPlan;
  //  TagfrmAjandaOzet : Result := TfrmAjandaOzet;
   end;
 end;
@@ -312,6 +313,7 @@ begin
    TagfrmRTFSablon : Result := frmRTFSablon;
    TagfrmSirketEkipmanList : Result := frmFirmaEkipmanList;
    TagfrmSirketYillikCalismaPlan : Result := frmSirketYillikCalismaPlan;
+   TagfrmSirketYillikEgitimPlan : Result := frmSirketYillikEgitimPlan;
 
    TagfrmLabParametreleri : Result := frmLabParams;
    TagfrmLabKabul : Result := frmLabaratuvarKabul;
@@ -384,6 +386,8 @@ begin
      TagfrmRTFSablon : frmRTFSablon := TfrmRTFSablon.Create(Tab);
      TagfrmSirketEkipmanList : frmFirmaEkipmanList := TfrmFirmaEkipmanList.Create(Tab);
      TagfrmSirketYillikCalismaPlan : frmSirketYillikCalismaPlan  := TfrmSirketYillikCalismaPlan.Create(Tab);
+     TagfrmSirketYillikEgitimPlan : frmSirketYillikEgitimPlan  := TfrmSirketYillikEgitimPlan.Create(Tab);
+
   end;
   try
     if not (Form is TGirisForm) then
@@ -516,6 +520,7 @@ begin
      TagfrmRTFSablon : frmRTFSablon := TfrmRTFSablon.Create(Tab);
      TagfrmSirketEkipmanList : frmFirmaEkipmanList := TfrmFirmaEkipmanList.Create(Tab);
      TagfrmSirketYillikCalismaPlan : frmSirketYillikCalismaPlan  := TfrmSirketYillikCalismaPlan.Create(Tab);
+     TagfrmSirketYillikEgitimPlan : frmSirketYillikEgitimPlan  := TfrmSirketYillikEgitimPlan.Create(Tab);
 
   end;
   try
@@ -631,6 +636,7 @@ begin
     TagfrmRTFSablon : Application.CreateForm(TfrmRTFSablon, frmRTFSablon);
     TagfrmSirketEkipmanList : Application.CreateForm(TfrmFirmaEkipmanList, frmFirmaEkipmanList);
     TagfrmSirketYillikCalismaPlan : Application.CreateForm(TfrmSirketYillikCalismaPlan , frmSirketYillikCalismaPlan);
+    TagfrmSirketYillikEgitimPlan : Application.CreateForm(TfrmSirketYillikEgitimPlan , frmSirketYillikEgitimPlan);
 
   end;
   try

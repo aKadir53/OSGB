@@ -4,7 +4,7 @@ interface
 
 uses
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
-  Dialogs, cxGraphics, cxControls, cxLookAndFeels, cxLookAndFeelPainters,
+  Dialogs, cxGraphics, cxControls, cxLookAndFeels, cxLookAndFeelPainters,Math,
   cxContainer, cxEdit,cxCalendar,  Menus, dxSkinscxPCPainter, cxPCdxBarPopupMenu,
   Data.Win.ADODB, cxPC, Vcl.StdCtrls, cxButtons, cxGroupBox, cxLabel,kadir,
   cxTextEdit, cxDBEdit, dxLayoutContainer, dxLayoutControl, KadirLabel,kadirType,
@@ -81,7 +81,6 @@ type
     sayfa2_Kolon1: TdxLayoutGroup;
     dxLayoutLookAndFeelList2: TdxLayoutLookAndFeelList;
     dxLayoutSkinLookAndFeel2: TdxLayoutSkinLookAndFeel;
-    sayfa2_dxLayoutControl3SpaceItem1: TdxLayoutEmptySpaceItem;
     pnlDurum: TcxGroupBox;
     pnlDurumImage: TcxImage;
     pnlDurumDurum: TcxGroupBox;
@@ -2484,12 +2483,20 @@ begin
 end;
 
 procedure TGirisForm.FormResize(Sender: TObject);
+var
+ Fr : Double;
 begin
+  Fr := min(ClientWidth/Sayfalar.Width,ClientHeight/Sayfalar.Height);
   pnlDurum.Left := round((Self.Width/2) - (pnlDurum.Width/2));
   pnlDurum.Top := round((Self.ClientHeight/2) - (pnlDurum.Height/2));
+  sayfalar.ScaleBy(Trunc(FR*100),100);
 end;
 
 procedure TGirisForm.FormShow(Sender: TObject);
+var
+ i , r : integer;
+ ClassName : string;
+ FF : TGirisForm;
 begin
  // if not _HastaBilgileriniCaptionGoster_
  // then Caption := 'Mavi Nokta Bilgi Tek.';
@@ -2507,8 +2514,18 @@ begin
 
    cxTab.Tabs[0].Caption := self._HastaAdSoyad_;// datalar.HastaBil.Adi + ' ' + datalar.HastaBil.SoyAdi;
 
-
-
+  for i := 0 to self.ComponentCount - 1 do
+   begin
+     if (self.Components[i] is TdxLayoutControl)
+     then
+       for r := 0 to TdxLayoutControl(self.Components[i]).ControlCount - 1 do
+       if (TdxLayoutControl(self.Components[i]).Controls[r] is TcxGrid)
+       Then begin
+         if TcxGrid(TdxLayoutControl(self.Components[i]).Controls[r]).Align = alClient then
+          GridToSayfaClient(TcxGrid(TdxLayoutControl(self.Components[i]).Controls[r]).Name,self);
+       end;
+  end;
+//  GridToSayfaClient('YillikPlanGrid',self);
 end;
 
 procedure TGirisForm.Image2Click(Sender: TObject);

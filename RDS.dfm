@@ -13,12 +13,13 @@ object frmRDS: TfrmRDS
   OldCreateOrder = False
   Position = poMainFormCenter
   OnCreate = FormCreate
+  OnShow = FormShow
   PixelsPerInch = 96
   TextHeight = 13
   object RDSGrid: TcxGridKadir
-    Left = -184
-    Top = 40
-    Width = 1891
+    Left = 16
+    Top = 104
+    Width = 1000
     Height = 169
     TabOrder = 0
     ExcelFileName = 'RiskDegerlendirme'

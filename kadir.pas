@@ -13,7 +13,8 @@ uses Windows, Messages, SysUtils, Variants, Classes, Graphics, Vcl.Controls, Con
   IdCoderMIME, cxDataStorage, cxEdit, cxControls, cxGridCustomView, cxGridDBTableView,
   cxCheckListBox,cxGridCustomTableView, cxGridTableView, cxGridBandedTableView, cxClasses,
   cxGroupBox, cxRadioGroup,cxGridLevel, cxGrid, cxCheckBox, cxImageComboBox, cxTextEdit, cxButtonEdit,
-  cxCalendar,dxLayoutContainer, dxLayoutControl,cxPC, cxImage;
+  cxCalendar,dxLayoutContainer, dxLayoutControl,cxPC, cxImage,
+  frxExportPDF ;
 
 
 procedure SMSSend(tel : string; Msj : string = '';Kisi : string ='');
@@ -351,7 +352,7 @@ procedure HastaRapor(dosyaNo,gelisNo : string);
 procedure Son6AylikTetkikSonuc(dosyaNo,Tarih : string);
 procedure TetkikEkle(dosyaNo,gelisNo,Tarih : string);
 procedure AdoQueryActiveYenile(ado : TADOQuery);
-procedure PrintYap(raporKodu,caption,formId : string; Data: TDataSetKadir; yazdirmaTipi : TprintTip = pTNone);
+procedure PrintYap(raporKodu,caption,formId : string; Data: TDataSetKadir; yazdirmaTipi : TprintTip = pTNone ; Form : TForm = nil);
 procedure KanTetkikleri(dosyaNo,Tarih : string);
 procedure KanTetkikleriDegerlendir(dosyaNo,gelisNo : string);
 procedure ReceteIlacAckTaniEkleMedula(islem : integer ; dosyaNo,gelisNo,ereceteNo,id,doktor,taniKodu,ackId : string);
@@ -412,6 +413,9 @@ function SifreGecerliMi (const sSifre: String; const pMinKarakter, pMinHarf, pMi
 procedure DokumanAc(Dataset : Tdataset;fieldName : string;fileName : string; Open : Boolean = True ; DokumanTip : string = 'rtf');
 procedure DokumanYukle(Dataset : Tdataset;field : string;fielName : string);
 function RTFSablonDataset(RTFKodu : string) : TDataset;
+function SirketIGUToSQLStr(sirketKodu : string) : string;
+function SirketDoktorToSQLStr(sirketKodu : string) : string;
+procedure GridToSayfaClient(Grid : string ; Form : TForm);
 
 
 
@@ -519,6 +523,37 @@ begin
  except
    FreeAndNil (Result);
  end;
+end;
+
+procedure GridToSayfaClient(Grid : string ; Form : TForm);
+var
+ H : integer;
+begin
+   H := TcxGrid(TGirisForm(Form).FindComponent(Grid)).Height;
+   TcxGrid(TGirisForm(Form).FindComponent(Grid)).Width := TGirisForm(Form).sayfa1.Width - 20;
+   TcxGrid(TGirisForm(Form).FindComponent(Grid)).Height := TGirisForm(Form).sayfa1.Height - (45 * abs(H));
+end;
+
+function SirketIGUToSQLStr(sirketKodu : string) : string;
+var
+ sql : string;
+begin
+   SirketIGUToSQLStr := '';
+   sql := '(select distinct I.kod,I.tanimi from SIRKET_SUBE_TNM S ' +
+          ' join IGU I on I.kod = S.IGU ' +
+          ' where sirketKod = ' + QuotedStr(sirketKodu) + ') IGU';
+   SirketIGUToSQLStr := sql;
+end;
+
+function SirketDoktorToSQLStr(sirketKodu : string) : string;
+var
+ sql : string;
+begin
+   SirketDoktorToSQLStr := '';
+   sql := '(select distinct D.kod,D.tanimi from SIRKET_SUBE_TNM S ' +
+          ' join DoktorlarT D on D.kod = S.subeDoktor ' +
+          ' where sirketKod = ' + QuotedStr(sirketKodu) + ') Doktor';
+   SirketDoktorToSQLStr := sql;
 end;
 
 
@@ -1532,12 +1567,31 @@ begin
 end;
 
 
-procedure PrintYap(raporKodu,caption,formId : string; Data: TDataSetKadir; yazdirmaTipi : TprintTip = pTNone);
+procedure PrintYap(raporKodu,caption,formId : string; Data: TDataSetKadir; yazdirmaTipi : TprintTip = pTNone ; Form : TForm = nil);
+var
+  i : integer;
+  //oExportfilter : TfrxCustomExportFilter;
 begin
   Application.CreateForm(TfrmRapor, frmRapor);
   try
     frmRapor.raporData1(Data ,raporKodu,caption,formId,yazdirmaTipi);
-    if yazdirmaTipi = pTNone then frmRapor.ShowModal;
+    if yazdirmaTipi = pTNone
+    then begin
+      if Form <> nil then TGirisForm(Form).DurumGoster(False);
+      frmRapor.ShowModal;
+    end;
+    if yazdirmaTipi = pTPDF
+    then begin
+      frmRapor.frxReport1.PrepareReport(true);
+      frmRapor.frxPDFExport1.ShowDialog := False;
+      frmRapor.frxPDFExport1.FileName := caption + '.PDF';
+      frmRapor.frxPDFExport1.ExportObject(frmRapor.frxReport1);
+      frmRapor.frxReport1.Export(frmRapor.frxPDFExport1);
+
+      if Form <> nil then TGirisForm(Form).DurumGoster(False);
+    end;
+
+
   finally
     FreeAndNil(frmRapor);
   end;

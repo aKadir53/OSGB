@@ -177,6 +177,7 @@ type
       AEvent: TcxSchedulerControlEvent);
   private
     { Private declarations }
+    procedure WMSettingChange(var Message: TMessage); message WM_SETTINGCHANGE;
   protected
     procedure SetUserInfo;
   public
@@ -202,6 +203,13 @@ implementation
 {$R *.dfm}
 {$R xx.res}
 
+
+procedure TAnaForm.WMSettingChange(var Message: TMessage);
+begin
+  FormatSettings.DecimalSeparator := '.';
+  FormatSettings.ThousandSeparator := ',';
+ // FormatSettings.ShortDateFormat := 'gg.aa.yyyy';
+end;
 
 
 function TAnaForm.GuncellemeKontrol : boolean;
@@ -534,6 +542,10 @@ begin
  //cxImage1.Picture.Graphic := GetResourceAsPNG('X');
 
  // WebBrowser1.Navigate('https://www.noktayazilim.net');
+
+  FormatSettings.DecimalSeparator := '.';
+  FormatSettings.ThousandSeparator := ',';
+ // FormatSettings.ShortDateFormat := 'gg.aa.yyyy';
 
   caption := 'Mavi Nokta Bilgi Teknolojileri Ltd.Þti.  Ýþyeri Hekimliði E-Reçete V.1';
   Sayfalar.Properties.CloseButtonMode := cbmNone;
