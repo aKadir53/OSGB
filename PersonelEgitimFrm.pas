@@ -12,7 +12,7 @@ uses
   cxStyles, dxSkinscxPCPainter, cxCustomData, cxFilter, cxData, cxDataStorage,
   cxDBData, cxDropDownEdit, cxGridLevel, cxGridCustomTableView, cxGridTableView,
   cxGridBandedTableView, cxGridDBBandedTableView, cxClasses, cxGridCustomView,
-  cxGrid, cxPC, cxImageComboBox;
+  cxGrid, cxPC, cxImageComboBox,dxLayoutContainer;
 
 
 
@@ -49,6 +49,15 @@ type
     EgitimGridSatirlarEgitimBilgi: TcxGridDBBandedColumn;
     EgitimGridSatirlarEgitimCSGBGonderimSonuc: TcxGridDBBandedColumn;
     miEgitimBilgisiniIBYSyeGonder: TMenuItem;
+    EgitimAltDetayGrid: TcxGridKadir;
+    EgitimAltDetayGridSatir: TcxGridDBBandedTableView;
+    cxGridLevel3: TcxGridLevel;
+    EgitimAltDetayGridSatiregitimID: TcxGridDBBandedColumn;
+    EgitimAltDetayGridSatirkod: TcxGridDBBandedColumn;
+    EgitimAltDetayGridSatirid: TcxGridDBBandedColumn;
+    EgitimAltDetayGridSatirtanimi: TcxGridDBBandedColumn;
+    EgitimAltDetayGridSatirsure: TcxGridDBBandedColumn;
+    Egitimler: TListeAc;
     procedure FormCreate(Sender: TObject);
     procedure ButtonClick(Sender: TObject);
     procedure cxKaydetClick(Sender: TObject);override;
@@ -63,6 +72,7 @@ type
     procedure SayfalarChange(Sender: TObject);
     procedure cxButtonCClick(Sender: TObject);
     procedure PropertiesEditValueChanged(Sender: TObject);override;
+    procedure EgitimAltDetay;
   private
     { Private declarations }
   protected
@@ -88,10 +98,22 @@ uses StrUtils, TransUtils;
 
 {$R *.dfm}
 
+procedure TfrmPersonelEgitim.EgitimAltDetay;
+begin
+  EgitimAltDetayGrid.Dataset.Connection := Datalar.ADOConnection2;
+  EgitimAltDetayGrid.Dataset.Active := False;
+  EgitimAltDetayGrid.Dataset.SQL.Text := 'select * from EgitimAltDetay where egitimID = ' +
+                                         ifThen(vartostr(TcxButtonEditKadir(FindComponent('id')).EditValue) = '','0',vartostr(TcxButtonEditKadir(FindComponent('id')).EditValue));
+  EgitimAltDetayGrid.Dataset.Active := True;
+
+end;
+
 procedure TfrmPersonelEgitim.PropertiesEditValueChanged(Sender: TObject);
 var
   xDeger : String;
 begin
+  inherited;
+(*
   if not sametext (TcxImageComboKadir(Sender).name, 'EgitimTuru') then Exit;
   TcxCheckGroupKadir(FindComponent('Egitimkod')).Clear;
   xDeger := vartoStr(TcxImageComboKadir(FindComponent('EgitimTuru')).EditValue);
@@ -99,6 +121,13 @@ begin
     TcxCheckGroupKadir(FindComponent('Egitimkod')).Filter := ' grup = ' + xDeger
    else
     TcxCheckGroupKadir(FindComponent('Egitimkod')).Filter := '';
+    *)
+
+ if TcxImageComboKadir(Sender).name = 'EgitimTuru'
+ Then
+  Egitimler.Table := '(select * from Egitim_Tnm where grup = ' +
+                     vartostr(TcxImageComboKadir(FindComponent('EgitimTuru')).EditingValue) + ' ) egitimler';
+
 end;
 
 procedure TfrmPersonelEgitim.ButtonClick(Sender: TObject);
@@ -106,7 +135,18 @@ var
   i : Integer;
   sTmp,sql: String;
   ado : TADOQuery;
+  Lst : ArrayListeSecimler;
 begin
+
+  if TcxButtonKadir (Sender).ButtonName = 'btnEgitimler' then
+  begin
+    Lst := Egitimler.ListeGetir;
+    EgitimAltDetayGrid.Dataset.Append;
+    EgitimAltDetayGrid.Dataset.FieldByName('egitimID').AsString := TcxButtonEditKadir (FindComponent('id')).Text;
+    EgitimAltDetayGrid.Dataset.FieldByName('kod').AsString := Lst[0].kolon1;
+    EgitimAltDetayGrid.Dataset.FieldByName('tanimi').AsString := Lst[0].kolon2;
+    EgitimAltDetayGrid.Dataset.Post;
+  end;
 
   if TcxButtonKadir (Sender).ButtonName = 'btnEgitimListele' then
   begin
@@ -401,7 +441,7 @@ begin
   sirketlerx.DisplayField := 'Tanimi';
   sirketlerx.BosOlamaz := False;
   sirketlerx.Filter := SirketComboFilter;
-  setDataStringKontrol(self,sirketlerx,'SirketKod','Þirket',Kolon1,'',250,0,alNone,'');
+  setDataStringKontrol(self,sirketlerx,'SirketKod','Þirket',Kolon1,'',370,0,alNone,'');
 
   (*
   //þube kodu ekle
@@ -420,41 +460,19 @@ begin
   dateEdit := TcxDateEditKadir.Create(self);
   dateEdit.ValueTip := tvDate;
   dateEdit.Properties.Kind := ckdatetime;
-  setDataStringKontrol(self,dateEdit, 'BaslamaTarihi','Baþlama Zamaný',Kolon1,'tar',145);
+  setDataStringKontrol(self,dateEdit, 'BaslamaTarihi','Baþlama Zamaný',Kolon1,'',150);
+  OrtakEventAta(dateEdit);
 
   dateEdit := TcxDateEditKadir.Create(self);
   dateEdit.ValueTip := tvDate;
-  setDataStringKontrol(self,dateEdit, 'BitisTarihi','Bitiþ Tarihi',Kolon1,'tar',100);
+  setDataStringKontrol(self,dateEdit, 'BitisTarihi','Bitiþ Tarihi',Kolon1,'',150);
+  OrtakEventAta(dateEdit);
 
   dateEdit := TcxDateEditKadir.Create(self);
   dateEdit.ValueTip := tvDate;
   setDataStringKontrol(self,dateEdit, 'GecerlilikTarihi','Geçerlilik Tarihi',Kolon1,'',100);
-
-  setDataString(self,'Sure','Süre (Saat)',Kolon1,'',100);
-
-(*
-  kombo := TcxImageComboKadir.Create(self);
-  kombo.Conn := Datalar.ADOConnection2;
-  kombo.TableName := 'Egitimci_view';
-  kombo.ValueField := 'tanimi1';
-  kombo.DisplayField := 'tanimi2';
-  kombo.BosOlamaz := True;
-  kombo.Filter := '';
-  OrtakEventAta(kombo);
-  setDataStringKontrol(self,kombo,'Egitimci','Eðitimci 1',kolon1,'eg1',180);{}
-  setDataString(self,'EgitimciX','Listede Olmayan Eðitimci',Kolon1,'eg1',140, False, '', False, -100);
-
-  kombo := TcxImageComboKadir.Create(self);
-  kombo.Conn := Datalar.ADOConnection2;
-  kombo.TableName := 'Egitimci_view';
-  kombo.ValueField := 'tanimi1';
-  kombo.DisplayField := 'tanimi2';
-  kombo.BosOlamaz := True;
-  kombo.Filter := '';
-  OrtakEventAta(kombo);
-  setDataStringKontrol(self,kombo,'Egitimci2','Eðitimci 2',kolon1,'eg2',180);{}
-  setDataString(self,'Egitimci2X','Listede Olmayan Eðitimci',Kolon1,'eg2',140, False, '', False, -100);
- *)
+  OrtakEventAta(dateEdit);
+  setDataString(self,'Sure','Toplam Süre (Dakika)',Kolon1,'',100);
 
   kombo := TcxImageComboKadir.Create(self);
   kombo.Conn := nil;
@@ -462,7 +480,15 @@ begin
   kombo.ItemList := '1;Ýç,2;Dýþ';
   kombo.Filter := '';
   OrtakEventAta(kombo);
-  setDataStringKontrol(self,kombo,'EgitimTip','Eðitim Tipi',kolon1,'',50);
+  setDataStringKontrol(self,kombo,'EgitimTip','Eðitim Tipi',kolon1,'',100);
+
+  kombo := TcxImageComboKadir.Create(self);
+  kombo.Conn := nil;
+  kombo.BosOlamaz := True;
+  kombo.ItemList := '0;Uzaktan,1;Yüzyüze';
+  kombo.Filter := '';
+  OrtakEventAta(kombo);
+  setDataStringKontrol(self,kombo,'EgitimYontem','Eðitim Yöntemi',kolon1,'',100);
 
   kombo1 := TcxImageComboKadir.Create(self);
   kombo1.Conn := datalar.ADOConnection2;
@@ -472,11 +498,14 @@ begin
   kombo1.BosOlamaz := True;
   kombo1.Filter := '';
   OrtakEventAta(kombo1);
-  setDataStringKontrol(self,kombo1,'EgitimTuru','Eðitim Türü',kolon1,'',120);
+  setDataStringKontrol(self,kombo1,'EgitimTuru','Eðitim Türü',kolon1,'etg',100);
   TcxImageComboKadir(FindComponent('EgitimTuru')).Properties.OnEditValueChanged := PropertiesEditValueChanged;
 
+  addButton(self,nil,'btnEgitimler','','Egitimler',sayfa4_kolon1,'etg',80,ButtonClick,30);
 
 
+
+ (*
   Egitimler := TcxCheckGroupKadir.Create(self);
   Egitimler.Properties.EditValueFormat := cvfStatesString;
   Egitimler.Properties.Columns := 4;
@@ -488,14 +517,16 @@ begin
   Egitimler.tumuSecili := False;
   Egitimler.OrderField := value;
   Egitimler.Filter := ' grup = -1';// grup = ' + ifThen(_value_ = '','0',_value_);
-  setDataStringKontrol(self,Egitimler,'Egitimkod','Eðitimler',kolon1,'',450,140);
-  Egitimler.Caption := '';
+ *)
+ // setDataStringKontrol(self,Egitimler,'Egitimkod','Eðitimler',kolon1,'',450,140);
+  setDataStringKontrol(self,EgitimAltDetayGrid,'EgitimAltDetayGrid','Eðitim Alt Detay',kolon1,'',370,130,alNone,'',clLeft);
+ // Egitimler.Caption := '';
 
 
   //setDataStringC(self,'EgitimTuru','Eðitim Türü',Kolon1,'',100, 'Ýç Eðitim,Dýþ Eðitim,Diðer');
   setDataString(self,'EgitimYeri','Eðitim Yeri',Kolon1,'',100);
   setDataString(self,'SertifikaNo','Sertifika No.',Kolon1,'',100);
-  setDataStringMemo(self,'EgitimIcerigi','Eðitim Açýklama',Kolon1,'',400, 60);
+  setDataStringMemo(self,'EgitimIcerigi','Eðitim Açýklama',Kolon1,'',370, 60);
   setDataString(self,'EgitimUcreti','Eðitim Ücreti',Kolon1,'ecr',100);
   setDataString(self,'EgitimUcretParaBirimi','Para Birimi',Kolon1,'ecr',50);
 
@@ -615,6 +646,7 @@ begin
   Egitimci.Dataset.SQL.Text := GetEgitimEgitimciSQL;
   Egitimci.Dataset.Open;
 
+  EgitimAltDetay;
 end;
 
 procedure TfrmPersonelEgitim.SayfalarChange(Sender: TObject);

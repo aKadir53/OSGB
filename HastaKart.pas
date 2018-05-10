@@ -1370,7 +1370,7 @@ begin
 
   SayfaCaption('Kimlik Bilgileri','Eðitim Bilgileri','Öz Geçmiþ','','');
 
-  if datalar.UserGroup <> '1'
+  if datalar.UserGroup <> '2'
   then begin
     sayfa3.TabVisible := False;
   end;
