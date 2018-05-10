@@ -395,6 +395,7 @@ function GetUserDoktorFilter (pFieldName : String = ''): String;
 function GetUserIGUFilter (pFieldName : String = ''): String;
 function GetUserDSPFilter (pFieldName : String = ''): String;
 function HakikiAktifSube: String;
+function PersonelTopluPasifYap (const bPasif : boolean; const pSirketKod, pSubeKod : String) : Boolean;
 procedure KademeliStoredProcCalistir (const pSPName : String; const pParameters : String);
 function SQLValue (const sValue: String): String;
 function PersonelPeriyodikTetkikIstemleri(grup : string) : string;
@@ -560,7 +561,6 @@ end;
 procedure DokumanAc(Dataset : Tdataset;fieldName : string;fileName : string; Open : Boolean = True ; DokumanTip : string = 'rtf');
 var
   Blob : TAdoBlobStream;
-  id : string;
 begin
   (*
     try
@@ -1568,8 +1568,8 @@ end;
 
 
 procedure PrintYap(raporKodu,caption,formId : string; Data: TDataSetKadir; yazdirmaTipi : TprintTip = pTNone ; Form : TForm = nil);
-var
-  i : integer;
+//var
+  //i : integer;
   //oExportfilter : TfrxCustomExportFilter;
 begin
   Application.CreateForm(TfrmRapor, frmRapor);
@@ -9569,6 +9569,64 @@ end;
 function HakikiAktifSube: String;
 begin
   Result := ifThen(IsNull (datalar.AktifSube),'',ifThen(pos(',',datalar.AktifSube) > 0,'',datalar.AktifSube));
+end;
+
+function PersonelTopluPasifYap (const bPasif : boolean; const pSirketKod, pSubeKod : String) : Boolean;
+var
+  List: TListeAc;
+  aQuery : TADOQuery;
+  iThermo, i : Integer;
+begin
+  Result := False;
+  if IsNull (pSirketKod) then Exit;
+  //seçilen kaynak þirketin þubeleri
+  //o þirket dýþýndaki ve þubesi olan þirketler
+  List :=
+    ListeAcCreate
+      ('PersonelKart',
+       'DosyaNo,HASTAADI,HASTASOYADI,TCKIMLIKNO,Aktif',
+       'DosyaNo,Adý,Soyadý,TCKimlik No,Aktif',
+       '50,150,150,100,20',
+       'PersonelList',
+       'Þubenin Personel Seçimi',
+       'SirketKod = ' + SQLValue (pSirketKod)+
+       ' and Sube = ' + SQLValue (pSubeKod)+
+       ' and IsNull (Aktif, -1) <> ' + IfThen (bPasif, '0', '1'),3,True);
+  try
+    datalar.ButtonEditSecimlist := List.ListeGetir;
+    if length (datalar.ButtonEditSecimlist) <= 0 then Exit;
+    aQuery := TADOQuery.Create (nil);
+    try
+      aQuery.Connection := DATALAR.ADOConnection2;
+      ShowThermo (iThermo, 'Personel kartlarý '+IfThen (bPasif, 'PASÝF', 'AKTÝF')+' hale getiriliyor', 0, High (datalar.ButtonEditSecimlist) + 1, 0, True);
+      try
+        BeginTrans(DATALAR.ADOConnection2);
+        try
+          for i := 0 to High (datalar.ButtonEditSecimlist) do
+          begin
+            if not UpdateThermo (i, iThermo, 'Dosya No: ' + DATALAR.ButtonEditSecimlist [i].kolon1) then Exit;
+            aQuery.SQL.Text := 'Update PersonelKart set Aktif = '+IfThen (bPasif, '0', '1')+' where DosyaNo = ' + SQLValue (DATALAR.ButtonEditSecimlist [i].kolon1);
+            aQuery.ExecSQL;
+          end;
+          Result := True;
+        finally
+          if Result then
+          begin
+            CommitTrans(DATALAR.ADOConnection2);
+            ShowMessageSkin('Personel Güncelleme Ýþlemi Üstün Baþarý Ýle Tamamlandý', '', '', 'info');
+          end
+           else
+            RollBackTrans (DATALAR.ADOConnection2);
+        end;
+      finally
+        FreeThermo(iThermo);
+      end;
+    finally
+      aQuery.Free;
+    end;
+  finally
+    List.Free;
+  end;
 end;
 
 procedure KademeliStoredProcCalistir (const pSPName : String; const pParameters : String);
