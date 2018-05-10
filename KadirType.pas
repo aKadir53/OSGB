@@ -451,6 +451,8 @@ type
     destekElemaniMail : string;
     isveren : string;
     ilgiliMailBilgileri : string;
+    firmaYetkiliMailBilgileri : string;
+    isgKurulEkibiMailBilgileri : string;
   End;
 
 type
@@ -519,6 +521,7 @@ type
     RDS : Variant;
     MevcutOnlem : string;
     Sorumlu : string;
+    TerminSure : Variant;
     Termin : string;
     Gerceklesme : Variant;
     Olasilik_2 : Variant;

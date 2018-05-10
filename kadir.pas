@@ -902,6 +902,46 @@ begin
     datalar.QuerySelect(ado,sql);
     FirmaBilgileri.ilgiliMailBilgileri := ado.Fields[0].AsString;
 
+    sql := 'declare @mail varchar(max) ' +
+           ' set @mail = ''''' +
+           'select @mail = case when isnull(eMail,'''') <> '''' then  @mail + case when  @mail = '''' then '''' else '','' end  + eMail else @mail end  from SIRKET_SUBE_EKIP SE ' +
+           ' where SE.SirketKod = '+ QuotedStr(sirketKodu) +
+           ' and SubeKod = ' + QuotedStr(subeKodu) + ' and SE.ISGEkipId = 10 ' +
+           ' select @mail ' ;
+
+    datalar.QuerySelect(ado,sql);
+    FirmaBilgileri.isgKurulEkibiMailBilgileri := ado.Fields[0].AsString;
+
+    sql := 'declare @mail varchar(max) ' +
+           ' set @mail = ''''' +
+           'select @mail = case when isnull(eMail,'''') <> '''' then  @mail + case when  @mail = '''' then '''' else '','' end  + eMail else @mail end  from ISGFirmaYetkilileri SE ' +
+           ' where SE.SirketKod = '+ QuotedStr(sirketKodu)+
+           ' select @mail ' ;
+    datalar.QuerySelect(ado,sql);
+    FirmaBilgileri.firmaYetkiliMailBilgileri := ado.Fields[0].AsString;
+
+    sql := 'declare @mail varchar(max) ' +
+           ' set @mail = ''''' +
+           'select distinct @mail = case when isnull(ePosta,'''') <> '''' then  @mail + case when  @mail = '''' then '''' else '','' end  + ePosta else @mail end  from SIRKET_SUBE_TNM  SE ' +
+           ' join IGU I on I.kod = SE.IGU ' +
+           ' where SE.SirketKod = '+ QuotedStr(sirketKodu)+
+           ' select @mail ' ;
+    datalar.QuerySelect(ado,sql);
+    FirmaBilgileri.IGUMail := ado.Fields[0].AsString;
+
+
+    sql := 'declare @mail varchar(max) ' +
+           ' set @mail = ''''' +
+           'select distinct @mail = case when isnull(ePosta,'''') <> '''' then  @mail + case when  @mail = '''' then '''' else '','' end  + ePosta else @mail end  from SIRKET_SUBE_TNM  SE ' +
+           ' join DoktorlarT DR on Dr.kod = SE.subeDoktor ' +
+           ' where SE.SirketKod = '+ QuotedStr(sirketKodu)+
+           ' select @mail ' ;
+    datalar.QuerySelect(ado,sql);
+    FirmaBilgileri.doktorMail := ado.Fields[0].AsString;
+
+
+
+
   finally
     ado.Free;
   end;

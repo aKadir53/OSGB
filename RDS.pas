@@ -114,6 +114,7 @@ type
     M1: TMenuItem;
     Fmea: TcxImageList;
     RDSSatirlarColumn3: TcxGridDBBandedColumn;
+    RDSSatirlarTerminSure: TcxGridDBBandedColumn;
     procedure cxButtonCClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure gridRaporCustomDrawGroupCell(Sender: TcxCustomGridTableView;
@@ -532,6 +533,7 @@ procedure TfrmRDS.RDSSatirlarNavigatorButtonsButtonClick(Sender: TObject;
     RDSSatirlar.DataController.DataSet.FieldByName('MevcutOnlem').AsString := datalar.Risk.MevcutOnlem;
     RDSSatirlar.DataController.DataSet.FieldByName('Sorumlu').AsString := datalar.Risk.Sorumlu;
     RDSSatirlar.DataController.DataSet.FieldByName('Termin').AsString := datalar.Risk.Termin;
+    RDSSatirlar.DataController.DataSet.FieldByName('TerminSure').AsString := varToStr(datalar.Risk.TerminSure);
     RDSSatirlar.DataController.DataSet.FieldByName('Gerceklesme').AsString := datalar.Risk.Gerceklesme;
     RDSSatirlar.DataController.DataSet.FieldByName('Olasilik_2').AsVariant := datalar.Risk.Olasilik_2;
     RDSSatirlar.DataController.DataSet.FieldByName('Frekans_2').AsVariant := datalar.Risk.Frekans_2;
@@ -570,6 +572,7 @@ procedure TfrmRDS.RDSSatirlarNavigatorButtonsButtonClick(Sender: TObject;
     datalar.Risk.RDS := RDSSatirlar.DataController.DataSet.FieldByName('RDS').AsVariant;;
     datalar.Risk.MevcutOnlem := RDSSatirlar.DataController.DataSet.FieldByName('MevcutOnlem').AsString;
     datalar.Risk.Sorumlu := RDSSatirlar.DataController.DataSet.FieldByName('Sorumlu').AsString;
+    datalar.Risk.TerminSure := RDSSatirlar.DataController.DataSet.FieldByName('TerminSure').AsString;
     datalar.Risk.Termin := RDSSatirlar.DataController.DataSet.FieldByName('Termin').AsString;
     datalar.Risk.Gerceklesme := RDSSatirlar.DataController.DataSet.FieldByName('Gerceklesme').AsString;
     datalar.Risk.Olasilik_2 := RDSSatirlar.DataController.DataSet.FieldByName('Olasilik_2').AsVariant;
@@ -607,6 +610,7 @@ begin
             datalar.Risk.MevcutOnlem := '';
             datalar.Risk.Sorumlu := '';
             datalar.Risk.Termin := '';
+            datalar.Risk.TerminSure := Null;
             datalar.Risk.Gerceklesme := Null;
             datalar.Risk.Olasilik_2 := Null;
             datalar.Risk.Frekans_2 := Null;
@@ -1007,7 +1011,7 @@ end;
 
 procedure TfrmRDS.FormCreate(Sender: TObject);
 var
-  RiskBolum,sirketlerx,TehlikeKaynak ,Tehlike , Risk ,
+  RiskBolum,sirketlerx,TehlikeKaynak ,Tehlike , Risk , TerminSure,
   Olasilik,Frekans,Siddet,Method,Onay,subeler ,Etkilenecek : TcxImageComboKadir;
   FaturaTarihi : TcxDateEditKadir;
   where : string;
@@ -1289,6 +1293,16 @@ begin
   Etkilenecek.ValueField := 'kod';
   Etkilenecek.DisplayField := 'tanimi';
   Etkilenecek.Filter := '';
+
+  TerminSure := TcxImageComboKadir.Create(self);
+  TerminSure.Name := 'TerminTipleri';
+  TerminSure.Tag := -100;
+  TerminSure.Conn := datalar.ADOConnection2;
+  TerminSure.TableName := 'TerminTipleri';
+  TerminSure.ValueField := 'kod';
+  TerminSure.DisplayField := 'tanimi';
+  TerminSure.Filter := '';
+
 (*
   Skor := TcxImageComboKadir.Create(self);
   Skor.Name := 'Skor';
@@ -1325,6 +1339,9 @@ begin
      TcxImageComboBoxProperties(TcxImageComboKadir(FindComponent('TehlikeKaynak')).Properties).Items;
      TcxImageComboBoxProperties(RDSSatirlarColumn3.Properties).Items :=
      TcxImageComboBoxProperties(TcxImageComboKadir(FindComponent('Etkilenen')).Properties).Items;
+
+     TcxImageComboBoxProperties(RDSSatirlarTerminSure.Properties).Items :=
+     TcxImageComboBoxProperties(TcxImageComboKadir(FindComponent('TerminTipleri')).Properties).Items;
 
  //    TcxImageComboBoxProperties(RDSSatirlarTehlike.Properties).Items :=
  //    TcxImageComboBoxProperties(TcxImageComboKadir(FindComponent('Tehlike')).Properties).Items;

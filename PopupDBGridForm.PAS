@@ -554,7 +554,8 @@ begin
   begin
     colswidth := colswidth + DBgrid.Columns[i].Width;
   end;
-  if colswidth < ClientWidth then ClientWidth := colswidth;
+
+  if colswidth > 170 then ClientWidth := colswidth + 50 else ClientWidth := 170;
 
 
 end;
