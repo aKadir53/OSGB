@@ -1,6 +1,6 @@
 BEGIN TRAN
 GO
-ALTER VIEW dbo.SirketISGKurulToplanti_view
+ALTER VIEW [dbo].[SirketISGKurulToplanti_view]
 AS
 SELECT        KT.id, KT.sirketKod, KT.kararNo, KT.kararTarihi, KT.defterSayfaNo, KT.isveren, KT.iGu, KT.hekim, KT.calisanTemsilci, KT.ustaBasi, KT.idariIslerGorevli, KT.KonuveKararlar, s.tanimi AS sirketAdi, 
                          KT.GundemMaddeleri, DR.tanimi AS DoktorAdi, I.tanimi AS IGUAdi
