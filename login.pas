@@ -80,6 +80,8 @@ type
     dxLayoutControl2Group2: TdxLayoutGroup;
     dxLayoutControl2Group1: TdxLayoutGroup;
     aTimer: TTimer;
+    Image1abx: TcxImage;
+    cxImagebcd: TcxImage;
 
     procedure FormCreate(Sender: TObject);
     procedure FormActivate(Sender: TObject);
@@ -411,11 +413,12 @@ end;
 procedure TfrmLogin.btnBaglanClick(Sender: TObject);
 var
  db, OSGBDesc : string;
+ iYazilimGelistirici : Integer;
 begin
  if txtOsgbKodu.EditingText <> ''
  Then begin
    try
-     if datalar.MasterBaglan(txtOsgbKodu.EditingValue,db, OSGBDesc, txtServerName.Text, txtServerUserName.Text, txtServerPassword.Text)
+     if datalar.MasterBaglan(txtOsgbKodu.EditingValue,db, OSGBDesc, iYazilimGelistirici, txtServerName.Text, txtServerUserName.Text, txtServerPassword.Text)
      Then begin
          Regyaz('OSGB_servername',Encode64(txtServerName.Text));
          Regyaz('OSGB_serverUserName',Encode64(txtServerUserName.Text));
@@ -426,7 +429,12 @@ begin
            txtDataBase.EditValue := db;
            Regyaz('OSGB_description',OSGBDesc);
            Labelx.Caption := OSGBDesc;
+           Regyaz('OSGB_YazilimGelistirici',IntToStr (iYazilimGelistirici));
+           Image1abx.Visible := iYazilimGelistirici = 1;
+           cxImagebcd.Visible := iYazilimGelistirici = 2;
+           cxImage1.Visible := (iYazilimGelistirici <> 2) and (iYazilimGelistirici <> 1);
            btnBaglan.Caption := 'Baðlandý';
+           DATALAR._YazilimGelistirici := iYazilimGelistirici;
          end;
      end;
    except
@@ -498,6 +506,8 @@ begin
 end;
 
 procedure TfrmLogin.FormShow(Sender: TObject);
+var
+  iYazGel : Integer;
 begin
  //  Height := dxLayoutControl1Group2. btnGiris.Top + btnGiris.Height + 10;
 
@@ -529,6 +539,11 @@ begin
 
    txtDataBase.EditValue := Decode64(regOku('OSGB_db_name'));
    Labelx.Caption := regOku('OSGB_description');
+   iYazGel := StrToIntDef (regOku('OSGB_YazilimGelistirici'), -1);
+   DATALAR._YazilimGelistirici := iYazGel;
+   Image1abx.Visible := iYazGel = 1;
+   cxImagebcd.Visible := iYazGel = 2;
+   cxImage1.Visible := (iYazGel <> 2) and (iYazGel <> 1);
    dxStatusBar1.Panels [1].Text := regOku('OSGB_Userdescription');
    dxStatusBar1.Panels [1].Width := Length (dxStatusBar1.Panels [1].Text) * 8;
    if LoginSayfalar.ActivePageIndex = 0 then Edit2.SetFocus;
