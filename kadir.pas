@@ -417,7 +417,7 @@ function RTFSablonDataset(RTFKodu : string) : TDataset;
 function SirketIGUToSQLStr(sirketKodu : string) : string;
 function SirketDoktorToSQLStr(sirketKodu : string) : string;
 procedure GridToSayfaClient(Grid : string ; Form : TForm);
-
+procedure YeniOSGBFirmaVeritabani;
 
 
 function findMethod(dllHandle: Cardinal;  methodName: string): FARPROC;
@@ -9834,6 +9834,295 @@ begin
         ShowmessageSkin ('Þifre, '+ sMessage + ' oluþmalýdýr', '', '', 'info');
       end;
     end;
+  end;
+end;
+
+procedure YeniOSGBFirmaVeritabani;
+var
+  bTamam, bKontrolGecti : Boolean;
+  aValues : array of String;
+  i, iThermo : Integer;
+  sOsgbKod, sOSGBTanimi, sMerkezBilgisiTanimi,
+  sYeniVeritabani, sKaynakVeritabani, sGeciciYedekDosya,
+  sDBPath, sLogicalDBName, sLogicalLogName : String;
+  aQuery : TADOQuery;
+begin
+  SetLength (aValues, 7);
+  aValues [5] := 'C:\OSGB\OSGB_UZMAN_20171030.BAK';
+  aValues [4] := 'OSGB_DEMO';
+  aValues [6] := 'C:\OSGB\';
+  repeat
+    bTamam :=
+      InputQuery (
+        'Yeni OSGB Veritabaný Aç',
+        ['OSGB Kodu',
+         'Yeni Veritabaný Adý',
+         'OSGB Tanýmý',
+         'Merkez Bilgisi Tanýmý',
+         'Kaynak Veritabaný',
+         'Geçici Yedek Dosya',
+         'SQL Sunucusu Fiziki Veritabaný Yolu'],
+        aValues);
+    if not bTamam then Exit;
+    bKontrolGecti := False;
+    iThermo := StrToIntDef (aValues [0], -1);
+    sYeniVeritabani := Trim (aValues [1]);
+    sOSGBTanimi := Trim (aValues [2]);
+    sMerkezBilgisiTanimi := Trim (aValues [3]);
+    sKaynakVeritabani := Trim (aValues [4]);
+    sGeciciYedekDosya := Trim (aValues [5]);
+    sDBPath := Trim (aValues [6]);
+    if not IsNull (sDBPath) and (Copy (sDBPath, Length (sDBPath), 1) <> '\') then
+      sDBPath := sDBPath + '\';
+
+    if iThermo <= 0 then
+    begin
+      ShowMessageSkin('Geçersiz OSGB Kodu : ' + aValues [0] + #13#10+'OSGB Kodu 1''den büyük bir sayýsal deðer olmalýdýr', '', '', 'info');
+      Continue;
+    end;
+
+    sOsgbKod := FormatFloat('0000', iThermo);
+    aValues [0] := sOsgbKod;
+    aQuery := TADOQuery.Create (nil);
+    try
+      aQuery.Connection := DATALAR.ADOConnection2;
+      aQuery.SQL.Text := 'Select 1 from OSGB_MASTER.dbo.OSGB_TNM where OSGB_KOD = ' + SQLvalue (sOsgbKod);
+      aQuery.Open;
+      try
+        if aQuery.RecordCount > 0 then
+        begin
+          ShowMessageSkin('OSGB Kodu daha önce kullanýlmýþ: ' + sOSGBKod, '', '', 'info');
+          Continue;
+        end;
+      finally
+        aQuery.Close;
+      end;
+
+      if IsNull (sYeniVeritabani) then
+      begin
+        ShowMessageSkin('Hedef yeni veritabaný ismi boþ olamaz !', '', '', 'info');
+        Continue;
+      end;
+
+      if IsNull (sKaynakVeritabani) then
+      begin
+        ShowMessageSkin('Kaynak veritabaný ismi boþ olamaz !', '', '', 'info');
+        Continue;
+      end;
+
+      aQuery.SQL.Text := 'select name from master.dbo.sysdatabases where name = ' + SQLvalue (sYeniVeritabani);
+      aQuery.Open;
+      try
+        if aQuery.RecordCount > 0 then
+        begin
+          ShowMessageSkin('Hedef olarak seçilen yeni veritabaný sistemde mevcut: ' + sYeniVeritabani, '', '', 'info');
+          Continue;
+        end;
+      finally
+        aQuery.Close;
+      end;
+
+      aQuery.SQL.Text := 'Select OSGB_KOD, tanimi from OSGB_MASTER.dbo.OSGB_TNM where db = ' + SQLvalue (sYeniVeritabani);
+      aQuery.Open;
+      try
+        if aQuery.RecordCount > 0 then
+        begin
+          ShowMessageSkin('Seçilen veritabaný baþka bir OSGB tanýmýnda daha önce kullanýlmýþ: ' +
+            sYeniVeritabani + ' ("' + aQuery.fieldbyname ('OSGB_KOD').AsString + '", "' + aQuery.fieldbyname ('tanimi').AsString + '")', '', '', 'info');
+          Continue;
+        end;
+      finally
+        aQuery.Close;
+      end;
+
+      aQuery.SQL.Text := 'select name from master.dbo.sysdatabases where name = ' + SQLvalue (sKaynakVeritabani);
+      aQuery.Open;
+      try
+        if aQuery.RecordCount <= 0 then
+        begin
+          ShowMessageSkin('Kaynak olarak seçilen yeni veritabaný sistemde mevcut deðil: ' + sYeniVeritabani, '', '', 'info');
+          Continue;
+        end;
+      finally
+        aQuery.Close;
+      end;
+
+      if IsNull (sOSGBTanimi) then
+      begin
+        ShowMessageSkin('OSGB Tanýmý boþ olamaz !', '', '', 'info');
+        Continue;
+      end;
+
+      if IsNull (sMerkezBilgisiTanimi) then
+      begin
+        ShowMessageSkin('Merkez Bilgisi Tanýmý boþ olamaz !', '', '', 'info');
+        Continue;
+      end;
+
+      bKontrolGecti := True;
+
+    finally
+      aQuery.Free;
+    end;
+  until (not bTamam) or (bKontrolGecti);
+
+  bTamam := False;
+
+  aQuery := TADOQuery.Create (nil);
+  try
+    aQuery.Connection := DATALAR.ADOConnection2;
+    ShowThermo(iThermo, 'Yeni Veritabaný Oluþturuluyor...', 0, 34, 0, True);
+    try
+      if not UpdateThermo (0, iThermo, 'Kaynak Veritabaný Yedekleniyor') then Exit;
+
+      aQuery.SQL.Text :=
+        'BACKUP DATABASE '+ sKaynakVeritabani + #13#10 +
+        'TO DISK = ' + sqlvalue (sGeciciYedekDosya) + #13#10 +
+        'wIth INIT';
+
+      aQuery.ExecSQL;
+
+      if not UpdateThermo (1, iThermo, 'Yedek Dosya Bilgileri Toplanýyor') then Exit;
+
+      aQuery.SQL.Text :=
+        'RESTORE FILELISTONLY'#13#10 +
+        'FROM DISK = '+ sqlvalue (sGeciciYedekDosya);
+
+      sLogicalDBName := '';
+      sLogicalLogName := '';
+      aQuery.Open;
+      try
+        while not aQuery.eof do
+        begin
+          if SameText (aQuery.FieldByName ('Type').AsString, 'D') then
+            sLogicalDBName := aQuery.FieldByName ('LogicalName').AsString
+          else if SameText (aQuery.FieldByName ('Type').AsString, 'L') then
+            sLogicalLogName := aQuery.FieldByName ('LogicalName').AsString;
+          aQuery.Next;
+        end;
+      finally
+        aQuery.Close;
+      end;
+
+      if not UpdateThermo (2, iThermo, 'Yedekten Hedef Veritabaný oluþturuluyor') then Exit;
+
+      aQuery.SQL.Text :=
+        'RESTORE database ' + sYeniVeritabani + ''#13#10 +
+        'FROM DISK = ' + sqlValue (sGeciciYedekDosya) + ''#13#10 +
+        'with recovery,'#13#10 +
+        '  move ' + sqlvalue (sLogicalDBName) + ' TO ' + sqlvalue (sDBPath + sYeniVeritabani + '_Data.mdf') +','#13#10 +
+        '  move ' + sqlvalue (sLogicalLogName) + ' TO ' + sqlvalue (sDBPath + sYeniVeritabani +'_Log.ldf') + '';
+
+      aQuery.ExecSQL;
+
+      try
+        for i := 1 to 20 do
+        begin
+          if not UpdateThermo (2 + i, iThermo, 'Sisteme Nefes Aldýrýlýyor (' + FormatFloat ('00', i) + '/20)') then Exit;
+          Sleep (1000);
+        end;
+
+        if not UpdateThermo (23, iThermo, 'Veritabaný Ayarlamalarý yapýlýyor (1/2)') then Exit;
+
+        aQuery.SQL.Text :=
+          'ALTER DATABASE ' + sYeniVeritabani + ' MODIFY FILE ( NAME = ' + sLogicalDBName + ', NEWNAME = ' + sYeniVeritabani + '_Data )';
+        aQuery.ExecSQL;
+
+        if not UpdateThermo (24, iThermo, 'Veritabaný Ayarlamalarý yapýlýyor (2/2)') then Exit;
+
+        aQuery.SQL.Text :=
+          'ALTER DATABASE ' + sYeniVeritabani + ' MODIFY FILE ( NAME = ' + sLogicalLogName + ', NEWNAME = ' + sYeniVeritabani + '_Log )';
+        aQuery.ExecSQL;
+
+        BeginTrans (DATALAR.ADOConnection2);
+        try
+          if not UpdateThermo (25, iThermo, 'Merkez Bilgisi Tablosu boþaltýlýyor') then Exit;
+
+          aQuery.SQL.Text :=
+            'delete T from '+sYeniVeritabani+'.dbo.merkezBilgisi T';
+          aQuery.ExecSQL;
+
+          if not UpdateThermo (26, iThermo, 'OSGB Taným Bilgisi Ekleniyor') then Exit;
+
+          aQuery.SQL.Text :=
+            'insert into OSGB_MASTER.dbo.OSGB_TNM (OSGB_KOD, tanimi, db, server, Aktif) SELECT ' + sqlValue (sOsgbKod) + ', ' + sqlValue (sOSGBTanimi) + ', ' + sqlValue (sYeniVeritabani) + ', ' + sqlValue ('.') + ', null';
+          aQuery.ExecSQL;
+
+          if not UpdateThermo (27, iThermo, 'Merkez Bilgisi kaydý yazýlýyor') then Exit;
+
+          aQuery.SQL.Text :=
+            'insert into '+sYeniVeritabani+'.dbo.MerkezBilgisi (MerkezAdi, MerkezKodu, MerkezTipi) SELECT ' + sqlValue (sMerkezBilgisiTanimi) + ', ' + sqlValue (sOsgbKod) + ', 1';
+          aQuery.ExecSQL;
+
+          if not UpdateThermo (28, iThermo, 'LoginLog tablosu siliniyor') then Exit;
+
+          aQuery.SQL.Text :=
+            'delete from '+sYeniVeritabani+'.dbo.LoginLog';
+          aQuery.ExecSQL;
+
+          if not UpdateThermo (29, iThermo, 'Users_Log tablosu siliniyor') then Exit;
+
+          aQuery.SQL.Text :=
+            'delete from '+sYeniVeritabani+'.dbo.Users_Log';
+          aQuery.ExecSQL;
+
+          if not UpdateThermo (30, iThermo, 'MerkezBilgisi_Log tablosu siliniyor') then Exit;
+
+          aQuery.SQL.Text :=
+            'delete from '+sYeniVeritabani+'.dbo.MerkezBilgisi_Log';
+          aQuery.ExecSQL;
+
+          if not UpdateThermo (31, iThermo, 'UserPasswordHistory tablosu siliniyor') then Exit;
+
+          aQuery.SQL.Text :=
+            'delete from '+sYeniVeritabani+'.dbo.UserPasswordHistory';
+          aQuery.ExecSQL;
+
+          if not UpdateThermo (32, iThermo, 'admin kullanýcýsý þifresi ilk kullaným için hazýrlanýyor') then Exit;
+
+          aQuery.SQL.Text :=
+            'update u set password = cast (m.MerkezKodu as varchar (10))+ ' + sqlvalue (sYeniVeritabani) + ', Dogrulama = 1, SifreDegisiklikTarihi= getdate () - 55'#13#10 +
+            'from '+sYeniVeritabani+'.dbo.users u'#13#10 +
+            'inner join '+sYeniVeritabani+'.dbo.merkezBilgisi m on 1 = 1'#13#10 +
+            'where password = ' + SQLvalue ('1') + ' or (password = ' + sqlvalue ('1002OSGB_DEMO') + ')';
+          aQuery.ExecSQL;
+
+          if not UpdateThermo (33, iThermo, 'admin þifresi') then Exit;
+
+          aQuery.SQL.Text :=
+            'update i set i.AdmPw = u.password'#13#10 +
+            'from OSGB_MASTER.dbo.OSGB_TNM i'#13#10 +
+            'inner join '+sYeniVeritabani+'.dbo.MerkezBilgisi mm on mm.MerkezKodu = i.OSGB_KOD'#13#10 +
+            'inner join '+sYeniVeritabani+'.dbo.users u on u.Kullanici = '+sqlValue ('admin')+''#13#10 +
+            'where IsNull (i.AdmPw, '''') <> IsNull (u.password, '''')';
+          aQuery.ExecSQL;
+
+          bTamam := True;
+        finally
+          if bTamam then
+          begin
+            CommitTrans (DATALAR.ADOConnection2);
+            ShowMessageSkin('Yeni Veritabaný Açýlmasý Ýþlemi Üstün Baþarý ile Gerçekleþtirildi', '', '', 'info');
+            WinExec(PAnsiChar (AnsiString (ParamStr (0) + ' /C:'+sOsgbKod + '/U:'+'admin' + '/P:'+ sOsgbKod+sYeniVeritabani)),SW_SHOW);
+          end
+          else begin
+            RollBackTrans(DATALAR.ADOConnection2);
+          end;
+        end;
+      finally
+        if not bTamam then
+        begin
+          aQuery.SQL.Text :=
+            'DROP database ' + sYeniVeritabani;
+          aQuery.ExecSQL;
+        end;
+      end;
+    finally
+      FreeThermo (iThermo);
+    end;
+
+  finally
+    aQuery.Free;
   end;
 end;
 
