@@ -464,7 +464,7 @@ type
     procedure LiosBeforeExecute(const MethodName: string; SOAPRequest: TStream);
     procedure LiosAfterExecute(const MethodName: string; SOAPResponse: TStream);
     function Baglan(db : string = '' ; Server : string = ''; username : String = ''; pSQLUserName : String = ''; pSQLPassword : String = '') : Boolean;
-    function MasterBaglan(MasterKod : string ; var DB, OSGBDesc : string ; Server : string = ''; pSQLUserName : String = ''; pSQLPassword : String = '') : boolean;
+    function MasterBaglan(MasterKod : string ; var DB, OSGBDesc : string ; var YazilimGelistirici : integer; Server : string = ''; pSQLUserName : String = ''; pSQLPassword : String = '') : boolean;
     procedure ADOConnection2WillExecute(Connection: TADOConnection;
       var CommandText: WideString; var CursorType: TCursorType;
       var LockType: TADOLockType; var CommandType: TCommandType;
@@ -488,6 +488,7 @@ type
    CentroResponse ,SMSHesapFrom,SMSHesapUser,SMSHesapSifre , AlpemixRun,AlpemixGrupAdi,AlpemixGrupParola : string;
    SMTPSunucu,SMTPUserName,SMTPPassword,SMTPPort : string;
    _kurumKod  , _donemgoster : integer;
+   _YazilimGelistirici : integer;
    LisansBitis,LisansBasla,LisansTarih : string;
    LisansLimit : integer;
    Bilgi : THastaKabul;
@@ -557,7 +558,7 @@ uses AnaUnit,kadir, NThermo;
 
 {$R *.dfm}
 
-function TDatalar.MasterBaglan(MasterKod : string ; var DB, OSGBDesc : string ; Server : string = ''; pSQLUserName : String = ''; pSQLPassword : String = '') : Boolean;
+function TDatalar.MasterBaglan(MasterKod : string ; var DB, OSGBDesc : string ; var YazilimGelistirici : integer; Server : string = ''; pSQLUserName : String = ''; pSQLPassword : String = '') : Boolean;
 var
   ado : TADOQuery;
 begin
@@ -572,11 +573,12 @@ begin
     ado := TADOQuery.Create(nil);
     try
       ado.Connection := Master;
-      QuerySelect(ado,'select db, Tanimi from OSGB_TNM where OSGB_KOD = ' + QuotedStr(MasterKod));
+      QuerySelect(ado,'select db, Tanimi, YazilimGelistirici from OSGB_TNM where OSGB_KOD = ' + QuotedStr(MasterKod));
       if not ado.Eof
       then Begin
         DB := ado.Fields[0].AsString;
         OSGBDesc := ado.Fields[1].AsString;
+        YazilimGelistirici := ado.Fields[2].AsInteger;
       End;
       Result := True;
     finally
