@@ -17,9 +17,9 @@ object frmRDS: TfrmRDS
   PixelsPerInch = 96
   TextHeight = 13
   object RDSGrid: TcxGridKadir
-    Left = 16
-    Top = 104
-    Width = 1000
+    Left = -800
+    Top = 88
+    Width = 2017
     Height = 169
     TabOrder = 0
     ExcelFileName = 'RiskDegerlendirme'
@@ -314,7 +314,7 @@ object frmRDS: TfrmRDS
         Properties.Alignment = taCenter
         HeaderAlignmentHorz = taCenter
         Options.Editing = False
-        Width = 155
+        Width = 154
         Position.BandIndex = 1
         Position.ColIndex = 3
         Position.RowIndex = 0
@@ -327,7 +327,7 @@ object frmRDS: TfrmRDS
         Properties.DisplayFormat = ',0.0'
         HeaderAlignmentHorz = taCenter
         Options.Editing = False
-        Width = 66
+        Width = 65
         Position.BandIndex = 1
         Position.ColIndex = 4
         Position.RowIndex = 0
@@ -354,7 +354,7 @@ object frmRDS: TfrmRDS
         Properties.DisplayFormat = ',0.0'
         HeaderAlignmentHorz = taCenter
         Options.Editing = False
-        Width = 66
+        Width = 65
         Position.BandIndex = 1
         Position.ColIndex = 6
         Position.RowIndex = 0
@@ -367,7 +367,7 @@ object frmRDS: TfrmRDS
         Properties.DisplayFormat = ',0.00'
         HeaderAlignmentHorz = taCenter
         Options.Editing = False
-        Width = 66
+        Width = 65
         Position.BandIndex = 1
         Position.ColIndex = 7
         Position.RowIndex = 0
@@ -411,7 +411,7 @@ object frmRDS: TfrmRDS
         PropertiesClassName = 'TcxMemoProperties'
         Properties.Alignment = taCenter
         Options.Editing = False
-        Width = 92
+        Width = 91
         Position.BandIndex = 1
         Position.ColIndex = 9
         Position.RowIndex = 0
@@ -427,13 +427,31 @@ object frmRDS: TfrmRDS
         Position.ColIndex = 10
         Position.RowIndex = 0
       end
-      object RDSSatirlarTermin: TcxGridDBBandedColumn
-        DataBinding.FieldName = 'Termin'
-        PropertiesClassName = 'TcxDateEditProperties'
+      object RDSSatirlarTerminSure: TcxGridDBBandedColumn
+        Caption = 'Ter.Sure'
+        DataBinding.FieldName = 'TerminSure'
+        PropertiesClassName = 'TcxImageComboBoxProperties'
+        Properties.Alignment.Horz = taCenter
+        Properties.Alignment.Vert = taVCenter
+        Properties.Items = <>
+        HeaderAlignmentHorz = taCenter
         Options.Editing = False
-        Width = 75
+        Width = 53
         Position.BandIndex = 1
         Position.ColIndex = 11
+        Position.RowIndex = 0
+      end
+      object RDSSatirlarTermin: TcxGridDBBandedColumn
+        Caption = 'Termin Tarihi'
+        DataBinding.FieldName = 'Termin'
+        PropertiesClassName = 'TcxDateEditProperties'
+        Properties.Alignment.Horz = taCenter
+        Properties.Alignment.Vert = taVCenter
+        HeaderAlignmentHorz = taCenter
+        Options.Editing = False
+        Width = 96
+        Position.BandIndex = 1
+        Position.ColIndex = 12
         Position.RowIndex = 0
       end
       object RDSSatirlarGerceklesme: TcxGridDBBandedColumn
@@ -443,9 +461,9 @@ object frmRDS: TfrmRDS
         Properties.Alignment.Horz = taCenter
         Properties.Alignment.Vert = taVCenter
         Options.Editing = False
-        Width = 71
+        Width = 68
         Position.BandIndex = 1
-        Position.ColIndex = 12
+        Position.ColIndex = 13
         Position.RowIndex = 0
       end
       object RDSSatirlarOlasilik_2: TcxGridDBBandedColumn
@@ -457,9 +475,9 @@ object frmRDS: TfrmRDS
         Properties.DisplayFormat = ',0.0'
         HeaderAlignmentHorz = taCenter
         Options.Editing = False
-        Width = 61
+        Width = 59
         Position.BandIndex = 1
-        Position.ColIndex = 13
+        Position.ColIndex = 14
         Position.RowIndex = 0
       end
       object RDSSatirlarFrekans_2: TcxGridDBBandedColumn
@@ -471,9 +489,9 @@ object frmRDS: TfrmRDS
         Properties.DisplayFormat = ',0.0'
         HeaderAlignmentHorz = taCenter
         Options.Editing = False
-        Width = 60
+        Width = 59
         Position.BandIndex = 1
-        Position.ColIndex = 14
+        Position.ColIndex = 15
         Position.RowIndex = 0
       end
       object RDSSatirlarSiddet_2: TcxGridDBBandedColumn
@@ -485,9 +503,9 @@ object frmRDS: TfrmRDS
         Properties.DisplayFormat = ',0.0'
         HeaderAlignmentHorz = taCenter
         Options.Editing = False
-        Width = 59
+        Width = 57
         Position.BandIndex = 1
-        Position.ColIndex = 15
+        Position.ColIndex = 16
         Position.RowIndex = 0
       end
       object RDSSatirlarRisk_2: TcxGridDBBandedColumn
@@ -499,9 +517,9 @@ object frmRDS: TfrmRDS
         Properties.DisplayFormat = ',0.00'
         HeaderAlignmentHorz = taCenter
         Options.Editing = False
-        Width = 60
+        Width = 59
         Position.BandIndex = 1
-        Position.ColIndex = 16
+        Position.ColIndex = 17
         Position.RowIndex = 0
       end
       object RDSSatirlarRDS_2: TcxGridDBBandedColumn
@@ -509,9 +527,9 @@ object frmRDS: TfrmRDS
         DataBinding.FieldName = 'RDS_2'
         HeaderAlignmentHorz = taCenter
         Options.Editing = False
-        Width = 59
+        Width = 56
         Position.BandIndex = 1
-        Position.ColIndex = 17
+        Position.ColIndex = 18
         Position.RowIndex = 0
       end
       object RDSSatirlaryasalDayanak: TcxGridDBBandedColumn
@@ -520,9 +538,9 @@ object frmRDS: TfrmRDS
         PropertiesClassName = 'TcxMemoProperties'
         Properties.Alignment = taCenter
         Options.Editing = False
-        Width = 93
+        Width = 90
         Position.BandIndex = 1
-        Position.ColIndex = 19
+        Position.ColIndex = 20
         Position.RowIndex = 0
       end
       object RDSSatirlarColumn1: TcxGridDBBandedColumn
@@ -532,7 +550,7 @@ object frmRDS: TfrmRDS
         Properties.GraphicClassName = 'TJPEGImage'
         Properties.Stretch = True
         HeaderAlignmentHorz = taCenter
-        Width = 103
+        Width = 102
         Position.BandIndex = 1
         Position.ColIndex = 2
         Position.RowIndex = 0
@@ -541,8 +559,9 @@ object frmRDS: TfrmRDS
         Caption = 'D'#246'f No'
         DataBinding.FieldName = 'DOFNO'
         HeaderAlignmentHorz = taCenter
+        Width = 63
         Position.BandIndex = 1
-        Position.ColIndex = 18
+        Position.ColIndex = 19
         Position.RowIndex = 0
       end
     end

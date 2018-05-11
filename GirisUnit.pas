@@ -239,7 +239,7 @@ type
         obje:TcxButtonEditKadir;tanimi : string='tanimi';whereColumObjeName : string = '';
         Zorunlu : Boolean = False ; ReadOnly : Boolean = False;_Tag_ : integer = 0);
     procedure setDataStringKontrol(sender : Tform;obje : TControl; fieldName,caption : string;
-     parent : TdxLayoutGroup;grup : string ;uzunluk : integer ; Yukseklik : integer = 0 ; Aling : TAlign = alNone; objeName : string = '');
+     parent : TdxLayoutGroup;grup : string ;uzunluk : integer ; Yukseklik : integer = 0 ; Aling : TAlign = alNone; objeName : string = '' ; CaptionAling : TdxCaptionLayout = clTop);
     procedure setDataStringBLabel(sender : Tform ; Name : string;
      parent : TdxLayoutGroup;grup : string;uzunluk : integer;caption : string = '';parentCaption : string = '';fieldName : string = '';
      pBoldText: Boolean = True;
@@ -1924,7 +1924,7 @@ end;
 
 
 procedure TGirisForm.setDataStringKontrol(sender : Tform;obje : TControl; fieldName,caption : string;
-     parent : TdxLayoutGroup;grup : string ;uzunluk : integer ; yukseklik : integer = 0 ; Aling : TAlign = alNone; objeName : string = '');
+     parent : TdxLayoutGroup;grup : string ;uzunluk : integer ; yukseklik : integer = 0 ; Aling : TAlign = alNone; objeName : string = '' ; CaptionAling : TdxCaptionLayout = clTop);
 var
   dxLaC : TdxLayoutItem;
   dxLaGC : TdxLayoutGroup;
@@ -1948,6 +1948,7 @@ begin
  // dxLaC.Width := uzunluk;
   dxLaC.Caption := caption;
 
+
   if grup = '' then
     dxLaC.Parent := parent
     else begin
@@ -1967,7 +1968,7 @@ begin
      (obje.ClassName = 'TcxPageControl')
   then
   begin
-     dxLac.CaptionOptions.Layout := clTop;
+     dxLac.CaptionOptions.Layout := CaptionAling;
   end
   else
   begin
