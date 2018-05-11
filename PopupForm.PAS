@@ -551,6 +551,8 @@ riskDuzenle,yeniRisk :
               datalar.Risk.MevcutOnlem := TcxMemo(FindComponent('MevcutOnlem')).Text;
               datalar.Risk.Sorumlu := TcxTextEditKadir(FindComponent('Sorumlu')).Text;
               datalar.Risk.Termin := TcxTextEditKadir(FindComponent('Termin')).Text;
+              datalar.Risk.TerminSure := TcxImageComboKadir(FindComponent('TerminTipleri')).EditingValue;
+
               datalar.Risk.Gerceklesme := TcxTextEditKadir(FindComponent('Gercek')).Text;
               datalar.Risk.Olasilik_2 := TcxImageComboKadir(FindComponent('Olasilik_2')).EditValue;
               if (datalar.Risk.Method = 1) or (datalar.Risk.Method = 3)
@@ -1285,9 +1287,24 @@ ptPersonelTetkikleri :
                     setDataString(self,'Sorumlu','Sorumlu',Kolon1,'',120);
                     TcxTextEditKadir(FindComponent('Sorumlu')).EditValue := datalar.Risk.Sorumlu;
 
+                    ICombo := TcxImageComboKadir.Create(self);
+                    ICombo.Name := 'TerminTipleri';
+                   // ICombo.Tag := -100;
+                    ICombo.Conn := datalar.ADOConnection2;
+                    ICombo.TableName := 'TerminTipleri';
+                    ICombo.ValueField := 'kod';
+                    ICombo.DisplayField := 'tanimi';
+                    ICombo.Filter := '';
+                    setDataStringKontrol(self,ICombo,'TerminTipleri','Termin Sure',Kolon1,'',100);
+                    TcxImageComboKadir(FindComponent('TerminTipleri')).EditValue := datalar.Risk.TerminSure;
+
                     Tarih := TcxDateEditKadir.Create(self);
                     setDataStringKontrol(self,Tarih, 'Termin','Termin Tarihi',Kolon1,'',100);
                     TcxTextEditKadir(FindComponent('Termin')).EditValue := datalar.Risk.Termin;
+
+                 //   setDataStringKontrol(self,Tarih, 'Gercek','Gerçekleþme Tarihi',Kolon1,'',100);
+                  //  TcxTextEditKadir(FindComponent('Gercek')).EditValue := datalar.Risk.Gerceklesme;
+
 
                     Tarih := TcxDateEditKadir.Create(self);
                     setDataStringKontrol(self,Tarih, 'Gercek','Gerçekleþme Tarihi',Kolon1,'',100);

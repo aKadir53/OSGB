@@ -451,6 +451,8 @@ type
     destekElemaniMail : string;
     isveren : string;
     ilgiliMailBilgileri : string;
+    firmaYetkiliMailBilgileri : string;
+    isgKurulEkibiMailBilgileri : string;
   End;
 
 type
@@ -519,6 +521,7 @@ type
     RDS : Variant;
     MevcutOnlem : string;
     Sorumlu : string;
+    TerminSure : Variant;
     Termin : string;
     Gerceklesme : Variant;
     Olasilik_2 : Variant;
@@ -635,6 +638,7 @@ Const
   TagfrmTedaviBilgisi = 70;
   TagfrmGridListeForm = 120;
   TagfrmDestekTalep = 121;
+  TagYeniOSGBVeriTabani = 127;
   TagfrmHastaRecete = 130;
   TagfrmHastaIlacTedavi = 140;
   TagfrmTeleEkg = 150;

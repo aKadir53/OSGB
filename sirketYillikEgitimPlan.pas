@@ -164,10 +164,11 @@ begin
   inherited;
 
   case TControl(sender).Tag  of
-    0 : begin
+Kaydet : begin
          YillikEgitimPlanGrid.Enabled := True;
+         FaturaDetay;
         end;
-    2 : begin
+  Yeni : begin
            if datalar.IGU <> ''
            then begin
              TcxImageComboKadir(FindComponent('hazirlayan')).EditValue := datalar.IGU;
@@ -177,7 +178,7 @@ begin
              TcxImageComboKadir(FindComponent('hazirlayan')).Enabled := True;
            TcxDateEditKadir(FindComponent('date_create')).EditValue := date;
            YillikEgitimPlanGrid.Enabled := False;
-           FaturaDetay;
+         //  FaturaDetay;
         end;
   end;
 end;
@@ -404,6 +405,7 @@ begin
 
  TcxImageComboKadir(FindComponent('hazirlayan')).TableName := SirketIGUToSQLStr(TcxImageComboKadir(FindComponent('sirketKod')).EditingValue);
  TcxImageComboKadir(FindComponent('hazirlayan')).Filter := '';
+
  TcxImageComboKadir(FindComponent('doktor')).TableName := SirketDoktorToSQLStr(TcxImageComboKadir(FindComponent('sirketKod')).EditingValue);
  TcxImageComboKadir(FindComponent('doktor')).Filter := '';
 

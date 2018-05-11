@@ -1783,4 +1783,8 @@ object frmLogin: TfrmLogin
     Left = 168
     Top = 8
   end
+  object aTimer: TTimer
+    Interval = 200
+    OnTimer = aTimerTimer
+  end
 end
