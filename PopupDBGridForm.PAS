@@ -251,13 +251,13 @@ begin
         ClientHeight := 500;
         ClientWidth := 900;
         TableName := 'SIRKET_SUBE_EKIP';
-        _fields_ := 'id,SirketKod,SubeKod,TCKimlikNo,AdiSoyadi,Telefon,eMail,ISGEkipId,ISGEkipGorevID';
-        _fieldBaslik_ := ',,Þube,TC Kimlik No,Adý Soyadý,Telefon,eMail,ISG Ekip,ISG Ekip Görev';
-        _fieldTips_ := 'int,string,IC,string,string,string,string,IC,IC';
+        _fields_ := 'id,SirketKod,SubeKod,TCKimlikNo,AdiSoyadi,Telefon,eMail,ISGEkipId,ISGEkipGorevID,Aktif,AtamaTarihi';
+        _fieldBaslik_ := ',,Þube,TC Kimlik No,Adý Soyadý,Telefon,eMail,ISG Ekip,ISG Ekip Görev,Aktif,Atama Tarihi';
+        _fieldTips_ := 'int,string,IC,string,string,string,string,IC,IC,IC,saat';
 
         _ICParams_ := '0;0;' +
                          '(select subeKod|subeTanim from SIRKET_SUBE_TNM where sirketKod = ' + QuotedStr(_firmaKod_) + ') subeler'+
-                         ',subeKod,subeTanim;0;0;0;0;FirmaISGEkipTnm,kod,tanimi;FirmaISGEkipGorevTnm,kod,tanimi';
+                         ',subeKod,subeTanim;0;0;0;0;FirmaISGEkipTnm,kod,tanimi;FirmaISGEkipGorevTnm,kod,tanimi;AktifPasifTanim_View,kod,tanimi;0';
 
         indexFieldName := 'sirketKod = ' + QuotedStr(_firmaKod_);
         cxPanel.Visible := false;
@@ -265,7 +265,7 @@ begin
 
         cxGrid3.Dataset.BeforePost := ADOBeforePost;
         cxGrid3.Dataset.Connection := datalar.ADOConnection2;
-        cxGrid3.Dataset.SQL.Text := 'Select id,SirketKod,SubeKod,TCKimlikNo,AdiSoyadi,Telefon,eMail,ISGEkipId,ISGEkipGorevID ' +
+        cxGrid3.Dataset.SQL.Text := 'Select id,SirketKod,SubeKod,TCKimlikNo,AdiSoyadi,Telefon,eMail,ISGEkipId,ISGEkipGorevID,Aktif,AtamaTarihi ' +
                                     ' from SIRKET_SUBE_EKIP where sirketKod = ' + QuotedStr(_firmaKod_);
         cxGrid3.Dataset.Open;
         DBGrid.ClearItems;
@@ -554,7 +554,8 @@ begin
   begin
     colswidth := colswidth + DBgrid.Columns[i].Width;
   end;
-  if colswidth < ClientWidth then ClientWidth := colswidth;
+
+  if colswidth > 170 then ClientWidth := colswidth + 50 else ClientWidth := 170;
 
 
 end;

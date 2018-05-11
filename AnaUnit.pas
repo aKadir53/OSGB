@@ -784,6 +784,7 @@ var
   tc : string;
   aTabSheet : TcxTabSheet;
   bTamam : Boolean;
+  sSifre : String;
 begin
 // MenuItem cliklendiðinde menu satiri form açýlma þekli ile form açar yada sadece method çalýþtýrýr.
 //FormID > 0 form açýlacak
@@ -795,7 +796,11 @@ begin
     121 : begin
             DestekTalep;
           end;
-
+    TagYeniOSGBVeriTabani : begin
+      if not InputQuery ('Ýþlem Þifresi Giriþi', 'Ýþlem Þifresi', sSifre) then Exit;
+      if sSifre <> 'Nokta5353' then Exit;
+      YeniOSGBFirmaVeritabani;
+    end;
     122 : begin
             OnlineDestekOpen;
           end;
