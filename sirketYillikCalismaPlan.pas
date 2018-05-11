@@ -186,10 +186,11 @@ begin
   inherited;
 
   case TControl(sender).Tag  of
-    0 : begin
+Kaydet : begin
          YillikPlanGrid.Enabled := True;
+         FaturaDetay;
         end;
-    2 : begin
+  Yeni : begin
            if datalar.IGU <> ''
            then begin
              TcxImageComboKadir(FindComponent('hazirlayan')).EditValue := datalar.IGU;
@@ -199,7 +200,7 @@ begin
              TcxImageComboKadir(FindComponent('hazirlayan')).Enabled := True;
            TcxDateEditKadir(FindComponent('date_create')).EditValue := date;
            YillikPlanGrid.Enabled := False;
-           FaturaDetay;
+          // FaturaDetay;
         end;
   end;
 end;

@@ -138,6 +138,8 @@ var
   Lst : ArrayListeSecimler;
 begin
 
+  if TcxButtonEditKadir(FindComponent('id')).Text <> ''
+  Then
   if TcxButtonKadir (Sender).ButtonName = 'btnEgitimler' then
   begin
     Lst := Egitimler.ListeGetir;
@@ -358,6 +360,7 @@ begin
   if length(datalar.ButtonEditSecimlist) > 0 then
   begin
     enabled;
+    EgitimGrid.Enabled := False;
     FormInputZorunluKontrolPaint(self,$00FCDDD1);
   end;
   //if TcxButtonEditKadir(FindComponent('id')).Text = '' then exit;
@@ -590,8 +593,7 @@ begin
 
 
 
-
-
+  EgitimGrid.Enabled := False;
   Disabled(self,True);
   TcxDateEditKadir(FindComponent('ilkTarih')).Enabled := True;
   TcxDateEditKadir(FindComponent('sonTarih')).Enabled := True;
@@ -664,92 +666,34 @@ end;
 procedure TfrmPersonelEgitim.cxKaydetClick(Sender: TObject);
 var
   xObj : TcxButtonEditKadir;
-  //xTExtObj1, xTExtObj2 : TcxTextEditKadir;
-  //xComboObj1, xComboObj2 : TcxImageComboKadir;
-  //sSQL : String;
-  //xEvt11, xEvt12, xEvt21, xEvt22 : TNotifyEvent;
 begin
- (* xTExtObj1 := TcxTextEditKadir (FindComponent('EgitimciX'));
-  xComboObj1 := TcxImageComboKadir (FindComponent ('Egitimci'));
-  xTExtObj2 := TcxTextEditKadir (FindComponent('Egitimci2X'));
-  xComboObj2 := TcxImageComboKadir (FindComponent ('Egitimci2'));
-  *)
+
   case TControl(sender).Tag  of
-    0 : begin
-    (*
-      if (not IsNull (VarToStr (xTExtObj1.EditValue))
-          and not IsNull (VarToStr (xComboObj1.EditValue)))
-        or (not IsNull (VarToStr (xTExtObj2.EditValue))
-          and not IsNull (VarToStr (xComboObj2.EditValue))) then
-      begin
-        ShowMessageSkin('Ayný hizadaki Eðitimci ve Listede Olmayan Eðitimci kutularý ayný anda doldurulmamalý'#13#10'- Birinci eðitimci 1. satýra, ikinci eðitimci 2. satýra'#13#10'- Listede varsa soldan seçilerek, yoksa saðda bir kereliðine elle yazýlarak eklenmelidir.', '', '', 'info');
-        Exit;
-      end;
-      *)
+  Kaydet : begin
+
+           end;
     end;
-    end;
+
   BeginTrans (DATALAR.ADOConnection2);
   try
     //SirketKodx.Text := datalar.AktifSirket; giriþ formuna eklendi.
     inherited;
     //post ettikten sonra veritabanýndan Identity deðeri alýp edit kutusuna yazmasý için....
     case TControl(sender).Tag  of
-      0 : begin
-        xObj := TcxButtonEditKadir (FindComponent('id'));
-        if IsNull (xObj.EditingValue) then
-        begin
-          xObj.Text := IntToStr (F_IDENTITY);
-          ResetDetayDataset;
-        end;
-        (*
-        if (not IsNull (VarToStr (xTExtObj1.EditValue))) or (not IsNull (VarToStr (xTExtObj2.EditValue))) then
-        begin
-          sqlRun.Edit;
-          try
-            if not IsNull (VarToStr (xTExtObj1.EditValue)) then
-              sqlRun.FieldByName('Egitimci').AsString := VarToStr (xTExtObj1.EditValue);
-            if not IsNull (VarToStr (xTExtObj2.EditValue)) then
-              sqlRun.FieldByName('Egitimci2').AsString := VarToStr (xTExtObj2.EditValue);
-            sqlRun.Post;
-          except
-            sqlRun.Cancel;
-            raise;
-          end;
-          sSQL := xComboObj1.Filter;
-          xComboObj1.Filter := '(1 = 2)';
-          xComboObj1.Filter := sSQL;
-          sSQL := xComboObj2.Filter;
-          xComboObj2.Filter := '(1 = 2)';
-          xComboObj2.Filter := sSQL;
-          xEvt11 := xComboObj1.Properties.OnEditValueChanged;
-          xEvt21 := xTExtObj1.Properties.OnEditValueChanged;
-          xEvt12 := xComboObj2.Properties.OnEditValueChanged;
-          xEvt22 := xTExtObj2.Properties.OnEditValueChanged;
-          xComboObj1.Properties.OnEditValueChanged := nil;
-          xTExtObj1.Properties.OnEditValueChanged := nil;
-          xComboObj2.Properties.OnEditValueChanged := nil;
-          xTExtObj2.Properties.OnEditValueChanged := nil;
-          try
-            if not IsNull (VarToStr (xTExtObj1.EditValue)) then
-              xComboObj1.EditValue := VarToStr (xTExtObj1.EditValue);
-            if not IsNull (VarToStr (xTExtObj2.EditValue)) then
-              xComboObj2.EditValue := VarToStr (xTExtObj2.EditValue);
-            xTExtObj1.EditValue := '';
-            xTExtObj2.EditValue := '';
-          finally
-            xComboObj1.Properties.OnEditValueChanged := xEvt11;
-            xTExtObj1.Properties.OnEditValueChanged := xEvt21;
-            xComboObj2.Properties.OnEditValueChanged := xEvt12;
-            xTExtObj2.Properties.OnEditValueChanged := xEvt22;
-          end;
-        end;
-        *)
-      end;
-      2 : begin
-        xObj := TcxButtonEditKadir (FindComponent('id'));
-        xObj.Text := '';
-        ResetDetayDataset;
-      end;
+    Kaydet : begin
+                xObj := TcxButtonEditKadir (FindComponent('id'));
+                if IsNull (xObj.EditingValue) then
+                begin
+                  xObj.Text := IntToStr (F_IDENTITY);
+                  ResetDetayDataset;
+                  EgitimGrid.Enabled := True;
+                end;
+             end;
+    Yeni : begin
+             xObj := TcxButtonEditKadir (FindComponent('id'));
+             xObj.Text := '';
+             ResetDetayDataset;
+           end;
     end;
   finally
     if cxKaydetResult then
