@@ -405,7 +405,6 @@ begin
   if bUser and bPass and bCode then
   begin
     btnBaglanClick(btnBaglan);
-    Image1Click(btnGiris);
   end;
 end;
 
