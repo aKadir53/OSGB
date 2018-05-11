@@ -546,8 +546,10 @@ begin
   FormatSettings.DecimalSeparator := '.';
   FormatSettings.ThousandSeparator := ',';
  // FormatSettings.ShortDateFormat := 'gg.aa.yyyy';
-
-  caption := 'Mavi Nokta Bilgi Teknolojileri Ltd.Þti.  Ýþyeri Hekimliði E-Reçete V.1';
+  if DATALAR._YazilimGelistirici = 1 then
+    caption := 'Mavi Nokta Bilgi Teknolojileri Ýþ Saðlýðý ve Güvenliði'
+  else if DATALAR._YazilimGelistirici = 2 then
+    caption := 'Uyumsoft Ýþ Saðlýðý ve Güvenliði';
   Sayfalar.Properties.CloseButtonMode := cbmNone;
   WebBrowser1.Navigate('https://www.noktayazilim.net/destek/GenelMesajlar2.aspx?Tip=O');
 
