@@ -15,6 +15,81 @@ object frmISGKurulToplanti: TfrmISGKurulToplanti
   OnCreate = FormCreate
   PixelsPerInch = 96
   TextHeight = 13
+  object KurulEkipGrid: TcxGridKadir
+    Left = 160
+    Top = 201
+    Width = 450
+    Height = 150
+    BorderStyle = cxcbsNone
+    TabOrder = 0
+    ExceleGonder = False
+    object KurulEkipGridList: TcxGridDBBandedTableView
+      DataController.Summary.DefaultGroupSummaryItems = <>
+      DataController.Summary.FooterSummaryItems = <>
+      DataController.Summary.SummaryGroups = <>
+      OptionsCustomize.ColumnFiltering = False
+      OptionsCustomize.ColumnSorting = False
+      OptionsData.Deleting = False
+      OptionsData.Editing = False
+      OptionsData.Inserting = False
+      OptionsView.GridLines = glNone
+      OptionsView.GroupByBox = False
+      OptionsView.GroupByHeaderLayout = ghlHorizontal
+      Bands = <
+        item
+          Caption = 'Kurul Ekibi'
+          Styles.Header = cxStyle8
+          Width = 432
+        end>
+      object KurulEkipGridListAdiSoyadi: TcxGridDBBandedColumn
+        DataBinding.FieldName = 'AdiSoyadi'
+        PropertiesClassName = 'TcxTextEditProperties'
+        Properties.Alignment.Horz = taCenter
+        Properties.Alignment.Vert = taVCenter
+        HeaderAlignmentHorz = taCenter
+        Width = 147
+        Position.BandIndex = 0
+        Position.ColIndex = 0
+        Position.RowIndex = 0
+      end
+      object KurulEkipGridListGorevTanim: TcxGridDBBandedColumn
+        DataBinding.FieldName = 'GorevTanim'
+        PropertiesClassName = 'TcxTextEditProperties'
+        Properties.Alignment.Horz = taCenter
+        Properties.Alignment.Vert = taVCenter
+        HeaderAlignmentHorz = taCenter
+        Width = 118
+        Position.BandIndex = 0
+        Position.ColIndex = 1
+        Position.RowIndex = 0
+      end
+      object KurulEkipGridListeMail: TcxGridDBBandedColumn
+        DataBinding.FieldName = 'eMail'
+        PropertiesClassName = 'TcxTextEditProperties'
+        Properties.Alignment.Horz = taCenter
+        Properties.Alignment.Vert = taVCenter
+        HeaderAlignmentHorz = taCenter
+        Width = 149
+        Position.BandIndex = 0
+        Position.ColIndex = 2
+        Position.RowIndex = 0
+      end
+      object KurulEkipGridListTelefon: TcxGridDBBandedColumn
+        DataBinding.FieldName = 'Telefon'
+        PropertiesClassName = 'TcxTextEditProperties'
+        Properties.Alignment.Horz = taCenter
+        Properties.Alignment.Vert = taVCenter
+        HeaderAlignmentHorz = taCenter
+        Width = 99
+        Position.BandIndex = 0
+        Position.ColIndex = 3
+        Position.RowIndex = 0
+      end
+    end
+    object cxGridLevel1: TcxGridLevel
+      GridView = KurulEkipGridList
+    end
+  end
   object cxStyleRepository1: TcxStyleRepository
     Left = 24
     Top = 112
@@ -88,7 +163,7 @@ object frmISGKurulToplanti: TfrmISGKurulToplanti
   object PopupMenu1: TPopupMenu
     Images = DATALAR.imag24png
     Left = 232
-    Top = 176
+    Top = 128
     object Y1: TMenuItem
       Caption = 'Yazd'#305'r'
       ImageIndex = 28

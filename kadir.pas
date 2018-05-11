@@ -401,6 +401,7 @@ function PersonelPeriyodikTetkikIstemleri(grup : string) : string;
 procedure PersonelTetkikIstemleri(tarih,tarih2 : string);
 procedure YeniRecete(islem: Integer ; _dosyaNo_,_gelisNo_,_MuayeneProtokolNo_ : string);
 function FirmaBilgileri(sirketKodu : string ; subeKodu  : string = '00') : TFirmaBilgi;
+function isgKurulEkibiMailBilgileri(id : string) : string;
 function mailGonder (alici , konu , mesaj : string ;  filename : string = ''): string;
 procedure UyumSoftPortalGit(user,pasword,url : string);
 function FaturaSilIptal(FID : string) : Boolean;
@@ -873,6 +874,25 @@ begin
   end;
 end;
 
+function isgKurulEkibiMailBilgileri(id : string) : string;
+var
+  sql: string;
+  ado: TADOQuery;
+  Dataset : TDataset;
+begin
+  isgKurulEkibiMailBilgileri := '';
+//  ado := TADOQuery.Create(nil);
+  try
+//    ado.Connection := datalar.ADOConnection2;
+    sql := 'sp_isgKurulEkibiMailBilgileri ' +  QuotedStr(id);
+    isgKurulEkibiMailBilgileri := datalar.QuerySelect(sql).Fields[0].AsString;
+  finally
+//   ado.free;
+  end;
+
+end;
+
+
 
 function FirmaBilgileri(sirketKodu : string ; subeKodu  : string = '00') : TFirmaBilgi;
 var
@@ -902,15 +922,6 @@ begin
     datalar.QuerySelect(ado,sql);
     FirmaBilgileri.ilgiliMailBilgileri := ado.Fields[0].AsString;
 
-    sql := 'declare @mail varchar(max) ' +
-           ' set @mail = ''''' +
-           'select @mail = case when isnull(eMail,'''') <> '''' then  @mail + case when  @mail = '''' then '''' else '','' end  + eMail else @mail end  from SIRKET_SUBE_EKIP SE ' +
-           ' where SE.SirketKod = '+ QuotedStr(sirketKodu) +
-           ' and SubeKod = ' + QuotedStr(subeKodu) + ' and SE.ISGEkipId = 10 ' +
-           ' select @mail ' ;
-
-    datalar.QuerySelect(ado,sql);
-    FirmaBilgileri.isgKurulEkibiMailBilgileri := ado.Fields[0].AsString;
 
     sql := 'declare @mail varchar(max) ' +
            ' set @mail = ''''' +
