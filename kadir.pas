@@ -403,6 +403,8 @@ procedure PersonelTetkikIstemleri(tarih,tarih2 : string);
 procedure YeniRecete(islem: Integer ; _dosyaNo_,_gelisNo_,_MuayeneProtokolNo_ : string);
 function FirmaBilgileri(sirketKodu : string ; subeKodu  : string = '00') : TFirmaBilgi;
 function isgKurulEkibiMailBilgileri(id : string) : string;
+function isgRDSEkibiMailBilgileri(id : string) : string;
+
 function mailGonder (alici , konu , mesaj : string ;  filename : string = ''): string;
 procedure UyumSoftPortalGit(user,pasword,url : string);
 function FaturaSilIptal(FID : string) : Boolean;
@@ -886,6 +888,24 @@ begin
 //    ado.Connection := datalar.ADOConnection2;
     sql := 'sp_isgKurulEkibiMailBilgileri ' +  QuotedStr(id);
     isgKurulEkibiMailBilgileri := datalar.QuerySelect(sql).Fields[0].AsString;
+  finally
+//   ado.free;
+  end;
+
+end;
+
+function isgRDSEkibiMailBilgileri(id : string) : string;
+var
+  sql: string;
+  ado: TADOQuery;
+  Dataset : TDataset;
+begin
+  isgRDSEkibiMailBilgileri := '';
+//  ado := TADOQuery.Create(nil);
+  try
+//    ado.Connection := datalar.ADOConnection2;
+    sql := 'sp_isgRDSEkibiMailBilgileri ' +  QuotedStr(id);
+    isgRDSEkibiMailBilgileri := datalar.QuerySelect(sql).Fields[0].AsString;
   finally
 //   ado.free;
   end;

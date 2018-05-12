@@ -569,6 +569,81 @@ object frmRDS: TfrmRDS
       GridView = RDSSatirlar
     end
   end
+  object RDSEkipGrid: TcxGridKadir
+    Left = 184
+    Top = 295
+    Width = 450
+    Height = 150
+    BorderStyle = cxcbsNone
+    TabOrder = 1
+    ExceleGonder = False
+    object RDSEkipGridList: TcxGridDBBandedTableView
+      DataController.Summary.DefaultGroupSummaryItems = <>
+      DataController.Summary.FooterSummaryItems = <>
+      DataController.Summary.SummaryGroups = <>
+      OptionsCustomize.ColumnFiltering = False
+      OptionsCustomize.ColumnSorting = False
+      OptionsData.Deleting = False
+      OptionsData.Editing = False
+      OptionsData.Inserting = False
+      OptionsView.GridLines = glNone
+      OptionsView.GroupByBox = False
+      OptionsView.GroupByHeaderLayout = ghlHorizontal
+      Bands = <
+        item
+          Caption = 'Risk De'#287'erlendirme Ekibi'
+          Styles.Header = cxStyle8
+          Width = 432
+        end>
+      object RDSEkipGridListAdiSoyadi: TcxGridDBBandedColumn
+        DataBinding.FieldName = 'AdiSoyadi'
+        PropertiesClassName = 'TcxTextEditProperties'
+        Properties.Alignment.Horz = taCenter
+        Properties.Alignment.Vert = taVCenter
+        HeaderAlignmentHorz = taCenter
+        Width = 147
+        Position.BandIndex = 0
+        Position.ColIndex = 0
+        Position.RowIndex = 0
+      end
+      object RDSEkipGridListGorevTanim: TcxGridDBBandedColumn
+        DataBinding.FieldName = 'GorevTanim'
+        PropertiesClassName = 'TcxTextEditProperties'
+        Properties.Alignment.Horz = taCenter
+        Properties.Alignment.Vert = taVCenter
+        HeaderAlignmentHorz = taCenter
+        Width = 118
+        Position.BandIndex = 0
+        Position.ColIndex = 1
+        Position.RowIndex = 0
+      end
+      object RDSEkipGridListeMail: TcxGridDBBandedColumn
+        DataBinding.FieldName = 'eMail'
+        PropertiesClassName = 'TcxTextEditProperties'
+        Properties.Alignment.Horz = taCenter
+        Properties.Alignment.Vert = taVCenter
+        HeaderAlignmentHorz = taCenter
+        Width = 149
+        Position.BandIndex = 0
+        Position.ColIndex = 2
+        Position.RowIndex = 0
+      end
+      object RDSEkipGridListTelefon: TcxGridDBBandedColumn
+        DataBinding.FieldName = 'Telefon'
+        PropertiesClassName = 'TcxTextEditProperties'
+        Properties.Alignment.Horz = taCenter
+        Properties.Alignment.Vert = taVCenter
+        HeaderAlignmentHorz = taCenter
+        Width = 99
+        Position.BandIndex = 0
+        Position.ColIndex = 3
+        Position.RowIndex = 0
+      end
+    end
+    object cxGridLevel1: TcxGridLevel
+      GridView = RDSEkipGridList
+    end
+  end
   object DataSource1: TDataSource
     DataSet = ADO_RiskDetay
     Left = 104
@@ -724,18 +799,19 @@ object frmRDS: TfrmRDS
     end
     object R3: TMenuItem
       Caption = 'RDS'
-      ImageIndex = 111
+      ImageIndex = 67
       OnClick = cxButtonCClick
       object R4: TMenuItem
         Tag = -28
         Caption = 'Risk Belirleme Ekip Tutana'#287#305
-        ImageIndex = 111
+        ImageIndex = 115
         OnClick = cxButtonCClick
       end
       object RiskDeerlendirmeProsedr1: TMenuItem
         Tag = -26
         Caption = 'Risk De'#287'erlendirme Prosed'#252'r'#252
         ImageIndex = 111
+        Visible = False
         OnClick = cxButtonCClick
       end
     end
