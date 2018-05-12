@@ -638,6 +638,7 @@ Const
   TagfrmTedaviBilgisi = 70;
   TagfrmGridListeForm = 120;
   TagfrmDestekTalep = 121;
+  TagYeniOSGBVeriTabani = 127;
   TagfrmHastaRecete = 130;
   TagfrmHastaIlacTedavi = 140;
   TagfrmTeleEkg = 150;
