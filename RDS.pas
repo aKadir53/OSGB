@@ -115,6 +115,13 @@ type
     Fmea: TcxImageList;
     RDSSatirlarColumn3: TcxGridDBBandedColumn;
     RDSSatirlarTerminSure: TcxGridDBBandedColumn;
+    RDSEkipGrid: TcxGridKadir;
+    RDSEkipGridList: TcxGridDBBandedTableView;
+    RDSEkipGridListAdiSoyadi: TcxGridDBBandedColumn;
+    RDSEkipGridListGorevTanim: TcxGridDBBandedColumn;
+    RDSEkipGridListeMail: TcxGridDBBandedColumn;
+    RDSEkipGridListTelefon: TcxGridDBBandedColumn;
+    cxGridLevel1: TcxGridLevel;
     procedure cxButtonCClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure gridRaporCustomDrawGroupCell(Sender: TcxCustomGridTableView;
@@ -139,6 +146,7 @@ type
     procedure E3Click(Sender: TObject);
     procedure SirketlerPropertiesChange(Sender: TObject);
     procedure FormShow(Sender: TObject);
+    function Ekip : TDataset;
 
  //   function EArsivGonder(FaturaId : string) : string;
  //   function EArsivIptal(FaturaGuid : string) : string;
@@ -166,6 +174,22 @@ implementation
 uses data_modul, StrUtils, Jpeg;
 
 {$R *.dfm}
+
+
+function TfrmRDS.Ekip : TDataset;
+begin
+  Ekip := nil;
+  RDSEkipGrid.Dataset.Connection := Datalar.ADOConnection2;
+  RDSEkipGrid.Dataset.Active := False;
+  RDSEkipGrid.Dataset.SQL.Text :=
+  'select AdiSoyadi,tanimi GorevTanim,eMail,Telefon from SirketRDSEkibi E ' +
+  ' join SIRKET_SUBE_EKIP_View SE on SE.kod = E.EkipID ' +
+  ' where ISGEkipId = 1 and SirketKod = ' +
+  QuotedStr(vartoStr(TcxImageComboKadir(FindComponent('sirketKod')).EditValue)) +
+  ' and E.SirketRiskID = ' + QuotedStr(vartoStr(TcxButtonEditKadir(FindComponent('id')).EditValue));
+  RDSEkipGrid.Dataset.Active := True;
+  Ekip := RDSEkipGrid.Dataset;
+end;
 
 
 
@@ -198,7 +222,7 @@ begin
 
       TcxImageComboKadir(FindComponent('hazirlayanDoktor')).EditValue := dataset.FieldByName('DoktorKod').AsString;
       TcxImageComboKadir(FindComponent('hazirlayan')).EditValue := dataset.FieldByName('IGUKod').AsString;
-
+(*
    sql :=
      '(select id,adiSoyadi,eMail,SE.Telefon from SIRKET_SUBE_EKIP SE ' +
      'where SE.SirketKod = ' + QuotedStr(vartostr(TcxImageComboKadir(FindComponent('sirketKod')).EditingValue)) +
@@ -244,7 +268,7 @@ begin
    TcxImageComboKadir(FindComponent('isverenVekil')).DisplayField := 'adiSoyadi';
    TcxImageComboKadir(FindComponent('isverenVekil')).ValueField := 'id';
    TcxImageComboKadir(FindComponent('isverenVekil')).Filter := '';
-
+   *)
  End;
 
 
@@ -298,6 +322,7 @@ Kaydet : begin
           RDSGrid.Enabled := True;
           PopupMenuEnabled(Self,PopupMenu1,True);
           ToolBar1.Enabled := True;
+          Ekip;
           //PopupMenuToToolBarEnabled(Self,ToolBar1,PopupMenu1);
         end;
  Yeni : begin
@@ -433,6 +458,7 @@ begin
 
     Enabled;
     FaturaDetay;
+    Ekip;
 
     if (vartostr(TcxTextEditKadir(FindComponent('hazirlayan')).EditingValue) <>
        datalar.IGU) and
@@ -454,10 +480,8 @@ begin
        TcxImageComboKadir(FindComponent('gecerlilik_date')).Enabled := False;
        TcxImageComboKadir(FindComponent('Method')).Enabled := False;
        TcxImageComboKadir(FindComponent('Onay')).Enabled := False;
-       TcxTextEditKadir(FindComponent('isverenVekil')).Enabled := False;
-       TcxTextEditKadir(FindComponent('calisanTemsilci')).Enabled := False;
-       TcxTextEditKadir(FindComponent('danisman')).Enabled := False;
-       TcxTextEditKadir(FindComponent('destekEleman')).Enabled := False;
+       RDSEkipGrid.Enabled := False;
+
     end
     else
     begin
@@ -474,10 +498,7 @@ begin
        TcxImageComboKadir(FindComponent('gecerlilik_date')).Enabled := True;
        TcxImageComboKadir(FindComponent('Method')).Enabled := True;
        TcxImageComboKadir(FindComponent('Onay')).Enabled := True;
-       TcxTextEditKadir(FindComponent('isverenVekil')).Enabled := True;
-       TcxTextEditKadir(FindComponent('calisanTemsilci')).Enabled := True;
-       TcxTextEditKadir(FindComponent('danisman')).Enabled := True;
-       TcxTextEditKadir(FindComponent('destekEleman')).Enabled := True;
+       RDSEkipGrid.Enabled := True;
     end;
 
      if RDSGrid.Dataset.Eof
@@ -956,6 +977,12 @@ begin
              end;
              Dataset := datalar.QuerySelect('sp_RDS ' + TcxButtonEditKadir(FindComponent('id')).EditText + ',' +
                                             vartostr(TcxImageComboKadir(FindComponent('Method')).EditingValue));
+
+             TopluDataset.Dataset0 := Dataset;
+             TopluDataset.Dataset1 := RDSEkipGrid.Dataset;
+             PrintYap('RET','Risk Deðerlendirme Ekip Tutanagi','',TopluDataset,pTNone)
+
+           (*
              DokumanAc(RTFSablonDataset(RDEkipTutanagi),'RTFFile','EkipTutanagi.rtf',False);
              EkRTF1.InFile := 'EkipTutanagi.rtf';
              EkRTF1.ClearVars;
@@ -967,6 +994,7 @@ begin
    //          EkRTF1.CreateVar('adres',Dataset.FieldByName('adres').AsString);
 
              EkRtf1.ExecuteOpen([Dataset],SW_SHOW);
+             *)
          end;
 
   -29 : begin
@@ -984,8 +1012,7 @@ begin
         end;
   -30 : begin
           cxExceleGonder(RDSGrid,'RDS.xls');
-          FB := FirmaBilgileri(vartostr(TcxImageComboKadir(FindComponent('sirketKod')).EditValue),
-                               vartostr(TcxImageComboKadir(FindComponent('subeKod')).EditValue));
+          FB.ilgiliMailBilgileri := isgRDSEkibiMailBilgileri(vartostr(TcxButtonEditKadir(FindComponent('id')).EditValue));
 
           if (mailGonder(FB.ilgiliMailBilgileri,'Risk Deðerlendirme Kaynaklarý',
                         'Düzenlenen Risk Kaynaklarý , ekteki dosyada bilginize sunulmuþtur',
@@ -1149,6 +1176,8 @@ begin
   OrtakEventAta(Onay);
 
 
+  (*
+
   Method := TcxImageComboKadir.Create(self);
   Method.Conn := Datalar.ADOConnection2;
   Method.TableName := 'SIRKET_SUBE_EKIP';
@@ -1195,8 +1224,12 @@ begin
   Method.BosOlamaz := False;
   Method.Filter := ' ISGEkipGorevID = 1 and sirketKod = ' + QuotedStr(vartostr(TcxImageComboKadir(FindComponent('SirketKod')).EditValue));
   setDataStringKontrol(self,Method,'isverenVekil','Ýþveren Vekili',Kolon1,'',120,0,alNone,'');
+  *)
+
 
   setDataStringMemo(self,'Aciklama','Açýklama',kolon1,'',300,70);
+
+  setDataStringKontrol(self,RDSEkipGrid,'RDSEkipGrid',' ',Kolon1,'',450,140,alNone,'',clLeft);
 
 
   Method := TcxImageComboKadir.Create(self);
