@@ -269,9 +269,12 @@ procedure TfrmCihazKontrol.SirketlerPropertiesChange(Sender: TObject);
 begin
   cxPanelButtonEnabled(false,True,false);
   if TcxImageComboKadir(Sender).Name = 'SirketKod'
-  Then
-   TcxImageComboKadir(FindComponent('KontrolCihaz')).Filter := ' sirketKod is null or sirketKod = ' + vartostr(TcxImageComboKadir(FindComponent('SirketKod')).EditingValue);
+  Then begin
+   TcxImageComboKadir(FindComponent('KontrolCihaz')).Filter := ' sirketKod = ' + vartostr(TcxImageComboKadir(FindComponent('SirketKod')).EditingValue);
+   TcxImageComboKadir(FindComponent('IGU')).TableName := SirketIGUToSQLStr(TcxImageComboKadir(FindComponent('sirketKod')).EditingValue);
+   TcxImageComboKadir(FindComponent('IGU')).Filter := '';
 
+  end;
 
   if TcxImageComboKadir(Sender).Name = 'KontrolCihaz'
   Then begin
@@ -322,10 +325,15 @@ begin
   TableName := 'CihazKontrol';
 
 
- (*
-  where := ' hazirlayan = ' + QuotedStr(datalar.IGU) + ' or paylasilan = ' + QuotedStr(datalar.IGU) +
-           ' or hazirlayanDoktor = ' + QuotedStr(datalar.doktorKodu) + ' or paylasilan = ' + QuotedStr(datalar.doktorKodu);
-  *)
+    if datalar.UserGroup = '1'
+    then
+      where := ''
+    else
+    if datalar.UserGroup = '10'
+    then
+      where := ' sirketKod = ' + QuotedStr(datalar.sirketKodu)
+    else
+      where := ' IGU = ' + QuotedStr(datalar.IGU);
 
   Kontroler := ListeAcCreate('CihazKontrol_view','id,sirket,Tarih,CihazAciklamasi,CihazTuru',
                        'ID,ÞirketAdý,HazýrlamaTarihi,Cihaz Aciklamasi,Cihaz Turu',
@@ -359,6 +367,17 @@ begin
   setDataStringKontrol(self,sirketlerx,'SirketKod','Þirket',Kolon1,'',250,0,alNone,'');
 
   TcxImageComboKadir(FindComponent('SirketKod')).Properties.OnEditValueChanged := SirketlerPropertiesChange;
+
+
+  sirketlerx := TcxImageComboKadir.Create(self);
+  sirketlerx.Conn := Datalar.ADOConnection2;
+  sirketlerx.TableName := 'IGU';
+  sirketlerx.ValueField := 'kod';
+  sirketlerx.DisplayField := 'Tanimi';
+  sirketlerx.BosOlamaz := False;
+  sirketlerx.Enabled := False;
+  sirketlerx.Filter := '';
+  setDataStringKontrol(self,sirketlerx,'IGU','Ýþ Güvenlik Uzm',Kolon1,'',120,0,alNone,'');
 
 
   setDataString(self,'FaaliyetAlani','Faaliyet Alani' ,Kolon1,'',100);
@@ -399,7 +418,13 @@ begin
            end;
   Yeni : begin
            TcxImageComboKadir(FindComponent('KontrolCihaz')).Enabled := False;
-
+           if datalar.IGU <> ''
+           then begin
+             TcxImageComboKadir(FindComponent('IGU')).EditValue := datalar.IGU;
+             TcxImageComboKadir(FindComponent('IGU')).Enabled := False;
+           end
+           else
+             TcxImageComboKadir(FindComponent('IGU')).Enabled := True;
          end;
   end;
 end;

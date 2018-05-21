@@ -186,10 +186,16 @@ begin
          SahaGozetimGrid.Enabled := True;
         end;
     2 : begin
-          TcxImageComboKadir(FindComponent('hazirlayan')).EditValue := datalar.IGU;
-          TcxDateEditKadir(FindComponent('date_create')).EditValue := date;
-          SahaGozetimGrid.Enabled := False;
-          FaturaDetay;
+           if datalar.IGU <> ''
+           then begin
+             TcxImageComboKadir(FindComponent('hazirlayan')).EditValue := datalar.IGU;
+             TcxImageComboKadir(FindComponent('hazirlayan')).Enabled := False;
+           end
+           else
+             TcxImageComboKadir(FindComponent('hazirlayan')).Enabled := True;
+           TcxDateEditKadir(FindComponent('date_create')).EditValue := date;
+           SahaGozetimGrid.Enabled := False;
+           FaturaDetay;
         end;
   end;
 end;
@@ -199,6 +205,7 @@ procedure TfrmSirketSahaDenetim.cxButtonEditPropertiesButtonClick(Sender: TObjec
   AButtonIndex: Integer);
 begin
     inherited;
+    if TcxButtonEditKadir(FindComponent('id')).Text = '' then exit;
     Enabled;
     FaturaDetay;
 
@@ -452,6 +459,10 @@ begin
   TcxImageComboKadir(FindComponent('subeKod')).Filter := ' sirketKod = ' +
   QuotedStr(vartostr(TcxImageComboKadir(FindComponent('SirketKod')).EditingValue)) + sube;
 
+ TcxImageComboKadir(FindComponent('hazirlayan')).TableName := SirketIGUToSQLStr(TcxImageComboKadir(FindComponent('sirketKod')).EditingValue);
+ TcxImageComboKadir(FindComponent('hazirlayan')).Filter := '';
+
+
 end;
 
 procedure TfrmSirketSahaDenetim.cxButtonCClick(Sender: TObject);
@@ -527,7 +538,17 @@ begin
   TableName := 'SirketSahaDenetim';
  // TopPanel.Visible := true;
 
-  where := ' hazirlayan = ' + QuotedStr(datalar.IGU);
+  if datalar.UserGroup = '1'
+  then
+    where := ''
+  else
+  if datalar.UserGroup = '10'
+  then
+    where := ' sirketKod = ' + QuotedStr(datalar.sirketKodu)
+  else
+    where := ' hazirlayan = ' + QuotedStr(datalar.IGU);
+
+
 
   Faturalar := ListeAcCreate('SirketSahaDenetim_view','id,sirketKod,sirketAdi,date_create',
                        'ID,ÞirketKodu,ÞirketAdý,Tarihi',
@@ -538,7 +559,7 @@ begin
 
   FaturaTarihi := TcxDateEditKadir.Create(Self);
   FaturaTarihi.ValueTip := tvDate;
-  setDataStringKontrol(self,FaturaTarihi,'date_create','Hazýrlama Tarihi',Kolon1,'trh',80);
+  setDataStringKontrol(self,FaturaTarihi,'date_create','Hazýr Tarihi',Kolon1,'trh',80);
 
 
   sirketlerx := TcxImageComboKadir.Create(self);
@@ -548,7 +569,7 @@ begin
   sirketlerx.DisplayField := 'Tanimi';
   sirketlerx.BosOlamaz := False;
   sirketlerx.Filter := datalar.sirketlerUserFilter;
-  setDataStringKontrol(self,sirketlerx,'SirketKod','Þirket',Kolon1,'trh',250,0,alNone,'');
+  setDataStringKontrol(self,sirketlerx,'SirketKod','Þirket',Kolon1,'trh',230,0,alNone,'');
   TcxImageComboKadir(FindComponent('SirketKod')).Properties.OnEditValueChanged := SirketlerPropertiesChange;
 
   sube := ' and IGU = ' + QuotedStr(datalar.IGU);
@@ -559,7 +580,7 @@ begin
   Subeler.ValueField := 'subeKod';
   Subeler.DisplayField := 'subeTanim';
   Subeler.Filter := ' SirketKod = ' + QuotedStr(vartostr(TcxImageComboKadir(FindComponent('SirketKod')).EditValue)) + sube + ' and (Pasif = 0 or Pasif is Null)';
-  setDataStringKontrol(self,Subeler,'SubeKod','Þube',Kolon1,'trh',100,0,alNone,'');
+  setDataStringKontrol(self,Subeler,'SubeKod','Þube',Kolon1,'trh',80,0,alNone,'');
 
 
   IGU := TcxImageComboKadir.Create(self);
@@ -569,10 +590,10 @@ begin
   IGU.DisplayField := 'Tanimi';
   IGU.BosOlamaz := False;
   IGU.Filter := '';
-  setDataStringKontrol(self,IGU,'hazirlayan','Ýþ Güvenlik Uzm',Kolon1,'trh',120,0,alNone,'');
+  setDataStringKontrol(self,IGU,'hazirlayan','Ýþ Güvenlik Uzm',Kolon1,'trh',100,0,alNone,'');
 
 //  setDataString(self,'hazirlayan','Hazýrlayan',Kolon1,'trh',80,false,'',True);
-  setDataString(self,'isveren','Isveren',Kolon1,'trh',150,false,'',False);
+  setDataString(self,'isveren','Isveren',Kolon1,'trh',120,false,'',False);
 
   (*
   Onay := TcxImageComboKadir.Create(self);
@@ -606,7 +627,7 @@ begin
 
 
 //  setDataStringBLabel(self,'bosSatir',kolon1,'',1000,'Risk Kaynaklarý');
-  setDataStringKontrol(self,SahaGozetimGrid,'SahaGozetimGrid','',Kolon1,'',1070,450);
+  setDataStringKontrol(self,SahaGozetimGrid,'SahaGozetimGrid','',Kolon1,'',1,1,alClient);
 
 
   SahaGozetimGrid.Dataset.Connection := datalar.ADOConnection2;
@@ -619,9 +640,9 @@ begin
   SahaGozetimGrid.Dataset.BeforeEdit := BeforeEdit;
 
 
-  kolon2.Width := 0;
-  Kolon3.Width := 0;
-  Kolon4.Width := 0;
+  kolon2.Visible := false;
+  kolon3.Visible := false;
+  kolon4.Visible := false;
 
 
   //GridFaturalar.DataController.DataSource := DataSource;

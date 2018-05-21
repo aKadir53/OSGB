@@ -163,7 +163,7 @@ procedure TfrmPopupDBGridForm.ADOBeforePost(DataSet: TDataSet);
 begin
   inherited;
   case Tag of
-  TagfrmSube, TagfrmFirmaISGEkip :
+  TagfrmSube, TagfrmFirmaISGEkip ,TagfrmFirmaYetkili,TagFirmaCalismalari:
         begin
            cxGrid3.Dataset.FieldByName('SirketKod').AsString := _firmaKod_;
         end;
@@ -251,13 +251,13 @@ begin
         ClientHeight := 500;
         ClientWidth := 900;
         TableName := 'SIRKET_SUBE_EKIP';
-        _fields_ := 'id,SirketKod,SubeKod,TCKimlikNo,AdiSoyadi,Telefon,eMail,ISGEkipId,ISGEkipGorevID';
-        _fieldBaslik_ := ',,Þube,TC Kimlik No,Adý Soyadý,Telefon,eMail,ISG Ekip,ISG Ekip Görev';
-        _fieldTips_ := 'int,string,IC,string,string,string,string,IC,IC';
+        _fields_ := 'id,SirketKod,SubeKod,TCKimlikNo,AdiSoyadi,Telefon,eMail,ISGEkipId,ISGEkipGorevID,Aktif,AtamaTarihi';
+        _fieldBaslik_ := ',,Þube,TC Kimlik No,Adý Soyadý,Telefon,eMail,ISG Ekip,ISG Ekip Görev,Aktif,Atama Tarihi';
+        _fieldTips_ := 'int,string,IC,string,string,string,string,IC,IC,IC,saat';
 
         _ICParams_ := '0;0;' +
                          '(select subeKod|subeTanim from SIRKET_SUBE_TNM where sirketKod = ' + QuotedStr(_firmaKod_) + ') subeler'+
-                         ',subeKod,subeTanim;0;0;0;0;FirmaISGEkipTnm,kod,tanimi;FirmaISGEkipGorevTnm,kod,tanimi';
+                         ',subeKod,subeTanim;0;0;0;0;FirmaISGEkipTnm,kod,tanimi;FirmaISGEkipGorevTnm,kod,tanimi;AktifPasifTanim_View,kod,tanimi;0';
 
         indexFieldName := 'sirketKod = ' + QuotedStr(_firmaKod_);
         cxPanel.Visible := false;
@@ -265,8 +265,35 @@ begin
 
         cxGrid3.Dataset.BeforePost := ADOBeforePost;
         cxGrid3.Dataset.Connection := datalar.ADOConnection2;
-        cxGrid3.Dataset.SQL.Text := 'Select id,SirketKod,SubeKod,TCKimlikNo,AdiSoyadi,Telefon,eMail,ISGEkipId,ISGEkipGorevID ' +
+        cxGrid3.Dataset.SQL.Text := 'Select id,SirketKod,SubeKod,TCKimlikNo,AdiSoyadi,Telefon,eMail,ISGEkipId,ISGEkipGorevID,Aktif,AtamaTarihi ' +
                                     ' from SIRKET_SUBE_EKIP where sirketKod = ' + QuotedStr(_firmaKod_);
+        cxGrid3.Dataset.Open;
+        DBGrid.ClearItems;
+        DBGrid.DataController.CreateAllItems(True);
+        SetGrid;
+
+        SayfaCaption('','','','','');
+        Result := True;
+    end;
+
+    TagfrmFirmaYetkili :
+    begin
+        ClientHeight := 500;
+        ClientWidth := 500;
+        TableName := 'ISGFirmaYetkilileri';
+        _fields_ := 'id,SirketKod,AdiSoyadi,Tc,eMail,mobil,Bolum,Aciklama';
+        _fieldBaslik_ := ',,Adý Soyadý,TC,eMail,Telefon,Bölüm,Açýklama';
+        _fieldTips_ := 'int,string,string,string,string,string,string,string';
+
+        _ICParams_ := '';
+        indexFieldName := 'sirketKod = ' + QuotedStr(_firmaKod_);
+        cxPanel.Visible := false;
+        cxGroupDoktorlar.Caption := 'Yetkili Bilgileri';
+
+        cxGrid3.Dataset.BeforePost := ADOBeforePost;
+        cxGrid3.Dataset.Connection := datalar.ADOConnection2;
+        cxGrid3.Dataset.SQL.Text := 'Select id,SirketKod,AdiSoyadi,Tc,eMail,mobil,Bolum,Aciklama ' +
+                                    ' from ISGFirmaYetkilileri where sirketKod = ' + QuotedStr(_firmaKod_);
         cxGrid3.Dataset.Open;
         DBGrid.ClearItems;
         DBGrid.DataController.CreateAllItems(True);
@@ -522,11 +549,13 @@ begin
   end;
   DBgrid.ApplyBestFit;
   colswidth := 0;
+
   for i := 0 to DBgrid.ColumnCount - 1 do
   begin
     colswidth := colswidth + DBgrid.Columns[i].Width;
   end;
-  if colswidth > 170 then ClientWidth := colswidth + 40 else ClientWidth := 170;
+
+  if colswidth > 170 then ClientWidth := colswidth + 50 else ClientWidth := 170;
 
 
 end;

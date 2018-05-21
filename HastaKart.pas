@@ -150,7 +150,8 @@ type
     procedure SirketlerPropertiesChange(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure ButtonClick(Sender: TObject);
-  private
+  protected
+    procedure TopluPasifYap(const bPasif: boolean);
     { Private declarations }
   public
     { Public declarations }
@@ -193,7 +194,9 @@ var
   sql : string;
 begin
   case TcxButtonKadir(sender).Tag of
-   -50 : begin
+    550 : TopluPasifYap (True);
+    555 : TopluPasifYap (False);
+    -50 : begin
             ado := TADOQuery.Create(nil);
             try
               ado.Connection := datalar.ADOConnection2;
@@ -1247,6 +1250,9 @@ begin
   setDataStringKontrol(self,cxFotoPanel , 'cxFotoPanel','',Kolon4,'',110);
   setDataStringKontrol(self,txtAktif , 'Aktif','',Kolon4,'',110);
 
+  addButton(self,nil,'btnTopluAktif','','Toplu Aktif Yap',Kolon4,'',110,ButtonClick, 555);
+  addButton(self,nil,'btnTopluPasif','','Toplu Pasif Yap',Kolon4,'',110,ButtonClick, 550);
+
   setDataStringBLabel(self,'MuayenePeryotBaslik',Kolon4,'',110,'Muayene Peryodu');
  // TcxLabel(FindComponent('MuayenePeryotBaslik')).Style.Font.Color := clRed;
 
@@ -1357,12 +1363,23 @@ begin
   addButton(self,nil,'btnSertifikaP','','Yazdýr',sayfa2_Kolon1,'',50,ButtonClick,-50);
 
 
+
  // tableColumnDescCreate;
+  cxpnlHastaGelisler.Parent := sayfa1;
   cxpnlHastaGelisler.Align := alBottom;
 
   SayfaCaption('Kimlik Bilgileri','Eðitim Bilgileri','Öz Geçmiþ','','');
 
+  if datalar.UserGroup <> '2'
+  then begin
+    sayfa3.TabVisible := False;
+  end;
+
+
   Disabled(self,True);
+
+
+
 
  end;
 
@@ -1460,6 +1477,24 @@ begin
   end;
 end;
 
+procedure TfrmHastaKart.TopluPasifYap (const bPasif : boolean);
+var
+  sSirketKod, sSubeKod : String;
+begin
+  sSirketKod := VarToStr (TcxImageComboKadir(FindComponent('SirketKod')).EditingValue);
+  if IsNull (sSirketKod) then 
+  begin
+    ShowMessageSkin ('Personelin Þirket bilgisi seçilmemiþ', '', '', 'info');
+    Exit;
+  end;
+  sSubeKod := VarToStr (TcxImageComboKadir(FindComponent('Sube')).EditingValue);
+  if IsNull (sSubeKod) then
+  begin
+    ShowMessageSkin ('Personelin Þube bilgisi seçilmemiþ', '', '', 'info');
+    Exit;
+  end;
+  if not PersonelTopluPasifYap (bPasif, sSirketKod, sSubeKod) then Exit;
+end;
 
 procedure TfrmHastaKart.cxButtonCClick(Sender: TObject);
 var
@@ -1640,3 +1675,4 @@ begin
 end;
 
 end.
+

@@ -79,6 +79,9 @@ type
     txtServerPassword: TcxTextEditKadir;
     dxLayoutControl2Group2: TdxLayoutGroup;
     dxLayoutControl2Group1: TdxLayoutGroup;
+    aTimer: TTimer;
+    Image1abx: TcxImage;
+    cxImagebcd: TcxImage;
 
     procedure FormCreate(Sender: TObject);
     procedure FormActivate(Sender: TObject);
@@ -99,6 +102,7 @@ type
       var AllowChange: Boolean);
     procedure txtSubePropertiesChange(Sender: TObject);
     procedure LoginSayfalarChange(Sender: TObject);
+    procedure aTimerTimer(Sender: TObject);
   private
     { Private declarations }
   public
@@ -181,35 +185,9 @@ end;
 
 procedure TfrmLogin.FormActivate(Sender: TObject);
 var
-  i : Integer;
-  sParams: String;
-  aStringList : TStringList;
   Arect:Trect;
 begin
   INVALIDATERECT(HANDLE,@ARect,False);
-  aStringList := TStringList.Create;
-  try
-    sParams := '';
-    for i := 1 to ParamCount do
-      sParams := sParams + ParamStr(i) + ' ';
-    Split('/', sParams, aStringList);
-    for i := 0 to aStringList.Count - 1 do
-    begin
-      sParams := aStringList [i];
-      if SameText (Copy (sParams, 1, 2), 'L:') then
-      begin
-        Delete (sParams, 1, 2);
-        Left := StrToIntDef (sParams, 0);
-      end;
-      if SameText (Copy (sParams, 1, 2), 'T:') then
-      begin
-        Delete (sParams, 1, 2);
-        Top := StrToIntDef (sParams, 0);
-      end;
-    end;
-  finally
-    aStringList.Free;
-  end;
 end;
 
 procedure TfrmLogin.Image1Click(Sender: TObject);
@@ -374,14 +352,73 @@ begin
      Image2.OnClick(Image2);
 end;
 
+procedure TfrmLogin.aTimerTimer(Sender: TObject);
+var
+  aStringList : TStringList;
+  sParams: String;
+  i : Integer;
+  bCode, bUser, bPass : Boolean;
+begin
+  TTimer (Sender).Enabled := False;
+  bCode := False;
+  bUser := False;
+  bPass := False;
+  aStringList := TStringList.Create;
+  try
+    sParams := '';
+    for i := 1 to ParamCount do
+      sParams := sParams + ParamStr(i) + ' ';
+    Split('/', sParams, aStringList);
+    for i := 0 to aStringList.Count - 1 do
+    begin
+      sParams := aStringList [i];
+      if SameText (Copy (sParams, 1, 2), 'L:') then
+      begin
+        Delete (sParams, 1, 2);
+        Left := StrToIntDef (sParams, 0);
+      end;
+      if SameText (Copy (sParams, 1, 2), 'T:') then
+      begin
+        Delete (sParams, 1, 2);
+        Top := StrToIntDef (sParams, 0);
+      end;
+      if SameText (Copy (sParams, 1, 2), 'C:') then
+      begin
+        Delete (sParams, 1, 2);
+        txtOsgbKodu.Text := Trim (sParams);
+        bCode := True;
+      end;
+      if SameText (Copy (sParams, 1, 2), 'U:') then
+      begin
+        Delete (sParams, 1, 2);
+        Edit1.Text := Trim (sParams);
+        bUser := True;
+      end;
+      if SameText (Copy (sParams, 1, 2), 'P:') then
+      begin
+        Delete (sParams, 1, 2);
+        Edit2.Text := Trim (sParams);
+        bPass := True;
+      end;
+    end;
+  finally
+    aStringList.Free;
+  end;
+  if bUser and bPass and bCode then
+  begin
+    btnBaglanClick(btnBaglan);
+  end;
+end;
+
 procedure TfrmLogin.btnBaglanClick(Sender: TObject);
 var
  db, OSGBDesc : string;
+ iYazilimGelistirici : Integer;
 begin
  if txtOsgbKodu.EditingText <> ''
  Then begin
    try
-     if datalar.MasterBaglan(txtOsgbKodu.EditingValue,db, OSGBDesc, txtServerName.Text, txtServerUserName.Text, txtServerPassword.Text)
+     if datalar.MasterBaglan(txtOsgbKodu.EditingValue,db, OSGBDesc, iYazilimGelistirici, txtServerName.Text, txtServerUserName.Text, txtServerPassword.Text)
      Then begin
          Regyaz('OSGB_servername',Encode64(txtServerName.Text));
          Regyaz('OSGB_serverUserName',Encode64(txtServerUserName.Text));
@@ -392,7 +429,12 @@ begin
            txtDataBase.EditValue := db;
            Regyaz('OSGB_description',OSGBDesc);
            Labelx.Caption := OSGBDesc;
+           Regyaz('OSGB_YazilimGelistirici',IntToStr (iYazilimGelistirici));
+           Image1abx.Visible := iYazilimGelistirici = 1;
+           cxImagebcd.Visible := iYazilimGelistirici = 2;
+           cxImage1.Visible := (iYazilimGelistirici <> 2) and (iYazilimGelistirici <> 1);
            btnBaglan.Caption := 'Baðlandý';
+           DATALAR._YazilimGelistirici := iYazilimGelistirici;
          end;
      end;
    except
@@ -464,8 +506,9 @@ begin
 end;
 
 procedure TfrmLogin.FormShow(Sender: TObject);
+var
+  iYazGel : Integer;
 begin
-
  //  Height := dxLayoutControl1Group2. btnGiris.Top + btnGiris.Height + 10;
 
    txtServerName.EditValue := Decode64(regOku('OSGB_servername'));
@@ -496,9 +539,15 @@ begin
 
    txtDataBase.EditValue := Decode64(regOku('OSGB_db_name'));
    Labelx.Caption := regOku('OSGB_description');
+   iYazGel := StrToIntDef (regOku('OSGB_YazilimGelistirici'), -1);
+   DATALAR._YazilimGelistirici := iYazGel;
+   Image1abx.Visible := iYazGel = 1;
+   cxImagebcd.Visible := iYazGel = 2;
+   cxImage1.Visible := (iYazGel <> 2) and (iYazGel <> 1);
    dxStatusBar1.Panels [1].Text := regOku('OSGB_Userdescription');
    dxStatusBar1.Panels [1].Width := Length (dxStatusBar1.Panels [1].Text) * 8;
    if LoginSayfalar.ActivePageIndex = 0 then Edit2.SetFocus;
 end;
 
 end.
+

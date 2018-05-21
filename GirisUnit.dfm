@@ -3,8 +3,8 @@ object GirisForm: TGirisForm
   Top = 0
   BorderStyle = bsDialog
   Caption = 'GirisForm'
-  ClientHeight = 443
-  ClientWidth = 1494
+  ClientHeight = 739
+  ClientWidth = 1366
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -24,15 +24,15 @@ object GirisForm: TGirisForm
   TextHeight = 13
   object cxPanel: TcxGroupBox
     Left = 0
-    Top = 386
+    Top = 682
     Align = alBottom
     PanelStyle.Active = True
     TabOrder = 0
     Height = 37
-    Width = 1494
+    Width = 1366
     object cxIptal: TcxButton
       Tag = 1
-      Left = 1362
+      Left = 1234
       Top = 2
       Width = 65
       Height = 33
@@ -118,7 +118,7 @@ object GirisForm: TGirisForm
       OnClick = cxKaydetClick
     end
     object cxKaydet: TcxButton
-      Left = 1297
+      Left = 1169
       Top = 2
       Width = 65
       Height = 33
@@ -205,7 +205,7 @@ object GirisForm: TGirisForm
     end
     object cxYeni: TcxButton
       Tag = 2
-      Left = 1232
+      Left = 1104
       Top = 2
       Width = 65
       Height = 33
@@ -290,9 +290,9 @@ object GirisForm: TGirisForm
       TabOrder = 2
       OnClick = cxKaydetClick
     end
-    object cxButton2: TcxButton
+    object cxKapat: TcxButton
       Tag = 9999
-      Left = 1427
+      Left = 1299
       Top = 2
       Width = 65
       Height = 33
@@ -378,7 +378,7 @@ object GirisForm: TGirisForm
     end
     object cxButton4: TcxButton
       Tag = 3
-      Left = 1167
+      Left = 1039
       Top = 2
       Width = 65
       Height = 33
@@ -465,7 +465,7 @@ object GirisForm: TGirisForm
     end
     object cxButton5: TcxButton
       Tag = 3
-      Left = 1102
+      Left = 974
       Top = 2
       Width = 65
       Height = 33
@@ -638,33 +638,29 @@ object GirisForm: TGirisForm
   object Sayfalar: TcxPageControl
     Left = 0
     Top = 78
-    Width = 1494
-    Height = 308
+    Width = 1366
+    Height = 604
     Align = alClient
     TabOrder = 2
     TabStop = False
-    Properties.ActivePage = sayfa1
+    Properties.ActivePage = sayfa5
     Properties.Style = 11
     Properties.TabHeight = 10
     Properties.TabPosition = tpBottom
     OnChange = SayfalarChange
     OnPageChanging = SayfalarPageChanging
-    ClientRectBottom = 278
+    ClientRectBottom = 574
     ClientRectLeft = 3
-    ClientRectRight = 1487
+    ClientRectRight = 1359
     ClientRectTop = 3
     object sayfa1: TcxTabSheet
       Caption = 'sayfa1'
       ImageIndex = 2
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object Sayfa1_dxLayoutControl1: TdxLayoutControl
         Left = 0
         Top = 0
-        Width = 1484
-        Height = 275
+        Width = 1356
+        Height = 571
         Margins.Left = 0
         Margins.Right = 0
         Align = alClient
@@ -758,15 +754,11 @@ object GirisForm: TGirisForm
     object sayfa2: TcxTabSheet
       Caption = 'sayfa2'
       ImageIndex = 1
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object sayfa2_dxLayoutControl3: TdxLayoutControl
         Left = 0
         Top = 0
-        Width = 1484
-        Height = 275
+        Width = 1356
+        Height = 571
         Align = alClient
         TabOrder = 0
         LayoutLookAndFeel = dxLayoutSkinLookAndFeel1
@@ -784,7 +776,7 @@ object GirisForm: TGirisForm
           ButtonOptions.Buttons = <>
           ShowBorder = False
           UseIndent = False
-          Index = 2
+          Index = 1
         end
         object sayfa2_Kolon3: TdxLayoutGroup
           AlignHorz = ahRight
@@ -794,7 +786,7 @@ object GirisForm: TGirisForm
           ButtonOptions.Buttons = <>
           ShowBorder = False
           UseIndent = False
-          Index = 3
+          Index = 2
         end
         object sayfa2_Kolon1: TdxLayoutGroup
           Parent = sayfa2_dxLayoutGroup2
@@ -803,27 +795,16 @@ object GirisForm: TGirisForm
           UseIndent = False
           Index = 0
         end
-        object sayfa2_dxLayoutControl3SpaceItem1: TdxLayoutEmptySpaceItem
-          CaptionOptions.Text = 'Empty Space Item'
-          Parent = sayfa2_dxLayoutGroup2
-          SizeOptions.Height = 10
-          SizeOptions.Width = 30
-          Index = 1
-        end
       end
     end
     object sayfa3: TcxTabSheet
       Caption = 'sayfa3'
       ImageIndex = 2
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object sayfa3_dxLayoutControl2: TdxLayoutControl
         Left = 0
         Top = 0
-        Width = 1484
-        Height = 275
+        Width = 1356
+        Height = 571
         Margins.Left = 0
         Margins.Right = 0
         Align = alClient
@@ -871,15 +852,11 @@ object GirisForm: TGirisForm
     object sayfa4: TcxTabSheet
       Caption = 'sayfa4'
       ImageIndex = 3
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object dxLayoutControl1: TdxLayoutControl
         Left = 0
         Top = 0
-        Width = 1484
-        Height = 275
+        Width = 1356
+        Height = 571
         Margins.Left = 0
         Margins.Right = 0
         Align = alClient
@@ -927,22 +904,62 @@ object GirisForm: TGirisForm
     object sayfa5: TcxTabSheet
       Caption = 'sayfa5'
       ImageIndex = 2
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
+      object dxLayoutControl2: TdxLayoutControl
+        Left = 0
+        Top = 0
+        Width = 1356
+        Height = 571
+        Margins.Left = 0
+        Margins.Right = 0
+        Align = alClient
+        TabOrder = 0
+        LayoutLookAndFeel = dxLayoutSkinLookAndFeel1
+        object dxLayoutGroup2: TdxLayoutGroup
+          AlignHorz = ahLeft
+          AlignVert = avTop
+          ButtonOptions.Buttons = <>
+          Hidden = True
+          LayoutDirection = ldHorizontal
+          ShowBorder = False
+          UseIndent = False
+          Index = -1
+        end
+        object Sayfa5_Kolon1: TdxLayoutGroup
+          Parent = dxLayoutGroup2
+          ButtonOptions.Buttons = <>
+          ShowBorder = False
+          UseIndent = False
+          Index = 2
+        end
+        object Sayfa5_Kolon2: TdxLayoutGroup
+          AlignHorz = ahRight
+          Parent = dxLayoutGroup2
+          SizeOptions.AssignedValues = [sovSizableHorz]
+          SizeOptions.SizableHorz = True
+          SizeOptions.Height = 3
+          ButtonOptions.Buttons = <>
+          ShowBorder = False
+          UseIndent = False
+          Index = 0
+        end
+        object Sayfa5_Kolon3: TdxLayoutGroup
+          AlignHorz = ahLeft
+          AlignVert = avTop
+          Parent = dxLayoutGroup2
+          ButtonOptions.Buttons = <>
+          ShowBorder = False
+          UseIndent = False
+          Index = 1
+        end
+      end
     end
     object sayfaList: TcxTabSheet
       Caption = 'sayfaList'
       ImageIndex = 3
       TabVisible = False
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object cxGridGiris: TcxGrid
-        Left = 2
-        Top = 5
+        Left = 58
+        Top = 29
         Width = 704
         Height = 212
         TabOrder = 0
@@ -965,8 +982,8 @@ object GirisForm: TGirisForm
   end
   object dxStatusBar1: TdxStatusBar
     Left = 0
-    Top = 423
-    Width = 1494
+    Top = 719
+    Width = 1366
     Height = 20
     Panels = <
       item
@@ -1008,7 +1025,7 @@ object GirisForm: TGirisForm
     Style.Color = 16119285
     TabOrder = 4
     Height = 45
-    Width = 1494
+    Width = 1366
     object cxTab: TcxTabControl
       Left = 2
       Top = 2
@@ -1035,7 +1052,7 @@ object GirisForm: TGirisForm
       ClientRectTop = 35
     end
     object cxTopPanel_AltSag: TcxGroupBox
-      Left = 1410
+      Left = 1282
       Top = 2
       Align = alRight
       PanelStyle.Active = True
@@ -1203,7 +1220,7 @@ object GirisForm: TGirisForm
     object cxTopPanelAltOrta: TControlBar
       Left = 202
       Top = 2
-      Width = 1208
+      Width = 1080
       Height = 41
       Align = alClient
       AutoDock = False
@@ -1438,11 +1455,11 @@ object GirisForm: TGirisForm
       Width = 430
       object pBar: TcxProgressBar
         Left = 2
-        Top = 35
+        Top = 37
         Align = alBottom
         TabOrder = 0
         Visible = False
-        ExplicitTop = 37
+        ExplicitTop = 39
         ExplicitWidth = 428
         Width = 426
       end
@@ -1456,7 +1473,7 @@ object GirisForm: TGirisForm
     TabOrder = 6
     Visible = False
     Height = 33
-    Width = 1494
+    Width = 1366
     object txtTopPanelTarih1: TcxDateEditKadir
       Tag = -100
       Left = 69
@@ -1477,7 +1494,6 @@ object GirisForm: TGirisForm
       OnExit = cxEditExit
       BosOlamaz = False
       ValueTip = tvString
-      ExplicitHeight = 21
       Width = 98
     end
     object txtTopPanelTarih2: TcxDateEditKadir
@@ -1500,7 +1516,6 @@ object GirisForm: TGirisForm
       OnExit = cxEditExit
       BosOlamaz = False
       ValueTip = tvString
-      ExplicitHeight = 21
       Width = 98
     end
     object btnListTopPanel: TcxButtonKadir
@@ -1543,7 +1558,6 @@ object GirisForm: TGirisForm
       TabOrder = 3
       OnEnter = cxEditEnter
       OnExit = cxEditExit
-      ExplicitHeight = 21
       Width = 30
     end
     object txtSeansTopPanel: TcxComboBox
@@ -1574,7 +1588,6 @@ object GirisForm: TGirisForm
       TabOrder = 4
       OnEnter = cxEditEnter
       OnExit = cxEditExit
-      ExplicitHeight = 21
       Width = 50
     end
     object SysTakipNoVar: TcxImageComboKadir
@@ -1608,7 +1621,6 @@ object GirisForm: TGirisForm
       OnEnter = cxEditEnter
       OnExit = cxEditExit
       BosOlamaz = False
-      ExplicitHeight = 21
       Width = 45
     end
     object ENabizMesajTipi: TcxImageComboKadir
@@ -1646,7 +1658,6 @@ object GirisForm: TGirisForm
       OnEnter = cxEditEnter
       OnExit = cxEditExit
       BosOlamaz = False
-      ExplicitHeight = 21
       Width = 35
     end
     object AktifPasifTopPanel: TcxImageComboKadir
@@ -1683,7 +1694,6 @@ object GirisForm: TGirisForm
       OnEnter = cxEditEnter
       OnExit = cxEditExit
       BosOlamaz = False
-      ExplicitHeight = 21
       Width = 88
     end
     object DiyalizTipTopPanel: TcxImageComboKadir
@@ -1722,7 +1732,6 @@ object GirisForm: TGirisForm
       OnExit = cxEditExit
       OnKeyDown = cxTextEditKeyDown
       BosOlamaz = False
-      ExplicitHeight = 21
       Width = 139
     end
     object txtDonemTopPanel: TcxDonemComboKadir
@@ -1747,7 +1756,6 @@ object GirisForm: TGirisForm
       OnEnter = cxEditEnter
       OnExit = cxEditExit
       BosOlamaz = False
-      ExplicitHeight = 21
       Width = 109
     end
     object KurumTipTopPanel: TcxImageComboKadir
@@ -1780,7 +1788,6 @@ object GirisForm: TGirisForm
       OnEnter = cxEditEnter
       OnExit = cxEditExit
       BosOlamaz = False
-      ExplicitHeight = 21
       Width = 115
     end
     object chkList: TcxCheckGroup
@@ -1817,7 +1824,7 @@ object GirisForm: TGirisForm
       Style.IsFontAssigned = True
       TabOrder = 11
       Height = 29
-      Width = 411
+      Width = 283
     end
     object SeansKriter: TcxTextEdit
       Tag = -100
@@ -1839,7 +1846,6 @@ object GirisForm: TGirisForm
       OnEnter = cxEditEnter
       OnExit = cxEditExit
       OnKeyDown = cxTextEditKeyDown
-      ExplicitHeight = 21
       Width = 205
     end
   end
@@ -2486,5 +2492,11 @@ object GirisForm: TGirisForm
           16400101011B0202020900000002000000000000000000000000000000000000
           0000000000000000000000000000000000000000000000000000}
       end>
+  end
+  object Ado_Foto: TADOQuery
+    Connection = DATALAR.ADOConnection2
+    Parameters = <>
+    Left = 24
+    Top = 352
   end
 end

@@ -64,6 +64,7 @@ type
     procedure PropertiesEditValueChanged(Sender: TObject);override;
     procedure PropertiesButtonClick(Sender: TObject; AButtonIndex: Integer);
     procedure ButtonClick(Sender: TObject);
+    procedure CalismaplaninaAylarikoy;
 
   private
     { Private declarations }
@@ -105,6 +106,161 @@ var
    MemoKalanLen : integer;
    textEdit : TcxTextEdit;
    _sahaDenetim_ : TSahaDenetimler;
+
+procedure TfrmPopup.CalismaplaninaAylarikoy;
+var
+  Combo : TcxImageComboKadir;
+begin
+  Combo := TcxImageComboKadir.Create(self);
+  Combo.Conn := nil;
+  Combo.ItemList := 'P;1,;0';
+  Combo.Filter := '';
+  setDataStringKontrol(self,Combo,'ocak','Ocak',Kolon1,'',50);
+
+  Combo := TcxImageComboKadir.Create(self);
+  Combo.Conn := nil;
+  Combo.ItemList := 'P;1,;0';
+  Combo.Filter := '';
+  setDataStringKontrol(self,Combo,'subat','Þubat',Kolon1,'',50);
+
+  Combo := TcxImageComboKadir.Create(self);
+  Combo.Conn := nil;
+  Combo.ItemList := 'P;1,;0';
+  Combo.Filter := '';
+  setDataStringKontrol(self,Combo,'mart','Mart',Kolon1,'',50);
+
+  Combo := TcxImageComboKadir.Create(self);
+  Combo.Conn := nil;
+  Combo.ItemList := 'P;1,;0';
+  Combo.Filter := '';
+  setDataStringKontrol(self,Combo,'nisan','Nisan',Kolon1,'',50);
+
+  Combo := TcxImageComboKadir.Create(self);
+  Combo.Conn := nil;
+  Combo.ItemList := 'P;1,;0';
+  Combo.Filter := '';
+  setDataStringKontrol(self,Combo,'mayis','Mayis',Kolon1,'',50);
+
+  Combo := TcxImageComboKadir.Create(self);
+  Combo.Conn := nil;
+  Combo.ItemList := 'P;1,;0';
+  Combo.Filter := '';
+  setDataStringKontrol(self,Combo,'haziran','Haziran',Kolon1,'',50);
+
+  Combo := TcxImageComboKadir.Create(self);
+  Combo.Conn := nil;
+  Combo.ItemList := 'P;1,;0';
+  Combo.Filter := '';
+  setDataStringKontrol(self,Combo,'temmuz','Temmuz',Kolon1,'',50);
+
+  Combo := TcxImageComboKadir.Create(self);
+  Combo.Conn := nil;
+  Combo.ItemList := 'P;1,;0';
+  Combo.Filter := '';
+  setDataStringKontrol(self,Combo,'agustos','Aðustos',Kolon1,'',50);
+
+  Combo := TcxImageComboKadir.Create(self);
+  Combo.Conn := nil;
+  Combo.ItemList := 'P;1,;0';
+  Combo.Filter := '';
+  setDataStringKontrol(self,Combo,'eylul','Eylül',Kolon1,'',50);
+
+  Combo := TcxImageComboKadir.Create(self);
+  Combo.Conn := nil;
+  Combo.ItemList := 'P;1,;0';
+  Combo.Filter := '';
+  setDataStringKontrol(self,Combo,'ekim','Ekim',Kolon1,'',50);
+
+  Combo := TcxImageComboKadir.Create(self);
+  Combo.Conn := nil;
+  Combo.ItemList := 'P;1,;0';
+  Combo.Filter := '';
+  setDataStringKontrol(self,Combo,'kasim','Kasim',Kolon1,'',50);
+
+  Combo := TcxImageComboKadir.Create(self);
+  Combo.Conn := nil;
+  Combo.ItemList := 'P;1,;0';
+  Combo.Filter := '';
+  setDataStringKontrol(self,Combo,'aralik','Aralik',Kolon1,'',50);
+
+
+
+  Combo := TcxImageComboKadir.Create(self);
+  Combo.Conn := nil;
+  Combo.ItemList := 'G;1,;0';
+  Combo.Filter := '';
+  setDataStringKontrol(self,Combo,'ocak_R','Ocak',Kolon1,'',50);
+
+  Combo := TcxImageComboKadir.Create(self);
+  Combo.Conn := nil;
+  Combo.ItemList := 'G;1,;0';
+  Combo.Filter := '';
+  setDataStringKontrol(self,Combo,'subat_R','Þubat',Kolon1,'',50);
+
+  Combo := TcxImageComboKadir.Create(self);
+  Combo.Conn := nil;
+  Combo.ItemList := 'G;1,;0';
+  Combo.Filter := '';
+  setDataStringKontrol(self,Combo,'mart_R','Mart',Kolon1,'',50);
+
+  Combo := TcxImageComboKadir.Create(self);
+  Combo.Conn := nil;
+  Combo.ItemList := 'G;1,;0';
+  Combo.Filter := '';
+  setDataStringKontrol(self,Combo,'nisan_R','Nisan',Kolon1,'',50);
+
+  Combo := TcxImageComboKadir.Create(self);
+  Combo.Conn := nil;
+  Combo.ItemList := 'G;1,;0';
+  Combo.Filter := '';
+  setDataStringKontrol(self,Combo,'mayis_R','Mayis',Kolon1,'',50);
+
+  Combo := TcxImageComboKadir.Create(self);
+  Combo.Conn := nil;
+  Combo.ItemList := 'G;1,;0';
+  Combo.Filter := '';
+  setDataStringKontrol(self,Combo,'haziran_R','Haziran',Kolon1,'',50);
+
+  Combo := TcxImageComboKadir.Create(self);
+  Combo.Conn := nil;
+  Combo.ItemList := 'G;1,;0';
+  Combo.Filter := '';
+  setDataStringKontrol(self,Combo,'temmuz_R','Temmuz',Kolon1,'',50);
+
+  Combo := TcxImageComboKadir.Create(self);
+  Combo.Conn := nil;
+  Combo.ItemList := 'G;1,;0';
+  Combo.Filter := '';
+  setDataStringKontrol(self,Combo,'agustos_R','Aðustos',Kolon1,'',50);
+
+  Combo := TcxImageComboKadir.Create(self);
+  Combo.Conn := nil;
+  Combo.ItemList := 'G;1,;0';
+  Combo.Filter := '';
+  setDataStringKontrol(self,Combo,'eylul_R','Eylül',Kolon1,'',50);
+
+  Combo := TcxImageComboKadir.Create(self);
+  Combo.Conn := nil;
+  Combo.ItemList := 'G;1,;0';
+  Combo.Filter := '';
+  setDataStringKontrol(self,Combo,'ekim_R','Ekim',Kolon1,'',50);
+
+  Combo := TcxImageComboKadir.Create(self);
+  Combo.Conn := nil;
+  Combo.ItemList := 'G;1,;0';
+  Combo.Filter := '';
+  setDataStringKontrol(self,Combo,'kasim_R','Kasim',Kolon1,'',50);
+
+  Combo := TcxImageComboKadir.Create(self);
+  Combo.Conn := nil;
+  Combo.ItemList := 'G;1,;0';
+  Combo.Filter := '';
+  setDataStringKontrol(self,Combo,'aralik_R','Aralik',Kolon1,'',50);
+
+
+
+end;
+
 
 procedure TfrmPopup.ButtonClick(Sender: TObject);
 var
@@ -382,6 +538,7 @@ riskDuzenle,yeniRisk :
               datalar.Risk.Bolum := TcxImageComboKadir(FindComponent('RiskBolum')).EditValue;
               datalar.Risk.TehlikeKaynagi := TcxImageComboKadir(FindComponent('TehlikeKaynak')).EditValue;
               datalar.Risk.Tehlike := TcxImageComboKadir(FindComponent('Tehlike')).Text;
+              datalar.Risk.Etkilenecek := TcxImageComboKadir(FindComponent('Etkilenecekler')).EditValue;
               datalar.Risk.Risk_tanim := TcxImageComboKadir(FindComponent('Risk_tanimi')).Text;
               datalar.Risk.Onlemler := TcxMemo(FindComponent('Onlemler')).Text;
               datalar.Risk.Olasilik := TcxImageComboKadir(FindComponent('Olasilik')).EditValue;
@@ -394,6 +551,8 @@ riskDuzenle,yeniRisk :
               datalar.Risk.MevcutOnlem := TcxMemo(FindComponent('MevcutOnlem')).Text;
               datalar.Risk.Sorumlu := TcxTextEditKadir(FindComponent('Sorumlu')).Text;
               datalar.Risk.Termin := TcxTextEditKadir(FindComponent('Termin')).Text;
+              datalar.Risk.TerminSure := TcxImageComboKadir(FindComponent('TerminTipleri')).EditingValue;
+
               datalar.Risk.Gerceklesme := TcxTextEditKadir(FindComponent('Gercek')).Text;
               datalar.Risk.Olasilik_2 := TcxImageComboKadir(FindComponent('Olasilik_2')).EditValue;
               if (datalar.Risk.Method = 1) or (datalar.Risk.Method = 3)
@@ -542,6 +701,39 @@ riskDuzenle,yeniRisk :
                                '3','','2',self._value_);
 
               end;
+
+
+    yeniFaaliyet,
+    FaaliyetDuzenle :
+             begin
+                    datalar.YillikCalismaPlan.peryod := TcxImageComboKadir(FindComponent('peryod')).EditValue;
+                    datalar.YillikCalismaPlan.ocak := TcxImageComboKadir(FindComponent('ocak')).EditValue;
+                    datalar.YillikCalismaPlan.subat := TcxImageComboKadir(FindComponent('subat')).EditValue;
+                    datalar.YillikCalismaPlan.mart := TcxImageComboKadir(FindComponent('mart')).EditValue;
+                    datalar.YillikCalismaPlan.nisan := TcxImageComboKadir(FindComponent('nisan')).EditValue;
+                    datalar.YillikCalismaPlan.mayis := TcxImageComboKadir(FindComponent('mayis')).EditValue;
+                    datalar.YillikCalismaPlan.haziran := TcxImageComboKadir(FindComponent('haziran')).EditValue;
+                    datalar.YillikCalismaPlan.temmuz := TcxImageComboKadir(FindComponent('temmuz')).EditValue;
+                    datalar.YillikCalismaPlan.agustos := TcxImageComboKadir(FindComponent('agustos')).EditValue;
+                    datalar.YillikCalismaPlan.eylul := TcxImageComboKadir(FindComponent('eylul')).EditValue;
+                    datalar.YillikCalismaPlan.ekim := TcxImageComboKadir(FindComponent('ekim')).EditValue;
+                    datalar.YillikCalismaPlan.kasim := TcxImageComboKadir(FindComponent('kasim')).EditValue;
+                    datalar.YillikCalismaPlan.aralik := TcxImageComboKadir(FindComponent('aralik')).EditValue;
+                    datalar.YillikCalismaPlan.ocakR := TcxImageComboKadir(FindComponent('ocak_R')).EditValue;
+                    datalar.YillikCalismaPlan.subatR := TcxImageComboKadir(FindComponent('subat_R')).EditValue;
+                    datalar.YillikCalismaPlan.martR := TcxImageComboKadir(FindComponent('mart_R')).EditValue;
+                    datalar.YillikCalismaPlan.nisanR := TcxImageComboKadir(FindComponent('nisan_R')).EditValue;
+                    datalar.YillikCalismaPlan.mayisR := TcxImageComboKadir(FindComponent('mayis_R')).EditValue;
+                    datalar.YillikCalismaPlan.haziranR := TcxImageComboKadir(FindComponent('haziran_R')).EditValue;
+                    datalar.YillikCalismaPlan.temmuzR := TcxImageComboKadir(FindComponent('temmuz_R')).EditValue;
+                    datalar.YillikCalismaPlan.agustosR := TcxImageComboKadir(FindComponent('agustos_R')).EditValue;
+                    datalar.YillikCalismaPlan.eylulR := TcxImageComboKadir(FindComponent('eylul_R')).EditValue;
+                    datalar.YillikCalismaPlan.ekimR := TcxImageComboKadir(FindComponent('ekim_R')).EditValue;
+                    datalar.YillikCalismaPlan.kasimR := TcxImageComboKadir(FindComponent('kasim_R')).EditValue;
+                    datalar.YillikCalismaPlan.aralikR := TcxImageComboKadir(FindComponent('aralik_R')).EditValue;
+
+
+             end;
 
   end;
 end;
@@ -1017,17 +1209,19 @@ ptPersonelTetkikleri :
                     TcxButtonEditKadir(FindComponent('Tehlike')).Properties.OnButtonClick := PropertiesButtonClick;
                     TcxButtonEditKadir(FindComponent('Tehlike')).EditValue := datalar.Risk.Tehlike;
 
-                  (*
+
+
                     ICombo := TcxImageComboKadir.Create(self);
-                    ICombo.Name := 'Risk_tanimi';
-                    ICombo.Tag := -100;
+                    ICombo.Name := 'Etkilenecekler';
+                 //   ICombo.Tag := 100;
                     ICombo.Conn := datalar.ADOConnection2;
-                    ICombo.TableName := 'RDS_Risk';
+                    ICombo.TableName := 'RDS_Etkilenecekler';
                     ICombo.ValueField := 'Kod';
                     ICombo.DisplayField := 'tanimi';
                     ICombo.Filter := '';
-                    setDataStringKontrol(self,ICombo,'Risk_tanimi','Risk Tanýmý',Kolon1,'',300);
-                    *)
+                    setDataStringKontrol(self,ICombo,'Etkilenecekler','Etkilenecekler',Kolon1,'',250);
+                    TcxImageComboKadir(FindComponent('Etkilenecekler')).EditValue := datalar.Risk.Etkilenecek;
+
                     setDataStringB(self,'Risk_tanimi','Risk Taným',Kolon1,'',250,List,False,nil,'','',False,True,-100);
                     TcxButtonEditKadir(FindComponent('Risk_tanimi')).Properties.OnButtonClick := PropertiesButtonClick;
                     TcxImageComboKadir(FindComponent('Risk_tanimi')).EditValue := datalar.Risk.Risk_tanim;
@@ -1093,9 +1287,24 @@ ptPersonelTetkikleri :
                     setDataString(self,'Sorumlu','Sorumlu',Kolon1,'',120);
                     TcxTextEditKadir(FindComponent('Sorumlu')).EditValue := datalar.Risk.Sorumlu;
 
+                    ICombo := TcxImageComboKadir.Create(self);
+                    ICombo.Name := 'TerminTipleri';
+                   // ICombo.Tag := -100;
+                    ICombo.Conn := datalar.ADOConnection2;
+                    ICombo.TableName := 'TerminTipleri';
+                    ICombo.ValueField := 'kod';
+                    ICombo.DisplayField := 'tanimi';
+                    ICombo.Filter := '';
+                    setDataStringKontrol(self,ICombo,'TerminTipleri','Termin Sure',Kolon1,'',100);
+                    TcxImageComboKadir(FindComponent('TerminTipleri')).EditValue := datalar.Risk.TerminSure;
+
                     Tarih := TcxDateEditKadir.Create(self);
                     setDataStringKontrol(self,Tarih, 'Termin','Termin Tarihi',Kolon1,'',100);
                     TcxTextEditKadir(FindComponent('Termin')).EditValue := datalar.Risk.Termin;
+
+                 //   setDataStringKontrol(self,Tarih, 'Gercek','Gerçekleþme Tarihi',Kolon1,'',100);
+                  //  TcxTextEditKadir(FindComponent('Gercek')).EditValue := datalar.Risk.Gerceklesme;
+
 
                     Tarih := TcxDateEditKadir.Create(self);
                     setDataStringKontrol(self,Tarih, 'Gercek','Gerçekleþme Tarihi',Kolon1,'',100);
@@ -1156,6 +1365,83 @@ ptPersonelTetkikleri :
 
 
                end;
+  yeniFaaliyet,
+  FaaliyetDuzenle :
+               begin
+                    ClientHeight := 500;
+                    ClientWidth := 300;
+                    Doktorlar := TcxImageComboKadir.Create(self);
+                    Doktorlar.Conn := Datalar.ADOConnection2;
+                    Doktorlar.TableName := 'FaaliyetKonulari';
+                    Doktorlar.ValueField := 'kod';
+                    Doktorlar.DisplayField := 'tanimi';
+                    Doktorlar.BosOlamaz := True;
+                    Doktorlar.Filter := '';
+                    setDataStringKontrol(self,Doktorlar,'FaaliyetKonulari','Faaliyet Konulari',Kolon1,'',150);
+                    Doktorlar.EditValue := datalar.YillikCalismaPlan.faliyetid;
+
+                    Doktorlar := TcxImageComboKadir.Create(self);
+                    Doktorlar.Conn := Datalar.ADOConnection2;
+                    Doktorlar.TableName := 'KontrolPeryodTipleri';
+                    Doktorlar.ValueField := 'kod';
+                    Doktorlar.DisplayField := 'tanimi';
+                    Doktorlar.BosOlamaz := True;
+                    Doktorlar.Filter := '';
+                    setDataStringKontrol(self,Doktorlar,'KontrolPeryodTipleri','Peryot',Kolon1,'',100);
+
+                    CalismaplaninaAylarikoy;
+                    TcxImageComboKadir(FindComponent('peryod')).EditValue := datalar.YillikCalismaPlan.peryod;
+                    TcxImageComboKadir(FindComponent('ocak')).EditValue := datalar.YillikCalismaPlan.ocak;
+                    TcxImageComboKadir(FindComponent('subat')).EditValue := datalar.YillikCalismaPlan.subat;
+                    TcxImageComboKadir(FindComponent('mart')).EditValue := datalar.YillikCalismaPlan.mart;
+                    TcxImageComboKadir(FindComponent('nisan')).EditValue := datalar.YillikCalismaPlan.nisan;
+                    TcxImageComboKadir(FindComponent('mayis')).EditValue := datalar.YillikCalismaPlan.mayis;
+                    TcxImageComboKadir(FindComponent('haziran')).EditValue := datalar.YillikCalismaPlan.mayis;
+                    TcxImageComboKadir(FindComponent('temmuz')).EditValue := datalar.YillikCalismaPlan.mayis;
+                    TcxImageComboKadir(FindComponent('agustos')).EditValue := datalar.YillikCalismaPlan.mayis;
+                    TcxImageComboKadir(FindComponent('eylul')).EditValue := datalar.YillikCalismaPlan.mayis;
+                    TcxImageComboKadir(FindComponent('ekim')).EditValue := datalar.YillikCalismaPlan.mayis;
+                    TcxImageComboKadir(FindComponent('kasim')).EditValue := datalar.YillikCalismaPlan.mayis;
+                    TcxImageComboKadir(FindComponent('aralik')).EditValue := datalar.YillikCalismaPlan.mayis;
+                    TcxImageComboKadir(FindComponent('ocak_R')).EditValue := datalar.YillikCalismaPlan.ocakR;
+                    TcxImageComboKadir(FindComponent('subat_R')).EditValue := datalar.YillikCalismaPlan.subatR;
+                    TcxImageComboKadir(FindComponent('mart_R')).EditValue := datalar.YillikCalismaPlan.martR;
+                    TcxImageComboKadir(FindComponent('nisan_R')).EditValue := datalar.YillikCalismaPlan.nisanR;
+                    TcxImageComboKadir(FindComponent('mayis_R')).EditValue := datalar.YillikCalismaPlan.mayisR;
+                    TcxImageComboKadir(FindComponent('haziran_R')).EditValue := datalar.YillikCalismaPlan.mayisR;
+                    TcxImageComboKadir(FindComponent('temmuz_R')).EditValue := datalar.YillikCalismaPlan.mayisR;
+                    TcxImageComboKadir(FindComponent('agustos_R')).EditValue := datalar.YillikCalismaPlan.mayisR;
+                    TcxImageComboKadir(FindComponent('eylul_R')).EditValue := datalar.YillikCalismaPlan.mayisR;
+                    TcxImageComboKadir(FindComponent('ekim_R')).EditValue := datalar.YillikCalismaPlan.mayisR;
+                    TcxImageComboKadir(FindComponent('kasim_R')).EditValue := datalar.YillikCalismaPlan.mayisR;
+                    TcxImageComboKadir(FindComponent('aralik_R')).EditValue := datalar.YillikCalismaPlan.mayisR;
+
+                    Doktorlar := TcxImageComboKadir.Create(self);
+                    Doktorlar.Conn := nil;
+                    Doktorlar.ItemList := 'Ýþyeri Hekimi;1,Ýþ Güvenliði Uzm.;2,ÝÞ GÜVENLÝÐÝ UZMANI/ÝÞ YERÝ HEKÝMÝ;3,ÝÞVEREN;4,ÝÞ GÜVENLÝÐÝ UZMANI/ÝÞVEREN;5';
+                    Doktorlar.Filter := '';
+                    setDataStringKontrol(self,Doktorlar,'Sorumlu1','Sorumlu',Kolon1,'',100);
+
+                    Doktorlar := TcxImageComboKadir.Create(self);
+                    Doktorlar.Conn := nil;
+                    Doktorlar.ItemList := 'TAKÝP;1,KATILIM;2,TESPÝT;3,ÖNERÝ;4,KATILIM VE ÖNERÝ;5,PLANLAMAVE TAKÝBÝ;6,UYGULAMA;7,ÖNERÝ VE PLANLAMA;8,EÐÝTÝM ÖNERÝ;9,KONTROL VE HAZIRLIK;10,EÐÝTÝM ALINMASI;11,EÐÝTÝM UYGULAMASI;12';
+                    Doktorlar.Filter := '';
+                    setDataStringKontrol(self,Doktorlar,'Sorumlu1Konu','Sorumlu',Kolon1,'',100);
+
+                    Doktorlar := TcxImageComboKadir.Create(self);
+                    Doktorlar.Conn := nil;
+                    Doktorlar.ItemList := 'Ýþyeri Hekimi;1,Ýþ Güvenliði Uzm.;2,ÝÞ GÜVENLÝÐÝ UZMANI/ÝÞ YERÝ HEKÝMÝ;3,ÝÞVEREN;4,ÝÞ GÜVENLÝÐÝ UZMANI/ÝÞVEREN;5';
+                    Doktorlar.Filter := '';
+                    setDataStringKontrol(self,Doktorlar,'Sorumlu2','Sorumlu',Kolon1,'',100);
+
+                    Doktorlar := TcxImageComboKadir.Create(self);
+                    Doktorlar.Conn := nil;
+                    Doktorlar.ItemList := 'TAKÝP;1,KATILIM;2,TESPÝT;3,ÖNERÝ;4,KATILIM VE ÖNERÝ;5,PLANLAMAVE TAKÝBÝ;6,UYGULAMA;7,ÖNERÝ VE PLANLAMA;8,EÐÝTÝM ÖNERÝ;9,KONTROL VE HAZIRLIK;10,EÐÝTÝM ALINMASI;11,EÐÝTÝM UYGULAMASI;12';
+                    Doktorlar.Filter := '';
+                    setDataStringKontrol(self,Doktorlar,'Sorumlu2Konu','Sorumlu',Kolon1,'',100);
+
+               end;
+
    yeniGozetim,gozetimDuzenle :
                begin
                     ClientHeight := 500;
@@ -1389,6 +1675,8 @@ ptPersonelTetkikleri :
                    Doktorlar.Filter := '';
                    setDataStringKontrol(self,Doktorlar, 'paylasilan','Kullanýcý',Kolon1,'',180);
                 end;
+
+
 
    FaturaTahsilatEkle,
    CekTahsilat ,

@@ -2,8 +2,8 @@ object frmPersonelEgitim: TfrmPersonelEgitim
   Left = 0
   Top = 0
   Caption = 'frmPersonelEgitim'
-  ClientHeight = 307
-  ClientWidth = 585
+  ClientHeight = 446
+  ClientWidth = 683
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -228,6 +228,116 @@ object frmPersonelEgitim: TfrmPersonelEgitim
       GridView = EgitimGridSatirlar
     end
   end
+  object EgitimAltDetayGrid: TcxGridKadir
+    Left = 16
+    Top = 305
+    Width = 370
+    Height = 130
+    TabOrder = 3
+    ExceleGonder = False
+    object EgitimAltDetayGridSatir: TcxGridDBBandedTableView
+      Navigator.Buttons.First.Visible = False
+      Navigator.Buttons.PriorPage.Visible = False
+      Navigator.Buttons.Prior.Visible = False
+      Navigator.Buttons.Next.Visible = False
+      Navigator.Buttons.NextPage.Visible = False
+      Navigator.Buttons.Last.Visible = False
+      Navigator.Buttons.Insert.Visible = False
+      Navigator.Buttons.Append.Visible = False
+      Navigator.Buttons.Edit.Visible = False
+      Navigator.Buttons.Refresh.Visible = False
+      Navigator.Buttons.SaveBookmark.Visible = False
+      Navigator.Buttons.GotoBookmark.Visible = False
+      Navigator.Buttons.Filter.Visible = False
+      Navigator.Visible = True
+      DataController.Summary.DefaultGroupSummaryItems = <>
+      DataController.Summary.FooterSummaryItems = <>
+      DataController.Summary.SummaryGroups = <>
+      OptionsCustomize.ColumnFiltering = False
+      OptionsCustomize.ColumnSorting = False
+      OptionsData.Inserting = False
+      OptionsView.GridLines = glHorizontal
+      OptionsView.GroupByBox = False
+      OptionsView.GroupByHeaderLayout = ghlHorizontal
+      Bands = <
+        item
+          Caption = 'E'#287'itim Alt Detaylar'#305
+          Width = 362
+        end>
+      object EgitimAltDetayGridSatiregitimID: TcxGridDBBandedColumn
+        DataBinding.FieldName = 'egitimID'
+        Visible = False
+        Position.BandIndex = 0
+        Position.ColIndex = 0
+        Position.RowIndex = 0
+      end
+      object EgitimAltDetayGridSatirkod: TcxGridDBBandedColumn
+        Caption = 'Kod'
+        DataBinding.FieldName = 'kod'
+        HeaderAlignmentHorz = taCenter
+        Options.Editing = False
+        Width = 43
+        Position.BandIndex = 0
+        Position.ColIndex = 1
+        Position.RowIndex = 0
+      end
+      object EgitimAltDetayGridSatirid: TcxGridDBBandedColumn
+        DataBinding.FieldName = 'id'
+        Visible = False
+        Position.BandIndex = 0
+        Position.ColIndex = 2
+        Position.RowIndex = 0
+      end
+      object EgitimAltDetayGridSatirtanimi: TcxGridDBBandedColumn
+        Caption = 'Tan'#305'm'#305
+        DataBinding.FieldName = 'tanimi'
+        HeaderAlignmentHorz = taCenter
+        Options.Editing = False
+        Width = 254
+        Position.BandIndex = 0
+        Position.ColIndex = 3
+        Position.RowIndex = 0
+      end
+      object EgitimAltDetayGridSatirsure: TcxGridDBBandedColumn
+        Caption = 'S'#252're(Dakika)'
+        DataBinding.FieldName = 'sure'
+        HeaderAlignmentHorz = taCenter
+        Width = 65
+        Position.BandIndex = 0
+        Position.ColIndex = 4
+        Position.RowIndex = 0
+      end
+    end
+    object cxGridLevel3: TcxGridLevel
+      GridView = EgitimAltDetayGridSatir
+    end
+  end
+  object foto2: TcxImage
+    Tag = -100
+    Left = 538
+    Top = 305
+    Properties.GraphicClassName = 'TJPEGImage'
+    Properties.PopupMenuLayout.MenuItems = [pmiCustom]
+    Properties.PopupMenuLayout.CustomMenuItemCaption = 'Browserda G'#246'ster'
+    Properties.ReadOnly = True
+    Properties.OnCustomClick = Foto1PropertiesCustomClick
+    TabOrder = 4
+    Height = 100
+    Width = 140
+  end
+  object Foto1: TcxImage
+    Tag = -100
+    Left = 392
+    Top = 305
+    Properties.GraphicClassName = 'TJPEGImage'
+    Properties.PopupMenuLayout.MenuItems = [pmiCustom]
+    Properties.PopupMenuLayout.CustomMenuItemCaption = 'Browserda G'#246'ster'
+    Properties.ReadOnly = True
+    Properties.OnCustomClick = Foto1PropertiesCustomClick
+    TabOrder = 5
+    Height = 100
+    Width = 140
+  end
   object PersonelList: TListeAc
     ListeBaslik = 'Personel Listesi'
     TColcount = 3
@@ -306,5 +416,26 @@ object frmPersonelEgitim: TfrmPersonelEgitim
     GrupCol = 0
     Left = 496
     Top = 128
+  end
+  object Egitimler: TListeAc
+    TColcount = 2
+    TColsW = '50,200'
+    Table = 'Egitim_Tnm'
+    Conn = DATALAR.ADOConnection2
+    Filtercol = 0
+    BaslikRenk = clBlack
+    DipRenk = clBlack
+    Kolonlar.Strings = (
+      'kod'
+      'tanimi')
+    KolonBasliklari.Strings = (
+      'Kod'
+      'Tan'#305'm'#305)
+    Calistir = fgEvet
+    BiriktirmeliSecim = False
+    Grup = False
+    GrupCol = 0
+    Left = 560
+    Top = 136
   end
 end

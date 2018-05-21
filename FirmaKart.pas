@@ -91,6 +91,7 @@ type
     { Private declarations }
   protected
     procedure FirmaSubeBirlestir;
+    procedure TopluPasifYap (const bPasif : boolean);
   public
     { Public declarations }
     procedure OrtakEventAta(Sender : TObject);overload;
@@ -114,7 +115,7 @@ var
   kart : sqlType;
 
 implementation
-    uses AnaUnit,SMS, TransUtils;
+uses AnaUnit,SMS, TransUtils, StrUtils, nThermo;
 {$R *.dfm}
 
 procedure TfrmFirmaKart.ButtonClick(Sender: TObject);
@@ -140,10 +141,22 @@ begin
     F := FormINIT(TagFirmaCalismalari,GirisRecord,ikHayir,'')
   else if TcxButtonKadir(sender).ButtonName = 'btnEkipmanList' then
     F := FormINIT(TagfrmSirketEkipmanList,GirisRecord,ikHayir,'')
+  else if TcxButtonKadir(sender).ButtonName = 'btnFirmaYetkili' then
+    F := FormINIT(TagfrmFirmaYetkili,GirisRecord,ikHayir,'')
   else
   if TcxButtonKadir(sender).ButtonName = 'btnSubeGetir' then
   begin
     FirmaSubeBirlestir;
+  end
+  else
+  if TcxButtonKadir(sender).ButtonName = 'btnTopluPasif' then
+  begin
+    TopluPasifYap (True);
+  end
+  else
+  if TcxButtonKadir(sender).ButtonName = 'btnTopluAktif' then
+  begin
+    TopluPasifYap (False);
   end;
   if F <> nil then F.ShowModal;
 end;
@@ -553,6 +566,34 @@ begin
   end;
 end;
 
+procedure TfrmFirmaKart.TopluPasifYap (const bPasif : boolean);
+var
+  List: TListeAc;
+  sSirketKod, sSubeKod : String;
+begin
+  sSirketKod := VarToStr (TcxButtonEditKadir(FindComponent('SirketKod')).EditingValue);
+  if IsNull (sSirketKod) then Exit;
+  //seçilen kaynak þirketin þubeleri
+  List :=
+    ListeAcCreate
+      ('SIRKET_SUBE_TNM',
+       'subeKod,subeTanim,subeSiciNo',
+       'Þube Kodu,Þube,Sicil No',
+       '10,80,250',
+       'SubeKodList',
+       'Personeli ' + IfThen (bPasif, 'Pasif', 'Aktif') + ' Hale Getirilecek Þube Seçimi',
+       'SirketKod = ' + SQLValue (sSirketKod),3,True);
+  try
+    datalar.ButtonEditSecimlist := List.ListeGetir;
+    if length (datalar.ButtonEditSecimlist) <= 0 then Exit;
+    sSubeKod := DATALAR.ButtonEditSecimlist [0].kolon1;
+    if IsNull (sSubeKod) then Exit;
+  finally
+    List.Free;
+  end;
+  if not PersonelTopluPasifYap (bPasif, sSirketKod, sSubeKod) then Exit;
+end;
+
 procedure TfrmFirmaKart.FormCreate(Sender: TObject);
 var
   List : TListeAc;
@@ -723,6 +764,9 @@ begin
   addButton(self,nil,'btnSozlesmeler','','Firma Sözleþmeleri',Kolon3,'',230,ButtonClick);
   addButton(self,nil,'btnISGEkipleri','','Ýþ Saðlýðý ve Güvenliði Ekipleri',Kolon3,'',230,ButtonClick);
   addButton(self,nil,'btnEkipmanList','','Firma Ekipman Listesi',Kolon3,'',230,ButtonClick);
+  addButton(self,nil,'btnFirmaYetkili','','Firma Yetkili Listesi',Kolon3,'',230,ButtonClick);
+  addButton(self,nil,'btnTopluAktif','','Firma Personeli Toplu Aktif Yap',Kolon3,'',230,ButtonClick);
+  addButton(self,nil,'btnTopluPasif','','Firma Personeli Toplu Pasif Yap',Kolon3,'',230,ButtonClick);
 
 
   tableColumnDescCreate;

@@ -6,7 +6,7 @@ interface
 uses HizmetKayitIslemleriWS,DB,sysUtils,XSBuiltIns,Classes,cxImage,ADODB,
      Vcl.Graphics,jpeg,ExtCtrls;
 
-type TprintTip = (pTYazdir,pTOnIzle,pTDizayn,pTNone);
+type TprintTip = (pTYazdir,pTOnIzle,pTDizayn,pTNone,pTPDF);
 type sqlType = (sql_Select,sql_Exec,sql_sp,sql_fn,sql_new,sql_edit,sql_delete,sql_none);
 type showDialog = (OFShow,OFShowModal);
 type userGroup = (ugUser,ugGroup);
@@ -445,10 +445,14 @@ type
     doktorMail : string;
     calisanTemsilci : string;
     calisanTemsilciMail : string;
+    BascalisanTemsilci : string;
+    BascalisanTemsilciMail : string;
     destekElemani : string;
     destekElemaniMail : string;
     isveren : string;
     ilgiliMailBilgileri : string;
+    firmaYetkiliMailBilgileri : string;
+    isgKurulEkibiMailBilgileri : string;
   End;
 
 type
@@ -507,6 +511,7 @@ type
     Bolum : Variant;
     TehlikeKaynagi : Variant;
     Tehlike : Variant;
+    Etkilenecek : Variant;
     Risk_tanim : Variant;
     Onlemler : string;
     Olasilik : Variant;
@@ -516,6 +521,7 @@ type
     RDS : Variant;
     MevcutOnlem : string;
     Sorumlu : string;
+    TerminSure : Variant;
     Termin : string;
     Gerceklesme : Variant;
     Olasilik_2 : Variant;
@@ -578,6 +584,40 @@ type
     DenetimDefterNo : String;
   end;
 
+  TYillikCalismaPlani = record
+    faliyetid : integer;
+    peryod : integer;
+    ocak : integer;
+    subat : integer;
+    mart : integer;
+    nisan : integer;
+    mayis : integer;
+    haziran : integer;
+    temmuz : integer;
+    agustos : integer;
+    eylul : integer;
+    ekim : integer;
+    kasim : integer;
+    aralik : integer;
+    ocakR : integer;
+    subatR : integer;
+    martR : integer;
+    nisanR : integer;
+    mayisR : integer;
+    haziranR : integer;
+    temmuzR : integer;
+    agustosR : integer;
+    eylulR : integer;
+    ekimR : integer;
+    kasimR : integer;
+    aralikR : integer;
+    sorumlu1 : integer;
+    konu1 : integer;
+    sorumlu2 : integer;
+    konu2 : integer;
+  end;
+
+
   TIntegerArray = array of Integer;
 Const
   TagfrmHastaKart = 90;
@@ -598,6 +638,7 @@ Const
   TagfrmTedaviBilgisi = 70;
   TagfrmGridListeForm = 120;
   TagfrmDestekTalep = 121;
+  TagYeniOSGBVeriTabani = 127;
   TagfrmHastaRecete = 130;
   TagfrmHastaIlacTedavi = 140;
   TagfrmTeleEkg = 150;
@@ -686,6 +727,9 @@ Const
   TagfrmRTFSablon = 940;
   TagfrmSirketSahaDenetim = 950;
   TagfrmSirketEkipmanList = 960;
+  TagfrmSirketYillikCalismaPlan = 970;
+  TagfrmFirmaYetkili = 980;
+  TagfrmSirketYillikEgitimPlan = 990;
 
 
   Kaydet = 0;
@@ -753,9 +797,13 @@ Const
   denetimDuzenle = 53;
   RDP_FineKenny = '10';
   RDP_Matris = '11';
+  RDP_Fmea = '12';
   RDSonuc_FineKenny = '20';
   RDSonuc_Matris = '21';
   RDEkipTutanagi = '30';
+  yeniFaaliyet = 54;
+  FaaliyetDuzenle = 55;
+
 
   sp_HastaGelis = 'exec sp_HastaGelisleri ';
 

@@ -177,6 +177,7 @@ type
       AEvent: TcxSchedulerControlEvent);
   private
     { Private declarations }
+    procedure WMSettingChange(var Message: TMessage); message WM_SETTINGCHANGE;
   protected
     procedure SetUserInfo;
   public
@@ -202,6 +203,13 @@ implementation
 {$R *.dfm}
 {$R xx.res}
 
+
+procedure TAnaForm.WMSettingChange(var Message: TMessage);
+begin
+  FormatSettings.DecimalSeparator := '.';
+  FormatSettings.ThousandSeparator := ',';
+ // FormatSettings.ShortDateFormat := 'gg.aa.yyyy';
+end;
 
 
 function TAnaForm.GuncellemeKontrol : boolean;
@@ -535,7 +543,13 @@ begin
 
  // WebBrowser1.Navigate('https://www.noktayazilim.net');
 
-  caption := 'Mavi Nokta Bilgi Teknolojileri Ltd.Þti.  Ýþyeri Hekimliði E-Reçete V.1';
+  FormatSettings.DecimalSeparator := '.';
+  FormatSettings.ThousandSeparator := ',';
+ // FormatSettings.ShortDateFormat := 'gg.aa.yyyy';
+  if DATALAR._YazilimGelistirici = 1 then
+    caption := 'Mavi Nokta Bilgi Teknolojileri Ýþ Saðlýðý ve Güvenliði'
+  else if DATALAR._YazilimGelistirici = 2 then
+    caption := 'Uyumsoft Ýþ Saðlýðý ve Güvenliði';
   Sayfalar.Properties.CloseButtonMode := cbmNone;
   WebBrowser1.Navigate('https://www.noktayazilim.net/destek/GenelMesajlar2.aspx?Tip=O');
 
@@ -772,6 +786,7 @@ var
   tc : string;
   aTabSheet : TcxTabSheet;
   bTamam : Boolean;
+  sSifre : String;
 begin
 // MenuItem cliklendiðinde menu satiri form açýlma þekli ile form açar yada sadece method çalýþtýrýr.
 //FormID > 0 form açýlacak
@@ -783,7 +798,11 @@ begin
     121 : begin
             DestekTalep;
           end;
-
+    TagYeniOSGBVeriTabani : begin
+      if not InputQuery ('Ýþlem Þifresi Giriþi', 'Ýþlem Þifresi', sSifre) then Exit;
+      if sSifre <> 'Nokta5353' then Exit;
+      YeniOSGBFirmaVeritabani;
+    end;
     122 : begin
             OnlineDestekOpen;
           end;

@@ -1,7 +1,7 @@
 unit DestekSorunBildir;
 
 interface
-
+incele;
 uses
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
   Dialogs, ExtCtrls, cxGraphics, cxControls, cxLookAndFeels,adodb,strutils,
@@ -253,7 +253,7 @@ begin
 
   try
     sql := 'insert into sorunlar (kurumkodu,sorunsahibi,sorunAciliyeti,sorunAciklamasi,' +
-           'ilgilenenPersonel,fonksiyonelEtki,sorunIhtiyac,Konu,secreen,kullanici)' +
+           'ilgilenenPersonel,fonksiyonelEtki,sorunIhtiyac,Konu,secreen,kullanici,Tip)' +
            ' values(' + QuotedStr(DATALAR.osgbKodu) + ','
                       + QuotedStr(datalar._merkezAdi) + ','
                       + inttostr(txtAciliyet.ItemIndex) + ','
@@ -263,7 +263,8 @@ begin
                       + QuotedStr(tip.Properties.Items[tip.ItemIndex].Value) + ','
                       + inttostr(txtKonu.ItemIndex) + ','
                       + QuotedStr(ifThen(cxCheckBox1.Checked,'1','0')) + ','
-                      + QuotedStr(datalar.username) +
+                      + QuotedStr(datalar.username) + ','
+                      + QuotedStr('O') +
 
                       ') select SCOPE_IDENTITY() ';
 

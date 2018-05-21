@@ -113,6 +113,15 @@ type
     D1: TMenuItem;
     M1: TMenuItem;
     Fmea: TcxImageList;
+    RDSSatirlarColumn3: TcxGridDBBandedColumn;
+    RDSSatirlarTerminSure: TcxGridDBBandedColumn;
+    RDSEkipGrid: TcxGridKadir;
+    RDSEkipGridList: TcxGridDBBandedTableView;
+    RDSEkipGridListAdiSoyadi: TcxGridDBBandedColumn;
+    RDSEkipGridListGorevTanim: TcxGridDBBandedColumn;
+    RDSEkipGridListeMail: TcxGridDBBandedColumn;
+    RDSEkipGridListTelefon: TcxGridDBBandedColumn;
+    cxGridLevel1: TcxGridLevel;
     procedure cxButtonCClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure gridRaporCustomDrawGroupCell(Sender: TcxCustomGridTableView;
@@ -136,6 +145,8 @@ type
       AButtonIndex: Integer; var ADone: Boolean);
     procedure E3Click(Sender: TObject);
     procedure SirketlerPropertiesChange(Sender: TObject);
+    procedure FormShow(Sender: TObject);
+    function Ekip : TDataset;
 
  //   function EArsivGonder(FaturaId : string) : string;
  //   function EArsivIptal(FaturaGuid : string) : string;
@@ -165,6 +176,22 @@ uses data_modul, StrUtils, Jpeg;
 {$R *.dfm}
 
 
+function TfrmRDS.Ekip : TDataset;
+begin
+  Ekip := nil;
+  RDSEkipGrid.Dataset.Connection := Datalar.ADOConnection2;
+  RDSEkipGrid.Dataset.Active := False;
+  RDSEkipGrid.Dataset.SQL.Text :=
+  'select AdiSoyadi,tanimi GorevTanim,eMail,Telefon from SirketRDSEkibi E ' +
+  ' join SIRKET_SUBE_EKIP_View SE on SE.kod = E.EkipID ' +
+  ' where ISGEkipId = 1 and SirketKod = ' +
+  QuotedStr(vartoStr(TcxImageComboKadir(FindComponent('sirketKod')).EditValue)) +
+  ' and E.SirketRiskID = ' + QuotedStr(vartoStr(TcxButtonEditKadir(FindComponent('id')).EditValue));
+  RDSEkipGrid.Dataset.Active := True;
+  Ekip := RDSEkipGrid.Dataset;
+end;
+
+
 
 procedure TfrmRDS.SirketlerPropertiesChange(Sender: TObject);
 var
@@ -176,8 +203,11 @@ begin
   TcxImageComboKadir(FindComponent('subeKod')).Filter := ' sirketKod = ' +
   QuotedStr(vartostr(TcxImageComboKadir(FindComponent('SirketKod')).EditingValue));
 
- if TcxImageComboKadir(Sender).Name = 'subeKod'
+ if (TcxImageComboKadir(Sender).Name = 'subeKod') or (TcxImageComboKadir(Sender).Name = 'SirketKod')
  Then Begin
+
+  // TcxImageComboKadir(FindComponent('IGU')).Filter := '';
+
    sql :=
       ' select I.kod IGUKod,I.tanimi IGUAdi,D.kod DoktorKod,D.tanimi DoktorAdi from SIRKETLER_TNM S ' +
       ' join SIRKET_SUBE_TNM SB on SB.sirketKod = S.sirketKod ' +
@@ -192,13 +222,15 @@ begin
 
       TcxImageComboKadir(FindComponent('hazirlayanDoktor')).EditValue := dataset.FieldByName('DoktorKod').AsString;
       TcxImageComboKadir(FindComponent('hazirlayan')).EditValue := dataset.FieldByName('IGUKod').AsString;
-
+(*
    sql :=
      '(select id,adiSoyadi,eMail,SE.Telefon from SIRKET_SUBE_EKIP SE ' +
      'where SE.SirketKod = ' + QuotedStr(vartostr(TcxImageComboKadir(FindComponent('sirketKod')).EditingValue)) +
      ' and SubeKod = ' + QuotedStr(ifThen(vartostr(TcxImageComboKadir(FindComponent('subeKod')).EditingValue)='','00',vartostr(TcxImageComboKadir(FindComponent('subeKod')).EditingValue))) +
      ' and SE.ISGEkipId = 1 and SE.ISGEkipGorevID = 3) Destek ';
    TcxImageComboKadir(FindComponent('destekEleman')).TableName := sql;
+   TcxImageComboKadir(FindComponent('destekEleman')).DisplayField := 'adiSoyadi';
+   TcxImageComboKadir(FindComponent('destekEleman')).ValueField := 'id';
    TcxImageComboKadir(FindComponent('destekEleman')).Filter := '';
 
    TcxImageComboKadir(FindComponent('calisanTemsilci')).TableName :=
@@ -206,13 +238,26 @@ begin
      'where SE.SirketKod = ' + QuotedStr(vartostr(TcxImageComboKadir(FindComponent('sirketKod')).EditingValue)) +
      ' and SubeKod = ' + QuotedStr(ifThen(vartostr(TcxImageComboKadir(FindComponent('subeKod')).EditingValue)='','00',vartostr(TcxImageComboKadir(FindComponent('subeKod')).EditingValue))) +
      ' and SE.ISGEkipId = 1 and SE.ISGEkipGorevID = 2) CalisanTemsilci ';
+   TcxImageComboKadir(FindComponent('calisanTemsilci')).DisplayField := 'adiSoyadi';
+   TcxImageComboKadir(FindComponent('calisanTemsilci')).ValueField := 'id';
    TcxImageComboKadir(FindComponent('calisanTemsilci')).Filter := '';
+
+   TcxImageComboKadir(FindComponent('BascalisanTemsilci')).TableName :=
+     '(select id,adiSoyadi,eMail,SE.Telefon from SIRKET_SUBE_EKIP SE ' +
+     'where SE.SirketKod = ' + QuotedStr(vartostr(TcxImageComboKadir(FindComponent('sirketKod')).EditingValue)) +
+     ' and SubeKod = ' + QuotedStr(ifThen(vartostr(TcxImageComboKadir(FindComponent('subeKod')).EditingValue)='','00',vartostr(TcxImageComboKadir(FindComponent('subeKod')).EditingValue))) +
+     ' and SE.ISGEkipId = 1 and SE.ISGEkipGorevID = 32) CalisanTemsilci ';
+   TcxImageComboKadir(FindComponent('BascalisanTemsilci')).DisplayField := 'adiSoyadi';
+   TcxImageComboKadir(FindComponent('BascalisanTemsilci')).ValueField := 'id';
+   TcxImageComboKadir(FindComponent('BascalisanTemsilci')).Filter := '';
 
    TcxImageComboKadir(FindComponent('danisman')).TableName :=
      '(select id,adiSoyadi,eMail,SE.Telefon from SIRKET_SUBE_EKIP SE ' +
      'where SE.SirketKod = ' + QuotedStr(vartostr(TcxImageComboKadir(FindComponent('sirketKod')).EditingValue)) +
      ' and SubeKod = ' + QuotedStr(ifThen(vartostr(TcxImageComboKadir(FindComponent('subeKod')).EditingValue)='','00',vartostr(TcxImageComboKadir(FindComponent('subeKod')).EditingValue))) +
      ' and SE.ISGEkipId = 1 and SE.ISGEkipGorevID = 5) Danisman ';
+   TcxImageComboKadir(FindComponent('danisman')).DisplayField := 'adiSoyadi';
+   TcxImageComboKadir(FindComponent('danisman')).ValueField := 'id';
     TcxImageComboKadir(FindComponent('danisman')).Filter := '';
 
    TcxImageComboKadir(FindComponent('isverenVekil')).TableName :=
@@ -220,8 +265,10 @@ begin
      'where SE.SirketKod = ' + QuotedStr(vartostr(TcxImageComboKadir(FindComponent('sirketKod')).EditingValue)) +
      ' and SubeKod = ' + QuotedStr(ifThen(vartostr(TcxImageComboKadir(FindComponent('subeKod')).EditingValue)='','00',vartostr(TcxImageComboKadir(FindComponent('subeKod')).EditingValue))) +
      ' and SE.ISGEkipId = 1 and SE.ISGEkipGorevID = 1) isverenVekil ';
+   TcxImageComboKadir(FindComponent('isverenVekil')).DisplayField := 'adiSoyadi';
+   TcxImageComboKadir(FindComponent('isverenVekil')).ValueField := 'id';
    TcxImageComboKadir(FindComponent('isverenVekil')).Filter := '';
-
+   *)
  End;
 
 
@@ -271,13 +318,14 @@ begin
   inherited;
 
   case TControl(sender).Tag  of
-    0 : begin
+Kaydet : begin
           RDSGrid.Enabled := True;
           PopupMenuEnabled(Self,PopupMenu1,True);
           ToolBar1.Enabled := True;
+          Ekip;
           //PopupMenuToToolBarEnabled(Self,ToolBar1,PopupMenu1);
         end;
-    2 : begin
+ Yeni : begin
           TcxDateEditKadir(FindComponent('date_create')).EditValue := date;
           if datalar.IGU <> '' then
            TcxTextEditKadir(FindComponent('hazirlayan')).EditValue := datalar.IGU;
@@ -393,9 +441,13 @@ begin
     if datalar.UserGroup = '1'
     then
       where := ''
-     else
-  where := ' hazirlayan = ' + QuotedStr(datalar.IGU) + ' or paylasilan = ' + QuotedStr(datalar.IGU) +
-           ' or hazirlayanDoktor = ' + QuotedStr(datalar.doktorKodu) + ' or paylasilan = ' + QuotedStr(datalar.doktorKodu);
+    else
+    if datalar.UserGroup = '10'
+    then
+      where := ' sirketKod = ' + QuotedStr(datalar.sirketKodu)
+    else
+      where := ' hazirlayan = ' + QuotedStr(datalar.IGU) + ' or paylasilan = ' + QuotedStr(datalar.IGU) +
+               ' or hazirlayanDoktor = ' + QuotedStr(datalar.doktorKodu) + ' or paylasilan = ' + QuotedStr(datalar.doktorKodu);
 
     TListeAc(FindComponent('RDSList')).Where := where;
 
@@ -406,6 +458,7 @@ begin
 
     Enabled;
     FaturaDetay;
+    Ekip;
 
     if (vartostr(TcxTextEditKadir(FindComponent('hazirlayan')).EditingValue) <>
        datalar.IGU) and
@@ -427,10 +480,8 @@ begin
        TcxImageComboKadir(FindComponent('gecerlilik_date')).Enabled := False;
        TcxImageComboKadir(FindComponent('Method')).Enabled := False;
        TcxImageComboKadir(FindComponent('Onay')).Enabled := False;
-       TcxTextEditKadir(FindComponent('isverenVekil')).Enabled := False;
-       TcxTextEditKadir(FindComponent('calisanTemsilci')).Enabled := False;
-       TcxTextEditKadir(FindComponent('danisman')).Enabled := False;
-       TcxTextEditKadir(FindComponent('destekEleman')).Enabled := False;
+       RDSEkipGrid.Enabled := False;
+
     end
     else
     begin
@@ -447,10 +498,7 @@ begin
        TcxImageComboKadir(FindComponent('gecerlilik_date')).Enabled := True;
        TcxImageComboKadir(FindComponent('Method')).Enabled := True;
        TcxImageComboKadir(FindComponent('Onay')).Enabled := True;
-       TcxTextEditKadir(FindComponent('isverenVekil')).Enabled := True;
-       TcxTextEditKadir(FindComponent('calisanTemsilci')).Enabled := True;
-       TcxTextEditKadir(FindComponent('danisman')).Enabled := True;
-       TcxTextEditKadir(FindComponent('destekEleman')).Enabled := True;
+       RDSEkipGrid.Enabled := True;
     end;
 
      if RDSGrid.Dataset.Eof
@@ -495,6 +543,7 @@ procedure TfrmRDS.RDSSatirlarNavigatorButtonsButtonClick(Sender: TObject;
     RDSSatirlar.DataController.DataSet.FieldByName('Bolum').AsString := datalar.Risk.Bolum;
     RDSSatirlar.DataController.DataSet.FieldByName('TehlikeKaynagi').AsString := datalar.Risk.TehlikeKaynagi;
     RDSSatirlar.DataController.DataSet.FieldByName('Tehlike').AsString := datalar.Risk.Tehlike;
+    RDSSatirlar.DataController.DataSet.FieldByName('Etkilenecekler').AsVariant := datalar.Risk.Etkilenecek;
     RDSSatirlar.DataController.DataSet.FieldByName('Risk_tanim').AsString := datalar.Risk.Risk_tanim;
     RDSSatirlar.DataController.DataSet.FieldByName('Onlemler').AsString := datalar.Risk.Onlemler;
     RDSSatirlar.DataController.DataSet.FieldByName('Olasilik').AsVariant := datalar.Risk.Olasilik;
@@ -505,6 +554,7 @@ procedure TfrmRDS.RDSSatirlarNavigatorButtonsButtonClick(Sender: TObject;
     RDSSatirlar.DataController.DataSet.FieldByName('MevcutOnlem').AsString := datalar.Risk.MevcutOnlem;
     RDSSatirlar.DataController.DataSet.FieldByName('Sorumlu').AsString := datalar.Risk.Sorumlu;
     RDSSatirlar.DataController.DataSet.FieldByName('Termin').AsString := datalar.Risk.Termin;
+    RDSSatirlar.DataController.DataSet.FieldByName('TerminSure').AsString := varToStr(datalar.Risk.TerminSure);
     RDSSatirlar.DataController.DataSet.FieldByName('Gerceklesme').AsString := datalar.Risk.Gerceklesme;
     RDSSatirlar.DataController.DataSet.FieldByName('Olasilik_2').AsVariant := datalar.Risk.Olasilik_2;
     RDSSatirlar.DataController.DataSet.FieldByName('Frekans_2').AsVariant := datalar.Risk.Frekans_2;
@@ -534,6 +584,7 @@ procedure TfrmRDS.RDSSatirlarNavigatorButtonsButtonClick(Sender: TObject;
     datalar.Risk.Bolum := RDSSatirlar.DataController.DataSet.FieldByName('Bolum').AsVariant;
     datalar.Risk.TehlikeKaynagi := RDSSatirlar.DataController.DataSet.FieldByName('TehlikeKaynagi').AsVariant;
     datalar.Risk.Tehlike := RDSSatirlar.DataController.DataSet.FieldByName('Tehlike').AsVariant;
+    datalar.Risk.Etkilenecek := RDSSatirlar.DataController.DataSet.FieldByName('Etkilenecekler').AsVariant;
     datalar.Risk.Risk_tanim := RDSSatirlar.DataController.DataSet.FieldByName('Risk_tanim').AsVariant;
     datalar.Risk.Onlemler := RDSSatirlar.DataController.DataSet.FieldByName('Onlemler').AsString;
     datalar.Risk.Olasilik := RDSSatirlar.DataController.DataSet.FieldByName('Olasilik').AsVariant;;
@@ -542,6 +593,7 @@ procedure TfrmRDS.RDSSatirlarNavigatorButtonsButtonClick(Sender: TObject;
     datalar.Risk.RDS := RDSSatirlar.DataController.DataSet.FieldByName('RDS').AsVariant;;
     datalar.Risk.MevcutOnlem := RDSSatirlar.DataController.DataSet.FieldByName('MevcutOnlem').AsString;
     datalar.Risk.Sorumlu := RDSSatirlar.DataController.DataSet.FieldByName('Sorumlu').AsString;
+    datalar.Risk.TerminSure := RDSSatirlar.DataController.DataSet.FieldByName('TerminSure').AsString;
     datalar.Risk.Termin := RDSSatirlar.DataController.DataSet.FieldByName('Termin').AsString;
     datalar.Risk.Gerceklesme := RDSSatirlar.DataController.DataSet.FieldByName('Gerceklesme').AsString;
     datalar.Risk.Olasilik_2 := RDSSatirlar.DataController.DataSet.FieldByName('Olasilik_2').AsVariant;
@@ -564,35 +616,40 @@ procedure TfrmRDS.RDSSatirlarNavigatorButtonsButtonClick(Sender: TObject;
 var
   Dataset : Tdataset;
 begin
+ case AButtonIndex of
+   6 ,9: begin
+            datalar.Risk.Bolum := Null;
+            datalar.Risk.TehlikeKaynagi := Null;
+            datalar.Risk.Tehlike := Null;
+            datalar.Risk.Etkilenecek := Null;
+            datalar.Risk.Risk_tanim := Null;
+            datalar.Risk.Onlemler := '';
+            datalar.Risk.Olasilik := Null;
+            datalar.Risk.Frekans := Null;
+            datalar.Risk.Siddet := Null;
+            datalar.Risk.RDS := Null;
+            datalar.Risk.MevcutOnlem := '';
+            datalar.Risk.Sorumlu := '';
+            datalar.Risk.Termin := '';
+            datalar.Risk.TerminSure := Null;
+            datalar.Risk.Gerceklesme := Null;
+            datalar.Risk.Olasilik_2 := Null;
+            datalar.Risk.Frekans_2 := Null;
+            datalar.Risk.Siddet_2 := Null;
+            datalar.Risk.Risk_2 := Null;
+            datalar.Risk.RDS_2 := Null;
+            datalar.Risk.yasalDayanak := '';
+            datalar.Risk.SektorId := vartostr(TcxImageComboKadir(FindComponent('Sektor')).EditingValue);
+            datalar.Risk.Image := TcxImage.Create(nil);
+        end;
+   end;
+
   case AButtonIndex of
    6 : begin
-        datalar.Risk.Bolum := Null;
-        datalar.Risk.TehlikeKaynagi := Null;
-        datalar.Risk.Tehlike := Null;
-        datalar.Risk.Risk_tanim := Null;
-        datalar.Risk.Onlemler := '';
-        datalar.Risk.Olasilik := Null;
-        datalar.Risk.Frekans := Null;
-        datalar.Risk.Siddet := Null;
-        datalar.Risk.RDS := Null;
-        datalar.Risk.MevcutOnlem := '';
-        datalar.Risk.Sorumlu := '';
-        datalar.Risk.Termin := '';
-        datalar.Risk.Gerceklesme := Null;
-        datalar.Risk.Olasilik_2 := Null;
-        datalar.Risk.Frekans_2 := Null;
-        datalar.Risk.Siddet_2 := Null;
-        datalar.Risk.Risk_2 := Null;
-        datalar.Risk.RDS_2 := Null;
-        datalar.Risk.yasalDayanak := '';
-        datalar.Risk.SektorId := vartostr(TcxImageComboKadir(FindComponent('Sektor')).EditingValue);
-        datalar.Risk.Image := TcxImage.Create(nil);
 
         if mrYes = ShowPopupForm('Risk Kaynaðý Ekle',yeniRisk)
         then begin
          try
-
-
           if datalar.Risk.Tehlike <> ''
           then begin
            RDSSatirlar.DataController.DataSet.Append;
@@ -696,7 +753,7 @@ begin
     TcxImageComboBoxProperties (RDSSatirlarRDS.Properties).Images := FineKenny;
     TcxImageComboBoxProperties (RDSSatirlarRDS.Properties).Items.Clear;
 
-    item := TcxImageComboBoxProperties (RDSSatirlarRDS).Items.add;
+    item := TcxImageComboBoxProperties (RDSSatirlarRDS.Properties).Items.add;
     item.value := 1;
     item.ImageIndex := 4;
     item := TcxImageComboBoxProperties (RDSSatirlarRDS.Properties).Items.add;
@@ -834,6 +891,9 @@ begin
           try
             Method := vartostr(TcxImageComboKadir(FindComponent('Method')).EditingValue);
 
+            DurumGoster(True,False,'Raporunuz Hazýrlanýyor, Lütfen Bekleyiniz');
+            Application.ProcessMessages;
+
             //datalar.QuerySelect(ado, sql);
             TopluDataset.Dataset0 := datalar.QuerySelect('select * from RDS_OLASILIK where Metod = ' + Method);
             TopluDataset.Dataset1 := datalar.QuerySelect('select * from RDS_FREKANS where Method = ' +  Method);
@@ -841,7 +901,8 @@ begin
             TopluDataset.Dataset3 := datalar.QuerySelect('select * from RDS_Skor where Metod = ' +  Method);
             TopluDataset.Dataset4 := datalar.QuerySelect('sp_RDS ' + TcxButtonEditKadir(FindComponent('id')).EditText + ',' + Method);
 
-            PrintYap('RDS','Risk Deðerlendirme Raporu','',TopluDataset,pTNone)
+            PrintYap('RD'+Method,'Risk Deðerlendirme Raporu','',TopluDataset,pTNone,self);
+          //  DurumGoster(False);
           finally
             //ado.free;
           end;
@@ -853,7 +914,15 @@ begin
            if F <> nil then F.ShowModal;
          end;
    -26 : begin
-             Method := ifThen(vartostr(TcxImageComboKadir(FindComponent('Method')).EditingValue) = '1',RDP_FineKenny,RDP_Matris);
+
+             case TcxImageComboKadir(FindComponent('Method')).EditingValue of
+              1 : Method := RDP_FineKenny;
+              2 : Method := RDP_Matris;
+              3 : Method := RDP_Fmea;
+             end;
+            // Method := ifThen(vartostr(TcxImageComboKadir(FindComponent('Method')).EditingValue) = '1',RDP_FineKenny,RDP_Matris);
+
+
              Dataset := datalar.QuerySelect('sp_RDS ' + TcxButtonEditKadir(FindComponent('id')).EditText + ',' +
                                             vartostr(TcxImageComboKadir(FindComponent('Method')).EditingValue));
              DokumanAc(RTFSablonDataset(Method),'RTFFile',
@@ -901,9 +970,19 @@ begin
          end;
 
    -28 : begin
-             Method := ifThen(vartostr(TcxImageComboKadir(FindComponent('Method')).EditingValue) = '1',RDSonuc_FineKenny,RDSonuc_Matris);
+             case TcxImageComboKadir(FindComponent('Method')).EditingValue of
+              1 : Method := RDP_FineKenny;
+              2 : Method := RDP_Matris;
+              3 : Method := RDP_Fmea;
+             end;
              Dataset := datalar.QuerySelect('sp_RDS ' + TcxButtonEditKadir(FindComponent('id')).EditText + ',' +
                                             vartostr(TcxImageComboKadir(FindComponent('Method')).EditingValue));
+
+             TopluDataset.Dataset0 := Dataset;
+             TopluDataset.Dataset1 := RDSEkipGrid.Dataset;
+             PrintYap('RET','Risk Deðerlendirme Ekip Tutanagi','',TopluDataset,pTNone)
+
+           (*
              DokumanAc(RTFSablonDataset(RDEkipTutanagi),'RTFFile','EkipTutanagi.rtf',False);
              EkRTF1.InFile := 'EkipTutanagi.rtf';
              EkRTF1.ClearVars;
@@ -915,6 +994,7 @@ begin
    //          EkRTF1.CreateVar('adres',Dataset.FieldByName('adres').AsString);
 
              EkRtf1.ExecuteOpen([Dataset],SW_SHOW);
+             *)
          end;
 
   -29 : begin
@@ -932,8 +1012,7 @@ begin
         end;
   -30 : begin
           cxExceleGonder(RDSGrid,'RDS.xls');
-          FB := FirmaBilgileri(vartostr(TcxImageComboKadir(FindComponent('sirketKod')).EditValue),
-                               vartostr(TcxImageComboKadir(FindComponent('subeKod')).EditValue));
+          FB.ilgiliMailBilgileri := isgRDSEkibiMailBilgileri(vartostr(TcxButtonEditKadir(FindComponent('id')).EditValue));
 
           if (mailGonder(FB.ilgiliMailBilgileri,'Risk Deðerlendirme Kaynaklarý',
                         'Düzenlenen Risk Kaynaklarý , ekteki dosyada bilginize sunulmuþtur',
@@ -959,8 +1038,8 @@ end;
 
 procedure TfrmRDS.FormCreate(Sender: TObject);
 var
-  RiskBolum,sirketlerx,TehlikeKaynak ,Tehlike , Risk ,
-  Olasilik,Frekans,Siddet,Method,Onay,subeler  : TcxImageComboKadir;
+  RiskBolum,sirketlerx,TehlikeKaynak ,Tehlike , Risk , TerminSure,
+  Olasilik,Frekans,Siddet,Method,Onay,subeler ,Etkilenecek : TcxImageComboKadir;
   FaturaTarihi : TcxDateEditKadir;
   where : string;
   r : integer;
@@ -1068,6 +1147,7 @@ begin
   Method.ValueField := 'kod';
   Method.DisplayField := 'Tanimi';
   Method.BosOlamaz := False;
+  Method.Enabled := False;
   Method.Filter := '';
   setDataStringKontrol(self,Method,'hazirlayan','Ýþ Güvenlik Uzm',Kolon1,'',120,0,alNone,'');
 
@@ -1081,6 +1161,7 @@ begin
   Method.DisplayField := 'Tanimi';
   Method.BosOlamaz := False;
   Method.Filter := '';
+  Method.Enabled := False;
   setDataStringKontrol(self,Method,'hazirlayanDoktor','Ýþyeri Hekimi',Kolon1,'',120,0,alNone,'');
 
 //  setDataString(self,'hazirlayanDoktor','Ýþyeri Hekimi ',Kolon1,'hz',120,false,'',True);
@@ -1095,43 +1176,60 @@ begin
   OrtakEventAta(Onay);
 
 
+  (*
+
   Method := TcxImageComboKadir.Create(self);
   Method.Conn := Datalar.ADOConnection2;
-  Method.TableName := '';
+  Method.TableName := 'SIRKET_SUBE_EKIP';
   Method.ValueField := 'id';
   Method.DisplayField := 'adiSoyadi';
   Method.BosOlamaz := False;
-//  Method.Filter := '';
+  Method.Filter := ' ISGEkipGorevID = 24 and sirketKod = ' + QuotedStr(vartostr(TcxImageComboKadir(FindComponent('SirketKod')).EditValue));
   setDataStringKontrol(self,Method,'destekEleman','Destek Elemaný',Kolon1,'',120,0,alNone,'');
 
 
   Method := TcxImageComboKadir.Create(self);
   Method.Conn := Datalar.ADOConnection2;
-  Method.TableName := '';
+  Method.TableName := 'SIRKET_SUBE_EKIP';
   Method.ValueField := 'id';
   Method.DisplayField := 'adiSoyadi';
   Method.BosOlamaz := False;
-//  Method.Filter := '';
+  Method.Filter := ' ISGEkipGorevID = 2 and sirketKod = ' + QuotedStr(vartostr(TcxImageComboKadir(FindComponent('SirketKod')).EditValue));
   setDataStringKontrol(self,Method,'calisanTemsilci','Çalýþan Temsilci',Kolon1,'',120,0,alNone,'');
+
+  Method := TcxImageComboKadir.Create(self);
+  Method.Conn := Datalar.ADOConnection2;
+  Method.TableName := 'SIRKET_SUBE_EKIP';
+  Method.ValueField := 'id';
+  Method.DisplayField := 'adiSoyadi';
+  Method.BosOlamaz := False;
+  Method.Filter := ' ISGEkipGorevID = 32 and sirketKod = ' + QuotedStr(vartostr(TcxImageComboKadir(FindComponent('SirketKod')).EditValue));
+  setDataStringKontrol(self,Method,'BascalisanTemsilci','Baþ Çalýþan Temsilci',Kolon1,'',120,0,alNone,'');
 
 
   Method := TcxImageComboKadir.Create(self);
   Method.Conn := Datalar.ADOConnection2;
-  Method.TableName := '';
+  Method.TableName := 'SIRKET_SUBE_EKIP';
   Method.ValueField := 'id';
   Method.DisplayField := 'adiSoyadi';
   Method.BosOlamaz := False;
- // Method.Filter := '';
+  Method.Filter := ' ISGEkipGorevID = 5 and sirketKod = ' + QuotedStr(vartostr(TcxImageComboKadir(FindComponent('SirketKod')).EditValue));
   setDataStringKontrol(self,Method,'danisman','Danýþman',Kolon1,'',120,0,alNone,'');
 
   Method := TcxImageComboKadir.Create(self);
   Method.Conn := Datalar.ADOConnection2;
-  Method.TableName := '';
+  Method.TableName := 'SIRKET_SUBE_EKIP';
   Method.ValueField := 'id';
   Method.DisplayField := 'adiSoyadi';
   Method.BosOlamaz := False;
-//  Method.Filter := '';
+  Method.Filter := ' ISGEkipGorevID = 1 and sirketKod = ' + QuotedStr(vartostr(TcxImageComboKadir(FindComponent('SirketKod')).EditValue));
   setDataStringKontrol(self,Method,'isverenVekil','Ýþveren Vekili',Kolon1,'',120,0,alNone,'');
+  *)
+
+
+  setDataStringMemo(self,'Aciklama','Açýklama',kolon1,'',300,70);
+
+  setDataStringKontrol(self,RDSEkipGrid,'RDSEkipGrid',' ',Kolon1,'',450,140,alNone,'',clLeft);
 
 
   Method := TcxImageComboKadir.Create(self);
@@ -1219,7 +1317,25 @@ begin
   Siddet.TableName := 'RDS_SIDDET';
   Siddet.ValueField := 'degeri';
   Siddet.DisplayField := 'tanimi';
-//  Siddet.Filter := '  Metod = ' + vartostr(TcxImageComboKadir(FindComponent('Method')).EditingValue);
+
+  Etkilenecek := TcxImageComboKadir.Create(self);
+  Etkilenecek.Name := 'Etkilenen';
+  Etkilenecek.Tag := -100;
+  Etkilenecek.Conn := datalar.ADOConnection2;
+  Etkilenecek.TableName := 'RDS_Etkilenecekler';
+  Etkilenecek.ValueField := 'kod';
+  Etkilenecek.DisplayField := 'tanimi';
+  Etkilenecek.Filter := '';
+
+  TerminSure := TcxImageComboKadir.Create(self);
+  TerminSure.Name := 'TerminTipleri';
+  TerminSure.Tag := -100;
+  TerminSure.Conn := datalar.ADOConnection2;
+  TerminSure.TableName := 'TerminTipleri';
+  TerminSure.ValueField := 'kod';
+  TerminSure.DisplayField := 'tanimi';
+  TerminSure.Filter := '';
+
 (*
   Skor := TcxImageComboKadir.Create(self);
   Skor.Name := 'Skor';
@@ -1254,6 +1370,12 @@ begin
      TcxImageComboBoxProperties(TcxImageComboKadir(FindComponent('RiskBolum')).Properties).Items;
      TcxImageComboBoxProperties(RDSSatirlarTehlikeKaynagi.Properties).Items :=
      TcxImageComboBoxProperties(TcxImageComboKadir(FindComponent('TehlikeKaynak')).Properties).Items;
+     TcxImageComboBoxProperties(RDSSatirlarColumn3.Properties).Items :=
+     TcxImageComboBoxProperties(TcxImageComboKadir(FindComponent('Etkilenen')).Properties).Items;
+
+     TcxImageComboBoxProperties(RDSSatirlarTerminSure.Properties).Items :=
+     TcxImageComboBoxProperties(TcxImageComboKadir(FindComponent('TerminTipleri')).Properties).Items;
+
  //    TcxImageComboBoxProperties(RDSSatirlarTehlike.Properties).Items :=
  //    TcxImageComboBoxProperties(TcxImageComboKadir(FindComponent('Tehlike')).Properties).Items;
   //   TcxImageComboBoxProperties(RDSSatirlarRisk_tanim.Properties).Items :=
@@ -1266,29 +1388,14 @@ begin
      TcxImageComboBoxProperties(TcxImageComboKadir(FindComponent('Frekans')).Properties).Items;
      TcxImageComboBoxProperties(RDSSatirlarSiddet.Properties).Items :=
      TcxImageComboBoxProperties(TcxImageComboKadir(FindComponent('Siddet')).Properties).Items;
+*)
 
-     TcxImageComboBoxProperties(RDSSatirlarOlasilik_2.Properties).Items :=
-     TcxImageComboBoxProperties(TcxImageComboKadir(FindComponent('Olasilik')).Properties).Items;
-     TcxImageComboBoxProperties(RDSSatirlarFrekans_2.Properties).Items :=
-     TcxImageComboBoxProperties(TcxImageComboKadir(FindComponent('Frekans')).Properties).Items;
-     TcxImageComboBoxProperties(RDSSatirlarSiddet_2.Properties).Items :=
-     TcxImageComboBoxProperties(TcxImageComboKadir(FindComponent('Siddet')).Properties).Items;
-     *)
-  //   TcxImageComboBoxProperties(RDSSatirlarRDS.Properties).Items :=
-  //   TcxImageComboBoxProperties(TcxImageComboKadir(FindComponent('Skor')).Properties).Items;
-
-  //   TcxColorComboBoxProperties(RDSSatirlarRDS.Properties).Items.Clear;
-  //   TcxColorComboBoxProperties(RDSSatirlarRDS.Properties).Items.AddColor(clRed,'TOLERANS GÖSTERÝLEMEZ RÝSK');
-  //   TcxColorComboBoxProperties(RDSSatirlarRDS.Properties).Items.AddColor(clYellow,'ÖNEMLÝ RÝSK');
-
-   //  TcxColorComboBox(RDSSatirlarRDS).ColorValue
-
-
-//     RDSSatirlarFrekans.Properties.OnEditValueChanged := RDSSatirlarOlasilikPropertiesEditValueChanged;
 //     RDSSatirlarSiddet.Properties.OnEditValueChanged := RDSSatirlarOlasilikPropertiesEditValueChanged;
-//     RDSSatirlarOlasilik_2.Properties.OnEditValueChanged := RDSSatirlarOlasilikPropertiesEditValueChanged;
-//     RDSSatirlarFrekans_2.Properties.OnEditValueChanged := RDSSatirlarOlasilikPropertiesEditValueChanged;
-//     RDSSatirlarSiddet_2.Properties.OnEditValueChanged := RDSSatirlarOlasilikPropertiesEditValueChanged;
+ //    RDSSatirlarFrekans.Properties.OnEditValueChanged := RDSSatirlarOlasilikPropertiesEditValueChanged;
+ //    RDSSatirlarSiddet.Properties.OnEditValueChanged := RDSSatirlarOlasilikPropertiesEditValueChanged;
+ //    RDSSatirlarOlasilik_2.Properties.OnEditValueChanged := RDSSatirlarOlasilikPropertiesEditValueChanged;
+ //    RDSSatirlarFrekans_2.Properties.OnEditValueChanged := RDSSatirlarOlasilikPropertiesEditValueChanged;
+ //    RDSSatirlarSiddet_2.Properties.OnEditValueChanged := RDSSatirlarOlasilikPropertiesEditValueChanged;
 
 
 
@@ -1301,7 +1408,7 @@ begin
 
 
 //  setDataStringBLabel(self,'bosSatir',kolon1,'',1000,'Risk Kaynaklarý');
-  setDataStringKontrol(self,RDSGrid,'RDSGrid','',sayfa2_Kolon1,'',1050,430);
+  setDataStringKontrol(self,RDSGrid,'RDSGrid','',sayfa2_Kolon1,'',1,1,alClient);
  // setDataStringKontrol(self,RDSGridMatris,'RDSGridMatris','',Kolon1,'',1050,450);
 
   RDSGrid.Dataset.Connection := datalar.ADOConnection2;
@@ -1320,11 +1427,22 @@ begin
   kolon2.Width := 0;
   Kolon3.Width := 0;
   Kolon4.Width := 0;
+  sayfa2_kolon2.Visible := false;
+  sayfa2_kolon3.Visible := false;
 
 
   //GridFaturalar.DataController.DataSource := DataSource;
   SayfaCaption('Rapor Bilgileri','Risk Kaynaklarý','','','');
   Disabled(self,True);
+end;
+
+procedure TfrmRDS.FormShow(Sender: TObject);
+begin
+  inherited;
+ //  TcxGrid(FindComponent('RDSGrid')).Width := sayfa1.Width - 20;
+ //  TcxGrid(FindComponent('RDSGrid')).Height := sayfa1.Height - 50;
+
+
 end;
 
 procedure TfrmRDS.GozlemYazdir(const GozlemID: integer);
