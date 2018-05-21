@@ -1,7 +1,6 @@
 BEGIN TRAN
 GO
- ALTER
- -- drop
+ ALTER 
   TRIGGER [dbo].[SirketRDSEkibiEkle] ON  [dbo].[RDS_SirketRisk]
 AFTER INSERT,UPDATE
 AS 
