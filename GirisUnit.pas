@@ -111,6 +111,12 @@ type
     Sayfa4_Kolon1: TdxLayoutGroup;
     SeansKriter: TcxTextEdit;
     pnlDurumImageList: TcxImageList;
+    dxLayoutControl2: TdxLayoutControl;
+    dxLayoutGroup2: TdxLayoutGroup;
+    Sayfa5_Kolon1: TdxLayoutGroup;
+    Sayfa5_Kolon2: TdxLayoutGroup;
+    Sayfa5_Kolon3: TdxLayoutGroup;
+    Ado_Foto: TADOQuery;
 
     procedure cxKaydetClick(Sender: TObject);virtual;
     procedure cxButtonCClick(Sender: TObject);

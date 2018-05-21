@@ -255,7 +255,6 @@ object frmPersonelEgitim: TfrmPersonelEgitim
       DataController.Summary.SummaryGroups = <>
       OptionsCustomize.ColumnFiltering = False
       OptionsCustomize.ColumnSorting = False
-      OptionsData.Deleting = False
       OptionsData.Inserting = False
       OptionsView.GridLines = glHorizontal
       OptionsView.GroupByBox = False
@@ -312,6 +311,32 @@ object frmPersonelEgitim: TfrmPersonelEgitim
     object cxGridLevel3: TcxGridLevel
       GridView = EgitimAltDetayGridSatir
     end
+  end
+  object foto2: TcxImage
+    Tag = -100
+    Left = 538
+    Top = 305
+    Properties.GraphicClassName = 'TJPEGImage'
+    Properties.PopupMenuLayout.MenuItems = [pmiCustom]
+    Properties.PopupMenuLayout.CustomMenuItemCaption = 'Browserda G'#246'ster'
+    Properties.ReadOnly = True
+    Properties.OnCustomClick = Foto1PropertiesCustomClick
+    TabOrder = 4
+    Height = 100
+    Width = 140
+  end
+  object Foto1: TcxImage
+    Tag = -100
+    Left = 392
+    Top = 305
+    Properties.GraphicClassName = 'TJPEGImage'
+    Properties.PopupMenuLayout.MenuItems = [pmiCustom]
+    Properties.PopupMenuLayout.CustomMenuItemCaption = 'Browserda G'#246'ster'
+    Properties.ReadOnly = True
+    Properties.OnCustomClick = Foto1PropertiesCustomClick
+    TabOrder = 5
+    Height = 100
+    Width = 140
   end
   object PersonelList: TListeAc
     ListeBaslik = 'Personel Listesi'

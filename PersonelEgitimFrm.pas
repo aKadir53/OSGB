@@ -4,7 +4,7 @@ interface
 
 uses
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
-  Dialogs, cxGraphics, cxControls, cxLookAndFeels, cxLookAndFeelPainters,
+  Dialogs, cxGraphics, cxControls, cxLookAndFeels, cxLookAndFeelPainters,jpeg,
   cxContainer, cxEdit, Menus, StdCtrls, cxButtons, cxGroupBox, DB, ADODB,
   cxTextEdit, cxMaskEdit, cxButtonEdit, cxDBEdit,kadirType,KadirLabel,Kadir,  GirisUnit,Data_Modul, dxSkinsCore, dxSkinBlue, dxSkinCaramel, dxSkinCoffee,
   dxSkiniMaginary, dxSkinLilian, dxSkinLiquidSky, dxSkinLondonLiquidSky,
@@ -12,7 +12,7 @@ uses
   cxStyles, dxSkinscxPCPainter, cxCustomData, cxFilter, cxData, cxDataStorage,
   cxDBData, cxDropDownEdit, cxGridLevel, cxGridCustomTableView, cxGridTableView,
   cxGridBandedTableView, cxGridDBBandedTableView, cxClasses, cxGridCustomView,
-  cxGrid, cxPC, cxImageComboBox,dxLayoutContainer;
+  cxGrid, cxPC, cxImageComboBox,dxLayoutContainer, cxImage,ShellApi;
 
 
 
@@ -58,6 +58,8 @@ type
     EgitimAltDetayGridSatirtanimi: TcxGridDBBandedColumn;
     EgitimAltDetayGridSatirsure: TcxGridDBBandedColumn;
     Egitimler: TListeAc;
+    foto2: TcxImage;
+    Foto1: TcxImage;
     procedure FormCreate(Sender: TObject);
     procedure ButtonClick(Sender: TObject);
     procedure cxKaydetClick(Sender: TObject);override;
@@ -73,6 +75,8 @@ type
     procedure cxButtonCClick(Sender: TObject);
     procedure PropertiesEditValueChanged(Sender: TObject);override;
     procedure EgitimAltDetay;
+    procedure Foto;
+    procedure Foto1PropertiesCustomClick(Sender: TObject);
   private
     { Private declarations }
   protected
@@ -97,6 +101,54 @@ implementation
 uses StrUtils, TransUtils;
 
 {$R *.dfm}
+
+procedure TfrmPersonelEgitim.Foto;
+var
+  g : TGraphic;
+begin
+   Ado_Foto.Close;
+   Ado_Foto.SQL.Text := 'select * from EgitimFoto where egitimID = ' +
+                               QuotedStr(TcxButtonEditKadir(FindComponent('id')).Text);
+   Ado_Foto.Open;
+
+
+   g := TJpegimage.Create;
+   try
+    if Ado_Foto.FieldByName('Foto1').AsVariant <> Null
+    Then begin
+      g.Assign(Ado_Foto.FieldByName('Foto1'));
+      TcxImage(FindComponent('Foto1')).Picture.Assign(g);
+    end
+    else
+    TcxImage(FindComponent('Foto1')).Picture.Assign(nil);
+
+    if Ado_Foto.FieldByName('Foto2').AsVariant <> Null
+    Then begin
+      g.Assign(Ado_Foto.FieldByName('Foto2'));
+      TcxImage(FindComponent('Foto2')).Picture.Assign(g);
+    end
+    else
+    TcxImage(FindComponent('Foto2')).Picture.Assign(nil);
+
+   finally
+     g.Free;
+   end;
+
+end;
+procedure TfrmPersonelEgitim.Foto1PropertiesCustomClick(Sender: TObject);
+var
+ ImageFileName : string;
+begin
+  inherited;
+  TcxImage(sender).Picture.SaveToFile('tempBrowser.jpg');
+  ImageFileName := 'tempBrowser.jpg';
+  ShellExecute(Handle,
+               'open',
+               'C:\Windows\explorer.exe',
+               PwideChar(ImageFileName),
+               nil,
+               SW_SHOWNORMAL);
+end;
 
 procedure TfrmPersonelEgitim.EgitimAltDetay;
 begin
@@ -136,6 +188,11 @@ var
   sTmp,sql: String;
   ado : TADOQuery;
   Lst : ArrayListeSecimler;
+  open : TOpenDialog;
+  filename,imageField : string;
+  Jpeg1 : TJPEGImage;
+  Image : TcxImage;
+  Blob : TADOBlobStream;
 begin
 
   if TcxButtonEditKadir(FindComponent('id')).Text <> ''
@@ -143,11 +200,61 @@ begin
   if TcxButtonKadir (Sender).ButtonName = 'btnEgitimler' then
   begin
     Lst := Egitimler.ListeGetir;
-    EgitimAltDetayGrid.Dataset.Append;
-    EgitimAltDetayGrid.Dataset.FieldByName('egitimID').AsString := TcxButtonEditKadir (FindComponent('id')).Text;
-    EgitimAltDetayGrid.Dataset.FieldByName('kod').AsString := Lst[0].kolon1;
-    EgitimAltDetayGrid.Dataset.FieldByName('tanimi').AsString := Lst[0].kolon2;
-    EgitimAltDetayGrid.Dataset.Post;
+    if Length(Lst) > 0
+    then begin
+      EgitimAltDetayGrid.Dataset.Append;
+      EgitimAltDetayGrid.Dataset.FieldByName('egitimID').AsString := TcxButtonEditKadir (FindComponent('id')).Text;
+      EgitimAltDetayGrid.Dataset.FieldByName('kod').AsString := Lst[0].kolon1;
+      EgitimAltDetayGrid.Dataset.FieldByName('tanimi').AsString := Lst[0].kolon2;
+      EgitimAltDetayGrid.Dataset.Post;
+    end;
+  end;
+
+  if pos('btnFoto',TcxButtonKadir(Sender).ButtonName) > 0 then
+  begin
+      imageField := TcxButtonKadir(Sender).ButtonName;
+      imageField := StringReplace(imageField,'btn','',[rfReplaceAll]);
+
+      open := TOpenDialog.Create(self);
+      try
+        if not open.Execute then Exit;
+        filename := open.FileName;
+        TcxImage(FindComponent(imageField)).Picture.LoadFromFile(filename);
+        Image := TcxImage(FindComponent(imageField));
+        StretchImage(Image,stHerDurumdaStretch,400,300);
+        Jpeg1 := TJPEGImage.Create;
+        try
+          Jpeg1.Assign(Image.Picture.Bitmap);
+          TcxImage(FindComponent(imageField)).Clear;
+          TcxImage(FindComponent(imageField)).Picture.Assign(Jpeg1);
+        finally
+          Jpeg1.Free;
+        end;
+      finally
+        open.Free;
+      end;
+
+      if not Ado_Foto.Eof
+       then Ado_Foto.Edit
+       Else begin
+        Ado_Foto.Append;
+        Ado_Foto.FieldByName('egitimID').AsString := TcxButtonEditKadir(FindComponent('id')).Text;
+       end;
+
+      if Assigned(TcxImage(FindComponent(imageField)).Picture.Graphic)
+      then begin
+        Blob := TADOBlobStream.Create(TBlobField(Ado_Foto.FieldByName(imageField)),bmwrite);
+        try
+          //datalar.Risk.Image.Picture.SaveToFile('dd.jpg');
+          TcxImage(FindComponent(imageField)).Picture.Graphic.SaveToStream(Blob);
+          Blob.Position := 0;
+          TBlobField(Ado_Foto.FieldByName(imageField)).LoadFromStream(Blob);
+          Ado_Foto.Post;
+        finally
+          //Blob.Free;
+        end;
+      end;
+
   end;
 
   if TcxButtonKadir (Sender).ButtonName = 'btnEgitimListele' then
@@ -396,6 +503,7 @@ var
   kombo , kombo1 ,sirketlerx ,sirketlerxx: TcxImageComboKadir;
   dateEdit: TcxDateEditKadir;
   Egitimler : TcxCheckGroupKadir;
+
 begin
   Tag := TagfrmPersonelEgitim;
   ClientHeight := formYukseklik;
@@ -587,6 +695,14 @@ begin
 
   setDataStringKontrol(self,EgitimGrid,'EgitimGrid','',sayfa4_kolon1,'',840,400);
 
+  setDataStringKontrol(self,Foto1,'Foto1','',sayfa5_kolon1,'',400,300);
+  addButton(self,nil,'btnFoto1','','Foto Ekle',sayfa5_kolon1,'',120,ButtonClick,30);
+
+  setDataStringKontrol(self,Foto2,'Foto2','',sayfa5_kolon1,'',400,300);
+  addButton(self,nil,'btnFoto2','','Foto Ekle',sayfa5_kolon1,'',120,ButtonClick,30);
+
+
+
 
   Menu := PopupMenu1;
   //setDataStringC(self,'EgitimUcretiOdendi','Ödendi mi?',Kolon1,'',100, 'Evet,Hayýr');
@@ -599,7 +715,7 @@ begin
   TcxDateEditKadir(FindComponent('sonTarih')).Enabled := True;
   TcxGridKadir(FindComponent('EgitimGrid')).Enabled := True;
 
-  SayfaCaption('Eðitim Bilgileri', 'Eðitime Katýlan Personeller', 'Eðitimci Bilgileri', 'Eðitim CSGB Gönder', '');
+  SayfaCaption('Eðitim Bilgileri', 'Eðitime Katýlan Personeller', 'Eðitimci Bilgileri', 'Eðitim CSGB Gönder', 'Eðitim Foto');
   //_HastaBilgileriniCaptionGoster_ := True;
 end;
 
@@ -649,6 +765,11 @@ begin
   Egitimci.Dataset.Open;
 
   EgitimAltDetay;
+
+  Foto;
+
+
+
 end;
 
 procedure TfrmPersonelEgitim.SayfalarChange(Sender: TObject);
