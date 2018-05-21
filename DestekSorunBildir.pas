@@ -1,7 +1,7 @@
 unit DestekSorunBildir;
 
 interface
-incele;
+
 uses
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
   Dialogs, ExtCtrls, cxGraphics, cxControls, cxLookAndFeels,adodb,strutils,
@@ -153,23 +153,22 @@ var
 begin
 //  datalar.ADOConnection1.Connected := True;
   ado := TADOQuery.Create(nil);
-  ado.Connection := datalar.ADOConnection1;
-
   try
-    sql := 'update sorunlar set durum = 0 , puan =  ' + puan +
-           ' where sorunId = ' + Ado_Sql.FieldByName('sorunId').AsString;
+    ado.Connection := datalar.ADOConnection1;
+    try
+      sql := 'update sorunlar set durum = 0 , puan =  ' + puan +
+             ' where sorunId = ' + Ado_Sql.FieldByName('sorunId').AsString;
 
-    datalar.QueryExec(ado,sql);
-
-  except on e : Exception do
-   begin
-    ShowMessageSkin(e.Message,'','','info');
-   end;
+      datalar.QueryExec(ado,sql);
+    except on e : Exception do
+     begin
+      ShowMessageSkin(e.Message,'','','info');
+     end;
+    end;
+  finally
+    ado.Free;
   end;
-
-  ado.Free;
   cxButton2.Click;
-
 end;
 
 procedure TfrmDestekSorunBildir.O1Click(Sender: TObject);
@@ -179,22 +178,24 @@ var
 begin
 //  datalar.ADOConnection1.Connected := True;
   ado := TADOQuery.Create(nil);
-  ado.Connection := datalar.ADOConnection1;
-
   try
-    sql := 'update sorunCozumSureci ' +
-           ' set durum = 0 ' +
-           ' where sorunId = ' + ado_CVP.FieldByName('sorunId').AsString;
-    datalar.QueryExec(ado,sql);
-  except on e : Exception do
-   begin
-    ShowMessageSkin(e.Message,'','','info');
-   end;
-  end;
+    ado.Connection := datalar.ADOConnection1;
+    try
+      sql := 'update sorunCozumSureci ' +
+             ' set durum = 0 ' +
+             ' where sorunId = ' + ado_CVP.FieldByName('sorunId').AsString;
+      datalar.QueryExec(ado,sql);
+    except on e : Exception do
+     begin
+      ShowMessageSkin(e.Message,'','','info');
+     end;
+    end;
+  finally
     ado.Free;
-
+  end;
   cozumler;
 end;
+
 procedure TfrmDestekSorunBildir.C1Click(Sender: TObject);
 begin
   pnlCvp.Visible := True;
@@ -247,59 +248,60 @@ begin
       end;
 
   ado := TADOQuery.Create(nil);
-  ado.Connection := datalar.ADOConnection1;
-
-//  datalar.Login;
-
   try
-    sql := 'insert into sorunlar (kurumkodu,sorunsahibi,sorunAciliyeti,sorunAciklamasi,' +
-           'ilgilenenPersonel,fonksiyonelEtki,sorunIhtiyac,Konu,secreen,kullanici,Tip)' +
-           ' values(' + QuotedStr(DATALAR.osgbKodu) + ','
-                      + QuotedStr(datalar._merkezAdi) + ','
-                      + inttostr(txtAciliyet.ItemIndex) + ','
-                      + QuotedStr(txtMesaj.Text) + ','
-                      + QuotedStr(txtPersonel.Text) + ','
-                      + inttostr(txtEtki.ItemIndex) + ','
-                      + QuotedStr(tip.Properties.Items[tip.ItemIndex].Value) + ','
-                      + inttostr(txtKonu.ItemIndex) + ','
-                      + QuotedStr(ifThen(cxCheckBox1.Checked,'1','0')) + ','
-                      + QuotedStr(datalar.username) + ','
-                      + QuotedStr('O') +
+    ado.Connection := datalar.ADOConnection1;
 
-                      ') select SCOPE_IDENTITY() ';
+  //  datalar.Login;
 
-    datalar.QuerySelect(ado,sql);
-
-    if not ado.Eof
-    Then
-     sorunId := ado.Fields[0].AsString;
-
-    if cxCheckBox1.Checked
-    then begin
-      dosya := 'secreen_'+sorunId + '.jpg';
-      renameFile('C:\OSGB\screen.jpg','C:\OSGB\' + dosya);
-      IdFTP1.Connect();
-      Application.ProcessMessages;
-      IdFTP1.Put('C:\OSGB\' + dosya ,'/httpdocs/secreen/' + dosya ,false);
-      IdFTP1.Disconnect;
-    end;
-
-    ShowMessage('Bildiriminiz ' + sorunId + ' Nolu referans ile Yapýldý','','','info');
     try
-     deletefile('C:\OSGB\' + dosya);
-    except
+      sql := 'insert into sorunlar (kurumkodu,sorunsahibi,sorunAciliyeti,sorunAciklamasi,' +
+             'ilgilenenPersonel,fonksiyonelEtki,sorunIhtiyac,Konu,secreen,kullanici,Tip)' +
+             ' values(' + QuotedStr(DATALAR.osgbKodu) + ','
+                        + QuotedStr(datalar._merkezAdi) + ','
+                        + inttostr(txtAciliyet.ItemIndex) + ','
+                        + QuotedStr(txtMesaj.Text) + ','
+                        + QuotedStr(txtPersonel.Text) + ','
+                        + inttostr(txtEtki.ItemIndex) + ','
+                        + QuotedStr(tip.Properties.Items[tip.ItemIndex].Value) + ','
+                        + inttostr(txtKonu.ItemIndex) + ','
+                        + QuotedStr(ifThen(cxCheckBox1.Checked,'1','0')) + ','
+                        + QuotedStr(datalar.username) + ','
+                        + QuotedStr('O') +
+
+                        ') select SCOPE_IDENTITY() ';
+
+      datalar.QuerySelect(ado,sql);
+
+      if not ado.Eof
+      Then
+       sorunId := ado.Fields[0].AsString;
+
+      if cxCheckBox1.Checked
+      then begin
+        dosya := 'secreen_'+sorunId + '.jpg';
+        renameFile('C:\OSGB\screen.jpg','C:\OSGB\' + dosya);
+        IdFTP1.Connect();
+        Application.ProcessMessages;
+        IdFTP1.Put('C:\OSGB\' + dosya ,'/httpdocs/secreen/' + dosya ,false);
+        IdFTP1.Disconnect;
+      end;
+
+      ShowMessage('Bildiriminiz ' + sorunId + ' Nolu referans ile Yapýldý','','','info');
+      try
+       deletefile('C:\OSGB\' + dosya);
+      except
+      end;
+
+    except on e : Exception do
+     begin
+        ShowMessage('Hata : '+ e.Message,'','','info');
+     end;
     end;
 
-  except on e : Exception do
-   begin
-      ShowMessage('Hata : '+ e.Message,'','','info');
-   end;
+    cxButton2.Click;
+  finally
+    ado.Free;
   end;
-
-  cxButton2.Click;
-
-  ado.Free;
-
 end;
 
 procedure TfrmDestekSorunBildir.Ado_SqlAfterScroll(DataSet: TDataSet);
@@ -336,27 +338,27 @@ var
 begin
 //  datalar.ADOConnection1.Connected := True;
   ado := TADOQuery.Create(nil);
-  ado.Connection := datalar.ADOConnection1;
-
   try
-    sql := 'insert into sorunCozumSureci (sorunId,durum,aciklama,personel,Taraf) ' +
-           'values( ' + ado_sql.FieldByName('sorunId').AsString + ',' +
-           '1,' +
-           QuotedStr(txtCvp.Text) + ',' +
-           inttostr(txtCvpPersonel.ItemIndex) + ',' +
-           QuotedStr(datalar.osgbKodu) + ')';
+    ado.Connection := datalar.ADOConnection1;
+    try
+      sql := 'insert into sorunCozumSureci (sorunId,durum,aciklama,personel,Taraf) ' +
+             'values( ' + ado_sql.FieldByName('sorunId').AsString + ',' +
+             '1,' +
+             QuotedStr(txtCvp.Text) + ',' +
+             inttostr(txtCvpPersonel.ItemIndex) + ',' +
+             QuotedStr(datalar.osgbKodu) + ')';
 
-    datalar.QueryExec(ado,sql);
-    pnlCvp.Visible := false;
-  except on e : Exception do
-   begin
-    ShowMessageSkin(e.Message,'','','info');
-   end;
-  end;
+      datalar.QueryExec(ado,sql);
+      pnlCvp.Visible := false;
+    except on e : Exception do
+     begin
+      ShowMessageSkin(e.Message,'','','info');
+     end;
+    end;
+  finally
     ado.Free;
-
+  end;
   cozumler;
-
 end;
 
 procedure TfrmDestekSorunBildir.cxButton6Click(Sender: TObject);

@@ -1,7 +1,7 @@
 unit sirketYillikEgitimPlan;
 
 interface
-incele projeye ekle
+
 uses
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
   Dialogs, cxGraphics, cxControls, cxLookAndFeels, cxLookAndFeelPainters,
