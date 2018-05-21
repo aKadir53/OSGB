@@ -1,6 +1,6 @@
 BEGIN TRAN
 GO
-ALTER VIEW dbo.AktifPasifTanim_View
+ALTER VIEW [dbo].[AktifPasifTanim_View]
 AS
 SELECT        kod, tanimi
 FROM            (SELECT        0 AS kod, 'Pasif' AS tanimi
