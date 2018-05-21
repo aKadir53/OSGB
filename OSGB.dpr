@@ -74,6 +74,8 @@ uses
   SirketSozlesme in 'SirketSozlesme.pas' {frmSirketSozlesme},
   Sozlesmeler in 'Sozlesmeler.pas' {frmSozlesmeler},
   UyumSoftPortal in 'UyumSoftPortal.pas' {frmPortal},
+  sirketYillikCalismaPlan in 'sirketYillikCalismaPlan.pas' {frmSirketYillikCalismaPlan},
+  sirketYillikEgitimPlan in 'sirketYillikEgitimPlan.pas' {frmSirketYillikEgitimPlan},
   AjandaOzet in 'AjandaOzet.pas' {frmAjandaOzet},
   CariHareketGiris in 'CariHareketGiris.pas' {frmCariHareket},
   CariHesapBorcAlacakToplam in 'CariHesapBorcAlacakToplam.pas' {frmCariHesapBorcAlacakToplam},

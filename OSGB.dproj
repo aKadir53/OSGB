@@ -289,6 +289,12 @@
 			<DCCReference Include="UyumSoftPortal.pas">
 				<Form>frmPortal</Form>
 			</DCCReference>
+			<DCCReference Include="sirketYillikCalismaPlan.pas">
+				<Form>frmSirketYillikCalismaPlan</Form>
+			</DCCReference>
+			<DCCReference Include="sirketYillikEgitimPlan.pas">
+				<Form>frmSirketYillikEgitimPlan</Form>
+			</DCCReference>
 			<DCCReference Include="AjandaOzet.pas">
 				<Form>frmAjandaOzet</Form>
 			</DCCReference>
