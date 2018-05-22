@@ -45,12 +45,6 @@ object DATALAR: TDATALAR
     Left = 184
     Top = 80
   end
-  object Q_LogADO: TADOQuery
-    Connection = ADOConnection2
-    Parameters = <>
-    Left = 256
-    Top = 80
-  end
   object HTTP2: TIdHTTP
     AllowCookies = True
     ProxyParams.BasicAuthentication = False
@@ -68,61 +62,6 @@ object DATALAR: TDATALAR
     HTTPOptions = [hoForceEncodeParams]
     Left = 53
     Top = 217
-  end
-  object Takip: THTTPRIO
-    OnAfterExecute = TakipAfterExecute
-    OnBeforeExecute = TakipBeforeExecute
-    WSDLLocation = 'HastaKabulIslemleri.wsdl'
-    Service = 'HastaKabulIslemleriService'
-    Port = 'HastaKabulIslemleri'
-    HTTPWebNode.Agent = 'Borland SOAP 1.2'
-    HTTPWebNode.UseUTF8InHeader = True
-    HTTPWebNode.InvokeOptions = [soIgnoreInvalidCerts, soAutoCheckAccessPointViaUDDI]
-    HTTPWebNode.WebNodeOptions = []
-    HTTPWebNode.OnBeforePost = TakipHTTPWebNode1BeforePost
-    Converter.Options = [soSendMultiRefObj, soTryAllSchema, soRootRefNodesToBody, soUTF8InHeader, soCacheMimeResponse, soUTF8EncodeXML]
-    Left = 83
-    Top = 244
-  end
-  object OdemeBilgi: THTTPRIO
-    WSDLLocation = 'OdemeBilgisiIslemleri.wsdl'
-    Service = 'OdemeBilgisiIslemleriService'
-    Port = 'OdemeBilgisiIslemleri'
-    HTTPWebNode.Agent = 'Borland SOAP 1.2'
-    HTTPWebNode.UseUTF8InHeader = True
-    HTTPWebNode.InvokeOptions = [soIgnoreInvalidCerts, soAutoCheckAccessPointViaUDDI]
-    HTTPWebNode.WebNodeOptions = []
-    Converter.Options = [soSendMultiRefObj, soTryAllSchema, soRootRefNodesToBody, soUTF8InHeader, soCacheMimeResponse, soUTF8EncodeXML]
-    Left = 187
-    Top = 164
-  end
-  object OdemeBilgiTest: THTTPRIO
-    WSDLLocation = 'OdemeBilgisiIslemleriTEST.wsdl'
-    Service = 'OdemeBilgisiIslemleriService'
-    Port = 'OdemeBilgisiIslemleri'
-    HTTPWebNode.Agent = 'Borland SOAP 1.2'
-    HTTPWebNode.UseUTF8InHeader = True
-    HTTPWebNode.InvokeOptions = [soIgnoreInvalidCerts, soAutoCheckAccessPointViaUDDI]
-    HTTPWebNode.WebNodeOptions = []
-    Converter.Options = [soSendMultiRefObj, soTryAllSchema, soRootRefNodesToBody, soUTF8InHeader, soCacheMimeResponse, soUTF8EncodeXML]
-    Left = 187
-    Top = 244
-  end
-  object yardimciIslemler: THTTPRIO
-    OnAfterExecute = yardimciIslemlerAfterExecute
-    OnBeforeExecute = yardimciIslemlerBeforeExecute
-    WSDLLocation = 
-      'https://medula.sgk.gov.tr/medulaws/services/YardimciIslemler/wsd' +
-      'l/YardimciIslemler.wsdl '
-    Service = 'YardimciIslemlerService'
-    Port = 'YardimciIslemler'
-    HTTPWebNode.Agent = 'Borland SOAP 1.2'
-    HTTPWebNode.UseUTF8InHeader = True
-    HTTPWebNode.InvokeOptions = [soIgnoreInvalidCerts, soAutoCheckAccessPointViaUDDI]
-    HTTPWebNode.WebNodeOptions = []
-    Converter.Options = [soSendMultiRefObj, soTryAllSchema, soRootRefNodesToBody, soCacheMimeResponse, soUTF8EncodeXML]
-    Left = 280
-    Top = 278
   end
   object RxHastaTakip_: TRxMemoryData
     FieldDefs = <
@@ -238,15 +177,6 @@ object DATALAR: TDATALAR
     Left = 349
     Top = 104
   end
-  object ADO_SQL5: TADOQuery
-    Connection = ADOConnection2
-    CursorType = ctStatic
-    Parameters = <>
-    SQL.Strings = (
-      'select * from HizmetFiyatTipleri')
-    Left = 120
-    Top = 304
-  end
   object ADO_SQL7: TADOQuery
     Connection = ADOConnection2
     CursorType = ctStatic
@@ -254,33 +184,6 @@ object DATALAR: TDATALAR
     SQL.Strings = (
       'select * from HizmetFiyatTipleri')
     Left = 112
-    Top = 376
-  end
-  object ADO_SQL8: TADOQuery
-    Connection = ADOConnection2
-    CursorType = ctStatic
-    Parameters = <>
-    SQL.Strings = (
-      'select * from HizmetFiyatTipleri')
-    Left = 144
-    Top = 376
-  end
-  object ADO_SQL9: TADOQuery
-    Connection = ADOConnection2
-    CursorType = ctStatic
-    Parameters = <>
-    SQL.Strings = (
-      'select * from HizmetFiyatTipleri')
-    Left = 184
-    Top = 376
-  end
-  object ADO_SQL10: TADOQuery
-    Connection = ADOConnection2
-    CursorType = ctStatic
-    Parameters = <>
-    SQL.Strings = (
-      'select * from HizmetFiyatTipleri')
-    Left = 240
     Top = 376
   end
   object ADO_SQL11: TADOQuery
@@ -292,22 +195,6 @@ object DATALAR: TDATALAR
     Left = 296
     Top = 376
   end
-  object ADO_SQL6: TADOQuery
-    Connection = ADOConnection2
-    CursorType = ctStatic
-    Parameters = <>
-    SQL.Strings = (
-      'exec sp_hastabakiye '#39'20070101'#39','#39'20071231'#39)
-    Left = 128
-    Top = 344
-  end
-  object SQL_Tarih: TADOQuery
-    Parameters = <>
-    SQL.Strings = (
-      'select convert(varchar,getdate(),112) as tarih')
-    Left = 144
-    Top = 80
-  end
   object TempConnection: TADOConnection
     CommandTimeout = 0
     ConnectionString = 
@@ -317,7 +204,6 @@ object DATALAR: TDATALAR
     KeepConnection = False
     LoginPrompt = False
     Provider = 'SQLOLEDB.1'
-    AfterConnect = TempConnectionAfterConnect
     Left = 113
     Top = 169
   end
@@ -11944,16 +11830,6 @@ object DATALAR: TDATALAR
       FFFFFFFFFCF9FFFF9FF9FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
       FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF00000000000000000000000000000000
       000000000000}
-  end
-  object ADO_CARIKAYITLAR: TADOQuery
-    Connection = ADOConnection2
-    Parameters = <>
-    SQL.Strings = (
-      
-        'select * from cariHareketler ch join cariKartlar ck on ck.cariHe' +
-        'sapkodu = ch.cariKod ')
-    Left = 461
-    Top = 32
   end
   object RxTaniBilgisi_: TRxMemoryData
     FieldDefs = <
@@ -23764,42 +23640,12 @@ object DATALAR: TDATALAR
       FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF00000000000000000000000000000000
       000000000000}
   end
-  object Rapor_: THTTPRIO
-    OnAfterExecute = Rapor_AfterExecute
-    OnBeforeExecute = Rapor_BeforeExecute
-    WSDLLocation = 
-      'https://medeczane.sgk.gov.tr/medula/eczane/saglikTesisiRaporIsle' +
-      'mleriWS?wsdl'
-    Service = 'SaglikTesisiRaporIslemleriService'
-    Port = 'SaglikTesisiRaporIslemleriPort'
-    HTTPWebNode.Agent = 'Borland SOAP 1.2'
-    HTTPWebNode.UseUTF8InHeader = True
-    HTTPWebNode.InvokeOptions = [soIgnoreInvalidCerts, soAutoCheckAccessPointViaUDDI]
-    HTTPWebNode.WebNodeOptions = []
-    Converter.Options = [soSendMultiRefObj, soTryAllSchema, soRootRefNodesToBody, soUTF8InHeader, soCacheMimeResponse, soUTF8EncodeXML]
-    Left = 1035
-    Top = 276
-  end
   object ADO_RAPORLAR1: TADOTable
     Connection = ADOConnection2
     CursorType = ctStatic
     TableName = 'Raporlar1'
     Left = 829
     Top = 176
-  end
-  object LabV: THTTPRIO
-    OnAfterExecute = LabVAfterExecute
-    WSDLLocation = 'AlisWS.WSDL'
-    Service = 'AlisWS'
-    Port = 'AlisWSSoap'
-    HTTPWebNode.Agent = 'Borland SOAP 1.2'
-    HTTPWebNode.UseUTF8InHeader = True
-    HTTPWebNode.InvokeOptions = [soIgnoreInvalidCerts, soAutoCheckAccessPointViaUDDI]
-    HTTPWebNode.WebNodeOptions = []
-    HTTPWebNode.OnReceivingData = LabHTTPWebNode1ReceivingData
-    Converter.Options = [soSendMultiRefObj, soTryAllSchema, soRootRefNodesToBody, soUTF8InHeader, soCacheMimeResponse, soUTF8EncodeXML]
-    Left = 643
-    Top = 28
   end
   object RxTahlilSonucData: TDataSource
     DataSet = RxTahlilSonuc
@@ -24298,57 +24144,6 @@ object DATALAR: TDATALAR
       end>
     Left = 312
     Top = 608
-  end
-  object LabT: THTTPRIO
-    OnAfterExecute = LabVAfterExecute
-    WSDLLocation = 'TenayService.wsdl'
-    Service = 'HastaIslemleri'
-    Port = 'HastaIslemleriSoap'
-    HTTPWebNode.Agent = 'Borland SOAP 1.2'
-    HTTPWebNode.UseUTF8InHeader = True
-    HTTPWebNode.InvokeOptions = [soIgnoreInvalidCerts, soAutoCheckAccessPointViaUDDI]
-    HTTPWebNode.WebNodeOptions = []
-    Converter.Options = [soSendMultiRefObj, soTryAllSchema, soRootRefNodesToBody, soUTF8InHeader, soCacheMimeResponse, soUTF8EncodeXML]
-    Left = 683
-    Top = 28
-  end
-  object LisansAl: THTTPRIO
-    WSDLLocation = 'http://www.noktayazilim.net/noktaservice.asmx?WSDL'
-    Service = 'Service1'
-    Port = 'Service1Soap'
-    HTTPWebNode.Agent = 'Borland SOAP 1.2'
-    HTTPWebNode.UseUTF8InHeader = True
-    HTTPWebNode.InvokeOptions = [soIgnoreInvalidCerts, soAutoCheckAccessPointViaUDDI]
-    HTTPWebNode.WebNodeOptions = []
-    HTTPWebNode.OnBeforePost = LisansAlHTTPWebNode1BeforePost
-    Converter.Options = [soSendMultiRefObj, soTryAllSchema, soRootRefNodesToBody, soCacheMimeResponse, soUTF8EncodeXML]
-    Left = 664
-    Top = 238
-  end
-  object Lab: THTTPRIO
-    OnAfterExecute = LabAfterExecute
-    OnBeforeExecute = LabBeforeExecute
-    WSDLLocation = 
-      'http://95.9.186.77:80/Medilis_Service.exe/wsdl/IMDLSHastaIslemle' +
-      'ri'
-    Service = 'IMDLSHastaIslemleriservice'
-    Port = 'IMDLSHastaIslemleriPort'
-    HTTPWebNode.Agent = 'Borland SOAP 1.2'
-    HTTPWebNode.UseUTF8InHeader = True
-    HTTPWebNode.InvokeOptions = [soIgnoreInvalidCerts, soAutoCheckAccessPointViaUDDI]
-    HTTPWebNode.WebNodeOptions = []
-    Converter.Options = [soSendMultiRefObj, soTryAllSchema, soRootRefNodesToBody, soUTF8InHeader, soCacheMimeResponse, soUTF8EncodeXML]
-    Left = 750
-    Top = 28
-  end
-  object Stok_IlacSarf: TADOQuery
-    Connection = ADOConnection2
-    CursorType = ctStatic
-    Parameters = <>
-    SQL.Strings = (
-      'select * from ILACSARF')
-    Left = 568
-    Top = 168
   end
   object ADO_TANILAR: TADOQuery
     Connection = ADOConnection2
@@ -36519,10 +36314,6 @@ object DATALAR: TDATALAR
           0000000000000000000000000000000000000000000000000000}
       end>
   end
-  object SaveDialog1: TSaveDialog
-    Left = 480
-    Top = 272
-  end
   object imag24png: TcxImageList
     Height = 24
     Width = 24
@@ -45540,73 +45331,6 @@ object DATALAR: TDATALAR
           ACB3114C6B72010B111200000000000000000000000000000000}
       end>
   end
-  object LabInVitro: THTTPRIO
-    WSDLLocation = 'http://78.187.3.208/HastaEkleWsdl.exe/wsdl/IHastaEkle'
-    Service = 'IHastaEkleservice'
-    Port = 'IHastaEklePort'
-    HTTPWebNode.Agent = 'Borland SOAP 1.2'
-    HTTPWebNode.UseUTF8InHeader = True
-    HTTPWebNode.InvokeOptions = [soIgnoreInvalidCerts, soAutoCheckAccessPointViaUDDI]
-    HTTPWebNode.WebNodeOptions = []
-    Converter.Options = [soSendMultiRefObj, soTryAllSchema, soRootRefNodesToBody, soUTF8InHeader, soCacheMimeResponse, soUTF8EncodeXML]
-    Left = 798
-    Top = 100
-  end
-  object LabInVitroTest: THTTPRIO
-    WSDLLocation = 'http://78.187.3.208/TestEkleWsdl.exe/wsdl/ITESTEKLE'
-    Service = 'ITESTEKLEservice'
-    Port = 'ITESTEKLEPort'
-    HTTPWebNode.Agent = 'Borland SOAP 1.2'
-    HTTPWebNode.UseUTF8InHeader = True
-    HTTPWebNode.InvokeOptions = [soIgnoreInvalidCerts, soAutoCheckAccessPointViaUDDI]
-    HTTPWebNode.WebNodeOptions = []
-    Converter.Options = [soSendMultiRefObj, soTryAllSchema, soRootRefNodesToBody, soUTF8InHeader, soCacheMimeResponse, soUTF8EncodeXML]
-    Left = 878
-    Top = 100
-  end
-  object LabsonucAlInVitro: THTTPRIO
-    WSDLLocation = 'http://78.187.200.244/SonucAlWsdl.exe/wsdl/ISonucAl'
-    Service = 'ISonucAlservice'
-    Port = 'ISonucAlPort'
-    HTTPWebNode.Agent = 'Borland SOAP 1.2'
-    HTTPWebNode.UseUTF8InHeader = True
-    HTTPWebNode.InvokeOptions = [soIgnoreInvalidCerts, soAutoCheckAccessPointViaUDDI]
-    HTTPWebNode.WebNodeOptions = []
-    Converter.Options = [soSendMultiRefObj, soTryAllSchema, soRootRefNodesToBody, soUTF8InHeader, soCacheMimeResponse, soUTF8EncodeXML]
-    Left = 904
-    Top = 156
-  end
-  object Ahenk: THTTPRIO
-    OnAfterExecute = AhenkAfterExecute
-    OnBeforeExecute = AhenkBeforeExecute
-    WSDLLocation = 
-      'http://88.250.87.241:8090/Medilis_Service.exe/wsdl/IMDLSHastaIsl' +
-      'emleri '
-    Service = 'IMDLSHastaIslemleriservice'
-    Port = 'IMDLSHastaIslemleriPort'
-    HTTPWebNode.Agent = 'Borland SOAP 1.2'
-    HTTPWebNode.UseUTF8InHeader = True
-    HTTPWebNode.InvokeOptions = [soIgnoreInvalidCerts, soAutoCheckAccessPointViaUDDI]
-    HTTPWebNode.WebNodeOptions = []
-    Converter.Options = [soSendMultiRefObj, soTryAllSchema, soRootRefNodesToBody, soUTF8InHeader, soCacheMimeResponse, soUTF8EncodeXML]
-    Left = 798
-    Top = 28
-  end
-  object UmitHast: THTTPRIO
-    OnBeforeExecute = UmitHastBeforeExecute
-    WSDLLocation = 
-      'http://212.156.94.186:8085/Medisoft_Service.exe/wsdl/IMDLSHastaI' +
-      'slemleri'
-    Service = 'IMDLSHastaIslemleriservice'
-    Port = 'IMDLSHastaIslemleriPort'
-    HTTPWebNode.Agent = 'Borland SOAP 1.2'
-    HTTPWebNode.UseUTF8InHeader = True
-    HTTPWebNode.InvokeOptions = [soIgnoreInvalidCerts, soAutoCheckAccessPointViaUDDI]
-    HTTPWebNode.WebNodeOptions = []
-    Converter.Options = [soSendMultiRefObj, soTryAllSchema, soRootRefNodesToBody, soUTF8InHeader, soCacheMimeResponse, soUTF8EncodeXML]
-    Left = 854
-    Top = 28
-  end
   object ilacList: THTTPRIO
     WSDLLocation = 'D:\medula3wsdl\SaglikTesisiYardimciIslemler.wsdl'
     Service = 'SaglikTesisiYardimciIslemlerService'
@@ -45618,20 +45342,6 @@ object DATALAR: TDATALAR
     Converter.Options = [soSendMultiRefObj, soTryAllSchema, soRootRefNodesToBody, soUTF8InHeader, soCacheMimeResponse, soUTF8EncodeXML]
     Left = 547
     Top = 348
-  end
-  object OnSecim: THTTPRIO
-    WSDLLocation = 
-      'http://test4.sgk.gov.tr/WS_isGoremezlik2011/services/SorgulaWS/w' +
-      'sdl/SorgulaWS.wsdl'
-    Service = 'SorgulaWSService'
-    Port = 'SorgulaWS'
-    HTTPWebNode.Agent = 'Borland SOAP 1.2'
-    HTTPWebNode.UseUTF8InHeader = True
-    HTTPWebNode.InvokeOptions = [soIgnoreInvalidCerts, soAutoCheckAccessPointViaUDDI]
-    HTTPWebNode.WebNodeOptions = []
-    Converter.Options = [soSendMultiRefObj, soTryAllSchema, soRootRefNodesToBody, soUTF8InHeader, soCacheMimeResponse, soUTF8EncodeXML]
-    Left = 83
-    Top = 500
   end
   object ReceteKayit: THTTPRIO
     WSDLLocation = 'D:\medula3wsdl\SaglikTesisiReceteIslemleri.wsdl'
@@ -45675,20 +45385,6 @@ object DATALAR: TDATALAR
     Parameters = <>
     Left = 912
     Top = 248
-  end
-  object Takipformu: THTTPRIO
-    OnAfterExecute = TakipformuAfterExecute
-    OnBeforeExecute = TakipformuBeforeExecute
-    WSDLLocation = 'TakipFormuIslemleri.wsdl'
-    Service = 'TakipFormuIslemleriService'
-    Port = 'TakipFormuIslemleri'
-    HTTPWebNode.Agent = 'Borland SOAP 1.2'
-    HTTPWebNode.UseUTF8InHeader = True
-    HTTPWebNode.InvokeOptions = [soIgnoreInvalidCerts, soAutoCheckAccessPointViaUDDI]
-    HTTPWebNode.WebNodeOptions = []
-    Converter.Options = [soSendMultiRefObj, soTryAllSchema, soRootRefNodesToBody, soCacheMimeResponse, soUTF8EncodeXML]
-    Left = 1048
-    Top = 502
   end
   object imag48png: TcxImageList
     Height = 48
@@ -52143,20 +51839,6 @@ object DATALAR: TDATALAR
           0000000000000000000000000000000000000000000000000000}
       end>
   end
-  object FaturaKaydet: THTTPRIO
-    OnAfterExecute = FaturaKaydetAfterExecute
-    OnBeforeExecute = FaturaKaydetBeforeExecute
-    WSDLLocation = 'FaturaKayitIslemleri.wsdl'
-    Service = 'FaturaKayitIslemleriService'
-    Port = 'FaturaKayitIslemleri'
-    HTTPWebNode.UseUTF8InHeader = True
-    HTTPWebNode.InvokeOptions = [soIgnoreInvalidCerts, soAutoCheckAccessPointViaUDDI]
-    HTTPWebNode.WebNodeOptions = []
-    HTTPWebNode.OnBeforePost = FaturaKaydetHTTPWebNode1BeforePost
-    Converter.Options = [soSendMultiRefObj, soTryAllSchema, soRootRefNodesToBody, soCacheMimeResponse, soUTF8EncodeXML]
-    Left = 1040
-    Top = 328
-  end
   object RxKayitliIslem: TdxMemData
     Active = True
     Indexes = <>
@@ -52653,25 +52335,6 @@ object DATALAR: TDATALAR
       Size = 10
     end
   end
-  object RxYesilKart: TdxMemData
-    Active = True
-    Indexes = <>
-    SortOptions = []
-    Left = 656
-    Top = 504
-    object RxYesilKartTakipNo: TStringField
-      FieldName = 'TakipNo'
-    end
-    object RxYesilKartSevkEdenTesis: TStringField
-      FieldName = 'SevkEdenTesis'
-    end
-    object RxYesilKartsevkEdilenBrans: TStringField
-      FieldName = 'sevkEdilenBrans'
-    end
-    object RxYesilKartsevkEdilisTarihi: TStringField
-      FieldName = 'sevkEdilisTarihi'
-    end
-  end
   object RxKonsultasyon: TdxMemData
     Active = True
     Indexes = <>
@@ -52732,19 +52395,6 @@ object DATALAR: TDATALAR
       FieldName = 'TakipTarihi'
     end
   end
-  object servis_: THTTPRIO
-    OnAfterExecute = servis_AfterExecute
-    OnBeforeExecute = servis_BeforeExecute
-    WSDLLocation = 'C:\Dializ2007_M3\onlineprotokol.wsdl'
-    Service = 'OnlineProtokol'
-    Port = 'OnlineProtokolSoap'
-    HTTPWebNode.UseUTF8InHeader = True
-    HTTPWebNode.InvokeOptions = [soIgnoreInvalidCerts, soAutoCheckAccessPointViaUDDI]
-    HTTPWebNode.WebNodeOptions = []
-    Converter.Options = [soSendMultiRefObj, soTryAllSchema, soRootRefNodesToBody, soCacheMimeResponse, soUTF8EncodeXML]
-    Left = 640
-    Top = 336
-  end
   object Ulkeler: TADOTable
     Connection = ADOConnection2
     CursorType = ctStatic
@@ -52769,102 +52419,6 @@ object DATALAR: TDATALAR
     HTTPOptions = [hoForceEncodeParams]
     Left = 24
     Top = 216
-  end
-  object ITS: THTTPRIO
-    OnBeforeExecute = ITSBeforeExecute
-    WSDLLocation = 'C:\Dializ2007_M3\HastaneSarfBildirimi.wsdl'
-    Service = 'HastaneSarfBildirimReceiverService'
-    Port = 'HastaneSarfBildirimReceiverBindingPort'
-    HTTPWebNode.UseUTF8InHeader = True
-    HTTPWebNode.InvokeOptions = [soIgnoreInvalidCerts, soAutoCheckAccessPointViaUDDI]
-    HTTPWebNode.WebNodeOptions = []
-    Converter.Options = [soSendMultiRefObj, soTryAllSchema, soRootRefNodesToBody, soCacheMimeResponse, soUTF8EncodeXML]
-    Left = 552
-    Top = 8
-  end
-  object MalAlim: THTTPRIO
-    OnBeforeExecute = MalAlimBeforeExecute
-    WSDLLocation = 'C:\Dializ2007_M3\MalAlimBildirimi.wsdl'
-    Service = 'ReceiptNotification'
-    Port = 'ReceiptNotificationPort'
-    HTTPWebNode.UseUTF8InHeader = True
-    HTTPWebNode.InvokeOptions = [soIgnoreInvalidCerts, soAutoCheckAccessPointViaUDDI]
-    HTTPWebNode.WebNodeOptions = []
-    Converter.Options = [soSendMultiRefObj, soTryAllSchema, soRootRefNodesToBody, soCacheMimeResponse, soUTF8EncodeXML]
-    Left = 584
-    Top = 8
-  end
-  object Ventura: THTTPRIO
-    OnAfterExecute = VenturaAfterExecute
-    OnBeforeExecute = VenturaBeforeExecute
-    WSDLLocation = 'C:\Dializ2007_M3\AlisWS.wsdl'
-    Service = 'AlisWS'
-    Port = 'AlisWSSoap'
-    HTTPWebNode.Agent = 'Borland SOAP 1.2'
-    HTTPWebNode.UseUTF8InHeader = True
-    HTTPWebNode.InvokeOptions = [soIgnoreInvalidCerts, soAutoCheckAccessPointViaUDDI]
-    HTTPWebNode.WebNodeOptions = []
-    Converter.Options = [soSendMultiRefObj, soTryAllSchema, soRootRefNodesToBody, soUTF8InHeader, soCacheMimeResponse, soUTF8EncodeXML]
-    Left = 774
-    Top = 156
-  end
-  object Sistem: THTTPRIO
-    OnAfterExecute = SistemAfterExecute
-    OnBeforeExecute = SistemBeforeExecute
-    WSDLLocation = 'C:\Dializ2007_M3\TenayServiceSistem.wsdl'
-    Service = 'HastaIslemleri'
-    Port = 'HastaIslemleriSoap'
-    HTTPWebNode.Agent = 'Borland SOAP 1.2'
-    HTTPWebNode.UseUTF8InHeader = True
-    HTTPWebNode.InvokeOptions = [soIgnoreInvalidCerts, soAutoCheckAccessPointViaUDDI]
-    HTTPWebNode.WebNodeOptions = []
-    HTTPWebNode.OnBeforePost = SistemHTTPWebNode1BeforePost
-    Converter.Options = [soSendMultiRefObj, soTryAllSchema, soRootRefNodesToBody, soUTF8InHeader, soCacheMimeResponse, soUTF8EncodeXML]
-    Left = 894
-    Top = 28
-  end
-  object Referans: THTTPRIO
-    OnAfterExecute = ReferansAfterExecute
-    OnBeforeExecute = ReferansBeforeExecute
-    WSDLLocation = 'http://www.referanslab.com/Webservice/ReLabSonucOku.asmx?WSDL'
-    Service = 'ReLabSonucOku'
-    Port = 'ReLabSonucOkuSoap'
-    HTTPWebNode.Agent = 'Borland SOAP 1.2'
-    HTTPWebNode.UseUTF8InHeader = True
-    HTTPWebNode.InvokeOptions = [soIgnoreInvalidCerts, soAutoCheckAccessPointViaUDDI]
-    HTTPWebNode.WebNodeOptions = []
-    Converter.Options = [soSendMultiRefObj, soTryAllSchema, soRootRefNodesToBody, soUTF8InHeader, soCacheMimeResponse, soUTF8EncodeXML]
-    Left = 934
-    Top = 28
-  end
-  object DYOB: THTTPRIO
-    OnAfterExecute = DYOBAfterExecute
-    OnBeforeExecute = DYOBBeforeExecute
-    WSDLLocation = 
-      'C:\DYOB\DYOBWS\DYOBWSEX\DYOBWSEX\Service References\DYOBWS\DIYAL' +
-      'IZWS.wsdl'
-    Service = 'DIYALIZWS'
-    Port = 'DIYALIZWSSoap'
-    HTTPWebNode.UseUTF8InHeader = True
-    HTTPWebNode.InvokeOptions = [soIgnoreInvalidCerts, soAutoCheckAccessPointViaUDDI]
-    HTTPWebNode.WebNodeOptions = []
-    Converter.Options = [soSendMultiRefObj, soTryAllSchema, soRootRefNodesToBody, soCacheMimeResponse, soUTF8EncodeXML]
-    Left = 152
-    Top = 304
-  end
-  object IlacRapor_: THTTPRIO
-    OnAfterExecute = IlacRapor_AfterExecute
-    OnBeforeExecute = IlacRapor_BeforeExecute
-    WSDLLocation = 'C:\medula3wsdl\RaporIslemleri.wsdl'
-    Service = 'SaglikTesisiRaporIslemleriService'
-    Port = 'SaglikTesisiRaporIslemleri'
-    HTTPWebNode.Agent = 'Borland SOAP 1.2'
-    HTTPWebNode.UseUTF8InHeader = True
-    HTTPWebNode.InvokeOptions = [soIgnoreInvalidCerts, soAutoCheckAccessPointViaUDDI]
-    HTTPWebNode.WebNodeOptions = []
-    Converter.Options = [soSendMultiRefObj, soTryAllSchema, soRootRefNodesToBody, soUTF8InHeader, soCacheMimeResponse, soUTF8EncodeXML]
-    Left = 979
-    Top = 284
   end
   object memData_DamarIzi: TdxMemData
     Active = True
@@ -52903,49 +52457,6 @@ object DATALAR: TDATALAR
     Parameters = <>
     Left = 854
     Top = 327
-  end
-  object Bio: THTTPRIO
-    OnAfterExecute = BioAfterExecute
-    OnBeforeExecute = BioBeforeExecute
-    WSDLLocation = 'http://81.214.108.120:1080/Tenayservice.asmx?WSDL'
-    Service = 'HastaIslemleri'
-    Port = 'HastaIslemleriSoap'
-    HTTPWebNode.Agent = 'Borland SOAP 1.2'
-    HTTPWebNode.UseUTF8InHeader = True
-    HTTPWebNode.InvokeOptions = [soIgnoreInvalidCerts, soAutoCheckAccessPointViaUDDI]
-    HTTPWebNode.WebNodeOptions = []
-    Converter.Options = [soSendMultiRefObj, soTryAllSchema, soRootRefNodesToBody, soUTF8InHeader, soCacheMimeResponse, soUTF8EncodeXML]
-    Left = 966
-    Top = 100
-  end
-  object Birlab: THTTPRIO
-    OnAfterExecute = TenayMNTAfterExecute
-    OnBeforeExecute = TenayMNTBeforeExecute
-    WSDLLocation = 'http://176.40.41.229/service.asmx?wsdl'
-    Service = 'Service'
-    Port = 'ServiceSoap'
-    HTTPWebNode.Agent = 'Borland SOAP 1.2'
-    HTTPWebNode.UseUTF8InHeader = True
-    HTTPWebNode.InvokeOptions = [soIgnoreInvalidCerts, soAutoCheckAccessPointViaUDDI]
-    HTTPWebNode.WebNodeOptions = []
-    Converter.Options = [soSendMultiRefObj, soTryAllSchema, soRootRefNodesToBody, soUTF8InHeader, soCacheMimeResponse, soUTF8EncodeXML]
-    Left = 990
-    Top = 172
-  end
-  object Duzen: THTTPRIO
-    OnAfterExecute = DuzenAfterExecute
-    OnBeforeExecute = DuzenBeforeExecute
-    WSDLLocation = 'C:\Dializ2007_M3\duzen.wsdl'
-    Service = 'PatientProcs'
-    Port = 'PatientProcsSoap'
-    HTTPWebNode.Agent = 'Borland SOAP 1.2'
-    HTTPWebNode.UseUTF8InHeader = True
-    HTTPWebNode.InvokeOptions = [soIgnoreInvalidCerts, soAutoCheckAccessPointViaUDDI]
-    HTTPWebNode.WebNodeOptions = []
-    HTTPWebNode.OnBeforePost = DuzenHTTPWebNode1BeforePost
-    Converter.Options = [soSendMultiRefObj, soTryAllSchema, soRootRefNodesToBody, soUTF8InHeader, soCacheMimeResponse, soUTF8EncodeXML]
-    Left = 710
-    Top = 156
   end
   object memData_yurtDisiYardimHakki: TdxMemData
     Active = True
@@ -53020,78 +52531,6 @@ object DATALAR: TDATALAR
     Left = 88
     Top = 560
   end
-  object yardimciIslem: THTTPRIO
-    OnAfterExecute = yardimciIslemAfterExecute
-    OnBeforeExecute = yardimciIslemBeforeExecute
-    WSDLLocation = 
-      'http://saglikt.sgk.gov.tr/medulaws/services/YardimciIslemler/wsd' +
-      'l/YardimciIslemler.wsdl'
-    Service = 'YardimciIslemlerService'
-    Port = 'YardimciIslemler'
-    HTTPWebNode.UseUTF8InHeader = True
-    HTTPWebNode.InvokeOptions = [soIgnoreInvalidCerts, soAutoCheckAccessPointViaUDDI]
-    HTTPWebNode.WebNodeOptions = []
-    Converter.Options = [soSendMultiRefObj, soTryAllSchema, soRootRefNodesToBody, soCacheMimeResponse, soUTF8EncodeXML]
-    Left = 1048
-    Top = 560
-  end
-  object TenayV2: THTTPRIO
-    OnAfterExecute = TenayV2AfterExecute
-    OnBeforeExecute = TenayV2BeforeExecute
-    WSDLLocation = 'C:\Dializ2007_M3\TenayserviceV2.wsdl'
-    Service = 'AHBSIslemleri'
-    Port = 'AHBSIslemleriSoap'
-    HTTPWebNode.Agent = 'Borland SOAP 1.2'
-    HTTPWebNode.UseUTF8InHeader = True
-    HTTPWebNode.InvokeOptions = [soIgnoreInvalidCerts, soAutoCheckAccessPointViaUDDI]
-    HTTPWebNode.WebNodeOptions = []
-    Converter.Options = [soSendMultiRefObj, soTryAllSchema, soRootRefNodesToBody, soUTF8InHeader, soCacheMimeResponse, soUTF8EncodeXML]
-    Left = 1030
-    Top = 76
-  end
-  object Rapor_M: THTTPRIO
-    OnAfterExecute = Rapor_AfterExecute
-    OnBeforeExecute = Rapor_MBeforeExecute
-    WSDLLocation = 'http://saglikt.sgk.gov.tr/medula/hastane/raporIslemleriWS?wsdl'
-    Service = 'RaporIslemleriService'
-    Port = 'RaporIslemleriPort'
-    HTTPWebNode.Agent = 'Borland SOAP 1.2'
-    HTTPWebNode.UseUTF8InHeader = True
-    HTTPWebNode.InvokeOptions = [soIgnoreInvalidCerts, soAutoCheckAccessPointViaUDDI]
-    HTTPWebNode.WebNodeOptions = []
-    Converter.Options = [soSendMultiRefObj, soTryAllSchema, soRootRefNodesToBody, soUTF8InHeader, soCacheMimeResponse, soUTF8EncodeXML]
-    Left = 971
-    Top = 388
-  end
-  object Alis: THTTPRIO
-    OnAfterExecute = AlisAfterExecute
-    OnBeforeExecute = AlisBeforeExecute
-    WSDLLocation = 'http://services.asta.gen.tr/AlisHizmetler.asmx?wsdl'
-    Service = 'AlisHizmetler'
-    Port = 'AlisHizmetlerSoap'
-    HTTPWebNode.Agent = 'Borland SOAP 1.2'
-    HTTPWebNode.UseUTF8InHeader = True
-    HTTPWebNode.InvokeOptions = [soIgnoreInvalidCerts, soAutoCheckAccessPointViaUDDI]
-    HTTPWebNode.WebNodeOptions = []
-    HTTPWebNode.OnBeforePost = AlisHTTPWebNode1BeforePost
-    Converter.Options = [soSendMultiRefObj, soTryAllSchema, soRootRefNodesToBody, soUTF8InHeader, soCacheMimeResponse, soUTF8EncodeXML]
-    Left = 990
-    Top = 228
-  end
-  object Winsoft: THTTPRIO
-    OnAfterExecute = WinsoftAfterExecute
-    OnBeforeExecute = WinsoftBeforeExecute
-    WSDLLocation = 'http://88.247.189.222:8080/dislab/service.asmx?WSDL'
-    Service = 'WinLisWebService'
-    Port = 'WinLisWebServiceSoap'
-    HTTPWebNode.Agent = 'Borland SOAP 1.2'
-    HTTPWebNode.UseUTF8InHeader = True
-    HTTPWebNode.InvokeOptions = [soIgnoreInvalidCerts, soAutoCheckAccessPointViaUDDI]
-    HTTPWebNode.WebNodeOptions = []
-    Converter.Options = [soSendMultiRefObj, soTryAllSchema, soRootRefNodesToBody, soUTF8InHeader, soCacheMimeResponse, soUTF8EncodeXML]
-    Left = 1030
-    Top = 180
-  end
   object Ado_Guncellemeler: TADOQuery
     Connection = ADOConnection1
     CursorType = ctStatic
@@ -53128,157 +52567,6 @@ object DATALAR: TDATALAR
     DataSet = ReceteKullanimYollari
     Left = 387
     Top = 450
-  end
-  object Metdata: THTTPRIO
-    OnAfterExecute = MetdataAfterExecute
-    OnBeforeExecute = MetdataBeforeExecute
-    WSDLLocation = 'C:\Dializ2007_M3\IMeddataLabService.wsdl'
-    Service = 'IMeddataLabServiceservice'
-    Port = 'IMeddataLabServicePort'
-    HTTPWebNode.Agent = 'Borland SOAP 1.2'
-    HTTPWebNode.UseUTF8InHeader = True
-    HTTPWebNode.InvokeOptions = [soIgnoreInvalidCerts, soAutoCheckAccessPointViaUDDI]
-    HTTPWebNode.WebNodeOptions = []
-    Converter.Options = [soSendMultiRefObj, soTryAllSchema, soRootRefNodesToBody, soUTF8InHeader, soCacheMimeResponse, soUTF8EncodeXML]
-    Left = 830
-    Top = 236
-  end
-  object MetDataC: THTTPRIO
-    OnAfterExecute = MetDataCAfterExecute
-    OnBeforeExecute = MetDataCBeforeExecute
-    WSDLLocation = 'C:\Dializ2007_M3\IMeddataLabService.wsdl'
-    Service = 'IMeddataLabServiceservice'
-    Port = 'IMeddataLabServicePort'
-    HTTPWebNode.Agent = 'Borland SOAP 1.2'
-    HTTPWebNode.UseUTF8InHeader = True
-    HTTPWebNode.InvokeOptions = [soIgnoreInvalidCerts, soAutoCheckAccessPointViaUDDI]
-    HTTPWebNode.WebNodeOptions = []
-    Converter.Options = [soSendMultiRefObj, soTryAllSchema, soRootRefNodesToBody, soUTF8InHeader, soCacheMimeResponse, soUTF8EncodeXML]
-    Left = 782
-    Top = 236
-  end
-  object ErguvanHttp: THTTPRIO
-    OnAfterExecute = ErguvanHttpAfterExecute
-    WSDLLocation = 
-      'http://212.253.85.61/LaboratuarSonuclariListele/TetkikSonuclari.' +
-      'asmx?wsdl'
-    Service = 'Service1'
-    Port = 'Service1Soap'
-    HTTPWebNode.Agent = 'Borland SOAP 1.2'
-    HTTPWebNode.UseUTF8InHeader = True
-    HTTPWebNode.InvokeOptions = [soIgnoreInvalidCerts, soAutoCheckAccessPointViaUDDI]
-    HTTPWebNode.WebNodeOptions = []
-    Converter.Options = [soSendMultiRefObj, soTryAllSchema, soRootRefNodesToBody, soUTF8InHeader, soCacheMimeResponse, soUTF8EncodeXML]
-    Left = 854
-    Top = 396
-  end
-  object ESY: THTTPRIO
-    OnAfterExecute = ESYAfterExecute
-    OnBeforeExecute = ESYBeforeExecute
-    WSDLLocation = 'http://78.187.230.55/LABservice.asmx?wsdl'
-    Service = 'LABservice'
-    Port = 'LABserviceSoap'
-    HTTPWebNode.Agent = 'Borland SOAP 1.2'
-    HTTPWebNode.UseUTF8InHeader = True
-    HTTPWebNode.InvokeOptions = [soIgnoreInvalidCerts, soAutoCheckAccessPointViaUDDI]
-    HTTPWebNode.WebNodeOptions = []
-    Converter.Options = [soSendMultiRefObj, soTryAllSchema, soRootRefNodesToBody, soUTF8InHeader, soCacheMimeResponse, soUTF8EncodeXML]
-    Left = 742
-    Top = 436
-  end
-  object TenayBio: THTTPRIO
-    OnAfterExecute = TenayBIOAfterExecute
-    OnBeforeExecute = TenayBIOBeforeExecute
-    WSDLLocation = 'http://95.70.143.123:1081/TenayService.asmx?WSDL'
-    Service = 'TenayWebService'
-    Port = 'TenayWebServiceSoap'
-    HTTPWebNode.UseUTF8InHeader = True
-    HTTPWebNode.InvokeOptions = [soIgnoreInvalidCerts, soAutoCheckAccessPointViaUDDI]
-    HTTPWebNode.WebNodeOptions = []
-    Converter.Options = [soSendMultiRefObj, soTryAllSchema, soRootRefNodesToBody, soCacheMimeResponse, soUTF8EncodeXML]
-    Left = 1056
-    Top = 19
-  end
-  object TenayMNT: THTTPRIO
-    OnAfterExecute = TenayMNTAfterExecute
-    OnBeforeExecute = TenayMNTBeforeExecute
-    WSDLLocation = 'C:\Dializ2007_M3\TenayServiceMNT.wsdl'
-    Service = 'TenayWebServiceMNT'
-    Port = 'TenayWebServiceSoapMNT'
-    HTTPWebNode.Agent = 'Borland SOAP 1.2'
-    HTTPWebNode.UseUTF8InHeader = True
-    HTTPWebNode.InvokeOptions = [soIgnoreInvalidCerts, soAutoCheckAccessPointViaUDDI]
-    HTTPWebNode.WebNodeOptions = []
-    Converter.Options = [soSendMultiRefObj, soTryAllSchema, soRootRefNodesToBody, soUTF8InHeader, soCacheMimeResponse, soUTF8EncodeXML]
-    Left = 1006
-    Top = 20
-  end
-  object HTTPRIO1: THTTPRIO
-    OnBeforeExecute = HTTPRIO1BeforeExecute
-    WSDLLocation = 'C:\Dializ2007_M3\TenayServiceMNT_mnt.wsdl'
-    Service = 'TenayWebServiceMNT'
-    Port = 'TenayWebServiceSoap'
-    HTTPWebNode.Agent = 'Borland SOAP 1.2'
-    HTTPWebNode.UseUTF8InHeader = True
-    HTTPWebNode.InvokeOptions = [soIgnoreInvalidCerts, soAutoCheckAccessPointViaUDDI]
-    HTTPWebNode.WebNodeOptions = []
-    Converter.Options = [soSendMultiRefObj, soTryAllSchema, soRootRefNodesToBody, soUTF8InHeader, soCacheMimeResponse, soUTF8EncodeXML]
-    Left = 1038
-    Top = 132
-  end
-  object Derman: THTTPRIO
-    OnAfterExecute = DermanAfterExecute
-    OnBeforeExecute = DermanBeforeExecute
-    WSDLLocation = 'http://95.9.220.27/WServis/LabIslemleri.asmx?Wsdl'
-    Service = 'LabIslemleri'
-    Port = 'LabIslemleriSoap'
-    HTTPWebNode.UseUTF8InHeader = True
-    HTTPWebNode.InvokeOptions = [soIgnoreInvalidCerts, soAutoCheckAccessPointViaUDDI]
-    HTTPWebNode.WebNodeOptions = []
-    Converter.Options = [soSendMultiRefObj, soTryAllSchema, soRootRefNodesToBody, soCacheMimeResponse, soUTF8EncodeXML]
-    Left = 360
-    Top = 27
-  end
-  object Centro: THTTPRIO
-    OnAfterExecute = CentroAfterExecute
-    OnBeforeExecute = CentroBeforeExecute
-    WSDLLocation = 'C:\Dializ2007_M3\Bridge_Delphi.wsdl'
-    Service = 'Bridge'
-    Port = 'BridgeSoap'
-    HTTPWebNode.UseUTF8InHeader = True
-    HTTPWebNode.InvokeOptions = [soIgnoreInvalidCerts, soAutoCheckAccessPointViaUDDI]
-    HTTPWebNode.WebNodeOptions = []
-    Converter.Options = [soSendMultiRefObj, soTryAllSchema, soRootRefNodesToBody, soCacheMimeResponse, soUTF8EncodeXML]
-    Left = 408
-    Top = 83
-  end
-  object Intermedia: THTTPRIO
-    OnAfterExecute = IntermediaAfterExecute
-    OnBeforeExecute = IntermediaBeforeExecute
-    WSDLLocation = 'C:\Dializ2007_M3\Intermedia.wsdl'
-    Service = 'SoapServis'
-    Port = 'SoapServisSoap'
-    HTTPWebNode.Agent = 'Borland SOAP 1.2'
-    HTTPWebNode.UseUTF8InHeader = True
-    HTTPWebNode.InvokeOptions = [soIgnoreInvalidCerts, soAutoCheckAccessPointViaUDDI]
-    HTTPWebNode.WebNodeOptions = []
-    Converter.Options = [soSendMultiRefObj, soTryAllSchema, soRootRefNodesToBody, soUTF8InHeader, soCacheMimeResponse, soUTF8EncodeXML]
-    Left = 654
-    Top = 164
-  end
-  object Gemsoft: THTTPRIO
-    OnAfterExecute = GemsoftAfterExecute
-    OnBeforeExecute = GemsoftBeforeExecute
-    WSDLLocation = 'http://176.41.232.198/ws/LabratuarIstek.asmx?wsdl'
-    Service = 'IstekGonder'
-    Port = 'IstekGonderSoap'
-    HTTPWebNode.Agent = 'Borland SOAP 1.2'
-    HTTPWebNode.UseUTF8InHeader = True
-    HTTPWebNode.InvokeOptions = [soIgnoreInvalidCerts, soAutoCheckAccessPointViaUDDI]
-    HTTPWebNode.WebNodeOptions = []
-    Converter.Options = [soSendMultiRefObj, soTryAllSchema, soRootRefNodesToBody, soUTF8InHeader, soCacheMimeResponse, soUTF8EncodeXML]
-    Left = 718
-    Top = 300
   end
   object Ado_Doktorlar: TADOQuery
     Connection = ADOConnection2
@@ -53333,34 +52621,6 @@ object DATALAR: TDATALAR
       'ORDER BY SLB')
     Left = 398
     Top = 279
-  end
-  object AEN: THTTPRIO
-    OnAfterExecute = AENAfterExecute
-    OnBeforeExecute = AENBeforeExecute
-    WSDLLocation = 'C:\Dializ2007_M3\AEN.wsdl'
-    Service = 'UtilsSrv'
-    Port = 'UtilsSrvSoap'
-    HTTPWebNode.Agent = 'Borland SOAP 1.2'
-    HTTPWebNode.UseUTF8InHeader = True
-    HTTPWebNode.InvokeOptions = [soIgnoreInvalidCerts, soAutoCheckAccessPointViaUDDI]
-    HTTPWebNode.WebNodeOptions = []
-    Converter.Options = [soSendMultiRefObj, soTryAllSchema, soRootRefNodesToBody, soUTF8InHeader, soCacheMimeResponse, soUTF8EncodeXML]
-    Left = 606
-    Top = 132
-  end
-  object Lios: THTTPRIO
-    OnAfterExecute = LiosAfterExecute
-    OnBeforeExecute = LiosBeforeExecute
-    WSDLLocation = 'http://88.249.11.123/LABservice.asmx?WSDL'
-    Service = 'LABservice'
-    Port = 'LABserviceSoap'
-    HTTPWebNode.Agent = 'Borland SOAP 1.2'
-    HTTPWebNode.UseUTF8InHeader = True
-    HTTPWebNode.InvokeOptions = [soIgnoreInvalidCerts, soAutoCheckAccessPointViaUDDI]
-    HTTPWebNode.WebNodeOptions = []
-    Converter.Options = [soSendMultiRefObj, soTryAllSchema, soRootRefNodesToBody, soUTF8InHeader, soCacheMimeResponse, soUTF8EncodeXML]
-    Left = 686
-    Top = 420
   end
   object RxMemoryData2: TRxMemoryData
     FieldDefs = <>
