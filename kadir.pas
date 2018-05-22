@@ -420,6 +420,7 @@ function RTFSablonDataset(RTFKodu : string) : TDataset;
 function SirketIGUToSQLStr(sirketKodu : string) : string;
 function SirketDoktorToSQLStr(sirketKodu : string) : string;
 procedure GridToSayfaClient(Grid : string ; Form : TForm);
+function GuncellemeTakipScriptPush: Boolean;
 procedure YeniOSGBFirmaVeritabani;
 
 
@@ -9865,6 +9866,193 @@ begin
         ShowmessageSkin ('Þifre, '+ sMessage + ' oluþmalýdýr', '', '', 'info');
       end;
     end;
+  end;
+end;
+
+function GuncellemeTakipScriptPush: Boolean;
+
+  procedure NewLine (var aQuery : TADOQuery; var iLineNum: Integer; const pSQLCmd, pAciklama : String);
+  begin
+    aQuery.Append;
+    iLineNum := iLineNum + 1;
+    aQuery.FieldByName('ID').AsInteger := iLineNum;
+    aQuery.FieldByName('REV').AsInteger := iLineNum;
+    aQuery.FieldByName('TARIH').AsString := FormatDateTime ('yyyymmdd', Date);
+    aQuery.FieldByName('VER').Clear;
+    aQuery.FieldByName('SQL_CMD').AsString := pSQLCmd;
+    aQuery.FieldByName('MODUL').AsString := 'O';
+    aQuery.FieldByName('TIPI').AsString := 'C';
+    aQuery.FieldByName('ACIKLAMA').AsString := pAciklama;
+    aQuery.Post;
+  end;
+
+const
+  cSunucuAdi='37.230.108.244';
+  cKullaniciAdi='MaviNokta';
+  cSifre='Guneysu53Rize';
+  cVeritabani='mavi';
+var
+  aQuery, bQuery : TADOQuery;
+  aConnection: TADOConnection;
+  iThermo, iBaseID, iRow : Integer;
+  aTableList : TStringList;
+  sIdentityInsertTable, sIdentityInsertTableOld : String;
+begin
+  Result := False;
+  //ÜÖ 20180522 trigger ile oluþan guncelleme takip script tablo datasýný update pakedi olarak otomatik push eden mekanizma...
+  //Tek seferde çalýþýrsa akþama tatlý ýsmarlayacaðým kendime :)
+  aConnection := TADOConnection.Create (nil);
+  try
+    aQuery := TADOQuery.Create (nil);
+    try
+      bQuery := TADOQuery.Create (nil);
+      try
+        aTableList := TStringList.Create;
+        try
+          bQuery.Connection := DATALAR.ADOConnection2;
+          bQuery.SQL.Text :=
+            'select TableName'#13#10+
+            'from GuncellemeTakipScript'#13#10+
+            'where Islendi = 0 or Islendi is null'#13#10+
+            'group by TableName'#13#10+
+            'order by TableName';
+          bQuery.Open;
+          try
+            while not bQuery.Eof do
+            begin
+              aTableList.Add(bQuery.FieldByName('TableName').AsString);
+              bQuery.Next;
+            end;
+          finally
+            bQuery.Close;
+          end;
+          bQuery.SQL.Text :=
+            'select DB_NAME () DBName, *'#13#10+
+            'from GuncellemeTakipScript'#13#10+
+            'where Islendi = 0 or Islendi is null'#13#10+
+            'order by id';
+          bQuery.Open;
+          try
+            aConnection.CommandTimeout := 0;
+            aConnection.ConnectionTimeout := 10;
+            aConnection.LoginPrompt := False;
+            aConnection.Provider := 'SQLOLEDB.1';
+            aConnection.Connected := false;
+            aConnection.ConnectionString :=
+              'Provider=SQLOLEDB.1;'+
+              'Password='+cSifre+';'+
+              'Persist Security Info=True;'+
+              'User ID='+cKullaniciAdi+';'+
+              'Initial Catalog=' + cVeritabani +';'+
+              'Data Source='+cSunucuAdi+';'+
+              'Application Name=' + Datalar.UygulamaBaglantiTanimi;
+            aConnection.Connected := True;
+
+            aQuery.Connection := aConnection;
+            aQuery.SQL.Text := 'select top 1 ID, REV, TARIH, VER, SQL_CMD, MODUL, TIPI, ACIKLAMA from UPDATE_CMD_OSGB order by ID desc';
+            aQuery.Open;
+            try
+              if not aQuery.Eof then
+                iBaseID := aQuery.FieldByName('ID').AsInteger
+               else
+                iBaseID := 0;
+              ShowThermo(iThermo, 'Kayýtlar Yazýlýyor', 0, bQuery.RecordCount + (aTableList.Count * 2), 0, False);
+              try
+                BeginTrans(DATALAR.ADOConnection2);
+                try
+                  BeginTrans(aConnection);
+                  try
+                    for iRow := 0 to aTableList.Count - 1 do
+                    begin
+                      if not UpdateThermo (iRow, iThermo, 'Satýr: ' + IntToStr (iRow + 1) + ' / '+IntToStr (bQuery.RecordCount + (aTableList.Count * 2))) then Exit;
+                      NewLine (aQuery, iBaseID,
+                        'Alter table ' + aTableList [iRow] + ' disable trigger ' + aTableList [iRow] + '_TakipTrg',
+                        'GTS (disable trigger ' + aTableList [iRow] + ')');
+                    end;
+                    sIdentityInsertTableOld := '';
+                    while not bQuery.Eof do
+                    begin
+                      if not UpdateThermo (bQuery.RecNo - 1 + aTableList.Count, iThermo, 'Satýr: ' + IntToStr (bQuery.RecNo + aTableList.Count) + ' / '+IntToStr (bQuery.RecordCount + (aTableList.Count * 2))) then Exit;
+                      if bQuery.FieldByName ('IdentityInsert').AsBoolean then
+                        sIdentityInsertTable := bQuery.FieldByName ('TableName').AsString
+                       else
+                        sIdentityInsertTable := '';
+
+                      if (not Isnull (sIdentityInsertTableOld))
+                        and (not SameText (sIdentityInsertTable, sIdentityInsertTableOld)) then
+                        NewLine (aQuery, iBaseID,
+                          'SET IDENTITY_INSERT ' + sIdentityInsertTableOld + ' OFF',
+                          'GTS (disable identity_insert ' + sIdentityInsertTableOld + ')');
+
+                      if (not Isnull (sIdentityInsertTable))
+                        and (not SameText (sIdentityInsertTable, sIdentityInsertTableOld)) then
+                        NewLine (aQuery, iBaseID,
+                          'SET IDENTITY_INSERT ' + sIdentityInsertTable + ' ON',
+                          'GTS (enable identity_insert ' + sIdentityInsertTable + ')');
+
+                      NewLine (aQuery, iBaseID,
+                        bQuery.FieldByName('Script').AsString,
+                        'GTS '+
+                          bQuery.FieldByName('DBName').AsString +
+                          '.dbo.'+
+                          bQuery.FieldByName('TableName').AsString+
+                          ' ('+
+                          bQuery.FieldByName('KeyFields').AsString+
+                          ') V ('+
+                          bQuery.FieldByName('KeyValues').AsString+
+                          ')');
+                      bQuery.Edit;
+                      bQuery.FieldByName('Islendi').AsBoolean := True;
+                      bQuery.Post;
+                      sIdentityInsertTableOld := sIdentityInsertTable;
+                      bQuery.Next;
+                    end;
+
+                    if (not Isnull (sIdentityInsertTableOld)) then
+                      NewLine (aQuery, iBaseID,
+                        'SET IDENTITY_INSERT ' + sIdentityInsertTableOld + ' OFF',
+                        'GTS (disable identity_insert ' + sIdentityInsertTableOld + ')');
+
+                    for iRow := 0 to aTableList.Count - 1 do
+                    begin
+                      if not UpdateThermo (aTableList.Count + bQuery.RecordCount + iRow, iThermo, 'Satýr: ' + IntToStr (aTableList.Count + bQuery.RecordCount + iRow + 1) + ' / '+IntToStr (bQuery.RecordCount + (aTableList.Count * 2))) then Exit;
+                      NewLine (aQuery, iBaseID,
+                        'Alter table ' + aTableList [iRow] + ' enable trigger ' + aTableList [iRow] + '_TakipTrg',
+                        'GTS (enable trigger ' + aTableList [iRow] + ')');
+                    end;
+                    Result := True;
+                  finally
+                    if Result then
+                      CommitTrans(aConnection)
+                     else
+                      RollBackTrans(aConnection);
+                  end;
+                finally
+                  if Result then
+                    CommitTrans(DATALAR.ADOConnection2)
+                   else
+                    RollBackTrans (DATALAR.ADOConnection2);
+                end;
+              finally
+                FreeThermo (iThermo);
+              end;
+            finally
+              aQuery.Close;
+            end;
+          finally
+            bQuery.Close;
+          end;
+        finally
+          aTableList.Free;
+        end;
+      finally
+        bQuery.Free;
+      end;
+    finally
+      aQuery.Free;
+    end;
+  finally
+    aConnection.Free;
   end;
 end;
 
