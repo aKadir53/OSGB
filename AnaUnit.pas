@@ -405,10 +405,10 @@ begin
 end;
 
 procedure TAnaForm.cxButtonKadir1Click(Sender: TObject);
-var
-  GirisRecord : TGirisFormRecord;
-  F : TGirisForm;
-  uu,sql,t1,t2 : string;
+//var
+  //GirisRecord : TGirisFormRecord;
+  //F : TGirisForm;
+  //uu : string;
 begin
 (*
     GirisRecord.F_Tarih1_ := FormatDateTime('YYYY-MM-DD',cxScheduler1.DateNavigator.SelectionList[0]);
@@ -422,7 +422,7 @@ end;
 procedure TAnaForm.AjandaAltPagePageChanging(Sender: TObject;
   NewPage: TcxTabSheet; var AllowChange: Boolean);
 var
-  uu,sql,t1,t2 : string;
+  uu,t1,t2 : string;
 begin
   if NewPage = Liste then
   begin
@@ -618,6 +618,7 @@ begin
 
   cxScheduler1.Storage.ConString := datalar.ADOConnection2.ConnectionString;
   cxScheduler1.Storage.Sirketler.Properties.Items := Sirketler.Properties.Items;
+  if not GuncellemeTakipScriptPush then Vcl.dialogs.ShowMessage('');
 
   if GuncelKontrol = 'Evet'
   then
