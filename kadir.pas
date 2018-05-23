@@ -511,8 +511,8 @@ var
 
 implementation
 
-uses message,AnaUnit,message_y,popupForm,rapor,TedaviKart,Son6AylikTetkikSonuc,DestekSorunBildir,
-             HastaRecete,sifreDegis,HastaTetkikEkle,GirisUnit,SMS,LisansUzat,Update_G, DBGrids, 
+uses message,idGlobal, IdFTP, AnaUnit,message_y,popupForm,rapor,TedaviKart,Son6AylikTetkikSonuc,DestekSorunBildir,
+             HastaRecete,sifreDegis,HastaTetkikEkle,GirisUnit,SMS,LisansUzat,Update_G, DBGrids,
              UyumSoftPortal,NThermo, TransUtils;
 
 
@@ -9871,7 +9871,7 @@ end;
 
 function GuncellemeTakipScriptPush: Boolean;
 
-  procedure NewLine (var aQuery : TADOQuery; var iLineNum: Integer; const pSQLCmd, pAciklama : String);
+  procedure NewLine (var aQuery : TADOQuery; var iLineNum: Integer; const pSQLCmd, pAciklama, pGTSTarihSaat : String);
   begin
     aQuery.Append;
     iLineNum := iLineNum + 1;
@@ -9883,6 +9883,10 @@ function GuncellemeTakipScriptPush: Boolean;
     aQuery.FieldByName('MODUL').AsString := 'O';
     aQuery.FieldByName('TIPI').AsString := 'C';
     aQuery.FieldByName('ACIKLAMA').AsString := pAciklama;
+    if IsNull (pGTSTarihSaat) then
+      aQuery.FieldByName('GTSTarihSaat').Clear
+     else
+      aQuery.FieldByName('GTSTarihSaat').AsString := pGTSTarihSaat;
     aQuery.Post;
   end;
 
@@ -9894,9 +9898,10 @@ const
 var
   aQuery, bQuery : TADOQuery;
   aConnection: TADOConnection;
-  iThermo, iBaseID, iRow : Integer;
+  iThermo, iBaseID, iPublishedBaseID, iRow : Integer;
   aTableList : TStringList;
   sIdentityInsertTable, sIdentityInsertTableOld : String;
+  bPublish : Boolean;
 begin
   Result := False;
   //ÜÖ 20180522 trigger ile oluþan guncelleme takip script tablo datasýný update pakedi olarak otomatik push eden mekanizma...
@@ -9926,6 +9931,13 @@ begin
           finally
             bQuery.Close;
           end;
+          //ÜÖ 20180523 hiç kayýt yoksa baþarýlýymýþ gibi çek panpa
+          if aTableList.Count <= 0 then
+          begin
+            Result := True;
+            Exit;
+          end;
+
           bQuery.SQL.Text :=
             'select DB_NAME () DBName, *'#13#10+
             'from GuncellemeTakipScript'#13#10+
@@ -9949,25 +9961,49 @@ begin
             aConnection.Connected := True;
 
             aQuery.Connection := aConnection;
-            aQuery.SQL.Text := 'select top 1 ID, REV, TARIH, VER, SQL_CMD, MODUL, TIPI, ACIKLAMA from UPDATE_CMD_OSGB order by ID desc';
-            aQuery.Open;
+            //FTP sunucudaki text dosyayý oku
+            with TIdHTTP.Create (nil) do
             try
-              if not aQuery.Eof then
-                iBaseID := aQuery.FieldByName('ID').AsInteger
-               else
-                iBaseID := 0;
-              ShowThermo(iThermo, 'Kayýtlar Yazýlýyor', 0, bQuery.RecordCount + (aTableList.Count * 2), 0, False);
+              AllowCookies := True;
+              ProxyParams.BasicAuthentication := False;
+              ProxyParams.ProxyPort := 0;
+              Request.ContentLength := -1;
+              Request.ContentRangeEnd := -1;
+              Request.ContentRangeStart := -1;
+              Request.ContentRangeInstanceLength := -1;
+              Request.ContentType := 'text/html';
+              Request.Accept := 'text/html, */*';
+              Request.BasicAuthentication := False;
+              Request.UserAgent := 'Mozilla/3.0 (compatible; Indy Library)';
+              Request.Ranges.Units := 'bytes';
+              HTTPOptions := [hoForceEncodeParams];
+              iPublishedBaseID := StrToIntDef (Get('http://www.noktayazilim.net/OSGBupdate.txt'), 0);
+            finally
+              Free;
+            end;
+
+            ShowThermo(iThermo, 'Kayýtlar Yazýlýyor', 0, bQuery.RecordCount + (aTableList.Count * 2), 0, False);
+            try
+              BeginTrans(DATALAR.ADOConnection2);
               try
-                BeginTrans(DATALAR.ADOConnection2);
+                BeginTrans(aConnection);
                 try
-                  BeginTrans(aConnection);
+                  //ayný anda insert olmasýn ve deadlock'a düþmesin diye tablockx modunda transaction içinde açtýk
+                  aQuery.SQL.Text := 'select top 1 ID, REV, TARIH, VER, SQL_CMD, MODUL, TIPI, ACIKLAMA, GTSTarihSaat from UPDATE_CMD_OSGB with (tablockx) order by ID desc';
+                  aQuery.Open;
                   try
+                    if not aQuery.Eof then
+                      iBaseID := aQuery.FieldByName('ID').AsInteger
+                     else
+                      iBaseID := 0;
+                    bPublish := iPublishedBaseID = iBaseID;
                     for iRow := 0 to aTableList.Count - 1 do
                     begin
                       if not UpdateThermo (iRow, iThermo, 'Satýr: ' + IntToStr (iRow + 1) + ' / '+IntToStr (bQuery.RecordCount + (aTableList.Count * 2))) then Exit;
                       NewLine (aQuery, iBaseID,
                         'Alter table ' + aTableList [iRow] + ' disable trigger ' + aTableList [iRow] + '_TakipTrg',
-                        'GTS (disable trigger ' + aTableList [iRow] + ')');
+                        'GTS (disable trigger ' + aTableList [iRow] + ')',
+                        '');
                     end;
                     sIdentityInsertTableOld := '';
                     while not bQuery.Eof do
@@ -9982,13 +10018,15 @@ begin
                         and (not SameText (sIdentityInsertTable, sIdentityInsertTableOld)) then
                         NewLine (aQuery, iBaseID,
                           'SET IDENTITY_INSERT ' + sIdentityInsertTableOld + ' OFF',
-                          'GTS (disable identity_insert ' + sIdentityInsertTableOld + ')');
+                          'GTS (disable identity_insert ' + sIdentityInsertTableOld + ')',
+                          '');
 
                       if (not Isnull (sIdentityInsertTable))
                         and (not SameText (sIdentityInsertTable, sIdentityInsertTableOld)) then
                         NewLine (aQuery, iBaseID,
                           'SET IDENTITY_INSERT ' + sIdentityInsertTable + ' ON',
-                          'GTS (enable identity_insert ' + sIdentityInsertTable + ')');
+                          'GTS (enable identity_insert ' + sIdentityInsertTable + ')',
+                          '');
 
                       NewLine (aQuery, iBaseID,
                         bQuery.FieldByName('Script').AsString,
@@ -10000,7 +10038,8 @@ begin
                           bQuery.FieldByName('KeyFields').AsString+
                           ') V ('+
                           bQuery.FieldByName('KeyValues').AsString+
-                          ')');
+                          ')',
+                        bQuery.FieldByName('LogTime').AsString);
                       bQuery.Edit;
                       bQuery.FieldByName('Islendi').AsBoolean := True;
                       bQuery.Post;
@@ -10011,33 +10050,68 @@ begin
                     if (not Isnull (sIdentityInsertTableOld)) then
                       NewLine (aQuery, iBaseID,
                         'SET IDENTITY_INSERT ' + sIdentityInsertTableOld + ' OFF',
-                        'GTS (disable identity_insert ' + sIdentityInsertTableOld + ')');
+                        'GTS (disable identity_insert ' + sIdentityInsertTableOld + ')',
+                        '');
 
                     for iRow := 0 to aTableList.Count - 1 do
                     begin
                       if not UpdateThermo (aTableList.Count + bQuery.RecordCount + iRow, iThermo, 'Satýr: ' + IntToStr (aTableList.Count + bQuery.RecordCount + iRow + 1) + ' / '+IntToStr (bQuery.RecordCount + (aTableList.Count * 2))) then Exit;
                       NewLine (aQuery, iBaseID,
                         'Alter table ' + aTableList [iRow] + ' enable trigger ' + aTableList [iRow] + '_TakipTrg',
-                        'GTS (enable trigger ' + aTableList [iRow] + ')');
+                        'GTS (enable trigger ' + aTableList [iRow] + ')',
+                        '');
+                    end;
+                    //FTP'deki text dosyayý güncelle
+                    if bPublish then
+                    begin
+                      with TIdFTP.Create do
+                      try
+                        IPVersion := Id_IPv4;
+                        Host := 'ftp.noktayazilim.net';
+                        Passive := True;
+                        Password := '53Noktanokta';
+                        Username := 'mavinokta';
+                        NATKeepAlive.UseKeepAlive := False;
+                        NATKeepAlive.IdleTimeMS := 0;
+                        NATKeepAlive.IntervalMS := 0;
+                        ProxySettings.ProxyType := fpcmNone;
+                        ProxySettings.Port := 0;
+                        ReadTimeout := 0;
+                        aTableList.Text := IntToStr (iBaseID);
+                        sIdentityInsertTableOld := ChangeFileExt(ParamStr(0), '.upd'+FormatDateTime('yyyymmdd_hhnnss_zzz', now));
+                        aTableList.SaveToFile(sIdentityInsertTableOld);
+                        try
+                          Connect();
+                          try
+                            Put(sIdentityInsertTableOld,'/httpdocs/OSGBupdate.txt',false);
+                          finally
+                            Disconnect;
+                          end;
+                        finally
+                          DeleteFile(sIdentityInsertTableOld);
+                        end;
+                      finally
+                        Free;
+                      end;
                     end;
                     Result := True;
                   finally
-                    if Result then
-                      CommitTrans(aConnection)
-                     else
-                      RollBackTrans(aConnection);
+                    aQuery.Close;
                   end;
                 finally
                   if Result then
-                    CommitTrans(DATALAR.ADOConnection2)
+                    CommitTrans(aConnection)
                    else
-                    RollBackTrans (DATALAR.ADOConnection2);
+                    RollBackTrans(aConnection);
                 end;
               finally
-                FreeThermo (iThermo);
+                if Result then
+                  CommitTrans(DATALAR.ADOConnection2)
+                 else
+                  RollBackTrans (DATALAR.ADOConnection2);
               end;
             finally
-              aQuery.Close;
+              FreeThermo (iThermo);
             end;
           finally
             bQuery.Close;
