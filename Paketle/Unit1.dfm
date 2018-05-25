@@ -211,14 +211,14 @@ object frmPaket: TfrmPaket
       Caption = 'ID Art'#305#351' miktar'#305
       FocusControl = SpinEdit1
     end
-    object SpeedButton5: TSpeedButton
-      Left = 4
-      Top = 27
+    object btnGit: TSpeedButton
+      Left = 105
+      Top = 26
       Width = 97
       Height = 26
       Caption = 'Git....'
       Enabled = False
-      OnClick = SpeedButton5Click
+      OnClick = btnGitClick
     end
     object ComboBox1: TComboBox
       Left = 380
@@ -264,6 +264,18 @@ object frmPaket: TfrmPaket
       ShowHint = True
       TabOrder = 3
       Value = 2
+    end
+    object cbSonBirAy: TCheckBox
+      Left = 6
+      Top = 30
+      Width = 92
+      Height = 17
+      Caption = 'Son 1 ay'#305' getir'
+      Checked = True
+      Enabled = False
+      State = cbChecked
+      TabOrder = 4
+      OnClick = cbSonBirAyClick
     end
   end
   object DataSource1: TDataSource

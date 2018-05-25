@@ -6,7 +6,7 @@ with schemabinding
 as
 begin
   declare @ret varchar (max)
-  set @ret = case when @Value is null then 'null' else '''' + Replace(@Value, '''', '''''') + '''' end
+  set @ret = case when @Value is null then 'null' else '''' + replace (Replace(@Value, '''', ''''''), char (13) + char (10), ''' + char (13) + char (10) + ' + char (13) + char (10) + '''') + '''' end
   if @withOper = 1
     set @ret = case when @Value is null then ' is ' else ' = ' end + @ret
   return (@ret)
