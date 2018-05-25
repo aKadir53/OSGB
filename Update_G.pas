@@ -28,7 +28,6 @@ type
     ADO_SQL: TADOQuery;
     DataSource1: TDataSource;
     ADO_SQL1: TADOQuery;
-    HTTP2: TIdHTTP;
     ADO_SQL_ID: TADOQuery;
     global_img_list4: TImageList;
     ADO_RaporlarKaynak: TADOQuery;
@@ -87,7 +86,7 @@ type
   private
     { Private declarations }
     FFirstActivated : Boolean;
-    FSonYayinlananGuncelleme, FSonGuncelleme : String;
+    FSonYayinlananGuncelleme, FSonGuncelleme : Integer;
     FAuto : Boolean;
   public
     { Public declarations }
@@ -191,7 +190,7 @@ var
 begin
     sql := 'select SLK,SLT,SLX from parametreler where SLK = ''GT'' and SLB = ''0000''';
     datalar.QuerySelect(datalar.ADO_SQL,sql);
-    FSonGuncelleme := datalar.ADO_SQL.Fieldbyname('SLX').AsString;
+    FSonGuncelleme := StrToInt (Trim (datalar.ADO_SQL.Fieldbyname('SLX').AsString));
     pnlBilgi.Caption := 'Son Güncelleme : ' + FormattedTarih(datalar.ADO_SQL.FieldList[1].AsString) +
                         ' Güncelleme ID :' + datalar.ADO_SQL.FieldList[2].AsString;
 
@@ -221,7 +220,7 @@ begin
                     end;
       end;
 
-    sql := 'select * from UPDATE_CMD_OSGB where ID > ' + FSonGuncelleme + ' and Modul = ''O''' + ' and ID <= ' + FSonYayinlananGuncelleme +
+    sql := 'select * from UPDATE_CMD_OSGB where ID > ' + IntToStr (FSonGuncelleme) + ' and Modul = ''O''' + ' and ID <= ' + IntToStr (FSonYayinlananGuncelleme) +
            ' Order by ID ';
     datalar.QuerySelect(datalar.Ado_Guncellemeler,sql);
 
@@ -410,18 +409,55 @@ begin
 end;
 
 procedure TfrmUpdate.btnListeClick(Sender: TObject);
+var
+  sTmp : String;
 begin
-   guncellemeIslemi := 'No';
-   GuncellemeBilgileri;
-   http2.ConnectTimeout := 10000;
-   try
-     FSonYayinlananGuncelleme := HTTP2.Get('http://www.noktayazilim.net/OSGBupdate.txt');
-   except
-     txtLOG.Lines.Add('Baðlantý Hatasý , Ýnternetinizi Kontrol Edip Tekrar Denayiniz...');
-     //exit;
-   end;
-
-   UpdateSQL;
+  TcxButton (Sender).Enabled := False;
+  try
+    guncellemeIslemi := 'No';
+    GuncellemeBilgileri;
+    //FTP sunucudaki text dosyayý oku
+    with TIdHTTP.Create (nil) do
+    try
+      AllowCookies := True;
+      ProxyParams.BasicAuthentication := False;
+      ProxyParams.ProxyPort := 0;
+      Request.ContentLength := -1;
+      Request.ContentRangeEnd := -1;
+      Request.ContentRangeStart := -1;
+      Request.ContentRangeInstanceLength := -1;
+      Request.ContentType := 'text/html';
+      Request.Accept := 'text/html, */*';
+      Request.BasicAuthentication := False;
+      Request.UserAgent := 'Mozilla/3.0 (compatible; Indy Library)';
+      Request.Ranges.Units := 'bytes';
+      HTTPOptions := [hoForceEncodeParams];
+      ConnectTimeout := 10000;
+      try
+        sTmp := Get('http://www.noktayazilim.net/OSGBupdate.txt');
+      except
+        on e: exception do
+        begin
+          txtLOG.Lines.Add('Baðlantý Hatasý , Ýnternetinizi Kontrol Edip Tekrar Denayiniz...' + e.Message);
+          raise;
+        end;
+      end;
+      //ltrim (rtrim (ilk satýr)) yap
+      with TStringList.Create do
+      try
+        Text := sTmp;
+        sTmp := Trim (Strings [0]);
+      finally
+        Free;
+      end;
+      FSonYayinlananGuncelleme := StrToIntDef (sTmp, 0);
+    finally
+      Free;
+    end;
+    UpdateSQL;
+  finally
+    TcxButton (Sender).Enabled := True;
+  end;
 end;
 
 procedure TfrmUpdate.FormShow(Sender: TObject);
