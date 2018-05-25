@@ -54,24 +54,21 @@ procedure TfrmDosyadanPaket.Button1Click(Sender: TObject);
 var
    x : integer;
 begin
-     if ComboBox1.ItemIndex = -1
-     then exit;
-     for x := 1 to dosyalar.Count do
-     begin
-          dosyalar.ItemIndex := x;
-          txtSQL.Lines.LoadFromFile(dosyalar.FileName);
-          frmPaket.table1.Append;
-//          frmPaket.table1.FieldByName('rev').AsInteger :=
-          frmPaket.table1.FieldByName('SQL_CMD').AsString := txtSQL.Lines.Text;
-          frmPaket.table1.FieldByName('tarih').AsString := tarihal(date());
-          frmPaket.table1.FieldByName('MODUL').AsString := copy(ComboBox1.Text,1,1);
-          frmPaket.table1.FieldByName('TIPI').AsString := 'C';
-          frmPaket.table1.FieldByName('VER').AsString := '1';
-          frmPaket.table1.Post;  
-
-     end;
-
-
+  if ComboBox1.ItemIndex = -1
+  then exit;
+  for x := 1 to dosyalar.Count do
+  begin
+    dosyalar.ItemIndex := x;
+    txtSQL.Lines.LoadFromFile(dosyalar.FileName);
+    frmPaket.table1.Append;
+    //frmPaket.table1.FieldByName('rev').AsInteger :=
+    frmPaket.table1.FieldByName('SQL_CMD').AsString := txtSQL.Lines.Text;
+    frmPaket.table1.FieldByName('tarih').AsString := tarihal(date());
+    frmPaket.table1.FieldByName('MODUL').AsString := copy(ComboBox1.Text,1,1);
+    frmPaket.table1.FieldByName('TIPI').AsString := 'C';
+    frmPaket.table1.FieldByName('VER').AsString := '1';
+    frmPaket.table1.Post;
+  end;
 end;
 
 procedure TfrmDosyadanPaket.ComboBox1Change(Sender: TObject);

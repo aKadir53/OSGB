@@ -9961,26 +9961,6 @@ begin
             aConnection.Connected := True;
 
             aQuery.Connection := aConnection;
-            //FTP sunucudaki text dosyayý oku
-            with TIdHTTP.Create (nil) do
-            try
-              AllowCookies := True;
-              ProxyParams.BasicAuthentication := False;
-              ProxyParams.ProxyPort := 0;
-              Request.ContentLength := -1;
-              Request.ContentRangeEnd := -1;
-              Request.ContentRangeStart := -1;
-              Request.ContentRangeInstanceLength := -1;
-              Request.ContentType := 'text/html';
-              Request.Accept := 'text/html, */*';
-              Request.BasicAuthentication := False;
-              Request.UserAgent := 'Mozilla/3.0 (compatible; Indy Library)';
-              Request.Ranges.Units := 'bytes';
-              HTTPOptions := [hoForceEncodeParams];
-              iPublishedBaseID := StrToIntDef (Get('http://www.noktayazilim.net/OSGBupdate.txt'), 0);
-            finally
-              Free;
-            end;
 
             ShowThermo(iThermo, 'Kayýtlar Yazýlýyor', 0, bQuery.RecordCount + (aTableList.Count * 2), 0, False);
             try
@@ -9992,10 +9972,40 @@ begin
                   aQuery.SQL.Text := 'select top 1 ID, REV, TARIH, VER, SQL_CMD, MODUL, TIPI, ACIKLAMA, GTSTarihSaat from UPDATE_CMD_OSGB with (tablockx) order by ID desc';
                   aQuery.Open;
                   try
+                    //ÜÖ 20180525 ftp okumayý transaction ve tablo okuma altýna koyduk ki kilidi bekleyip önceki exe'nin iþlemleri bitip sýra geldikten sonra okusun
                     if not aQuery.Eof then
                       iBaseID := aQuery.FieldByName('ID').AsInteger
                      else
                       iBaseID := 0;
+                    //FTP sunucudaki text dosyayý oku
+                    with TIdHTTP.Create (nil) do
+                    try
+                      AllowCookies := True;
+                      ProxyParams.BasicAuthentication := False;
+                      ProxyParams.ProxyPort := 0;
+                      Request.ContentLength := -1;
+                      Request.ContentRangeEnd := -1;
+                      Request.ContentRangeStart := -1;
+                      Request.ContentRangeInstanceLength := -1;
+                      Request.ContentType := 'text/html';
+                      Request.Accept := 'text/html, */*';
+                      Request.BasicAuthentication := False;
+                      Request.UserAgent := 'Mozilla/3.0 (compatible; Indy Library)';
+                      Request.Ranges.Units := 'bytes';
+                      HTTPOptions := [hoForceEncodeParams];
+                      sIdentityInsertTableOld := Get('http://www.noktayazilim.net/OSGBupdate.txt');
+                      //ltrim (rtrim (ilk satýr)) yap
+                      with TStringList.Create do
+                      try
+                        Text := sIdentityInsertTableOld;
+                        sIdentityInsertTableOld := Trim (Strings [0]);
+                      finally
+                        Free;
+                      end;
+                      iPublishedBaseID := StrToIntDef (sIdentityInsertTableOld, 0);
+                    finally
+                      Free;
+                    end;
                     bPublish := iPublishedBaseID = iBaseID;
                     for iRow := 0 to aTableList.Count - 1 do
                     begin
@@ -10078,16 +10088,26 @@ begin
                         ProxySettings.Port := 0;
                         ReadTimeout := 0;
                         aTableList.Text := IntToStr (iBaseID);
-                        sIdentityInsertTableOld := ChangeFileExt(ParamStr(0), '.upd'+FormatDateTime('yyyymmdd_hhnnss_zzz', now));
+                        sIdentityInsertTableOld := ChangeFileExt(ParamStr(0), FormatDateTime('_yyyymmdd_hhnnss_zzz', now) + '.upd');
                         aTableList.SaveToFile(sIdentityInsertTableOld);
                         try
                           Connect();
                           try
                             Put(sIdentityInsertTableOld,'/httpdocs/OSGBupdate.txt',false);
                           finally
+                            for iRow := 0 to 300 do
+                            begin
+                              Sleep (10);
+                              Application.ProcessMessages;
+                            end;
                             Disconnect;
                           end;
                         finally
+                          for iRow := 0 to 300 do
+                          begin
+                            Sleep (10);
+                            Application.ProcessMessages;
+                          end;
                           DeleteFile(sIdentityInsertTableOld);
                         end;
                       finally
