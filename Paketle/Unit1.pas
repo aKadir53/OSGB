@@ -310,11 +310,18 @@ begin
 end;
 
 procedure TfrmPaket.cbSonBirAyClick(Sender: TObject);
+var
+  bActive : Boolean;
 begin
-  if TCheckBox (Sender).Checked then
-    table1.Filter := ''
+  bActive := table1.Active;
+  if bActive then table1.Close;
+  if not TCheckBox (Sender).Checked then
+    table1.SQL.Text :=
+      'select * from UPDATE_CMD_OSGB where Modul = ' +QuotedStr ('O') + 'order by ID'
    else
-    table1.Filter := 'TARIH >= ' + QuotedStr (FormatDateTime('yyyymmdd', date - 30));
+    table1.SQL.Text :=
+      'select * from UPDATE_CMD_OSGB where Modul = ' +QuotedStr ('O') + ' and TARIH >= ' + QuotedStr (FormatDateTime('yyyymmdd', date - 30)) +' order by ID';
+  if bActive then table1.Open;
 end;
 
 procedure TfrmPaket.SpeedButton3Click(Sender: TObject);
