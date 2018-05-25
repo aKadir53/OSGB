@@ -51,7 +51,8 @@ type
     btPanodanYapistir: TSpeedButton;
     SpinEdit1: TSpinEdit;
     label111: TLabel;
-    SpeedButton5: TSpeedButton;
+    btnGit: TSpeedButton;
+    cbSonBirAy: TCheckBox;
     procedure SpeedButton2Click(Sender: TObject);
     procedure SpeedButton1Click(Sender: TObject);
     Function  DosyaKopyala(sSrc : string;sDest : string) : integer;
@@ -72,7 +73,8 @@ type
     procedure table1NewRecord(DataSet: TDataSet);
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
     procedure btPanodanYapistirClick(Sender: TObject);
-    procedure SpeedButton5Click(Sender: TObject);
+    procedure btnGitClick(Sender: TObject);
+    procedure cbSonBirAyClick(Sender: TObject);
 
   private
     { Private declarations }
@@ -307,6 +309,21 @@ begin
   end;
 end;
 
+procedure TfrmPaket.cbSonBirAyClick(Sender: TObject);
+var
+  bActive : Boolean;
+begin
+  bActive := table1.Active;
+  if bActive then table1.Close;
+  if not TCheckBox (Sender).Checked then
+    table1.SQL.Text :=
+      'select * from UPDATE_CMD_OSGB where Modul = ' +QuotedStr ('O') + 'order by ID'
+   else
+    table1.SQL.Text :=
+      'select * from UPDATE_CMD_OSGB where Modul = ' +QuotedStr ('O') + ' and TARIH >= ' + QuotedStr (FormatDateTime('yyyymmdd', date - 30)) +' order by ID';
+  if bActive then table1.Open;
+end;
+
 procedure TfrmPaket.SpeedButton3Click(Sender: TObject);
 //var
 //  dosya : TFileStream;
@@ -373,8 +390,8 @@ begin
   SQL_Host_Baglan;
 
   //serverbaglan('213.142.141.121','mavi','');
- // datalar.hedef.Connected := true;
-
+  // datalar.hedef.Connected := true;
+  cbSonBirAyClick(cbSonBirAy);
   table1.Active := true;
   DBMemo1.DataField := 'SQL_CMD';
 
@@ -384,12 +401,11 @@ begin
 
   SpeedButton1.Enabled := true;
   btPanodanYapistir.Enabled := True;
-  SpeedButton5.Enabled := True;
-
-
+  btnGit.Enabled := True;
+  cbSonBirAy.Enabled := True;
 end;
 
-procedure TfrmPaket.SpeedButton5Click(Sender: TObject);
+procedure TfrmPaket.btnGitClick(Sender: TObject);
 var
   sID : String;
 begin

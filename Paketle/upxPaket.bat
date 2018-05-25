@@ -1,1 +1,1 @@
-upx paket.exe
+..\win32\debug\upx.exe --best PaketOSGB.exe
