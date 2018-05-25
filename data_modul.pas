@@ -19,7 +19,6 @@ type
     ADO_SQL1: TADOQuery;
     ADO_SQL2: TADOQuery;
     ADO_SQL3: TADOQuery;
-    HTTP2: TIdHTTP;
     RxHastaTakip_: TRxMemoryData;
     RxHastaTakipleri_: TRxMemoryData;
     ADO_RAPORLAR: TADOTable;

@@ -37,7 +37,6 @@ function TakipTuruAdi(turu: string): string;
 function NoktasizTarih(t: string): string;
 function ProgramKontrol(_Tarih: string): Boolean;
 function TarihKayit: Boolean;
-function mesaj: string;
 function REV: string;
 function TesisTuruAdi(deger: string): string;
 function ZorunluTel(Tel: string): Boolean;
@@ -408,7 +407,7 @@ function isgRDSEkibiMailBilgileri(id : string) : string;
 function mailGonder (alici , konu , mesaj : string ;  filename : string = ''): string;
 procedure UyumSoftPortalGit(user,pasword,url : string);
 function FaturaSilIptal(FID : string) : Boolean;
-
+function SonYayinlananGuncellemeNumarasi : Integer;
 procedure StretchImage(var Image1: TImage; StretchType: Byte; NewWidth, NewHeight: Word);overload;
 procedure StretchImage(var Image1: TcxImage; StretchType: Byte; NewWidth, NewHeight: Word);overload;
 procedure HesapIsle(BorcHesap,AlacakHesap,Aciklama : string ; Tutar : Double ; Tarih ,cek,vadeTarihi,evrakTipi,evrakNo,cekdurum,cekId: string);
@@ -6176,8 +6175,7 @@ begin
       ado.Connection := datalar.ADOConnection2;
       sql := 'select SLX from parametreler where SLK = ' + QuotedStr ('GT');
       datalar.QuerySelect(ado, sql);
-      _sonSQLID := strtoint(trim(datalar.http2.Get(
-            'http://www.noktayazilim.net/OSGBupdate.txt')));
+      _sonSQLID := SonYayinlananGuncellemeNumarasi;
       if ado.Fields[0].AsInteger < _sonSQLID then
       begin
         Result := 'G';
@@ -6187,23 +6185,6 @@ begin
     end;
   except
     Result := 'Y';
-  end;
-end;
-
-function mesaj: string;
-var
-  _mesaj, dosya: string;
-begin
-  dosya := 'http://www.noktayazilim.net/mesaj_' + tarihal(date()) + '.txt';
-  datalar.http2.ConnectTimeout := 10000;
-  try
-    _mesaj := datalar.http2.Get(dosya);
-    if _mesaj <> '' then
-    begin
-      Result := _mesaj;
-    end;
-  except
-    Result := '';
   end;
 end;
 
@@ -9869,6 +9850,43 @@ begin
   end;
 end;
 
+function SonYayinlananGuncellemeNumarasi : Integer;
+var
+  sTmp : String;
+begin
+  //Result := 0;
+  //FTP sunucudaki text dosyayý oku
+  with TIdHTTP.Create (nil) do
+  try
+    AllowCookies := True;
+    ProxyParams.BasicAuthentication := False;
+    ProxyParams.ProxyPort := 0;
+    Request.ContentLength := -1;
+    Request.ContentRangeEnd := -1;
+    Request.ContentRangeStart := -1;
+    Request.ContentRangeInstanceLength := -1;
+    Request.ContentType := 'text/html';
+    Request.Accept := 'text/html, */*';
+    Request.BasicAuthentication := False;
+    Request.UserAgent := 'Mozilla/3.0 (compatible; Indy Library)';
+    Request.Ranges.Units := 'bytes';
+    HTTPOptions := [hoForceEncodeParams];
+    ConnectTimeout := 10000;
+    sTmp := Get('http://www.noktayazilim.net/OSGBupdate.txt');
+    //ltrim (rtrim (ilk satýr)) yap
+    with TStringList.Create do
+    try
+      Text := sTmp;
+      sTmp := Trim (Strings [0]);
+    finally
+      Free;
+    end;
+    Result := StrToIntDef (sTmp, 0);
+  finally
+    Free;
+  end;
+end;
+
 function GuncellemeTakipScriptPush: Boolean;
 
   procedure NewLine (var aQuery : TADOQuery; var iLineNum: Integer; const pSQLCmd, pAciklama, pGTSTarihSaat : String);
@@ -9978,34 +9996,7 @@ begin
                      else
                       iBaseID := 0;
                     //FTP sunucudaki text dosyayý oku
-                    with TIdHTTP.Create (nil) do
-                    try
-                      AllowCookies := True;
-                      ProxyParams.BasicAuthentication := False;
-                      ProxyParams.ProxyPort := 0;
-                      Request.ContentLength := -1;
-                      Request.ContentRangeEnd := -1;
-                      Request.ContentRangeStart := -1;
-                      Request.ContentRangeInstanceLength := -1;
-                      Request.ContentType := 'text/html';
-                      Request.Accept := 'text/html, */*';
-                      Request.BasicAuthentication := False;
-                      Request.UserAgent := 'Mozilla/3.0 (compatible; Indy Library)';
-                      Request.Ranges.Units := 'bytes';
-                      HTTPOptions := [hoForceEncodeParams];
-                      sIdentityInsertTableOld := Get('http://www.noktayazilim.net/OSGBupdate.txt');
-                      //ltrim (rtrim (ilk satýr)) yap
-                      with TStringList.Create do
-                      try
-                        Text := sIdentityInsertTableOld;
-                        sIdentityInsertTableOld := Trim (Strings [0]);
-                      finally
-                        Free;
-                      end;
-                      iPublishedBaseID := StrToIntDef (sIdentityInsertTableOld, 0);
-                    finally
-                      Free;
-                    end;
+                    iPublishedBaseID := SonYayinlananGuncellemeNumarasi;
                     bPublish := iPublishedBaseID = iBaseID;
                     for iRow := 0 to aTableList.Count - 1 do
                     begin

@@ -409,50 +409,20 @@ begin
 end;
 
 procedure TfrmUpdate.btnListeClick(Sender: TObject);
-var
-  sTmp : String;
 begin
   TcxButton (Sender).Enabled := False;
   try
     guncellemeIslemi := 'No';
     GuncellemeBilgileri;
-    //FTP sunucudaki text dosyayý oku
-    with TIdHTTP.Create (nil) do
     try
-      AllowCookies := True;
-      ProxyParams.BasicAuthentication := False;
-      ProxyParams.ProxyPort := 0;
-      Request.ContentLength := -1;
-      Request.ContentRangeEnd := -1;
-      Request.ContentRangeStart := -1;
-      Request.ContentRangeInstanceLength := -1;
-      Request.ContentType := 'text/html';
-      Request.Accept := 'text/html, */*';
-      Request.BasicAuthentication := False;
-      Request.UserAgent := 'Mozilla/3.0 (compatible; Indy Library)';
-      Request.Ranges.Units := 'bytes';
-      HTTPOptions := [hoForceEncodeParams];
-      ConnectTimeout := 10000;
-      try
-        sTmp := Get('http://www.noktayazilim.net/OSGBupdate.txt');
-      except
-        on e: exception do
-        begin
-          txtLOG.Lines.Add('Baðlantý Hatasý , Ýnternetinizi Kontrol Edip Tekrar Denayiniz...' + e.Message);
-          raise;
-        end;
+    //FTP sunucudaki text dosyayý oku
+      FSonYayinlananGuncelleme := SonYayinlananGuncellemeNumarasi;
+    except
+      on e: exception do
+      begin
+        txtLOG.Lines.Add('Baðlantý Hatasý , Ýnternetinizi Kontrol Edip Tekrar Denayiniz...' + e.Message);
+        raise;
       end;
-      //ltrim (rtrim (ilk satýr)) yap
-      with TStringList.Create do
-      try
-        Text := sTmp;
-        sTmp := Trim (Strings [0]);
-      finally
-        Free;
-      end;
-      FSonYayinlananGuncelleme := StrToIntDef (sTmp, 0);
-    finally
-      Free;
     end;
     UpdateSQL;
   finally
