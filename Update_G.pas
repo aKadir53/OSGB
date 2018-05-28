@@ -409,7 +409,10 @@ begin
 end;
 
 procedure TfrmUpdate.btnListeClick(Sender: TObject);
+var
+  bFocused: Boolean;
 begin
+  bFocused := TcxButton (Sender).Focused;
   TcxButton (Sender).Enabled := False;
   try
     guncellemeIslemi := 'No';
@@ -427,6 +430,7 @@ begin
     UpdateSQL;
   finally
     TcxButton (Sender).Enabled := True;
+    if bFocused then TcxButton (Sender).SetFocus;
   end;
 end;
 
