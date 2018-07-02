@@ -14,4 +14,58 @@ object frmDoktorlar: TfrmDoktorlar
   OnCreate = FormCreate
   PixelsPerInch = 96
   TextHeight = 13
+  object cxFotoPanel: TcxGroupBox
+    Left = 440
+    Top = 8
+    Caption = 'Foto'
+    TabOrder = 0
+    Height = 153
+    Width = 121
+    object Foto: TcxImage
+      Left = 3
+      Top = 15
+      Align = alClient
+      Properties.ClearKey = 46
+      Properties.PopupMenuLayout.MenuItems = []
+      Properties.ReadOnly = False
+      Properties.Stretch = True
+      TabOrder = 0
+      ExplicitWidth = 104
+      ExplicitHeight = 96
+      Height = 99
+      Width = 115
+    end
+    object cxGroupBox1: TcxGroupBox
+      Left = 3
+      Top = 114
+      Align = alBottom
+      PanelStyle.Active = True
+      TabOrder = 1
+      ExplicitWidth = 131
+      Height = 29
+      Width = 115
+      object cxFotoEkleButton: TcxButton
+        Tag = -50
+        Left = 2
+        Top = 2
+        Width = 56
+        Height = 25
+        Align = alLeft
+        Caption = 'Ekle'
+        TabOrder = 0
+        OnClick = cxFotoEkleButtonClick
+      end
+      object cxFotoTemizle: TcxButton
+        Tag = -51
+        Left = 58
+        Top = 2
+        Width = 56
+        Height = 25
+        Align = alLeft
+        Caption = 'Temizle'
+        TabOrder = 1
+        OnClick = cxFotoEkleButtonClick
+      end
+    end
+  end
 end

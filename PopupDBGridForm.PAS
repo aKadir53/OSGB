@@ -20,7 +20,8 @@ uses
   DB, cxDBData, cxCurrencyEdit, cxGridLevel, cxGridBandedTableView,
   cxGridDBBandedTableView, cxGridCustomTableView, cxGridTableView,
   cxGridDBTableView, cxClasses, cxGridCustomView, cxGrid, cxLabel, cxCheckBox,
-  cxImageComboBox, cxMemo,adoDb,cxDBLookupComboBox,cxButtonEdit;
+  cxImageComboBox, cxMemo,adoDb,cxDBLookupComboBox,cxButtonEdit, cxRichEdit,
+  Vcl.DBCtrls, cxDBRichEdit;
 
 type
   TfrmPopupDBGridForm = class(TGirisForm)
@@ -50,11 +51,14 @@ type
     cxGridLevel2: TcxGridLevel;
     PopupMenu1: TPopupMenu;
     K1: TMenuItem;
-    H1: TMenuItem;
     txtTable: TcxImageComboKadir;
     ListeNaceKods: TListeAc;
     cxStyleRepository1: TcxStyleRepository;
     cxStyle1: TcxStyle;
+    DataSource1: TDataSource;
+    GrpAciklama: TcxGroupBox;
+    txtAciklama: TcxDBRichEdit;
+    cxStyle2: TcxStyle;
     procedure FormCreate(Sender: TObject);
     procedure txtMsgEnter(Sender: TObject);
     procedure FormShow(Sender: TObject);
@@ -65,9 +69,10 @@ type
     procedure ADOBeforePost(DataSet: TDataSet);
     procedure NaceKodPropertiesButtonClick(Sender: TObject;
       AButtonIndex: Integer);
-
     procedure PropertiesEditValueChanged(Sender: TObject);
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
+    procedure cxButtonCClick(Sender: TObject);
+
   private
     { Private declarations }
   public
@@ -92,6 +97,24 @@ implementation
 uses message, data_modul , anaUnit;
 
 {$R *.DFM}
+
+procedure TfrmPopupDBGridForm.cxButtonCClick(Sender: TObject);
+var
+  TopluDataset : TDataSetKadir;
+begin
+   //inherited;
+   //
+   case Tag of
+     TagfrmFirmaISGEkip : begin
+                            TopluDataset.Dataset0 := datalar.QuerySelect('exec	sp_ISGFirmaEkip  ' + DBGrid.DataController.DataSet.FieldByName('ISGEkipId').AsString  +
+                                                                         ',' + QuotedStr(_firmaKod_));
+                            PrintYap('GAT','Atama Tutanaðý','',TopluDataset,pTNone,self);
+                          end;
+
+   end;
+
+
+end;
 
 procedure TfrmPopupDBGridForm.PropertiesEditValueChanged(Sender: TObject);
 var
@@ -128,12 +151,15 @@ begin
 
     if DBGrid.Controller.FocusedColumnIndex = 6
     then begin
+    // 5 . colon editvalue deðerine göre doldurulacak
+     (*
         _v_ := DBgrid.GetColumnByFieldName('ISGEkipId').EditValue;
         if _v_ <> 1
         then begin
           DBgrid.GetColumnByFieldName('ISGEkipGorevID').EditValue := null;
           DBGrid.DataController.DataSet.Post;
         end;
+        *)
     end;
 
  //
@@ -171,6 +197,8 @@ begin
 end;
 
 function TfrmPopupDBGridForm.Init(Sender: TObject) : Boolean;
+var
+  itm : TMenuItem;
 begin
   inherited;
   Result := False;
@@ -250,6 +278,14 @@ begin
     begin
         ClientHeight := 500;
         ClientWidth := 900;
+
+        itm := TMenuItem.Create(PopupMenu1);
+        itm.Caption := 'Atama Tutanaðý';
+        itm.Tag := -20;
+        itm.OnClick := cxButtonCClick;
+        itm.ImageIndex := 98;
+        PopupMenu1.Items.Add(itm);
+
         TableName := 'SIRKET_SUBE_EKIP';
         _fields_ := 'id,SirketKod,SubeKod,TCKimlikNo,AdiSoyadi,Telefon,eMail,ISGEkipId,ISGEkipGorevID,Aktif,AtamaTarihi';
         _fieldBaslik_ := ',,Þube,TC Kimlik No,Adý Soyadý,Telefon,eMail,ISG Ekip,ISG Ekip Görev,Aktif,Atama Tarihi';
@@ -270,7 +306,11 @@ begin
         cxGrid3.Dataset.Open;
         DBGrid.ClearItems;
         DBGrid.DataController.CreateAllItems(True);
+
+
+
         SetGrid;
+
 
         SayfaCaption('','','','','');
         Result := True;
@@ -400,7 +440,16 @@ begin
            //   TcxTextEditProperties(DBgrid.Columns[i].Properties).Alignment.Horz := taCenter;
             //  DBgrid.Columns[i].Width := DBgrid.Columns[i].BestFitMaxWidth;
              end;
-
+            if SameText (Tips[i], 'memo') then
+             begin
+              DBgrid.Columns[i].PropertiesClassName := 'TcxRichEditProperties';
+          //    TcxRichEditProperties(DBgrid.Columns[i].Properties).PlainText := True;
+        //      TcxRichEditProperties(DBgrid.Columns[i].Properties).StreamModes := [resmPlainRtf];
+              DBgrid.Columns[i].Width := 200;
+              //TcxTextEditProperties(DBgrid.Columns[i].Properties).Alignment.Vert := taVCenter;
+           //   TcxTextEditProperties(DBgrid.Columns[i].Properties).Alignment.Horz := taCenter;
+            //  DBgrid.Columns[i].Width := DBgrid.Columns[i].BestFitMaxWidth;
+             end;
             if SameText (Tips[i], 'Check') then
              begin
               DBgrid.Columns[i].PropertiesClassName := 'TcxCheckBoxProperties';
@@ -530,7 +579,12 @@ begin
 
              end;
 
-            DBgrid.Columns[i].Width := 70;
+            if SameText (Tips[i], 'memo')
+            then
+              DBgrid.Columns[i].Width := 200
+             else
+              DBgrid.Columns[i].Width := 70;
+
           end;
          // DBGrid.Columns[0].Visible := false;
         finally
@@ -555,7 +609,9 @@ begin
     colswidth := colswidth + DBgrid.Columns[i].Width;
   end;
 
-  if colswidth > 170 then ClientWidth := colswidth + 50 else ClientWidth := 170;
+  if (colswidth > 600) then colswidth := 600;
+  if (colswidth >= 170) and (colswidth <= 600)
+  then ClientWidth := colswidth + 50 else ClientWidth := 170;
 
 
 end;
@@ -613,6 +669,8 @@ begin
     _fieldTips_ := ado.FieldByName('_fieldTips_').AsString;
     _ICParams_ :=  ado.FieldByName('IC_Params').AsString;
 
+
+
   (*
     if txtTable.Text = 'Ýþ Ekipmaný Tanýmla'
     then begin
@@ -630,6 +688,18 @@ begin
     *)
 
     Yukle;
+
+    if txtTable.Text = 'Ekip Görev Tanýmlarý'
+    then begin
+       GrpAciklama.Caption := 'Ekip Görev Tanýmlarý - Yasal Yükümlülükler';
+       GrpAciklama.Visible := True;
+       txtAciklama.DataBinding.DataSource := DataSource1;
+    end
+    else
+    begin
+       GrpAciklama.Visible := false;
+       txtAciklama.DataBinding.DataSource := nil;
+    end;
   (*
     if txtTable.Text = 'Ýþ Ekipmaný Tanýmla'
     then begin

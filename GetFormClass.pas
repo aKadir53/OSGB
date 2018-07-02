@@ -47,7 +47,7 @@ uses message,Data_Modul,AnaUnit,message_y,popupForm,rapor,TedaviKart,Son6AylikTe
              Tnm_Doktor,LabTestAyarlari,SahaSaglikGozetim, CariHesapBorcAlacakToplam,
              PopupDBGridForm,PopupDBVerticalGridForm,AjandaOzet,sirketISGKurulToplanti,
              Tnm_Ilaclar, PersonelEgitimFrm, About_Frm, MerkezBilgisi,sirketYillikCalismaPlan,
-             sirketYillikEgitimPlan,HizmetKart, CihazKontrol;
+             sirketYillikEgitimPlan,HizmetKart, CihazKontrol,firmaListesi;
 
 
 
@@ -159,7 +159,7 @@ begin
       if pMsg then ShowMessageSkin('Form Baþlýk Bilgisi Tanýmlanmamýþ : "FormCaption" ('+IntToStr (formID)+')', '', '', 'info');
       Exit;
     end;
-    pFormCaption := ado.Fields[0].AsString;
+    pFormCaption :=  ado.Fields[0].AsString;
     pFormAltCaption := ado.Fields[1].AsString;
     if ado.Fields[2].IsNull then
       pUserGroup := ''
@@ -207,7 +207,7 @@ begin
    TagfrmTedaviBilgisi : Result := TfrmTedaviBilgisi;
    TagfrmHastaRecete : Result := TfrmHastaRecete;
    TagfrmHastaListe,TagfrmDoktorHastaListe : Result := TfrmHastaListe;
-
+   TagfrmFirmaListe : Result := TfrmFirmaListe;
    TagfrmUsers : Result := TfrmUsers;
    TagfrmHastaTetkikEkle : Result := TfrmHastaTetkikEkle;
    TagfrmAsiKarti : Result := TfrmAsiKarti;
@@ -272,6 +272,7 @@ begin
    TagfrmAnamnez,TagfrmIseGiris : Result := frmAnamnez;
    TagfrmHastaRecete : Result := frmHastaRecete;
    TagfrmHastaListe,TagfrmDoktorHastaListe : Result := frmHastaListe;
+   TagfrmFirmaListe : Result := frmFirmaListe;
    TagfrmTetkikIstemSablon : Result := frmGrupDetayTanim;
    TagfrmDokumanYonetim : Result := frmDokumanYonetim;
    TagfrmUsers : Result := frmUsers;
@@ -354,6 +355,7 @@ begin
      TagfrmPopupDBVerticalGridForm : frmPopupDBVerticalGridForm := TfrmPopupDBVerticalGridForm.Create(Tab);
 
      TagfrmHastaListe,TagfrmDoktorHastaListe : frmHastaListe := TfrmHastaListe.Create(Tab);
+     TagfrmFirmaListe : frmFirmaListe := TfrmFirmaListe.Create(Tab);
      TagfrmSorguCalistir : frmRaporCalistir := TfrmRaporCalistir.Create(Tab);
      TagfrmSon6AylikTetkikSonuc : frmSon6AylikTetkikSonuc := TfrmSon6AylikTetkikSonuc.Create(Tab);
      TagfrmReceteler : frmReceteler := TfrmReceteler.Create(Tab);
@@ -488,6 +490,7 @@ begin
      TagfrmAnamnez,TagfrmIseGiris : frmAnamnez := TfrmAnamnez.Create(Tab);
 
      TagfrmHastaListe,TagfrmDoktorHastaListe : frmHastaListe := TfrmHastaListe.Create(Tab);
+     TagfrmFirmaListe : frmFirmaListe := TfrmFirmaListe.Create(Tab);
      TagfrmPopupDBVerticalGridForm : frmPopupDBVerticalGridForm := TfrmPopupDBVerticalGridForm.Create(Tab);
 
      TagfrmSon6AylikTetkikSonuc : frmSon6AylikTetkikSonuc := TfrmSon6AylikTetkikSonuc.Create(Tab);

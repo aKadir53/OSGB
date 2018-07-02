@@ -204,6 +204,8 @@ begin
                      ',@PersonelDosyaNo = ' + QuotedStr(dosyaNo.Text);
               datalar.QuerySelect(ado, sql);
               TopluDataset.Dataset0 := ado;
+          //    TopluDataset.Dataset1 := datalar.QuerySelect('select * from EgitimAltDetay where egitimId = '  + GridPersonelEgitim.Dataset.FieldByName('egitimID').AsString);
+
               PrintYap('005','Personel Eðitimi Sertifikasý','',TopluDataset,kadirType.pTNone);
             finally
              ado.free;
@@ -830,7 +832,7 @@ begin
       //     _gelisNO_ := ADO_Gelisler.FieldByName('gelisNO').AsString;
 
           GridPersonelEgitim.Dataset.Connection := datalar.ADOConnection2;
-          GridPersonelEgitim.Dataset.SQL.Text := 'sp_frmPersonelEgitim @PersonelDosyaNo = ' + QuotedStr(dosyaNo.Text);
+          GridPersonelEgitim.Dataset.SQL.Text := 'exec sp_frmPersonelEgitim @PersonelDosyaNo = ' + QuotedStr(dosyaNo.Text);
           GridPersonelEgitim.Dataset.Open;
 //          GridEgitim.DataController.CreateAllItems(True);
 
@@ -1358,17 +1360,25 @@ begin
 
 
 
-  setDataStringKontrol(self,IseGirisMuayene,'IseGirisMuayene','',sayfa4_Kolon1,'',800,350,alClient);
-  setDataStringKontrol(self,GridPersonelEgitim,'GridPersonelEgitim','',sayfa2_Kolon1,'',800,290,alClient);
+ // setDataStringKontrol(self,IseGirisMuayene,'IseGirisMuayene','',sayfa4_Kolon1,'',800,350,alClient);
+  setDataStringKontrol(self,GridPersonelEgitim,'GridPersonelEgitim','',sayfa2_Kolon1,'',800,290,alNone);
   addButton(self,nil,'btnSertifikaP','','Yazdýr',sayfa2_Kolon1,'',50,ButtonClick,-50);
 
-
+  setDataString(self,'EskiFirma1','1.Firma',sayfa4_Kolon1,'',300,false,'',False);
+  setDataString(self,'EskiIskolu1','Ýþ Kolu',sayfa4_Kolon1,'',200,false,'',False);
+  setDataString(self,'EskiYaptigiIs1','Yaptýðý Ýþ',sayfa4_Kolon1,'',200,false,'',False);
+  setDataString(self,'EskiGiris_CikisTarihi1','Giriþ - Çýkýþ Tarihi',sayfa4_Kolon1,'',200,false,'',False);
+  setDataStringBLabel(self,'bosSatir3',sayfa4_Kolon1,'',350);
+  setDataString(self,'EskiFirma2','2.Firma',sayfa4_Kolon1,'',300,false,'',False);
+  setDataString(self,'EskiIskolu2','Ýþ Kolu',sayfa4_Kolon1,'',200,false,'',False);
+  setDataString(self,'EskiYaptigiIs2','Yaptýðý Ýþ',sayfa4_Kolon1,'',200,false,'',False);
+  setDataString(self,'EskiGiris_CikisTarihi2','Giriþ - Çýkýþ Tarihi',sayfa4_Kolon1,'',200,false,'',False);
 
  // tableColumnDescCreate;
   cxpnlHastaGelisler.Parent := sayfa1;
   cxpnlHastaGelisler.Align := alBottom;
 
-  SayfaCaption('Kimlik Bilgileri','Eðitim Bilgileri','Öz Geçmiþ','','');
+  SayfaCaption('Kimlik Bilgileri','Eðitim Bilgileri','Öz Geçmiþ','Çalýþma Geçmiþi','');
 
   if datalar.UserGroup <> '2'
   then begin

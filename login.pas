@@ -5,7 +5,7 @@ interface
 uses
   Windows, Messages, SysUtils, Classes, Graphics, Controls, Forms, Dialogs,
   StdCtrls, Db, DBTables, ExtCtrls, Buttons,ADODB,REGISTRY, ComCtrls,
-  activex, jpeg, cxGraphics, cxControls,
+  activex, jpeg,PngImage, cxGraphics, cxControls,
   cxLookAndFeels, cxLookAndFeelPainters, cxContainer, cxEdit, cxButtonEdit,
   KadirLabel,KadirType, Kadir,
   dxSkinscxPCPainter, cxPCdxBarPopupMenu, dxLayoutcxEditAdapters,
@@ -80,8 +80,8 @@ type
     dxLayoutControl2Group2: TdxLayoutGroup;
     dxLayoutControl2Group1: TdxLayoutGroup;
     aTimer: TTimer;
-    Image1abx: TcxImage;
-    cxImagebcd: TcxImage;
+    NoktaImage: TcxImage;
+    UYUMImage: TcxImage;
 
     procedure FormCreate(Sender: TObject);
     procedure FormActivate(Sender: TObject);
@@ -193,10 +193,12 @@ end;
 procedure TfrmLogin.Image1Click(Sender: TObject);
 var
   aSL1 : TStringList;
-  sTmp : String;
+  sTmp , Table ,where : String;
   bLoginLog : Boolean;
   bOtomatikGiris : Boolean;
   iThermo : Integer;
+  g : TBitmap;
+  Dataset : TDataset;
 begin
   bloginLog := False;
   bOtomatikGiris := False;
@@ -282,9 +284,64 @@ begin
       dxStatusBar1.Panels [1].Text := datalar.usernameAdi + ' (' + datalar.UserGroupName + ')';
       dxStatusBar1.Panels [1].Width := Length (dxStatusBar1.Panels [1].Text) * 8;
 
+
+      if datalar.UserGroup = '1' then
+      begin
+          datalar.Foto := TJpegImage.Create;
+          g := TBitmap.Create;
+          try
+            g := TBitmap.Create;
+            datalar.FotoImage.GetBitmap(2,g);
+            datalar.Foto.Assign(g);
+          finally
+           g.free;
+          end;
+      end;
+
+      if (datalar.IGU <> '') or (datalar.doktorKodu <> '')
+      then begin
+         if datalar.IGU <> '' then Table := 'IGU' else Table := 'DoktorlarT';
+         if datalar.IGU <> '' then where := datalar.IGU else where := datalar.doktorKodu;
+
+        // datalar.Foto := TPngImage.Create;
+         datalar.Foto := TJpegImage.Create;
+         try
+           try
+              Dataset := datalar.QuerySelect('select tanimi,Foto from ' + Table + ' where kod = ' + QuotedStr(where));
+              datalar.userTanimi := Dataset.FieldByName('tanimi').AsString;
+              if not Dataset.FieldByName('foto').IsNull
+              then
+               datalar.Foto.Assign(Dataset.FieldByName('foto'))
+              else
+               datalar.Foto := nil;
+           except
+            datalar.Foto := nil;
+           end;
+         finally
+         end;
+
+         if datalar.Foto = nil
+         then begin
+          try
+           //datalar.Foto := TPngImage.Create;
+           datalar.Foto := TJpegImage.Create;
+           g := TBitmap.Create;
+
+           if datalar.IGU <> '' then datalar.FotoImage.GetBitmap(0,g);
+           if datalar.doktorKodu <> '' then datalar.FotoImage.GetBitmap(1,g);
+            datalar.Foto.Assign(g);
+          finally
+           g.free;
+          end;
+         end;
+
+      end;
+
+
       AnaForm.dxSkinController1.SkinName := login.FieldByName('userSkin').AsString;
       FormatSettings.DateSeparator := '.';
       LoginSayfalar.ActivePageIndex := 2;
+
       Application.ProcessMessages;
       ShowThermo (iThermo, 'Giriþ Ýþlemleri Yapýlýyor', 0, 8, 0);
       try
@@ -429,12 +486,23 @@ begin
            txtDataBase.EditValue := db;
            Regyaz('OSGB_description',OSGBDesc);
            Labelx.Caption := OSGBDesc;
-           Regyaz('OSGB_YazilimGelistirici',IntToStr (iYazilimGelistirici));
-           Image1abx.Visible := iYazilimGelistirici = 1;
-           cxImagebcd.Visible := iYazilimGelistirici = 2;
-           cxImage1.Visible := (iYazilimGelistirici <> 2) and (iYazilimGelistirici <> 1);
+         //  Regyaz('OSGB_YazilimGelistirici',IntToStr (iYazilimGelistirici));
+           if Datalar.YazilimFirma = 'UYUM'
+           then begin
+            UYUMImage.Visible := True;
+            NoktaImage.Visible := False;
+           end
+           Else
+           Begin
+             UYUMImage.Visible := False;
+             NoktaImage.Visible := True;
+           End;
+      //     Image1abx.Visible := iYazilimGelistirici = 1;
+      //     cxImagebcd.Visible := iYazilimGelistirici = 2;
+      //     cxImage1.Visible := (iYazilimGelistirici <> 2) and (iYazilimGelistirici <> 1);
+
            btnBaglan.Caption := 'Baðlandý';
-           DATALAR._YazilimGelistirici := iYazilimGelistirici;
+        //   DATALAR._YazilimGelistirici := iYazilimGelistirici;
          end;
      end;
    except
@@ -518,7 +586,7 @@ begin
    begin
      txtServerName.Text := '213.159.30.6';
      if ShowMessageSkin (
-       'Mavi Nokta Bilgi Teknolojileri e-Reçete yazýlýmý'#13#10+
+       'Ýþyeri Hekimi ve Ýþ Güvenliði yazýlýmý'#13#10+
        'Demo sürümüne girmek üzeresiniz'#13#10#13#10+
        'Kayýtlý kullanýcý iseniz [Hayýr] seçip firma kodunuzu girerek devam ediniz', '', '', 'conf') = mrYes then
      begin
@@ -539,11 +607,24 @@ begin
 
    txtDataBase.EditValue := Decode64(regOku('OSGB_db_name'));
    Labelx.Caption := regOku('OSGB_description');
-   iYazGel := StrToIntDef (regOku('OSGB_YazilimGelistirici'), -1);
+ //  iYazGel := StrToIntDef (regOku('OSGB_YazilimGelistirici'), -1);
+
+   if pos('UYUM',paramStr(0)) > 0  then Datalar.YazilimFirma := 'UYUM'
+   Else Datalar.YazilimFirma := 'Nokta';
    DATALAR._YazilimGelistirici := iYazGel;
-   Image1abx.Visible := iYazGel = 1;
-   cxImagebcd.Visible := iYazGel = 2;
-   cxImage1.Visible := (iYazGel <> 2) and (iYazGel <> 1);
+   if Datalar.YazilimFirma = 'UYUM'
+   then begin
+    UYUMImage.Visible := True;
+    NoktaImage.Visible := False;
+   end
+   Else
+   Begin
+     UYUMImage.Visible := False;
+     NoktaImage.Visible := True;
+   End;
+  // Image1abx.Visible := iYazGel = 1;
+ //  cxImagebcd.Visible := iYazGel = 2;
+ //  cxImage1.Visible := (iYazGel <> 2) and (iYazGel <> 1);
    dxStatusBar1.Panels [1].Text := regOku('OSGB_Userdescription');
    dxStatusBar1.Panels [1].Width := Length (dxStatusBar1.Panels [1].Text) * 8;
    if LoginSayfalar.ActivePageIndex = 0 then Edit2.SetFocus;

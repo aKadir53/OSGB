@@ -1605,7 +1605,7 @@ object frmLogin: TfrmLogin
         Height = 94
         Width = 145
       end
-      object Image1abx: TcxImage
+      object NoktaImage: TcxImage
         Left = -7
         Top = 16
         Picture.Data = {
@@ -1984,12 +1984,13 @@ object frmLogin: TfrmLogin
           EBD7FD43FF00E4FF00FDA87D57CCBF4550A28FF5EBFEA1FF00F27FFED43EABE6
           5FAA93FF00AE6A8E8AF133BE24FED5C3C687B2E5B4AF7E6BF46BB2EE6B4E8FB3
           77B9FFD9}
+        Style.BorderStyle = ebsNone
         TabOrder = 1
         Visible = False
         Height = 121
         Width = 155
       end
-      object cxImagebcd: TcxImage
+      object UYUMImage: TcxImage
         Left = -3
         Top = 52
         Picture.Data = {
@@ -3704,6 +3705,7 @@ object frmLogin: TfrmLogin
           FFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FF
           FFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FF
           FFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF}
+        Style.BorderStyle = ebsNone
         TabOrder = 2
         Height = 51
         Width = 151

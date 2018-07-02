@@ -17,8 +17,8 @@ object frmSirketYillikEgitimPlan: TfrmSirketYillikEgitimPlan
   PixelsPerInch = 96
   TextHeight = 13
   object YillikEgitimPlanGrid: TcxGridKadir
-    Left = 88
-    Top = 8
+    Left = 8
+    Top = 32
     Width = 1161
     Height = 297
     TabOrder = 0
@@ -173,7 +173,7 @@ object frmSirketYillikEgitimPlan: TfrmSirketYillikEgitimPlan
         Position.RowIndex = 0
       end
       object YillikEgitimPlanSatirlaraciklama: TcxGridDBBandedColumn
-        Caption = 'Aciklama'
+        Caption = 'Egitim Hedefi'
         DataBinding.FieldName = 'aciklama'
         PropertiesClassName = 'TcxMemoProperties'
         Properties.Alignment = taCenter

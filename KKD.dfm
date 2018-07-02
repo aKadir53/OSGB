@@ -398,9 +398,10 @@ object frmKKD: TfrmKKD
       end
       object KKDSatirlarBolum: TcxGridDBBandedColumn
         DataBinding.FieldName = 'Bolum'
-        PropertiesClassName = 'TcxTextEditProperties'
+        PropertiesClassName = 'TcxImageComboBoxProperties'
         Properties.Alignment.Horz = taCenter
         Properties.Alignment.Vert = taVCenter
+        Properties.Items = <>
         HeaderAlignmentHorz = taCenter
         HeaderAlignmentVert = vaCenter
         Options.Editing = False

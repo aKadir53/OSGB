@@ -14,10 +14,10 @@ object frmAnamnez: TfrmAnamnez
   PixelsPerInch = 96
   TextHeight = 13
   object IseGirisMuayene: TcxGridKadir
-    Left = 48
-    Top = 142
+    Left = -16
+    Top = 70
     Width = 513
-    Height = 109
+    Height = 219
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clWindowText
     Font.Height = -13
@@ -93,6 +93,7 @@ object frmAnamnez: TfrmAnamnez
         Properties.Alignment.Horz = taCenter
         Properties.Alignment.Vert = taVCenter
         HeaderAlignmentHorz = taCenter
+        Styles.Content = cxStyle1
         Width = 62
         Position.BandIndex = 0
         Position.ColIndex = 5
@@ -125,6 +126,7 @@ object frmAnamnez: TfrmAnamnez
         Caption = 'A'#231#305'klama'
         DataBinding.FieldName = 'aciklama'
         HeaderAlignmentHorz = taCenter
+        Styles.Content = cxStyle2
         Width = 234
         Position.BandIndex = 0
         Position.ColIndex = 6
@@ -172,6 +174,20 @@ object frmAnamnez: TfrmAnamnez
         ImageIndex = 98
         OnClick = cxButtonCClick
       end
+    end
+  end
+  object cxStyleRepository1: TcxStyleRepository
+    PixelsPerInch = 96
+    object cxStyle1: TcxStyle
+      AssignedValues = [svColor]
+      Color = 8454143
+    end
+  end
+  object cxStyleRepository2: TcxStyleRepository
+    PixelsPerInch = 96
+    object cxStyle2: TcxStyle
+      AssignedValues = [svColor]
+      Color = 16777088
     end
   end
 end

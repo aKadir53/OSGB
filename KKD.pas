@@ -299,6 +299,7 @@ begin
     KKDSatirlar.DataController.DataSet.FieldByName('KKD').AsString := datalar.KKD.KKD ;
     KKDSatirlar.DataController.DataSet.FieldByName('Standart').AsString := datalar.KKD.TSE;
     KKDSatirlar.DataController.DataSet.FieldByName('KullanilacakIs').AsVariant := datalar.KKD.KullanilacakIs;
+
 end;
 
 procedure dataRead;
@@ -309,6 +310,7 @@ begin
     datalar.KKD.KKD := KKDSatirlar.DataController.DataSet.FieldByName('KKD').AsString ;
     datalar.KKD.TSE := KKDSatirlar.DataController.DataSet.FieldByName('Standart').AsString;
     datalar.KKD.KullanilacakIs := KKDSatirlar.DataController.DataSet.FieldByName('KullanilacakIs').AsString;
+
 end;
 
 begin
@@ -321,6 +323,7 @@ begin
         datalar.KKD.KKD := '';
         datalar.KKD.TSE := '';
         datalar.KKD.KullanilacakIs := '';
+        datalar.KKD.Bolum := '';
 
         if mrYes = ShowPopupForm('KKD Ekle',yeniKKD)
         then begin
@@ -414,7 +417,7 @@ end;
 
 procedure TfrmKKD.FormCreate(Sender: TObject);
 var
-  ICombo : TcxImageComboKadir;
+  ICombo,RiskBolum : TcxImageComboKadir;
 begin
   inherited;
 
@@ -436,8 +439,20 @@ begin
   ICombo.ItemList := '1;E,0;H';
   ICombo.Filter := '';
 
+  RiskBolum := TcxImageComboKadir.Create(self);
+  RiskBolum.Name := 'RiskBolum';
+  RiskBolum.Tag := -100;
+  RiskBolum.Conn := datalar.ADOConnection2;
+  RiskBolum.TableName := 'RDS_RiskBolum';
+  RiskBolum.ValueField := 'Kod';
+  RiskBolum.DisplayField := 'tanimi';
+  RiskBolum.Filter := '';
+
 
   try
+     TcxImageComboBoxProperties(KKDSatirlarBolum.Properties).Items :=
+     TcxImageComboBoxProperties(TcxImageComboKadir(FindComponent('RiskBolum')).Properties).Items;
+
      TcxImageComboBoxProperties(KKDSatirlarYuksektenDusme.Properties).Items :=
      TcxImageComboBoxProperties(TcxImageComboKadir(FindComponent('ICombo')).Properties).Items;
      TcxImageComboBoxProperties(KKDSatirlarDarbeKesik.Properties).Items :=

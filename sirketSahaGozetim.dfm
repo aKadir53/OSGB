@@ -17,8 +17,8 @@ object frmSirketSahaGozetim: TfrmSirketSahaGozetim
   PixelsPerInch = 96
   TextHeight = 13
   object SahaGozetimGrid: TcxGridKadir
-    Left = -136
-    Top = 32
+    Left = -312
+    Top = 8
     Width = 1153
     Height = 169
     TabOrder = 0
@@ -195,6 +195,8 @@ object frmSirketSahaGozetim: TfrmSirketSahaGozetim
       DataController.Summary.FooterSummaryItems = <>
       DataController.Summary.SummaryGroups = <>
       NewItemRow.SeparatorColor = 8454143
+      OptionsData.Deleting = False
+      OptionsData.DeletingConfirmation = False
       OptionsView.CellAutoHeight = True
       OptionsView.DataRowHeight = 50
       OptionsView.GroupByBox = False

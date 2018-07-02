@@ -40,7 +40,7 @@ type
     cxGrid2: TcxGridKadir;
     Liste: TcxGridDBTableView;
     TC: TcxGridDBColumn;
-    ListeColumn1: TcxGridDBColumn;
+    ListeColumndosyaNo: TcxGridDBColumn;
     HastaAdi: TcxGridDBColumn;
     HastaSoyadi: TcxGridDBColumn;
     ListeColumn4: TcxGridDBColumn;
@@ -75,8 +75,9 @@ type
     Muayene: TMenuItem;
     PeryodikMuayeneOlutur1: TMenuItem;
     ListeColumn12: TcxGridDBColumn;
-    ListeColumn17: TcxGridDBColumn;
-    ListeColumn18: TcxGridDBColumn;
+    ListeColumnSirketKod: TcxGridDBColumn;
+    ListeColumnSube: TcxGridDBColumn;
+    f1: TMenuItem;
 
     procedure TopPanelPropertiesChange(Sender: TObject);
     procedure btnVazgecClick(Sender: TObject);
@@ -140,6 +141,8 @@ procedure TfrmHastaListe.cxButtonCClick(Sender: TObject);
 var
  GirisFormRecord : TGirisFormRecord;
  F : TGirisForm;
+ dosyaNo,sirketKod,sube : string;
+ i : integer;
 begin
   datalar.KontrolUserSet := False;
   inherited;
@@ -154,7 +157,13 @@ begin
   GirisFormRecord.F_TC_ := _Dataset.FieldByName('TCKimlikNo').AsString;
 
   GirisFormRecord.F_firmaKod_ := _Dataset.FieldByName('SirketKod').AsString;
-  GirisFormRecord.F_sube_ := TcxImageComboKadir(FindComponent('sube')).EditText;
+  GirisFormRecord.F_sube_ := _Dataset.FieldByName('Sube').AsString;
+  //TcxImageComboKadir(FindComponent('sube')).EditText;
+
+
+  datalar.GirisFormRecord.F_firmaKod_ := _Dataset.FieldByName('SirketKod').AsString;
+  datalar.GirisFormRecord.F_sube_ :=    _Dataset.FieldByName('sube').AsString;
+  datalar.GirisFormRecord.F_dosyaNo_ := _Dataset.FieldByName('dosyaNo').AsString;
 
   case Tcontrol(sender).tag of
  -1 : begin
@@ -169,6 +178,31 @@ begin
           F := FormINIT(TagfrmHastaRecete,GirisFormRecord,ikEvet,'');
           if F <> nil then F.ShowModal;
        // ReceteForm(ado_BransKodlari.FieldByName('dosyaNo').AsString,ado_BransKodlari.FieldByName('gelisNo').AsString);
+      end;
+
+-10 : begin
+        if mrYes = ShowPopupForm('Þirket Deðiþtir',PersonelSirketDegistir)
+        then begin
+             sirketKod := datalar.GirisFormRecord.F_firmaKod_;
+             sube :=    datalar.GirisFormRecord.F_sube_ ;
+             try
+               for i := 0 to Liste.Controller.SelectedRowCount - 1 do
+               begin
+                  dosyaNo := GridCellToString(Liste,'dosyaNo',i);
+                  if dosyaNOIslemGormusmu(dosyaNo) = 0
+                  Then
+                  datalar.QueryExec('update PersonelKart set sirketKod = ' + QuotedStr(sirketKod) +
+                                    ' where dosyaNo = ' + QuotedStr(dosyaNo));
+
+               end;
+               ShowMessageSkin('Ýþlem Görmemiþ(Muayene,Eðitim)','Seçili Pesonellerin Þirketi Deðiþtirildi','','info');
+             except on e : exception do
+              begin
+                ShowMessageSkin(e.Message,'','','info');
+              end;
+             end;
+        end;
+
       end;
  330,9020 : begin
                F := FormINIT(Tcontrol(sender).tag,GirisFormRecord,ikEvet,'');
@@ -408,9 +442,11 @@ begin
 end;
 
 procedure TfrmHastaListe.PeryodikMuayeneOlutur1Click(Sender: TObject);
+ type  BenSecerim = (BsEvet,BsHayir);
 var
  gun,i : integer;
  tetkikIstemGrupSablon,sql,protokolNo,dosyaNo,sirketKod,sube,grup,tetkikler,hasta : string;
+ BS : BenSecerim;
 begin
   inherited;
 
@@ -420,41 +456,63 @@ begin
        exit;
    end;
 
-   if mrYes = ShowMessageSkin('Seçili Personeller için Peryodik Muayene ve Tetkikler Ýþlenecek',
+   if mrYes = ShowMessageSkin('Seçili Personeller için Peryodik Muayene Ýþlenecek',
                                '','','msg')
    then begin
+     if mrYes = ShowMessageSkin('Ýþlenecek Tetkikleri Siz Belirlemek Ýstermisiniz?',
+                               'Siz Belirlemezseniz Personel Kartýnda Belirtilen Gruba Göre Ýþlenecek',
+                               'Grup Belirtilmemiþse Tetkik Ýþlenmez','msg')
+      then begin
+         BS := BsEvet;
+         datalar.PersonelTetkikler.Tetkik := '';
+         ShowPopupForm('Tetkik Seçim',PersonelTetkisIste,'','HastaListe');
+          tetkikler := datalar.PersonelTetkikler.Tetkik;
+      end
+      else begin
+         BS := BsHayir;
+      end;
 
        pBar.Properties.Max := Liste.Controller.SelectedRowCount;
        pBar.Position := 0;
 
        for i := 0 to Liste.Controller.SelectedRowCount - 1 do
        begin
-          hasta := GridCellToString(Liste,'HASTAADI',i) + ' ' +
-                   GridCellToString(Liste,'HASTASOYADI',i);
-          dosyaNo := GridCellToString(Liste,'dosyaNo',i);
-          sirketKod := GridCellToString(Liste,'sirketKod',i);
-          sube := GridCellToString(Liste,'sube',i);
-          grup := GridCellToString(Liste,'tetkikIstemGrupSablon',i);
-          tetkikler := PersonelPeriyodikTetkikIstemleri(grup);
-          protokolNo := EnsonSeansProtokolNo(sirketKod,sube);
+         datalar.ADOConnection2.BeginTrans;
+         try
+           hasta := GridCellToString(Liste,'HASTAADI',i) + ' ' +
+                    GridCellToString(Liste,'HASTASOYADI',i);
+           dosyaNo := GridCellToString(Liste,'dosyaNo',i);
+           sirketKod := GridCellToString(Liste,'sirketKod',i);
+           sube := GridCellToString(Liste,'sube',i);
 
-          DurumGoster(True,True,hasta);
-          Application.ProcessMessages;
-          pBar.Position := i;
+           if BS = BsHayir
+           then begin
+            grup := GridCellToString(Liste,'tetkikIstemGrupSablon',i);
+            tetkikler := PersonelPeriyodikTetkikIstemleri(grup);
+           end;
 
-         sql := 'exec sp_GelisKaydet ' +
-                '@dosyaNo = ' + #39 + dosyaNo + #39 + ',' +
-                '@gelisNo = 0 ,' +
-                '@BHDAT = ' + #39 + tarihal(date) + #39 + ',' +
-                '@doktor = ' + #39 + DATALAR.doktorKodu + #39 + ',' +
-                '@SERVIS = ' + #39 + '' + #39 + ',' +
-                '@TEDAVITURU = ' + #39 + '2' + #39 + ',' +
-                '@Kullanici = ' + #39 + datalar.username + #39 + ',' +
-                '@sirketKod = ' + QuotedStr(sirketKod) + ',' +
-                '@PN = ' + protokolNo + ',' +
-                '@tetkikler = ' + QuotedStr(tetkikler);
-         datalar.QuerySelect(sqlRun,sql);
+           protokolNo := EnsonSeansProtokolNo(sirketKod,sube);
 
+           DurumGoster(True,True,hasta);
+           Application.ProcessMessages;
+           pBar.Position := i;
+
+           sql := 'exec sp_GelisKaydet ' +
+                  '@dosyaNo = ' + #39 + dosyaNo + #39 + ',' +
+                  '@gelisNo = 0 ,' +
+                  '@BHDAT = ' + #39 + tarihal(date) + #39 + ',' +
+                  '@doktor = ' + #39 + DATALAR.doktorKodu + #39 + ',' +
+                  '@SERVIS = ' + #39 + '' + #39 + ',' +
+                  '@TEDAVITURU = ' + #39 + '2' + #39 + ',' +
+                  '@Kullanici = ' + #39 + datalar.username + #39 + ',' +
+                  '@sirketKod = ' + QuotedStr(sirketKod) + ',' +
+                  '@PN = ' + protokolNo + ',' +
+                  '@tetkikler = ' + QuotedStr(tetkikler);
+           datalar.QuerySelect(sqlRun,sql);
+           datalar.ADOConnection2.CommitTrans;
+         except
+           datalar.ADOConnection2.RollbackTrans;
+         end;
        end;
        DurumGoster(False,False,hasta);
    end;

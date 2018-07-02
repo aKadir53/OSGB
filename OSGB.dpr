@@ -80,26 +80,30 @@ uses
   CariHesapExtresi in 'CariHesapExtresi.pas' {frmCariHesapEkstre},
   DokumanYukle in 'DokumanYukle.pas' {frmDokumanYonetim},
   TransUtils in 'TransUtils.pas',
-  DestekSorunBildir in 'DestekSorunBildir.pas' {frmDestekSorunBildir};
+  DestekSorunBildir in 'DestekSorunBildir.pas' {frmDestekSorunBildir},
+  CSGBservice in 'CSGBservice.pas';
 
 // KadirMedula3 in '..\..\medula3wsdl\KadirMedula3.pas';
 
 const
-  AppalicationVer : integer = 1066;
+  AppalicationVer : integer = 1073;
   // Versiyon info kontrol etmeyi unutma
 
 {$R *.res}
+{$WEAKLINKRTTI ON}
+  {$RTTI EXPLICIT METHODS([]) PROPERTIES([]) FIELDS([])}
+
  var SiteVersiyon,ExeVersiyon: string; V1, V2, V3, V4: word;
-   versiyon,sql : string;
+   versiyon,sql,isg : string;
   _exe : PAnsiChar;
   dosya : TFileStream;
+
 
 begin
   Application.Initialize;
   Application.MainFormOnTaskbar := True;
   Application.CreateForm(TDATALAR, DATALAR);
   Application.CreateForm(TAnaForm, AnaForm);
-
   //Application.CreateForm(TfrmUpdate, frmUpdate);???
 
   // form2.show;
@@ -107,17 +111,19 @@ begin
 //  FormatSettings.ShortDateFormat := 'dd.mm.yyyy';
 //  FormatSettings.LongDateFormat := 'dd mmmm yyyy dddd';
 
+  if pos('UYUM',paramStr(0)) > 0 then isg := 'UYUMISG.exe' else isg := 'isg.exe';
+
   datalar.versiyon := inttostr(AppalicationVer);
   if ForceDirectories ('C:\OSGB') then
   begin
-    if FileExists('C:\OSGB\isg.exe') = False
-    Then begin
-      dosya := TFileStream.Create('C:\OSGB\isg.exe',fmCreate);
-      try
-      datalar.HTTP1.Get('http://www.noktayazilim.net/isg.exe' ,TStream(dosya));
-      finally
-      dosya.Free;
-    end;
+      if FileExists('C:\OSGB\' + isg) = False
+      Then begin
+        dosya := TFileStream.Create('C:\OSGB\' + isg,fmCreate);
+        try
+        datalar.HTTP1.Get('http://www.noktayazilim.net/' + isg ,TStream(dosya));
+        finally
+        dosya.Free;
+      end;
     end;
 
   try
@@ -131,7 +137,7 @@ begin
   if (strtoint(versiyon) > AppalicationVer)
   Then Begin
     try
-     _exe :=  PAnsiChar(AnsiString('C:\OSGB\isg.exe'));
+     _exe :=  PAnsiChar(AnsiString('C:\OSGB\' + isg));
      WinExec(_exe,SW_SHOW);
     // datalar.KillTask('Diyaliz.exe');
     except on e : exception do

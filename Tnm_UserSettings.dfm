@@ -96,10 +96,6 @@ object frmUsers: TfrmUsers
     object cxTabSheet2: TcxTabSheet
       Caption = 'Men'#252' Yetkileri'
       ImageIndex = 1
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 419
-      ExplicitHeight = 0
       object cxGrid1: TcxGrid
         Left = 0
         Top = 0
@@ -107,9 +103,6 @@ object frmUsers: TfrmUsers
         Height = 529
         Align = alClient
         TabOrder = 0
-        ExplicitLeft = 24
-        ExplicitTop = 23
-        ExplicitWidth = 306
         object cxGridMenuSet: TcxGridDBTableView
           DataController.DataModeController.DetailInSQLMode = True
           DataController.DataSource = User_Menu_Settings_DataSource

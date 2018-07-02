@@ -8,12 +8,18 @@ uses
   cxContainer, cxEdit, Menus, StdCtrls, cxButtons, cxGroupBox, DB, ADODB,
   cxTextEdit, cxMaskEdit, cxButtonEdit, cxDBEdit,kadirType,KadirLabel,Kadir,  GirisUnit,Data_Modul, dxSkinsCore, dxSkinBlue, dxSkinCaramel, dxSkinCoffee,
   dxSkiniMaginary, dxSkinLilian, dxSkinLiquidSky, dxSkinLondonLiquidSky,
-  dxSkinMcSkin, dxSkinMoneyTwins, dxSkinsDefaultPainters, cxCheckBox, cxLabel;
+  dxSkinMcSkin, dxSkinMoneyTwins, dxSkinsDefaultPainters, cxCheckBox, cxLabel,
+  cxImage;
 
 
 
 type
   TfrmDoktorlar = class(TGirisForm)
+    cxFotoPanel: TcxGroupBox;
+    Foto: TcxImage;
+    cxFotoEkleButton: TcxButton;
+    cxGroupBox1: TcxGroupBox;
+    cxFotoTemizle: TcxButton;
     procedure cxKaydetClick(Sender: TObject);override;
     procedure cxTextEditKeyDown(Sender: TObject; var Key: Word;
       Shift: TShiftState);
@@ -22,6 +28,7 @@ type
     procedure cxEditEnter(Sender: TObject);
     procedure cxEditExit(Sender: TObject);
     procedure ButtonClick(Sender: TObject);
+    procedure cxFotoEkleButtonClick(Sender: TObject);
   private
     { Private declarations }
   public
@@ -150,6 +157,8 @@ begin
         setDataStringC(self,'cumartesi','Cumartesi',sayfa2_Kolon1,'',80,'0,1,1-2,1-3,2,2-3,3');
 
        // setDataImage(self,'foto','Foto',Kolon2,'',120,100);
+        setDataStringKontrol(self,cxFotoPanel , 'cxFotoPanel','',Kolon2,'',121);
+        Foto.Properties.OnEditValueChanged := PropertiesEditValueChanged;
 
         SayfaCaption('Taným Bilgileri','Çalýþma Bilgileri','','','');
         Result := True;
@@ -213,6 +222,9 @@ begin
 
      //   setDataStringC(self,'uzman','Uzman mý?',Kolon1,'',80,'Evet,Hayýr');
         setDataStringC(self,'durum','Durum',Kolon1,'',80,'Aktif,Pasif');
+
+        setDataStringKontrol(self,cxFotoPanel , 'cxFotoPanel','',Kolon2,'',121);
+        Foto.Properties.OnEditValueChanged := PropertiesEditValueChanged;
 
         SayfaCaption('Taným Bilgileri','','','','');
         Result := True;
@@ -320,6 +332,33 @@ procedure TfrmDoktorlar.cxEditExit(Sender: TObject);
 begin
   inherited;
   //
+
+end;
+
+procedure TfrmDoktorlar.cxFotoEkleButtonClick(Sender: TObject);
+var
+ Fo : TFileOpenDialog;
+ filename,dosyaNo : string;
+ //jp : TJPEGImage;
+begin
+  inherited;
+  case TcxButton(Sender).tag of
+  -50 : begin
+          Fo := TFileOpenDialog.Create(nil);
+          try
+            if not fo.Execute then Exit;
+            filename := fo.FileName;
+          finally
+            fo.Free;
+          end;
+          Foto.Picture.LoadFromFile(filename);
+        end;
+  -51 : begin
+          Foto.Clear;
+          Foto.EditValue := Null;
+        end;
+
+  end;
 
 end;
 

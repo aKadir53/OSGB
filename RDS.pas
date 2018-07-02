@@ -122,6 +122,8 @@ type
     RDSEkipGridListeMail: TcxGridDBBandedColumn;
     RDSEkipGridListTelefon: TcxGridDBBandedColumn;
     cxGridLevel1: TcxGridLevel;
+    D2: TMenuItem;
+    D3: TMenuItem;
     procedure cxButtonCClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure gridRaporCustomDrawGroupCell(Sender: TcxCustomGridTableView;
@@ -147,7 +149,7 @@ type
     procedure SirketlerPropertiesChange(Sender: TObject);
     procedure FormShow(Sender: TObject);
     function Ekip : TDataset;
-
+    procedure DOF_FormKontrolETOlustur;
  //   function EArsivGonder(FaturaId : string) : string;
  //   function EArsivIptal(FaturaGuid : string) : string;
  //   function EArsivPDF(FaturaGuid : string ; _tag_ : integer) : string;
@@ -175,6 +177,29 @@ uses data_modul, StrUtils, Jpeg;
 
 {$R *.dfm}
 
+procedure TfrmRDS.DOF_FormKontrolETOlustur;
+var
+  sql : string;
+begin
+  sql := 'exec sp_DOF_FormKontrolETOlustur ' +
+         TcxButtonEditKadir(FindComponent('id')).EditText  + ',' +
+         QuotedStr(vartoStr(TcxImageComboKadir(FindComponent('SirketKod')).EditValue)) + ',' +
+         QuotedStr(vartoStr(TcxImageComboKadir(FindComponent('SubeKod')).EditValue)) + ',' +
+         QuotedStr(vartoStr(TcxImageComboKadir(FindComponent('hazirlayan')).EditValue)) + ',' +
+         QuotedStr(RDSGrid.Dataset.FieldByName('Tehlike').AsString) + ',' +
+         QuotedStr(RDSGrid.Dataset.FieldByName('Bolum').AsString) + ',' +
+         QuotedStr(RDSGrid.Dataset.FieldByName('Risk_tanim').AsString);
+  try
+    if not datalar.QuerySelect(sql).Eof
+    Then ShowMessageSkin('Risk Planý Ýçin Döf Oluþturuldu','','','info');
+  except on e : exception do
+   begin
+     ShowMessageSkin(e.Message,'','','info');
+   end;
+
+  end;
+
+end;
 
 function TfrmRDS.Ekip : TDataset;
 begin
@@ -1023,6 +1048,11 @@ begin
 
 
         end;
+
+   -31 : begin
+           DOF_FormKontrolETOlustur;
+         end;
+
   end;
 end;
 

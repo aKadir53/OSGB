@@ -5,6 +5,8 @@ uses
   yvunit in 'yvunit.pas' {frmYv};
 
 {$R *.res}
+{$WEAKLINKRTTI ON}
+  {$RTTI EXPLICIT METHODS([]) PROPERTIES([]) FIELDS([])}
 
 begin
   Application.Initialize;

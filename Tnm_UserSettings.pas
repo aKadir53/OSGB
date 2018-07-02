@@ -604,6 +604,30 @@ var
   c : char;
 begin
 
+  case TcxImageComboKadir(FindComponent('Grup')).EditValue of
+   2 : if vartoStr(TcxImageComboKadir(FindComponent('Doktor')).EditValue) = ''
+       Then begin
+          ShowMessageSkin('Doktor Grubu için Doktor Seçimi Yapmak Zorundasýnýz','','','info');
+          TcxImageComboKadir(FindComponent('Doktor')).SetFocus;
+          exit;
+       end;
+  11 : if vartoStr(TcxImageComboKadir(FindComponent('IGU')).EditValue) = ''
+       Then begin
+          ShowMessageSkin('ÝGU Grubu için Uzman Seçimi Yapmak Zorundasýnýz','','','info');
+          TcxImageComboKadir(FindComponent('IGU')).SetFocus;
+          exit;
+       end;
+  10 : if vartoStr(TcxImageComboKadir(FindComponent('sirketKodu')).EditValue) = ''
+       Then begin
+          ShowMessageSkin('OSGB Þirket Grubu için Þirket Seçimi Yapmak Zorundasýnýz','','','info');
+          TcxImageComboKadir(FindComponent('sirketKodu')).SetFocus;
+          exit;
+       end;
+  end;
+
+
+
+
   if TcxButton(sender).Tag = 9
   then begin
      c := chr(Random(65)+20);

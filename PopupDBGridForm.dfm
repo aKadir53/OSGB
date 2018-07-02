@@ -68,7 +68,7 @@ object frmPopupDBGridForm: TfrmPopupDBGridForm
       Left = 3
       Top = 36
       Width = 763
-      Height = 239
+      Height = 134
       Align = alClient
       Font.Charset = TURKISH_CHARSET
       Font.Color = clWindowText
@@ -80,10 +80,6 @@ object frmPopupDBGridForm: TfrmPopupDBGridForm
       LevelTabs.ImageBorder = 2
       LevelTabs.Style = 1
       ExceleGonder = False
-      ExplicitLeft = 2
-      ExplicitTop = 19
-      ExplicitWidth = 765
-      ExplicitHeight = 264
       object DBGrid: TcxGridDBTableView
         Navigator.Buttons.First.Visible = False
         Navigator.Buttons.PriorPage.Visible = False
@@ -103,7 +99,9 @@ object frmPopupDBGridForm: TfrmPopupDBGridForm
         Navigator.Buttons.Filter.Visible = False
         Navigator.Visible = True
         FilterBox.CustomizeDialog = False
-        DataController.DataSource = DATALAR.Doktorlar_DataSource
+        FilterBox.Position = fpTop
+        DataController.DataSource = DataSource1
+        DataController.Filter.Options = [fcoCaseInsensitive]
         DataController.Filter.Active = True
         DataController.Filter.TranslateBetween = True
         DataController.Filter.TranslateLike = True
@@ -114,12 +112,14 @@ object frmPopupDBGridForm: TfrmPopupDBGridForm
         Filtering.ColumnMRUItemsList = False
         FilterRow.InfoText = 'Arama Sat'#305'r'#305
         FilterRow.SeparatorWidth = 2
+        FilterRow.Visible = True
         FilterRow.ApplyChanges = fracImmediately
         NewItemRow.InfoText = 'Yeni Sat'#305'r Ekle'
         NewItemRow.SeparatorColor = clYellow
         NewItemRow.Visible = True
         OptionsBehavior.AlwaysShowEditor = True
         OptionsBehavior.FocusCellOnTab = True
+        OptionsBehavior.IncSearch = True
         OptionsCustomize.ColumnGrouping = False
         OptionsCustomize.ColumnHidingOnGrouping = False
         OptionsCustomize.ColumnsQuickCustomization = True
@@ -127,10 +127,10 @@ object frmPopupDBGridForm: TfrmPopupDBGridForm
         OptionsData.DeletingConfirmation = False
         OptionsView.NoDataToDisplayInfoText = 'Kay'#305't Yok'
         OptionsView.CellAutoHeight = True
-        OptionsView.DataRowHeight = 25
         OptionsView.GroupByBox = False
         OptionsView.Indicator = True
         OptionsView.RowSeparatorColor = clBlack
+        Styles.FilterBox = cxStyle2
         Styles.NewItemRowInfoText = cxStyle1
       end
       object cxGridDBBandedTableView5: TcxGridDBBandedTableView
@@ -336,20 +336,35 @@ object frmPopupDBGridForm: TfrmPopupDBGridForm
       TabOrder = 1
       Visible = False
       BosOlamaz = False
-      ExplicitLeft = 2
-      ExplicitTop = -2
-      ExplicitWidth = 765
       Width = 763
+    end
+    object GrpAciklama: TcxGroupBox
+      Left = 3
+      Top = 170
+      Align = alBottom
+      TabOrder = 2
+      Visible = False
+      Height = 105
+      Width = 763
+      object txtAciklama: TcxDBRichEdit
+        Left = 3
+        Top = 22
+        Align = alClient
+        DataBinding.DataField = 'aciklama'
+        TabOrder = 0
+        Height = 80
+        Width = 757
+      end
     end
   end
   object PopupMenu1: TPopupMenu
+    Images = DATALAR.imag24png
     Left = 568
     Top = 96
     object K1: TMenuItem
+      Tag = 9999
       Caption = 'Kapat'
-    end
-    object H1: TMenuItem
-      Caption = 'Hem'#351'ire '#304'zlem'
+      OnClick = cxKaydetClick
     end
   end
   object ListeNaceKods: TListeAc
@@ -391,5 +406,18 @@ object frmPopupDBGridForm: TfrmPopupDBGridForm
       Font.Name = 'Tahoma'
       Font.Style = [fsBold]
     end
+    object cxStyle2: TcxStyle
+      AssignedValues = [svColor, svFont]
+      Color = 16777088
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -11
+      Font.Name = 'Tahoma'
+      Font.Style = [fsBold]
+    end
+  end
+  object DataSource1: TDataSource
+    Left = 176
+    Top = 144
   end
 end

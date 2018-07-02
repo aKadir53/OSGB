@@ -104,7 +104,7 @@ type
     procedure AfterPost(DataSet: TDataSet);
     procedure BeforePost(DataSet: TDataSet);
     procedure BeforeEdit(DataSet: TDataSet);
-
+    procedure BeforeDelete(DataSet: TDataSet);
     procedure ButtonClick(Sender: TObject);
     procedure FaturaSatirTutarCustomDrawFooterCell(Sender: TcxGridTableView;
       ACanvas: TcxCanvas; AViewInfo: TcxGridColumnHeaderViewInfo;
@@ -120,6 +120,7 @@ type
     procedure RDSSatirlarNavigatorButtonsButtonClick(Sender: TObject;
       AButtonIndex: Integer; var ADone: Boolean);
     procedure SirketlerPropertiesChange(Sender: TObject);
+    procedure SatirSil(rowid : string);
  //   function EArsivGonder(FaturaId : string) : string;
  //   function EArsivIptal(FaturaGuid : string) : string;
  //   function EArsivPDF(FaturaGuid : string ; _tag_ : integer) : string;
@@ -162,6 +163,13 @@ begin
     Result := CreateFontIndirect(ALogFont);
 end;
 
+procedure TfrmSirketSahaGozetim.SatirSil(rowid : string);
+var
+  sql : string;
+begin
+  sql := 'delete from SirketSahaGozetimDetay where id = ' + QuotedStr(rowid);
+  datalar.QueryExec(sql);
+end;
 
 procedure TfrmSirketSahaGozetim.SirketlerPropertiesChange(Sender: TObject);
 var
@@ -400,6 +408,7 @@ begin
 
   case AButtonIndex of
    6 : begin
+        datalar.Risk.RiskID := '';
         datalar.Risk.Onlemler := '';
         datalar.Risk.SSGBolum := -1;
         datalar.Risk.SSGYapilacakFaliyetTuru := -1;
@@ -429,6 +438,10 @@ begin
         end;
         end;
     end;
+   8 : begin
+       //  SatirSil(SahaGozetimGrid.Dataset.FieldByName('id').AsString);
+       //  FaturaDetay;
+       end;
 
    9 : begin
         dataRead;
@@ -548,6 +561,11 @@ begin
   // Satirlar.DataController.Dataset.DataSource.DataSet.Properties['Unique Table'].Value := 'SirketSahaGozetimDetay';
 end;
 
+procedure TfrmSirketSahaGozetim.BeforeDelete(DataSet: TDataSet);
+begin
+   SahaGozetimGrid.DataSet.Properties['Unique Table'].Value := 'SirketSahaGozetimDetay';
+end;
+
 procedure TfrmSirketSahaGozetim.BeforePost(DataSet: TDataSet);
 begin
 
@@ -591,16 +609,18 @@ begin
         end;
   -24:begin
        dosya := TOpenDialog.Create(nil);
+       DurumGoster;
        try
          if not dosya.Execute then Exit;
          DokumanYukle(Satirlar.DataController.Dataset,'Image',dosya.FileName);
        finally
          dosya.free;
+         DurumGoster(False);
        end;
 
       end;
   -25 : begin
-          DokumanAc(Satirlar.DataController.Dataset,'Image','DOFBelge');
+          DokumanAc(Satirlar.DataController.Dataset,'Image','DOFBelge_'+Satirlar.DataController.Dataset.FieldByName('id').AsString);
         end;
   end;
 end;
@@ -641,11 +661,11 @@ begin
   else
     where := ' hazirlayan = ' + QuotedStr(datalar.IGU);
 
-  Faturalar := ListeAcCreate('SirketSahaGozetim_view','id,sirketKod,sirketAdi,date_create',
-                       'ID,ÞirketKodu,ÞirketAdý,Tarihi',
-                       '40,60,250,80','ID','Saha Gözetimleri',where,5,True);
+  Faturalar := ListeAcCreate('SirketSahaGozetim_view','id,sirketKod,sirketAdi,date_create,RDS_ID',
+                       'ID,ÞirketKodu,ÞirketAdý,Tarihi,RiskID',
+                       '40,60,250,80,50','ID','Saha Gözetimleri',where,5,True);
 
-  setDataStringB(self,'id','Gozetim ID',Kolon1,'trh',50,Faturalar,True,nil,'','',True,True,-100);
+  setDataStringB(self,'id','ID',Kolon1,'trh',50,Faturalar,True,nil,'','',True,True,-100);
   TcxButtonEditKadir(FindComponent('id')).Identity := True;
 
   FaturaTarihi := TcxDateEditKadir.Create(Self);
@@ -693,6 +713,7 @@ begin
   setDataStringKontrol(self,Onay,'Onay','Onay',kolon4,'trh',50);
   OrtakEventAta(Onay);
 
+  setDataString(self,'RDS_ID','Risk ID',Kolon1,'trh',50,false,'',False);
 
 (*
   try
@@ -719,6 +740,8 @@ begin
   SahaGozetimGrid.Dataset.BeforePost := BeforePost;
   SahaGozetimGrid.Dataset.AfterScroll := AfterScroll;
   SahaGozetimGrid.Dataset.BeforeEdit := BeforeEdit;
+  SahaGozetimGrid.Dataset.BeforeDelete := BeforeDelete;
+
 
 
   kolon2.Visible := false;

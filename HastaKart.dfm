@@ -164,8 +164,8 @@ object frmHastaKart: TfrmHastaKart
     Width = 121
   end
   object cxFotoPanel: TcxGroupBox
-    Left = 648
-    Top = 35
+    Left = 647
+    Top = 19
     Caption = 'Foto'
     TabOrder = 7
     Height = 149
@@ -569,6 +569,7 @@ object frmHastaKart: TfrmHastaKart
     Width = 513
     Height = 109
     TabOrder = 12
+    Visible = False
     ExceleGonder = False
     object GridList: TcxGridDBBandedTableView
       DataController.DataSource = DataSource1
@@ -684,14 +685,13 @@ object frmHastaKart: TfrmHastaKart
     end
   end
   object GridPersonelEgitim: TcxGridKadir
-    Left = 46
+    Left = 8
     Top = 186
     Width = 709
     Height = 109
     TabOrder = 13
     ExceleGonder = False
     object GridEgitim: TcxGridDBBandedTableView
-      DataController.DataSource = DataSource1
       DataController.Summary.DefaultGroupSummaryItems = <>
       DataController.Summary.FooterSummaryItems = <>
       DataController.Summary.SummaryGroups = <>
@@ -901,8 +901,8 @@ object frmHastaKart: TfrmHastaKart
   end
   object DataSource1: TDataSource
     DataSet = ADO_Gelisler
-    Left = 104
-    Top = 152
+    Left = 48
+    Top = 120
   end
   object cxStyleRepository1: TcxStyleRepository
     Left = 224
@@ -930,8 +930,8 @@ object frmHastaKart: TfrmHastaKart
   object ADO_Gelisler: TADOQuery
     Connection = DATALAR.ADOConnection2
     Parameters = <>
-    Left = 40
-    Top = 152
+    Left = 16
+    Top = 120
   end
   object ListeAc3: TListeAc
     ListeBaslik = 'Primer Tanilar (Hastal'#305'klar)'

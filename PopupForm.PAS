@@ -281,9 +281,20 @@ begin
             then
                TcxImageComboKadir(FindComponent('TehlikeKaynak')).Filter := '';
          end;
-   22 : begin
+    22 : begin
            ShowPopupForm('Tehlike Kaynak Ekle',yeniKKDEkle,'','KKDTanimEkleForm')
         end;
+    23 : begin
+           ShowPopupForm('Tehlike Ekle',yeniTehlike,'','RiskTanimEkleForm')
+
+
+        end;
+    24 : begin
+           if mrYes = ShowPopupForm('Etkilenecekler Ekle',yeniEkilenecekler,'','RiskTanimEkleForm')
+           then
+             TcxImageComboKadir(FindComponent('Etkilenecekler')).Filter := '';
+         end;
+
 
   98,99 : begin
           open := TOpenDialog.Create(self);
@@ -599,27 +610,45 @@ riskDuzenle,yeniRisk :
               datalar.KKD.KKD := TcxButtonEditKadir(FindComponent('KKD')).Text;
               datalar.KKD.TSE := TcxButtonEditKadir(FindComponent('TS_EN_KODLARI')).EditText;
               datalar.KKD.KullanilacakIs := TcxButtonEditKadir(FindComponent('KullanilacakIS')).EditText;
+              datalar.KKD.Bolum := TcxImageComboKadir(FindComponent('RiskBolum')).EditValue;
 
             end;
 
 
    yeniRiskBolum ,
    yeniTehlikeKaynak,
+   yeniTehlike,
+   yeniEkilenecekler,
    yeniKKDEkle
               :
               begin
 
                  case TfrmPopup(self).islem_ of
                    yeniRiskBolum :
+                         begin
                           datalar.QueryExec('insert into RDS_RiskBolum (tanimi) values(' +
                                              QuotedStr(TcxTextEditKadir(FindComponent('RiskBolum')).EditingValue) +
                                              ')');
-
-
+                         end;
                    yeniTehlikeKaynak :
+                         begin
                           datalar.QueryExec('insert into RDS_TehlikeKaynak (tanimi) values(' +
                                              QuotedStr(TcxTextEditKadir(FindComponent('TehlikeKaynak')).EditingValue) +
                                              ')');
+                         end;
+                   yeniTehlike :
+                         begin
+                          datalar.QueryExec('insert into RDS_Tehlike (tanimi) values(' +
+                                             QuotedStr(TcxTextEditKadir(FindComponent('Tehlike')).EditingValue) +
+                                             ')');
+                         end;
+
+                   yeniEkilenecekler :
+                        begin
+                          datalar.QueryExec('insert into RDS_Etkilenecekler (tanimi) values(' +
+                                             QuotedStr(TcxTextEditKadir(FindComponent('yeniEkilenecekler')).EditingValue) +
+                                             ')');
+                        end;
 
                    yeniKKDEkle :
                          datalar.QueryExec('insert into KKD (tanimi) values(' +
@@ -702,6 +731,20 @@ riskDuzenle,yeniRisk :
 
               end;
 
+    FirmaUzmanDegistir,FirmaDoktorDegistir :
+             begin
+                if self.islem_ = FirmaUzmanDegistir
+                then
+                  datalar.GirisFormRecord.F_Igu_ := vartostr(TcxImageComboKadir(FindComponent('Uzman')).EditValue)
+                else
+                 datalar.GirisFormRecord.F_Doktor_ := vartostr(TcxImageComboKadir(FindComponent('Uzman')).EditValue);
+             end;
+
+    PersonelSirketDegistir :
+             begin
+                 datalar.GirisFormRecord.F_firmaKod_ := vartostr(TcxImageComboKadir(FindComponent('sirketKod')).EditValue);
+                 datalar.GirisFormRecord.F_sube_ := vartostr(TcxImageComboKadir(FindComponent('subeKod')).EditValue);
+             end;
 
     yeniFaaliyet,
     FaaliyetDuzenle :
@@ -735,6 +778,14 @@ riskDuzenle,yeniRisk :
 
              end;
 
+    PersonelTetkisIste :
+             begin
+                 datalar.PersonelTetkikler.Tetkik :=
+                   TcxCheckGroupKadir(FindComponent('istemler')).getItemCheckString;
+
+
+             end;
+
   end;
 end;
 
@@ -754,7 +805,7 @@ end;
 procedure TfrmPopup.FormShow(Sender: TObject);
 var
   ilacList : TlisteAc;
-  Doktorlar,kulYolList : TcxImageComboKadir;
+  Doktorlar,kulYolList,sirketKos,subeKod,tetkikIstemGrupSablon : TcxImageComboKadir;
   txtTetkikIstem : TcxCheckGroupKadir;
   TabCaption ,TahsilatOdemeTipCaption : string;
   Image1 : TcxImage;
@@ -922,6 +973,61 @@ inherited;
           TcxTextEdit(FindComponent('islemAciklamasi')).Text := datalar.TeleEkg.ack;
           ClientHeight := 270;
           ClientWidth := 400;
+       end;
+
+   FirmaUzmanDegistir,FirmaDoktorDegistir :
+       begin
+          ClientHeight := 200;
+          ClientWidth := 310;
+
+          Doktorlar := TcxImageComboKadir.Create(self);
+          Doktorlar.Conn := Datalar.ADOConnection2;
+          Doktorlar.ValueField := 'Kod';
+          Doktorlar.DisplayField := 'Tanimi';
+
+          if frmPopup.islem_ = FirmaUzmanDegistir
+          Then begin
+            Doktorlar.TableName := 'IGU';
+            setDataStringKontrol(self,Doktorlar, 'Uzman','Ýþ Güvenlik Uzmaný',Kolon1,'',120);
+          end
+          Else begin
+            Doktorlar.TableName := 'DoktorlarT';
+            setDataStringKontrol(self,Doktorlar, 'Uzman','Ýþ Yeri Hekimi',Kolon1,'',120);
+          end;
+          Doktorlar.Filter := ' durum = ''Aktif''';
+
+
+       end;
+
+   PersonelSirketDegistir :
+       begin
+          ClientHeight := 250;
+          ClientWidth := 330;
+
+          setDataStringBLabel(self,'ackSatir',kolon1,'',300,'Ýþlem Görmeyen Kartlar Taþýnacaktýr');
+
+          Doktorlar := TcxImageComboKadir.Create(self);
+          Doktorlar.Name := 'sirketKod';
+      //    Doktorlar.Tag := -20;
+          Doktorlar.Conn := Datalar.ADOConnection2;
+          Doktorlar.TableName := 'SIRKETLER_TNM';
+          Doktorlar.ValueField := 'sirketKod';
+          Doktorlar.DisplayField := 'Tanimi';
+          Doktorlar.Filter := '';
+          TcxImageComboKadir(FindComponent('sirketKod')).Properties.OnEditValueChanged := PropertiesEditValueChanged;
+          setDataStringKontrol(self,Doktorlar, 'sirketKod','Firma',Kolon1,'',250);
+
+
+          Doktorlar := TcxImageComboKadir.Create(self);
+          Doktorlar.Name := 'subeKod';
+          Doktorlar.Conn := Datalar.ADOConnection2;
+          Doktorlar.TableName := 'SIRKETLER_TNM_view';
+          Doktorlar.ValueField := 'subeKod';
+          Doktorlar.DisplayField := 'subeTanim';
+         // Doktorlar.Filter := '';
+          setDataStringKontrol(self,Doktorlar, 'subeKod','Þube',Kolon1,'',120);
+
+
        end;
 
   gdgelisDuzenle :
@@ -1205,7 +1311,8 @@ ptPersonelTetkikleri :
                     ICombo.Filter := '';
                     setDataStringKontrol(self,ICombo,'Tehlike','Tehlike',Kolon1,'',300);
                    *)
-                    setDataStringB(self,'Tehlike','Tehlike',Kolon1,'',250,List,False,nil,'','',False,True,-100);
+                    setDataStringB(self,'Tehlike','Tehlike',Kolon1,'Teh',250,List,False,nil,'','',False,True,-100);
+                    addButton(self,nil,'btnTehlikeEkle','','Ekle',Kolon1,'Teh',40,ButtonClick,23);
                     TcxButtonEditKadir(FindComponent('Tehlike')).Properties.OnButtonClick := PropertiesButtonClick;
                     TcxButtonEditKadir(FindComponent('Tehlike')).EditValue := datalar.Risk.Tehlike;
 
@@ -1219,7 +1326,8 @@ ptPersonelTetkikleri :
                     ICombo.ValueField := 'Kod';
                     ICombo.DisplayField := 'tanimi';
                     ICombo.Filter := '';
-                    setDataStringKontrol(self,ICombo,'Etkilenecekler','Etkilenecekler',Kolon1,'',250);
+                    setDataStringKontrol(self,ICombo,'Etkilenecekler','Etkilenecekler',Kolon1,'Etki',250);
+                    addButton(self,nil,'btnEtkileneceklerEkle','','Ekle',Kolon1,'Etki',40,ButtonClick,24);
                     TcxImageComboKadir(FindComponent('Etkilenecekler')).EditValue := datalar.Risk.Etkilenecek;
 
                     setDataStringB(self,'Risk_tanimi','Risk Taným',Kolon1,'',250,List,False,nil,'','',False,True,-100);
@@ -1630,6 +1738,18 @@ ptPersonelTetkikleri :
                   setDataString(self,'KullanilacakIS','KullanilacakIS',Kolon1,'',250);
                   TcxTextEditKadir(FindComponent('KullanilacakIS')).EditingText := datalar.KKD.KullanilacakIs;
 
+                  ICombo := TcxImageComboKadir.Create(self);
+                  ICombo.Name := 'RiskBolum';
+                  ICombo.Tag := -1;
+                  ICombo.Conn := datalar.ADOConnection2;
+                  ICombo.TableName := 'RDS_RiskBolum';
+                  ICombo.ValueField := 'Kod';
+                  ICombo.DisplayField := 'tanimi';
+                  ICombo.Filter := '';
+                  setDataStringKontrol(self,ICombo,'RiskBolum','Risk Bölümü',Kolon1,'',250);
+              //    addButton(self,nil,'btnRiskBolumEkle','','Ekle',Kolon1,'RB',40,ButtonClick,20);
+                  TcxImageComboKadir(FindComponent('RiskBolum')).EditValue := datalar.KKD.Bolum;
+
                   (*
                   setDataStringB(self,'Risk_tanimi','Risk Taným',Kolon1,'',250,List,False,nil,'','',False,True,-100);
                   TcxButtonEditKadir(FindComponent('Risk_tanimi')).Properties.OnButtonClick := PropertiesButtonClick;
@@ -1641,6 +1761,8 @@ ptPersonelTetkikleri :
 
    yeniRiskBolum ,
    yeniTehlikeKaynak,
+   yeniTehlike,
+   yeniEkilenecekler,
    yeniKKDEkle
               :
               begin
@@ -1652,6 +1774,8 @@ ptPersonelTetkikleri :
                  case TfrmPopup(self).islem_ of
                    yeniRiskBolum : setDataString(self,'RiskBolum','Risk Bölüm',Kolon1,'',200,True,'',False,0,'',ecUpperCase);
                    yeniTehlikeKaynak : setDataString(self,'TehlikeKaynak','Tehlike Kaynaðý',Kolon1,'',200,True,'',False,0,'',ecUpperCase);
+                   yeniTehlike : setDataString(self,'Tehlike','Tehlike',Kolon1,'',200,True,'',False,0,'',ecUpperCase);
+                   yeniEkilenecekler : setDataString(self,'yeniEkilenecekler','Ekilenecekler',Kolon1,'',200,True,'',False,0,'',ecUpperCase);
                    yeniKKDEkle : setDataString(self,'KKD','Kiþisel Koruyucu Donaným',Kolon1,'',200,True,'',False,0,'',ecUpperCase);
                  end;
 
@@ -1757,6 +1881,31 @@ ptPersonelTetkikleri :
 
                 end;
 
+
+   PersonelTetkisIste :
+               begin
+                      ClientHeight := 320;
+                      tetkikIstemGrupSablon := TcxImageComboKadir.Create(self);
+                      tetkikIstemGrupSablon.Conn := datalar.ADOConnection2;
+                      tetkikIstemGrupSablon.TableName := 'tetkikIstemGrupSablon';
+                      tetkikIstemGrupSablon.ValueField := 'kod';
+                      tetkikIstemGrupSablon.DisplayField := 'tanimi';
+                      tetkikIstemGrupSablon.Filter := '';
+                      setDataStringKontrol(self,tetkikIstemGrupSablon,'tetkikIstemGrupSablon','',kolon1,'',250);
+                      TcxImageComboKadir(FindComponent('tetkikIstemGrupSablon')).Properties.OnEditValueChanged := PropertiesEditValueChanged;
+
+                      txtTetkikIstem := TcxCheckGroupKadir.Create(self);
+                      txtTetkikIstem.Properties.EditValueFormat := cvfStatesString;
+                      txtTetkikIstem.Alignment := alCenterCenter;
+                      txtTetkikIstem.Conn := Datalar.ADOConnection2;
+                      txtTetkikIstem.Name := 'txtTetkikIstem';
+                      txtTetkikIstem.TableName := 'TetkikIstemSablonItem';
+                      txtTetkikIstem.ValueField := 'id';
+                      txtTetkikIstem.DisplayField := 'tanimi';
+                      setDataStringKontrol(self,txtTetkikIstem,'istemler','',Kolon1,'',250,150);
+
+               end;
+
   end;
 
 
@@ -1766,6 +1915,20 @@ end;
 procedure TfrmPopup.PropertiesEditValueChanged(Sender: TObject);
 begin
   inherited;
+
+
+  if TcxImageComboKadir(sender).Name = 'tetkikIstemGrupSablon'
+  Then begin
+    TcxCheckGroupKadir(FindComponent('istemler')).Filter := ' SablonGrupKod = ' +
+      vartoStr(TcxImageComboKadir(FindComponent('tetkikIstemGrupSablon')).EditValue);
+  end;
+
+  if TcxImageComboKadir(sender).Name = 'sirketKod'
+  Then begin
+    TcxImageComboKadir(FindComponent('subeKod')).Filter :=
+    ' sirketKod = ' + QuotedStr(vartoStr(TcxImageComboKadir(FindComponent('sirketKod')).EditValue));
+  end;
+
   if TcxImageComboKadir(sender).Tag = -3
   Then begin
     if TcxImageComboKadir(FindComponent('OdemeTip')).EditingValue = 1

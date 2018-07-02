@@ -11,7 +11,7 @@ uses
   dxNavBarCollns,JPEG, Vcl.StdCtrls,pngimage, cxContainer, cxEdit, cxImage,
   cxTextEdit, cxCurrencyEdit, dxSkinsCore, dxSkinBlue, dxSkinCaramel,
   dxSkinCoffee, dxSkiniMaginary, dxSkinLilian, dxSkinLiquidSky,
-  dxSkinLondonLiquidSky, dxSkinMcSkin, dxSkinMoneyTwins, dxSkinsDefaultPainters,
+  dxSkinLondonLiquidSky, dxSkinsDefaultPainters,
   dxSkinsdxNavBarPainter,GetFormClass, dxSkinscxSchedulerPainter,
    cxStyles, cxScheduler, cxSchedulerStorage, cxSchedulerCustomControls,
   cxSchedulerCustomResourceView, cxSchedulerDayView, cxSchedulerDateNavigator,
@@ -28,7 +28,7 @@ uses
   cxDropDownEdit, cxImageComboBox, Data.SqlExpr, cxCustomData, cxFilter, cxData,
   cxDataStorage, cxDBData, cxMemo, cxGridLevel, cxGridBandedTableView,
   cxGridDBBandedTableView, cxGridCustomTableView, cxGridTableView,
-  cxGridDBTableView, cxGridCustomView, cxGrid, DB;
+  cxGridDBTableView, cxGridCustomView, cxGrid, DB, cxLabel, acPNG;
 
 type
   TAnaForm = class(TForm)
@@ -135,6 +135,10 @@ type
     cxStyleRepository1: TcxStyleRepository;
     cxStyle1: TcxStyle;
     AjandaGridSatirlarColumn3: TcxGridDBBandedColumn;
+    FotoPanel: TcxGroupBox;
+    cxAdi: TcxLabel;
+    cxGrupAdi: TcxLabel;
+    Foto: TcxImage;
     procedure FormCreate(Sender: TObject);
     procedure ToolButton1Click(Sender: TObject);
     procedure FormResize(Sender: TObject);
@@ -546,10 +550,15 @@ begin
   FormatSettings.DecimalSeparator := '.';
   FormatSettings.ThousandSeparator := ',';
  // FormatSettings.ShortDateFormat := 'gg.aa.yyyy';
+
+ (*
+  datalar._YazilimGelistirici := RegOku('OSGB_YazilimGelistirici');
   if DATALAR._YazilimGelistirici = 1 then
     caption := 'Mavi Nokta Bilgi Teknolojileri Ýþ Saðlýðý ve Güvenliði'
   else if DATALAR._YazilimGelistirici = 2 then
     caption := 'Uyumsoft Ýþ Saðlýðý ve Güvenliði';
+  *)
+
   Sayfalar.Properties.CloseButtonMode := cbmNone;
   WebBrowser1.Navigate('https://www.noktayazilim.net/destek/GenelMesajlar2.aspx?Tip=O');
 
@@ -578,6 +587,19 @@ var
  sube , Where : string;
 begin
 
+  if pos('UYUM',paramStr(0)) > 0
+  then begin
+    Caption := 'Uyumsoft Bilgi Sistemleri ve Teknolojileri A.Þ.';
+    Datalar.YazilimFirma := 'UYUM';
+  end
+  Else
+  Begin
+    Caption := 'Mavi Nokta Bilgi Teknolojileri LTD.ÞTÝ.';
+    Datalar.YazilimFirma := 'Nokta';
+  End;
+  Datalar.StandartFormCaption := Caption;
+
+
   if datalar.DoktorKodu <> '' then
   begin
     where := '';
@@ -588,6 +610,7 @@ begin
   begin
     where := '';
     sube := ' IGU = ' + QuotedStr(datalar.IGU);
+
   end
   else
   if datalar.DSPers <> '' then
@@ -675,6 +698,15 @@ begin
   dxStatusBar1.Panels[3].Width := length(dxStatusBar1.Panels[3].Text) * 8;
   dxStatusBar1.Panels[5].Text := 'Versiyon : ' + datalar.versiyon;
   SetUserInfo;
+
+
+  Foto.Picture.Assign(datalar.Foto);
+
+
+
+  cxAdi.Caption := datalar.userTanimi;
+  cxGrupAdi.Caption := datalar.UserGroupName;
+
 end;
 
 procedure TAnaForm.MainMenuKadir1DragDrop(Sender, Source: TObject; X,

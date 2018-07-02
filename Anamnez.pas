@@ -39,6 +39,10 @@ type
     R2: TMenuItem;
     Y1: TMenuItem;
     R3: TMenuItem;
+    cxStyleRepository1: TcxStyleRepository;
+    cxStyle1: TcxStyle;
+    cxStyleRepository2: TcxStyleRepository;
+    cxStyle2: TcxStyle;
     procedure cxKaydetClick(Sender: TObject);override;
     procedure cxTextEditKeyDown(Sender: TObject; var Key: Word;
       Shift: TShiftState);

@@ -8,7 +8,7 @@ uses
   cxStyles, cxCustomData, cxFilter, cxData, cxDataStorage, cxEdit, DB,
   cxDBData, ADODB, cxGridLevel, cxClasses, cxGridCustomView,
   cxGridCustomTableView, cxGridTableView, cxGridDBTableView, cxGrid,
-  kadir, kadirMedula3, KadirType,GetFormClass,GirisUnit,
+  kadir, kadirMedula3, KadirType,GetFormClass,GirisUnit,dxLayoutContainer,
   StdCtrls, Buttons, sBitBtn, ExtCtrls, cxContainer, cxLabel, cxTextEdit, cxGridExportLink,
   cxMaskEdit, cxDropDownEdit, cxCalendar, sCheckBox, dxSkinsCore,
   dxSkinsDefaultPainters, dxSkinscxPCPainter, dxSkinBlack, dxSkinBlue,
@@ -113,6 +113,8 @@ type
     procedure SirketlerPropertiesChange(Sender: TObject);
     procedure cxKaydetClick(Sender: TObject);override;
     procedure ButtonClick(Sender: TObject);
+    procedure cxButtonEditPropertiesButtonClick(Sender: TObject;
+     AButtonIndex: Integer);override;
 
   private
     { Private declarations }
@@ -139,6 +141,58 @@ implementation
 uses data_modul, StrUtils, Jpeg;
 
 {$R *.dfm}
+
+procedure TfrmCihazKontrol.cxButtonEditPropertiesButtonClick(Sender: TObject;
+  AButtonIndex: Integer);
+begin
+    inherited;
+    if TcxButtonEditKadir(FindComponent('id')).Text = '' then exit;
+
+    if (vartostr(TcxTextEditKadir(FindComponent('IGU')).EditValue) <>
+       datalar.IGU)
+       //and TcxImageComboKadir(FindComponent('Onay')).EditValue = 1
+    then begin
+       CihazSoruSatir.OptionsData.Editing := False;
+       CihazSoruSatir.OptionsData.Inserting := False;
+       CihazSoruSatir.OptionsData.Deleting := False;
+
+       TcxImageComboKadir(FindComponent('SirketKod')).Enabled := False;
+       TcxTextEditKadir(FindComponent('IGU')).Enabled := False;
+       TcxImageComboKadir(FindComponent('KontrolCihaz')).Enabled := False;
+       TcxImageComboKadir(FindComponent('KontrolTip')).Enabled := False;
+       TcxDateEditKadir(FindComponent('Tarih')).Enabled := False;
+       TcxTextEditKadir(FindComponent('FaaliyetAlani')).Enabled := False;
+       TcxTextEditKadir(FindComponent('CihazServisVeren')).Enabled := False;
+       TcxTextEditKadir(FindComponent('CihazServisTel')).Enabled := False;
+       TcxTextEditKadir(FindComponent('sorumluYonetici')).Enabled := False;
+       TcxTextEditKadir(FindComponent('sorumlu')).Enabled := False;
+
+      // TcxImageComboKadir(FindComponent('Onay')).Enabled := False;
+
+    end
+    else
+    begin
+       CihazSoruSatir.OptionsData.Editing := True;
+       CihazSoruSatir.OptionsData.Inserting := True;
+       CihazSoruSatir.OptionsData.Deleting := True;
+
+       TcxImageComboKadir(FindComponent('SirketKod')).Enabled := True;
+       TcxTextEditKadir(FindComponent('IGU')).Enabled := True;
+       TcxImageComboKadir(FindComponent('KontrolCihaz')).Enabled := True;
+       TcxImageComboKadir(FindComponent('KontrolTip')).Enabled := True;
+       TcxDateEditKadir(FindComponent('Tarih')).Enabled := True;
+       TcxTextEditKadir(FindComponent('FaaliyetAlani')).Enabled := True;
+       TcxTextEditKadir(FindComponent('CihazServisVeren')).Enabled := True;
+       TcxTextEditKadir(FindComponent('CihazServisTel')).Enabled := True;
+       TcxTextEditKadir(FindComponent('sorumluYonetici')).Enabled := True;
+       TcxTextEditKadir(FindComponent('sorumlu')).Enabled := True;
+
+
+    //   TcxImageComboKadir(FindComponent('Onay')).Enabled := True;
+    end;
+
+
+end;
 
 
 procedure TfrmCihazKontrol.CihazKontrolSoruSil(kontrolId : string);
@@ -276,14 +330,32 @@ begin
 
   end;
 
+  if TcxImageComboKadir(Sender).Name = 'KontrolTip'
+  Then begin
+   if TcxImageComboKadir(FindComponent('KontrolTip')).EditingValue = 1
+   then begin
+    TdxLayoutItem(FindComponent('dxLaServisSonucDurum')).Visible := False;
+    TdxLayoutItem(FindComponent('dxLaCihazSoruGrid')).Visible := True;
+   end
+   else
+   begin
+    TdxLayoutItem(FindComponent('dxLaServisSonucDurum')).Visible := True;
+    TdxLayoutItem(FindComponent('dxLaCihazSoruGrid')).Visible := False;
+   end;
+
+
+  end;
+
   if TcxImageComboKadir(Sender).Name = 'KontrolCihaz'
   Then begin
+   if TcxImageComboKadir(FindComponent('KontrolTip')).EditingValue = 1
+   then begin
      if TcxImageComboKadir(FindComponent('KontrolCihaz')).EditingValue = null then  exit;
 
      if not datalar.QuerySelect('select * from  CihazKontrolDetay where kontrolid = ' + vartostr(TcxButtonEditKadir(FindComponent('id')).EditingValue) +
                            ' and (KontrolSoruCvp is not null or isnull(KontrolSoruCvpAciklama,'''') <> '''')').Eof
      Then begin
-       TcxImageComboKadir(Sender).EditValue := sqlRun.FieldByName('KontrolCihaz').AsVariant;
+      // TcxImageComboKadir(Sender).EditValue := sqlRun.FieldByName('KontrolCihaz').AsVariant;
        CihazKontrolSoruEdit(vartostr(TcxImageComboKadir(FindComponent('KontrolCihaz')).EditingValue),
                             vartostr(TcxButtonEditKadir(FindComponent('id')).EditingValue));
      end
@@ -306,6 +378,7 @@ begin
      CihazSoruGrid.Dataset.SQL.Text :=  'select * from  CihazKontrolDetay where kontrolid = ' +
                         vartostr(TcxButtonEditKadir(FindComponent('id')).EditingValue);
      CihazSoruGrid.Dataset.Active := True;
+   end;
   end;
 
 end;
@@ -355,6 +428,7 @@ begin
   sirketlerx.Filter := '';
   setDataStringKontrol(self,sirketlerx,'KontrolTip','Kontrol Tipi',kolon1,'',100);
   OrtakEventAta(sirketlerx);
+  TcxImageComboKadir(FindComponent('KontrolTip')).Properties.OnEditValueChanged := SirketlerPropertiesChange;
 
 
   sirketlerx := TcxImageComboKadir.Create(self);
@@ -399,8 +473,12 @@ begin
 
 
   setDataStringKontrol(self,CihazGrid,'CihazGrid','',Kolon1,'',430,200,alNone,'');
+
+  setDataStringMemo(self,'ServisSonucDurum','Servis Sonuç' ,Kolon2,'',500,460);
   setDataStringKontrol(self,CihazSoruGrid,'CihazSoruGrid','',Kolon2,'',500,460,alNone,'');
 
+  TdxLayoutItem(FindComponent('dxLaServisSonucDurum')).Visible := False;
+  TdxLayoutItem(FindComponent('dxLaCihazSoruGrid')).Visible := False;
 
 
   SayfaCaption('Ekipman Kontrol','','','','');

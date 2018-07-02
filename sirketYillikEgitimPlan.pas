@@ -521,6 +521,9 @@ begin
   FaturaTarihi := TcxDateEditKadir.Create(Self);
   FaturaTarihi.ValueTip := tvDate;
   setDataStringKontrol(self,FaturaTarihi,'date_create','Hazýrlama Tarihi',Kolon1,'trh',80);
+  FaturaTarihi := TcxDateEditKadir.Create(Self);
+  FaturaTarihi.ValueTip := tvDate;
+  setDataStringKontrol(self,FaturaTarihi,'gecerlilik','Geçerlilik Tarihi',Kolon1,'trh',80);
 
 
   sirketlerx := TcxImageComboKadir.Create(self);

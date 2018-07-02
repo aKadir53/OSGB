@@ -4,11 +4,13 @@ interface
 
 uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
-  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, cxGraphics, cxControls, cxLookAndFeels,
-  cxLookAndFeelPainters, dxSkinsCore, dxSkinLilian, dxSkinsDefaultPainters,Registry,
-  dxActivityIndicator, cxContainer, cxEdit, cxLabel, cxProgressBar,ShellApi,TlHelp32,
-  IdBaseComponent, IdComponent, IdTCPConnection, IdTCPClient, IdHTTP, Vcl.Menus,
-  Vcl.StdCtrls, cxButtons, dxStatusBar, Vcl.ExtCtrls,ShlObj,ActiveX,ComObj;
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, cxGraphics, cxControls,
+  cxLookAndFeelPainters, dxSkinsCore,  dxSkinsDefaultPainters,Registry,
+   cxContainer, cxEdit, cxLabel, cxProgressBar,ShellApi,TlHelp32,
+  IdBaseComponent, IdComponent, IdTCPConnection, IdTCPClient, IdHTTP,
+  Vcl.StdCtrls, cxButtons, dxStatusBar, Vcl.ExtCtrls,ShlObj,ActiveX,ComObj,
+  dxSkinsdxStatusBarPainter, acPNG,
+  Menus,cxLookAndFeels, dxSkinsForm;
 
 type
   TfrmYv = class(TForm)
@@ -18,6 +20,9 @@ type
     cxButton1: TcxButton;
     dxStatusBar1: TdxStatusBar;
     Timer1: TTimer;
+    UyumImage: TImage;
+    NoktaImage: TImage;
+    dxSkinController1: TdxSkinController;
     procedure HTTP1WorkBegin(ASender: TObject; AWorkMode: TWorkMode;
       AWorkCountMax: Int64);
     procedure cxButton1Click(Sender: TObject);
@@ -27,11 +32,16 @@ type
     procedure Timer1Timer(Sender: TObject);
     function KillTaskt(Dosyadi: string): integer;
     function DesktopPath : string;
+    procedure FormShow(Sender: TObject);
   private
     { Private declarations }
   public
     { Public declarations }
   end;
+
+const
+  UYUM = 'UYUMOSGB.exe';
+  Nokta = 'OSGB.exe';
 
 var
   frmYv: TfrmYv;
@@ -63,6 +73,28 @@ begin
  theReg.Free;
 end;
 
+
+procedure TfrmYv.FormShow(Sender: TObject);
+var
+  p : string;
+begin
+  p := paramStr(0);
+  if pos('UYUM',p) > 0
+  then begin
+    Caption := 'Uyumsoft Bilgi Sistemleri ve Teknolojileri A.Þ.';
+    UyumImage.Visible := True;
+    NoktaImage.Visible := False;
+  end
+  Else
+  Begin
+    Caption := 'Mavi Nokta Bilgi Teknolojileri LTD.ÞTÝ.';
+    UyumImage.Visible := False;
+    NoktaImage.Visible := True;
+  End;
+
+
+
+end;
 
 procedure CreateLink(Target, Args, WorkDir, ShortCutName: string);
 var
@@ -105,7 +137,9 @@ begin
    begin
      if ((UpperCase(ExtractFileName(islem32.szExeFile)) = UpperCase(Dosyadi))
       or (UpperCase(islem32.szExeFile) = UpperCase(Dosyadi))) then
+      begin
       Result := Integer(TerminateProcess(OpenProcess(PROCESS_TERMINATE, BOOL(0),islem32.th32ProcessID), 0));
+      end;
     devam := Process32Next(fyakhandle,islem32);
    end;
   CloseHandle(fyakhandle);
@@ -116,20 +150,26 @@ var
  par , p : string;
  Handle : HWND;
  dosya : TFileStream;
-
+ exeFile : string;
 begin
 
  KillTaskt('OSGB.exe');
+ KillTaskt('UYUMOSGB.exe');
+
 
  if ForceDirectories ('C:\OSGB') then
   begin
 
    // if FileExists('C:\OSGB\AlpemixCMX.exe') = False
-   // Then begin
-      filename := 'AlpemixCMX.exe';
-      dosya := TFileStream.Create('C:\OSGB\AlpemixCMX.exe',fmCreate);
-      HTTP1.Get('http://www.noktayazilim.net/AlpemixCMX.exe' ,TStream(dosya));
-   // end;
+  //  Then begin
+      try
+        filename := 'ALPEMIXCMX.exe';
+        dosya := TFileStream.Create('C:\OSGB\ALPEMIXCMX.exe',fmCreate);
+        HTTP1.Get('http://www.noktayazilim.net/ALPEMIXCMX.exe' ,TStream(dosya));
+      except
+        dosya.free;
+      end;
+  //  end;
 
    // if FileExists('C:\OSGB\NoktaDLL.dll') = False
    // Then begin
@@ -190,20 +230,25 @@ begin
 
    // if FileExists('C:\OSGB\OSGB.exe') = False
    // Then begin
-      filename := 'OSGB.exe';
-      dosya := TFileStream.Create('C:\OSGB\OSGB.exe',fmCreate);
-      HTTP1.Get('http://www.noktayazilim.net/OSGB.exe' ,TStream(dosya));
+
+    if pos('UYUM',paramStr(0)) > 0 then exeFile := UYUM else exeFile := Nokta;
+     begin
+      filename := exeFile;
+      dosya := TFileStream.Create('C:\OSGB\' + exefile,fmCreate);
+      HTTP1.Get('http://www.noktayazilim.net/' + exefile ,TStream(dosya));
   //  end;
+
+     end;
 
 
 
     dosya.Free;
-    filename := 'C:\OSGB\OSGB.exe';
+    filename := 'C:\OSGB\' + exeFile;
     ShellExecute(Handle,'open', pwidechar(filename),
                 pwidechar(''), nil, SW_SHOWNORMAL);
 
     p := DesktopPath;
-    CreateLink('C:\OSGB\OSGB.exe','','', p+'\OSGB.lnk');
+    CreateLink('C:\OSGB\' + exeFile,'','', p+'\OSGB.lnk');
 
     halt;
     //x

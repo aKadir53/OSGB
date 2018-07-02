@@ -1,7 +1,7 @@
 ﻿	<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
 		<PropertyGroup>
 			<ProjectGuid>{EAD58334-2A9B-441E-9A8A-B1294F9BE2F6}</ProjectGuid>
-			<MainSource>OSGB.dpr</MainSource>
+			<MainSource>UYUMOSGB.dpr</MainSource>
 			<Base>True</Base>
 			<Config Condition="'$(Config)'==''">Debug</Config>
 			<TargetedPlatforms>1</TargetedPlatforms>
@@ -315,7 +315,7 @@
 			<BorlandProject>
 				<Delphi.Personality>
 					<Source>
-						<Source Name="MainSource">OSGB.dpr</Source>
+						<Source Name="MainSource">UYUMOSGB.dpr</Source>
 					</Source>
 					<VersionInfo>
 						<VersionInfo Name="IncludeVerInfo">False</VersionInfo>

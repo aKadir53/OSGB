@@ -398,6 +398,13 @@ begin
 
            end;
 
+       TagfrmfirmaListe :
+           begin
+             sql := 'exec sp_firmaListesi ' + QuotedStr(vartoStr(KurumTipTopPanel.EditingValue)) + ',' +
+                                               QuotedStr(vartoStr(AktifPasifTopPanel.EditingValue));
+
+           end;
+
        TagfrmReceteler :
            begin
               if KurumTipTopPanel.EditValue = 1 then sirketKod := datalar.AktifSirket
@@ -1343,6 +1350,8 @@ begin
 end;
 
 procedure TGirisForm.cxEditExit(Sender: TObject);
+var
+ firma : string;
 begin
 // kontrolden çýkýldýðýndan beyaz yapýlýyor
   TcxCustomEdit(sender).Style.Color := oldRenk;
@@ -1372,11 +1381,13 @@ begin
   then begin
     if TCKontrol(vartoStr(TcxTextEditKadir(sender).EditingValue)) = True
     Then begin
-       if TCtoDosyaNo(vartoStr(TcxTextEditKadir(sender).EditingValue)) <> ''
+       if TCtoDosyaNo(vartoStr(TcxTextEditKadir(sender).EditingValue),firma) <> ''
        Then begin
-          ShowMessageSkin('Tc Sistemde Mevcut','','','info');
-          TcxTextEditKadir(sender).SetFocus;
-          TcxTextEditKadir(sender).EditValue := '';
+          if mrYes <> ShowMessageSkin('TC ' + firma + ' Firmasýnda Mevcut','Devam Edilsin mi','','msg')
+          then begin
+           TcxTextEditKadir(sender).SetFocus;
+           TcxTextEditKadir(sender).EditValue := '';
+          end;
        end;
     end
     else
@@ -1472,9 +1483,11 @@ var
   dxLaG : TdxLayoutGroup;
 begin
   if cxButton = nil
-  then cxButton := TcxButtonKadir.Create(self);
+  then cxButton := TcxButtonKadir.Create(sender);
+  cxButton.Parent := sender;
+
  // cxButton.Visible := True;
-//  cxButton.Name := 'cxbtn'+Name;
+ // cxButton.Name := Name;
  // cxButton.Tag := 0;
 
   cxButton.ButtonName := Name;
@@ -1944,6 +1957,7 @@ begin
   else
     obje.Name := objeName;
 
+  obje.Parent := sender;
   obje.Align := Aling;
   dxLaC := TdxLayoutGroup(parent).CreateItemForControl(obje);
   dxLaC.Name := 'dxLa'+fieldName;
@@ -2122,7 +2136,9 @@ begin
             finally
               jp.Free;
             end;
-          end;
+          end
+          else
+           sqlRun.FieldByName(_Obje_.Name).AsVariant := Null;
         End
         else
         if (self.Components[i].ClassName = 'TcxButtonEditKadir') and
@@ -2493,10 +2509,10 @@ procedure TGirisForm.FormResize(Sender: TObject);
 var
  Fr : Double;
 begin
-  Fr := min(ClientWidth/Sayfalar.Width,ClientHeight/Sayfalar.Height);
-  pnlDurum.Left := round((Self.Width/2) - (pnlDurum.Width/2));
-  pnlDurum.Top := round((Self.ClientHeight/2) - (pnlDurum.Height/2));
-  sayfalar.ScaleBy(Trunc(FR*100),100);
+//  Fr := min(ClientWidth/Sayfalar.Width,ClientHeight/Sayfalar.Height);
+ // pnlDurum.Left := round((Self.Width/2) - (pnlDurum.Width/2));
+ // pnlDurum.Top := round((Self.ClientHeight/2) - (pnlDurum.Height/2));
+//  sayfalar.ScaleBy(Trunc(FR*100),100);
 end;
 
 procedure TGirisForm.FormShow(Sender: TObject);

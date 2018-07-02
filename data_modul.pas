@@ -9,7 +9,7 @@ uses
   IdComponent, IdTCPConnection, IdTCPClient, IdHTTP, InvokeRegistry, Rio,SOAPHTTPTrans,
   SOAPHTTPClient,  ImgList, Controls, XMLDoc, FileCtrl,HizmetKayitIslemleriWS,
   Dialogs, cxGraphics, dxmdaset, ExtCtrls, xmldom, Provider, Xmlxform, DBClient,XMLIntf,
-  RxMemDS,strUtils,Registry, SQLMemMain, KadirLabel;
+  RxMemDS,strUtils,Registry, SQLMemMain, KadirLabel,jpeg,Graphics,PNGImage;
 
 
 type
@@ -313,6 +313,8 @@ type
     ADO_TehlikeSiniflari: TADOQuery;
     Ado_DSP: TADOQuery;
     DSP_DataSource: TDataSource;
+    FotoImage: TcxImageList;
+    CSGBSoap: THTTPRIO;
     procedure pcarihareketlerAfterScroll(DataSet: TDataSet);
     procedure TempConnectionAfterConnect(Sender: TObject);
     procedure TakipHTTPWebNode1BeforePost(const HTTPReqResp: THTTPReqResp;
@@ -503,6 +505,7 @@ type
    KKD : TKKDREcord;
    SeansOlusturPrm : TSeansOlusturPrm;
    TeleEkg : TTeleEKG;
+   PersonelTetkikler : TPersonelTetkikler;
    yardimciIslemMethod: string;
    DigerIslemTalebi : TDigerIslemTalep;
    ProgTarih : string;
@@ -534,6 +537,13 @@ type
    portalUser : string;
    portalSifre : string;
    sirketlerUserFilter : string;
+   GirisFormRecord : TGirisFormRecord;
+   StandartFormCaption : String;
+   YazilimFirma : String;
+ //  Foto : TPngImage;
+   Foto : TJpegImage;
+   userTanimi : String;
+
 
    function QuerySelect (Q: TADOQuery; sql:string) : Boolean;overload;
   // function QuerySelect (sql:string;Q: TADOQuery = nil) : Boolean;overload;

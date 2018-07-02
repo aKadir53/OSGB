@@ -15,10 +15,10 @@ object frmPersonelEgitim: TfrmPersonelEgitim
   PixelsPerInch = 96
   TextHeight = 13
   object EgitimPersonel: TcxGridKadir
-    Left = 16
-    Top = 224
-    Width = 513
-    Height = 75
+    Left = 178
+    Top = 204
+    Width = 500
+    Height = 145
     TabOrder = 0
     ExceleGonder = False
     object GridList: TcxGridDBBandedTableView
@@ -28,7 +28,6 @@ object frmPersonelEgitim: TfrmPersonelEgitim
       OptionsCustomize.ColumnFiltering = False
       OptionsCustomize.ColumnSorting = False
       OptionsData.Deleting = False
-      OptionsData.Editing = False
       OptionsData.Inserting = False
       OptionsView.GridLines = glHorizontal
       OptionsView.GroupByBox = False
@@ -36,7 +35,7 @@ object frmPersonelEgitim: TfrmPersonelEgitim
       Bands = <
         item
           Caption = 'E'#287'itime Kat'#305'lan Personeller'
-          Width = 667
+          Width = 482
         end>
       object GridListMuayeneSoru: TcxGridDBBandedColumn
         Caption = 'Dosya No.'
@@ -48,16 +47,67 @@ object frmPersonelEgitim: TfrmPersonelEgitim
         FooterAlignmentHorz = taCenter
         HeaderAlignmentHorz = taCenter
         Options.Editing = False
-        Width = 20
+        Width = 55
         Position.BandIndex = 0
         Position.ColIndex = 0
         Position.RowIndex = 0
       end
       object GridListGrupKod: TcxGridDBBandedColumn
         DataBinding.FieldName = 'PersonelAdiSoyadi'
-        Width = 150
+        Options.Editing = False
+        Width = 233
         Position.BandIndex = 0
         Position.ColIndex = 1
+        Position.RowIndex = 0
+      end
+      object GridListColumn1: TcxGridDBBandedColumn
+        Caption = #214'n Test'
+        DataBinding.FieldName = 'onTest'
+        PropertiesClassName = 'TcxCurrencyEditProperties'
+        Properties.Alignment.Horz = taCenter
+        Properties.Alignment.Vert = taVCenter
+        Properties.AssignedValues.DisplayFormat = True
+        HeaderAlignmentHorz = taCenter
+        Width = 47
+        Position.BandIndex = 0
+        Position.ColIndex = 2
+        Position.RowIndex = 0
+      end
+      object GridListColumn2: TcxGridDBBandedColumn
+        Caption = 'Son Test'
+        DataBinding.FieldName = 'sonTest'
+        PropertiesClassName = 'TcxCurrencyEditProperties'
+        Properties.Alignment.Horz = taCenter
+        Properties.Alignment.Vert = taVCenter
+        Properties.AssignedValues.DisplayFormat = True
+        HeaderAlignmentHorz = taCenter
+        Width = 43
+        Position.BandIndex = 0
+        Position.ColIndex = 3
+        Position.RowIndex = 0
+      end
+      object GridListColumn3: TcxGridDBBandedColumn
+        Caption = 'Sonu'#231
+        DataBinding.FieldName = 'durum'
+        PropertiesClassName = 'TcxImageComboBoxProperties'
+        Properties.Images = DATALAR.global_img_list4
+        Properties.Items = <
+          item
+            Description = 'Ba'#351'ar'#305'l'#305
+            ImageIndex = 154
+            Value = 1
+          end
+          item
+            Description = 'Ba'#351'ar'#305's'#305'z'
+            ImageIndex = 133
+            Value = 0
+          end>
+        Properties.ReadOnly = False
+        HeaderAlignmentHorz = taCenter
+        Options.Editing = False
+        Width = 104
+        Position.BandIndex = 0
+        Position.ColIndex = 4
         Position.RowIndex = 0
       end
     end
@@ -314,29 +364,29 @@ object frmPersonelEgitim: TfrmPersonelEgitim
   end
   object foto2: TcxImage
     Tag = -100
-    Left = 538
-    Top = 305
+    Left = 495
+    Top = 377
     Properties.GraphicClassName = 'TJPEGImage'
     Properties.PopupMenuLayout.MenuItems = [pmiCustom]
     Properties.PopupMenuLayout.CustomMenuItemCaption = 'Browserda G'#246'ster'
     Properties.ReadOnly = True
     Properties.OnCustomClick = Foto1PropertiesCustomClick
     TabOrder = 4
-    Height = 100
-    Width = 140
+    Height = 44
+    Width = 50
   end
   object Foto1: TcxImage
     Tag = -100
-    Left = 392
-    Top = 305
+    Left = 424
+    Top = 377
     Properties.GraphicClassName = 'TJPEGImage'
     Properties.PopupMenuLayout.MenuItems = [pmiCustom]
     Properties.PopupMenuLayout.CustomMenuItemCaption = 'Browserda G'#246'ster'
     Properties.ReadOnly = True
     Properties.OnCustomClick = Foto1PropertiesCustomClick
     TabOrder = 5
-    Height = 100
-    Width = 140
+    Height = 44
+    Width = 49
   end
   object PersonelList: TListeAc
     ListeBaslik = 'Personel Listesi'
@@ -360,7 +410,7 @@ object frmPersonelEgitim: TfrmPersonelEgitim
     SkinName = 'Lilian'
     Grup = False
     GrupCol = 0
-    Left = 528
+    Left = 560
     Top = 40
   end
   object PopupMenu1: TPopupMenu

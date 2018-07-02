@@ -16,8 +16,8 @@ object frmFirmaKontrol: TfrmFirmaKontrol
   PixelsPerInch = 96
   TextHeight = 13
   object FirmaSoruGrid: TcxGridKadir
-    Left = 8
-    Top = 102
+    Left = -152
+    Top = 94
     Width = 900
     Height = 321
     TabOrder = 0

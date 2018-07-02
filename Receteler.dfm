@@ -43,7 +43,7 @@ object frmReceteler: TfrmReceteler
     Height = 512
     Align = alClient
     TabOrder = 1
-    Properties.ActivePage = cxTabSheet3
+    Properties.ActivePage = cxTabSheet1
     ClientRectBottom = 505
     ClientRectLeft = 3
     ClientRectRight = 905
@@ -51,10 +51,6 @@ object frmReceteler: TfrmReceteler
     object cxTabSheet1: TcxTabSheet
       Caption = 'Re'#231'eteler'
       ImageIndex = 0
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object cxGrid2: TcxGrid
         Left = 0
         Top = 201
@@ -368,6 +364,7 @@ object frmReceteler: TfrmReceteler
         TabOrder = 1
         LevelTabs.ImageBorder = 2
         LevelTabs.Style = 1
+        ExplicitTop = -6
         object Recete: TcxGridDBTableView
           Navigator.Buttons.First.Visible = True
           Navigator.Buttons.PriorPage.Visible = True
@@ -387,6 +384,7 @@ object frmReceteler: TfrmReceteler
           Navigator.Buttons.Filter.Visible = True
           FilterBox.CustomizeDialog = False
           OnFocusedRecordChanged = ReceteFocusedRecordChanged
+          DataController.DataSource = Ds_cxGrid2
           DataController.Filter.Active = True
           DataController.Filter.TranslateBetween = True
           DataController.Filter.TranslateLike = True
@@ -437,6 +435,11 @@ object frmReceteler: TfrmReceteler
             Caption = 'Hasta Soyad'#305
             DataBinding.FieldName = 'HASTASOYADI'
             Width = 87
+          end
+          object ReceteTanimi: TcxGridDBColumn
+            Caption = #350'irketi'
+            DataBinding.FieldName = 'tanimi'
+            Width = 199
           end
           object Recetetarih: TcxGridDBColumn
             Caption = 'Tarih'
@@ -500,192 +503,6 @@ object frmReceteler: TfrmReceteler
             Width = 139
           end
         end
-        object cxGridDBBandedTableView5: TcxGridDBBandedTableView
-          DataController.DataModeController.DetailInSQLMode = True
-          DataController.DataModeController.GridMode = True
-          DataController.DataModeController.SmartRefresh = True
-          DataController.DetailKeyFieldNames = 'Tan'#305'm'
-          DataController.Filter.Active = True
-          DataController.Filter.AutoDataSetFilter = True
-          DataController.Filter.TranslateBetween = True
-          DataController.Filter.TranslateIn = True
-          DataController.Filter.TranslateLike = True
-          DataController.KeyFieldNames = 'Tan'#305'm'
-          DataController.Options = [dcoAnsiSort, dcoAssignGroupingValues, dcoAssignMasterDetailKeys, dcoSaveExpanding, dcoSortByDisplayText, dcoFocusTopRowAfterSorting, dcoImmediatePost]
-          DataController.Summary.DefaultGroupSummaryItems = <
-            item
-              Kind = skSum
-              Position = spFooter
-              Column = cxGridDBBandedColumn18
-            end
-            item
-              Kind = skSum
-              Column = cxGridDBBandedColumn18
-            end>
-          DataController.Summary.FooterSummaryItems = <>
-          DataController.Summary.SummaryGroups = <>
-          Filtering.ColumnFilteredItemsList = True
-          FilterRow.InfoText = 'Arama Sat'#305'r'#305
-          FilterRow.ApplyChanges = fracImmediately
-          OptionsBehavior.AlwaysShowEditor = True
-          OptionsBehavior.DragDropText = True
-          OptionsBehavior.FocusCellOnTab = True
-          OptionsBehavior.FocusFirstCellOnNewRecord = True
-          OptionsBehavior.GoToNextCellOnEnter = True
-          OptionsBehavior.FocusCellOnCycle = True
-          OptionsBehavior.PullFocusing = True
-          OptionsData.Deleting = False
-          OptionsData.Editing = False
-          OptionsData.Inserting = False
-          OptionsView.NoDataToDisplayInfoText = 'Kay'#305't Yok'
-          OptionsView.Footer = True
-          OptionsView.FooterMultiSummaries = True
-          OptionsView.GroupByBox = False
-          OptionsView.GroupFooterMultiSummaries = True
-          OptionsView.GroupFooters = gfVisibleWhenExpanded
-          OptionsView.BandCaptionsInColumnAlternateCaption = True
-          OptionsView.BandHeaderEndEllipsis = True
-          Bands = <
-            item
-              Caption = 'Geli'#351'ler'
-            end>
-          object cxGridDBBandedColumn14: TcxGridDBBandedColumn
-            DataBinding.FieldName = 'Tan'#305'm'
-            Width = 90
-            Position.BandIndex = 0
-            Position.ColIndex = 0
-            Position.RowIndex = 0
-          end
-          object cxGridDBBandedColumn15: TcxGridDBBandedColumn
-            Caption = 'Tan'#305'm Ad'#305
-            DataBinding.FieldName = 'ad'
-            Width = 150
-            Position.BandIndex = 0
-            Position.ColIndex = 1
-            Position.RowIndex = 0
-          end
-          object cxGridDBBandedColumn16: TcxGridDBBandedColumn
-            Caption = 'Toplam'
-            DataBinding.FieldName = 'adet'
-            Width = 70
-            Position.BandIndex = 0
-            Position.ColIndex = 2
-            Position.RowIndex = 0
-          end
-          object cxGridDBBandedColumn17: TcxGridDBBandedColumn
-            DataBinding.FieldName = 'kurumT'
-            PropertiesClassName = 'TcxCurrencyEditProperties'
-            Properties.DisplayFormat = '#,###.#0'
-            Width = 80
-            Position.BandIndex = 0
-            Position.ColIndex = 3
-            Position.RowIndex = 0
-          end
-          object cxGridDBBandedColumn18: TcxGridDBBandedColumn
-            DataBinding.FieldName = 'hastaT'
-            PropertiesClassName = 'TcxCurrencyEditProperties'
-            Properties.DisplayFormat = '#,###.#0'
-            Width = 80
-            Position.BandIndex = 0
-            Position.ColIndex = 4
-            Position.RowIndex = 0
-          end
-        end
-        object cxGridDBBandedTableView6: TcxGridDBBandedTableView
-          DataController.DetailKeyFieldNames = 'gelisNo'
-          DataController.KeyFieldNames = 'gelisNo'
-          DataController.MasterKeyFieldNames = 'gelisNo'
-          DataController.Summary.DefaultGroupSummaryItems = <>
-          DataController.Summary.FooterSummaryItems = <>
-          DataController.Summary.SummaryGroups = <>
-          OptionsBehavior.AlwaysShowEditor = True
-          OptionsView.GroupByBox = False
-          Bands = <
-            item
-              Caption = 'Hareketler'
-            end>
-          object cxGridDBBandedColumn19: TcxGridDBBandedColumn
-            DataBinding.FieldName = 'NAME1'
-            Position.BandIndex = 0
-            Position.ColIndex = 0
-            Position.RowIndex = 0
-          end
-          object cxGridDBBandedColumn20: TcxGridDBBandedColumn
-            DataBinding.FieldName = 'SATISF'
-            Position.BandIndex = 0
-            Position.ColIndex = 1
-            Position.RowIndex = 0
-          end
-        end
-        object cxGridDBBandedTableView7: TcxGridDBBandedTableView
-          DataController.Summary.DefaultGroupSummaryItems = <>
-          DataController.Summary.FooterSummaryItems = <>
-          DataController.Summary.SummaryGroups = <>
-          Bands = <
-            item
-              Caption = 'i'#351'lemler'
-            end>
-        end
-        object cxGridDBBandedTableView8: TcxGridDBBandedTableView
-          DataController.DataModeController.DetailInSQLMode = True
-          DataController.DataModeController.GridMode = True
-          DataController.Filter.Active = True
-          DataController.Summary.DefaultGroupSummaryItems = <>
-          DataController.Summary.FooterSummaryItems = <>
-          DataController.Summary.SummaryGroups = <>
-          OptionsData.Deleting = False
-          OptionsData.DeletingConfirmation = False
-          OptionsData.Editing = False
-          OptionsData.Inserting = False
-          OptionsView.GroupByBox = False
-          OptionsView.BandCaptionsInColumnAlternateCaption = True
-          Bands = <
-            item
-            end>
-          object cxGridDBBandedColumn21: TcxGridDBBandedColumn
-            Caption = 'Tanim'
-            DataBinding.FieldName = 'TANIM'
-            Position.BandIndex = 0
-            Position.ColIndex = 0
-            Position.RowIndex = 0
-          end
-          object cxGridDBBandedColumn22: TcxGridDBBandedColumn
-            Caption = 'Hasta Ad'#305
-            DataBinding.FieldName = 'HASTAADI'
-            Position.BandIndex = 0
-            Position.ColIndex = 1
-            Position.RowIndex = 0
-          end
-          object cxGridDBBandedColumn23: TcxGridDBBandedColumn
-            Caption = 'Soyad'#305
-            DataBinding.FieldName = 'HASTASOYADI'
-            Position.BandIndex = 0
-            Position.ColIndex = 2
-            Position.RowIndex = 0
-          end
-          object cxGridDBBandedColumn24: TcxGridDBBandedColumn
-            Caption = 'Hizmet Ad'#305
-            DataBinding.FieldName = 'NAME1'
-            Width = 80
-            Position.BandIndex = 0
-            Position.ColIndex = 3
-            Position.RowIndex = 0
-          end
-          object cxGridDBBandedColumn25: TcxGridDBBandedColumn
-            Caption = 'Kurum F'
-            DataBinding.FieldName = 'KSATISF'
-            Position.BandIndex = 0
-            Position.ColIndex = 4
-            Position.RowIndex = 0
-          end
-          object cxGridDBBandedColumn26: TcxGridDBBandedColumn
-            Caption = 'Hasta F'
-            DataBinding.FieldName = 'SATISF'
-            Position.BandIndex = 0
-            Position.ColIndex = 5
-            Position.RowIndex = 0
-          end
-        end
         object cxGridLevel2: TcxGridLevel
           Caption = 'Hastalar'
           GridView = Recete
@@ -696,10 +513,6 @@ object frmReceteler: TfrmReceteler
     object cxTabSheet2: TcxTabSheet
       Caption = 'Re'#231'ete '#304'la'#231' Say'#305'lar'#305
       ImageIndex = 1
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object cxGrid3: TcxGrid
         Left = 0
         Top = 0
@@ -1755,14 +1568,14 @@ object frmReceteler: TfrmReceteler
     CursorType = ctStatic
     Parameters = <>
     SQL.Strings = (
-      'exec sp_Receteler '#39'20150101'#39','#39'20170330'#39)
+      'exec sp_Receteler '#39#39','#39'20170105'#39','#39'20180605'#39','#39#39','#39'0001'#39)
     Left = 136
-    Top = 114
+    Top = 122
   end
   object Ds_cxGrid2: TDataSource
     DataSet = ADO_Receteler
     Left = 134
-    Top = 162
+    Top = 74
   end
   object ADO_ReceteDetay: TADOQuery
     Connection = DATALAR.ADOConnection2
@@ -1770,8 +1583,8 @@ object frmReceteler: TfrmReceteler
     Parameters = <>
     SQL.Strings = (
       'select * from receteDetay')
-    Left = 424
-    Top = 114
+    Left = 392
+    Top = 98
   end
   object DataSource1: TDataSource
     DataSet = ADO_ReceteDetay
@@ -1792,7 +1605,7 @@ object frmReceteler: TfrmReceteler
   end
   object DataSource2: TDataSource
     DataSet = ADO_toplam
-    Left = 590
+    Left = 614
     Top = 114
   end
   object DataSource3: TDataSource
@@ -1809,8 +1622,8 @@ object frmReceteler: TfrmReceteler
       'sum (kullanimAdet*kullanimadet2) toplamDoz from recete R'
       'join receteDetay RD on R.id = RD.receteId'
       'group by ilacKodu,ilacAdi')
-    Left = 672
-    Top = 138
+    Left = 712
+    Top = 82
   end
   object cxStyleRepository1: TcxStyleRepository
     Left = 40

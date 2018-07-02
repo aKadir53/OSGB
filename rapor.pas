@@ -208,7 +208,7 @@ begin
   end;
 
 
-  frmRapor.Caption := caption;
+  frmRapor.Caption := kod + ' - ' + caption;
 
   template := datalar.ADO_RAPORLAR.CreateBlobStream(datalar.ADO_RAPORLAR.FieldByName('Rapor'), bmRead);
   try

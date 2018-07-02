@@ -83,7 +83,8 @@ type
     procedure SirketlerPropertiesChange(Sender: TObject);
     procedure cxKaydetClick(Sender: TObject);override;
     procedure ButtonClick(Sender: TObject);
-
+    procedure cxButtonEditPropertiesButtonClick(Sender: TObject;
+     AButtonIndex: Integer);override;
   private
     { Private declarations }
 
@@ -110,6 +111,54 @@ implementation
 uses data_modul, StrUtils, Jpeg;
 
 {$R *.dfm}
+
+procedure TfrmFirmaKontrol.cxButtonEditPropertiesButtonClick(Sender: TObject;
+  AButtonIndex: Integer);
+begin
+    inherited;
+    if TcxButtonEditKadir(FindComponent('id')).Text = '' then exit;
+
+     FirmaSoruGrid.Dataset.Connection := datalar.ADOConnection2;
+     FirmaSoruGrid.Dataset.Active := false;
+     FirmaSoruGrid.Dataset.SQL.Text :=  'select * from  Kontrol_IslemDetay where kontrolID = ' +
+                        vartostr(TcxButtonEditKadir(FindComponent('id')).EditingValue);
+     FirmaSoruGrid.Dataset.Active := True;
+
+
+    if (vartostr(TcxTextEditKadir(FindComponent('IGU')).EditValue) <>
+       datalar.IGU)
+       //and TcxImageComboKadir(FindComponent('Onay')).EditValue = 1
+    then begin
+       FirmaSoruSatir.OptionsData.Editing := False;
+       FirmaSoruSatir.OptionsData.Inserting := False;
+       FirmaSoruSatir.OptionsData.Deleting := False;
+
+       TcxImageComboKadir(FindComponent('SirketKod')).Enabled := False;
+       TcxTextEditKadir(FindComponent('IGU')).Enabled := False;
+       TcxImageComboKadir(FindComponent('KontrolTuru')).Enabled := False;
+       TcxImageComboKadir(FindComponent('KontrolTip')).Enabled := False;
+       TcxImageComboKadir(FindComponent('doktor')).Enabled := False;
+       TcxDateEditKadir(FindComponent('Tarih')).Enabled := False;
+
+      // TcxImageComboKadir(FindComponent('Onay')).Enabled := False;
+
+    end
+    else
+    begin
+       FirmaSoruSatir.OptionsData.Editing := True;
+       FirmaSoruSatir.OptionsData.Inserting := True;
+       FirmaSoruSatir.OptionsData.Deleting := True;
+
+       TcxImageComboKadir(FindComponent('SirketKod')).Enabled := True;
+       TcxTextEditKadir(FindComponent('IGU')).Enabled := True;
+       TcxImageComboKadir(FindComponent('KontrolTuru')).Enabled := True;
+       TcxImageComboKadir(FindComponent('KontrolTip')).Enabled := True;
+       TcxImageComboKadir(FindComponent('doktor')).Enabled := True;
+       TcxDateEditKadir(FindComponent('Tarih')).Enabled := True;
+    //   TcxImageComboKadir(FindComponent('Onay')).Enabled := True;
+    end;
+
+end;
 
 
 procedure TfrmFirmaKontrol.CihazKontrolSoruSil(kontrolId : string);
@@ -313,7 +362,7 @@ begin
 
   Kontroler := ListeAcCreate('FirmaKontrol_view','id,sirket,Tarih',
                        'ID,ÞirketAdý,Ýþlem Tarihi',
-                       '40,250,80','FirmaKontrolList','Firma Kontrolleri',where,3,True,self);
+                       '40,250,80','FirmaKontrolList','Firma Kontrolleri',where,3,True);
 
 
   setDataStringB(self,'id','Firma Kontrol ID',Kolon1,'xxid',50,Kontroler,True,nil,'','',True,True,-100);

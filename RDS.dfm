@@ -17,8 +17,8 @@ object frmRDS: TfrmRDS
   PixelsPerInch = 96
   TextHeight = 13
   object RDSGrid: TcxGridKadir
-    Left = -800
-    Top = 88
+    Left = -1192
+    Top = 32
     Width = 2017
     Height = 169
     TabOrder = 0
@@ -816,10 +816,19 @@ object frmRDS: TfrmRDS
       end
     end
     object D1: TMenuItem
-      Tag = -29
       Caption = 'D'#252'zeltici '#214'nleyici Faaliyetler'
       ImageIndex = 112
       OnClick = cxButtonCClick
+      object D2: TMenuItem
+        Tag = -31
+        Caption = 'D'#214'F Olu'#351'tur'
+        OnClick = cxButtonCClick
+      end
+      object D3: TMenuItem
+        Tag = -32
+        Caption = 'D'#214'F Formlar'#305'n'#305' G'#246'ster'
+        OnClick = cxButtonCClick
+      end
     end
   end
   object tmr1: TTimer

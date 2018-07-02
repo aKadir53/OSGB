@@ -114,7 +114,7 @@ object frmHastaListe: TfrmHastaListe
           HeaderAlignmentVert = vaCenter
           Width = 84
         end
-        object ListeColumn1: TcxGridDBColumn
+        object ListeColumndosyaNo: TcxGridDBColumn
           Caption = 'Dosya'
           DataBinding.FieldName = 'dosyaNo'
           PropertiesClassName = 'TcxTextEditProperties'
@@ -345,11 +345,11 @@ object frmHastaListe: TfrmHastaListe
           Caption = 'Grup'
           DataBinding.FieldName = 'tetkikIstemGrupSablon'
         end
-        object ListeColumn17: TcxGridDBColumn
+        object ListeColumnSirketKod: TcxGridDBColumn
           DataBinding.FieldName = 'sirketKod'
           Visible = False
         end
-        object ListeColumn18: TcxGridDBColumn
+        object ListeColumnSube: TcxGridDBColumn
           DataBinding.FieldName = 'sube'
           Visible = False
         end
@@ -573,6 +573,12 @@ object frmHastaListe: TfrmHastaListe
       Caption = 'Peryodik Muayene Olu'#351'tur (Toplu)'
       ImageIndex = 17
       OnClick = PeryodikMuayeneOlutur1Click
+    end
+    object f1: TMenuItem
+      Tag = -10
+      Caption = 'Pesonel '#350'irket De'#287'i'#351'tir'
+      ImageIndex = 69
+      OnClick = cxButtonCClick
     end
   end
   object popupYil: TPopupMenu

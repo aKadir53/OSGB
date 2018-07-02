@@ -53,23 +53,6 @@ type
     cxGridLevel1: TcxGridLevel;
     cxGrid1: TcxGrid;
     Recete: TcxGridDBTableView;
-    cxGridDBBandedTableView5: TcxGridDBBandedTableView;
-    cxGridDBBandedColumn14: TcxGridDBBandedColumn;
-    cxGridDBBandedColumn15: TcxGridDBBandedColumn;
-    cxGridDBBandedColumn16: TcxGridDBBandedColumn;
-    cxGridDBBandedColumn17: TcxGridDBBandedColumn;
-    cxGridDBBandedColumn18: TcxGridDBBandedColumn;
-    cxGridDBBandedTableView6: TcxGridDBBandedTableView;
-    cxGridDBBandedColumn19: TcxGridDBBandedColumn;
-    cxGridDBBandedColumn20: TcxGridDBBandedColumn;
-    cxGridDBBandedTableView7: TcxGridDBBandedTableView;
-    cxGridDBBandedTableView8: TcxGridDBBandedTableView;
-    cxGridDBBandedColumn21: TcxGridDBBandedColumn;
-    cxGridDBBandedColumn22: TcxGridDBBandedColumn;
-    cxGridDBBandedColumn23: TcxGridDBBandedColumn;
-    cxGridDBBandedColumn24: TcxGridDBBandedColumn;
-    cxGridDBBandedColumn25: TcxGridDBBandedColumn;
-    cxGridDBBandedColumn26: TcxGridDBBandedColumn;
     cxGridLevel2: TcxGridLevel;
     ADO_ReceteDetay: TADOQuery;
     DataSource1: TDataSource;
@@ -215,6 +198,7 @@ type
     Recete_Hasta_Grup_Top_Panel: TcxGroupBox;
     txtHastaBilgisi: TcxTextEdit;
     cxLabel1: TcxLabel;
+    ReceteTanimi: TcxGridDBColumn;
     procedure TopPanelButonClick(Sender: TObject);
     procedure TopPanelPropertiesChange(Sender: TObject);
     procedure cxGridDBTableView1DblClick(Sender: TObject);
@@ -334,6 +318,7 @@ begin
          ' join hastakart h on h.dosyaNo = r.dosyaNO ' +
          ' where convert(varchar,tarih,112) between ' + txtTopPanelTarih1.GetSQLValue + ' and ' + txtTopPanelTarih1.GetSQLValue +
          ' and rd.ilacKodu = ' + QuotedStr(ADO_toplam.FieldByName('ilacKodu').AsString) +
+         ' and h.sirketKod in (select sirketKod from SIRKETLER_TNM_view where doktor = ' + QuotedStr(datalar.doktorKodu)  + ')' +
          ' order by h.HASTAADI , h.HASTASOYADI ' ;
   datalar.QuerySelect(ADO_Hast,sql);
 end;
@@ -376,19 +361,23 @@ procedure TfrmReceteler.TopPanelButonClick(Sender: TObject);
 var
  sql,SirketKod : string;
 begin
-  inherited;
+ // inherited;
   if KurumTipTopPanel.EditValue = 1 then sirketKod := datalar.AktifSirket
    else SirketKod := '';
   sql := 'exec sp_Receteler ' + QuotedStr(sirketKod) + ',' +
-  txtTopPanelTarih1.GetSQLValue + ',' + txtTopPanelTarih2.GetSQLValue + ',' + 'G';
+  txtTopPanelTarih1.GetSQLValue + ',' + txtTopPanelTarih2.GetSQLValue + ',' + 'G,' + QuotedStr(datalar.doktorKodu);
   datalar.QuerySelect(Ado_Receteler_Grup,sql);
 
+  sql := 'exec sp_Receteler ' + QuotedStr(sirketKod) + ',' +
+  txtTopPanelTarih1.GetSQLValue + ',' + txtTopPanelTarih2.GetSQLValue + ',' + QuotedStr('') + ',' + QuotedStr(datalar.doktorKodu);
+  datalar.QuerySelect(Ado_Receteler,sql);
 
   sql := 'select ilacKodu,ilacAdi,sum(adet) toplamAdet , sum (kullanimAdet*kullanimadet2) toplamDoz from recete R ' +
          ' join PersonelKart p on p.dosyaNo = r.dosyaNo ' +
          ' join receteDetay RD on R.id = RD.receteId ' +
          ' where p.SirketKod like ' + QuotedStr('%'+sirketKod+'%') +
          ' and convert(varchar,tarih,112) between ' + txtTopPanelTarih1.GetSQLValue+ ' and ' + txtTopPanelTarih2.GetSQLValue +
+         ' and p.sirketKod in (select sirketKod from SIRKETLER_TNM_view where doktor = ' + QuotedStr(datalar.doktorKodu)  + ') ' +
          '  group by ilacKodu,ilacAdi ';
   datalar.QuerySelect(ADO_toplam,sql);
 
@@ -400,8 +389,11 @@ procedure TfrmReceteler.ReceteFocusedRecordChanged(
 var
  sql : string;
 begin
-   sql := 'select * from recetedetay where ReceteId = ' + _Dataset.fieldbyname('id').AsString;
-  datalar.QuerySelect(ADO_ReceteDetay,sql);
+  try
+   sql := 'select * from recetedetay where ReceteId = ' + ADO_Receteler.fieldbyname('id').AsString;
+   datalar.QuerySelect(ADO_ReceteDetay,sql);
+  except
+  end;
 end;
 
 function TfrmReceteler.Init(Sender : TObject) : Boolean;
@@ -416,7 +408,7 @@ begin
   TapPanelElemanVisible(True,True,True,false,false,False,True,false,False,False,False,False);
   txtTopPanelTarih1.Date := date;
   txtTopPanelTarih2.Date := date;
-  Recete.DataController.DataSource := _DataSource;
+ // Recete.DataController.DataSource := _DataSource;
   cxPanel.Visible := false;
 end;
 

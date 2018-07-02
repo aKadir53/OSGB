@@ -492,7 +492,7 @@ begin
 
   key := 13;
  // SirketKod.EditValue := _dosyaNo_;//datalar.Bilgi.dosyaNo;
-
+  TcxButtonEditKadir(FindComponent('SirketKod')).EditValue := _firmaKod_;
   if TcxButtonEditKadir(FindComponent('SirketKod')).EditingValue  <> ''
   then
    TcxButtonEditKadir(FindComponent('SirketKod')).OnKeyDown(TcxButtonEditKadir(FindComponent('SirketKod')),key,[]);
@@ -598,6 +598,7 @@ procedure TfrmFirmaKart.FormCreate(Sender: TObject);
 var
   List : TListeAc;
   SEHIR ,ILCE ,BUCAK ,KOY,MAHALLE,tehlikeSinifi,odeme : TcxImageComboKadir;
+  BB : TcxButtonKadir;
 begin
   // Burdaki User_ID ve sirketKod base formda dolduruluyor. Visible false (true set etmeyin)
   // Eðer kayýt eklediðiniz tabloda bu alanlar varsa ve bunlarý otomatik set etmek isterseniz
@@ -790,6 +791,8 @@ begin
 end;
 
 procedure TfrmFirmaKart.cxKaydetClick(Sender: TObject);
+var
+ B : TcxButtonKadir;
 begin
   datalar.KontrolUserSet := False;
   BeginTrans (DATALAR.ADOConnection2);
@@ -805,15 +808,24 @@ begin
     if not cxKaydetResult then Exit;
 
     case TControl(sender).Tag  of
-      0 : begin
+ kaydet : begin
            // if TCtoDosyaNo(TcxCustomEdit(FindComponent('TckimlikNo')).EditingValue)
            FotoNewRecord;
            Kart := sql_none;
+           if SubeIGUDoktorAtanmismi(TcxButtonEditKadir(FindComponent('SirketKod')).Text) = 0
+           Then
+            if mrYes = ShowMessageSkin('Doktor Yada ÝGU atamasý yapýlmayan Þube Var','Tanýmlamak Ýster misiniz?','','msg')
+            then begin
+              B := TcxButtonKadir(FindComponentButtonName('btnSubeler',Self));
+
+              B.Click;
+            end;
+
           end;
-      1 : begin
+    sil : begin
             Kart := sql_delete;
           end;
-      2 : begin
+   yeni : begin
               Kart := sql_new;
               TcxButtonEditKadir(FindComponent('SirketKod')).EditValue := dosyaNoYeniNumaraAl('FN');
               if TcxButtonEditKadir(FindComponent('SirketKod')).EditingValue = '0'

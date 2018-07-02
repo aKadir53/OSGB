@@ -432,6 +432,11 @@ type
   End;
 
 type
+ TPersonelTetkikler = Record
+   Tetkik : String;
+ End;
+
+type
   TFirmaBilgi = Record
     SirketKodu : String;
     SubeKodu : string;
@@ -465,6 +470,7 @@ type
     F_BasvuruNo_ : string;
     F_DiyalizTedaviTipi_ : string;
     F_Doktor_ : string;
+    F_Igu_ : string;
     F_Makina_ : string;
     F_Seans_ : string;
     F_TalepSira_ : string;
@@ -652,6 +658,7 @@ Const
   TagfrmKontrolUserSet = 230;
   TagfrmHastaListe = 240;
   TagfrmDoktorHastaListe = 241;
+  TagfrmFirmaListe = 242;
   TagfrmIlacSarf = 250;
   TagfrmSeansDetayKart = 260;
   TagfrmPopupDBGridForm = 270;
@@ -785,6 +792,8 @@ Const
   gozetimDuzenle = 41;
   yeniRiskBolum = 42;
   yeniTehlikeKaynak = 43;
+  yeniTehlike = 59;
+  yeniEkilenecekler = 60;
   riskRaporuPaylas = 44;
   sahaGozetimPaylas = 45;
   yeniKKD = 46;
@@ -803,6 +812,10 @@ Const
   RDEkipTutanagi = '30';
   yeniFaaliyet = 54;
   FaaliyetDuzenle = 55;
+  FirmaUzmanDegistir = 56;
+  FirmaDoktorDegistir = 57;
+  PersonelSirketDegistir = 58;
+  PersonelTetkisIste = 61;
 
 
   sp_HastaGelis = 'exec sp_HastaGelisleri ';

@@ -14,7 +14,7 @@ uses Windows, Messages, SysUtils, Variants, Classes, Graphics, Vcl.Controls, Con
   cxCheckListBox,cxGridCustomTableView, cxGridTableView, cxGridBandedTableView, cxClasses,
   cxGroupBox, cxRadioGroup,cxGridLevel, cxGrid, cxCheckBox, cxImageComboBox, cxTextEdit, cxButtonEdit,
   cxCalendar,dxLayoutContainer, dxLayoutControl,cxPC, cxImage,
-  frxExportPDF ;
+  frxExportPDF ,CSGBService;
 
 
 procedure SMSSend(tel : string; Msj : string = '';Kisi : string ='');
@@ -297,7 +297,8 @@ procedure strtostrings(ayirac: string; text: string; const Strings: TStrings);
 function YedeklemeUyari: integer;
 procedure Sonucyaz(s, Takip: string; x: integer; hatalar: tstringlist);
 function TCtoAd(tc: string): string;
-function TCtoDosyaNo(tc: string): string;
+function dosyaNOIslemGormusmu(dosyaNo: string): integer;
+function TCtoDosyaNo(tc: string ; var firma : string): string;
 function KanAlimTarihi(DosyaNo, GelisNo: string): string;
 procedure GonderimMesaj(msj, filename: string);
 function TCdenDosyaNoGelisNo(tc, tarih1, tarih2: string;
@@ -421,6 +422,13 @@ function SirketIGUToSQLStr(sirketKodu : string) : string;
 function SirketDoktorToSQLStr(sirketKodu : string) : string;
 procedure GridToSayfaClient(Grid : string ; Form : TForm);
 procedure YeniOSGBFirmaVeritabani;
+function SubeIGUDoktorAtanmismi(sirketKod : string) : integer;
+function FindComponentButtonName(const AName: string ; Form : TForm): TComponent;
+function FirmaSorgulaCSGB(firmaSGK , iguTC : string) : isyeriCevapBilgisi;
+function EgitimKaydetCSGB(egitim : egitimBilgisi) : egitimBilgisiCevap;
+function EgitimVerisi(id : string) : egitimBilgisi;
+
+Procedure FirmaSorgulCSGBCvpFirmaBilgiGuncelle(firmaSgk : string ; Cvp : isyeriCevapBilgisi);
 
 
 function findMethod(dllHandle: Cardinal;  methodName: string): FARPROC;
@@ -511,8 +519,120 @@ var
 implementation
 
 uses message,AnaUnit,message_y,popupForm,rapor,TedaviKart,Son6AylikTetkikSonuc,DestekSorunBildir,
-             HastaRecete,sifreDegis,HastaTetkikEkle,GirisUnit,SMS,LisansUzat,Update_G, DBGrids, 
+             HastaRecete,sifreDegis,HastaTetkikEkle,GirisUnit,SMS,LisansUzat,Update_G, DBGrids,
              UyumSoftPortal,NThermo, TransUtils;
+
+function EgitimVerisi(id : string) : egitimBilgisi;
+var
+  sql : string;
+  ado : TADOQuery;
+  Veri : egitimBilgisi;
+begin
+   ado := TADOQuery.Create(nil);
+   ado.Connection := datalar.ADOConnection2;
+   Veri := egitimBilgisi.Create;
+   try
+    sql := 'select * from Egitimler where id = ' + id;
+    datalar.QuerySelect(ado,sql);
+
+    Veri.firmaKodu := ado.FieldByName('SirketKod').AsString;
+    Veri.sorguNo := strToint(id);
+    EgitimVerisi := Veri;
+
+   finally
+     ado.Free;
+   end;
+end;
+
+
+Procedure FirmaSorgulCSGBCvpFirmaBilgiGuncelle(firmaSgk : string ; Cvp : isyeriCevapBilgisi);
+var
+  sql : string;
+begin
+  sql := 'update SIRKET_SUBE_TNM set calisanSayi = ' + inttoStr(Cvp.calisanSayisi) +
+         ' where subeSiciNo = ' + QuotedStr(firmaSgk);
+  datalar.QueryExec(sql);
+end;
+
+
+Procedure EgitimKaydetCSGBCvpBilgiGuncelle(Cvp : egitimBilgisiCevap);
+var
+  sql : string;
+begin
+  sql := 'update Egitimler set EgitimCSGBGonderimSonuc = ' + QuotedStr(Cvp.message_) +
+         ' where id = ' + QuotedStr(inttoStr(Cvp.sorguNo));
+  datalar.QueryExec(sql);
+end;
+
+function EgitimKaydetCSGB(egitim : egitimBilgisi) : egitimBilgisiCevap;
+var
+  sayi : string;
+  Cvp : egitimBilgisiCevap;
+begin
+    Cvp := egitimBilgisiCevap.Create;
+    try
+      Application.ProcessMessages;
+      datalar.CSGBsoap.URL := 'http://213.159.30.6/CSGBservice.asmx';
+      Cvp := (datalar.CSGBsoap as CSGBServiceSoap).egitimKaydet(egitim);
+      EgitimKaydetCSGB := Cvp;
+      if Cvp.status = 200
+      Then begin
+        ShowMessageSkin('Sorgu No:' + intTostr(Cvp.sorguNo),'','','info');
+      end
+      else ShowMessageSkin(Cvp.message_,'','','info');
+      EgitimKaydetCSGBCvpBilgiGuncelle(Cvp);
+
+    except
+      on E : Exception do
+      begin
+        ShowmessageSkin(E.Message,'','','info');
+      end;
+    end;
+end;
+
+
+function FirmaSorgulaCSGB(firmaSGK , iguTC : string) : isyeriCevapBilgisi;
+var
+  sayi : string;
+  Cvp : isyeriCevapBilgisi;
+begin
+    Cvp := isyeriCevapBilgisi.Create;
+    try
+      Application.ProcessMessages;
+      datalar.CSGBsoap.URL := 'http://213.159.30.6/CSGBservice.asmx';
+      Cvp := (datalar.CSGBsoap as CSGBServiceSoap).isyeriBilgisi(firmaSGK,iguTC);
+      FirmaSorgulaCSGB := Cvp;
+      if Cvp.status = 200
+      Then begin
+        ShowMessageSkin('Çalýþan Sayýsý:' + intTostr(Cvp.calisanSayisi) + #13 +
+                        'Nace : ' + Cvp.naceKodu + #13 +
+                        'Tehlike Sýnýfý : ' + Cvp.tehlikeSinifi,'','','info');
+        FirmaSorgulCSGBCvpFirmaBilgiGuncelle(firmaSGK,Cvp);
+      end
+      else ShowMessageSkin(Cvp.message_,'','','info');
+    except
+      on E : Exception do
+      begin
+        ShowmessageSkin(E.Message,'','','info');
+      end;
+    end;
+end;
+
+
+function FindComponentButtonName(const AName: string ; Form : TForm): TComponent;
+var
+  I: Integer;
+begin
+  Result := nil;
+  for I := 0 to Form.ComponentCount - 1 do
+    if Form.Components[I] is TcxButtonKadir 
+    then    
+     if TcxButtonKadir(Form.Components[I]).ButtonName = AName 
+     then begin
+      Result := Form.Components[I];     
+      break;
+     end; 
+end;
 
 
 function findMethod(dllHandle: Cardinal;  methodName: string): FARPROC;
@@ -536,6 +656,18 @@ begin
    H := TcxGrid(TGirisForm(Form).FindComponent(Grid)).Height;
    TcxGrid(TGirisForm(Form).FindComponent(Grid)).Width := TGirisForm(Form).sayfa1.Width - 20;
    TcxGrid(TGirisForm(Form).FindComponent(Grid)).Height := TGirisForm(Form).sayfa1.Height - (45 * abs(H));
+end;
+
+function SubeIGUDoktorAtanmismi(sirketKod : string) : integer;
+var
+  sql : string;
+begin
+  SubeIGUDoktorAtanmismi := 1;
+  sql := 'if exists (select * from SIRKET_SUBE_TNM ' +
+         ' where (isnull(subeDoktor,'''') = '''' or isnull(IGU,'''') = '''') and sirketKod = ' + QuotedStr(sirketKod) +
+         ') select 0 durum else select 1 durum ';
+
+  SubeIGUDoktorAtanmismi := datalar.QuerySelect(sql).FieldByName('durum').AsInteger;
 end;
 
 function SirketIGUToSQLStr(sirketKodu : string) : string;
@@ -565,23 +697,23 @@ procedure DokumanAc(Dataset : Tdataset;fieldName : string;fileName : string; Ope
 var
   Blob : TAdoBlobStream;
 begin
-  (*
+
     try
-     id := Dataset.FieldByName('id').AsString;
+    // id := Dataset.FieldByName('id').AsString;
      DokumanTip := Dataset.FieldByName('DokumanTip').AsString;
     except
     end;
-    *)
+
 
     Blob := TADOBlobStream.Create((Dataset.FieldByName(fieldName) as TBlobField), bmRead);
     try
      // filename := filename;
-      Blob.SaveToFile(filename);
+      Blob.SaveToFile(filename+'.'+DokumanTip);
     finally
       Blob.Free;
     end;
     sleep(1000);
-    if open then ShellExecute(0, 'open', PChar(filename), nil, nil, SW_SHOWNORMAL);
+    if open then ShellExecute(0, 'open', PChar(filename+'.'+DokumanTip), nil, nil, SW_SHOWNORMAL);
 end;
 
 procedure DokumanYukle(Dataset : Tdataset;field : string;fielName : string);
@@ -1088,8 +1220,9 @@ begin
     txtTetkikIstem.ValueField := 'id';
     txtTetkikIstem.DisplayField := 'tanimi';
     txtTetkikIstem.Filter := ' SablonGrupKod = ' + grup;
+    txtTetkikIstem.SelectAll;
 
-    tetkikler := txtTetkikIstem.getItemCheckString;
+    tetkikler := txtTetkikIstem.getItemString;
 
     PersonelPeriyodikTetkikIstemleri := tetkikler;
 
@@ -2898,7 +3031,26 @@ begin
   end;
 end;
 
-function TCtoDosyaNo(tc: string): string;
+function dosyaNOIslemGormusmu(dosyaNo: string): integer;
+var
+  sql: string;
+  ado: TADOQuery;
+begin
+  ado := TADOQuery.Create(nil);
+  try
+    ado.Connection := datalar.ADOConnection2;
+    sql :=
+      'select dbo.dosyaNoislemGormusmu(' + QuotedStr(dosyaNo) + ')';
+    datalar.QuerySelect(ado, sql);
+
+    Result := ado.Fields[0].AsInteger;
+  finally
+    ado.Free;
+  end;
+end;
+
+
+function TCtoDosyaNo(tc: string ; var firma : string): string;
 var
   sql: string;
   ado: TADOQuery;
@@ -2907,9 +3059,12 @@ begin
   ado := TADOQuery.Create(nil);
   try
     ado.Connection := datalar.ADOConnection2;
-    sql := 'select dosyaNo from Personelkart where TCKIMLIKNO = ' + QuotedStr(tc);
+    sql := 'select dosyaNo,S.tanimi from Personelkart P ' +
+           ' left join SIRKETLER_TNM S on S.sirketKod = P.sirketKod ' +
+           ' where TCKIMLIKNO = ' + QuotedStr(tc);
     datalar.QuerySelect(ado, sql);
     Result := ado.Fields[0].AsString;
+    firma := ado.Fields[1].AsString;
   finally
     ado.Free;
   end;
