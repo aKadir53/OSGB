@@ -28,7 +28,6 @@ type
     ADO_SQL: TADOQuery;
     DataSource1: TDataSource;
     ADO_SQL1: TADOQuery;
-    HTTP2: TIdHTTP;
     ADO_SQL_ID: TADOQuery;
     global_img_list4: TImageList;
     ADO_RaporlarKaynak: TADOQuery;
@@ -87,7 +86,7 @@ type
   private
     { Private declarations }
     FFirstActivated : Boolean;
-    FSonYayinlananGuncelleme, FSonGuncelleme : String;
+    FSonYayinlananGuncelleme, FSonGuncelleme : Integer;
     FAuto : Boolean;
   public
     { Public declarations }
@@ -191,7 +190,7 @@ var
 begin
     sql := 'select SLK,SLT,SLX from parametreler where SLK = ''GT'' and SLB = ''0000''';
     datalar.QuerySelect(datalar.ADO_SQL,sql);
-    FSonGuncelleme := datalar.ADO_SQL.Fieldbyname('SLX').AsString;
+    FSonGuncelleme := StrToInt (Trim (datalar.ADO_SQL.Fieldbyname('SLX').AsString));
     pnlBilgi.Caption := 'Son Güncelleme : ' + FormattedTarih(datalar.ADO_SQL.FieldList[1].AsString) +
                         ' Güncelleme ID :' + datalar.ADO_SQL.FieldList[2].AsString;
 
@@ -221,7 +220,7 @@ begin
                     end;
       end;
 
-    sql := 'select * from UPDATE_CMD_OSGB where ID > ' + FSonGuncelleme + ' and Modul = ''O''' + ' and ID <= ' + FSonYayinlananGuncelleme +
+    sql := 'select * from UPDATE_CMD_OSGB where ID > ' + IntToStr (FSonGuncelleme) + ' and Modul = ''O''' + ' and ID <= ' + IntToStr (FSonYayinlananGuncelleme) +
            ' Order by ID ';
     datalar.QuerySelect(datalar.Ado_Guncellemeler,sql);
 
@@ -410,18 +409,29 @@ begin
 end;
 
 procedure TfrmUpdate.btnListeClick(Sender: TObject);
+var
+  bFocused: Boolean;
 begin
-   guncellemeIslemi := 'No';
-   GuncellemeBilgileri;
-   http2.ConnectTimeout := 10000;
-   try
-     FSonYayinlananGuncelleme := HTTP2.Get('http://www.noktayazilim.net/OSGBupdate.txt');
-   except
-     txtLOG.Lines.Add('Baðlantý Hatasý , Ýnternetinizi Kontrol Edip Tekrar Denayiniz...');
-     //exit;
-   end;
-
-   UpdateSQL;
+  bFocused := TcxButton (Sender).Focused;
+  TcxButton (Sender).Enabled := False;
+  try
+    guncellemeIslemi := 'No';
+    GuncellemeBilgileri;
+    try
+    //FTP sunucudaki text dosyayý oku
+      FSonYayinlananGuncelleme := SonYayinlananGuncellemeNumarasi;
+    except
+      on e: exception do
+      begin
+        txtLOG.Lines.Add('Baðlantý Hatasý , Ýnternetinizi Kontrol Edip Tekrar Denayiniz...' + e.Message);
+        raise;
+      end;
+    end;
+    UpdateSQL;
+  finally
+    TcxButton (Sender).Enabled := True;
+    if bFocused then TcxButton (Sender).SetFocus;
+  end;
 end;
 
 procedure TfrmUpdate.FormShow(Sender: TObject);
