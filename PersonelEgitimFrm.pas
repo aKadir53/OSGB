@@ -13,7 +13,7 @@ uses
   cxDBData, cxDropDownEdit, cxGridLevel, cxGridCustomTableView, cxGridTableView,
   cxGridBandedTableView, cxGridDBBandedTableView, cxClasses, cxGridCustomView,
   cxGrid, cxPC, cxImageComboBox,dxLayoutContainer, cxImage,ShellApi,
-  cxCurrencyEdit;
+  cxCurrencyEdit,CSGBservice;
 
 
 
@@ -215,10 +215,11 @@ var
   ado : TADOQuery;
   Lst : ArrayListeSecimler;
   open : TOpenDialog;
-  filename,imageField : string;
+  filename,imageField,egitimXML,pin,cardType,_xml_ : string;
   Jpeg1 : TJPEGImage;
   Image : TcxImage;
   Blob : TADOBlobStream;
+  Veri : egitimBilgisi;
 begin
 
   if TcxButtonEditKadir(FindComponent('id')).Text <> ''
@@ -286,7 +287,10 @@ begin
 
   if TcxButtonKadir (Sender).ButtonName = 'btnEgitimGonderTek' then
   begin
-    EgitimKaydetCSGB(EgitimVerisi(TcxButtonEditKadir(FindComponent('id')).Text));
+  //  DurumGoster(True,True);
+    veri := EgitimVerisi(TcxButtonEditKadir(FindComponent('id')).Text,pin,cardType,_xml_);
+    EgitimKaydetCSGB(veri,pin,cardType,_xml_);
+  //  DurumGoster(False,False);
   end;
 
   if TcxButtonKadir (Sender).ButtonName = 'btnEgitimListele' then

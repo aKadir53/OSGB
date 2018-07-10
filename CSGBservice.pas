@@ -5,7 +5,7 @@
 //  >Import : http://213.159.30.6/CSGBservice.asmx?wsdl>0
 // Encoding : utf-8
 // Version  : 1.0
-// (29.06.2018 16:02:13 - - $Rev: 45757 $)
+// (10.07.2018 14:05:31 - - $Rev: 45757 $)
 // ************************************************************************ //
 
 unit CSGBservice;
@@ -31,18 +31,19 @@ type
   // typically map to predefined/known XML or Embarcadero types; however, they could also
   // indicate incorrect WSDL documents that failed to declare or import a schema type.
   // ************************************************************************ //
-  // !:string          - "http://www.w3.org/2001/XMLSchema"[Gbl]
+  // !:boolean         - "http://www.w3.org/2001/XMLSchema"[Gbl]
   // !:int             - "http://www.w3.org/2001/XMLSchema"[Gbl]
+  // !:string          - "http://www.w3.org/2001/XMLSchema"[Gbl]
   // !:long            - "http://www.w3.org/2001/XMLSchema"[Gbl]
   // !:double          - "http://www.w3.org/2001/XMLSchema"[Gbl]
 
   isyeriCevapBilgisi   = class;                 { "http://tempuri.org/"[GblCplx] }
-  egitimBilgisiCevap   = class;                 { "http://tempuri.org/"[GblCplx] }
-  egitimBildirimSorgu  = class;                 { "http://tempuri.org/"[GblCplx] }
   egitimBilgisi        = class;                 { "http://tempuri.org/"[GblCplx] }
   egitimBildirimSorgulaCevap = class;           { "http://tempuri.org/"[GblCplx] }
+  profesyonelYetkilimiCevap = class;            { "http://tempuri.org/"[GblCplx] }
+  egitimBilgisiCevap   = class;                 { "http://tempuri.org/"[GblCplx] }
+  egitimBildirimSorgu  = class;                 { "http://tempuri.org/"[GblCplx] }
 
-  ArrayOfEgitimBildirimSorgulaCevap = array of egitimBildirimSorgulaCevap;   { "http://tempuri.org/"[GblCplx] }
 
 
   // ************************************************************************ //
@@ -73,56 +74,6 @@ type
     property sorguNo:       Int64    Index (IS_UNQL) read FsorguNo write FsorguNo;
     property status:        Integer  Index (IS_UNQL) read Fstatus write Fstatus;
     property tehlikeSinifi: string   Index (IS_OPTN or IS_UNQL) read FtehlikeSinifi write SettehlikeSinifi stored tehlikeSinifi_Specified;
-  end;
-
-
-
-  // ************************************************************************ //
-  // XML       : egitimBilgisiCevap, global, <complexType>
-  // Namespace : http://tempuri.org/
-  // ************************************************************************ //
-  egitimBilgisiCevap = class(TRemotable)
-  private
-    Fmessage_: string;
-    Fmessage__Specified: boolean;
-    FsorguNo: Int64;
-    FsorguNo_Specified: boolean;
-    Fstatus: Integer;
-    procedure Setmessage_(Index: Integer; const Astring: string);
-    function  message__Specified(Index: Integer): boolean;
-    procedure SetsorguNo(Index: Integer; const AInt64: Int64);
-    function  sorguNo_Specified(Index: Integer): boolean;
-  published
-    property message_: string   Index (IS_OPTN or IS_UNQL) read Fmessage_ write Setmessage_ stored message__Specified;
-    property sorguNo:  Int64    Index (IS_OPTN or IS_UNQL) read FsorguNo write SetsorguNo stored sorguNo_Specified;
-    property status:   Integer  Index (IS_UNQL) read Fstatus write Fstatus;
-  end;
-
-
-
-  // ************************************************************************ //
-  // XML       : egitimBildirimSorgu, global, <complexType>
-  // Namespace : http://tempuri.org/
-  // ************************************************************************ //
-  egitimBildirimSorgu = class(TRemotable)
-  private
-    FbaslangicTarihi: string;
-    FbaslangicTarihi_Specified: boolean;
-    FbitisTarihi: string;
-    FbitisTarihi_Specified: boolean;
-    FcalisanTckNo: Int64;
-    FisgProfTckNo: Int64;
-    FsorguNo: Int64;
-    procedure SetbaslangicTarihi(Index: Integer; const Astring: string);
-    function  baslangicTarihi_Specified(Index: Integer): boolean;
-    procedure SetbitisTarihi(Index: Integer; const Astring: string);
-    function  bitisTarihi_Specified(Index: Integer): boolean;
-  published
-    property baslangicTarihi: string  Index (IS_OPTN or IS_UNQL) read FbaslangicTarihi write SetbaslangicTarihi stored baslangicTarihi_Specified;
-    property bitisTarihi:     string  Index (IS_OPTN or IS_UNQL) read FbitisTarihi write SetbitisTarihi stored bitisTarihi_Specified;
-    property calisanTckNo:    Int64   Index (IS_UNQL) read FcalisanTckNo write FcalisanTckNo;
-    property isgProfTckNo:    Int64   Index (IS_UNQL) read FisgProfTckNo write FisgProfTckNo;
-    property sorguNo:         Int64   Index (IS_UNQL) read FsorguNo write FsorguNo;
   end;
 
 
@@ -233,6 +184,82 @@ type
   end;
 
 
+
+  // ************************************************************************ //
+  // XML       : profesyonelYetkilimiCevap, global, <complexType>
+  // Namespace : http://tempuri.org/
+  // ************************************************************************ //
+  profesyonelYetkilimiCevap = class(TRemotable)
+  private
+    Fmessage_: string;
+    Fmessage__Specified: boolean;
+    FsorguNo: Int64;
+    FsorguNo_Specified: boolean;
+    Fstatus: Integer;
+    FyetkilimiBoolean: Boolean;
+    procedure Setmessage_(Index: Integer; const Astring: string);
+    function  message__Specified(Index: Integer): boolean;
+    procedure SetsorguNo(Index: Integer; const AInt64: Int64);
+    function  sorguNo_Specified(Index: Integer): boolean;
+  published
+    property message_:         string   Index (IS_OPTN or IS_UNQL) read Fmessage_ write Setmessage_ stored message__Specified;
+    property sorguNo:          Int64    Index (IS_OPTN or IS_UNQL) read FsorguNo write SetsorguNo stored sorguNo_Specified;
+    property status:           Integer  Index (IS_UNQL) read Fstatus write Fstatus;
+    property yetkilimiBoolean: Boolean  Index (IS_UNQL) read FyetkilimiBoolean write FyetkilimiBoolean;
+  end;
+
+  ArrayOfEgitimBildirimSorgulaCevap = array of egitimBildirimSorgulaCevap;   { "http://tempuri.org/"[GblCplx] }
+
+
+  // ************************************************************************ //
+  // XML       : egitimBilgisiCevap, global, <complexType>
+  // Namespace : http://tempuri.org/
+  // ************************************************************************ //
+  egitimBilgisiCevap = class(TRemotable)
+  private
+    Fmessage_: string;
+    Fmessage__Specified: boolean;
+    FsorguNo: Int64;
+    FsorguNo_Specified: boolean;
+    Fstatus: Integer;
+    procedure Setmessage_(Index: Integer; const Astring: string);
+    function  message__Specified(Index: Integer): boolean;
+    procedure SetsorguNo(Index: Integer; const AInt64: Int64);
+    function  sorguNo_Specified(Index: Integer): boolean;
+  published
+    property message_: string   Index (IS_OPTN or IS_UNQL) read Fmessage_ write Setmessage_ stored message__Specified;
+    property sorguNo:  Int64    Index (IS_OPTN or IS_UNQL) read FsorguNo write SetsorguNo stored sorguNo_Specified;
+    property status:   Integer  Index (IS_UNQL) read Fstatus write Fstatus;
+  end;
+
+
+
+  // ************************************************************************ //
+  // XML       : egitimBildirimSorgu, global, <complexType>
+  // Namespace : http://tempuri.org/
+  // ************************************************************************ //
+  egitimBildirimSorgu = class(TRemotable)
+  private
+    FbaslangicTarihi: string;
+    FbaslangicTarihi_Specified: boolean;
+    FbitisTarihi: string;
+    FbitisTarihi_Specified: boolean;
+    FcalisanTckNo: Int64;
+    FisgProfTckNo: Int64;
+    FsorguNo: Int64;
+    procedure SetbaslangicTarihi(Index: Integer; const Astring: string);
+    function  baslangicTarihi_Specified(Index: Integer): boolean;
+    procedure SetbitisTarihi(Index: Integer; const Astring: string);
+    function  bitisTarihi_Specified(Index: Integer): boolean;
+  published
+    property baslangicTarihi: string  Index (IS_OPTN or IS_UNQL) read FbaslangicTarihi write SetbaslangicTarihi stored baslangicTarihi_Specified;
+    property bitisTarihi:     string  Index (IS_OPTN or IS_UNQL) read FbitisTarihi write SetbitisTarihi stored bitisTarihi_Specified;
+    property calisanTckNo:    Int64   Index (IS_UNQL) read FcalisanTckNo write FcalisanTckNo;
+    property isgProfTckNo:    Int64   Index (IS_UNQL) read FisgProfTckNo write FisgProfTckNo;
+    property sorguNo:         Int64   Index (IS_UNQL) read FsorguNo write FsorguNo;
+  end;
+
+
   // ************************************************************************ //
   // Namespace : http://tempuri.org/
   // soapAction: http://tempuri.org/%operationName%
@@ -247,8 +274,10 @@ type
   CSGBServiceSoap = interface(IInvokable)
   ['{BAF09A16-C601-BE75-CF3C-640BC3A39E57}']
     function  isyeriBilgisi(const isyeriSgk: string; const iguTc: string): isyeriCevapBilgisi; stdcall;
-    function  egitimKaydet(const egitimBilgisi: egitimBilgisi): egitimBilgisiCevap; stdcall;
+    function  egitimBilgisiDVOToXML(const egitimBilgisi: egitimBilgisi): string; stdcall;
+    function  egitimKaydet(const egitimBilgisi: egitimBilgisi; const imzaliDeger: string): egitimBilgisiCevap; stdcall;
     function  egitimSorgula(const egitimSorgu: egitimBildirimSorgu): ArrayOfEgitimBildirimSorgulaCevap; stdcall;
+    function  profYetkilimi(const isyeriSgkNo: string; const isgProfTc: Int64): profesyonelYetkilimiCevap; stdcall;
   end;
 
 function GetCSGBServiceSoap(UseWSDL: Boolean=System.False; Addr: string=''; HTTPRIO: THTTPRIO = nil): CSGBServiceSoap;
@@ -325,50 +354,6 @@ end;
 function isyeriCevapBilgisi.tehlikeSinifi_Specified(Index: Integer): boolean;
 begin
   Result := FtehlikeSinifi_Specified;
-end;
-
-procedure egitimBilgisiCevap.Setmessage_(Index: Integer; const Astring: string);
-begin
-  Fmessage_ := Astring;
-  Fmessage__Specified := True;
-end;
-
-function egitimBilgisiCevap.message__Specified(Index: Integer): boolean;
-begin
-  Result := Fmessage__Specified;
-end;
-
-procedure egitimBilgisiCevap.SetsorguNo(Index: Integer; const AInt64: Int64);
-begin
-  FsorguNo := AInt64;
-  FsorguNo_Specified := True;
-end;
-
-function egitimBilgisiCevap.sorguNo_Specified(Index: Integer): boolean;
-begin
-  Result := FsorguNo_Specified;
-end;
-
-procedure egitimBildirimSorgu.SetbaslangicTarihi(Index: Integer; const Astring: string);
-begin
-  FbaslangicTarihi := Astring;
-  FbaslangicTarihi_Specified := True;
-end;
-
-function egitimBildirimSorgu.baslangicTarihi_Specified(Index: Integer): boolean;
-begin
-  Result := FbaslangicTarihi_Specified;
-end;
-
-procedure egitimBildirimSorgu.SetbitisTarihi(Index: Integer; const Astring: string);
-begin
-  FbitisTarihi := Astring;
-  FbitisTarihi_Specified := True;
-end;
-
-function egitimBildirimSorgu.bitisTarihi_Specified(Index: Integer): boolean;
-begin
-  Result := FbitisTarihi_Specified;
 end;
 
 procedure egitimBilgisi.SetbelgeTipi(Index: Integer; const AInt64: Int64);
@@ -536,6 +521,72 @@ begin
   Result := FsorguNo_Specified;
 end;
 
+procedure profesyonelYetkilimiCevap.Setmessage_(Index: Integer; const Astring: string);
+begin
+  Fmessage_ := Astring;
+  Fmessage__Specified := True;
+end;
+
+function profesyonelYetkilimiCevap.message__Specified(Index: Integer): boolean;
+begin
+  Result := Fmessage__Specified;
+end;
+
+procedure profesyonelYetkilimiCevap.SetsorguNo(Index: Integer; const AInt64: Int64);
+begin
+  FsorguNo := AInt64;
+  FsorguNo_Specified := True;
+end;
+
+function profesyonelYetkilimiCevap.sorguNo_Specified(Index: Integer): boolean;
+begin
+  Result := FsorguNo_Specified;
+end;
+
+procedure egitimBilgisiCevap.Setmessage_(Index: Integer; const Astring: string);
+begin
+  Fmessage_ := Astring;
+  Fmessage__Specified := True;
+end;
+
+function egitimBilgisiCevap.message__Specified(Index: Integer): boolean;
+begin
+  Result := Fmessage__Specified;
+end;
+
+procedure egitimBilgisiCevap.SetsorguNo(Index: Integer; const AInt64: Int64);
+begin
+  FsorguNo := AInt64;
+  FsorguNo_Specified := True;
+end;
+
+function egitimBilgisiCevap.sorguNo_Specified(Index: Integer): boolean;
+begin
+  Result := FsorguNo_Specified;
+end;
+
+procedure egitimBildirimSorgu.SetbaslangicTarihi(Index: Integer; const Astring: string);
+begin
+  FbaslangicTarihi := Astring;
+  FbaslangicTarihi_Specified := True;
+end;
+
+function egitimBildirimSorgu.baslangicTarihi_Specified(Index: Integer): boolean;
+begin
+  Result := FbaslangicTarihi_Specified;
+end;
+
+procedure egitimBildirimSorgu.SetbitisTarihi(Index: Integer; const Astring: string);
+begin
+  FbitisTarihi := Astring;
+  FbitisTarihi_Specified := True;
+end;
+
+function egitimBildirimSorgu.bitisTarihi_Specified(Index: Integer): boolean;
+begin
+  Result := FbitisTarihi_Specified;
+end;
+
 initialization
   { CSGBServiceSoap }
   InvRegistry.RegisterInterface(TypeInfo(CSGBServiceSoap), 'http://tempuri.org/', 'utf-8');
@@ -545,6 +596,9 @@ initialization
   { CSGBServiceSoap.isyeriBilgisi }
   InvRegistry.RegisterMethodInfo(TypeInfo(CSGBServiceSoap), 'isyeriBilgisi', '',
                                  '[ReturnName="isyeriBilgisiResult"]', IS_OPTN);
+  { CSGBServiceSoap.egitimBilgisiDVOToXML }
+  InvRegistry.RegisterMethodInfo(TypeInfo(CSGBServiceSoap), 'egitimBilgisiDVOToXML', '',
+                                 '[ReturnName="egitimBilgisiDVOToXMLResult"]', IS_OPTN);
   { CSGBServiceSoap.egitimKaydet }
   InvRegistry.RegisterMethodInfo(TypeInfo(CSGBServiceSoap), 'egitimKaydet', '',
                                  '[ReturnName="egitimKaydetResult"]', IS_OPTN);
@@ -553,14 +607,19 @@ initialization
                                  '[ReturnName="egitimSorgulaResult"]', IS_OPTN);
   InvRegistry.RegisterParamInfo(TypeInfo(CSGBServiceSoap), 'egitimSorgula', 'egitimSorgulaResult', '',
                                 '[ArrayItemName="egitimBildirimSorgulaCevap"]');
-  RemClassRegistry.RegisterXSInfo(TypeInfo(ArrayOfEgitimBildirimSorgulaCevap), 'http://tempuri.org/', 'ArrayOfEgitimBildirimSorgulaCevap');
+  { CSGBServiceSoap.profYetkilimi }
+  InvRegistry.RegisterMethodInfo(TypeInfo(CSGBServiceSoap), 'profYetkilimi', '',
+                                 '[ReturnName="profYetkilimiResult"]', IS_OPTN);
   RemClassRegistry.RegisterXSClass(isyeriCevapBilgisi, 'http://tempuri.org/', 'isyeriCevapBilgisi');
   RemClassRegistry.RegisterExternalPropName(TypeInfo(isyeriCevapBilgisi), 'message_', '[ExtName="message"]');
-  RemClassRegistry.RegisterXSClass(egitimBilgisiCevap, 'http://tempuri.org/', 'egitimBilgisiCevap');
-  RemClassRegistry.RegisterExternalPropName(TypeInfo(egitimBilgisiCevap), 'message_', '[ExtName="message"]');
-  RemClassRegistry.RegisterXSClass(egitimBildirimSorgu, 'http://tempuri.org/', 'egitimBildirimSorgu');
   RemClassRegistry.RegisterXSClass(egitimBilgisi, 'http://tempuri.org/', 'egitimBilgisi');
   RemClassRegistry.RegisterXSClass(egitimBildirimSorgulaCevap, 'http://tempuri.org/', 'egitimBildirimSorgulaCevap');
   RemClassRegistry.RegisterExternalPropName(TypeInfo(egitimBildirimSorgulaCevap), 'message_', '[ExtName="message"]');
+  RemClassRegistry.RegisterXSClass(profesyonelYetkilimiCevap, 'http://tempuri.org/', 'profesyonelYetkilimiCevap');
+  RemClassRegistry.RegisterExternalPropName(TypeInfo(profesyonelYetkilimiCevap), 'message_', '[ExtName="message"]');
+  RemClassRegistry.RegisterXSInfo(TypeInfo(ArrayOfEgitimBildirimSorgulaCevap), 'http://tempuri.org/', 'ArrayOfEgitimBildirimSorgulaCevap');
+  RemClassRegistry.RegisterXSClass(egitimBilgisiCevap, 'http://tempuri.org/', 'egitimBilgisiCevap');
+  RemClassRegistry.RegisterExternalPropName(TypeInfo(egitimBilgisiCevap), 'message_', '[ExtName="message"]');
+  RemClassRegistry.RegisterXSClass(egitimBildirimSorgu, 'http://tempuri.org/', 'egitimBildirimSorgu');
 
 end.

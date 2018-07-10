@@ -641,7 +641,7 @@ begin
 
   cxScheduler1.Storage.ConString := datalar.ADOConnection2.ConnectionString;
   cxScheduler1.Storage.Sirketler.Properties.Items := Sirketler.Properties.Items;
-  if not GuncellemeTakipScriptPush then Vcl.dialogs.ShowMessage('');
+ // if not GuncellemeTakipScriptPush then Vcl.dialogs.ShowMessage('');
 
   if GuncelKontrol = 'Evet'
   then

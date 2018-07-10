@@ -464,6 +464,9 @@ end;
 procedure TfrmFirmaKontrol.cxKaydetClick(Sender: TObject);
 begin
 
+  if DetaySil(TControl(sender).Tag,'Kontrol_IslemDetay','kontrolID',
+             vartostr(TcxButtonEditKadir(FindComponent('id')).EditingValue)) = False Then Exit;
+
   inherited;
 
   case TControl(sender).Tag  of

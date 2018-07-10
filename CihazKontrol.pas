@@ -355,7 +355,7 @@ begin
      if not datalar.QuerySelect('select * from  CihazKontrolDetay where kontrolid = ' + vartostr(TcxButtonEditKadir(FindComponent('id')).EditingValue) +
                            ' and (KontrolSoruCvp is not null or isnull(KontrolSoruCvpAciklama,'''') <> '''')').Eof
      Then begin
-      // TcxImageComboKadir(Sender).EditValue := sqlRun.FieldByName('KontrolCihaz').AsVariant;
+       TcxImageComboKadir(Sender).EditValue := sqlRun.FieldByName('KontrolCihaz').AsVariant;
        CihazKontrolSoruEdit(vartostr(TcxImageComboKadir(FindComponent('KontrolCihaz')).EditingValue),
                             vartostr(TcxButtonEditKadir(FindComponent('id')).EditingValue));
      end
@@ -487,6 +487,8 @@ end;
 
 procedure TfrmCihazKontrol.cxKaydetClick(Sender: TObject);
 begin
+  if DetaySil(TControl(sender).Tag,'CihazKontrolDetay','kontrolid',
+             vartostr(TcxButtonEditKadir(FindComponent('id')).EditingValue)) = False then exit;
 
   inherited;
 

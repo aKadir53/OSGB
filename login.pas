@@ -82,6 +82,7 @@ type
     aTimer: TTimer;
     NoktaImage: TcxImage;
     UYUMImage: TcxImage;
+    btnSifreUnuttum: TcxButton;
 
     procedure FormCreate(Sender: TObject);
     procedure FormActivate(Sender: TObject);
@@ -103,6 +104,7 @@ type
     procedure txtSubePropertiesChange(Sender: TObject);
     procedure LoginSayfalarChange(Sender: TObject);
     procedure aTimerTimer(Sender: TObject);
+    procedure btnSifreUnuttumClick(Sender: TObject);
   private
     { Private declarations }
   public
@@ -517,6 +519,33 @@ end;
 procedure TfrmLogin.btnDetayClick(Sender: TObject);
 begin
   txtDonemler.Visible := true;
+end;
+
+procedure TfrmLogin.btnSifreUnuttumClick(Sender: TObject);
+var
+  sql,email,pass : string;
+  ado : TADOQuery;
+begin
+     ado := TADOQuery.Create(nil);
+     ado.Connection := datalar.ADOConnection2;
+     try
+       datalar.SMTPSunucu := WebErisimBilgi('EML','01');
+       datalar.SMTPUserName := WebErisimBilgi('EML','02');
+       datalar.SMTPPassword := WebErisimBilgi('EML','03');
+       email := '';
+       sql := 'select password,email from Users where kullanici = ' + QuotedStr(edit1.text);
+       datalar.QuerySelect(ado,sql);
+       email := ado.FieldByName('email').AsString;
+       pass := ado.FieldByName('password').AsString;
+       if email <> ''
+       then
+       if mailGonder (email , 'Þifreniz Bilgisi' , 'Þifreniz : ' + pass)
+          = '0000'
+        then ShowMessageSkin('Þifreniz Kayýtlý Mail adresinize Gönderildi','','','info')
+        else ShowMessageSkin('Gönderilemedi','','','info');
+     finally
+      ado.free;
+     end;
 end;
 
 procedure TfrmLogin.cxButtonEditKadir1PropertiesButtonClick(Sender: TObject;

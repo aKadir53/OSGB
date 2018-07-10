@@ -7,7 +7,7 @@ uses Windows, Messages, SysUtils, Variants, Classes, Graphics, Vcl.Controls, Con
   ShellApi, forms, data_modul, Grids,  Rio, SOAPHTTPClient,cxGridExportLink,
   xsbuiltIns,  Mask, Math, Printers,   zlib, StrUtils, Menus, SHDocVw,
   ActiveX, Buttons,  WinSvc, ImgList,wininet, types, kadirType, KadirLabel,jpeg, AdvGrid,
-  IdBaseComponent, IdComponent, IdTCPConnection, IdTCPClient, IdHTTP,
+  IdBaseComponent, IdComponent, IdTCPConnection, IdTCPClient, IdHTTP,IdFtp,IdGlobal,
   cxDBLookupComboBox,winsock,  DBCtrlsEh, EncdDecd,cxStyles, cxCustomData, cxGraphics,
   cxFilter, cxData, cxDropDownEdit,MedEczane,JclGraphics,
   IdCoderMIME, cxDataStorage, cxEdit, cxControls, cxGridCustomView, cxGridDBTableView,
@@ -425,15 +425,26 @@ procedure YeniOSGBFirmaVeritabani;
 function SubeIGUDoktorAtanmismi(sirketKod : string) : integer;
 function FindComponentButtonName(const AName: string ; Form : TForm): TComponent;
 function FirmaSorgulaCSGB(firmaSGK , iguTC : string) : isyeriCevapBilgisi;
-function EgitimKaydetCSGB(egitim : egitimBilgisi) : egitimBilgisiCevap;
-function EgitimVerisi(id : string) : egitimBilgisi;
+function EgitimKaydetCSGB(egitim : egitimBilgisi ; pin,cardType,_xml_ : string) : egitimBilgisiCevap;
+function EgitimVerisi(id : string ; var pin,cardType : string; var xml : string) : egitimBilgisi;
+function EgitimVerisiXML(egitim : egitimBilgisi) : string;
+function EgitimImzala(pin,egitim,cardType : string): string;
 
 Procedure FirmaSorgulCSGBCvpFirmaBilgiGuncelle(firmaSgk : string ; Cvp : isyeriCevapBilgisi);
+
+function DetaySil(Tag : integer ; Tablaname,WhereField,Where : string) : Boolean;
 
 
 function findMethod(dllHandle: Cardinal;  methodName: string): FARPROC;
 
 type
+
+  TEgitimImzala = procedure(egitim : PWideChar;
+                            var imzaliEgitim : PWideChar;
+                            pin : string;
+                            cardType : string;
+                            var sonuc : PWideChar); stdcall;
+
   TEmailSend = procedure(var sonuc : PWideChar;
                           smtpClientHost : PWideChar;
                           Username : PWideChar;
@@ -448,6 +459,8 @@ type
 
 const
   LIB_DLL = 'D:\Projeler\VS\c#\EFatura\EFaturaDLL\ClassLibrary1\bin\Debug\EFaturaDLL.dll';
+  LIB_DLL2 = 'D:\Projeler\VS\c#\ListeDLL\ListeDLL\bin\x86\Debug\NoktaDLL.dll';
+ // LIB_DLL = 'EFaturaDLL.dll';
   _YTL_ = 'YTL';
   _OTL_ = 'TRL';
   harfler = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGGHIJKLMNOPQRSTUVWXYZXW';
@@ -522,7 +535,75 @@ uses message,AnaUnit,message_y,popupForm,rapor,TedaviKart,Son6AylikTetkikSonuc,D
              HastaRecete,sifreDegis,HastaTetkikEkle,GirisUnit,SMS,LisansUzat,Update_G, DBGrids,
              UyumSoftPortal,NThermo, TransUtils;
 
-function EgitimVerisi(id : string) : egitimBilgisi;
+function DetaySil(Tag : integer ; Tablaname,WhereField,Where : string) : Boolean;
+begin
+  DetaySil := False;
+  case Tag  of
+    Sil :
+      begin
+        try
+           datalar.QueryExec('delete from ' + Tablaname  + ' where ' + WhereField + ' = ' + QuotedStr(where));
+           DetaySil := True;
+        except on e : exception do
+          begin
+           ShowMessageSkin(e.Message,'','','info');
+           DetaySil := False;
+          end;
+        end;
+
+      end
+      Else DetaySil := True;
+  end;
+end;
+
+function EgitimImzala(pin,egitim,cardType : string): string;
+var
+  imzala : TEgitimImzala;
+  dllHandle: Cardinal;
+  receteId,TesisKodu: integer;
+  recete,doktorKullanici,doktorsifre : string;
+  doktorTc : string;
+  ss,imzali : PWideChar;
+  sql : string;
+begin
+  ss := '';
+  imzali := '';
+  dllHandle := LoadLibrary(LIB_DLL2);
+  try
+    if dllHandle = 0 then exit;
+
+    @imzala := findMethod(dllHandle, 'EgitimImzala');
+    if addr(imzala) <> nil then
+    imzala(pwidechar(egitim),imzali,pin,cardType,ss);
+
+    EgitimImzala := imzali;
+
+    if not Assigned(imzala) then
+      raise Exception.Create(LIB_DLL + ' içersinde EgitimImzala bulunamadý!');
+
+  finally
+    FreeLibrary(dllHandle);
+  end;
+end;
+
+function EgitimVerisiXML(egitim : egitimBilgisi) : string;
+var
+  Cvp : string;
+begin
+    EgitimVerisiXML := '';
+    try
+      Application.ProcessMessages;
+      datalar.CSGBsoap.URL := 'http://213.159.30.6/CSGBservice.asmx';
+      Cvp := (datalar.CSGBsoap as CSGBServiceSoap).egitimBilgisiDVOToXML(egitim);
+      EgitimVerisiXML := Cvp;
+    except
+      on E : Exception do
+      begin
+        ShowmessageSkin(E.Message,'','','info');
+      end;
+    end;
+end;
+function EgitimVerisi(id : string ; var pin,cardType : string; var xml : string) : egitimBilgisi;
 var
   sql : string;
   ado : TADOQuery;
@@ -532,11 +613,27 @@ begin
    ado.Connection := datalar.ADOConnection2;
    Veri := egitimBilgisi.Create;
    try
-    sql := 'select * from Egitimler where id = ' + id;
+    sql := 'sp_EgitimVerisi ' + id;
     datalar.QuerySelect(ado,sql);
 
-    Veri.firmaKodu := ado.FieldByName('SirketKod').AsString;
+    pin := ado.FieldByName('pin').AsString;
+    cardType := ado.FieldByName('cardType').AsString;
+    xml :=  ado.FieldByName('EgitimXML').AsString;
+
     Veri.sorguNo := strToint(id);
+    Veri.belgeTipi := 2;
+    Veri.egiticiTckNo := ado.FieldByName('egitimciTC').AsLargeInt;
+    Veri.calisanTckNo := ado.FieldByName('TCKIMLIKNO').AsLargeInt;
+    Veri.egitimKoduId := ado.FieldByName('EntagrasyonKodu').AsInteger;
+    Veri.egitimSuresi := ado.FieldByName('egitimSure').AsInteger;
+    Veri.egitimTarihi := ado.FieldByName('EgitimTarihi').AsString;
+    Veri.egitimTur := ado.FieldByName('EgitimTuru').AsInteger;
+    Veri.egitimYer := ado.FieldByName('EgitimTip').AsInteger;
+    Veri.firmaKodu := ado.FieldByName('FirmaKodu').AsString;
+    Veri.isgProfTckNo :=  ado.FieldByName('egitimciTC').AsLargeInt;
+    Veri.sgkTescilNo := ado.FieldByName('sgkSicil').AsString;
+
+
     EgitimVerisi := Veri;
 
    finally
@@ -564,16 +661,19 @@ begin
   datalar.QueryExec(sql);
 end;
 
-function EgitimKaydetCSGB(egitim : egitimBilgisi) : egitimBilgisiCevap;
+function EgitimKaydetCSGB(egitim : egitimBilgisi ; pin,cardType,_xml_ : string) : egitimBilgisiCevap;
 var
-  sayi : string;
+  sayi,EgitimString : string;
   Cvp : egitimBilgisiCevap;
 begin
     Cvp := egitimBilgisiCevap.Create;
+  //  EgitimString := EgitimVerisiXML(egitim);
+
+    EgitimString := EgitimImzala(pin,_xml_,cardType);
     try
       Application.ProcessMessages;
       datalar.CSGBsoap.URL := 'http://213.159.30.6/CSGBservice.asmx';
-      Cvp := (datalar.CSGBsoap as CSGBServiceSoap).egitimKaydet(egitim);
+      Cvp := (datalar.CSGBsoap as CSGBServiceSoap).egitimKaydet(egitim,EgitimString);
       EgitimKaydetCSGB := Cvp;
       if Cvp.status = 200
       Then begin

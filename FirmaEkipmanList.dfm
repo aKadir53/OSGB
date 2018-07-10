@@ -204,6 +204,7 @@ object frmFirmaEkipmanList: TfrmFirmaEkipmanList
         item
           Caption = 'Firma Ekipman Listesi'
           FixedKind = fkLeft
+          Options.Sizing = False
           Styles.Header = cxStyle8
           Width = 426
         end>
@@ -229,6 +230,7 @@ object frmFirmaEkipmanList: TfrmFirmaEkipmanList
         Caption = 'Ekipman T'#252'r'#252
         DataBinding.FieldName = 'cihazTurKod'
         PropertiesClassName = 'TcxImageComboBoxProperties'
+        Properties.DropDownRows = 16
         Properties.Items = <>
         HeaderAlignmentHorz = taCenter
         Width = 129

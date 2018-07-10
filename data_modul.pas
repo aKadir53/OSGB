@@ -253,8 +253,8 @@ type
     DSP_DataSource: TDataSource;
     FotoImage: TcxImageList;
     CSGBSoap: THTTPRIO;
-    procedure pcarihareketlerAfterScroll(DataSet: TDataSet);
-    procedure TempConnectionAfterConnect(Sender: TObject);
+ //   procedure pcarihareketlerAfterScroll(DataSet: TDataSet);
+ //   procedure TempConnectionAfterConnect(Sender: TObject);
     procedure TakipHTTPWebNode1BeforePost(const HTTPReqResp: THTTPReqResp;
       Data: Pointer);
     procedure HizmetKayitHTTPWebNode1BeforePost(

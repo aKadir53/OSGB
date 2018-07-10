@@ -1,0 +1,65 @@
+<ds:Signature Id="Sign-Id-S0" xmlns:ds="http://www.w3.org/2000/09/xmldsig#"><ds:SignedInfo>
+<ds:CanonicalizationMethod Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315" />
+<ds:SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsa-sha256" />
+<ds:Reference Id="Sign-Id-S0-Reference-Id-0" URI="#Sign-Id-S0-Object-Id-1"><ds:DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256" /><ds:DigestValue>Vv8FDI/0ryuxS/Gcwt5OOg5zyO3Uliva0rPOdrs5/6Q=</ds:DigestValue></ds:Reference>
+<ds:Reference Id="Sign-Id-S0-Reference-Id-1" URI="#Sign-Id-S0-SignedProperties" Type="http://uri.etsi.org/01903#SignedProperties"><ds:DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256" /><ds:DigestValue>/TvjqmsR7KlXI1V/aDrmjYCsbnfZZEimGsTZf5vGpGQ=</ds:DigestValue></ds:Reference></ds:SignedInfo><ds:SignatureValue Id="Sign-Id-S0-Signature-Value">PSUkHzNpLy9WngJ4yr0u6Eh350wRHZLntJMCkrP5fMk2jsXREgjgKpAreW3mJ/wLJsjdvMRNZ0BR
+NgZuPBV/FOeh+x9EkCxB21+sOOJwhZDQjmyJBCv/Xv14vSyWoqjbfkzVmb71ZuMvSO6hvnAenNUJ
+PRwlsUvahJlemXuBoDaQ3A9aMG0KYvsIrniWLp8S5YotMj1fY2aiOYB9r7v/2WU+V/E15hQnLqHU
+gzkJL7be09+o3IrEG+bjnmx4bft2eVdtoon3hr4qJpVQT88Sgl+Bzc1rYMyEu4Bs9DRKj3JCvRAx
+n4uM4T8NczM3cBOtvfDtDoRpQlO8utKi+tZnaQ==</ds:SignatureValue>
+<ds:KeyInfo>
+<ds:KeyValue>
+<ds:RSAKeyValue>
+<ds:Modulus>AJ/O2rP11sxgyl+m5QVZGui44V4nKxmGcCebHW5JHNZxWOd90YovISEwLFtuDOwUf5aIYnW6Eobr
+nixZ2H0EgBNg4g0kQb8JDbxx9ku8DDCSdlH6dQvzlrHSWGMtJ9AfzbVpsSnmEMCGBk+vh2Wk+x4w
+6NieF1KCpPE3g19UgKrrnYTv4A61PoI/Pg2B8s9MOhmxD00o5rbVG8o/9/j8kL6B6nMKzVUsWDZi
+gzfyEYihh6u272fFg+Qa++ElL2nLWH3KDNDusCB0HFYsuTK+la9KGxLL6HJpaqxFFmnCD1psTKkT
+vkLEtsHrhIBL6yBr2o3eZDq3vKWBamAeBqesvrk=</ds:Modulus>
+<ds:Exponent>AQAB</ds:Exponent></ds:RSAKeyValue></ds:KeyValue>
+<ds:X509Data>
+<ds:X509SubjectName>C=TR,SERIALNUMBER=66289083080,CN=ABDULKADİR KOÇALİ</ds:X509SubjectName>
+<ds:X509Certificate>MIIGdjCCBV6gAwIBAgIIUshue2R3JR0wDQYJKoZIhvcNAQELBQAwgdUxCzAJBgNVBAYTAlRSMQ8w
+DQYDVQQHDAZBbmthcmExQDA+BgNVBAoMN0UtVHXEn3JhIEVCRyBCaWxpxZ9pbSBUZWtub2xvamls
+ZXJpIHZlIEhpem1ldGxlcmkgQS7Fni4xJzAlBgNVBAsMHkUtVHXEn3JhIFNlcnRpZmlrYXN5b24g
+TWVya2V6aTFKMEgGA1UEAwxBRS1UdcSfcmEgTml0ZWxpa2xpIEVsZWt0cm9uaWsgU2VydGlmaWth
+IEhpem1ldCBTYcSfbGF5xLFjxLFzxLEgdjIwHhcNMTcxMDAyMTE1NTUyWhcNMTgxMDAyMDAwMjAw
+WjBCMQswCQYDVQQGEwJUUjEUMBIGA1UEBRMLNjYyODkwODMwODAxHTAbBgNVBAMMFEFCRFVMS0FE
+xLBSIEtPw4dBTMSwMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAn87as/XWzGDKX6bl
+BVka6LjhXicrGYZwJ5sdbkkc1nFY533Rii8hITAsW24M7BR/lohidboShuueLFnYfQSAE2DiDSRB
+vwkNvHH2S7wMMJJ2Ufp1C/OWsdJYYy0n0B/NtWmxKeYQwIYGT6+HZaT7HjDo2J4XUoKk8TeDX1SA
+quudhO/gDrU+gj8+DYHyz0w6GbEPTSjmttUbyj/3+PyQvoHqcwrNVSxYNmKDN/IRiKGHq7bvZ8WD
+5Br74SUvactYfcoM0O6wIHQcViy5Mr6Vr0obEsvocmlqrEUWacIPWmxMqRO+QsS2weuEgEvrIGva
+jd5kOre8pYFqYB4Gp6y+uQIDAQABo4IC2jCCAtYwCQYDVR0TBAIwADAfBgNVHSMEGDAWgBRtOjV+
+cXst6L9byH9j1RjhF9sjEjB5BggrBgEFBQcBAQRtMGswOAYIKwYBBQUHMAKGLGh0dHA6Ly93d3cu
+ZS10dWdyYS5jb20vY3J0L2V0dWdyYV9uZXNfdjIuY3J0MC8GCCsGAQUFBzABhiNodHRwOi8vb2Nz
+cC5lLXR1Z3JhLmNvbS9zdGF0dXMvb2NzcDAiBgNVHREEGzAZgRdkZXN0ZWtAbm9rdGF5YXppbGlt
+Lm5ldDCBswYDVR0gBIGrMIGoMIGlBglghhgDAAQBAQEwgZcwJgYIKwYBBQUHAgEWGmh0dHA6Ly93
+d3cuZS10dWdyYS5jb20vY3BzMG0GCCsGAQUFBwICMGEMX0J1IHNlcnRpZmlrYSwgNTA3MCBzYXnE
+sWzEsSBFbGVrdHJvbmlrIMSwbXphIEthbnVudW5hIGfDtnJlIE5pdGVsaWtsaSBFbGVrdHJvbmlr
+IFNlcnRpZmlrYWTEsXIuMIG3BggrBgEFBQcBAwSBqjCBpzAKBggrBgEFBQcLAjAIBgYEAI5GAQEw
+FQYGBACORgECMAsTA1RSWQIBAAIBADAIBgYEAI5GAQQwbgYLYIYYAT0AAadOAQEMX0J1IHNlcnRp
+ZmlrYSwgNTA3MCBzYXnEsWzEsSBFbGVrdHJvbmlrIMSwbXphIEthbnVudW5hIGfDtnJlIE5pdGVs
+aWtsaSBFbGVrdHJvbmlrIFNlcnRpZmlrYWTEsXIuMGoGA1UdHwRjMGEwLqAsoCqGKGh0dHA6Ly9j
+cmwuZS10dWdyYS5jb20vZXR1Z3JhX25lc192Mi5jcmwwL6AtoCuGKWh0dHA6Ly9jcmwxLmUtdHVn
+cmEuY29tL2V0dWdyYV9uZXNfdjIuY3JsMB0GA1UdDgQWBBQfb1ktJHutNdGkd30RN41bc5bbsjAO
+BgNVHQ8BAf8EBAMCBsAwDQYJKoZIhvcNAQELBQADggEBAMBMt1Odz1yRGy5tMcYjiHXvoaFqYcQb
+LZLK6MEDWTF8OBw3pwcXXJiEfAH6rNiF0vHVivNYy28hoBU12njtt1ZoHKWcXYSsfAQULy30nSHA
+Jzhedwaks8aCfoojLsTqhX5lt50R+uFoDnpnXSm9c+e6jq83LC9td9AKEJUIsni1ZmdC9JBZUlFw
+qbsEC1aGvK28DNGEzBrurwTsi+ErmQyGn2qButvSOzq9KZyqcEqfncWIPuPFUZ+Ej58iE9dFA7th
+760RDEIxFVEBcgEfqphp5SWKbtRmZuCRPKzN7d9Tm6M9c2+Yfk+3daXF4XJhsXqvIEt7kBw+6gjH
+qi3aids=</ds:X509Certificate></ds:X509Data></ds:KeyInfo>
+<ds:Object Id="Sign-Id-S0-Object-Id-1" Encoding="http://www.w3.org/2000/09/xmldsig#base64">PGVnaXRpbURWTz48ZWdpdGltQmlsZGlyaW0+PGJlbGdlVGlwaT4yPC9iZWxnZVRpcGk+PGNhbGlzYW5UY2tObz42NjI4OTA4MzA4MDwvY2FsaXNhblRja05vPjxlZ2l0aWNpVGNrTm8+MjM2MjcwOTY3Njg8L2VnaXRpY2lUY2tObz48ZWdpdGltS29kdUlkPjI0PC9lZ2l0aW1Lb2R1SWQ+PGVnaXRpbVN1cmVzaT4xMDwvZWdpdGltU3VyZXNpPjxlZ2l0aW1UYXJpaGk+MDItMDctMjAxODwvZWdpdGltVGFyaWhpPjxlZ2l0aW1UdXI+MTwvZWdpdGltVHVyPjxlZ2l0aW1ZZXI+MTwvZWdpdGltWWVyPjxmaXJtYUtvZHU+M2FmZDc3NWNlYmNmMjYyMDFmNjFjM2Q4Mjk3MDVmM2Y8L2Zpcm1hS29kdT48aXNnUHJvZlRja05vPjIzNjI3MDk2NzY4PC9pc2dQcm9mVGNrTm8+PGlzeWVyaUlkPjA8L2lzeWVyaUlkPjxzZ2tUZXNjaWxObz4yNDMyOTA3MDcxMTM0MzUxMDM0MjQ5NTAwMDwvc2drVGVzY2lsTm8+PC9lZ2l0aW1CaWxkaXJpbT48L2VnaXRpbURWTz4=</ds:Object>
+<ds:Object Id="Sign-Id-S0-Object-Id-0">
+<xades:QualifyingProperties Target="#Sign-Id-S0" xmlns:xades="http://uri.etsi.org/01903/v1.3.2#">
+<xades:SignedProperties Id="Sign-Id-S0-SignedProperties">
+<xades:SignedSignatureProperties>
+<xades:SigningTime>2018-07-10T15:45:27Z</xades:SigningTime>
+<xades:SigningCertificate>
+<xades:Cert>
+<xades:CertDigest><ds:DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256" /><ds:DigestValue>OKG8930VP1tOKuvWdfA0YEFGF2IzHjEKgoK39QhZZUo=</ds:DigestValue></xades:CertDigest>
+<xades:IssuerSerial>
+<ds:X509IssuerName>CN=E-Tuğra Nitelikli Elektronik Sertifika Hizmet Sağlayıcısı v2, OU=E-Tuğra Sertifikasyon Merkezi, O=E-Tuğra EBG Bilişim Teknolojileri ve Hizmetleri A.Ş., L=Ankara, C=TR</ds:X509IssuerName>
+<ds:X509SerialNumber>5965139182697784605</ds:X509SerialNumber></xades:IssuerSerial></xades:Cert></xades:SigningCertificate></xades:SignedSignatureProperties>
+<xades:SignedDataObjectProperties>
+<xades:DataObjectFormat ObjectReference="#Sign-Id-S0-Reference-Id-0">
+<xades:MimeType>text/xml</xades:MimeType></xades:DataObjectFormat></xades:SignedDataObjectProperties></xades:SignedProperties></xades:QualifyingProperties></ds:Object></ds:Signature>

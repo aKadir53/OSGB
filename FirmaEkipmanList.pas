@@ -112,6 +112,7 @@ type
     procedure gridRaporCustomDrawGroupCell(Sender: TcxCustomGridTableView;
       ACanvas: TcxCanvas; AViewInfo: TcxGridTableCellViewInfo;
       var ADone: Boolean);
+
     procedure SirketlerPropertiesChange(Sender: TObject);
     procedure cxKaydetClick(Sender: TObject);override;
     procedure NewRecord(DataSet: TDataSet);
@@ -233,13 +234,12 @@ begin
   sirketlerx.BosOlamaz := False;
   sirketlerx.Filter := '';
 
-
   TcxImageComboBoxProperties(EkipmanListGridSatircihazTurKod.Properties).Items :=
   TcxImageComboBoxProperties(TcxImageComboKadir(FindComponent('CihazTurleri')).Properties).Items;
+  TcxImageComboBoxProperties(EkipmanListGridSatircihazTurKod.Properties).Alignment.Horz := taLeftJustify;
 
-
-  setDataStringKontrol(self,EkipmanListGrid,'EkipmanListGrid','',Kolon1,'',440,490,alNone,'');
-  setDataStringKontrol(self,EkipmanDetay,'EkipmanDetay','',Kolon2,'',377,490,alNone,'');
+  setDataStringKontrol(self,EkipmanListGrid,'EkipmanListGrid','',Kolon1,'',450,480,alNone,'');
+  setDataStringKontrol(self,EkipmanDetay,'EkipmanDetay','',Kolon2,'',367,480,alNone,'');
 
   EkipmanListGrid.Dataset.OnNewRecord := NewRecord;
   EkipmanListGrid.Dataset.AfterScroll := AfterScroll;

@@ -181,6 +181,7 @@ type
   end;
 
 
+
   TReceteImzala = procedure(Id : integer;
                       recete : string;
                       doktorkullanici : string;
