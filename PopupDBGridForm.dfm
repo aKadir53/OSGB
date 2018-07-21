@@ -366,6 +366,13 @@ object frmPopupDBGridForm: TfrmPopupDBGridForm
       Caption = 'Kapat'
       OnClick = cxKaydetClick
     end
+    object E1: TMenuItem
+      Tag = -1
+      Caption = 'Egitimleri Getir'
+      ImageIndex = 76
+      Visible = False
+      OnClick = cxButtonCClick
+    end
   end
   object ListeNaceKods: TListeAc
     ListeBaslik = 'Nace Kodlari'

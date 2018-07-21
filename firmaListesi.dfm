@@ -331,7 +331,7 @@ object frmFirmaListe: TfrmFirmaListe
           HeaderAlignmentVert = vaCenter
         end
         object ListeIsyeriSicilNo: TcxGridDBColumn
-          DataBinding.FieldName = 'subeSiciNo'
+          DataBinding.FieldName = 'subeSicilNo'
           HeaderAlignmentHorz = taCenter
           HeaderAlignmentVert = vaCenter
           Width = 84

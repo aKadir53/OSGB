@@ -59,6 +59,7 @@ type
     GrpAciklama: TcxGroupBox;
     txtAciklama: TcxDBRichEdit;
     cxStyle2: TcxStyle;
+    E1: TMenuItem;
     procedure FormCreate(Sender: TObject);
     procedure txtMsgEnter(Sender: TObject);
     procedure FormShow(Sender: TObject);
@@ -104,6 +105,14 @@ var
 begin
    //inherited;
    //
+
+  case TmenuItem(sender).Tag of
+   -1 : begin
+          EgitimKodlari;
+        end;
+
+  end;
+
    case Tag of
      TagfrmFirmaISGEkip : begin
                             TopluDataset.Dataset0 := datalar.QuerySelect('exec	sp_ISGFirmaEkip  ' + DBGrid.DataController.DataSet.FieldByName('ISGEkipId').AsString  +
@@ -112,6 +121,10 @@ begin
                           end;
 
    end;
+
+
+
+
 
 
 end;
@@ -688,6 +701,19 @@ begin
     *)
 
     Yukle;
+
+    if txtTable.Text = 'Eðitim Türleri'
+    then begin
+        E1.Visible := True;
+        PopupMenuToToolBar(self,ToolBar1,PopupMenu1);
+    end
+    else
+    begin
+        E1.Visible := False;
+        PopupMenuToToolBar(self,ToolBar1,PopupMenu1);
+    end;
+
+
 
     if txtTable.Text = 'Ekip Görev Tanýmlarý'
     then begin

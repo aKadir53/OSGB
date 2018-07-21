@@ -263,7 +263,7 @@ begin
      end;
  -6 : begin
         iguTC := _Dataset.FieldByName('iguTc').AsString;
-        firmaSgk := _Dataset.FieldByName('SubeSiciNo').AsString;
+        firmaSgk := _Dataset.FieldByName('SubeSicilNo').AsString;
         FirmaSorgulaCSGB(firmaSgk,iguTC);//'23627096768');
       end;
 

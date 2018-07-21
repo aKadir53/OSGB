@@ -25,7 +25,7 @@ uses
   dxSkinOffice2007Pink, dxSkinOffice2007Silver, dxSkinOffice2010Black,
   dxSkinOffice2010Blue, dxSkinOffice2010Silver, dxSkinPumpkin, dxSkinSeven,
   dxSkinSharp, dxSkinSilver, dxSkinSpringTime, dxSkinStardust, dxSkinSummer2008,
-  dxSkinValentine, dxSkinXmas2008Blue;
+  dxSkinValentine, dxSkinXmas2008Blue, Vcl.ActnList;
 
 
 
@@ -112,6 +112,9 @@ type
     GridEgitimColumn5: TcxGridDBBandedColumn;
     Meslekler: TListeAc;
     MESLEK: TcxButtonEditKadir;
+    ActionList1: TActionList;
+    PersonelKaydet: TAction;
+    YeniMuayene: TAction;
     procedure FormCreate(Sender: TObject);
     procedure cxKaydetClick(Sender: TObject);override;
     procedure cxButtonCClick(Sender: TObject);
@@ -1252,8 +1255,8 @@ begin
   setDataStringKontrol(self,cxFotoPanel , 'cxFotoPanel','',Kolon4,'',110);
   setDataStringKontrol(self,txtAktif , 'Aktif','',Kolon4,'',110);
 
-  addButton(self,nil,'btnTopluAktif','','Toplu Aktif Yap',Kolon4,'',110,ButtonClick, 555);
-  addButton(self,nil,'btnTopluPasif','','Toplu Pasif Yap',Kolon4,'',110,ButtonClick, 550);
+  addButton(self,nil,'btnTopluAktif','','Toplu &Aktif Yap',Kolon4,'',110,ButtonClick, 555);
+  addButton(self,nil,'btnTopluPasif','','Toplu &Pasif Yap',Kolon4,'',110,ButtonClick, 550);
 
   setDataStringBLabel(self,'MuayenePeryotBaslik',Kolon4,'',110,'Muayene Peryodu');
  // TcxLabel(FindComponent('MuayenePeryotBaslik')).Style.Font.Color := clRed;
@@ -1328,7 +1331,7 @@ begin
   setDataStringKontrol(self,birim,'birim','Birimi',kolon3,'birimGrp',120);
   OrtakEventAta(birim);
   addButton(self,nil,'btnBirim','','Ekle',Kolon3,'birimGrp',50,ButtonClick,TagfrmBirim*-1);
-  setDataString(self,'yaptigiIsinTanimi','Ýþ Tanýmý',Kolon3,'',250,True);
+  setDataString(self,'yaptigiIsinTanimi','Ýþ Tanýmý',Kolon3,'',200,True);
 
 // meslekler := ListeAcCreate('MeslekKodlari','kod,tanimi','Meslekler','100,300','Kodu','Meslek Tanýmý','',2);
 

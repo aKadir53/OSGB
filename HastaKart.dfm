@@ -863,14 +863,13 @@ object frmHastaKart: TfrmHastaKart
       ImageIndex = 79
       object MenucxYeni: TMenuItem
         Tag = 2
-        Caption = 'Yeni Personel Kart'#305
-        ImageIndex = 17
+        Caption = 'Yeni Personel'
+        ImageIndex = 82
         OnClick = cxKaydetClick
       end
       object MenucxKaydet: TMenuItem
-        Caption = 'Personel Kart'#305'n'#305' Kaydet'
-        ImageIndex = 31
-        OnClick = cxKaydetClick
+        Action = PersonelKaydet
+        Caption = 'Personel Kaydet'
       end
       object MenucxIptal: TMenuItem
         Tag = 1
@@ -880,9 +879,8 @@ object frmHastaKart: TfrmHastaKart
       end
       object GeliA1: TMenuItem
         Tag = -27
-        Caption = 'Yeni Muayene A'#231
-        ImageIndex = 48
-        OnClick = cxButtonCClick
+        Action = YeniMuayene
+        Caption = 'Yeni Muayene'
       end
       object G1: TMenuItem
         Tag = -31
@@ -997,5 +995,22 @@ object frmHastaKart: TfrmHastaKart
     GrupCol = 0
     Left = 448
     Top = 120
+  end
+  object ActionList1: TActionList
+    Images = DATALAR.imag24png
+    Left = 632
+    Top = 320
+    object PersonelKaydet: TAction
+      Caption = 'PersonelKaydet'
+      ImageIndex = 83
+      ShortCut = 16459
+      OnExecute = cxKaydetClick
+    end
+    object YeniMuayene: TAction
+      Caption = 'YeniMuayene'
+      ImageIndex = 48
+      ShortCut = 16461
+      OnExecute = cxButtonCClick
+    end
   end
 end

@@ -108,20 +108,29 @@ begin
   if MrYes = ShowMessageSkin('Þablon Ýptal Ediliyor Emin misiniz ?','','','msg')
   Then Begin
     try
+      datalar.ADOConnection2.BeginTrans;
       ado := TADOQuery.Create(nil);
       try
-      sql := 'delete from receteTaniSablon where ReceteSablonID = ' + Sablonlar.fieldbyname('Id').AsString;
-      datalar.QueryExec(ado,sql);
-      sql := 'delete from receteAciklamaSablon where ReceteSablonID = ' + Sablonlar.fieldbyname('Id').AsString;
-      datalar.QueryExec(ado,sql);
-      sql := 'delete from ReceteDetaySablon where ReceteSablonID = ' + Sablonlar.fieldbyname('Id').AsString;
-      datalar.QueryExec(ado,sql);
-      Sablonlar.Delete;
-      ShowMessageSkin('Þablon Ýptal Edildi','','','info');
+        sql := 'delete from receteTaniSablon where ReceteSablonID = ' + Sablonlar.fieldbyname('Id').AsString;
+        datalar.QueryExec(ado,sql);
+        sql := 'delete from receteAciklamaSablon where ReceteSablonID = ' + Sablonlar.fieldbyname('Id').AsString;
+        datalar.QueryExec(ado,sql);
+        sql := 'delete from ReceteIlacAciklamaSablon where ReceteDetaySablonID in ( ' +
+               'select id from ReceteDetaySablon where ReceteSablonID = ' + Sablonlar.fieldbyname('Id').AsString + ')';
+        datalar.QueryExec(ado,sql);
+        sql := 'delete from ReceteDetaySablon where ReceteSablonID = ' + Sablonlar.fieldbyname('Id').AsString;
+        datalar.QueryExec(ado,sql);
+        Sablonlar.Delete;
+        datalar.ADOConnection2.CommitTrans;
+        ShowMessageSkin('Þablon Ýptal Edildi','','','info');
       finally
-        ado.Free;
+            ado.Free;
       end;
-    except
+    except on e : exception do
+      begin
+        datalar.ADOConnection2.RollbackTrans;
+        ShowMessageSkin('Hata',e.Message,'','info');
+      end;
     end;
   End;
 end;

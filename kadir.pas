@@ -429,6 +429,7 @@ function EgitimKaydetCSGB(egitim : egitimBilgisi ; pin,cardType,_xml_ : string) 
 function EgitimVerisi(id : string ; var pin,cardType : string; var xml : string) : egitimBilgisi;
 function EgitimVerisiXML(egitim : egitimBilgisi) : string;
 function EgitimImzala(pin,egitim,cardType : string): string;
+Function EgitimKodlari : egitimListesiBilgisi;
 
 Procedure FirmaSorgulCSGBCvpFirmaBilgiGuncelle(firmaSgk : string ; Cvp : isyeriCevapBilgisi);
 
@@ -554,6 +555,26 @@ begin
       end
       Else DetaySil := True;
   end;
+end;
+
+Function EgitimKodlari : egitimListesiBilgisi;
+var
+  Cvp : egitimListesiBilgisi;
+begin
+    Cvp := egitimListesiBilgisi.Create;
+    try
+      Application.ProcessMessages;
+      datalar.CSGBsoap.URL := 'http://213.159.30.6/CSGBservice.asmx';
+      Cvp := (datalar.CSGBsoap as CSGBServiceSoap).egitimKodlariGetir;
+      EgitimKodlari := Cvp;
+      if Cvp.status = 200 then ShowMessageSkin('Ýþlem Baþarýlý','','','info');
+      
+    except
+      on E : Exception do
+      begin
+        ShowmessageSkin(E.Message,'','','info');
+      end;
+    end;
 end;
 
 function EgitimImzala(pin,egitim,cardType : string): string;
@@ -2303,6 +2324,13 @@ begin
           begin
             misub := TMenuItem.Create(pmenu);
             misub.Caption := mi.Items[i].Caption;
+
+            if Assigned(mi.Items[i].Action)
+            then begin
+              mi.Items[i].Action.Tag := mi.Items[i].Tag;
+              misub.Action := mi.Items[i].Action;
+            end;
+
             misub.ImageIndex := mi.Items[i].ImageIndex;
             misub.Tag := mi.Items[i].Tag;
             misub.Enabled := mi.Items[i].Enabled;
@@ -10128,6 +10156,7 @@ begin
     HTTPOptions := [hoForceEncodeParams];
     ConnectTimeout := 10000;
     sTmp := Get('http://www.noktayazilim.net/OSGBupdate.txt');
+  //  sTmp := '27932';
     //ltrim (rtrim (ilk satýr)) yap
     with TStringList.Create do
     try
