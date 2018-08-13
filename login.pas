@@ -286,7 +286,7 @@ begin
       dxStatusBar1.Panels [1].Text := datalar.usernameAdi + ' (' + datalar.UserGroupName + ')';
       dxStatusBar1.Panels [1].Width := Length (dxStatusBar1.Panels [1].Text) * 8;
 
-
+  (*
       if datalar.UserGroup = '1' then
       begin
           datalar.Foto := TJpegImage.Create;
@@ -338,7 +338,8 @@ begin
          end;
 
       end;
-
+       *)
+       SetAnaFormFoto;
 
       AnaForm.dxSkinController1.SkinName := login.FieldByName('userSkin').AsString;
       FormatSettings.DateSeparator := '.';

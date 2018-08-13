@@ -364,12 +364,20 @@ object frmPopupDBGridForm: TfrmPopupDBGridForm
     object K1: TMenuItem
       Tag = 9999
       Caption = 'Kapat'
+      ImageIndex = 18
       OnClick = cxKaydetClick
     end
     object E1: TMenuItem
       Tag = -1
       Caption = 'Egitimleri Getir'
       ImageIndex = 76
+      Visible = False
+      OnClick = cxButtonCClick
+    end
+    object R1: TMenuItem
+      Tag = -2
+      Caption = 'Rapor Dizayn Y'#252'kle'
+      ImageIndex = 9
       Visible = False
       OnClick = cxButtonCClick
     end

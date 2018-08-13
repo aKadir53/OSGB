@@ -426,10 +426,15 @@ function SubeIGUDoktorAtanmismi(sirketKod : string) : integer;
 function FindComponentButtonName(const AName: string ; Form : TForm): TComponent;
 function FirmaSorgulaCSGB(firmaSGK , iguTC : string) : isyeriCevapBilgisi;
 function EgitimKaydetCSGB(egitim : egitimBilgisi ; pin,cardType,_xml_ : string) : egitimBilgisiCevap;
+function EgitimKaydetCSGBImzager(egitim : egitimBilgisi) : egitimBilgisiCevap;
 function EgitimVerisi(id : string ; var pin,cardType : string; var xml : string) : egitimBilgisi;
 function EgitimVerisiXML(egitim : egitimBilgisi) : string;
 function EgitimImzala(pin,egitim,cardType : string): string;
+function EgitimImzali : string;
+function EgitimHash(egitim : string): string;
 Function EgitimKodlari : egitimListesiBilgisi;
+procedure SetAnaFormFoto;
+
 
 Procedure FirmaSorgulCSGBCvpFirmaBilgiGuncelle(firmaSgk : string ; Cvp : isyeriCevapBilgisi);
 
@@ -439,11 +444,17 @@ function DetaySil(Tag : integer ; Tablaname,WhereField,Where : string) : Boolean
 function findMethod(dllHandle: Cardinal;  methodName: string): FARPROC;
 
 type
+  TEgitimHash = procedure(egitim : PWideChar;
+                            var HashEgitim : PWideChar;
+                            var sonuc : PWideChar); stdcall;
 
   TEgitimImzala = procedure(egitim : PWideChar;
                             var imzaliEgitim : PWideChar;
                             pin : string;
                             cardType : string;
+                            var sonuc : PWideChar); stdcall;
+
+  TEgitimImzali = procedure(var imzaliEgitim : PWideChar;
                             var sonuc : PWideChar); stdcall;
 
   TEmailSend = procedure(var sonuc : PWideChar;
@@ -536,6 +547,71 @@ uses message,AnaUnit,message_y,popupForm,rapor,TedaviKart,Son6AylikTetkikSonuc,D
              HastaRecete,sifreDegis,HastaTetkikEkle,GirisUnit,SMS,LisansUzat,Update_G, DBGrids,
              UyumSoftPortal,NThermo, TransUtils;
 
+
+procedure SetAnaFormFoto;
+var
+  g : TBitmap;
+  Dataset : TDataset;
+  Table ,where : String;
+begin
+      if datalar.UserGroup = '1' then
+      begin
+          datalar.Foto := TJpegImage.Create;
+          g := TBitmap.Create;
+          try
+            g := TBitmap.Create;
+            datalar.FotoImage.GetBitmap(2,g);
+            datalar.Foto.Assign(g);
+          finally
+           g.free;
+          end;
+      end;
+
+      if (datalar.IGU <> '') or (datalar.doktorKodu <> '')
+      then begin
+         if datalar.IGU <> '' then Table := 'IGU' else Table := 'DoktorlarT';
+         if datalar.IGU <> '' then where := datalar.IGU else where := datalar.doktorKodu;
+
+        // datalar.Foto := TPngImage.Create;
+         datalar.Foto := TJpegImage.Create;
+         try
+           try
+              Dataset := datalar.QuerySelect('select tanimi,Foto from ' + Table + ' where kod = ' + QuotedStr(where));
+              datalar.userTanimi := Dataset.FieldByName('tanimi').AsString;
+              if not Dataset.FieldByName('foto').IsNull
+              then
+               datalar.Foto.Assign(Dataset.FieldByName('foto'))
+              else
+               datalar.Foto := nil;
+           except
+            datalar.Foto := nil;
+           end;
+         finally
+         end;
+
+         if datalar.Foto = nil
+         then begin
+          try
+           //datalar.Foto := TPngImage.Create;
+           datalar.Foto := TJpegImage.Create;
+           g := TBitmap.Create;
+
+           if datalar.IGU <> '' then datalar.FotoImage.GetBitmap(0,g);
+           if datalar.doktorKodu <> '' then datalar.FotoImage.GetBitmap(1,g);
+            datalar.Foto.Assign(g);
+          finally
+           g.free;
+          end;
+         end;
+
+      end;
+
+
+end;
+
+
+
+
 function DetaySil(Tag : integer ; Tablaname,WhereField,Where : string) : Boolean;
 begin
   DetaySil := False;
@@ -575,6 +651,68 @@ begin
         ShowmessageSkin(E.Message,'','','info');
       end;
     end;
+end;
+
+
+function EgitimHash(egitim : string): string;
+var
+  hash : TEgitimHash;
+  dllHandle: Cardinal;
+  receteId,TesisKodu: integer;
+  recete,doktorKullanici,doktorsifre : string;
+  doktorTc : string;
+  ss,imzali : PWideChar;
+  sql : string;
+begin
+  ss := '';
+  imzali := '';
+  dllHandle := LoadLibrary(LIB_DLL2);
+  try
+    if dllHandle = 0 then exit;
+
+    @hash := findMethod(dllHandle, 'EgitimXMLHash');
+    if addr(hash) <> nil then
+    hash(pwidechar(egitim),imzali,ss);
+
+    EgitimHash := imzali;
+
+    if not Assigned(hash) then
+      raise Exception.Create(LIB_DLL + ' içersinde EgitimXMLHash bulunamadý!');
+
+  finally
+    FreeLibrary(dllHandle);
+  end;
+end;
+
+
+function EgitimImzali : string;
+var
+  imzala : TEgitimImzali;
+  dllHandle: Cardinal;
+  receteId,TesisKodu: integer;
+  recete,doktorKullanici,doktorsifre : string;
+  doktorTc : string;
+  ss,imzali : PWideChar;
+  sql : string;
+begin
+  ss := '';
+  imzali := '';
+  dllHandle := LoadLibrary(LIB_DLL2);
+  try
+    if dllHandle = 0 then exit;
+
+    @imzala := findMethod(dllHandle, 'EgitimImzali');
+    if addr(imzala) <> nil then
+    imzala(imzali,ss);
+
+    EgitimImzali := imzali;
+
+    if not Assigned(imzala) then
+      raise Exception.Create(LIB_DLL + ' içersinde EgitimImzali bulunamadý!');
+
+  finally
+    FreeLibrary(dllHandle);
+  end;
 end;
 
 function EgitimImzala(pin,egitim,cardType : string): string;
@@ -648,7 +786,7 @@ begin
     Veri.egitimKoduId := ado.FieldByName('EntagrasyonKodu').AsInteger;
     Veri.egitimSuresi := ado.FieldByName('egitimSure').AsInteger;
     Veri.egitimTarihi := ado.FieldByName('EgitimTarihi').AsString;
-    Veri.egitimTur := ado.FieldByName('EgitimTuru').AsInteger;
+    Veri.egitimTur := ado.FieldByName('EgitimYontem').AsInteger;
     Veri.egitimYer := ado.FieldByName('EgitimTip').AsInteger;
     Veri.firmaKodu := ado.FieldByName('FirmaKodu').AsString;
     Veri.isgProfTckNo :=  ado.FieldByName('egitimciTC').AsLargeInt;
@@ -700,7 +838,11 @@ begin
       Then begin
         ShowMessageSkin('Sorgu No:' + intTostr(Cvp.sorguNo),'','','info');
       end
-      else ShowMessageSkin(Cvp.message_,'','','info');
+      else begin
+        ShowMessageSkin(Cvp.message_,'','','info');
+        Cvp.sorguNo := egitim.sorguNo;
+      end;
+
       EgitimKaydetCSGBCvpBilgiGuncelle(Cvp);
 
     except
@@ -710,6 +852,42 @@ begin
       end;
     end;
 end;
+
+
+function EgitimKaydetCSGBImzager(egitim : egitimBilgisi) : egitimBilgisiCevap;
+var
+  sayi,EgitimString : string;
+  Cvp : egitimBilgisiCevap;
+begin
+    Cvp := egitimBilgisiCevap.Create;
+  //  EgitimString := EgitimVerisiXML(egitim);
+
+    EgitimString := EgitimImzali;
+    try
+      Application.ProcessMessages;
+      datalar.CSGBsoap.URL := 'http://213.159.30.6/CSGBservice.asmx';
+      Cvp := (datalar.CSGBsoap as CSGBServiceSoap).egitimKaydet(egitim,EgitimString);
+      EgitimKaydetCSGBImzager := Cvp;
+      if Cvp.status = 200
+      Then begin
+        ShowMessageSkin('Sorgu No:' + intTostr(Cvp.sorguNo),'','','info');
+      end
+      else begin
+        ShowMessageSkin(Cvp.message_,'','','info');
+        Cvp.sorguNo := egitim.sorguNo;
+      end;
+
+      EgitimKaydetCSGBCvpBilgiGuncelle(Cvp);
+
+    except
+      on E : Exception do
+      begin
+        ShowmessageSkin(E.Message,'','','info');
+      end;
+    end;
+end;
+
+
 
 
 function FirmaSorgulaCSGB(firmaSGK , iguTC : string) : isyeriCevapBilgisi;
@@ -2281,6 +2459,8 @@ var
   pmenu : TPopupMenu;
   i,r : integer;
 begin
+  for I := TB.ButtonCount - 1 downto 0 do
+    TB.Buttons[I].Free;
 
   TB.Images := Menu.Images;
 

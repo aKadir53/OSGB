@@ -364,7 +364,7 @@ object frmPersonelEgitim: TfrmPersonelEgitim
   end
   object foto2: TcxImage
     Tag = -100
-    Left = 495
+    Left = 447
     Top = 377
     Properties.GraphicClassName = 'TJPEGImage'
     Properties.PopupMenuLayout.MenuItems = [pmiCustom]
@@ -377,7 +377,7 @@ object frmPersonelEgitim: TfrmPersonelEgitim
   end
   object Foto1: TcxImage
     Tag = -100
-    Left = 424
+    Left = 392
     Top = 377
     Properties.GraphicClassName = 'TJPEGImage'
     Properties.PopupMenuLayout.MenuItems = [pmiCustom]
@@ -387,6 +387,25 @@ object frmPersonelEgitim: TfrmPersonelEgitim
     TabOrder = 5
     Height = 44
     Width = 49
+  end
+  object btnEgitimGonderTek: TcxButtonKadir
+    Left = 503
+    Top = 355
+    Width = 75
+    Height = 25
+    Caption = 'E'#287'itim G'#246'nder'
+    TabOrder = 6
+    NewButtonVisible = False
+  end
+  object btnEgitimGonderTekImzager: TcxButtonKadir
+    Left = 584
+    Top = 355
+    Width = 75
+    Height = 25
+    Caption = 'G'#246'nder'
+    TabOrder = 7
+    Visible = False
+    NewButtonVisible = False
   end
   object PersonelList: TListeAc
     ListeBaslik = 'Personel Listesi'

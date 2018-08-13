@@ -278,7 +278,6 @@ type
       Data: Pointer);
     procedure ADOConnection2AfterConnect(Sender: TObject);
     function Baglan(db : string = '' ; Server : string = ''; username : String = ''; pSQLUserName : String = ''; pSQLPassword : String = '') : Boolean;
-    function MasterBaglan(MasterKod : string ; var DB, OSGBDesc : string ; var YazilimGelistirici : integer; Server : string = ''; pSQLUserName : String = ''; pSQLPassword : String = '') : boolean;
     procedure ADOConnection2WillExecute(Connection: TADOConnection;
       var CommandText: WideString; var CursorType: TCursorType;
       var LockType: TADOLockType; var CommandType: TCommandType;
@@ -352,10 +351,15 @@ type
    GirisFormRecord : TGirisFormRecord;
    StandartFormCaption : String;
    YazilimFirma : String;
+   CSGBUrl : string;
+   CSGBImza : string;
+   CSGBSifre : string;
+   CSGBFirmaKod : string;
  //  Foto : TPngImage;
    Foto : TJpegImage;
    userTanimi : String;
-
+    function MasterBaglan(MasterKod : string ; var DB, OSGBDesc : string ; var YazilimGelistirici : integer; Server : string = ''; pSQLUserName : String = ''; pSQLPassword : String = '') : boolean; overload;
+    function MasterBaglan : Boolean; overload;
 
    function QuerySelect (Q: TADOQuery; sql:string) : Boolean;overload;
   // function QuerySelect (sql:string;Q: TADOQuery = nil) : Boolean;overload;
@@ -376,9 +380,28 @@ var
 
 implementation
 
-uses AnaUnit,kadir, NThermo;
+uses kadir, NThermo, AnaUnit;
 
 {$R *.dfm}
+
+function TDatalar.MasterBaglan : Boolean;
+var
+  ado : TADOQuery;
+  pSQLPassword,pSQLUserName : string;
+begin
+ try
+  servername := Decode64(RegOku('OSGB_servername'));
+  pSQLUserName := Decode64(regOku('OSGB_serverUserName'));
+  pSQLPassword := Decode64(regOku('OSGB_serverPassWord'));
+  Master.Connected := false;
+  Master.ConnectionString :=
+  'Provider=SQLOLEDB.1;Password='+pSQLPassword+';Persist Security Info=True;User ID='+pSQLUserName+';Initial Catalog=OSGB_MASTER;Data Source='+servername;
+  Master.Connected := True;
+  Result := True;
+ except
+  Result := False;
+ end;
+end;
 
 function TDatalar.MasterBaglan(MasterKod : string ; var DB, OSGBDesc : string ; var YazilimGelistirici : integer; Server : string = ''; pSQLUserName : String = ''; pSQLPassword : String = '') : Boolean;
 var
@@ -521,6 +544,15 @@ begin
           efaturaUsername := WebErisimBilgi('EF','06');
           efaturaSifre := WebErisimBilgi('EF','07');
         end;
+        if WebErisimBilgi('CSG','02') = 'Gerçek'
+        Then
+           CSGBUrl := WebErisimBilgi('CSG','01')
+        else
+           CSGBUrl := WebErisimBilgi('CSG','00');
+
+        CSGBImza := WebErisimBilgi('CSG','03');
+
+
         portalURL := WebErisimBilgi('EF','08');
         portalUSer := WebErisimBilgi('EF','09');
         portalSifre := WebErisimBilgi('EF','10');

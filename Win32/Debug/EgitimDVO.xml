@@ -1,16 +1,15 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
 <egitimDVO>
   <egitimBildirim>
     <belgeTipi>2</belgeTipi>
+    <isgProfTckNo>28306762576</isgProfTckNo>
     <calisanTckNo>66289083080</calisanTckNo>
-    <egiticiTckNo>23627096768</egiticiTckNo>
     <egitimKoduId>390</egitimKoduId>
     <egitimSuresi>40</egitimSuresi>
     <egitimTarihi>23-10-2017</egitimTarihi>
-    <egitimTur>1</egitimTur>
     <egitimYer>1</egitimYer>
-    <firmaKodu>3afd775cebcf26201f61c3d829705f3f</firmaKodu>
-    <isgProfTckNo>23627096768</isgProfTckNo>
-    <isyeriId>0</isyeriId>
+    <egitimTur>1</egitimTur>
     <sgkTescilNo>24329070711343510342495000</sgkTescilNo>
+    <egiticiTckNo>28306762576</egiticiTckNo>
   </egitimBildirim>
 </egitimDVO>

@@ -608,6 +608,8 @@ begin
     (SameText (aComponent.ClassName, 'TcxCheckGroup')) or
     (SameText (aComponent.ClassName, 'TcxButton')) or
     (SameText (aComponent.ClassName, 'TcxGrid')) or
+    (SameText (aComponent.ClassName, 'TcxButton')) or
+    (SameText (aComponent.ClassName, 'TcxButtonKadir')) or
     (SameText (aComponent.ClassName, 'TcxCheckGroupKadir'));
 end;
 

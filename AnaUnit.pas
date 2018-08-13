@@ -701,12 +701,7 @@ begin
   SetUserInfo;
 
 
-  Foto.Picture.Assign(datalar.Foto);
 
-
-
-  cxAdi.Caption := datalar.userTanimi;
-  cxGrupAdi.Caption := datalar.UserGroupName;
 
 end;
 
@@ -1069,6 +1064,11 @@ procedure TAnaForm.SetUserInfo;
 begin
   dxStatusBar1.Panels[4].Text := 'Kullanýcý : ' + datalar.username + ' ('+datalar.usernameAdi+'), Grubu: ' + DATALAR.UserGroupName;
   dxStatusBar1.Panels[4].Width := length(dxStatusBar1.Panels[4].Text) * 6;
+  SetAnaFormFoto;
+  Foto.Picture.Assign(datalar.Foto);
+  cxAdi.Caption := datalar.userTanimi;
+  cxGrupAdi.Caption := datalar.UserGroupName;
+
 end;
 
 procedure TAnaForm.SirketlerPropertiesChange(Sender: TObject);

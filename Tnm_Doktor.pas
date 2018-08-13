@@ -288,6 +288,9 @@ begin
      //   setDataStringC(self,'uzman','Uzman mý?',Kolon1,'',80,'Evet,Hayýr');
         setDataStringC(self,'durum','Durum',Kolon1,'',80,'Aktif,Pasif');
 
+        setDataStringKontrol(self,cxFotoPanel , 'cxFotoPanel','',Kolon2,'',121);
+        Foto.Properties.OnEditValueChanged := PropertiesEditValueChanged;
+
         SayfaCaption('Taným Bilgileri','','','','');
         Result := True;
         Disabled(self,True);

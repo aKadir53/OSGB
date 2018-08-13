@@ -716,6 +716,7 @@ object frmHastaKart: TfrmHastaKart
         PropertiesClassName = 'TcxTextEditProperties'
         Properties.Alignment.Horz = taCenter
         Properties.Alignment.Vert = taVCenter
+        HeaderAlignmentHorz = taCenter
         Width = 250
         Position.BandIndex = 0
         Position.ColIndex = 0
@@ -727,6 +728,7 @@ object frmHastaKart: TfrmHastaKart
         PropertiesClassName = 'TcxTextEditProperties'
         Properties.Alignment.Horz = taCenter
         Properties.Alignment.Vert = taVCenter
+        HeaderAlignmentHorz = taCenter
         Width = 200
         Position.BandIndex = 0
         Position.ColIndex = 1
@@ -738,6 +740,7 @@ object frmHastaKart: TfrmHastaKart
         PropertiesClassName = 'TcxTextEditProperties'
         Properties.Alignment.Horz = taCenter
         Properties.Alignment.Vert = taVCenter
+        HeaderAlignmentHorz = taCenter
         Width = 150
         Position.BandIndex = 0
         Position.ColIndex = 2
@@ -749,6 +752,7 @@ object frmHastaKart: TfrmHastaKart
         PropertiesClassName = 'TcxTextEditProperties'
         Properties.Alignment.Horz = taCenter
         Properties.Alignment.Vert = taVCenter
+        HeaderAlignmentHorz = taCenter
         Position.BandIndex = 0
         Position.ColIndex = 3
         Position.RowIndex = 0
@@ -759,6 +763,7 @@ object frmHastaKart: TfrmHastaKart
         PropertiesClassName = 'TcxMemoProperties'
         Properties.ScrollBars = ssVertical
         Properties.VisibleLineCount = 3
+        HeaderAlignmentHorz = taCenter
         Width = 350
         Position.BandIndex = 0
         Position.ColIndex = 4

@@ -64,6 +64,8 @@ type
     GridListColumn1: TcxGridDBBandedColumn;
     GridListColumn2: TcxGridDBBandedColumn;
     GridListColumn3: TcxGridDBBandedColumn;
+    btnEgitimGonderTek: TcxButtonKadir;
+    btnEgitimGonderTekImzager: TcxButtonKadir;
     procedure FormCreate(Sender: TObject);
     procedure ButtonClick(Sender: TObject);
     procedure cxKaydetClick(Sender: TObject);override;
@@ -285,12 +287,36 @@ begin
   end;
 
 
-  if TcxButtonKadir (Sender).ButtonName = 'btnEgitimGonderTek' then
+  if TcxButtonKadir(Sender).ButtonName = 'btnEgitimGonderTekImzager' then
   begin
-  //  DurumGoster(True,True);
-    veri := EgitimVerisi(TcxButtonEditKadir(FindComponent('id')).Text,pin,cardType,_xml_);
-    EgitimKaydetCSGB(veri,pin,cardType,_xml_);
-  //  DurumGoster(False,False);
+       veri := EgitimVerisi(TcxButtonEditKadir(FindComponent('id')).Text,pin,cardType,_xml_);
+       EgitimKaydetCSGBImzager(veri);
+       btnEgitimGonderTekImzager.Enabled := False;
+  end;
+
+  if TcxButtonKadir(Sender).ButtonName = 'btnEgitimGonderTek' then
+  begin
+       veri := EgitimVerisi(TcxButtonEditKadir(FindComponent('id')).Text,pin,cardType,_xml_);
+
+       if TcxButtonEditKadir(FindComponent('id')).EditingValue = '' then exit;
+
+       if datalar.CSGBImza = 'Imzager' then
+       begin
+          DeleteFile('EgitimDVO256Hash.txt.p7s');
+          DeleteFile('EgitimDVO256Hash.txt');
+          EgitimHash(_xml_);
+          ShellExecute(Handle,
+                       'open',
+                       'C:\Program Files\Imzager\Imzager.exe',
+                       PwideChar(''),
+                       nil,
+                       SW_SHOWNORMAL);
+         btnEgitimGonderTekImzager.Enabled := True;
+       end
+       else
+       begin
+        EgitimKaydetCSGB(veri,pin,cardType,_xml_);
+      end;
   end;
 
   if TcxButtonKadir (Sender).ButtonName = 'btnEgitimListele' then
@@ -498,6 +524,8 @@ end;
 
 procedure TfrmPersonelEgitim.cxButtonEditPropertiesButtonClick(Sender: TObject;
       AButtonIndex: Integer);
+var
+  obje : TComponent;
 begin
   inherited;
   if length(datalar.ButtonEditSecimlist) > 0 then
@@ -505,6 +533,12 @@ begin
     enabled;
     EgitimGrid.Enabled := True;
     FormInputZorunluKontrolPaint(self,$00FCDDD1);
+
+  if datalar.CSGBImza = 'Imzager' then
+  begin
+   btnEgitimGonderTekImzager.Enabled := False;
+  end;
+
   end;
   //if TcxButtonEditKadir(FindComponent('id')).Text = '' then exit;
   ResetDetayDataset;
@@ -539,7 +573,7 @@ var
   kombo , kombo1 ,sirketlerx ,sirketlerxx: TcxImageComboKadir;
   dateEdit: TcxDateEditKadir;
   Egitimler : TcxCheckGroupKadir;
-  where : string;
+  where,GonderButtonCaption : string;
 begin
   Tag := TagfrmPersonelEgitim;
   ClientHeight := formYukseklik;
@@ -590,7 +624,21 @@ begin
 
   setDataStringB(self,'id','Eðitim No.',Kolon1,'ababa',70,List,True,nil, 'tanimi', '', False, True, -100);
   setDataString(self,'EgitimCSGBGonderimSonuc','ÇSGB Gönderim Sonucu',Kolon1,'ababa',120, False, '', True);
-  addButton(self,nil,'btnEgitimGonderTek','','Egitim Gönder',Kolon1,'ababa',80,ButtonClick,30);
+
+  addButton(self,btnEgitimGonderTek,'btnEgitimGonderTek','','Eðitim Gönder',Kolon1,'ababa',70,ButtonClick,30);
+
+
+  if datalar.CSGBImza = 'Imzager' then
+  begin
+   addButton(self,btnEgitimGonderTekImzager,'btnEgitimGonderTekImzager','','Gönder',Kolon1,'ababa',70,ButtonClick,30);
+   btnEgitimGonderTekImzager.Enabled := False;
+   btnEgitimGonderTek.Caption := 'Imzager';
+  end
+  else begin
+   btnEgitimGonderTek.Caption  := 'Eðitim Gönder';
+  end;
+
+
 
  // setDataStringB(self,'SirketKod','Þirket Kodu',Kolon1,'',100,nil, True, SirketKod);
  // SirketKod.Properties.ReadOnly := True;
@@ -767,6 +815,7 @@ begin
   TcxDateEditKadir(FindComponent('ilkTarih')).Enabled := True;
   TcxDateEditKadir(FindComponent('sonTarih')).Enabled := True;
   TcxGridKadir(FindComponent('EgitimGrid')).Enabled := True;
+//  TcxButtonKadir(FindControl ('btnEgitimGonderTek')).Enabled := False;
 
   SayfaCaption('Eðitim Bilgileri', 'Eðitime Katýlan Personeller', 'Eðitimci Bilgileri', 'Eðitim CSGB Gönder', 'Eðitim Foto');
   //_HastaBilgileriniCaptionGoster_ := True;

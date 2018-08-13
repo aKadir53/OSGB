@@ -60,11 +60,13 @@ type
     txtAciklama: TcxDBRichEdit;
     cxStyle2: TcxStyle;
     E1: TMenuItem;
+    R1: TMenuItem;
     procedure FormCreate(Sender: TObject);
     procedure txtMsgEnter(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure FormActivate(Sender: TObject);
     procedure Yukle;
+    procedure RaporDizyanYukle;
     procedure SetGrid;
     procedure txtTablePropertiesChange(Sender: TObject);
     procedure ADOBeforePost(DataSet: TDataSet);
@@ -99,6 +101,37 @@ uses message, data_modul , anaUnit;
 
 {$R *.DFM}
 
+procedure TfrmPopupDBGridForm.RaporDizyanYukle;
+var
+  AdoTable : TADOQuery;
+  RaporKodu : string;
+begin
+   AdoTable := TADOQuery.Create(nil);
+   if Datalar.MasterBaglan
+   Then Begin
+       AdoTable.Connection := Datalar.Master;
+       raporKodu := sqlRun.FieldByName('raporKodu').AsString;
+       try
+          datalar.QuerySelect(AdoTable,'select * from RaporlarDizayn where raporKodu = ' + QuotedStr(RaporKodu));
+
+         if AdoTable.RecordCount > 0
+          Then begin
+             SqlRun.Edit;
+             sqlRun.FieldByName('rapor').AsVariant := AdoTable.FieldByName('rapor').AsVariant;
+             sqlRun.Post;
+          end;
+
+
+       finally
+        AdoTable.Free;
+        Datalar.Master.Connected := False;
+       end;
+   end;
+
+
+
+end;
+
 procedure TfrmPopupDBGridForm.cxButtonCClick(Sender: TObject);
 var
   TopluDataset : TDataSetKadir;
@@ -109,6 +142,11 @@ begin
   case TmenuItem(sender).Tag of
    -1 : begin
           EgitimKodlari;
+        end;
+
+   -2 : begin
+          RaporDizyanYukle;
+
         end;
 
   end;
@@ -270,7 +308,7 @@ begin
         TableName := 'SIRKET_SUBE_TNM';
         _fields_ := 'sirketKod,subeKod,subeTanim,subeSiciNo,subeDoktor,IGU,DigerSaglikPers,BolgeMudurlukSicilNo,MuayeneProtokolNo,DoktorCalismaDakika,IGUCalismaDakika,DigerSaglikPersCalismaDakika,NaceKod,tehlikeSinifi,Pasif,SemtLokasyon,calisanSayi,Adres';
         _fieldBaslik_ := ',Þube Kodu,Þube Tanýmý,ÝþYeri Sicil No,Doktor,Ýþ Güvenlik Uzm.,Diðer Sað.Pers,Bölge Md.Scl.No,Muayene Protokol No,Doktor Çalýþma Dk.,Ýþ Gv.Uzm.Çalýsma Dk.,DiðerSaðPersÇDakika,Nace Kodu,TehlikeSinifi,Pasif,Semt/Lokasyon,ÇalýþanSayý,Adres';
-        _fieldTips_ := 'string,string,string,string,ImageDoktorCombo,ImageDoktorCombo,ImageDoktorCombo,string,string,string,string,string,ButtonEdit,ImageDoktorCombo,CheckBit,string,string,string';
+        _fieldTips_ := 'string,string,string,maskEdit9-0009-09-09-9999999-099-09-09-000;1;_,ImageDoktorCombo,ImageDoktorCombo,ImageDoktorCombo,string,string,string,string,string,ButtonEdit,ImageDoktorCombo,CheckBit,string,string,string';
         indexFieldName := 'sirketKod = ' + QuotedStr(_firmaKod_);
         cxPanel.Visible := false;
         cxGroupDoktorlar.Caption := 'Þube Bilgileri';
@@ -408,7 +446,7 @@ var
  Columns,Baslik,Tips,Edits,IC_Params,IC_Param : TstringList;
  FItem : TcxImageComboBoxItem;
  ado : TADOQuery;
- field1,field2,table : string;
+ field1,field2,table,MaskEdit : string;
 begin
   Columns := TStringList.Create;
   try
@@ -453,15 +491,30 @@ begin
            //   TcxTextEditProperties(DBgrid.Columns[i].Properties).Alignment.Horz := taCenter;
             //  DBgrid.Columns[i].Width := DBgrid.Columns[i].BestFitMaxWidth;
              end;
+            if Pos('maskEdit',Tips[i]) > 0 then
+             begin
+              DBgrid.Columns[i].PropertiesClassName := 'TcxMaskEditProperties';
+              TcxMaskEditProperties(DBgrid.Columns[i].Properties).Alignment.Vert := taVCenter;
+             // MaskEdit := StringReplace(Tips[i],'maskEdit','',[rfReplaceAll]);
+              MaskEdit := Copy(Tips[i],9,100);
+              MaskEdit := StringReplace(MaskEdit,'-',' ',[rfReplaceAll]);
+
+              TcxMaskEditProperties(DBgrid.Columns[i].Properties).EditMask := MaskEdit;
+
+           //   TcxTextEditProperties(DBgrid.Columns[i].Properties).Alignment.Horz := taCenter;
+            //  DBgrid.Columns[i].Width := DBgrid.Columns[i].BestFitMaxWidth;
+             end;
             if SameText (Tips[i], 'memo') then
              begin
               DBgrid.Columns[i].PropertiesClassName := 'TcxRichEditProperties';
           //    TcxRichEditProperties(DBgrid.Columns[i].Properties).PlainText := True;
         //      TcxRichEditProperties(DBgrid.Columns[i].Properties).StreamModes := [resmPlainRtf];
               DBgrid.Columns[i].Width := 200;
+              TcxRichEditProperties(DBgrid.Columns[i].Properties).VisibleLineCount := 4;
+              TcxRichEditProperties(DBgrid.Columns[i].Properties).ScrollBars := ssBoth;
               //TcxTextEditProperties(DBgrid.Columns[i].Properties).Alignment.Vert := taVCenter;
            //   TcxTextEditProperties(DBgrid.Columns[i].Properties).Alignment.Horz := taCenter;
-            //  DBgrid.Columns[i].Width := DBgrid.Columns[i].BestFitMaxWidth;
+              DBgrid.Columns[i].BestFitMaxWidth := 400;
              end;
             if SameText (Tips[i], 'Check') then
              begin
@@ -702,14 +755,23 @@ begin
 
     Yukle;
 
+    if txtTable.Text = 'Rapor Dizaynlarý'
+    then begin
+        E1.Visible := False;
+        R1.Visible := True;
+        PopupMenuToToolBar(self,ToolBar1,PopupMenu1);
+    end
+    else
     if txtTable.Text = 'Eðitim Türleri'
     then begin
         E1.Visible := True;
+        R1.Visible := False;
         PopupMenuToToolBar(self,ToolBar1,PopupMenu1);
     end
     else
     begin
         E1.Visible := False;
+        R1.Visible := False;
         PopupMenuToToolBar(self,ToolBar1,PopupMenu1);
     end;
 
