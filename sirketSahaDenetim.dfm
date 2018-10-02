@@ -455,6 +455,7 @@ object frmSirketSahaDenetim: TfrmSirketSahaDenetim
     Grup = False
     GrupCol = 0
     Left = 56
+    Top = 48
   end
   object cxImageList1: TcxImageList
     Height = 141

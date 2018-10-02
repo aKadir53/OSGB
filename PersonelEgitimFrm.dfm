@@ -487,19 +487,22 @@ object frmPersonelEgitim: TfrmPersonelEgitim
     Top = 128
   end
   object Egitimler: TListeAc
-    TColcount = 2
-    TColsW = '50,200'
+    TColcount = 3
+    TColsW = '50,200,50'
     Table = 'Egitim_Tnm'
     Conn = DATALAR.ADOConnection2
     Filtercol = 0
+    FilterRowGizle = True
     BaslikRenk = clBlack
     DipRenk = clBlack
     Kolonlar.Strings = (
       'kod'
-      'tanimi')
+      'tanimi'
+      'sure')
     KolonBasliklari.Strings = (
       'Kod'
-      'Tan'#305'm'#305)
+      'Tan'#305'm'#305
+      'S'#252're')
     Calistir = fgEvet
     BiriktirmeliSecim = False
     Grup = False

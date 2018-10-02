@@ -14,7 +14,7 @@ uses Windows, Messages, SysUtils, Variants, Classes, Graphics, Vcl.Controls, Con
   cxCheckListBox,cxGridCustomTableView, cxGridTableView, cxGridBandedTableView, cxClasses,
   cxGroupBox, cxRadioGroup,cxGridLevel, cxGrid, cxCheckBox, cxImageComboBox, cxTextEdit, cxButtonEdit,
   cxCalendar,dxLayoutContainer, dxLayoutControl,cxPC, cxImage,
-  frxExportPDF ,CSGBService;
+  frxExportPDF ,CSGBService,IOUtils;
 
 
 procedure SMSSend(tel : string; Msj : string = '';Kisi : string ='');
@@ -415,7 +415,7 @@ procedure HesapIsle(BorcHesap,AlacakHesap,Aciklama : string ; Tutar : Double ; T
 procedure HesapIsleOdeme(BorcHesap,AlacakHesap,Aciklama : string ; Tutar : Double ; Tarih ,cek,vadeTarihi,evrakTipi,evrakNo,cekdurum,cekId: string);
 function SifreGecerliMi (const sSifre: String; const pMinKarakter, pMinHarf, pMinKucukHarf, pMinBuyukHarf, pMinRakam : Integer; pMsgGostrt : Boolean = True) : Boolean;
 procedure DokumanAc(Dataset : Tdataset;fieldName : string;fileName : string; Open : Boolean = True ; DokumanTip : string = 'rtf');
-procedure DokumanYukle(Dataset : Tdataset;field : string;fielName : string);
+procedure DokumanYukle(Dataset : Tdataset;field : string;fielName : string;maxSize : longint = 60000000);
 function RTFSablonDataset(RTFKodu : string) : TDataset;
 function SirketIGUToSQLStr(sirketKodu : string) : string;
 function SirketDoktorToSQLStr(sirketKodu : string) : string;
@@ -434,6 +434,7 @@ function EgitimImzali : string;
 function EgitimHash(egitim : string): string;
 Function EgitimKodlari : egitimListesiBilgisi;
 procedure SetAnaFormFoto;
+Function myFileSize(filename : string) : integer;
 
 
 Procedure FirmaSorgulCSGBCvpFirmaBilgiGuncelle(firmaSgk : string ; Cvp : isyeriCevapBilgisi);
@@ -547,6 +548,39 @@ uses message,AnaUnit,message_y,popupForm,rapor,TedaviKart,Son6AylikTetkikSonuc,D
              HastaRecete,sifreDegis,HastaTetkikEkle,GirisUnit,SMS,LisansUzat,Update_G, DBGrids,
              UyumSoftPortal,NThermo, TransUtils;
 
+
+Function myFileSize(filename : string) : integer;
+var
+  dSize: Integer;
+  dFile: THandle;
+  strSize: String;
+begin
+    dFile := CreateFile (PChar (filename),0, FILE_SHARE_READ, nil, OPEN_EXISTING, 0, 0);
+    dSize := GetFileSize (dFile, nil);
+    CloseHandle (dFile);
+
+    if (dsize div 1024) > 0 then
+      begin
+        strSize := ' Kb';
+        dsize := dsize div 1024;
+      end;
+    (*
+    if (dsize div 1024) > 0 then
+      begin
+        strSize := ' Mb';
+        dsize := dsize div 1024;
+      end;
+    if (dsize div 1024) > 0 then
+      begin
+        strSize := ' Gb';
+        dsize := dsize div 1024;
+      end;
+       *)
+  if dsize = -1 then
+  RESULT := -1
+  else
+  RESULT := dsize;//floattostr(dsize) + strsize;
+end;
 
 procedure SetAnaFormFoto;
 var
@@ -806,7 +840,8 @@ var
   sql : string;
 begin
   sql := 'update SIRKET_SUBE_TNM set calisanSayi = ' + inttoStr(Cvp.calisanSayisi) +
-         ' where subeSiciNo = ' + QuotedStr(firmaSgk);
+         ' where subeSiciNo = ' +
+           '(select subeSiciNo from SIRKETLER_TNM_view where subeSicilNo = ' + QuotedStr(firmaSgk) + ')';
   datalar.QueryExec(sql);
 end;
 
@@ -1015,11 +1050,21 @@ begin
     if open then ShellExecute(0, 'open', PChar(filename+'.'+DokumanTip), nil, nil, SW_SHOWNORMAL);
 end;
 
-procedure DokumanYukle(Dataset : Tdataset;field : string;fielName : string);
+procedure DokumanYukle(Dataset : Tdataset;field : string;fielName : string;maxSize : longint = 60000000);
 var
   Blob : TADOBlobStream;
   dosyaTip : string;
+  dosyaBoyutu : integer;
+  myFile : File of Word;
 begin
+      dosyaBoyutu := myFileSize(fielName);
+      if dosyaBoyutu > maxSize then
+      begin
+        ShowMessageSkin('Dosya Yükleme Hatasý','Yüklenebilecek Max Dosya Boyutu : ' + floattostr(maxSize) + ' Kb',
+                        inttostr(dosyaBoyutu) + ' Kb Boyutlu Dosya Yüklenemez','info');
+        exit;
+      end;
+
       dosyaTip := ExtractFileExt(fielName);
       dosyaTip := StringReplace(dosyaTip,'.','',[rfReplaceAll]);
       Dataset.Edit;

@@ -13,7 +13,13 @@ uses
   cxDBData, cxDropDownEdit, cxGridLevel, cxGridCustomTableView, cxGridTableView,
   cxGridBandedTableView, cxGridDBBandedTableView, cxClasses, cxGridCustomView,
   cxGrid, cxPC, cxImageComboBox,dxLayoutContainer, cxImage,ShellApi,
-  cxCurrencyEdit,CSGBservice;
+  cxCurrencyEdit,CSGBservice, dxSkinBlack, dxSkinDarkRoom, dxSkinDarkSide,
+  dxSkinFoggy, dxSkinGlassOceans, dxSkinMcSkin, dxSkinOffice2007Black,
+  dxSkinOffice2007Blue, dxSkinOffice2007Green, dxSkinOffice2007Pink,
+  dxSkinOffice2007Silver, dxSkinOffice2010Black, dxSkinOffice2010Blue,
+  dxSkinOffice2010Silver, dxSkinPumpkin, dxSkinSeven, dxSkinSharp, dxSkinSilver,
+  dxSkinSpringTime, dxSkinStardust, dxSkinSummer2008, dxSkinValentine,
+  dxSkinXmas2008Blue;
 
 
 
@@ -216,6 +222,7 @@ var
   sTmp,sql: String;
   ado : TADOQuery;
   Lst : ArrayListeSecimler;
+  L : ListeSecimler;
   open : TOpenDialog;
   filename,imageField,egitimXML,pin,cardType,_xml_ : string;
   Jpeg1 : TJPEGImage;
@@ -231,11 +238,16 @@ begin
     Lst := Egitimler.ListeGetir;
     if Length(Lst) > 0
     then begin
-      EgitimAltDetayGrid.Dataset.Append;
-      EgitimAltDetayGrid.Dataset.FieldByName('egitimID').AsString := TcxButtonEditKadir (FindComponent('id')).Text;
-      EgitimAltDetayGrid.Dataset.FieldByName('kod').AsString := Lst[0].kolon1;
-      EgitimAltDetayGrid.Dataset.FieldByName('tanimi').AsString := Lst[0].kolon2;
-      EgitimAltDetayGrid.Dataset.Post;
+     for L in Lst do
+      begin
+        if EgitimAltDetayGrid.Dataset.locate('kod',L.kolon1,[]) then Continue;
+        EgitimAltDetayGrid.Dataset.Append;
+        EgitimAltDetayGrid.Dataset.FieldByName('egitimID').AsString := TcxButtonEditKadir (FindComponent('id')).Text;
+        EgitimAltDetayGrid.Dataset.FieldByName('kod').AsString := L.kolon1;
+        EgitimAltDetayGrid.Dataset.FieldByName('tanimi').AsString := L.kolon2;
+        EgitimAltDetayGrid.Dataset.FieldByName('sure').AsString := L.kolon3;
+        EgitimAltDetayGrid.Dataset.Post;
+      end;
     end;
   end;
 
@@ -304,7 +316,8 @@ begin
        begin
           DeleteFile('EgitimDVO256Hash.txt.p7s');
           DeleteFile('EgitimDVO256Hash.txt');
-          EgitimHash(_xml_);
+          DeleteFile('EgitimDVO.txt.p7s');
+          //EgitimHash(_xml_);
           ShellExecute(Handle,
                        'open',
                        'C:\Program Files\Imzager\Imzager.exe',
@@ -710,7 +723,7 @@ begin
   setDataStringKontrol(self,kombo1,'EgitimTuru','Eðitim Türü',kolon1,'etg',100);
   TcxImageComboKadir(FindComponent('EgitimTuru')).Properties.OnEditValueChanged := PropertiesEditValueChanged;
 
-  addButton(self,nil,'btnEgitimler','','Egitimler',sayfa4_kolon1,'etg',80,ButtonClick,30);
+  addButton(self,nil,'btnEgitimler','','Egitimler',sayfa4_kolon1,'etg',50,ButtonClick,30);
 
 
 

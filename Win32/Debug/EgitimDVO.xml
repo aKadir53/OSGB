@@ -1,5 +1,5 @@
-﻿<?xml version="1.0" encoding="UTF-8"?>
-<egitimDVO>
+﻿<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<EgitimDVO>
   <egitimBildirim>
     <belgeTipi>2</belgeTipi>
     <isgProfTckNo>28306762576</isgProfTckNo>
@@ -12,4 +12,4 @@
     <sgkTescilNo>24329070711343510342495000</sgkTescilNo>
     <egiticiTckNo>28306762576</egiticiTckNo>
   </egitimBildirim>
-</egitimDVO>
+</EgitimDVO>

@@ -432,7 +432,7 @@ object frmPopupDBGridForm: TfrmPopupDBGridForm
     end
   end
   object DataSource1: TDataSource
-    Left = 176
-    Top = 144
+    Left = 152
+    Top = 96
   end
 end

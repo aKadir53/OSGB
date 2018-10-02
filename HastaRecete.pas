@@ -704,7 +704,7 @@ begin
                                   ADO_Recete.FieldByName('eReceteNo').AsString := Copy(Sonuc,6,10);
                                   ADO_Recete.post;
                                   ShowMessageSkin(Sonuc,'Reçete Medulaya Gönderildi','','info');
-                                  end;
+                                end;
 
                               finally
                                 DurumGoster(False,False,'');

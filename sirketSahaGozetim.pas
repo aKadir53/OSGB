@@ -612,7 +612,7 @@ begin
        DurumGoster;
        try
          if not dosya.Execute then Exit;
-         DokumanYukle(Satirlar.DataController.Dataset,'Image',dosya.FileName);
+         DokumanYukle(Satirlar.DataController.Dataset,'Image',dosya.FileName,2048);
        finally
          dosya.free;
          DurumGoster(False);
