@@ -562,6 +562,11 @@ begin
   FormInputZorunluKontrolPaint(self,$00FCDDD1);
   cxTab.PopupMenu := menu;
 
+//  pnlDurum.Alignment := alCenterCenter;
+
+  pnlDurum.left := (width div 2) - pnlDurum.width div 2;
+  pnlDurum.Top := (Height div 2) - pnlDurum.Height div 2;
+
   Result := True;
 end;
 
