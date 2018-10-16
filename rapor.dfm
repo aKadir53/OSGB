@@ -3,8 +3,8 @@ object frmRapor: TfrmRapor
   Top = 137
   BorderStyle = bsToolWindow
   Caption = '-'
-  ClientHeight = 71
-  ClientWidth = 308
+  ClientHeight = 333
+  ClientWidth = 600
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -19,10 +19,12 @@ object frmRapor: TfrmRapor
   TextHeight = 13
   object StatusBar1: TStatusBar
     Left = 0
-    Top = 52
-    Width = 308
+    Top = 314
+    Width = 600
     Height = 19
     Panels = <>
+    ExplicitTop = 52
+    ExplicitWidth = 308
   end
   object memo: TDBMemo
     Left = 128
@@ -37,12 +39,14 @@ object frmRapor: TfrmRapor
   object Panel1: TPanel
     Left = 0
     Top = 0
-    Width = 308
-    Height = 52
+    Width = 600
+    Height = 314
     Align = alClient
     BevelInner = bvLowered
     Caption = 'Panel1'
     TabOrder = 2
+    ExplicitWidth = 308
+    ExplicitHeight = 52
     object btnOnIzle: TcxButton
       Left = 205
       Top = 3
@@ -338,8 +342,8 @@ object frmRapor: TfrmRapor
       'begin'
       ''
       'end.')
-    Left = 8
-    Top = 48
+    Left = 216
+    Top = 224
     Datasets = <>
     Variables = <>
     Style = <>
@@ -399,7 +403,9 @@ object frmRapor: TfrmRapor
     MemoParentFont = False
     OnLoadReport = frxDesigner1LoadReport
     OnSaveReport = frxDesigner1SaveReport
-    Left = 105
+    OnInsertObject = frxDesigner1InsertObject
+    Left = 217
+    Top = 184
   end
   object DataSource1: TDataSource
     DataSet = DATALAR.ADO_RAPORLAR
@@ -432,8 +438,8 @@ object frmRapor: TfrmRapor
     SuppressPageHeadersFooters = False
     HeaderFooterMode = hfText
     AutoSize = False
-    Left = 216
-    Top = 40
+    Left = 488
+    Top = 88
   end
   object frxPDFExport1: TfrxPDFExport
     UseFileCache = True
@@ -456,8 +462,8 @@ object frmRapor: TfrmRapor
     CenterWindow = False
     PrintScaling = False
     CheckboxAsShape = False
-    Left = 248
-    Top = 40
+    Left = 432
+    Top = 88
   end
   object frxHTMLExport1: TfrxHTMLExport
     UseFileCache = True
@@ -484,14 +490,15 @@ object frmRapor: TfrmRapor
     SuppressPageHeadersFooters = False
     RowsCount = 0
     Split = ssNotSplit
-    Left = 248
+    Left = 496
+    Top = 128
   end
   object frxDBDataset2: TfrxDBDataset
     UserName = 'frxDBDataset2'
     CloseDataSource = False
     BCDToCurrency = False
-    Left = 8
-    Top = 48
+    Left = 32
+    Top = 96
   end
   object frxDBDataset3: TfrxDBDataset
     UserName = 'frxDBDataset3'
@@ -553,27 +560,28 @@ object frmRapor: TfrmRapor
     UserName = 'frxDBDataset11'
     CloseDataSource = False
     BCDToCurrency = False
-    Left = 280
-    Top = 40
-  end
-  object frxBarCodeObject1: TfrxBarCodeObject
-    Left = 136
-  end
-  object frxDialogControls1: TfrxDialogControls
-    Left = 288
+    Left = 320
     Top = 8
   end
+  object frxBarCodeObject1: TfrxBarCodeObject
+    Left = 424
+    Top = 184
+  end
+  object frxDialogControls1: TfrxDialogControls
+    Left = 72
+    Top = 168
+  end
   object frxChartObject1: TfrxChartObject
-    Left = 120
-    Top = 40
+    Left = 16
+    Top = 168
   end
   object frxRichObject1: TfrxRichObject
-    Left = 176
-    Top = 40
+    Left = 432
+    Top = 248
   end
   object frxCheckBoxObject1: TfrxCheckBoxObject
     Left = 8
-    Top = 32
+    Top = 120
   end
   object frxDotMatrixExport1: TfrxDotMatrixExport
     UseFileCache = True
@@ -584,18 +592,18 @@ object frmRapor: TfrmRapor
     GraphicFrames = False
     SaveToFile = False
     UseIniSettings = True
-    Left = 72
-    Top = 32
+    Left = 64
+    Top = 120
   end
   object frxGradientObject1: TfrxGradientObject
-    Left = 40
+    Left = 8
+    Top = 216
   end
   object PrinterSetupDialog1: TPrinterSetupDialog
-    Left = 272
-    Top = 8
+    Left = 448
   end
   object PrintDialog1: TPrintDialog
-    Left = 280
+    Left = 456
     Top = 32
   end
   object frxDBDataset12: TfrxDBDataset
@@ -633,10 +641,15 @@ object frmRapor: TfrmRapor
     TimeOut = 60
     ConfurmReading = False
     TransportType = SMTP
-    Left = 200
+    Left = 432
+    Top = 136
   end
   object frxADOComponents2: TfrxADOComponents
     DefaultDatabase = DATALAR.ADOConnection2
     Left = 72
+  end
+  object frxCrossObject1: TfrxCrossObject
+    Left = 136
+    Top = 128
   end
 end

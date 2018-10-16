@@ -425,18 +425,19 @@ procedure YeniOSGBFirmaVeritabani;
 function SubeIGUDoktorAtanmismi(sirketKod : string) : integer;
 function FindComponentButtonName(const AName: string ; Form : TForm): TComponent;
 function FirmaSorgulaCSGB(firmaSGK , iguTC : string) : isyeriCevapBilgisi;
-function EgitimKaydetCSGB(egitim : egitimBilgisi ; pin,cardType,_xml_ : string) : egitimBilgisiCevap;
+//function EgitimKaydetCSGB(egitim : egitimBilgisi ; pin,cardType,_xml_ : string) : egitimBilgisiCevap;overload;
+//function EgitimKaydetCSGB(egitim : cokluEgitimBilgisi ; pin,cardType,_xml_ : string) : cokluEgitimCevapDVO;overload;
 function EgitimKaydetCSGBImzager(egitim : egitimBilgisi) : egitimBilgisiCevap;
-function EgitimVerisi(id : string ; var pin,cardType : string; var xml : string) : egitimBilgisi;
+function EgitimVerisi(id : string ; var pin,cardType : string; var xml : string; var ce : cokluEgitimBilgisi) : egitimBilgisi;
 function EgitimVerisiXML(egitim : egitimBilgisi) : string;
-function EgitimImzala(pin,egitim,cardType : string): string;
+//function EgitimImzala(pin,egitim,cardType : string): string;
 function EgitimImzali : string;
 function EgitimHash(egitim : string): string;
 Function EgitimKodlari : egitimListesiBilgisi;
 procedure SetAnaFormFoto;
 Function myFileSize(filename : string) : integer;
 
-
+Procedure EgitimKaydetCSGBCvpBilgiGuncelle(msg,sorguNo : string);
 Procedure FirmaSorgulCSGBCvpFirmaBilgiGuncelle(firmaSgk : string ; Cvp : isyeriCevapBilgisi);
 
 function DetaySil(Tag : integer ; Tablaname,WhereField,Where : string) : Boolean;
@@ -449,11 +450,12 @@ type
                             var HashEgitim : PWideChar;
                             var sonuc : PWideChar); stdcall;
 
+ (*
   TEgitimImzala = procedure(egitim : PWideChar;
                             var imzaliEgitim : PWideChar;
                             pin : string;
                             cardType : string;
-                            var sonuc : PWideChar); stdcall;
+                            var sonuc : PWideChar); stdcall;  *)
 
   TEgitimImzali = procedure(var imzaliEgitim : PWideChar;
                             var sonuc : PWideChar); stdcall;
@@ -472,7 +474,7 @@ type
 
 const
   LIB_DLL = 'D:\Projeler\VS\c#\EFatura\EFaturaDLL\ClassLibrary1\bin\Debug\EFaturaDLL.dll';
-  LIB_DLL2 = 'D:\Projeler\VS\c#\ListeDLL\ListeDLL\bin\x86\Debug\NoktaDLL.dll';
+  LIB_DLL2 = 'D:\Projeler\VS\c#\ListeDLL_Cades\ListeDLL\bin\x86\Debug\NoktaDLL.dll';
  // LIB_DLL = 'EFaturaDLL.dll';
   _YTL_ = 'YTL';
   _OTL_ = 'TRL';
@@ -749,6 +751,7 @@ begin
   end;
 end;
 
+(*
 function EgitimImzala(pin,egitim,cardType : string): string;
 var
   imzala : TEgitimImzala;
@@ -778,7 +781,7 @@ begin
     FreeLibrary(dllHandle);
   end;
 end;
-
+          *)
 function EgitimVerisiXML(egitim : egitimBilgisi) : string;
 var
   Cvp : string;
@@ -796,15 +799,21 @@ begin
       end;
     end;
 end;
-function EgitimVerisi(id : string ; var pin,cardType : string; var xml : string) : egitimBilgisi;
+function EgitimVerisi(id : string ; var pin,cardType : string; var xml : string; var ce : cokluEgitimBilgisi) : egitimBilgisi;
 var
   sql : string;
   ado : TADOQuery;
   Veri : egitimBilgisi;
+  VeriCoklu : cokluEgitimBilgisi;
+  calisanlar : Array_Of_calisanObject;
+  calisan : calisanObject;
+  egitimler : Array_Of_egitimObject;
+  egitim : egitimObject;
+  i : integer;
 begin
    ado := TADOQuery.Create(nil);
    ado.Connection := datalar.ADOConnection2;
-   Veri := egitimBilgisi.Create;
+
    try
     sql := 'sp_EgitimVerisi ' + id;
     datalar.QuerySelect(ado,sql);
@@ -813,20 +822,71 @@ begin
     cardType := ado.FieldByName('cardType').AsString;
     xml :=  ado.FieldByName('EgitimXML').AsString;
 
-    Veri.sorguNo := strToint(id);
-    Veri.belgeTipi := 2;
-    Veri.egiticiTckNo := ado.FieldByName('egitimciTC').AsLargeInt;
-    Veri.calisanTckNo := ado.FieldByName('TCKIMLIKNO').AsLargeInt;
-    Veri.egitimKoduId := ado.FieldByName('EntagrasyonKodu').AsInteger;
-    Veri.egitimSuresi := ado.FieldByName('egitimSure').AsInteger;
-    Veri.egitimTarihi := ado.FieldByName('EgitimTarihi').AsString;
-    Veri.egitimTur := ado.FieldByName('EgitimYontem').AsInteger;
-    Veri.egitimYer := ado.FieldByName('EgitimTip').AsInteger;
-    Veri.firmaKodu := ado.FieldByName('FirmaKodu').AsString;
-    Veri.isgProfTckNo :=  ado.FieldByName('egitimciTC').AsLargeInt;
-    Veri.sgkTescilNo := ado.FieldByName('sgkSicil').AsString;
 
+    if ado.RecordCount = 1 then
+    begin
+      VeriCoklu := nil;
+      Veri := egitimBilgisi.Create;
+      Veri.sorguNo := strToint(id);
+      Veri.belgeTipi := 2;
+      Veri.egiticiTckNo := ado.FieldByName('egitimciTC').AsLargeInt;
+      Veri.calisanTckNo := ado.FieldByName('TCKIMLIKNO').AsLargeInt;
+      Veri.egitimKoduId := ado.FieldByName('EntagrasyonKodu').AsInteger;
+      Veri.egitimSuresi := ado.FieldByName('egitimSure').AsInteger;
+      Veri.egitimTarihi := ado.FieldByName('EgitimTarihi').AsString;
+      Veri.egitimTur := ado.FieldByName('EgitimYontem').AsInteger;
+      Veri.egitimYer := ado.FieldByName('EgitimTip').AsInteger;
+      Veri.firmaKodu := ado.FieldByName('FirmaKodu').AsString;
+      Veri.isgProfTckNo :=  ado.FieldByName('egitimciTC').AsLargeInt;
+      Veri.sgkTescilNo := ado.FieldByName('sgkSicil').AsString;
+    end
+    else
+    begin
+      Veri := nil;
+      VeriCoklu := cokluEgitimBilgisi.Create;
+      VeriCoklu.belgeTipi := 2;
+      VeriCoklu.egiticiTckNo := ado.FieldByName('egitimciTC').AsLargeInt;
+      VeriCoklu.sorguNo := strToint(id);
+      VeriCoklu.egitimTarihi := ado.FieldByName('EgitimTarihi').AsString;
+      VeriCoklu.egitimTur := ado.FieldByName('EgitimYontem').AsInteger;
+      VeriCoklu.egitimYer := ado.FieldByName('EgitimTip').AsInteger;
+      VeriCoklu.firmaKodu := ado.FieldByName('FirmaKodu').AsString;
+      VeriCoklu.isgProfTckNo :=  ado.FieldByName('egitimciTC').AsLargeInt;
+      VeriCoklu.sgkTescilNo := ado.FieldByName('sgkSicil').AsString;
 
+      sql := 'select * from Personel_Egitim E ' +
+             ' join PersonelKart P on P.dosyaNo = E.PersonelDosyaNo ' +
+             ' where EgitimID = ' + id;
+      datalar.QuerySelect(ado,sql);
+      i := 0;
+      SetLength(calisanlar ,ado.RecordCount);
+      while not ado.eof do
+      begin
+        calisan := calisanObject.Create;
+        calisan.calisanTckNo := ado.FieldByName('TCKIMLIKNO').AsLargeInt;
+        calisanlar[i] := calisan;
+        inc(i);
+        ado.next;
+      end;
+      VeriCoklu.calisan := calisanlar;
+
+      sql := 'select * from EgitimAltDetay E where EgitimID = ' + id;
+      datalar.QuerySelect(ado,sql);
+      i := 0;
+      SetLength(egitimler,ado.RecordCount);
+      while not ado.eof do
+      begin
+        egitim := egitimObject.Create;
+        egitim.egitimKoduId := ado.FieldByName('kod').AsInteger;
+        egitim.egitimSuresi := ado.FieldByName('sure').AsInteger;
+        egitimler[i] := egitim;
+        inc(i);
+        ado.Next;
+      end;
+      VeriCoklu.egitim := egitimler;
+    end;
+
+    ce := VeriCoklu;
     EgitimVerisi := Veri;
 
    finally
@@ -846,15 +906,16 @@ begin
 end;
 
 
-Procedure EgitimKaydetCSGBCvpBilgiGuncelle(Cvp : egitimBilgisiCevap);
+Procedure EgitimKaydetCSGBCvpBilgiGuncelle(msg,sorguNo : string);
 var
   sql : string;
 begin
-  sql := 'update Egitimler set EgitimCSGBGonderimSonuc = ' + QuotedStr(Cvp.message_) +
-         ' where id = ' + QuotedStr(inttoStr(Cvp.sorguNo));
+  sql := 'update Egitimler set EgitimCSGBGonderimSonuc = ' + QuotedStr(msg) +
+         ' where id = ' + QuotedStr(sorguNo);
   datalar.QueryExec(sql);
 end;
 
+(*
 function EgitimKaydetCSGB(egitim : egitimBilgisi ; pin,cardType,_xml_ : string) : egitimBilgisiCevap;
 var
   sayi,EgitimString : string;
@@ -878,7 +939,7 @@ begin
         Cvp.sorguNo := egitim.sorguNo;
       end;
 
-      EgitimKaydetCSGBCvpBilgiGuncelle(Cvp);
+      EgitimKaydetCSGBCvpBilgiGuncelle(Cvp.message_,inttostr(Cvp.sorguNo));
 
     except
       on E : Exception do
@@ -887,8 +948,41 @@ begin
       end;
     end;
 end;
+ *)
+ (*
+function EgitimKaydetCSGB(egitim : cokluEgitimBilgisi ; pin,cardType,_xml_ : string) : cokluEgitimCevapDVO;
+var
+  sayi,EgitimString : string;
+  Cvp : cokluEgitimCevapDVO;
+begin
+    Cvp := cokluEgitimCevapDVO.Create;
+  //  EgitimString := EgitimVerisiXML(egitim);
 
+    EgitimString := EgitimImzala(pin,_xml_,cardType);
+    try
+      Application.ProcessMessages;
+      datalar.CSGBsoap.URL := 'http://213.159.30.6/CSGBservice.asmx';
+      Cvp := (datalar.CSGBsoap as CSGBServiceSoap).egitimKaydetCoklu(egitim,EgitimString);
+      EgitimKaydetCSGB := Cvp;
+      if Cvp.status = 200
+      Then begin
+        ShowMessageSkin('Sorgu No:' + intTostr(Cvp.sorguNo),'','','info');
+      end
+      else begin
+        ShowMessageSkin(Cvp.message_,'','','info');
+        Cvp.sorguNo := egitim.sorguNo;
+      end;
 
+      EgitimKaydetCSGBCvpBilgiGuncelle(Cvp.message_,inttostr(Cvp.sorguNo));
+
+    except
+      on E : Exception do
+      begin
+        ShowmessageSkin(E.Message,'','','info');
+      end;
+    end;
+end;
+       *)
 function EgitimKaydetCSGBImzager(egitim : egitimBilgisi) : egitimBilgisiCevap;
 var
   sayi,EgitimString : string;
@@ -912,7 +1006,7 @@ begin
         Cvp.sorguNo := egitim.sorguNo;
       end;
 
-      EgitimKaydetCSGBCvpBilgiGuncelle(Cvp);
+      EgitimKaydetCSGBCvpBilgiGuncelle(Cvp.message_,inttostr(Cvp.sorguNo));
 
     except
       on E : Exception do

@@ -839,7 +839,10 @@ inherited;
           ilacList := ListeAcCreate('ILACLARM','code,name1,ICD,doz,adet,kulyol',
                                     'StokKodu,StokAdý,ICD,Doz,Adet,KYolu',
                                     '90,250,30,30,30,60','code','Ýlaçlar','',6,True);
-          setDataStringB(self,'code','&Ilaç Barkod',Kolon1,'ik',120,ilacList,True,nil,'name1','',false);
+
+        //  setDataStringB(self,'code','&Ilaç Barkod',Kolon1,'ik',120,ilacList,True,nil,'name1','',false);
+
+          setDataString(self,'code','&Ilaç Barkod',Kolon1,'ik',120,False,'',True);
 
           setDataStringBLabel(self,'code',Kolon1,'ik',200,' ');
           setDataStringCurr(self,'adet','Adet',Kolon1,'',50,'0');
@@ -872,7 +875,9 @@ inherited;
 
 
 
-          if  frmPopup._islem_ = ReceteIlacDuzenle
+          if TfrmPopup(self).islem_ = ReceteIlacDuzenle //then
+
+         // frmPopup._islem_ = ReceteIlacDuzenle
           Then begin
             TcxTextEdit(FindComponent('code')).EditValue := datalar.ReceteSatir.barkod;
             TcxLabel(FindComponent('Label'+'code')).Caption := datalar.ReceteSatir.barkodadi;
@@ -899,7 +904,7 @@ inherited;
                                                         '5-EndikasyonDýþýKullanýmizni,99-Diðer');
           setDataStringMemo(self,'Ack','Açýklama',kolon1,'',200,50);
 
-          if frmPopup._islem_ in [ReceteAckDuzenle,ReceteIlacAckDuzenle]
+          if TfrmPopup(self).islem_ in [ReceteAckDuzenle,ReceteIlacAckDuzenle]
           then begin
             TcxComboBox(FindComponent('ackKodu')).EditValue := datalar.ReceteAciklama.ackKod;
             TcxTextEdit(FindComponent('ack')).EditValue := datalar.ReceteAciklama.ack;

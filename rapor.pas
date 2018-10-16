@@ -12,7 +12,7 @@ uses
   cxButtons, frxADOComponents,
   frxExportMail, dxSkinsCore, dxSkinBlue, dxSkinCaramel, dxSkinCoffee,
   dxSkiniMaginary, dxSkinLilian, dxSkinLiquidSky, dxSkinLondonLiquidSky,
-  dxSkinMcSkin, dxSkinMoneyTwins, dxSkinsDefaultPainters;
+  dxSkinMcSkin, dxSkinMoneyTwins, dxSkinsDefaultPainters, frxCross, frxCtrls;
 
 
 
@@ -58,6 +58,7 @@ type
     frxADOComponents1: TfrxADOComponents;
     frxMailExport1: TfrxMailExport;
     frxADOComponents2: TfrxADOComponents;
+    frxCrossObject1: TfrxCrossObject;
     procedure raporData(Dataset : TADOQuery ; kod ,dosya ,yazici: string);
     procedure rapor1Data(dataset : TADOQuery ; kod , dosya , yazici : string);
     procedure raporDataset(Dataset : TDataset ; kod ,dosya ,yazici: string);
@@ -73,6 +74,7 @@ type
     procedure btnSendClick(Sender: TObject);
     procedure btnYazdirClick(Sender: TObject);
     procedure btnOnIzleClick(Sender: TObject);
+    procedure frxDesigner1InsertObject(Sender: TObject);
 
   private
 
@@ -360,6 +362,19 @@ begin
   finally
     template.Free;
   end;
+
+end;
+
+procedure TfrmRapor.frxDesigner1InsertObject(Sender: TObject);
+var
+ Ct : string;
+begin
+  if TComponent(Sender).ClassType = TfrxPictureView
+  Then begin
+   TfrxPictureView(Sender).Picture.LoadFromFile('D:\test.bmp');
+
+  end;
+
 
 end;
 

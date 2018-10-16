@@ -15,11 +15,12 @@ object frmPersonelEgitim: TfrmPersonelEgitim
   PixelsPerInch = 96
   TextHeight = 13
   object EgitimPersonel: TcxGridKadir
-    Left = 178
-    Top = 204
-    Width = 500
+    Left = 16
+    Top = 224
+    Width = 562
     Height = 145
     TabOrder = 0
+    OnResize = EgitimPersonelResize
     ExceleGonder = False
     object GridList: TcxGridDBBandedTableView
       DataController.Summary.DefaultGroupSummaryItems = <>
@@ -35,7 +36,7 @@ object frmPersonelEgitim: TfrmPersonelEgitim
       Bands = <
         item
           Caption = 'E'#287'itime Kat'#305'lan Personeller'
-          Width = 482
+          Width = 540
         end>
       object GridListMuayeneSoru: TcxGridDBBandedColumn
         Caption = 'Dosya No.'
@@ -47,7 +48,7 @@ object frmPersonelEgitim: TfrmPersonelEgitim
         FooterAlignmentHorz = taCenter
         HeaderAlignmentHorz = taCenter
         Options.Editing = False
-        Width = 55
+        Width = 62
         Position.BandIndex = 0
         Position.ColIndex = 0
         Position.RowIndex = 0
@@ -55,7 +56,7 @@ object frmPersonelEgitim: TfrmPersonelEgitim
       object GridListGrupKod: TcxGridDBBandedColumn
         DataBinding.FieldName = 'PersonelAdiSoyadi'
         Options.Editing = False
-        Width = 233
+        Width = 235
         Position.BandIndex = 0
         Position.ColIndex = 1
         Position.RowIndex = 0
@@ -68,7 +69,7 @@ object frmPersonelEgitim: TfrmPersonelEgitim
         Properties.Alignment.Vert = taVCenter
         Properties.AssignedValues.DisplayFormat = True
         HeaderAlignmentHorz = taCenter
-        Width = 47
+        Width = 64
         Position.BandIndex = 0
         Position.ColIndex = 2
         Position.RowIndex = 0
@@ -81,7 +82,7 @@ object frmPersonelEgitim: TfrmPersonelEgitim
         Properties.Alignment.Vert = taVCenter
         Properties.AssignedValues.DisplayFormat = True
         HeaderAlignmentHorz = taCenter
-        Width = 43
+        Width = 84
         Position.BandIndex = 0
         Position.ColIndex = 3
         Position.RowIndex = 0
@@ -105,7 +106,7 @@ object frmPersonelEgitim: TfrmPersonelEgitim
         Properties.ReadOnly = False
         HeaderAlignmentHorz = taCenter
         Options.Editing = False
-        Width = 104
+        Width = 95
         Position.BandIndex = 0
         Position.ColIndex = 4
         Position.RowIndex = 0
