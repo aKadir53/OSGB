@@ -277,6 +277,7 @@ begin
       bloginLog := True;
       datalar.usernameAdi := login.FieldByName('ADISOYADI').AsString;
       datalar.doktorKodu := login.FieldByName('doktor').AsString;
+      datalar.doktorAdi := doktorAdi(datalar.doktorKodu);
       datalar.sirketKodu := login.FieldByName('SirketKodu').AsString;
       datalar.IGU := login.FieldByName('IGU').AsString;
       datalar.DSPers := login.FieldByName('DigerSaglikPers').AsString;

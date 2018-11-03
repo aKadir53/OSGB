@@ -316,10 +316,6 @@ object frmLogin: TfrmLogin
     object SayfaLogin: TcxTabSheet
       Caption = 'Kullan'#305'c'#305' Giri'#351'i   '
       ImageIndex = 17
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object dxLayoutControl1: TdxLayoutControl
         Left = 0
         Top = 0

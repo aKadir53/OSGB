@@ -817,6 +817,7 @@ Const
   FirmaDoktorDegistir = 57;
   PersonelSirketDegistir = 58;
   PersonelTetkisIste = 61;
+  userSifre = 62;
 
 
   sp_HastaGelis = 'exec sp_HastaGelisleri ';

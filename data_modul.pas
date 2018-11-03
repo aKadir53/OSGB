@@ -289,7 +289,7 @@ type
     { Private declarations }
   public
    servername,username, usersifre , _username , _sifre , _donemuser , _donemsifre , usernameAdi ,
-   _tesisKodu , _labusername , _labsifre , doktor ,doktorKodu, SonReceteDoktorKodu,SonImzaDoktorKodu,sirketKodu,
+   _tesisKodu , _labusername , _labsifre , doktor ,doktorKodu, doktorAdi , SonReceteDoktorKodu,SonImzaDoktorKodu,sirketKodu,
    IGU, DSPers, _dosyaNo_,_gelisNo_,kontrolKod,RiskTanimBilgiEkle,
    _labkurumkod , _labkurumkodText, _laburl , _labfirma ,  _SKRS , _saglikNetUser ,
    _saglikNetPass , _firmaSKRS , _usermernis , _passmernis, UserGroup, UserGroupName : string;

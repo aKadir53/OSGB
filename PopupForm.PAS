@@ -528,6 +528,20 @@ begin
              end;
              datalar.SifreDegistir.Sifre := TcxTextEdit(FindComponent('YeniSifre')).EditValue;
            end;
+
+       userSifre :
+           begin
+               if TcxTextEdit(FindComponent('YeniSifre')).EditValue <>
+                TcxTextEdit(FindComponent('YeniSifreTekrar')).EditValue then
+              begin
+                ShowMessageSkin('Yeni þifre ve tekrar giriþleri uyumsuz', '', '', 'info');
+                Action := caNone;
+              end
+              else
+              datalar.SifreDegistir.Sifre := TcxTextEdit(FindComponent('YeniSifre')).EditValue;
+           end;
+
+
        yeniGozlem, GozlemDuzenle :
            begin
              xSahaDenetimVeri.DenetimTarihi := TcxTextEdit(FindComponent('DenetimTarihi')).EditValue;
@@ -1177,6 +1191,27 @@ inherited;
            else
             TcxTextEdit(FindComponent('MevcutSifre')).SetFocus;
        end;
+
+    userSifre :
+       begin
+          Caption := _caption_;
+          cxTab.Tabs[0].Caption := datalar.SifreDegistir.KullaniciAdi;
+          cxTab.Tabs[0].ImageIndex := 38;
+          setDataString(self,'YeniSifre','Yeni Þifre',Kolon1,'',100);
+          setDataString(self,'YeniSifreTekrar','Yeni Þifre Tekrar',Kolon1,'',100);
+          TcxTextEdit(FindComponent('YeniSifre')).Properties.EchoMode := eemPassword;
+          TcxTextEdit(FindComponent('YeniSifre')).Properties.PasswordChar := '*';
+          TcxTextEdit(FindComponent('YeniSifreTekrar')).Properties.EchoMode := eemPassword;
+          TcxTextEdit(FindComponent('YeniSifreTekrar')).Properties.PasswordChar := '*';
+
+
+          ClientHeight := 235;
+          ClientWidth := 350;
+
+
+
+       end;
+
 
    yeniGozlem, GozlemDuzenle :
        begin

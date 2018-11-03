@@ -2320,6 +2320,8 @@ end;
 
 procedure SifreDegistir(newSifre : string ; sifreTip : integer);
 begin
+
+ (*
   Application.CreateForm(TfrmSifreDegis, frmSifreDegis);
   try
     frmSifreDegis.doktorKullanici := datalar.doktorKodu;
@@ -2327,7 +2329,36 @@ begin
     frmSifreDegis.ShowModal;
   finally
     FreeAndNil(frmSifreDegis);
+  end;*)
+
+  datalar.SifreDegistir.KullaniciAdi :=  datalar.doktorAdi;
+
+
+  if mrYes <> ShowPopupForm('Reçete Þifre Deðiþtirme',userSifre) then
+  begin
+    ShowMessageSkin('Ýþlem iptal edildi','','','info');
+    exit;
   end;
+
+  //güncellemeleri yap
+
+      try
+        sql := 'update DoktorlarT set ereceteSifre = ' + QuotedStr(datalar.SifreDegistir.Sifre)
+             + ' where Kod = ' + QuotedStr(datalar.doktorKodu);
+        datalar.QueryExec(sql);
+
+        ShowMessageSkin('Þifreniz Deðiþtirildi','','','info');
+
+      except on e : exception do
+       begin
+          ShowMessageskin(e.Message,'','','info');
+       end;
+
+      end;
+
+
+
+
 end;
 
 procedure cxExceleGonder(grid : TcxGrid ; dosyaName : string);
