@@ -6,7 +6,7 @@
 //  >Import : http://213.159.30.6/CSGBservice.asmx?wsdl>1
 // Encoding : utf-8
 // Version  : 1.0
-// (15.10.2018 20:18:04 - - $Rev: 45757 $)
+// (27.10.2018 10:45:33 - - $Rev: 45757 $)
 // ************************************************************************ //
 
 unit CSGBservice;
@@ -505,7 +505,7 @@ type
     function  egitimKodlariGetir: egitimListesiBilgisi; stdcall;
     function  isyeriBilgisi(const isyeriSgk: string; const iguTc: string): isyeriCevapBilgisi; stdcall;
     function  egitimBilgisiDVOToXML(const egitimBilgisi: egitimBilgisi): string; stdcall;
-    function  egitimKaydet(const egitimBilgisi: egitimBilgisi; const imzaliDeger: string): egitimBilgisiCevap; stdcall;
+    function  egitimKaydet(const egitimBilgisi: egitimBilgisi; const SOAPmesaj: string; const imzaliDeger: string; const imzalananXML: string): egitimBilgisiCevap; stdcall;
     function  egitimKaydetCoklu(const egitimBilgisi: cokluEgitimBilgisi; const imzaliDeger: string): cokluEgitimCevapDVO; stdcall;
     function  egitimSorgula(const egitimSorgu: egitimBildirimSorgu): ArrayOfEgitimBildirimSorgulaCevap; stdcall;
     function  profYetkilimi(const isyeriSgkNo: string; const isgProfTc: Int64): profesyonelYetkilimiCevap; stdcall;

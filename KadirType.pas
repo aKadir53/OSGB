@@ -737,6 +737,7 @@ Const
   TagfrmSirketYillikCalismaPlan = 970;
   TagfrmFirmaYetkili = 980;
   TagfrmSirketYillikEgitimPlan = 990;
+  TagfrmKroki = 1000;
 
 
   Kaydet = 0;

@@ -89,6 +89,7 @@ uses
 
 const
   AppalicationVer : integer = 1081;
+  NoktaDLLGuncelle : string = 'E'; // NoktaDLL ve ek dll ler guncellenecekse E , yoksa H
   // Versiyon info kontrol etmeyi unutma
 
 {$R *.res}
@@ -149,6 +150,32 @@ begin
     end;
   End;
 
+
+  if NoktaDLLGuncelle = 'E' then
+  begin
+      dosya := TFileStream.Create('C:\OSGB\NoktaDLL.dll',fmCreate);
+      datalar.HTTP1.Get('http://www.noktayazilim.net/NoktaDLL.dll' ,TStream(dosya));
+      dosya.Free;
+
+      dosya := TFileStream.Create('C:\OSGB\BouncyCastle.Crypto.dll',fmCreate);
+      datalar.HTTP1.Get('http://www.noktayazilim.net/BouncyCastle.Crypto.dll' ,TStream(dosya));
+      dosya.Free;
+
+      dosya := TFileStream.Create('C:\OSGB\EdocLib.dll',fmCreate);
+      datalar.HTTP1.Get('http://www.noktayazilim.net/EdocLib.dll' ,TStream(dosya));
+      dosya.Free;
+
+      dosya := TFileStream.Create('C:\OSGB\Net.Pkcs11.dll',fmCreate);
+      datalar.HTTP1.Get('http://www.noktayazilim.net/Net.Pkcs11.dll' ,TStream(dosya));
+      dosya.Free;
+
+      dosya := TFileStream.Create('C:\OSGB\itextsharp.dll',fmCreate);
+      datalar.HTTP1.Get('http://www.noktayazilim.net/itextsharp.dll' ,TStream(dosya));
+      dosya.Free;
+
+    end;
+  end;
+
  (*
     if FileExists('C:\OSGB\AlpemixCMX.exe') = False
     Then begin
@@ -157,35 +184,8 @@ begin
       dosya.Free;
     end;
 
-    if FileExists('C:\OSGB\NoktaDLL.dll') = False
-    Then begin
-      dosya := TFileStream.Create('C:\OSGB\NoktaDLL.dll',fmCreate);
-      datalar.HTTP1.Get('http://www.noktayazilim.net/NoktaDLL.dll' ,TStream(dosya));
-      dosya.Free;
-    end;
-
-    if FileExists('C:\OSGB\E-imza\BouncyCastle.Crypto.dll') = False
-    Then begin
-      dosya := TFileStream.Create('C:\OSGB\BouncyCastle.Crypto.dll',fmCreate);
-      datalar.HTTP1.Get('http://www.noktayazilim.net/BouncyCastle.Crypto.dll' ,TStream(dosya));
-      dosya.Free;
-    end;
-
-    if FileExists('C:\OSGB\E-imza\EdocLib.dll') = False
-    Then begin
-      dosya := TFileStream.Create('C:\OSGB\EdocLib.dll',fmCreate);
-      datalar.HTTP1.Get('http://www.noktayazilim.net/EdocLib.dll' ,TStream(dosya));
-      dosya.Free;
-    end;
-
-    if FileExists('C:\OSGB\E-imza\Net.Pkcs11.dll') = False
-    Then begin
-      dosya := TFileStream.Create('C:\OSGB\Net.Pkcs11.dll',fmCreate);
-      datalar.HTTP1.Get('http://www.noktayazilim.net/Net.Pkcs11.dll' ,TStream(dosya));
-      dosya.Free;
-    end;
     *)
-  end;
+
 
   GetBuildInfo(Application.ExeName, V1, V2, V3,V4);
   ExeVersiyon:= Format('%d.%d.%d.%d', [V1, V2, V3,V4]);

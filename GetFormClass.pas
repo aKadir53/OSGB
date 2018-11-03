@@ -47,7 +47,7 @@ uses message,Data_Modul,AnaUnit,message_y,popupForm,rapor,TedaviKart,Son6AylikTe
              Tnm_Doktor,LabTestAyarlari,SahaSaglikGozetim, CariHesapBorcAlacakToplam,
              PopupDBGridForm,PopupDBVerticalGridForm,AjandaOzet,sirketISGKurulToplanti,
              Tnm_Ilaclar, PersonelEgitimFrm, About_Frm, MerkezBilgisi,sirketYillikCalismaPlan,
-             sirketYillikEgitimPlan,HizmetKart, CihazKontrol,firmaListesi;
+             sirketYillikEgitimPlan,HizmetKart, CihazKontrol,firmaListesi,Kroki;
 
 
 
@@ -249,6 +249,7 @@ begin
    TagfrmSirketEkipmanList : Result := TfrmFirmaEkipmanList;
    TagfrmSirketYillikCalismaPlan : Result := TfrmSirketYillikCalismaPlan;
    TagfrmSirketYillikEgitimPlan : Result := TfrmSirketYillikEgitimPlan;
+   TagfrmKroki : Result := TfrmKroki;
  //  TagfrmAjandaOzet : Result := TfrmAjandaOzet;
   end;
 end;
@@ -318,6 +319,7 @@ begin
 
    TagfrmLabParametreleri : Result := frmLabParams;
    TagfrmLabKabul : Result := frmLabaratuvarKabul;
+   TagfrmKroki : Result := frmKroki;
 //   TagfrmAjandaOzet : Result := frmAjandaOzet;
 
   end;
@@ -389,7 +391,7 @@ begin
      TagfrmSirketEkipmanList : frmFirmaEkipmanList := TfrmFirmaEkipmanList.Create(Tab);
      TagfrmSirketYillikCalismaPlan : frmSirketYillikCalismaPlan  := TfrmSirketYillikCalismaPlan.Create(Tab);
      TagfrmSirketYillikEgitimPlan : frmSirketYillikEgitimPlan  := TfrmSirketYillikEgitimPlan.Create(Tab);
-
+     TagfrmKroki : frmKroki  := TfrmKroki.Create(Tab);
   end;
   try
     if not (Form is TGirisForm) then
@@ -523,7 +525,7 @@ begin
      TagfrmRTFSablon : frmRTFSablon := TfrmRTFSablon.Create(Tab);
      TagfrmSirketEkipmanList : frmFirmaEkipmanList := TfrmFirmaEkipmanList.Create(Tab);
      TagfrmSirketYillikCalismaPlan : frmSirketYillikCalismaPlan  := TfrmSirketYillikCalismaPlan.Create(Tab);
-     TagfrmSirketYillikEgitimPlan : frmSirketYillikEgitimPlan  := TfrmSirketYillikEgitimPlan.Create(Tab);
+     TagfrmKroki : frmKroki  := TfrmKroki.Create(Tab);
 
   end;
   try
@@ -640,6 +642,7 @@ begin
     TagfrmSirketEkipmanList : Application.CreateForm(TfrmFirmaEkipmanList, frmFirmaEkipmanList);
     TagfrmSirketYillikCalismaPlan : Application.CreateForm(TfrmSirketYillikCalismaPlan , frmSirketYillikCalismaPlan);
     TagfrmSirketYillikEgitimPlan : Application.CreateForm(TfrmSirketYillikEgitimPlan , frmSirketYillikEgitimPlan);
+    TagfrmKroki : Application.CreateForm(TfrmKroki, frmKroki);
 
   end;
   try

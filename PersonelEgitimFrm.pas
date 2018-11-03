@@ -101,8 +101,8 @@ type
   public
     { Public declarations }
     function Init(Sender: TObject) : Boolean; override;
-    function EgitimKaydetCSGB(egitim : egitimBilgisi ; pin,cardType,_xml_ : string) : egitimBilgisiCevap; overload;
-    function EgitimKaydetCSGB(egitim : cokluEgitimBilgisi ; pin,cardType,_xml_ : string) : cokluEgitimCevapDVO; overload;
+    function EgitimKaydetCSGB(egitim : egitimBilgisi ; pin,cardType,_xml_,_xmlSOAP_ : string) : egitimBilgisiCevap; overload;
+    function EgitimKaydetCSGB(egitim : cokluEgitimBilgisi ; pin,cardType,_xml_,_xmlSOAP_ : string) : cokluEgitimCevapDVO; overload;
 
   end;
 
@@ -119,7 +119,7 @@ const _TableName_ = 'Egitimler';
       formYukseklik = 600;
 
       LIB_DLL2 = 'D:\Projeler\VS\c#\ListeDLL_Cades\ListeDLL\bin\x86\Debug\NoktaDLL.dll';
-
+    //  LIB_DLL2 = 'NoktaDLL.dll';
 
 var
   frmPersonelEgitim: TfrmPersonelEgitim;
@@ -162,7 +162,7 @@ begin
 end;
 
 
-function TfrmPersonelEgitim.EgitimKaydetCSGB(egitim : egitimBilgisi ; pin,cardType,_xml_ : string) : egitimBilgisiCevap;
+function TfrmPersonelEgitim.EgitimKaydetCSGB(egitim : egitimBilgisi ; pin,cardType,_xml_,_xmlSOAP_ : string) : egitimBilgisiCevap;
 var
   sayi,EgitimString : string;
   Cvp : egitimBilgisiCevap;
@@ -171,11 +171,12 @@ begin
   //  EgitimString := EgitimVerisiXML(egitim);
 
     EgitimString := EgitimImzala(pin,_xml_,cardType);
+
     DurumGoster(True,False,'Eðitim Bilgisi Gönderiliyor...Lütfen Bekleyiniz...',1);
     try
       Application.ProcessMessages;
       datalar.CSGBsoap.URL := 'http://213.159.30.6/CSGBservice.asmx';
-      Cvp := (datalar.CSGBsoap as CSGBServiceSoap).egitimKaydet(egitim,EgitimString);
+      Cvp := (datalar.CSGBsoap as CSGBServiceSoap).egitimKaydet(egitim,_xmlSOAP_,EgitimString,_xml_);
       EgitimKaydetCSGB := Cvp;
       if Cvp.status = 200
       Then begin
@@ -197,7 +198,7 @@ begin
 end;
 
 
-function TfrmPersonelEgitim.EgitimKaydetCSGB(egitim : cokluEgitimBilgisi ; pin,cardType,_xml_ : string) : cokluEgitimCevapDVO;
+function TfrmPersonelEgitim.EgitimKaydetCSGB(egitim : cokluEgitimBilgisi ; pin,cardType,_xml_,_xmlSOAP_ : string) : cokluEgitimCevapDVO;
 var
   sayi,EgitimString : string;
   Cvp : cokluEgitimCevapDVO;
@@ -347,7 +348,7 @@ var
   Lst : ArrayListeSecimler;
   L : ListeSecimler;
   open : TOpenDialog;
-  filename,imageField,egitimXML,pin,cardType,_xml_ : string;
+  filename,imageField,egitimXML,pin,cardType,_xml_ ,_xmlSOAP_: string;
   Jpeg1 : TJPEGImage;
   Image : TcxImage;
   Blob : TADOBlobStream;
@@ -433,18 +434,18 @@ begin
   if TcxButtonKadir(Sender).ButtonName = 'btnEgitimGonderTek' then
   begin
 
-       DurumGoster(True,False,'Eðitim Bilgisi Ýmzalanýyor...Lütfen Bekleyiniz...',1);
-       veri := EgitimVerisi(TcxButtonEditKadir(FindComponent('id')).Text,pin,cardType,_xml_,VeriCoklu);
+    //   DurumGoster(True,False,'Eðitim Bilgisi Ýmzalanýyor...Lütfen Bekleyiniz...',1);
+       veri := EgitimVerisi(TcxButtonEditKadir(FindComponent('id')).Text,pin,cardType,_xml_,_xmlSOAP_,VeriCoklu);
 
        if TcxButtonEditKadir(FindComponent('id')).EditingValue = '' then exit;
 
-       if veri <> nil then
-       EgitimKaydetCSGB(veri,pin,cardType,_xml_);
+      // if veri <> nil then
+       EgitimKaydetCSGB(veri,pin,cardType,_xml_,_xmlSOAP_);
 
-       if VeriCoklu <> nil then
-       EgitimKaydetCSGB(VeriCoklu,pin,cardType,_xml_);
+     //  if VeriCoklu <> nil then
+     //  EgitimKaydetCSGB(VeriCoklu,pin,cardType,_xml_,_xmlSOAP_);
 
-       DurumGoster(False,False,'Eðitim Bilgisi Ýmzalanýyor...Lütfen Bekleyiniz...',1);
+       DurumGoster(False,False,'',1);
        (*
        if datalar.CSGBImza = 'Imzager' then
        begin

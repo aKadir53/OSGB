@@ -428,7 +428,7 @@ function FirmaSorgulaCSGB(firmaSGK , iguTC : string) : isyeriCevapBilgisi;
 //function EgitimKaydetCSGB(egitim : egitimBilgisi ; pin,cardType,_xml_ : string) : egitimBilgisiCevap;overload;
 //function EgitimKaydetCSGB(egitim : cokluEgitimBilgisi ; pin,cardType,_xml_ : string) : cokluEgitimCevapDVO;overload;
 function EgitimKaydetCSGBImzager(egitim : egitimBilgisi) : egitimBilgisiCevap;
-function EgitimVerisi(id : string ; var pin,cardType : string; var xml : string; var ce : cokluEgitimBilgisi) : egitimBilgisi;
+function EgitimVerisi(id : string ; var pin,cardType : string; var xml : string;var xmlSOAP : string; var ce : cokluEgitimBilgisi) : egitimBilgisi;
 function EgitimVerisiXML(egitim : egitimBilgisi) : string;
 //function EgitimImzala(pin,egitim,cardType : string): string;
 function EgitimImzali : string;
@@ -799,7 +799,7 @@ begin
       end;
     end;
 end;
-function EgitimVerisi(id : string ; var pin,cardType : string; var xml : string; var ce : cokluEgitimBilgisi) : egitimBilgisi;
+function EgitimVerisi(id : string ; var pin,cardType : string; var xml : string;var xmlSOAP : string; var ce : cokluEgitimBilgisi) : egitimBilgisi;
 var
   sql : string;
   ado : TADOQuery;
@@ -821,7 +821,7 @@ begin
     pin := ado.FieldByName('pin').AsString;
     cardType := ado.FieldByName('cardType').AsString;
     xml :=  ado.FieldByName('EgitimXML').AsString;
-
+    xmlSOAP :=  ado.FieldByName('EgitimSOAP').AsString;
 
     if ado.RecordCount = 1 then
     begin
@@ -995,7 +995,7 @@ begin
     try
       Application.ProcessMessages;
       datalar.CSGBsoap.URL := 'http://213.159.30.6/CSGBservice.asmx';
-      Cvp := (datalar.CSGBsoap as CSGBServiceSoap).egitimKaydet(egitim,EgitimString);
+    //  Cvp := (datalar.CSGBsoap as CSGBServiceSoap).egitimKaydet(egitim,_xmlSOAP_,EgitimString);
       EgitimKaydetCSGBImzager := Cvp;
       if Cvp.status = 200
       Then begin

@@ -689,10 +689,12 @@ begin
                            if not CheckReceteStatus (True, False, True, True, True) then Exit;
                            if LisansKontrol(fark) = True
                            Then Begin
+                             (*
                               case DoktorReceteMedulaGonderimTip(_d_) of
                                imzali :  DurumGoster(True,False,'Reçeteniz Kayýt Ýçin Ýmzalanýyor...Lütfen Bekleyiniz...',1);
                                imzasiz :   DurumGoster(True,False,'Reçeteniz Medula Sistemine Gönderiliyor...Lütfen Bekleyiniz...',1);
                               end;
+                              *)
                               try
                                 case DoktorReceteMedulaGonderimTip(_d_) of
                                  imzali :  Sonuc := ReceteImzalaGonder;
@@ -704,12 +706,12 @@ begin
                                   ADO_Recete.edit;
                                   ADO_Recete.FieldByName('eReceteNo').AsString := Copy(Sonuc,6,10);
                                   ADO_Recete.post;
-                                  ShowMessageSkin(Sonuc,'Reçete Medulaya Gönderildi','','info');
+                                //  ShowMessageSkin(Sonuc,'Reçete Medulaya Gönderildi','','info');
                                 end;
 
                               finally
                                 DurumGoster(False,False,'');
-                                ShowMessageSkin(Sonuc,'','','info');
+                               // ShowMessageSkin(Sonuc,'','','info');
                               end;
                            end
                            Else
