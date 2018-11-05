@@ -4,7 +4,7 @@ object frmReceteSablon: TfrmReceteSablon
   BorderStyle = bsDialog
   Caption = 'frmReceteSablon'
   ClientHeight = 489
-  ClientWidth = 743
+  ClientWidth = 746
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -119,31 +119,34 @@ object frmReceteSablon: TfrmReceteSablon
   object Panel2: TPanel
     Left = 265
     Top = 0
-    Width = 478
+    Width = 481
     Height = 489
     Align = alClient
     TabOrder = 1
+    ExplicitWidth = 478
     object cxGroupBox1: TcxGroupBox
       Left = 1
       Top = 1
       Align = alTop
       Caption = '  '#304'la'#231'lar  '
       TabOrder = 0
+      ExplicitWidth = 476
       DesignSize = (
-        476
+        479
         138)
       Height = 145
-      Width = 476
+      Width = 479
       object cxGrid2: TcxGrid
         Left = 3
         Top = 15
-        Width = 470
+        Width = 473
         Height = 120
         Align = alClient
         TabOrder = 0
-        ExplicitLeft = 1
-        ExplicitTop = 14
-        ExplicitWidth = 424
+        ExplicitLeft = 2
+        ExplicitTop = -2
+        ExplicitWidth = 472
+        ExplicitHeight = 145
         object cxGridDBTableView1: TcxGridDBTableView
           DataController.DataModeController.GridMode = True
           DataController.DataSource = DataSource2
@@ -238,7 +241,7 @@ object frmReceteSablon: TfrmReceteSablon
         end
       end
       object BtnIlacEkle: TcxButtonKadir
-        Left = 431
+        Left = 434
         Top = 15
         Width = 42
         Height = 35
@@ -247,10 +250,11 @@ object frmReceteSablon: TfrmReceteSablon
         TabOrder = 1
         OnClick = BtnIlacEkleClick
         NewButtonVisible = False
+        ExplicitLeft = 431
       end
       object cxButtonKadirTaniSil: TcxButtonKadir
         Tag = 1
-        Left = 431
+        Left = 434
         Top = 56
         Width = 42
         Height = 38
@@ -259,6 +263,7 @@ object frmReceteSablon: TfrmReceteSablon
         TabOrder = 2
         OnClick = cxButtonKadirTaniSilClick
         NewButtonVisible = False
+        ExplicitLeft = 431
       end
     end
     object cxGroupBox2: TcxGroupBox
@@ -276,8 +281,10 @@ object frmReceteSablon: TfrmReceteSablon
         Height = 60
         Align = alClient
         TabOrder = 0
-        ExplicitTop = 12
-        ExplicitWidth = 422
+        ExplicitLeft = 2
+        ExplicitTop = -2
+        ExplicitWidth = 472
+        ExplicitHeight = 85
         object cxGridDBTableView2: TcxGridDBTableView
           DataController.DataModeController.GridMode = True
           DataController.DataSource = DataSource3
@@ -314,23 +321,23 @@ object frmReceteSablon: TfrmReceteSablon
       Align = alTop
       Caption = 'A'#231#305'klama'
       TabOrder = 2
-      ExplicitLeft = 0
-      ExplicitTop = 154
+      ExplicitWidth = 476
       DesignSize = (
-        476
+        479
         73)
       Height = 80
-      Width = 476
+      Width = 479
       object cxGrid4: TcxGrid
         Left = 3
         Top = 15
-        Width = 470
+        Width = 473
         Height = 55
         Align = alClient
         TabOrder = 0
-        ExplicitTop = 10
-        ExplicitWidth = 422
-        ExplicitHeight = 60
+        ExplicitLeft = 2
+        ExplicitTop = -2
+        ExplicitWidth = 472
+        ExplicitHeight = 80
         object cxGridDBTableView3: TcxGridDBTableView
           DataController.DataModeController.GridMode = True
           DataController.DataSource = DataSource4
@@ -364,7 +371,7 @@ object frmReceteSablon: TfrmReceteSablon
       end
       object cxButtonKadirAckSil: TcxButtonKadir
         Tag = 1
-        Left = 431
+        Left = 434
         Top = 43
         Width = 42
         Height = 27
@@ -373,9 +380,10 @@ object frmReceteSablon: TfrmReceteSablon
         TabOrder = 1
         OnClick = cxButtonKadirAckEkleClick
         NewButtonVisible = False
+        ExplicitLeft = 431
       end
       object cxButtonKadirAckEkle: TcxButtonKadir
-        Left = 431
+        Left = 434
         Top = 13
         Width = 42
         Height = 28
@@ -384,6 +392,7 @@ object frmReceteSablon: TfrmReceteSablon
         TabOrder = 2
         OnClick = cxButtonKadirAckEkleClick
         NewButtonVisible = False
+        ExplicitLeft = 431
       end
     end
     object cxGroupBox4: TcxGroupBox
@@ -392,23 +401,23 @@ object frmReceteSablon: TfrmReceteSablon
       Align = alTop
       Caption = 'Tan'#305
       TabOrder = 3
-      ExplicitLeft = 6
-      ExplicitTop = 250
+      ExplicitWidth = 476
       DesignSize = (
-        476
+        479
         168)
       Height = 175
-      Width = 476
+      Width = 479
       object cxGrid5: TcxGrid
         Left = 3
         Top = 15
-        Width = 470
+        Width = 473
         Height = 150
         Align = alClient
         TabOrder = 0
-        ExplicitTop = 9
-        ExplicitWidth = 422
-        ExplicitHeight = 152
+        ExplicitLeft = 2
+        ExplicitTop = -2
+        ExplicitWidth = 472
+        ExplicitHeight = 175
         object cxGridDBTableView4: TcxGridDBTableView
           DataController.DataModeController.GridMode = True
           DataController.DataSource = DataSource5
@@ -439,7 +448,7 @@ object frmReceteSablon: TfrmReceteSablon
         end
       end
       object cxButtonKadirTaniEkle: TcxButtonKadir
-        Left = 431
+        Left = 434
         Top = 15
         Width = 42
         Height = 38
@@ -448,10 +457,11 @@ object frmReceteSablon: TfrmReceteSablon
         TabOrder = 1
         OnClick = cxButtonKadirTaniEkleClick
         NewButtonVisible = False
+        ExplicitLeft = 431
       end
       object cxButtonKadirTanisil1: TcxButtonKadir
         Tag = 1
-        Left = 431
+        Left = 434
         Top = 59
         Width = 42
         Height = 38
@@ -460,6 +470,7 @@ object frmReceteSablon: TfrmReceteSablon
         TabOrder = 2
         OnClick = cxButtonKadirTaniEkleClick
         NewButtonVisible = False
+        ExplicitLeft = 431
       end
     end
   end
