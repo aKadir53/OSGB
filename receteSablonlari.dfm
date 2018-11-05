@@ -24,11 +24,10 @@ object frmReceteSablon: TfrmReceteSablon
     Align = alLeft
     TabOrder = 0
     object DBGridEh3: TDBGridEh
-      Left = 1
-      Top = 1
+      Left = 2
+      Top = 425
       Width = 263
       Height = 487
-      Align = alClient
       DataSource = DataSource1
       DynProps = <>
       EvenRowColor = clInactiveBorder
@@ -65,6 +64,57 @@ object frmReceteSablon: TfrmReceteSablon
       object RowDetailData: TRowDetailPanelControlEh
       end
     end
+    object cxGrid1: TcxGrid
+      Left = 1
+      Top = 1
+      Width = 263
+      Height = 487
+      Align = alClient
+      TabOrder = 1
+      object cxGridHastaGelis: TcxGridDBTableView
+        DataController.DataModeController.GridMode = True
+        DataController.DataSource = DataSource1
+        DataController.Summary.DefaultGroupSummaryItems = <>
+        DataController.Summary.FooterSummaryItems = <>
+        DataController.Summary.SummaryGroups = <>
+        OptionsData.Deleting = False
+        OptionsData.Editing = False
+        OptionsData.Inserting = False
+        OptionsView.GroupByBox = False
+        object cxGridHastaGelissablonAdi: TcxGridDBColumn
+          Caption = #350'ablonAd'#305
+          DataBinding.FieldName = 'sablonAdi'
+          Options.Filtering = False
+          Width = 65
+        end
+        object cxGridHastaGelisreceteTur: TcxGridDBColumn
+          Caption = 'Re'#231'ete T'#252'r'#252
+          DataBinding.FieldName = 'receteTur'
+          HeaderAlignmentHorz = taCenter
+          Options.Filtering = False
+          Width = 70
+        end
+        object cxGridHastaGelisdoktor: TcxGridDBColumn
+          Caption = 'Doktor'
+          DataBinding.FieldName = 'doktor'
+          PropertiesClassName = 'TcxImageComboBoxProperties'
+          Properties.Items = <>
+          HeaderAlignmentHorz = taCenter
+          Options.Filtering = False
+          Width = 100
+        end
+        object cxGridHastaGelisreceteAltTur: TcxGridDBColumn
+          Caption = 'Re'#231'ete Alt T'#252'r'#252
+          DataBinding.FieldName = 'receteAltTur'
+          HeaderAlignmentHorz = taCenter
+          Options.Filtering = False
+          Width = 91
+        end
+      end
+      object cxGrid1Level1: TcxGridLevel
+        GridView = cxGridHastaGelis
+      end
+    end
   end
   object Panel2: TPanel
     Left = 265
@@ -79,270 +129,337 @@ object frmReceteSablon: TfrmReceteSablon
       Align = alTop
       Caption = '  '#304'la'#231'lar  '
       TabOrder = 0
+      DesignSize = (
+        476
+        138)
       Height = 145
       Width = 476
-      object DBGridEh1: TDBGridEh
+      object cxGrid2: TcxGrid
         Left = 3
         Top = 15
         Width = 470
         Height = 120
         Align = alClient
-        DataSource = DataSource2
-        DynProps = <>
-        Flat = True
-        Font.Charset = TURKISH_CHARSET
-        Font.Color = clWindowText
-        Font.Height = -11
-        Font.Name = 'Tahoma'
-        Font.Style = []
-        FooterParams.Color = clWindow
-        IndicatorOptions = [gioShowRowIndicatorEh]
-        Options = [dgTitles, dgIndicator, dgColumnResize, dgColLines, dgRowLines, dgTabs, dgRowSelect, dgConfirmDelete, dgCancelOnExit]
-        ParentFont = False
-        RowHeight = 18
         TabOrder = 0
-        Columns = <
-          item
-            DynProps = <>
-            EditButtons = <>
-            FieldName = 'ilacKodu'
-            Footers = <>
-            Title.Caption = #304'la'#231' Kodu'
-            Width = 83
+        ExplicitLeft = 1
+        ExplicitTop = 14
+        ExplicitWidth = 424
+        object cxGridDBTableView1: TcxGridDBTableView
+          DataController.DataModeController.GridMode = True
+          DataController.DataSource = DataSource2
+          DataController.Summary.DefaultGroupSummaryItems = <>
+          DataController.Summary.FooterSummaryItems = <>
+          DataController.Summary.SummaryGroups = <>
+          OptionsData.Deleting = False
+          OptionsData.Editing = False
+          OptionsData.Inserting = False
+          OptionsView.GroupByBox = False
+          object cxGridDBTableView1ilacKodu: TcxGridDBColumn
+            Caption = 'ila'#231'Kodu'
+            DataBinding.FieldName = 'ilacKodu'
+            HeaderAlignmentHorz = taCenter
+            Options.Filtering = False
+            Options.FilteringFilteredItemsList = False
+            Width = 58
           end
-          item
-            DynProps = <>
-            EditButtons = <>
-            FieldName = 'ilacAdi'
-            Footers = <>
-            Title.Caption = #304'la'#231' Ad'#305
-            Width = 180
+          object cxGridDBTableView1ilacAdi: TcxGridDBColumn
+            Caption = #304'la'#231' Ad'#305
+            DataBinding.FieldName = 'ilacAdi'
+            HeaderAlignmentHorz = taCenter
+            Options.Filtering = False
+            Options.FilteringFilteredItemsList = False
+            Width = 95
           end
-          item
-            DynProps = <>
-            EditButtons = <>
-            FieldName = 'EtkenMadde'
-            Footers = <>
-            Width = 27
+          object cxGridDBTableView1EtkenMadde: TcxGridDBColumn
+            DataBinding.FieldName = 'EtkenMadde'
+            HeaderAlignmentHorz = taCenter
+            Options.Filtering = False
+            Options.FilteringFilteredItemsList = False
+            Width = 94
           end
-          item
-            DynProps = <>
-            EditButtons = <>
-            FieldName = 'kullanimZaman'
-            Footers = <>
-            Width = 30
+          object cxGridDBTableView1kullanimZaman: TcxGridDBColumn
+            Caption = 'Zaman'
+            DataBinding.FieldName = 'kullanimZaman'
+            HeaderAlignmentHorz = taCenter
+            Options.Filtering = False
+            Options.FilteringFilteredItemsList = False
+            Width = 77
           end
-          item
-            DynProps = <>
-            EditButtons = <>
-            FieldName = 'kullanimAdet'
-            Footers = <>
-            Width = 28
+          object cxGridDBTableView1kullanimAdet: TcxGridDBColumn
+            Caption = 'Adet'
+            DataBinding.FieldName = 'kullanimAdet'
+            HeaderAlignmentHorz = taCenter
+            Options.Filtering = False
+            Options.FilteringFilteredItemsList = False
+            Width = 49
           end
-          item
-            DynProps = <>
-            EditButtons = <>
-            FieldName = 'kullanZamanUnit'
-            Footers = <>
+          object cxGridDBTableView1kullanZamanUnit: TcxGridDBColumn
+            DataBinding.FieldName = 'kullanZamanUnit'
+            HeaderAlignmentHorz = taCenter
+            Options.Filtering = False
+            Options.FilteringFilteredItemsList = False
+            Width = 100
           end
-          item
-            DynProps = <>
-            EditButtons = <>
-            FieldName = 'kullanimSekli'
-            Footers = <>
-            Width = 37
+          object cxGridDBTableView1kullanimSekli: TcxGridDBColumn
+            Caption = 'Kullan'#305'm '#350'ekli'
+            DataBinding.FieldName = 'kullanimSekli'
+            HeaderAlignmentHorz = taCenter
+            Options.Filtering = False
+            Options.FilteringFilteredItemsList = False
+            Width = 100
           end
-          item
-            DynProps = <>
-            EditButtons = <>
-            FieldName = 'kullanimYolu'
-            Footers = <>
-            Width = 93
+          object cxGridDBTableView1kullanimYolu: TcxGridDBColumn
+            Caption = 'Kullan'#305'm Yolu'
+            DataBinding.FieldName = 'kullanimYolu'
+            HeaderAlignmentHorz = taCenter
+            Options.Filtering = False
+            Options.FilteringFilteredItemsList = False
+            Width = 100
           end
-          item
-            DynProps = <>
-            EditButtons = <>
-            FieldName = 'kullanimAdet2'
-            Footers = <>
+          object cxGridDBTableView1kullanimAdet2: TcxGridDBColumn
+            Caption = 'Kullan'#305'm Adet-2'
+            DataBinding.FieldName = 'kullanimAdet2'
+            HeaderAlignmentHorz = taCenter
+            Options.Filtering = False
+            Options.FilteringFilteredItemsList = False
+            Width = 100
           end
-          item
-            DynProps = <>
-            EditButtons = <>
-            FieldName = 'adet'
-            Footers = <>
-          end>
-        object RowDetailData: TRowDetailPanelControlEh
+          object cxGridDBTableView1adet: TcxGridDBColumn
+            Caption = 'Adet'
+            DataBinding.FieldName = 'adet'
+            HeaderAlignmentHorz = taCenter
+            Options.Filtering = False
+            Options.FilteringFilteredItemsList = False
+            Width = 100
+          end
         end
+        object cxGridLevel1: TcxGridLevel
+          GridView = cxGridDBTableView1
+        end
+      end
+      object BtnIlacEkle: TcxButtonKadir
+        Left = 431
+        Top = 15
+        Width = 42
+        Height = 35
+        Anchors = [akTop, akRight]
+        Caption = 'Ekle'
+        TabOrder = 1
+        OnClick = BtnIlacEkleClick
+        NewButtonVisible = False
+      end
+      object cxButtonKadirTaniSil: TcxButtonKadir
+        Tag = 1
+        Left = 431
+        Top = 56
+        Width = 42
+        Height = 38
+        Anchors = [akTop, akRight]
+        Caption = 'Sil'
+        TabOrder = 2
+        OnClick = cxButtonKadirTaniSilClick
+        NewButtonVisible = False
       end
     end
     object cxGroupBox2: TcxGroupBox
-      Left = 1
-      Top = 146
-      Align = alTop
+      Left = 0
+      Top = 400
+      Align = alCustom
       Caption = #304'la'#231' A'#231#305'klama'
       TabOrder = 1
       Height = 85
       Width = 476
-      object DBGridEh2: TDBGridEh
+      object cxGrid3: TcxGrid
         Left = 3
         Top = 15
         Width = 470
         Height = 60
         Align = alClient
-        DataSource = DataSource3
-        DynProps = <>
-        Flat = True
-        Font.Charset = TURKISH_CHARSET
-        Font.Color = clWindowText
-        Font.Height = -11
-        Font.Name = 'Tahoma'
-        Font.Style = []
-        FooterParams.Color = clWindow
-        IndicatorOptions = [gioShowRowIndicatorEh]
-        Options = [dgTitles, dgIndicator, dgColumnResize, dgColLines, dgRowLines, dgTabs, dgRowSelect, dgConfirmDelete, dgCancelOnExit]
-        ParentFont = False
-        RowHeight = 18
         TabOrder = 0
-        Columns = <
-          item
-            DynProps = <>
-            EditButtons = <>
-            FieldName = 'aciklamaTip'
-            Footers = <>
-            Title.Caption = 'AciklamaTip'
-            Width = 28
+        ExplicitTop = 12
+        ExplicitWidth = 422
+        object cxGridDBTableView2: TcxGridDBTableView
+          DataController.DataModeController.GridMode = True
+          DataController.DataSource = DataSource3
+          DataController.Summary.DefaultGroupSummaryItems = <>
+          DataController.Summary.FooterSummaryItems = <>
+          DataController.Summary.SummaryGroups = <>
+          OptionsData.Deleting = False
+          OptionsData.Editing = False
+          OptionsData.Inserting = False
+          OptionsView.GroupByBox = False
+          object cxGridDBTableView2aciklamaTip: TcxGridDBColumn
+            DataBinding.FieldName = 'aciklamaTip'
+            HeaderAlignmentHorz = taCenter
+            Options.Filtering = False
+            Options.FilteringFilteredItemsList = False
+            Width = 155
           end
-          item
-            DynProps = <>
-            EditButtons = <>
-            FieldName = 'aciklama'
-            Footers = <>
-            Title.Caption = 'Aciklama'
+          object cxGridDBTableView2aciklama: TcxGridDBColumn
+            DataBinding.FieldName = 'aciklama'
+            HeaderAlignmentHorz = taCenter
+            Options.Filtering = False
+            Options.FilteringFilteredItemsList = False
+            Width = 299
           end
-          item
-            DynProps = <>
-            EditButtons = <>
-            FieldName = 'id'
-            Footers = <>
-            Title.Caption = 'Id'
-          end>
-        object RowDetailData: TRowDetailPanelControlEh
+        end
+        object cxGridLevel2: TcxGridLevel
+          GridView = cxGridDBTableView2
         end
       end
     end
     object cxGroupBox3: TcxGroupBox
       Left = 1
-      Top = 231
+      Top = 146
       Align = alTop
       Caption = 'A'#231#305'klama'
       TabOrder = 2
+      ExplicitLeft = 0
+      ExplicitTop = 154
+      DesignSize = (
+        476
+        73)
       Height = 80
       Width = 476
-      object DBGridEh4: TDBGridEh
+      object cxGrid4: TcxGrid
         Left = 3
         Top = 15
         Width = 470
         Height = 55
         Align = alClient
-        DataSource = DataSource4
-        DynProps = <>
-        Flat = True
-        Font.Charset = TURKISH_CHARSET
-        Font.Color = clWindowText
-        Font.Height = -11
-        Font.Name = 'Tahoma'
-        Font.Style = []
-        FooterParams.Color = clWindow
-        IndicatorOptions = [gioShowRowIndicatorEh]
-        Options = [dgTitles, dgIndicator, dgColumnResize, dgColLines, dgRowLines, dgTabs, dgRowSelect, dgConfirmDelete, dgCancelOnExit]
-        ParentFont = False
-        RowHeight = 18
         TabOrder = 0
-        Columns = <
-          item
-            DynProps = <>
-            EditButtons = <>
-            FieldName = 'aciklamaTip'
-            Footers = <>
-            Title.Caption = 'AciklamaTip'
-            Width = 28
+        ExplicitTop = 10
+        ExplicitWidth = 422
+        ExplicitHeight = 60
+        object cxGridDBTableView3: TcxGridDBTableView
+          DataController.DataModeController.GridMode = True
+          DataController.DataSource = DataSource4
+          DataController.Summary.DefaultGroupSummaryItems = <>
+          DataController.Summary.FooterSummaryItems = <>
+          DataController.Summary.SummaryGroups = <>
+          OptionsData.Deleting = False
+          OptionsData.Editing = False
+          OptionsData.Inserting = False
+          OptionsView.GroupByBox = False
+          object cxGridDBTableView3aciklamaTip: TcxGridDBColumn
+            Caption = 'A'#231#305'klama Tipi'
+            DataBinding.FieldName = 'aciklamaTip'
+            HeaderAlignmentHorz = taCenter
+            Options.Filtering = False
+            Options.FilteringFilteredItemsList = False
+            Width = 158
           end
-          item
-            DynProps = <>
-            EditButtons = <>
-            FieldName = 'aciklama'
-            Footers = <>
-            Title.Caption = 'Aciklama'
+          object cxGridDBTableView3aciklama: TcxGridDBColumn
+            Caption = 'A'#231#305'klama'
+            DataBinding.FieldName = 'aciklama'
+            HeaderAlignmentHorz = taCenter
+            Options.Filtering = False
+            Options.FilteringFilteredItemsList = False
+            Width = 299
           end
-          item
-            DynProps = <>
-            EditButtons = <>
-            FieldName = 'id'
-            Footers = <>
-          end>
-        object RowDetailData: TRowDetailPanelControlEh
         end
+        object cxGridLevel3: TcxGridLevel
+          GridView = cxGridDBTableView3
+        end
+      end
+      object cxButtonKadirAckSil: TcxButtonKadir
+        Tag = 1
+        Left = 431
+        Top = 43
+        Width = 42
+        Height = 27
+        Anchors = [akTop, akRight]
+        Caption = 'Sil'
+        TabOrder = 1
+        OnClick = cxButtonKadirAckEkleClick
+        NewButtonVisible = False
+      end
+      object cxButtonKadirAckEkle: TcxButtonKadir
+        Left = 431
+        Top = 13
+        Width = 42
+        Height = 28
+        Anchors = [akTop, akRight]
+        Caption = 'Ekle'
+        TabOrder = 2
+        OnClick = cxButtonKadirAckEkleClick
+        NewButtonVisible = False
       end
     end
     object cxGroupBox4: TcxGroupBox
       Left = 1
-      Top = 311
-      Align = alClient
+      Top = 226
+      Align = alTop
       Caption = 'Tan'#305
       TabOrder = 3
-      Height = 177
+      ExplicitLeft = 6
+      ExplicitTop = 250
+      DesignSize = (
+        476
+        168)
+      Height = 175
       Width = 476
-      object DBGridEh5: TDBGridEh
+      object cxGrid5: TcxGrid
         Left = 3
         Top = 15
         Width = 470
-        Height = 152
+        Height = 150
         Align = alClient
-        DataSource = DataSource5
-        DynProps = <>
-        Flat = True
-        Font.Charset = TURKISH_CHARSET
-        Font.Color = clWindowText
-        Font.Height = -11
-        Font.Name = 'Tahoma'
-        Font.Style = []
-        FooterParams.Color = clWindow
-        IndicatorOptions = [gioShowRowIndicatorEh]
-        Options = [dgTitles, dgIndicator, dgColumnResize, dgColLines, dgRowLines, dgTabs, dgRowSelect, dgConfirmDelete, dgCancelOnExit]
-        ParentFont = False
-        RowHeight = 18
         TabOrder = 0
-        Columns = <
-          item
-            DynProps = <>
-            EditButtons = <>
-            FieldName = 'receteSablonId'
-            Footers = <>
-            Title.Caption = 'SablonId'
-            Width = 22
+        ExplicitTop = 9
+        ExplicitWidth = 422
+        ExplicitHeight = 152
+        object cxGridDBTableView4: TcxGridDBTableView
+          DataController.DataModeController.GridMode = True
+          DataController.DataSource = DataSource5
+          DataController.Summary.DefaultGroupSummaryItems = <>
+          DataController.Summary.FooterSummaryItems = <>
+          DataController.Summary.SummaryGroups = <>
+          OptionsData.Deleting = False
+          OptionsData.Editing = False
+          OptionsData.Inserting = False
+          OptionsView.GroupByBox = False
+          object cxGridDBTableView4taniKodu: TcxGridDBColumn
+            Caption = 'Tan'#305' Kodu'
+            DataBinding.FieldName = 'taniKodu'
+            HeaderAlignmentHorz = taCenter
+            Options.Filtering = False
+            Options.FilteringFilteredItemsList = False
+            Width = 73
           end
-          item
-            DynProps = <>
-            EditButtons = <>
-            FieldName = 'taniKodu'
-            Footers = <>
-            Title.Caption = 'TaniKodu'
+          object cxGridDBTableView4tani: TcxGridDBColumn
+            Caption = 'Tan'#305
+            DataBinding.FieldName = 'tani'
+            HeaderAlignmentHorz = taCenter
+            Width = 367
           end
-          item
-            DynProps = <>
-            EditButtons = <>
-            FieldName = 'tani'
-            Footers = <>
-            Title.Caption = 'Tani'
-          end
-          item
-            DynProps = <>
-            EditButtons = <>
-            FieldName = 'id'
-            Footers = <>
-          end>
-        object RowDetailData: TRowDetailPanelControlEh
         end
+        object cxGridLevel4: TcxGridLevel
+          GridView = cxGridDBTableView4
+        end
+      end
+      object cxButtonKadirTaniEkle: TcxButtonKadir
+        Left = 431
+        Top = 15
+        Width = 42
+        Height = 38
+        Anchors = [akTop, akRight]
+        Caption = 'Ekle'
+        TabOrder = 1
+        OnClick = cxButtonKadirTaniEkleClick
+        NewButtonVisible = False
+      end
+      object cxButtonKadirTanisil1: TcxButtonKadir
+        Tag = 1
+        Left = 431
+        Top = 59
+        Width = 42
+        Height = 38
+        Anchors = [akTop, akRight]
+        Caption = 'Sil'
+        TabOrder = 2
+        OnClick = cxButtonKadirTaniEkleClick
+        NewButtonVisible = False
       end
     end
   end
@@ -362,6 +479,49 @@ object frmReceteSablon: TfrmReceteSablon
     TableName = 'ReceteDetaySablon'
     Left = 88
     Top = 201
+    object SablonDetayid: TAutoIncField
+      FieldName = 'id'
+      ReadOnly = True
+    end
+    object SablonDetayilacKodu: TStringField
+      FieldName = 'ilacKodu'
+    end
+    object SablonDetayilacAdi: TStringField
+      FieldName = 'ilacAdi'
+      Size = 50
+    end
+    object SablonDetayEtkenMadde: TStringField
+      FieldName = 'EtkenMadde'
+      Size = 50
+    end
+    object SablonDetaykullanimZaman: TStringField
+      FieldName = 'kullanimZaman'
+      Size = 10
+    end
+    object SablonDetaykullanimAdet: TFloatField
+      FieldName = 'kullanimAdet'
+    end
+    object SablonDetaykullanZamanUnit: TStringField
+      FieldName = 'kullanZamanUnit'
+      Size = 1
+    end
+    object SablonDetaykullanimSekli: TStringField
+      FieldName = 'kullanimSekli'
+      Size = 50
+    end
+    object SablonDetaykullanimYolu: TStringField
+      FieldName = 'kullanimYolu'
+      Size = 50
+    end
+    object SablonDetaykullanimAdet2: TIntegerField
+      FieldName = 'kullanimAdet2'
+    end
+    object SablonDetayadet: TIntegerField
+      FieldName = 'adet'
+    end
+    object SablonDetayReceteSablonID: TIntegerField
+      FieldName = 'ReceteSablonID'
+    end
   end
   object DataSource1: TDataSource
     DataSet = Sablonlar
@@ -433,6 +593,10 @@ object frmReceteSablon: TfrmReceteSablon
       Caption = 'Sil'
       ImageIndex = 42
       OnClick = S1Click
+    end
+    object E1: TMenuItem
+      Caption = 'Ekle'
+      ImageIndex = 34
     end
   end
 end

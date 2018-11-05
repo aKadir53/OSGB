@@ -3,7 +3,7 @@ object frmLogin: TfrmLogin
   Top = 245
   BorderIcons = []
   BorderStyle = bsDialog
-  Caption = 'l'
+  Caption = 'Giri'#351
   ClientHeight = 239
   ClientWidth = 309
   Color = 13750737
@@ -771,10 +771,6 @@ object frmLogin: TfrmLogin
           Height = 125
           Align = alClient
           TabOrder = 0
-          ExplicitLeft = 2
-          ExplicitTop = -2
-          ExplicitWidth = 295
-          ExplicitHeight = 150
           object txtServerName: TcxTextEditKadir
             Left = 104
             Top = 10
@@ -932,10 +928,6 @@ object frmLogin: TfrmLogin
       Caption = 'cxTabSheet1'
       ImageIndex = 2
       TabVisible = False
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object Label1: TLabel
         Left = 154
         Top = 46

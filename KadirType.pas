@@ -749,6 +749,7 @@ Const
   SeansDoktorUpdate = 1;
   SeansInsert = 2;
   ReceteIlacEkle = 3;
+  ReceteSablonIlacEkle=31;
   ReceteAckEkle = 4;
   ReceteIlacDuzenle = 5;
   ReceteAckDuzenle = 6;

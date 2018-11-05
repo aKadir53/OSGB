@@ -16,6 +16,277 @@ object frmIlacSarf: TfrmIlacSarf
   OnCreate = FormCreate
   PixelsPerInch = 96
   TextHeight = 13
+  object GroupBox2: TGroupBox
+    Left = 0
+    Top = 53
+    Width = 468
+    Height = 601
+    Align = alClient
+    Caption = #304'la'#231'lar  '
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -11
+    Font.Name = 'MS Sans Serif'
+    Font.Style = []
+    ParentFont = False
+    TabOrder = 3
+    object txtarama: TcxTextEdit
+      Tag = -1
+      Left = 4
+      Top = 13
+      Enabled = False
+      ParentFont = False
+      ParentShowHint = False
+      ShowHint = True
+      TabOrder = 0
+      Width = 454
+    end
+    object txtGruplar: TsComboBox
+      Left = 4
+      Top = 51
+      Width = 69
+      Height = 21
+      Alignment = taLeftJustify
+      BoundLabel.Indent = 0
+      BoundLabel.Font.Charset = DEFAULT_CHARSET
+      BoundLabel.Font.Color = clWindowText
+      BoundLabel.Font.Height = -11
+      BoundLabel.Font.Name = 'MS Sans Serif'
+      BoundLabel.Font.Style = []
+      BoundLabel.Layout = sclLeft
+      BoundLabel.MaxWidth = 0
+      BoundLabel.UseSkinColor = True
+      SkinData.SkinSection = 'COMBOBOX'
+      Color = 16774895
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clBlack
+      Font.Height = -11
+      Font.Name = 'MS Sans Serif'
+      Font.Style = [fsBold]
+      ItemIndex = -1
+      ParentFont = False
+      TabOrder = 1
+      Visible = False
+    end
+    object cxGrid1: TcxGrid
+      Left = 2
+      Top = 15
+      Width = 464
+      Height = 396
+      Align = alClient
+      TabOrder = 2
+      object gridIlacSarf: TcxGridDBTableView
+        OnDblClick = gridIlacSarfDblClick
+        OnKeyDown = gridIlacSarfKeyDown
+        OnKeyPress = gridIlacSarfKeyPress
+        Navigator.Buttons.First.Visible = True
+        Navigator.Buttons.PriorPage.Visible = True
+        Navigator.Buttons.Prior.Visible = True
+        Navigator.Buttons.Next.Visible = True
+        Navigator.Buttons.NextPage.Visible = True
+        Navigator.Buttons.Last.Visible = True
+        Navigator.Buttons.Insert.Visible = True
+        Navigator.Buttons.Append.Visible = False
+        Navigator.Buttons.Delete.Visible = True
+        Navigator.Buttons.Edit.Visible = True
+        Navigator.Buttons.Post.Visible = True
+        Navigator.Buttons.Cancel.Visible = True
+        Navigator.Buttons.Refresh.Visible = True
+        Navigator.Buttons.SaveBookmark.Visible = True
+        Navigator.Buttons.GotoBookmark.Visible = True
+        Navigator.Buttons.Filter.Visible = True
+        DataController.DataSource = DataSource1
+        DataController.Filter.Options = [fcoCaseInsensitive]
+        DataController.Filter.Active = True
+        DataController.Filter.TranslateBetween = True
+        DataController.Filter.TranslateLike = True
+        DataController.Options = [dcoAnsiSort, dcoAssignGroupingValues, dcoAssignMasterDetailKeys, dcoSaveExpanding, dcoSortByDisplayText]
+        DataController.Summary.DefaultGroupSummaryItems = <>
+        DataController.Summary.FooterSummaryItems = <>
+        DataController.Summary.SummaryGroups = <>
+        Filtering.ColumnFilteredItemsList = True
+        FilterRow.InfoText = 'Arama Sat'#305'r'#305
+        FilterRow.Visible = True
+        FilterRow.ApplyChanges = fracImmediately
+        OptionsBehavior.FocusCellOnTab = True
+        OptionsBehavior.IncSearch = True
+        OptionsData.Deleting = False
+        OptionsData.DeletingConfirmation = False
+        OptionsData.Editing = False
+        OptionsData.Inserting = False
+        OptionsView.NoDataToDisplayInfoText = 'Listelenecek '#304'la'#231' Yok'
+        OptionsView.CellAutoHeight = True
+        OptionsView.ColumnAutoWidth = True
+        OptionsView.GroupByBox = False
+        OptionsView.Indicator = True
+        Styles.Content = cxStyle1
+        Styles.FilterBox = cxStyle2
+        Styles.OnGetContentStyle = gridIlacSarfStylesGetContentStyle
+        Styles.FilterRowInfoText = cxStyle2
+        object gridIlacSarfColumn1: TcxGridDBColumn
+          Caption = 'Barkod'
+          DataBinding.FieldName = 'Code'
+          Width = 98
+        end
+        object gridIlacSarfColumn2: TcxGridDBColumn
+          Caption = #304'la'#231' Ad'#305
+          DataBinding.FieldName = 'NAME1'
+          Width = 307
+        end
+        object gridIlacSarfColumn4: TcxGridDBColumn
+          DataBinding.FieldName = 'ReceteTip'
+          Visible = False
+        end
+        object gridIlacSarfColumn3: TcxGridDBColumn
+          DataBinding.FieldName = 'Aktif'
+          Width = 36
+        end
+        object gridIlacSarfColumn5: TcxGridDBColumn
+          DataBinding.FieldName = 'ICD'
+          Visible = False
+        end
+        object gridIlacSarfColumn6: TcxGridDBColumn
+          DataBinding.FieldName = 'doz'
+          Visible = False
+        end
+        object gridIlacSarfColumn7: TcxGridDBColumn
+          DataBinding.FieldName = 'adet'
+          Visible = False
+        end
+        object gridIlacSarfColumn8: TcxGridDBColumn
+          DataBinding.FieldName = 'kulYol'
+          Visible = False
+        end
+      end
+      object cxGrid1Level1: TcxGridLevel
+        GridView = gridIlacSarf
+      end
+    end
+    object DBNavigator1: TDBNavigator
+      Left = 2
+      Top = 581
+      Width = 464
+      Height = 18
+      DataSource = DataSource2
+      VisibleButtons = [nbDelete, nbPost, nbCancel]
+      Align = alBottom
+      Flat = True
+      Kind = dbnHorizontal
+      TabOrder = 3
+    end
+    object cxGrid2: TcxGrid
+      Left = 2
+      Top = 411
+      Width = 464
+      Height = 170
+      Align = alBottom
+      TabOrder = 4
+      object Eklenen: TcxGridDBTableView
+        Navigator.Buttons.First.Visible = True
+        Navigator.Buttons.PriorPage.Visible = True
+        Navigator.Buttons.Prior.Visible = True
+        Navigator.Buttons.Next.Visible = True
+        Navigator.Buttons.NextPage.Visible = True
+        Navigator.Buttons.Last.Visible = True
+        Navigator.Buttons.Insert.Visible = True
+        Navigator.Buttons.Append.Visible = False
+        Navigator.Buttons.Delete.Visible = True
+        Navigator.Buttons.Edit.Visible = True
+        Navigator.Buttons.Post.Visible = True
+        Navigator.Buttons.Cancel.Visible = True
+        Navigator.Buttons.Refresh.Visible = True
+        Navigator.Buttons.SaveBookmark.Visible = True
+        Navigator.Buttons.GotoBookmark.Visible = True
+        Navigator.Buttons.Filter.Visible = True
+        DataController.DataSource = DataSource2
+        DataController.Filter.Active = True
+        DataController.Filter.TranslateBetween = True
+        DataController.Filter.TranslateLike = True
+        DataController.Options = [dcoAnsiSort, dcoAssignGroupingValues, dcoAssignMasterDetailKeys, dcoSaveExpanding, dcoSortByDisplayText]
+        DataController.Summary.DefaultGroupSummaryItems = <>
+        DataController.Summary.FooterSummaryItems = <>
+        DataController.Summary.SummaryGroups = <>
+        FilterRow.InfoText = 'Filtreleme Sat'#305'r'#305
+        FilterRow.ApplyChanges = fracImmediately
+        OptionsBehavior.FocusCellOnTab = True
+        OptionsData.DeletingConfirmation = False
+        OptionsData.Inserting = False
+        OptionsView.NoDataToDisplayInfoText = 'Eklenen '#304'la'#231' Yok'
+        OptionsView.CellAutoHeight = True
+        OptionsView.ColumnAutoWidth = True
+        OptionsView.GroupByBox = False
+        OptionsView.Indicator = True
+        Styles.Content = cxStyle1
+        object cxGridDBColumn1: TcxGridDBColumn
+          Caption = 'Barkod'
+          DataBinding.FieldName = 'ETKENMADDE'
+          Options.Editing = False
+          Width = 56
+        end
+        object cxGridDBColumn2: TcxGridDBColumn
+          Caption = #304'la'#231' Ad'#305
+          DataBinding.FieldName = 'Formu'
+          Options.Editing = False
+          Width = 133
+        end
+        object EklenenColumn1: TcxGridDBColumn
+          Caption = 'Doz'
+          DataBinding.FieldName = 'doz'
+          PropertiesClassName = 'TcxComboBoxProperties'
+          Properties.Items.Strings = (
+            ''
+            '1x1'
+            '2x1'
+            '3x1'
+            '3x2'
+            '1x2'
+            '1x3'
+            '1x4'
+            '2x1'
+            '2x2'
+            '2x3'
+            '2x4'
+            '3x1'
+            '3x2'
+            '3x3'
+            '3x4'
+            '4x1'
+            '4x2'
+            '4x3'
+            '4x4')
+          Width = 64
+        end
+        object EklenenColumn3: TcxGridDBColumn
+          Caption = 'Adet'
+          DataBinding.FieldName = 'adet'
+          Width = 31
+        end
+        object EklenenColumn2: TcxGridDBColumn
+          Caption = 'Kul.Yolu'
+          DataBinding.FieldName = 'Kyolu'
+          PropertiesClassName = 'TcxLookupComboBoxProperties'
+          Properties.DropDownListStyle = lsFixedList
+          Properties.KeyFieldNames = 'kod'
+          Properties.ListColumns = <
+            item
+              FieldName = 'tanimi'
+            end>
+          Properties.ListOptions.GridLines = glNone
+          Properties.ListOptions.ShowHeader = False
+          Properties.ListSource = DATALAR.ReceteKullanimYollari_Datasource
+          Width = 104
+        end
+        object EklenenColumn4: TcxGridDBColumn
+          Caption = 'Tani'
+          DataBinding.FieldName = 'tani'
+          Width = 62
+        end
+      end
+      object cxGridLevel1: TcxGridLevel
+        GridView = Eklenen
+      end
+    end
+  end
   object pnlToolBar: TPanel
     Left = 0
     Top = 18
@@ -166,277 +437,6 @@ object frmIlacSarf: TfrmIlacSarf
       Font.Style = [fsBold]
       ParentFont = False
       OnClick = btnSendClick
-    end
-  end
-  object GroupBox2: TGroupBox
-    Left = 0
-    Top = 53
-    Width = 468
-    Height = 601
-    Align = alClient
-    Caption = #304'la'#231'lar  '
-    Font.Charset = DEFAULT_CHARSET
-    Font.Color = clWindowText
-    Font.Height = -11
-    Font.Name = 'MS Sans Serif'
-    Font.Style = []
-    ParentFont = False
-    TabOrder = 3
-    object txtarama: TcxTextEdit
-      Tag = -1
-      Left = 4
-      Top = 13
-      Enabled = False
-      ParentFont = False
-      ParentShowHint = False
-      ShowHint = True
-      TabOrder = 0
-      Width = 454
-    end
-    object txtGruplar: TsComboBox
-      Left = 4
-      Top = 51
-      Width = 69
-      Height = 21
-      Alignment = taLeftJustify
-      BoundLabel.Indent = 0
-      BoundLabel.Font.Charset = DEFAULT_CHARSET
-      BoundLabel.Font.Color = clWindowText
-      BoundLabel.Font.Height = -11
-      BoundLabel.Font.Name = 'MS Sans Serif'
-      BoundLabel.Font.Style = []
-      BoundLabel.Layout = sclLeft
-      BoundLabel.MaxWidth = 0
-      BoundLabel.UseSkinColor = True
-      SkinData.SkinSection = 'COMBOBOX'
-      Color = 16774895
-      Font.Charset = DEFAULT_CHARSET
-      Font.Color = clBlack
-      Font.Height = -11
-      Font.Name = 'MS Sans Serif'
-      Font.Style = [fsBold]
-      ItemIndex = -1
-      ParentFont = False
-      TabOrder = 1
-      Visible = False
-    end
-    object cxGrid1: TcxGrid
-      Left = 2
-      Top = 15
-      Width = 464
-      Height = 406
-      Align = alTop
-      TabOrder = 2
-      object gridIlacSarf: TcxGridDBTableView
-        OnDblClick = gridIlacSarfDblClick
-        OnKeyDown = gridIlacSarfKeyDown
-        OnKeyPress = gridIlacSarfKeyPress
-        Navigator.Buttons.First.Visible = True
-        Navigator.Buttons.PriorPage.Visible = True
-        Navigator.Buttons.Prior.Visible = True
-        Navigator.Buttons.Next.Visible = True
-        Navigator.Buttons.NextPage.Visible = True
-        Navigator.Buttons.Last.Visible = True
-        Navigator.Buttons.Insert.Visible = True
-        Navigator.Buttons.Append.Visible = False
-        Navigator.Buttons.Delete.Visible = True
-        Navigator.Buttons.Edit.Visible = True
-        Navigator.Buttons.Post.Visible = True
-        Navigator.Buttons.Cancel.Visible = True
-        Navigator.Buttons.Refresh.Visible = True
-        Navigator.Buttons.SaveBookmark.Visible = True
-        Navigator.Buttons.GotoBookmark.Visible = True
-        Navigator.Buttons.Filter.Visible = True
-        DataController.DataSource = DataSource1
-        DataController.Filter.Options = [fcoCaseInsensitive]
-        DataController.Filter.Active = True
-        DataController.Filter.TranslateBetween = True
-        DataController.Filter.TranslateLike = True
-        DataController.Options = [dcoAnsiSort, dcoAssignGroupingValues, dcoAssignMasterDetailKeys, dcoSaveExpanding, dcoSortByDisplayText]
-        DataController.Summary.DefaultGroupSummaryItems = <>
-        DataController.Summary.FooterSummaryItems = <>
-        DataController.Summary.SummaryGroups = <>
-        Filtering.ColumnFilteredItemsList = True
-        FilterRow.InfoText = 'Arama Sat'#305'r'#305
-        FilterRow.Visible = True
-        FilterRow.ApplyChanges = fracImmediately
-        OptionsBehavior.FocusCellOnTab = True
-        OptionsBehavior.IncSearch = True
-        OptionsData.Deleting = False
-        OptionsData.DeletingConfirmation = False
-        OptionsData.Editing = False
-        OptionsData.Inserting = False
-        OptionsView.NoDataToDisplayInfoText = 'Listelenecek '#304'la'#231' Yok'
-        OptionsView.CellAutoHeight = True
-        OptionsView.ColumnAutoWidth = True
-        OptionsView.GroupByBox = False
-        OptionsView.Indicator = True
-        Styles.Content = cxStyle1
-        Styles.FilterBox = cxStyle2
-        Styles.OnGetContentStyle = gridIlacSarfStylesGetContentStyle
-        Styles.FilterRowInfoText = cxStyle2
-        object gridIlacSarfColumn1: TcxGridDBColumn
-          Caption = 'Barkod'
-          DataBinding.FieldName = 'Code'
-          Width = 98
-        end
-        object gridIlacSarfColumn2: TcxGridDBColumn
-          Caption = #304'la'#231' Ad'#305
-          DataBinding.FieldName = 'NAME1'
-          Width = 307
-        end
-        object gridIlacSarfColumn4: TcxGridDBColumn
-          DataBinding.FieldName = 'ReceteTip'
-          Visible = False
-        end
-        object gridIlacSarfColumn3: TcxGridDBColumn
-          DataBinding.FieldName = 'Aktif'
-          Width = 36
-        end
-        object gridIlacSarfColumn5: TcxGridDBColumn
-          DataBinding.FieldName = 'ICD'
-          Visible = False
-        end
-        object gridIlacSarfColumn6: TcxGridDBColumn
-          DataBinding.FieldName = 'doz'
-          Visible = False
-        end
-        object gridIlacSarfColumn7: TcxGridDBColumn
-          DataBinding.FieldName = 'adet'
-          Visible = False
-        end
-        object gridIlacSarfColumn8: TcxGridDBColumn
-          DataBinding.FieldName = 'kulYol'
-          Visible = False
-        end
-      end
-      object cxGrid1Level1: TcxGridLevel
-        GridView = gridIlacSarf
-      end
-    end
-    object DBNavigator1: TDBNavigator
-      Left = 2
-      Top = 581
-      Width = 464
-      Height = 18
-      DataSource = DataSource2
-      VisibleButtons = [nbDelete, nbPost, nbCancel]
-      Align = alBottom
-      Flat = True
-      Kind = dbnHorizontal
-      TabOrder = 3
-    end
-    object cxGrid2: TcxGrid
-      Left = 2
-      Top = 421
-      Width = 464
-      Height = 160
-      Align = alClient
-      TabOrder = 4
-      object Eklenen: TcxGridDBTableView
-        Navigator.Buttons.First.Visible = True
-        Navigator.Buttons.PriorPage.Visible = True
-        Navigator.Buttons.Prior.Visible = True
-        Navigator.Buttons.Next.Visible = True
-        Navigator.Buttons.NextPage.Visible = True
-        Navigator.Buttons.Last.Visible = True
-        Navigator.Buttons.Insert.Visible = True
-        Navigator.Buttons.Append.Visible = False
-        Navigator.Buttons.Delete.Visible = True
-        Navigator.Buttons.Edit.Visible = True
-        Navigator.Buttons.Post.Visible = True
-        Navigator.Buttons.Cancel.Visible = True
-        Navigator.Buttons.Refresh.Visible = True
-        Navigator.Buttons.SaveBookmark.Visible = True
-        Navigator.Buttons.GotoBookmark.Visible = True
-        Navigator.Buttons.Filter.Visible = True
-        DataController.DataSource = DataSource2
-        DataController.Filter.Active = True
-        DataController.Filter.TranslateBetween = True
-        DataController.Filter.TranslateLike = True
-        DataController.Options = [dcoAnsiSort, dcoAssignGroupingValues, dcoAssignMasterDetailKeys, dcoSaveExpanding, dcoSortByDisplayText]
-        DataController.Summary.DefaultGroupSummaryItems = <>
-        DataController.Summary.FooterSummaryItems = <>
-        DataController.Summary.SummaryGroups = <>
-        FilterRow.InfoText = 'Filtreleme Sat'#305'r'#305
-        FilterRow.ApplyChanges = fracImmediately
-        OptionsBehavior.FocusCellOnTab = True
-        OptionsData.DeletingConfirmation = False
-        OptionsData.Inserting = False
-        OptionsView.NoDataToDisplayInfoText = 'Eklenen '#304'la'#231' Yok'
-        OptionsView.CellAutoHeight = True
-        OptionsView.ColumnAutoWidth = True
-        OptionsView.GroupByBox = False
-        OptionsView.Indicator = True
-        Styles.Content = cxStyle1
-        object cxGridDBColumn1: TcxGridDBColumn
-          Caption = 'Barkod'
-          DataBinding.FieldName = 'ETKENMADDE'
-          Options.Editing = False
-          Width = 56
-        end
-        object cxGridDBColumn2: TcxGridDBColumn
-          Caption = #304'la'#231' Ad'#305
-          DataBinding.FieldName = 'Formu'
-          Options.Editing = False
-          Width = 133
-        end
-        object EklenenColumn1: TcxGridDBColumn
-          Caption = 'Doz'
-          DataBinding.FieldName = 'doz'
-          PropertiesClassName = 'TcxComboBoxProperties'
-          Properties.Items.Strings = (
-            ''
-            '1x1'
-            '2x1'
-            '3x1'
-            '3x2'
-            '1x2'
-            '1x3'
-            '1x4'
-            '2x1'
-            '2x2'
-            '2x3'
-            '2x4'
-            '3x1'
-            '3x2'
-            '3x3'
-            '3x4'
-            '4x1'
-            '4x2'
-            '4x3'
-            '4x4')
-          Width = 64
-        end
-        object EklenenColumn3: TcxGridDBColumn
-          Caption = 'Adet'
-          DataBinding.FieldName = 'adet'
-          Width = 31
-        end
-        object EklenenColumn2: TcxGridDBColumn
-          Caption = 'Kul.Yolu'
-          DataBinding.FieldName = 'Kyolu'
-          PropertiesClassName = 'TcxLookupComboBoxProperties'
-          Properties.DropDownListStyle = lsFixedList
-          Properties.KeyFieldNames = 'kod'
-          Properties.ListColumns = <
-            item
-              FieldName = 'tanimi'
-            end>
-          Properties.ListOptions.GridLines = glNone
-          Properties.ListOptions.ShowHeader = False
-          Properties.ListSource = DATALAR.ReceteKullanimYollari_Datasource
-          Width = 104
-        end
-        object EklenenColumn4: TcxGridDBColumn
-          Caption = 'Tani'
-          DataBinding.FieldName = 'tani'
-          Width = 62
-        end
-      end
-      object cxGridLevel1: TcxGridLevel
-        GridView = Eklenen
-      end
     end
   end
   object DataSource1: TDataSource
