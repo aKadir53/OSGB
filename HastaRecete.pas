@@ -1037,7 +1037,11 @@ begin
    TaniListe.SkinName := AnaForm.dxSkinController1.SkinName;
    TaniListe.SiralamaKolonu := ifThen(cxChkSIK.Checked,'Sikkullan Desc,TANI','TANI');
    List := TaniListe.ListeGetir;
+
    id := ADO_Recete.FieldByName('id').AsString;
+
+//   if frmhastarecete.sender is TcxButtonKadir.tag=1515 then ShowMessageSkin('Þablon Kayýt Edildi','','','info');
+
    for I := 0 to length(List) - 1 do
    begin
     try
@@ -1062,10 +1066,14 @@ begin
     end;
    end;
 
+
+
+
 end;
 
 procedure TfrmHastaRecete.AckEkle(islem : integer);
 begin
+
      if mrYes = ShowPopupForm('Reçete Açýklama Ekle',islem)
     then begin
        if islem in [ReceteAckEkle,ReceteAckDuzenle]
@@ -1098,10 +1106,12 @@ begin
      try
       Application.CreateForm(TfrmIlacSarf, frmIlacSarf);
       try
+
         GorselAyar(frmIlacSarf,datalar.global_img_list4);
     //    frmIlacSarf.GonForm('frmHastaRecete',_dosyaNo_,_gelisNo_);
         frmIlacSarf._dosyaNO_ := _dosyaNo_;
         frmIlacSarf._gelisNO_ := _gelisNo_;
+        frmilacsarf._islem_:=islem;
         frmIlacSarf.Tanilar (False);
         frmIlacSarf.Tag := TagfrmIlacSarf;
         frmIlacSarf.cxTab.Tabs[0].Caption := 'Ýlaçlar';
@@ -1206,6 +1216,7 @@ begin
   inherited;
   if not CheckReceteStatus (True, False, True, True, True) then Exit;
   ilacEkle(ReceteIlacEkle);
+
 end;
 
 procedure TfrmHastaRecete.btnIlacSilClick(Sender: TObject);
@@ -1391,11 +1402,14 @@ end;
 
 procedure TfrmHastaRecete.cxButtonKadirAckSilClick(Sender: TObject);
 begin
+  if MrYes = ShowMessageSkin('Açýklama Reçeteden Çýkartýlýyor Emin misiniz ?','','','msg')
+     Then Begin
   inherited;
   if not CheckReceteStatus (True, False, True, True, True) then Exit;
   ADO_receteAcikla.Delete;
   ADO_receteAcikla.Close;
   ADO_receteAcikla.Open;
+     End;
 end;
 
 procedure TfrmHastaRecete.cxButtonKadirIlacAckEkleClick(Sender: TObject);
@@ -1417,8 +1431,11 @@ begin
   inherited;
   if not CheckReceteStatus (True, False, True, True, True) then Exit;
   case TcxButtonKadir(Sender).Tag of
-   0 : TaniEkle;
-   1 : ADO_receteTani.Delete;
+   0 :TaniEkle;
+   1 : if MrYes = ShowMessageSkin('Taný Reçeteden Çýkartýlýyor Emin misiniz ?','','','msg')
+     Then Begin
+    ADO_receteTani.Delete;
+     End;
   end;
   ADO_receteTani.Active := False;
   ADO_receteTani.Active := True;

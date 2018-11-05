@@ -89,22 +89,41 @@ type
 
   private
     { Private declarations }
+    { Private declarations }
+    Fislem_ : integer;
+    Fcaption_ : string;
+    Fvalue_ : string;
+    FFormName_ : string;
+
   protected
     procedure FADO_ILACSARFAfterScroll(DataSet: TDataSet);
   public
     { Public declarations }
+    _islem_ :integer;
+    _caption_ : string;
+    _value_ : string;
+    FGirisForm : TGirisForm;
+    { Public declarations }
+
+    property islem_ : integer read Fislem_ write Fislem_;
+    property caption_ : string read Fcaption_ write Fcaption_;
+    property value_ : string read Fvalue_ write Fvalue_;
+    property FormName_ : string read FFormName_ write FFormName_;
+
     destructor Destroy; override;
   end;
+
 
 var
   frmIlacSarf: TfrmIlacSarf;
 
 implementation
-   uses HastaRecete;
+   uses HastaRecete,Recetesablonlari;
 
 var
   FADO_ILACSARF : TADOQuery;
   FLastSikKull : Integer;
+
 
 {$R *.dfm}
 
@@ -175,6 +194,8 @@ var
    ado : TADOQuery;
    unite : real;
 begin
+  if _islem_=receteilacekle then
+  begin
   try
     if Tag = TagfrmIlacSarf
     Then Begin
@@ -308,6 +329,147 @@ begin
      close;
   except
   end;
+  end
+  else
+   if _islem_=recetesablonilacekle then
+  begin
+
+     try
+    if Tag = TagfrmIlacSarf
+    Then Begin
+       try
+         frmReceteSablon.SABLONDETAY.Active := false;
+         frmReceteSablon.SABLONDETAY.Active := True;
+
+         Eklenenler.First;
+         for i := 1 to Eklenenler.RecordCount do
+         begin
+           if Eklenenler.fieldbyname('doz').AsString <> ''
+           Then Begin
+             if frmReceteSablon.SABLONDETAY.Locate('ilacKodu;recetesablonId',VarArrayOf([Eklenenler.fieldbyname('ETKENMADDE').AsString,
+                                                                                      frmReceteSablon.SABLOnLAR.fieldbyname('id').AsString]),[]) = True
+             Then begin
+               ShowMessageSkin(Eklenenler.fieldbyname('ETKENMADDE').AsString + ' ilaç reçeteye eklenmiþ','','','info');
+               exit;
+             End;
+
+              frmReceteSablon.SABLONDETAY.Append;
+              frmReceteSablon.SABLONDETAY.FieldByName('ilacKodu').AsString := Eklenenler.fieldbyname('ETKENMADDE').AsString;
+              frmReceteSablon.SABLONDETAY.FieldByName('ilacAdi').AsString := Eklenenler.fieldbyname('Formu').AsString;
+
+              frmReceteSablon.SABLONDETAY.FieldByName('adet').AsString := Eklenenler.fieldbyname('adet').AsString;
+              frmReceteSablon.SABLONDETAY.FieldByName('kullanimYolu').AsString :=
+              ifThen(Eklenenler.fieldbyname('Kyolu').AsString = '' ,'1',Eklenenler.fieldbyname('Kyolu').AsString);
+              frmReceteSablon.SABLONDETAY.FieldByName('kullanimZaman').AsString := '1';
+
+              doz1 := copy(Eklenenler.fieldbyname('doz').AsString,1,pos('x',Eklenenler.fieldbyname('doz').AsString)-1);
+              doz2 := copy(Eklenenler.fieldbyname('doz').AsString,pos('x',Eklenenler.fieldbyname('doz').AsString)+1,5);
+
+              frmReceteSablon.SABLONDETAY.FieldByName('kullanimAdet2').AsString := doz1;
+
+              unite := 1 * strtofloat(doz2);//IlacKoduToUnite(Eklenenler.fieldbyname('ETKENMADDE').AsString,_dosyaNo_,_gelisNo_,peryot,peryotAdet)
+              try
+
+                frmReceteSablon.SABLONDETAY.FieldByName('kullanZamanUnit').AsString := '3';
+                frmReceteSablon.SABLONDETAY.FieldByName('kullanimZaman').AsString := '1';
+
+              except
+              end;
+
+              frmReceteSablon.SABLONDETAY.FieldByName('kullanimAdet').AsString := floattostr(unite);
+              //Eklenenler.fieldbyname('doz').AsString[3];
+
+              frmReceteSablon.SABLONDETAY.Post;
+
+              ado := TADOQuery.Create(nil);
+              try
+                sql := 'update ilacListesi set sikKullan = 1 where barkod = ' + QuotedStr(Eklenenler.fieldbyname('ETKENMADDE').AsString);
+                datalar.QueryExec(ado,sql);
+
+                sql := 'IF EXISTS (SELECT * FROM ilacListesi WHERE barkod = ' + QuotedStr(Eklenenler.fieldbyname('ETKENMADDE').AsString) + ')' +
+                        ' BEGIN ' +
+                        '  UPDATE ilacListesi ' +
+                        '  SET kulYol = ' + SQLValue(Eklenenler.fieldbyname('Kyolu').AsString) + ',' +
+                        '  ICD = ' + SQLValue(Eklenenler.fieldbyname('tani').AsString) +
+                        '  where barkod = ' + SQLValue (Eklenenler.fieldbyname('ETKENMADDE').AsString) +
+                        ' END';
+                datalar.QueryExec(ado,sql);
+
+                (*
+                ack := IlacReceteAciklama(_dosyaNo_,_gelisNo_,Eklenenler.fieldbyname('ETKENMADDE').AsString,
+                                            inttostr(frmHastaRecete.ADO_RECETE_DETAY.FieldByName('kullanimAdet2').AsInteger *
+                                                     frmHastaRecete.ADO_RECETE_DETAY.FieldByName('kullanimAdet').AsInteger)
+                                            );
+                  *)
+
+                 sql := 'delete from ReceteIlacAciklamasablon where recetedetaysablonId = ' + frmReceteSablon.SABLONDETAY.fieldbyname('id').AsString;
+                 datalar.QueryExec(ado,sql);
+              finally
+                 ado.Free;
+              end;
+              frmReceteSablon.IlacAciklama.Active := false;
+              frmReceteSablon.IlacAciklama.Active := true;
+
+            (*
+              for j := 0 to ack.Count-1 do
+              begin
+                  frmHastaRecete.ADO_ReceteIlacAciklama.Append;
+                  frmHastaRecete.ADO_ReceteIlacAciklama.FieldByName('aciklama').AsString := copy(ack[j],3,500);
+                  frmHastaRecete.ADO_ReceteIlacAciklama.FieldByName('aciklamaTip').AsString := trim(copy(ack[j],1,2));
+                  frmHastaRecete.ADO_ReceteIlacAciklama.Post;
+                  if copy(frmHastaRecete.ADO_ReceteIlacAciklama.FieldByName('aciklama').AsString,1,4) = 'Hata'
+                  Then ShowMessageSkin('Dikkat , Doz Bilgisini Kontrol Ediniz','','','info');
+              end;
+               *)
+
+              frmReceteSablon.Tani.Active := false;
+              frmReceteSablon.Tani.Active := True;
+
+              _tani_ := IlacReceteTaniEkle(Eklenenler.fieldbyname('ETKENMADDE').AsString);
+              x := pos(';',_tani_)-1;
+              keys := copy(_tani_,1,x);
+              if copy(_tani_,1,x) <> ''
+              Then Begin
+               if frmReceteSablon.Tani.Locate('taniKodu;recetesablonId',VarArrayOf([keys,frmReceteSablon.Sablonlar.fieldbyname('id').AsString]) ,[]) = False
+               Then Begin
+                 frmReceteSablon.Tani.Append;
+                 frmReceteSablon.Tani.fieldbyname('taniKodu').AsString := copy(_tani_,1,pos(';',_tani_)-1);
+                 frmReceteSablon.Tani.fieldbyname('tani').AsString := copy(_tani_,pos(';',_tani_)+1,100);
+                 frmReceteSablon.Tani.Post;
+               End;
+              End;
+              if Eklenenler.fieldbyname('Tani').AsString <> ''
+              Then Begin
+              keys := Eklenenler.fieldbyname('Tani').AsString;
+               if frmReceteSablon.Tani.Locate('taniKodu;recetesablonId',VarArrayOf([keys,frmReceteSablon.Sablonlar.fieldbyname('id').AsString]) ,[]) = False
+               Then Begin
+                 frmReceteSablon.Tani.Append;
+                 frmReceteSablon.Tani.fieldbyname('taniKodu').AsString := keys;
+                 frmReceteSablon.Tani.fieldbyname('tani').AsString := TaniKodToTaniAd(keys);
+                 frmReceteSablon.Tani.Post;
+               End;
+              End;
+              Eklenenler.Next;
+           End // if end
+           Else
+           Begin
+              ShowMessageSkin(Eklenenler.fieldbyname('Formu').AsString + ' için doz girilmemiþ','','','info');
+              exit;
+           End;
+         end; // for end
+         s := copy(s,1,Length(s)-1);
+      except on e : Exception do
+       begin
+           ShowMessageSkin(e.Message,'','','info');
+       end;
+      end;
+    End;
+     close;
+  except
+  end;
+
+
+   end;
 end;
 
 destructor TfrmIlacSarf.Destroy;
@@ -331,6 +493,7 @@ begin
   cxTab.Width := 200;
   SayfaCaption('','','','','');
   Olustur(self,_TableName_,'Ýlaç Listesi',97);
+
 end;
 
 procedure TfrmIlacSarf.FormShow(Sender: TObject);
