@@ -7,5 +7,9 @@
 Kadir
 Test
 ugurTest
+<<<<<<< .mine
 Deneme
-Merhaba Dünya
+=======
+Deneme
+>>>>>>> .theirs
+123Merhaba Dünya
