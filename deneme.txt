@@ -13,3 +13,5 @@ Deneme
 Deneme
 >>>>>>> .theirs
 123Merhaba Dünya
+x1
+y1
