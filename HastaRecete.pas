@@ -1105,6 +1105,7 @@ begin
         frmIlacSarf.Tanilar (False);
         frmIlacSarf.Tag := TagfrmIlacSarf;
         frmIlacSarf.cxTab.Tabs[0].Caption := 'Ýlaçlar';
+        frmIlacSarf.cxTab.Tabs[0].ImageIndex := 50;
         frmIlacSarf.ShowModal;
       finally
         FreeAndNil(frmIlacSarf);

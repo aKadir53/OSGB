@@ -738,6 +738,7 @@ Const
   TagfrmFirmaYetkili = 980;
   TagfrmSirketYillikEgitimPlan = 990;
   TagfrmKroki = 1000;
+  TagfrmHastaRaporlari = 1010;
 
 
   Kaydet = 0;

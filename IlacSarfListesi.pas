@@ -67,6 +67,8 @@ type
     btnSend: TcxButton;
     cxStyleRepository2: TcxStyleRepository;
     cxStyle2: TcxStyle;
+    cxStyleRepository3: TcxStyleRepository;
+    cxStyle3: TcxStyle;
     procedure txtHizmetGruplariCheckListItemToText(sender: TObject;
       var aText: String);
     procedure btnSendClick(Sender: TObject);
@@ -82,6 +84,8 @@ type
       ARecord: TcxCustomGridRecord; AItem: TcxCustomGridTableItem;
       out AStyle: TcxStyle);
     procedure FormCreate(Sender: TObject);
+    procedure FormShow(Sender: TObject);
+    procedure FormClose(Sender: TObject; var Action: TCloseAction);
 
   private
     { Private declarations }
@@ -109,6 +113,7 @@ var
   sql : string;
   iTmp : Integer;
   aNtfEvt: TNotifyEvent;
+  AHandled : Boolean;
 begin
   if not bReset then
   begin
@@ -133,12 +138,13 @@ begin
   begin
     FADO_ILACSARF.Close;
     FADO_ILACSARF.SQL.Clear;
-    sql := 'select * from ' + IfThen (chkSIK.Checked, 'ILACLARMM', 'ILACLARM') +
-           ' where Aktif = 1 order by NAME1 ' ;
+    sql := 'select * from ' + IfThen (chkSIK.Checked, 'OSGB_MASTER.DBO.ILACLARMM', 'OSGB_MASTER.DBO.ILACLARM') +
+           ' order by NAME1 ' ;
     datalar.QuerySelect(FADO_ILACSARF, sql);
     FLastSikKull := iTmp;
   end;
   FADO_ILACSARF.First;
+
 end;
 
 procedure TfrmIlacSarf.txtHizmetGruplariCheckListItemToText(
@@ -310,6 +316,12 @@ begin
   inherited;
 end;
 
+procedure TfrmIlacSarf.FormClose(Sender: TObject; var Action: TCloseAction);
+begin
+  inherited;
+  Action := caFree;
+end;
+
 procedure TfrmIlacSarf.FormCreate(Sender: TObject);
 begin
   inherited;
@@ -321,9 +333,23 @@ begin
   Olustur(self,_TableName_,'Ýlaç Listesi',97);
 end;
 
+procedure TfrmIlacSarf.FormShow(Sender: TObject);
+var
+ AHandled : Boolean;
+begin
+  inherited;
+  cxGrid1.SetFocus;
+  gridIlacSarf.Focused := True;
+
+  //gridIlacSarf.OnCellClick(gridIlacSarf,nil,mbLeft,[],AHandled);
+end;
+
 procedure TfrmIlacSarf.btnVazgecClick(Sender: TObject);
 begin
+     kadir.AramaText := '';
+     gridIlacSarf.DataController.Filter.Root.Clear;
      datalar.ADO_ILACSARF.Close;
+
      close;
 end;
 

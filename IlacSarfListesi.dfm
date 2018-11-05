@@ -2,8 +2,8 @@ object frmIlacSarf: TfrmIlacSarf
   Left = 418
   Top = 10
   BorderStyle = bsDialog
-  ClientHeight = 686
-  ClientWidth = 468
+  ClientHeight = 708
+  ClientWidth = 654
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -13,13 +13,15 @@ object frmIlacSarf: TfrmIlacSarf
   KeyPreview = True
   OldCreateOrder = False
   Position = poOwnerFormCenter
+  OnClose = FormClose
   OnCreate = FormCreate
+  OnShow = FormShow
   PixelsPerInch = 96
   TextHeight = 13
   object pnlToolBar: TPanel
     Left = 0
     Top = 18
-    Width = 468
+    Width = 654
     Height = 35
     Align = alTop
     Color = clBackground
@@ -62,13 +64,13 @@ object frmIlacSarf: TfrmIlacSarf
       Style.IsFontAssigned = True
       TabOrder = 1
       Height = 33
-      Width = 466
+      Width = 652
     end
   end
   object pnlTitle: TPanel
     Left = 0
     Top = 0
-    Width = 468
+    Width = 654
     Height = 18
     Align = alTop
     Color = clBlack
@@ -80,8 +82,8 @@ object frmIlacSarf: TfrmIlacSarf
     ParentFont = False
     TabOrder = 1
     object chkDoz: TcxCheckBox
-      Left = 359
-      Top = -1
+      Left = 423
+      Top = 0
       Caption = 'Detay G'#246'ster'
       ParentFont = False
       Style.Font.Charset = TURKISH_CHARSET
@@ -97,9 +99,9 @@ object frmIlacSarf: TfrmIlacSarf
       Width = 110
     end
     object chkSIK: TcxCheckBox
-      Left = 238
+      Left = 1
       Top = -1
-      Caption = 'S'#305'k Kullan'#305'm List'
+      Caption = 'S'#305'k Kullan'#305'm Listesi'
       ParentFont = False
       State = cbsChecked
       Style.Font.Charset = TURKISH_CHARSET
@@ -111,17 +113,18 @@ object frmIlacSarf: TfrmIlacSarf
       TabOrder = 1
       Transparent = True
       OnClick = chkSIKClick
-      Width = 125
+      Width = 163
     end
   end
   object pnlOnay: TPanel
     Left = 0
-    Top = 654
-    Width = 468
+    Top = 676
+    Width = 654
     Height = 32
     Align = alBottom
     Color = clBackground
     TabOrder = 2
+    ExplicitTop = 654
     object txtinfo: TLabel
       Left = 7
       Top = 11
@@ -136,7 +139,7 @@ object frmIlacSarf: TfrmIlacSarf
       ParentFont = False
     end
     object btnVazgec: TcxButton
-      Left = 392
+      Left = 578
       Top = 1
       Width = 75
       Height = 30
@@ -152,7 +155,7 @@ object frmIlacSarf: TfrmIlacSarf
       OnClick = btnVazgecClick
     end
     object btnSend: TcxButton
-      Left = 317
+      Left = 503
       Top = 1
       Width = 75
       Height = 30
@@ -171,8 +174,8 @@ object frmIlacSarf: TfrmIlacSarf
   object GroupBox2: TGroupBox
     Left = 0
     Top = 53
-    Width = 468
-    Height = 601
+    Width = 654
+    Height = 623
     Align = alClient
     Caption = #304'la'#231'lar  '
     Font.Charset = DEFAULT_CHARSET
@@ -182,6 +185,7 @@ object frmIlacSarf: TfrmIlacSarf
     Font.Style = []
     ParentFont = False
     TabOrder = 3
+    ExplicitHeight = 601
     object txtarama: TcxTextEdit
       Tag = -1
       Left = 4
@@ -190,7 +194,7 @@ object frmIlacSarf: TfrmIlacSarf
       ParentFont = False
       ParentShowHint = False
       ShowHint = True
-      TabOrder = 0
+      TabOrder = 1
       Width = 454
     end
     object txtGruplar: TsComboBox
@@ -217,16 +221,16 @@ object frmIlacSarf: TfrmIlacSarf
       Font.Style = [fsBold]
       ItemIndex = -1
       ParentFont = False
-      TabOrder = 1
+      TabOrder = 2
       Visible = False
     end
     object cxGrid1: TcxGrid
       Left = 2
       Top = 15
-      Width = 464
-      Height = 406
+      Width = 650
+      Height = 444
       Align = alTop
-      TabOrder = 2
+      TabOrder = 0
       object gridIlacSarf: TcxGridDBTableView
         OnDblClick = gridIlacSarfDblClick
         OnKeyDown = gridIlacSarfKeyDown
@@ -248,16 +252,22 @@ object frmIlacSarf: TfrmIlacSarf
         Navigator.Buttons.GotoBookmark.Visible = True
         Navigator.Buttons.Filter.Visible = True
         DataController.DataSource = DataSource1
-        DataController.Filter.Options = [fcoCaseInsensitive]
+        DataController.Filter.Options = [fcoCaseInsensitive, fcoShowOperatorDescription]
         DataController.Filter.Active = True
         DataController.Filter.TranslateBetween = True
         DataController.Filter.TranslateLike = True
         DataController.Options = [dcoAnsiSort, dcoAssignGroupingValues, dcoAssignMasterDetailKeys, dcoSaveExpanding, dcoSortByDisplayText]
         DataController.Summary.DefaultGroupSummaryItems = <>
-        DataController.Summary.FooterSummaryItems = <>
+        DataController.Summary.FooterSummaryItems = <
+          item
+            Format = #304'la'#231' Say'#305's'#305' : #'
+            Kind = skCount
+            Column = gridIlacSarfColumn1
+          end>
         DataController.Summary.SummaryGroups = <>
         Filtering.ColumnFilteredItemsList = True
         FilterRow.InfoText = 'Arama Sat'#305'r'#305
+        FilterRow.SeparatorColor = 3155860
         FilterRow.Visible = True
         FilterRow.ApplyChanges = fracImmediately
         OptionsBehavior.FocusCellOnTab = True
@@ -269,7 +279,10 @@ object frmIlacSarf: TfrmIlacSarf
         OptionsView.NoDataToDisplayInfoText = 'Listelenecek '#304'la'#231' Yok'
         OptionsView.CellAutoHeight = True
         OptionsView.ColumnAutoWidth = True
+        OptionsView.DataRowHeight = 21
+        OptionsView.Footer = True
         OptionsView.GroupByBox = False
+        OptionsView.HeaderHeight = 25
         OptionsView.Indicator = True
         Styles.Content = cxStyle1
         Styles.FilterBox = cxStyle2
@@ -278,24 +291,52 @@ object frmIlacSarf: TfrmIlacSarf
         object gridIlacSarfColumn1: TcxGridDBColumn
           Caption = 'Barkod'
           DataBinding.FieldName = 'Code'
-          Width = 98
+          PropertiesClassName = 'TcxTextEditProperties'
+          Properties.Alignment.Horz = taLeftJustify
+          Properties.Alignment.Vert = taVCenter
+          GroupSummaryAlignment = taCenter
+          HeaderAlignmentHorz = taCenter
+          HeaderAlignmentVert = vaCenter
+          Styles.Header = cxStyle3
+          Width = 123
         end
         object gridIlacSarfColumn2: TcxGridDBColumn
           Caption = #304'la'#231' Ad'#305
           DataBinding.FieldName = 'NAME1'
-          Width = 307
+          PropertiesClassName = 'TcxTextEditProperties'
+          Properties.Alignment.Horz = taLeftJustify
+          Properties.Alignment.Vert = taVCenter
+          GroupSummaryAlignment = taCenter
+          HeaderAlignmentHorz = taCenter
+          HeaderAlignmentVert = vaCenter
+          Styles.Header = cxStyle3
+          Width = 335
         end
         object gridIlacSarfColumn4: TcxGridDBColumn
           DataBinding.FieldName = 'ReceteTip'
           Visible = False
         end
+        object gridIlacSarfColumn5: TcxGridDBColumn
+          DataBinding.FieldName = 'EtkenMadde'
+          PropertiesClassName = 'TcxTextEditProperties'
+          Properties.Alignment.Horz = taLeftJustify
+          Properties.Alignment.Vert = taVCenter
+          GroupSummaryAlignment = taCenter
+          HeaderAlignmentHorz = taCenter
+          HeaderAlignmentVert = vaCenter
+          Styles.Header = cxStyle3
+          Width = 115
+        end
         object gridIlacSarfColumn3: TcxGridDBColumn
           DataBinding.FieldName = 'Aktif'
-          Width = 36
-        end
-        object gridIlacSarfColumn5: TcxGridDBColumn
-          DataBinding.FieldName = 'ICD'
-          Visible = False
+          PropertiesClassName = 'TcxTextEditProperties'
+          Properties.Alignment.Horz = taLeftJustify
+          Properties.Alignment.Vert = taVCenter
+          GroupSummaryAlignment = taCenter
+          HeaderAlignmentHorz = taCenter
+          HeaderAlignmentVert = vaCenter
+          Styles.Header = cxStyle3
+          Width = 63
         end
         object gridIlacSarfColumn6: TcxGridDBColumn
           DataBinding.FieldName = 'doz'
@@ -316,8 +357,8 @@ object frmIlacSarf: TfrmIlacSarf
     end
     object DBNavigator1: TDBNavigator
       Left = 2
-      Top = 581
-      Width = 464
+      Top = 603
+      Width = 650
       Height = 18
       DataSource = DataSource2
       VisibleButtons = [nbDelete, nbPost, nbCancel]
@@ -325,14 +366,17 @@ object frmIlacSarf: TfrmIlacSarf
       Flat = True
       Kind = dbnHorizontal
       TabOrder = 3
+      ExplicitTop = 581
     end
     object cxGrid2: TcxGrid
       Left = 2
-      Top = 421
-      Width = 464
-      Height = 160
+      Top = 459
+      Width = 650
+      Height = 144
       Align = alClient
       TabOrder = 4
+      ExplicitTop = 421
+      ExplicitHeight = 183
       object Eklenen: TcxGridDBTableView
         Navigator.Buttons.First.Visible = True
         Navigator.Buttons.PriorPage.Visible = True
@@ -372,14 +416,16 @@ object frmIlacSarf: TfrmIlacSarf
         object cxGridDBColumn1: TcxGridDBColumn
           Caption = 'Barkod'
           DataBinding.FieldName = 'ETKENMADDE'
+          HeaderAlignmentHorz = taCenter
           Options.Editing = False
-          Width = 56
+          Width = 91
         end
         object cxGridDBColumn2: TcxGridDBColumn
           Caption = #304'la'#231' Ad'#305
           DataBinding.FieldName = 'Formu'
+          HeaderAlignmentHorz = taCenter
           Options.Editing = False
-          Width = 133
+          Width = 184
         end
         object EklenenColumn1: TcxGridDBColumn
           Caption = 'Doz'
@@ -406,12 +452,14 @@ object frmIlacSarf: TfrmIlacSarf
             '4x2'
             '4x3'
             '4x4')
-          Width = 64
+          HeaderAlignmentHorz = taCenter
+          Width = 89
         end
         object EklenenColumn3: TcxGridDBColumn
           Caption = 'Adet'
           DataBinding.FieldName = 'adet'
-          Width = 31
+          HeaderAlignmentHorz = taCenter
+          Width = 42
         end
         object EklenenColumn2: TcxGridDBColumn
           Caption = 'Kul.Yolu'
@@ -426,12 +474,14 @@ object frmIlacSarf: TfrmIlacSarf
           Properties.ListOptions.GridLines = glNone
           Properties.ListOptions.ShowHeader = False
           Properties.ListSource = DATALAR.ReceteKullanimYollari_Datasource
-          Width = 104
+          HeaderAlignmentHorz = taCenter
+          Width = 144
         end
         object EklenenColumn4: TcxGridDBColumn
           Caption = 'Tani'
           DataBinding.FieldName = 'tani'
-          Width = 62
+          HeaderAlignmentHorz = taCenter
+          Width = 86
         end
       end
       object cxGridLevel1: TcxGridLevel
@@ -445,15 +495,15 @@ object frmIlacSarf: TfrmIlacSarf
   end
   object DataSource2: TDataSource
     DataSet = Eklenenler
-    Left = 124
-    Top = 529
+    Left = 84
+    Top = 585
   end
   object Eklenenler: TdxMemData
     Active = True
     Indexes = <>
     SortOptions = []
-    Left = 168
-    Top = 528
+    Left = 128
+    Top = 584
     object EklenenlerETKENMADDE: TStringField
       DisplayWidth = 50
       FieldName = 'ETKENMADDE'
@@ -480,8 +530,8 @@ object frmIlacSarf: TfrmIlacSarf
     end
   end
   object cxStyleRepository1: TcxStyleRepository
-    Left = 88
-    Top = 65528
+    Left = 56
+    Top = 256
     PixelsPerInch = 96
     object cxStyle1: TcxStyle
       AssignedValues = [svFont]
@@ -505,13 +555,63 @@ object frmIlacSarf: TfrmIlacSarf
     end
   end
   object cxStyleRepository2: TcxStyleRepository
+    Left = 64
+    Top = 200
     PixelsPerInch = 96
     object cxStyle2: TcxStyle
-      AssignedValues = [svColor, svFont]
+      AssignedValues = [svBitmap, svColor, svFont]
       Color = clYellow
+      Bitmap.Data = {
+        36040000424D3604000000000000360000002800000010000000100000000100
+        2000000000000004000000000000000000000000000000000000F8F8F900B9BA
+        BC00C0BFBF00918E8B00C3C3C100E1E1E100BFC0C100999A9D126D71717F717F
+        6DC082817E63CDCBC800CECBC900CECBC900CECBC900CECBC900F8F8F900B9BA
+        BC00C0BFBF00918E8B00C3C3C100E1E1E100B9BABB18709769D280F166FF4F72
+        49FF49494CFEB7B5B32FCBCAC700C8C6C300D2D0CE00D2D0CE00F8F8F900B9BA
+        BC00C0BFBF00918E8B00BEBDBA00C6C5C2036C786BC090EF71FF678E5CFF4E4F
+        51FF3C3D41FF8C8B8A8FD3D1CF00ACAAA800DEDDDC00DEDDDC00F8F8F900B9BA
+        BC00BDBDBD1486838033C1C1BE0084827D205F7959FF566E55FF636464FF5E5E
+        5FFF444549FF595A5BE5C0BEBC079A999600DEDDDC00DEDDDC00F8F8F900AAAF
+        AC3F68A05FF14A5249FF9998976DCAC8C3047B7A79E654565DFF5D5E61FF6060
+        62FF515254FF44464AFF656461C18786846CDEDDDC00DEDDDC00DEDDDF1E7BB9
+        69ED659359FF454548FF49494CF4C2C1BE1EC2C0BA2378787AE14B4D53FF5758
+        5CFF58595CFF424448FF525253FF4A4B4DFDBAB8B742E1E0DE007E8079A86487
+        5BFF616262FF5B5B5CFF3E3F43FF7A7A79A092908C11ADABA62F808080E54C4E
+        55FF4E5055FF4A4C52FF3D3E42FF3C3D41FF5D5D5DDDD9D8D4099C9994815D5F
+        64FF5B5C60FF626263FF4F4F51FF3D3E40FD51504EFC6B6A69C28E8D899D7676
+        76FF494B52FF3E3F45FF4E4F51FF4A4B4EFF4D4E51FF8F8D8877A6A39B048B89
+        86875E5F64FF525459FF525355FF3A3A3EFF57585AFF3C3D40FF6A6968FE5E5E
+        61FF4E4F54FF545457FF4A4C51FF484A4EFF48494EFF6B6964D7A6A39B00A7A4
+        9E0097948E526E6E71EC43454AFF4A4B4EFF4E4F52FF3E3E40FF5A5A5BFF5556
+        5BFF4F5156FF44464CFF44464DFF45474DFF58595DFF83817EBAA6A39B00A29F
+        99008A8680007A7975BA696A6CFF545659FF666666FF666667FF5D5E61FF484B
+        51FF41444BFF41434BFF41434AFF42444BFF626265FFA9A7A674C9C6C000C9C6
+        C000C9C6C000A9A6A156646261FD727170FF939392FF7F8084FF606268FF4E51
+        58FF464950FF42454CFF41444BFF4C4D54FD43454BFF696869D5C9C6C000C9C6
+        C000C9C6C000B8B5AE00A19E96585F5A54F7898784FFA3A2A2FF86878AFF696B
+        70FF56585FFF56585FDA7B7D83668E8C8B63626468FF6E6F72C9C9C6C000C9C6
+        C000C9C6C000B8B5AE00C5C3BC009A978E4D6D6862C18F8D89DD9A999AFF7879
+        7DF69C9DA24494969B039B9DA200D7D6D3008D8A8533BAB8B60FC9C6C000C9C6
+        C000C9C6C000B8B5AE00C5C3BC00AFACA400A09C9700A4A29E009E9B9662ABAA
+        AA5BB9BABC0094969B009B9DA200D7D6D300918E8900BAB8B600FFFFFF00FFFF
+        FF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFF
+        FF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00}
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clWindowText
       Font.Height = -15
+      Font.Name = 'Tahoma'
+      Font.Style = [fsBold]
+    end
+  end
+  object cxStyleRepository3: TcxStyleRepository
+    Left = 56
+    Top = 160
+    PixelsPerInch = 96
+    object cxStyle3: TcxStyle
+      AssignedValues = [svFont]
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -11
       Font.Name = 'Tahoma'
       Font.Style = [fsBold]
     end

@@ -2315,6 +2315,9 @@ begin
        exit;
    end;
 
+
+
+
 end;
 
 
@@ -4165,17 +4168,15 @@ var
   s: string;
 begin
 
-  if Key = 'ý' Then
-    Key := 'I';
-  if Key = 'i' Then
-    Key := 'Ý';
+  if Key = 'ý' Then Key := 'I';
+  if Key = 'i' Then Key := 'Ý';
 
   s := AnsiUpperCase(Key);
   if s[1] in [#13, #10, #9, #14] Then
     Exit;
   // ['A'..'Z', '0'..'9', 'Ç','Þ','Ð','Ö','Ü','Ý']
 
-  if (Key in [#27, #13]) Then
+  if (Key in [#27]) Then
   Begin
     AramaText := '';
     arama := '';
@@ -4188,14 +4189,17 @@ begin
     Exit;
   End;
 
+
+
   if (Key in [#8]) Then
   begin
-
     if (Length(AramaText) > 0) Then
       AramaText := copy(AramaText, 1, Length(AramaText) - 1)
-    else
+    else begin
       AramaText := '';
-    // arama := arama + s;
+      Sender.DataController.Filter.Root.Clear;
+      Exit;
+    end;
     if F = True Then
     Begin
       Sender.DataController.Filter.Root.Clear;
@@ -4204,16 +4208,16 @@ begin
     End;
   end
   else
+//  if (s[1] in ['A'..'Z','a'..'z']) or (s[1] in ['Ý','Þ','Ð','Ö','Ü','Ç']) then
 
-    AramaText := AramaText + s;
+  AramaText := AramaText + s[1];
 
-  if F = True Then
-  Begin
-    Sender.DataController.Filter.Root.AddItem(Sender.Columns[colum], foLike,
-      AramaText + '%', AramaText);
+  if F = True
+  Then Begin
+      Sender.DataController.Filter.Root.Clear;
+      Sender.DataController.Filter.Root.AddItem(Sender.Columns[colum], foLike,AramaText + '%', AramaText);
   End;
 
-  s := arama + '*' + ';*' + arama + '*';
   arama := AramaText;
 
 end;
