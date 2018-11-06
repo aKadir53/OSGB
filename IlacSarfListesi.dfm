@@ -124,7 +124,6 @@ object frmIlacSarf: TfrmIlacSarf
     Align = alBottom
     Color = clBackground
     TabOrder = 2
-    ExplicitTop = 654
     object txtinfo: TLabel
       Left = 7
       Top = 11
@@ -185,7 +184,6 @@ object frmIlacSarf: TfrmIlacSarf
     Font.Style = []
     ParentFont = False
     TabOrder = 3
-    ExplicitHeight = 601
     object txtarama: TcxTextEdit
       Tag = -1
       Left = 4
@@ -366,7 +364,6 @@ object frmIlacSarf: TfrmIlacSarf
       Flat = True
       Kind = dbnHorizontal
       TabOrder = 3
-      ExplicitTop = 581
     end
     object cxGrid2: TcxGrid
       Left = 2
@@ -375,8 +372,6 @@ object frmIlacSarf: TfrmIlacSarf
       Height = 144
       Align = alClient
       TabOrder = 4
-      ExplicitTop = 421
-      ExplicitHeight = 183
       object Eklenen: TcxGridDBTableView
         Navigator.Buttons.First.Visible = True
         Navigator.Buttons.PriorPage.Visible = True
@@ -480,6 +475,14 @@ object frmIlacSarf: TfrmIlacSarf
         object EklenenColumn4: TcxGridDBColumn
           Caption = 'Tani'
           DataBinding.FieldName = 'tani'
+          PropertiesClassName = 'TcxButtonEditProperties'
+          Properties.Buttons = <
+            item
+              Default = True
+              Kind = bkEllipsis
+            end>
+          Properties.ReadOnly = True
+          Properties.OnButtonClick = EklenenColumn4PropertiesButtonClick
           HeaderAlignmentHorz = taCenter
           Width = 86
         end
@@ -615,5 +618,29 @@ object frmIlacSarf: TfrmIlacSarf
       Font.Name = 'Tahoma'
       Font.Style = [fsBold]
     end
+  end
+  object TaniListe: TListeAc
+    ListeBaslik = 'Tan'#305'lar'
+    TColcount = 2
+    TColsW = '60,350'
+    Table = 'icd_teshisleri'
+    Conn = DATALAR.ADOConnection2
+    Filtercol = 1
+    BaslikRenk = 16744576
+    DipRenk = 16744576
+    ImajList = DATALAR.global_img_list4
+    ButtonImajIndex = 132
+    Kolonlar.Strings = (
+      'ICDKODU'
+      'TANI')
+    KolonBasliklari.Strings = (
+      'Tani Kodu'
+      'Tani Tan'#305'm'#305)
+    Calistir = fgEvet
+    BiriktirmeliSecim = False
+    Grup = False
+    GrupCol = 0
+    Left = 252
+    Top = 70
   end
 end
