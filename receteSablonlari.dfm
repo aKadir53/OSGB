@@ -3,8 +3,8 @@ object frmReceteSablon: TfrmReceteSablon
   Top = 81
   BorderStyle = bsDialog
   Caption = 'frmReceteSablon'
-  ClientHeight = 489
-  ClientWidth = 746
+  ClientHeight = 487
+  ClientWidth = 988
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -20,9 +20,10 @@ object frmReceteSablon: TfrmReceteSablon
     Left = 0
     Top = 0
     Width = 265
-    Height = 489
+    Height = 487
     Align = alLeft
     TabOrder = 0
+    ExplicitHeight = 489
     object DBGridEh3: TDBGridEh
       Left = 2
       Top = 425
@@ -68,9 +69,11 @@ object frmReceteSablon: TfrmReceteSablon
       Left = 1
       Top = 1
       Width = 263
-      Height = 487
+      Height = 485
       Align = alClient
       TabOrder = 1
+      ExplicitLeft = -1
+      ExplicitHeight = 544
       object cxGridHastaGelis: TcxGridDBTableView
         DataController.DataModeController.GridMode = True
         DataController.DataSource = DataSource1
@@ -84,6 +87,7 @@ object frmReceteSablon: TfrmReceteSablon
         object cxGridHastaGelissablonAdi: TcxGridDBColumn
           Caption = #350'ablonAd'#305
           DataBinding.FieldName = 'sablonAdi'
+          HeaderAlignmentHorz = taCenter
           Options.Filtering = False
           Width = 65
         end
@@ -92,7 +96,7 @@ object frmReceteSablon: TfrmReceteSablon
           DataBinding.FieldName = 'receteTur'
           HeaderAlignmentHorz = taCenter
           Options.Filtering = False
-          Width = 70
+          Width = 66
         end
         object cxGridHastaGelisdoktor: TcxGridDBColumn
           Caption = 'Doktor'
@@ -101,7 +105,7 @@ object frmReceteSablon: TfrmReceteSablon
           Properties.Items = <>
           HeaderAlignmentHorz = taCenter
           Options.Filtering = False
-          Width = 100
+          Width = 116
         end
         object cxGridHastaGelisreceteAltTur: TcxGridDBColumn
           Caption = 'Re'#231'ete Alt T'#252'r'#252
@@ -119,34 +123,30 @@ object frmReceteSablon: TfrmReceteSablon
   object Panel2: TPanel
     Left = 265
     Top = 0
-    Width = 481
-    Height = 489
+    Width = 723
+    Height = 487
     Align = alClient
     TabOrder = 1
-    ExplicitWidth = 478
+    ExplicitHeight = 546
     object cxGroupBox1: TcxGroupBox
       Left = 1
       Top = 1
       Align = alTop
       Caption = '  '#304'la'#231'lar  '
       TabOrder = 0
-      ExplicitWidth = 476
+      ExplicitWidth = 479
       DesignSize = (
-        479
+        721
         138)
       Height = 145
-      Width = 479
+      Width = 721
       object cxGrid2: TcxGrid
-        Left = 3
-        Top = 15
-        Width = 473
-        Height = 120
-        Align = alClient
+        Left = 2
+        Top = 13
+        Width = 668
+        Height = 126
+        Align = alCustom
         TabOrder = 0
-        ExplicitLeft = 2
-        ExplicitTop = -2
-        ExplicitWidth = 472
-        ExplicitHeight = 145
         object cxGridDBTableView1: TcxGridDBTableView
           DataController.DataModeController.GridMode = True
           DataController.DataSource = DataSource2
@@ -163,7 +163,7 @@ object frmReceteSablon: TfrmReceteSablon
             HeaderAlignmentHorz = taCenter
             Options.Filtering = False
             Options.FilteringFilteredItemsList = False
-            Width = 58
+            Width = 51
           end
           object cxGridDBTableView1ilacAdi: TcxGridDBColumn
             Caption = #304'la'#231' Ad'#305
@@ -171,61 +171,7 @@ object frmReceteSablon: TfrmReceteSablon
             HeaderAlignmentHorz = taCenter
             Options.Filtering = False
             Options.FilteringFilteredItemsList = False
-            Width = 95
-          end
-          object cxGridDBTableView1EtkenMadde: TcxGridDBColumn
-            DataBinding.FieldName = 'EtkenMadde'
-            HeaderAlignmentHorz = taCenter
-            Options.Filtering = False
-            Options.FilteringFilteredItemsList = False
-            Width = 94
-          end
-          object cxGridDBTableView1kullanimZaman: TcxGridDBColumn
-            Caption = 'Zaman'
-            DataBinding.FieldName = 'kullanimZaman'
-            HeaderAlignmentHorz = taCenter
-            Options.Filtering = False
-            Options.FilteringFilteredItemsList = False
-            Width = 77
-          end
-          object cxGridDBTableView1kullanimAdet: TcxGridDBColumn
-            Caption = 'Adet'
-            DataBinding.FieldName = 'kullanimAdet'
-            HeaderAlignmentHorz = taCenter
-            Options.Filtering = False
-            Options.FilteringFilteredItemsList = False
-            Width = 49
-          end
-          object cxGridDBTableView1kullanZamanUnit: TcxGridDBColumn
-            DataBinding.FieldName = 'kullanZamanUnit'
-            HeaderAlignmentHorz = taCenter
-            Options.Filtering = False
-            Options.FilteringFilteredItemsList = False
-            Width = 100
-          end
-          object cxGridDBTableView1kullanimSekli: TcxGridDBColumn
-            Caption = 'Kullan'#305'm '#350'ekli'
-            DataBinding.FieldName = 'kullanimSekli'
-            HeaderAlignmentHorz = taCenter
-            Options.Filtering = False
-            Options.FilteringFilteredItemsList = False
-            Width = 100
-          end
-          object cxGridDBTableView1kullanimYolu: TcxGridDBColumn
-            Caption = 'Kullan'#305'm Yolu'
-            DataBinding.FieldName = 'kullanimYolu'
-            HeaderAlignmentHorz = taCenter
-            Options.Filtering = False
-            Options.FilteringFilteredItemsList = False
-            Width = 100
-          end
-          object cxGridDBTableView1kullanimAdet2: TcxGridDBColumn
-            Caption = 'Kullan'#305'm Adet-2'
-            DataBinding.FieldName = 'kullanimAdet2'
-            HeaderAlignmentHorz = taCenter
-            Options.Filtering = False
-            Options.FilteringFilteredItemsList = False
-            Width = 100
+            Width = 109
           end
           object cxGridDBTableView1adet: TcxGridDBColumn
             Caption = 'Adet'
@@ -233,7 +179,55 @@ object frmReceteSablon: TfrmReceteSablon
             HeaderAlignmentHorz = taCenter
             Options.Filtering = False
             Options.FilteringFilteredItemsList = False
-            Width = 100
+            Width = 37
+          end
+          object cxGridDBTableView1kullanZamanUnit: TcxGridDBColumn
+            Caption = 'Peryot Birim'
+            DataBinding.FieldName = 'kullanZamanUnit'
+            HeaderAlignmentHorz = taCenter
+            Options.Filtering = False
+            Options.FilteringFilteredItemsList = False
+            Width = 62
+          end
+          object cxGridDBTableView1kullanimZaman: TcxGridDBColumn
+            Caption = 'Peryot Adet'
+            DataBinding.FieldName = 'kullanimZaman'
+            HeaderAlignmentHorz = taCenter
+            Options.Filtering = False
+            Options.FilteringFilteredItemsList = False
+            Width = 66
+          end
+          object cxGridDBTableView1kullanimAdet2: TcxGridDBColumn
+            Caption = 'Kullan'#305'm Doz(1)'
+            DataBinding.FieldName = 'kullanimAdet2'
+            HeaderAlignmentHorz = taCenter
+            Options.Filtering = False
+            Options.FilteringFilteredItemsList = False
+            Width = 78
+          end
+          object cxGridDBTableView1kullanimAdet: TcxGridDBColumn
+            Caption = 'Kullan'#305'm Doz(2)'
+            DataBinding.FieldName = 'kullanimAdet'
+            HeaderAlignmentHorz = taCenter
+            Options.Filtering = False
+            Options.FilteringFilteredItemsList = False
+            Width = 80
+          end
+          object cxGridDBTableView1kullanimSekli: TcxGridDBColumn
+            Caption = 'Kullan'#305'm '#350'ekli'
+            DataBinding.FieldName = 'kullanimSekli'
+            HeaderAlignmentHorz = taCenter
+            Options.Filtering = False
+            Options.FilteringFilteredItemsList = False
+            Width = 79
+          end
+          object cxGridDBTableView1kullanimYolu: TcxGridDBColumn
+            Caption = 'Kullan'#305'm Yolu'
+            DataBinding.FieldName = 'kullanimYolu'
+            HeaderAlignmentHorz = taCenter
+            Options.Filtering = False
+            Options.FilteringFilteredItemsList = False
+            Width = 82
           end
         end
         object cxGridLevel1: TcxGridLevel
@@ -241,7 +235,7 @@ object frmReceteSablon: TfrmReceteSablon
         end
       end
       object BtnIlacEkle: TcxButtonKadir
-        Left = 434
+        Left = 676
         Top = 15
         Width = 42
         Height = 35
@@ -250,41 +244,39 @@ object frmReceteSablon: TfrmReceteSablon
         TabOrder = 1
         OnClick = BtnIlacEkleClick
         NewButtonVisible = False
-        ExplicitLeft = 431
+        ExplicitLeft = 434
       end
       object cxButtonKadirTaniSil: TcxButtonKadir
         Tag = 1
-        Left = 434
-        Top = 56
+        Left = 676
+        Top = 51
         Width = 42
-        Height = 38
+        Height = 35
         Anchors = [akTop, akRight]
         Caption = 'Sil'
         TabOrder = 2
         OnClick = cxButtonKadirTaniSilClick
         NewButtonVisible = False
-        ExplicitLeft = 431
       end
     end
     object cxGroupBox2: TcxGroupBox
-      Left = 0
-      Top = 400
-      Align = alCustom
+      Left = 1
+      Top = 385
+      Align = alTop
       Caption = #304'la'#231' A'#231#305'klama'
       TabOrder = 1
-      Height = 85
-      Width = 476
+      DesignSize = (
+        721
+        89)
+      Height = 96
+      Width = 721
       object cxGrid3: TcxGrid
-        Left = 3
-        Top = 15
-        Width = 470
-        Height = 60
-        Align = alClient
+        Left = 0
+        Top = 13
+        Width = 668
+        Height = 68
+        Align = alCustom
         TabOrder = 0
-        ExplicitLeft = 2
-        ExplicitTop = -2
-        ExplicitWidth = 472
-        ExplicitHeight = 85
         object cxGridDBTableView2: TcxGridDBTableView
           DataController.DataModeController.GridMode = True
           DataController.DataSource = DataSource3
@@ -314,6 +306,29 @@ object frmReceteSablon: TfrmReceteSablon
           GridView = cxGridDBTableView2
         end
       end
+      object cxButtonKadirilacackekle1: TcxButtonKadir
+        Left = 676
+        Top = 12
+        Width = 42
+        Height = 35
+        Anchors = [akTop, akRight]
+        Caption = 'Ekle'
+        TabOrder = 1
+        OnClick = cxButtonKadirTaniEkleClick
+        NewButtonVisible = False
+      end
+      object cxButtonKadirilacacksil1: TcxButtonKadir
+        Tag = 1
+        Left = 676
+        Top = 48
+        Width = 42
+        Height = 35
+        Anchors = [akTop, akRight]
+        Caption = 'Sil'
+        TabOrder = 2
+        OnClick = cxButtonKadirTaniEkleClick
+        NewButtonVisible = False
+      end
     end
     object cxGroupBox3: TcxGroupBox
       Left = 1
@@ -321,23 +336,18 @@ object frmReceteSablon: TfrmReceteSablon
       Align = alTop
       Caption = 'A'#231#305'klama'
       TabOrder = 2
-      ExplicitWidth = 476
       DesignSize = (
-        479
-        73)
-      Height = 80
-      Width = 479
+        721
+        89)
+      Height = 96
+      Width = 721
       object cxGrid4: TcxGrid
-        Left = 3
-        Top = 15
-        Width = 473
-        Height = 55
-        Align = alClient
+        Left = 2
+        Top = 13
+        Width = 668
+        Height = 77
+        Align = alCustom
         TabOrder = 0
-        ExplicitLeft = 2
-        ExplicitTop = -2
-        ExplicitWidth = 472
-        ExplicitHeight = 80
         object cxGridDBTableView3: TcxGridDBTableView
           DataController.DataModeController.GridMode = True
           DataController.DataSource = DataSource4
@@ -354,7 +364,7 @@ object frmReceteSablon: TfrmReceteSablon
             HeaderAlignmentHorz = taCenter
             Options.Filtering = False
             Options.FilteringFilteredItemsList = False
-            Width = 158
+            Width = 125
           end
           object cxGridDBTableView3aciklama: TcxGridDBColumn
             Caption = 'A'#231#305'klama'
@@ -362,7 +372,7 @@ object frmReceteSablon: TfrmReceteSablon
             HeaderAlignmentHorz = taCenter
             Options.Filtering = False
             Options.FilteringFilteredItemsList = False
-            Width = 299
+            Width = 518
           end
         end
         object cxGridLevel3: TcxGridLevel
@@ -371,53 +381,47 @@ object frmReceteSablon: TfrmReceteSablon
       end
       object cxButtonKadirAckSil: TcxButtonKadir
         Tag = 1
-        Left = 434
-        Top = 43
+        Left = 676
+        Top = 50
         Width = 42
-        Height = 27
+        Height = 35
         Anchors = [akTop, akRight]
         Caption = 'Sil'
         TabOrder = 1
         OnClick = cxButtonKadirAckEkleClick
         NewButtonVisible = False
-        ExplicitLeft = 431
       end
       object cxButtonKadirAckEkle: TcxButtonKadir
-        Left = 434
+        Left = 676
         Top = 13
         Width = 42
-        Height = 28
+        Height = 35
         Anchors = [akTop, akRight]
         Caption = 'Ekle'
         TabOrder = 2
         OnClick = cxButtonKadirAckEkleClick
         NewButtonVisible = False
-        ExplicitLeft = 431
       end
     end
     object cxGroupBox4: TcxGroupBox
       Left = 1
-      Top = 226
+      Top = 242
       Align = alTop
       Caption = 'Tan'#305
       TabOrder = 3
-      ExplicitWidth = 476
+      ExplicitTop = 226
       DesignSize = (
-        479
-        168)
-      Height = 175
-      Width = 479
+        721
+        136)
+      Height = 143
+      Width = 721
       object cxGrid5: TcxGrid
-        Left = 3
-        Top = 15
-        Width = 473
-        Height = 150
-        Align = alClient
+        Left = 2
+        Top = 17
+        Width = 668
+        Height = 119
+        Align = alCustom
         TabOrder = 0
-        ExplicitLeft = 2
-        ExplicitTop = -2
-        ExplicitWidth = 472
-        ExplicitHeight = 175
         object cxGridDBTableView4: TcxGridDBTableView
           DataController.DataModeController.GridMode = True
           DataController.DataSource = DataSource5
@@ -434,13 +438,15 @@ object frmReceteSablon: TfrmReceteSablon
             HeaderAlignmentHorz = taCenter
             Options.Filtering = False
             Options.FilteringFilteredItemsList = False
-            Width = 73
+            Width = 124
           end
           object cxGridDBTableView4tani: TcxGridDBColumn
             Caption = 'Tan'#305
             DataBinding.FieldName = 'tani'
             HeaderAlignmentHorz = taCenter
-            Width = 367
+            Options.Filtering = False
+            Options.FilteringFilteredItemsList = False
+            Width = 516
           end
         end
         object cxGridLevel4: TcxGridLevel
@@ -448,29 +454,27 @@ object frmReceteSablon: TfrmReceteSablon
         end
       end
       object cxButtonKadirTaniEkle: TcxButtonKadir
-        Left = 434
-        Top = 15
+        Left = 676
+        Top = 23
         Width = 42
-        Height = 38
+        Height = 35
         Anchors = [akTop, akRight]
         Caption = 'Ekle'
         TabOrder = 1
         OnClick = cxButtonKadirTaniEkleClick
         NewButtonVisible = False
-        ExplicitLeft = 431
       end
       object cxButtonKadirTanisil1: TcxButtonKadir
         Tag = 1
-        Left = 434
+        Left = 676
         Top = 59
         Width = 42
-        Height = 38
+        Height = 35
         Anchors = [akTop, akRight]
         Caption = 'Sil'
         TabOrder = 2
         OnClick = cxButtonKadirTaniEkleClick
         NewButtonVisible = False
-        ExplicitLeft = 431
       end
     end
   end

@@ -61,7 +61,6 @@ type
     cxGridLevel1: TcxGridLevel;
     cxGridDBTableView1ilacKodu: TcxGridDBColumn;
     cxGridDBTableView1ilacAdi: TcxGridDBColumn;
-    cxGridDBTableView1EtkenMadde: TcxGridDBColumn;
     cxGridDBTableView1kullanimZaman: TcxGridDBColumn;
     cxGridDBTableView1kullanimAdet: TcxGridDBColumn;
     cxGridDBTableView1kullanZamanUnit: TcxGridDBColumn;
@@ -91,6 +90,8 @@ type
     E1: TMenuItem;
     cxButtonKadirAckSil: TcxButtonKadir;
     cxButtonKadirAckEkle: TcxButtonKadir;
+    cxButtonKadirilacackekle1: TcxButtonKadir;
+    cxButtonKadirilacacksil1: TcxButtonKadir;
     procedure btnSendClick(Sender: TObject);
     procedure TabloAc(doktor : string);
     procedure FormCreate(Sender: TObject);

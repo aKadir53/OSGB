@@ -13,7 +13,8 @@ uses
   cxTextEdit, cxMemo, cxDBLookupComboBox, Menus, cxButtons, dxSkinsCore,
   dxSkinBlue, dxSkinCaramel, dxSkinCoffee, dxSkiniMaginary, dxSkinLilian,
   dxSkinLiquidSky, dxSkinLondonLiquidSky, dxSkinMcSkin, dxSkinMoneyTwins,
-  dxSkinsDefaultPainters, dxSkinscxPCPainter, cxDropDownEdit;
+  dxSkinsDefaultPainters, dxSkinscxPCPainter, cxDropDownEdit, cxButtonEdit,
+  KadirLabel;
 
 type
   TfrmIlacSarf = class(TGirisForm)
@@ -69,6 +70,7 @@ type
     cxStyle2: TcxStyle;
     cxStyleRepository3: TcxStyleRepository;
     cxStyle3: TcxStyle;
+    TaniListe: TListeAc;
     procedure txtHizmetGruplariCheckListItemToText(sender: TObject;
       var aText: String);
     procedure btnSendClick(Sender: TObject);
@@ -86,6 +88,8 @@ type
     procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
+    procedure EklenenColumn4PropertiesButtonClick(Sender: TObject;
+      AButtonIndex: Integer);
 
   private
     { Private declarations }
@@ -245,18 +249,19 @@ begin
 
               ado := TADOQuery.Create(nil);
               try
-                sql := 'update ilacListesi set sikKullan = 1 where barkod = ' + QuotedStr(Eklenenler.fieldbyname('ETKENMADDE').AsString);
+                sql := 'update OSGB_MASTER.dbo.ilacListesi set sikKullan = 1,ICD = ' + QuotedStr(Eklenenler.fieldbyname('tani').AsString) +
+                        ' where barkod = ' + QuotedStr(Eklenenler.fieldbyname('ETKENMADDE').AsString);
                 datalar.QueryExec(ado,sql);
 
-                sql := 'IF EXISTS (SELECT * FROM ilacListesi WHERE barkod = ' + QuotedStr(Eklenenler.fieldbyname('ETKENMADDE').AsString) + ')' +
+                sql := 'IF EXISTS (SELECT * FROM OSGB_MASTER.dbo.ilacListesi WHERE barkod = ' + QuotedStr(Eklenenler.fieldbyname('ETKENMADDE').AsString) + ')' +
                         ' BEGIN ' +
-                        '  UPDATE ilacListesi ' +
+                        '  UPDATE OSGB_MASTER.dbo.ilacListesi ' +
                         '  SET kulYol = ' + SQLValue(Eklenenler.fieldbyname('Kyolu').AsString) + ',' +
                         '  ICD = ' + SQLValue(Eklenenler.fieldbyname('tani').AsString) +
                         '  where barkod = ' + SQLValue (Eklenenler.fieldbyname('ETKENMADDE').AsString) +
                         ' END';
                 datalar.QueryExec(ado,sql);
-
+            //    DataSource1.DataSet.Refresh;
                 (*
                 ack := IlacReceteAciklama(_dosyaNo_,_gelisNo_,Eklenenler.fieldbyname('ETKENMADDE').AsString,
                                             inttostr(frmHastaRecete.ADO_RECETE_DETAY.FieldByName('kullanimAdet2').AsInteger *
@@ -476,6 +481,24 @@ destructor TfrmIlacSarf.Destroy;
 begin
   FADO_ILACSARF.AfterScroll := nil;
   inherited;
+end;
+
+procedure TfrmIlacSarf.EklenenColumn4PropertiesButtonClick(Sender: TObject;
+  AButtonIndex: Integer);
+var
+  List : ArrayListeSecimler;
+  I : integer;
+  sql, id : string;
+  ado : TADOQuery;
+begin
+   TaniListe.Where := '';
+ //  TaniListe.SkinName := AnaForm.dxSkinController1.SkinName;
+   TaniListe.SiralamaKolonu := 'TANI';
+   List := TaniListe.ListeGetir;
+   eklenenler.edit;
+   eklenenler.fieldbyname('Tani').asstring:=List[0].kolon1;
+   eklenenler.post;
+
 end;
 
 procedure TfrmIlacSarf.FormClose(Sender: TObject; var Action: TCloseAction);

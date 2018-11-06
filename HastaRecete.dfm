@@ -24,7 +24,6 @@ object frmHastaRecete: TfrmHastaRecete
     Align = alClient
     PanelStyle.Active = True
     TabOrder = 0
-    ExplicitHeight = 600
     Height = 555
     Width = 1100
     object cxPanelReceteBaslik: TcxGroupBox
@@ -58,6 +57,9 @@ object frmHastaRecete: TfrmHastaRecete
         TabOrder = 0
         LevelTabs.ImageBorder = 2
         LevelTabs.Style = 1
+        ExplicitLeft = 2
+        ExplicitTop = -2
+        ExplicitWidth = 1092
         object cxGridRecete: TcxGridDBTableView
           OnDblClick = cxGridReceteDblClick
           Navigator.Buttons.First.Visible = True
@@ -241,6 +243,10 @@ object frmHastaRecete: TfrmHastaRecete
         Align = alClient
         PanelStyle.Active = True
         TabOrder = 1
+        ExplicitLeft = 2
+        ExplicitTop = 152
+        ExplicitWidth = 1092
+        ExplicitHeight = 134
         Height = 109
         Width = 1090
         object cxPanelReceteTanilar: TcxGroupBox
@@ -256,6 +262,7 @@ object frmHastaRecete: TfrmHastaRecete
           Style.Font.Style = [fsBold]
           Style.IsFontAssigned = True
           TabOrder = 0
+          ExplicitHeight = 130
           DesignSize = (
             438
             98)
@@ -277,6 +284,9 @@ object frmHastaRecete: TfrmHastaRecete
             TabOrder = 0
             LevelTabs.ImageBorder = 2
             LevelTabs.Style = 1
+            ExplicitLeft = 2
+            ExplicitTop = -2
+            ExplicitHeight = 130
             object cxGridReceteTani: TcxGridDBTableView
               Navigator.Buttons.First.Visible = True
               Navigator.Buttons.PriorPage.Visible = True
@@ -325,14 +335,16 @@ object frmHastaRecete: TfrmHastaRecete
               OptionsView.Indicator = True
               OptionsView.RowSeparatorColor = clBlack
               object cxGridDBColumn20: TcxGridDBColumn
-                Caption = 'Tani Kodu'
+                Caption = 'Tan'#305' Kodu'
                 DataBinding.FieldName = 'taniKodu'
+                HeaderAlignmentHorz = taCenter
                 Options.Editing = False
                 Width = 57
               end
               object cxGridDBColumn21: TcxGridDBColumn
-                Caption = 'Tani'
+                Caption = 'Tan'#305
                 DataBinding.FieldName = 'tani'
+                HeaderAlignmentHorz = taCenter
                 Options.Editing = False
                 Width = 306
               end
@@ -382,6 +394,8 @@ object frmHastaRecete: TfrmHastaRecete
           Align = alClient
           Caption = 'Recete A'#231#305'klamalar'#305
           TabOrder = 1
+          ExplicitWidth = 650
+          ExplicitHeight = 130
           DesignSize = (
             648
             98)
@@ -403,6 +417,9 @@ object frmHastaRecete: TfrmHastaRecete
             TabOrder = 0
             LevelTabs.ImageBorder = 2
             LevelTabs.Style = 1
+            ExplicitLeft = 2
+            ExplicitTop = -2
+            ExplicitHeight = 130
             object cxGridReceteAciklama: TcxGridDBTableView
               Tag = 1
               OnDblClick = cxGridReceteAciklamaDblClick
@@ -456,18 +473,21 @@ object frmHastaRecete: TfrmHastaRecete
                 Caption = #304'lac Kodu'
                 DataBinding.FieldName = 'rre'
                 Visible = False
+                HeaderAlignmentHorz = taCenter
                 Options.Editing = False
                 Width = 128
               end
               object cxGridDBColumn12: TcxGridDBColumn
                 Caption = 'Tip'
                 DataBinding.FieldName = 'aciklamaTip'
+                HeaderAlignmentHorz = taCenter
                 Options.Editing = False
                 Width = 41
               end
               object cxGridDBColumn13: TcxGridDBColumn
                 Caption = 'A'#231#305'klama'
                 DataBinding.FieldName = 'aciklama'
+                HeaderAlignmentHorz = taCenter
                 Options.Editing = False
                 Width = 294
               end
@@ -489,6 +509,7 @@ object frmHastaRecete: TfrmHastaRecete
             TabOrder = 1
             OnClick = cxButtonKadirAckSilClick
             NewButtonVisible = False
+            ExplicitLeft = 608
           end
           object cxButtonKadirAckEkle: TcxButtonKadir
             Left = 606
@@ -500,6 +521,7 @@ object frmHastaRecete: TfrmHastaRecete
             TabOrder = 2
             OnClick = cxButtonKadirAckEkleClick
             NewButtonVisible = False
+            ExplicitLeft = 608
           end
         end
       end
@@ -536,6 +558,10 @@ object frmHastaRecete: TfrmHastaRecete
         LevelTabs.ImageBorder = 2
         LevelTabs.Style = 1
         LookAndFeel.Kind = lfOffice11
+        ExplicitLeft = 2
+        ExplicitTop = -2
+        ExplicitWidth = 1046
+        ExplicitHeight = 239
         object gridIlaclar: TcxGridDBTableView
           PopupMenu = GridIlaclarPopup
           OnDblClick = gridIlaclarDblClick
@@ -587,7 +613,7 @@ object frmHastaRecete: TfrmHastaRecete
           OptionsView.Indicator = True
           OptionsView.RowSeparatorColor = clBlack
           object gridIlaclarilacKodu: TcxGridDBColumn
-            Caption = #304'lac Kodu'
+            Caption = #304'la'#231' Kodu'
             DataBinding.FieldName = 'ilacKodu'
             FooterAlignmentHorz = taCenter
             HeaderAlignmentHorz = taCenter
@@ -596,7 +622,7 @@ object frmHastaRecete: TfrmHastaRecete
             Width = 128
           end
           object gridIlaclarilacAdi: TcxGridDBColumn
-            Caption = #304'lac Adi'
+            Caption = #304'la'#231' Ad'#305
             DataBinding.FieldName = 'ilacAdi'
             FooterAlignmentHorz = taCenter
             HeaderAlignmentHorz = taCenter
@@ -716,6 +742,9 @@ object frmHastaRecete: TfrmHastaRecete
         PanelStyle.Active = True
         Style.BorderStyle = ebsNone
         TabOrder = 1
+        ExplicitLeft = 1048
+        ExplicitTop = -2
+        ExplicitHeight = 239
         Height = 214
         Width = 46
         object btnIlacSil: TcxButtonKadir
@@ -758,7 +787,6 @@ object frmHastaRecete: TfrmHastaRecete
       Align = alClient
       Caption = 'Re'#231'ete '#304'la'#231' A'#231#305'klama'
       TabOrder = 3
-      ExplicitHeight = 53
       DesignSize = (
         1096
         1)
@@ -769,7 +797,7 @@ object frmHastaRecete: TfrmHastaRecete
         Left = 3
         Top = 15
         Width = 230
-        Height = 0
+        Height = 8
         Align = alLeft
         Font.Charset = TURKISH_CHARSET
         Font.Color = clWindowText
@@ -781,7 +809,8 @@ object frmHastaRecete: TfrmHastaRecete
         TabOrder = 0
         LevelTabs.ImageBorder = 2
         LevelTabs.Style = 1
-        ExplicitHeight = 95
+        ExplicitLeft = 2
+        ExplicitTop = -2
         object cxGridReceteIlacAciklama: TcxGridDBTableView
           OnDblClick = cxGridReceteIlacAciklamaDblClick
           Navigator.Buttons.First.Visible = True

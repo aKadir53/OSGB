@@ -23,8 +23,6 @@ object frmRapor: TfrmRapor
     Width = 600
     Height = 19
     Panels = <>
-    ExplicitTop = 52
-    ExplicitWidth = 308
   end
   object memo: TDBMemo
     Left = 128
@@ -45,8 +43,6 @@ object frmRapor: TfrmRapor
     BevelInner = bvLowered
     Caption = 'Panel1'
     TabOrder = 2
-    ExplicitWidth = 308
-    ExplicitHeight = 52
     object btnOnIzle: TcxButton
       Left = 205
       Top = 3
@@ -347,6 +343,10 @@ object frmRapor: TfrmRapor
     Datasets = <>
     Variables = <>
     Style = <>
+    object Data: TfrxDataPage
+      Height = 1000.000000000000000000
+      Width = 1000.000000000000000000
+    end
     object Page1: TfrxReportPage
       PaperWidth = 210.000000000000000000
       PaperHeight = 297.000000000000000000
@@ -358,18 +358,18 @@ object frmRapor: TfrmRapor
       object ReportTitle1: TfrxReportTitle
         Height = 22.677180000000000000
         Top = 18.897650000000000000
-        Width = 718.009912533333500000
+        Width = 718.110700000000000000
       end
       object MasterData1: TfrxMasterData
         Height = 22.677180000000000000
         Top = 102.047310000000000000
-        Width = 718.009912533333500000
+        Width = 718.110700000000000000
         RowCount = 0
       end
       object PageFooter1: TfrxPageFooter
         Height = 22.677180000000000000
         Top = 185.196970000000000000
-        Width = 718.009912533333500000
+        Width = 718.110700000000000000
         object Memo1: TfrxMemoView
           Left = 642.419312533333400000
           Width = 75.590600000000000000
