@@ -740,7 +740,7 @@ end;
 procedure TfrmRDS.RDSSatirlarOlasilikPropertiesEditValueChanged(
   Sender: TObject);
 var
-  item : TcxImageComboBoxItem;
+  item,item2 : TcxImageComboBoxItem;
 begin
   if TcxImageComboKadir(sender).Name = 'Method'
   then begin
@@ -793,6 +793,26 @@ begin
     item := TcxImageComboBoxProperties (RDSSatirlarRDS.Properties).Items.add;
     item.value := 5;
     item.ImageIndex := 1;
+
+    TcxImageComboBoxProperties (RDSSatirlarRDS_2.Properties).Images := FineKenny;
+    TcxImageComboBoxProperties (RDSSatirlarRDS_2.Properties).Items.Clear;
+
+    item2 := TcxImageComboBoxProperties (RDSSatirlarRDS_2.Properties).Items.add;
+    item2.value := 1;
+    item2.ImageIndex := 4;
+    item2 := TcxImageComboBoxProperties (RDSSatirlarRDS_2.Properties).Items.add;
+    item2.value := 2;
+    item2.ImageIndex := 0;
+    item2 := TcxImageComboBoxProperties (RDSSatirlarRDS_2.Properties).Items.add;
+    item2.value := 3;
+    item2.ImageIndex := 3;
+    item2 := TcxImageComboBoxProperties (RDSSatirlarRDS_2.Properties).Items.add;
+    item2.value := 4;
+    item2.ImageIndex := 2;
+    item2 := TcxImageComboBoxProperties (RDSSatirlarRDS_2.Properties).Items.add;
+    item2.value := 5;
+    item2.ImageIndex := 1;
+
    End;
 
    if TcxImageComboKadir(FindComponent('Method')).EditingValue = 3
@@ -888,6 +908,12 @@ begin
   RDSSatirlar.DataController.DataSet.FieldByName('RDS').AsInteger :=
     Skor(RDSSatirlar.DataController.DataSet.FieldByName('Risk').AsFloat,
          vartostr(datalar.Risk.Method));
+
+  RDSSatirlar.DataController.DataSet.FieldByName('RDS_2').AsInteger :=
+    Skor(RDSSatirlar.DataController.DataSet.FieldByName('Risk_2').AsFloat,
+         vartostr(datalar.Risk.Method));
+
+
 end;
 
 procedure TfrmRDS.cxButtonCClick(Sender: TObject);
@@ -1405,6 +1431,12 @@ begin
 
      TcxImageComboBoxProperties(RDSSatirlarTerminSure.Properties).Items :=
      TcxImageComboBoxProperties(TcxImageComboKadir(FindComponent('TerminTipleri')).Properties).Items;
+
+     TcxImageComboBoxProperties (RDSSatirlarRDS_2.Properties).Images :=
+     TcxImageComboBoxProperties (RDSSatirlarRDS.Properties).Images;
+     TcxImageComboBoxProperties (RDSSatirlarRDS_2.Properties).Items :=
+     TcxImageComboBoxProperties (RDSSatirlarRDS.Properties).Items;
+
 
  //    TcxImageComboBoxProperties(RDSSatirlarTehlike.Properties).Items :=
  //    TcxImageComboBoxProperties(TcxImageComboKadir(FindComponent('Tehlike')).Properties).Items;

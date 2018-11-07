@@ -17,8 +17,8 @@ object frmRDS: TfrmRDS
   PixelsPerInch = 96
   TextHeight = 13
   object RDSGrid: TcxGridKadir
-    Left = -1192
-    Top = 32
+    Left = -1025
+    Top = 104
     Width = 2017
     Height = 169
     TabOrder = 0
@@ -525,6 +525,8 @@ object frmRDS: TfrmRDS
       object RDSSatirlarRDS_2: TcxGridDBBandedColumn
         Caption = 'RDS'
         DataBinding.FieldName = 'RDS_2'
+        PropertiesClassName = 'TcxImageComboBoxProperties'
+        Properties.Items = <>
         HeaderAlignmentHorz = taCenter
         Options.Editing = False
         Width = 56

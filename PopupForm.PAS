@@ -584,7 +584,7 @@ riskDuzenle,yeniRisk :
               then datalar.Risk.Frekans_2 := TcxImageComboKadir(FindComponent('Frekans_2')).EditValue;
               datalar.Risk.Siddet_2 := TcxImageComboKadir(FindComponent('Siddet_2')).EditValue;
               datalar.Risk.Risk_2 := TcxCurrencyEdit(FindComponent('Risk_2')).EditValue;
-              datalar.Risk.RDS_2 := Null;
+           //   datalar.Risk.RDS_2 := Null;
               datalar.Risk.yasalDayanak := TcxMemo(FindComponent('yasalDayanak')).Text;
               datalar.Risk.Image.Picture := TcxImage(FindComponent('ImageResim')).Picture;
 
