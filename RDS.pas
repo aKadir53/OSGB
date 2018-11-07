@@ -946,12 +946,13 @@ begin
             Application.ProcessMessages;
 
             //datalar.QuerySelect(ado, sql);
-            TopluDataset.Dataset0 := datalar.QuerySelect('select * from RDS_OLASILIK where Metod = ' + Method);
+         {   TopluDataset.Dataset0 := datalar.QuerySelect('select * from RDS_OLASILIK where Metod = ' + Method);
             TopluDataset.Dataset1 := datalar.QuerySelect('select * from RDS_FREKANS where Method = ' +  Method);
             TopluDataset.Dataset2 := datalar.QuerySelect('select * from RDS_SIDDET where Metod = ' +  Method);
             TopluDataset.Dataset3 := datalar.QuerySelect('select * from RDS_Skor where Metod = ' +  Method);
-            TopluDataset.Dataset4 := datalar.QuerySelect('sp_RDS ' + TcxButtonEditKadir(FindComponent('id')).EditText + ',' + Method);
-
+          }  TopluDataset.Dataset4 := datalar.QuerySelect('sp_RDS ' + TcxButtonEditKadir(FindComponent('id')).EditText + ',' + Method);
+            TopluDataset.Dataset1 := datalar.QuerySelect('select * from firmalogo where sirketkod = ' + quotedstr(vartostr(TcxImageComboKadir(FindComponent('sirketkod')).EditingValue)));
+            TopluDataset.Dataset0 :=ekip;
             PrintYap('RD'+Method,'Risk Deðerlendirme Raporu','',TopluDataset,pTNone,self);
           //  DurumGoster(False);
           finally
