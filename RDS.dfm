@@ -595,7 +595,7 @@ object frmRDS: TfrmRDS
         item
           Caption = 'Risk De'#287'erlendirme Ekibi'
           Styles.Header = cxStyle8
-          Width = 432
+          Width = 450
         end>
       object RDSEkipGridListAdiSoyadi: TcxGridDBBandedColumn
         DataBinding.FieldName = 'AdiSoyadi'
@@ -4317,7 +4317,7 @@ object frmRDS: TfrmRDS
     Height = 141
     Width = 24
     FormatVersion = 1
-    DesignInfo = 15729112
+    DesignInfo = 15204848
     ImageInfo = <
       item
         Image.Data = {

@@ -164,6 +164,7 @@ type
   public
     { Public declarations }
     function Init(Sender: TObject) : Boolean; override;
+    procedure PropertiesEditValueChanged(Sender: TObject);override;
   end;
 
 
@@ -171,6 +172,8 @@ type
 var
   frmRDS: TfrmRDS;
   List,Faturalar : TListeAc;
+  IlkYuklemem : Boolean = False;
+
 implementation
 
 uses data_modul, StrUtils, Jpeg;
@@ -220,7 +223,7 @@ end;
 
 procedure TfrmRDS.SirketlerPropertiesChange(Sender: TObject);
 var
-  sql : string;
+  sql , riskID : string;
   dataset : Tdataset;
 begin
  if Assigned(TcxImageComboKadir(FindComponent('subeKod')))
@@ -231,23 +234,38 @@ begin
  if (TcxImageComboKadir(Sender).Name = 'subeKod') or (TcxImageComboKadir(Sender).Name = 'SirketKod')
  Then Begin
 
-  // TcxImageComboKadir(FindComponent('IGU')).Filter := '';
+  if not IlkYuklemem  then   // Change buttonEdit ten çaðrýlmamýþsa
+  begin
+     sql :=
+        ' select I.kod IGUKod,I.tanimi IGUAdi,D.kod DoktorKod,D.tanimi DoktorAdi from SIRKETLER_TNM S ' +
+        ' join SIRKET_SUBE_TNM SB on SB.sirketKod = S.sirketKod ' +
+        ' left join IGU I on I.kod = SB.IGU ' +
+        ' left join DoktorlarT D on D.kod = SB.subeDoktor ' +
+        ' where S.sirketKod = ' +
+         QuotedStr(vartostr(TcxImageComboKadir(FindComponent('SirketKod')).EditingValue)) +
+        ' and SB.subeKod = ' +
+         QuotedStr(vartostr(TcxImageComboKadir(FindComponent('subeKod')).EditingValue));
 
-   sql :=
-      ' select I.kod IGUKod,I.tanimi IGUAdi,D.kod DoktorKod,D.tanimi DoktorAdi from SIRKETLER_TNM S ' +
-      ' join SIRKET_SUBE_TNM SB on SB.sirketKod = S.sirketKod ' +
-      ' left join IGU I on I.kod = SB.IGU ' +
-      ' left join DoktorlarT D on D.kod = SB.subeDoktor ' +
-      ' where S.sirketKod = ' +
-       QuotedStr(vartostr(TcxImageComboKadir(FindComponent('SirketKod')).EditingValue)) +
-      ' and SB.subeKod = ' +
-       QuotedStr(vartostr(TcxImageComboKadir(FindComponent('subeKod')).EditingValue));
+         dataset := datalar.QuerySelect(sql);
 
-       dataset := datalar.QuerySelect(sql);
+        TcxImageComboKadir(FindComponent('hazirlayanDoktor')).EditValue := dataset.FieldByName('DoktorKod').AsString;
+        TcxImageComboKadir(FindComponent('hazirlayan')).EditValue := dataset.FieldByName('IGUKod').AsString;
 
-      TcxImageComboKadir(FindComponent('hazirlayanDoktor')).EditValue := dataset.FieldByName('DoktorKod').AsString;
-      TcxImageComboKadir(FindComponent('hazirlayan')).EditValue := dataset.FieldByName('IGUKod').AsString;
-(*
+
+        riskID := vartoStr(TcxButtonEditKadir(FindComponent('id')).EditValue);
+        sql := 'delete from SirketRDSEkibi where SirketRiskID = ' + QuotedStr(riskID) +
+               ' insert into SirketRDSEkibi (SirketRiskID,EkipID) ' +
+               ' select ' + riskId + ',kod from SIRKET_SUBE_EKIP_View ' +
+               ' where ISGEkipId = 1 '  +
+               ' and subeKod = ' + vartostr(TcxImageComboKadir(FindComponent('subeKod')).EditingValue) +
+               ' and sirketKod = ' + vartostr(TcxImageComboKadir(FindComponent('SirketKod')).EditingValue) +
+               ' and Aktif = 1 ';
+        datalar.QueryExec(sql);
+      end;
+
+      Ekip;
+
+      (*
    sql :=
      '(select id,adiSoyadi,eMail,SE.Telefon from SIRKET_SUBE_EKIP SE ' +
      'where SE.SirketKod = ' + QuotedStr(vartostr(TcxImageComboKadir(FindComponent('sirketKod')).EditingValue)) +
@@ -347,7 +365,7 @@ Kaydet : begin
           RDSGrid.Enabled := True;
           PopupMenuEnabled(Self,PopupMenu1,True);
           ToolBar1.Enabled := True;
-          Ekip;
+        //  Ekip;
           //PopupMenuToToolBarEnabled(Self,ToolBar1,PopupMenu1);
         end;
  Yeni : begin
@@ -476,10 +494,12 @@ begin
 
     TListeAc(FindComponent('RDSList')).Where := where;
 
+    IlkYuklemem := True;
+
     inherited;
 
     if TcxButtonEditKadir(FindComponent('id')).EditText = '' then exit;
-    
+
 
     Enabled;
     FaturaDetay;
@@ -543,6 +563,8 @@ begin
      TcxImageComboBoxProperties(RDSSatirlarTehlikeKaynagi.Properties).Items :=
      TcxImageComboBoxProperties(TcxImageComboKadir(FindComponent('TehlikeKaynak')).Properties).Items;
 
+
+     IlkYuklemem := False;
 end;
 
 function TfrmRDS.Init(Sender : TObject) : Boolean;
@@ -768,6 +790,7 @@ begin
     item.value := 4;
     item.ImageIndex := 3;
    End;
+
    if TcxImageComboKadir(FindComponent('Method')).EditingValue = 1
    Then begin
     RDSSatirlarFrekans_2.Visible := True;
@@ -844,6 +867,8 @@ begin
 
   end;
 
+  PropertiesEditValueChanged(Sender);
+
 //  RDSSatirlar.DataController.post;
 end;
 
@@ -883,6 +908,22 @@ begin
       raise;
     end;
   end;
+end;
+
+procedure TfrmRDS.PropertiesEditValueChanged(Sender: TObject);
+begin
+  inherited;
+
+   if TcxImageComboKadir(Sender).Name = 'SirketKod'
+   Then
+    SirketlerPropertiesChange(Sender);
+
+   if TcxImageComboKadir(Sender).Name = 'subeKod'
+   Then
+    SirketlerPropertiesChange(Sender);
+
+
+
 end;
 
 procedure TfrmRDS.AfterScroll(DataSet: TDataSet);
@@ -1169,8 +1210,8 @@ begin
   sirketlerx.DisplayField := 'Tanimi';
   sirketlerx.BosOlamaz := False;
   sirketlerx.Filter := datalar.sirketlerUserFilter;
-  setDataStringKontrol(self,sirketlerx,'SirketKod','Þirket',Kolon1,'',250,0,alNone,'');
-  TcxImageComboKadir(FindComponent('SirketKod')).Properties.OnEditValueChanged := SirketlerPropertiesChange;
+  setDataStringKontrol(self,sirketlerx,'SirketKod','Þirket',Kolon1,'',450,0,alNone,'');
+  TcxImageComboKadir(FindComponent('SirketKod')).Properties.OnEditValueChanged := PropertiesEditValueChanged;//SirketlerPropertiesChange;
 
   Subeler := TcxImageComboKadir.Create(self);
   Subeler.Conn := Datalar.ADOConnection2;
@@ -1179,7 +1220,7 @@ begin
   Subeler.DisplayField := 'subeTanim';
 
   setDataStringKontrol(self,Subeler,'subeKod','Þube',Kolon1,'',100,0,alNone,'');
-  TcxImageComboKadir(FindComponent('subeKod')).Properties.OnEditValueChanged := SirketlerPropertiesChange;
+  TcxImageComboKadir(FindComponent('subeKod')).Properties.OnEditValueChanged := PropertiesEditValueChanged;//SirketlerPropertiesChange;
 
   //  Subeler.Filter := ' SirketKod = ' + QuotedStr(datalar.AktifSirket) + sube + ' and (Pasif = 0 or Pasif is Null)';
 
@@ -1283,7 +1324,7 @@ begin
   *)
 
 
-  setDataStringMemo(self,'Aciklama','Açýklama',kolon1,'',300,70);
+  setDataStringMemo(self,'Aciklama','Açýklama',kolon1,'',450,100);
 
   setDataStringKontrol(self,RDSEkipGrid,'RDSEkipGrid',' ',Kolon1,'',450,140,alNone,'',clLeft);
 

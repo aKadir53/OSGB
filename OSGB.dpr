@@ -123,7 +123,7 @@ begin
       Then begin
         dosya := TFileStream.Create('C:\OSGB\' + isg,fmCreate);
         try
-        datalar.HTTP1.Get('http://www.noktayazilim.net/' + isg ,TStream(dosya));
+        datalar.HTTP1.Get('https://www.noktayazilim.net/' + isg ,TStream(dosya));
         finally
         dosya.Free;
       end;
