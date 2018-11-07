@@ -2381,8 +2381,6 @@ begin
 
           end;
     Sil : begin
-
-
            if MrYes = ShowMessageSkin('Silmek Ýstediðinizden Emin misiniz ?','','','msg')
            then begin
                try

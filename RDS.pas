@@ -356,32 +356,63 @@ begin
 end;
 
 procedure TfrmRDS.cxKaydetClick(Sender: TObject);
+var
+  riskID : string;
 begin
   //SirketKodx.Text := datalar.AktifSirket; giriþ formuna eklendi.
+
+  if TControl(sender).Tag = Sil
+  then begin
+           if mrCancel = ShowMessageSkin('Risk Planý Çalýþmasýný silmek üzeresiniz !','Tüm Risk Planý Silinecek','Silme Ýþlemi Ýptal Edilsin mi?','conf')
+           then begin
+              datalar.ADOConnection2.BeginTrans;
+             try
+              riskID := vartoStr(TcxButtonEditKadir(FindComponent('id')).EditValue);
+              datalar.QueryExec('delete from RDS_SirketRisk where id = ' + QuotedStr(riskID));
+              datalar.QueryExec('delete from RDS_SirketRiskKaynakFK where SirketRiskID = ' + QuotedStr(riskID));
+              datalar.QueryExec('delete from RDS_KKD_Sirket where sirketRiskId = ' + QuotedStr(riskID));
+              datalar.QueryExec('delete from SirketRDSEkibi where SirketRiskID = ' + QuotedStr(riskID));
+              datalar.QueryExec('delete from RDS_SirketRisk where id = ' + QuotedStr(riskID));
+              datalar.ADOConnection2.CommitTrans;
+              indexKaydiBul('');
+              sqlRunLoad;
+              TcxButtonEditKadir(FindComponent('id')).EditValue := '';
+              cxPanelButtonEnabled(true,false,false);
+              ShowMessageSkin('Risk Planý Silindi','','','info');
+             except on e : Exception do
+              begin
+                ShowMessageSkin('Hata Oluþtu',e.Message,'','info');
+                datalar.ADOConnection2.RollbackTrans;
+              end;
+             end;
+           end;
+    exit;
+  end;
+
   inherited;
 
   case TControl(sender).Tag  of
-Kaydet : begin
-          RDSGrid.Enabled := True;
-          PopupMenuEnabled(Self,PopupMenu1,True);
-          ToolBar1.Enabled := True;
-        //  Ekip;
-          //PopupMenuToToolBarEnabled(Self,ToolBar1,PopupMenu1);
-        end;
- Yeni : begin
-          TcxDateEditKadir(FindComponent('date_create')).EditValue := date;
-          if datalar.IGU <> '' then
-           TcxTextEditKadir(FindComponent('hazirlayan')).EditValue := datalar.IGU;
-          if datalar.doktor <> '' then
-           TcxTextEditKadir(FindComponent('hazirlayanDoktor')).EditValue := datalar.doktor;
+      Kaydet : begin
+                RDSGrid.Enabled := True;
+                PopupMenuEnabled(Self,PopupMenu1,True);
+                ToolBar1.Enabled := True;
+              //  Ekip;
+                //PopupMenuToToolBarEnabled(Self,ToolBar1,PopupMenu1);
+              end;
+       Yeni : begin
+                TcxDateEditKadir(FindComponent('date_create')).EditValue := date;
+                if datalar.IGU <> '' then
+                 TcxTextEditKadir(FindComponent('hazirlayan')).EditValue := datalar.IGU;
+                if datalar.doktor <> '' then
+                 TcxTextEditKadir(FindComponent('hazirlayanDoktor')).EditValue := datalar.doktor;
 
 
-          RDSGrid.Enabled := False;
-          PopupMenuEnabled(Self,PopupMenu1,False);
-          ToolBar1.Enabled := False;
-          //PopupMenuToToolBarEnabled(Self,ToolBar1,PopupMenu1);
-          FaturaDetay;
-        end;
+                RDSGrid.Enabled := False;
+                PopupMenuEnabled(Self,PopupMenu1,False);
+                ToolBar1.Enabled := False;
+                //PopupMenuToToolBarEnabled(Self,ToolBar1,PopupMenu1);
+                FaturaDetay;
+              end;
   end;
 end;
 
@@ -991,9 +1022,11 @@ begin
             TopluDataset.Dataset1 := datalar.QuerySelect('select * from RDS_FREKANS where Method = ' +  Method);
             TopluDataset.Dataset2 := datalar.QuerySelect('select * from RDS_SIDDET where Metod = ' +  Method);
             TopluDataset.Dataset3 := datalar.QuerySelect('select * from RDS_Skor where Metod = ' +  Method);
-          }  TopluDataset.Dataset4 := datalar.QuerySelect('sp_RDS ' + TcxButtonEditKadir(FindComponent('id')).EditText + ',' + Method);
+          }
+            TopluDataset.Dataset4 := datalar.QuerySelect('sp_RDS ' + TcxButtonEditKadir(FindComponent('id')).EditText + ',' + Method);
             TopluDataset.Dataset1 := datalar.QuerySelect('select * from firmalogo where sirketkod = ' + quotedstr(vartostr(TcxImageComboKadir(FindComponent('sirketkod')).EditingValue)));
-            TopluDataset.Dataset0 :=ekip;
+            TopluDataset.Dataset2 := datalar.QuerySelect('sp_KKD ' + TcxButtonEditKadir(FindComponent('id')).EditText);
+            TopluDataset.Dataset0 := ekip;
             PrintYap('RD'+Method,'Risk Deðerlendirme Raporu','',TopluDataset,pTNone,self);
           //  DurumGoster(False);
           finally
