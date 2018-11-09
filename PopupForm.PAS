@@ -1247,7 +1247,7 @@ inherited;
          doktorlar.DisplayField := 'Tanimi';
          doktorlar.BosOlamaz := True;
          doktorlar.Filter := '';
-         Doktorlar.Properties.ReadOnly := (frmPopup._islem_ <> yeniGozlem);
+         Doktorlar.Properties.ReadOnly := (frmPopup.islem_ = GozlemDuzenle);
          OrtakEventAta(doktorlar);
          setDataStringKontrol(self,doktorlar,'GozlemGrup','Saha Gözlem Tipi',kolon1,'',250);
          TcxTextEdit(FindComponent('GozlemGrup')).EditValue := _SahaDenetimVeri_.GozlemGrubu;

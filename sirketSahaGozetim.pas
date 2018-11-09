@@ -247,8 +247,13 @@ end;
 procedure TfrmSirketSahaGozetim.cxButtonEditPropertiesButtonClick(Sender: TObject;
   AButtonIndex: Integer);
 begin
-    inherited;
-    if TcxButtonEditKadir(FindComponent('id')).Text = '' then exit;
+    if AButtonIndex > -1 then inherited;
+    if vartoStr(TcxButtonEditKadir(FindComponent('id')).EditingValue) = ''
+    then begin
+     SahaGozetimGrid.Dataset.Active := False;
+     exit;
+    end;
+
     Enabled;
     FaturaDetay;
 
@@ -286,6 +291,10 @@ end;
 function TfrmSirketSahaGozetim.Init(Sender : TObject) : Boolean;
 begin
   Result := True;
+    TcxButtonEditKadir(FindComponent('id')).EditValue := DATALAR.QuerySelect('select id from SirketSahaGozetim where RDS_ID = ' + QuotedStr(_kod_)).Fields[0].AsString;
+    indexFieldValue := TcxButtonEditKadir(FindComponent('id')).EditingValue;
+    indexKaydiBul(_kod_,'RDS_ID');
+    cxButtonEditPropertiesButtonClick(TcxButtonEditKadir(FindComponent('id')),-1);
 end;
 
 

@@ -176,7 +176,7 @@ var
 
 implementation
 
-uses data_modul, StrUtils, Jpeg;
+uses data_modul, StrUtils, Jpeg , AnaUnit;
 
 {$R *.dfm}
 
@@ -996,6 +996,8 @@ var
   Dataset : TDataset;
   F : TGirisForm;
   FB : TFirmaBilgi;
+  aTabSheet : TcxTabSheet;
+  bTamam : Boolean;
 begin
   inherited;
 
@@ -1153,6 +1155,28 @@ begin
    -31 : begin
            DOF_FormKontrolETOlustur;
          end;
+
+   -32 : begin
+           datalar.Risk.RDS_ID := TcxButtonEditKadir(FindComponent('id')).text;
+           if FindTab(AnaForm.sayfalar,TagfrmSirketSahaGozetim)
+           Then begin
+             F := TGirisForm(FormClassType(TagfrmSirketSahaGozetim));
+             TGirisForm(FormClassType(TagfrmSirketSahaGozetim))._kod_ := datalar.Risk.RDS_ID;
+             TGirisForm(FormClassType(TagfrmSirketSahaGozetim)).Init(F);
+           end
+           Else begin
+            bTamam := False;
+            aTabSheet := NewTab(AnaForm.sayfalar,TagfrmSirketSahaGozetim);
+            try
+              F := FormINIT(TagfrmSirketSahaGozetim,self,datalar.Risk.RDS_ID,aTabSheet,ikHayir,'','');
+              bTamam := F <> nil;
+              if bTamam then F.show;
+            finally
+              if not bTamam then FreeAndNil(aTabSheet);
+            end;
+          end;
+         end;
+
 
   end;
 end;

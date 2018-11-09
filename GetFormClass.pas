@@ -546,6 +546,7 @@ begin
 
     TGirisForm(Form)._dosyaNO_ := Value;
     TGirisForm(Form)._TC_ := tc;
+    TGirisForm(Form)._kod_ := Value;
     TGirisForm(Form).Tag := FormTag;
     TgirisForm(Form).Parent := Tab;
     TGirisForm(Form).BringToFront;

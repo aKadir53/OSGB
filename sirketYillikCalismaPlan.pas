@@ -534,7 +534,7 @@ var
   Faturalar : TListeAc;
   sirketlerx,subeler ,RiskBolum , IGU ,doktor : TcxImageComboKadir;
   FaturaTarihi : TcxDateEditKadir;
-  where , sube : string;
+  where , sube , sql : string;
 begin
   inherited;
 
@@ -549,17 +549,25 @@ begin
   then
     where := ''
   else
+  if datalar.UserGroup = '2'
+  then
+    where := ' drKod = ' + QuotedStr(datalar.doktorKodu)
+  else
   if datalar.UserGroup = '10'
   then
-    where := ' sirketKod = ' + QuotedStr(datalar.sirketKodu)
+    where := ' SKod = ' + QuotedStr(datalar.sirketKodu)
   else
-    where := ' hazirlayan = ' + QuotedStr(datalar.IGU);
+    where := ' IguKod = ' + QuotedStr(datalar.IGU);
 
+  sql := '(select P.id,P.date_create,S.SirketKod SKod,S.tanimi Sirket,I.kod IguKod,I.tanimi IGU,D.kod drKod,D.tanimi doktor from firmaYillikCalismaPlani P ' +
+         ' join SIRKETLER_TNM S on S.sirketKod = P.sirketKod ' +
+         ' left join doktorlarT D on D.kod = P.doktor ' +
+         ' left join IGU I on I.kod = P.hazirlayan) TT';
 
-
-  Faturalar := ListeAcCreate('firmaYillikCalismaPlani','id,date_create,hazirlayan',
-                       'ID,Tarihi,Ýþ Güvenlik Uzm.',
-                       '40,80,150','ID','Saha Gözetimleri',where,5,True);
+  Faturalar := ListeAcCreate(sql,'id,date_create,Sirket,IGU,doktor',
+                       'ID,Tarihi,Sirket,Ýgu,Doktor',
+                       '40,80,150,100,100','ID','Çalýþma Planlarý',where,5,True);
+ // Faturalar.KaynakTableTip := tpSp;
 
   setDataStringB(self,'id','Plan ID',Kolon1,'trh',50,Faturalar,True,nil,'','',True,True,-100);
   TcxButtonEditKadir(FindComponent('id')).Identity := True;

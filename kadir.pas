@@ -8987,7 +8987,7 @@ begin
             end;
          end;
     end;
-
+    F._islem_ := Tag;
     F.islem_ := Tag;
     F.caption_ := Caption;
     F.value_ := value;

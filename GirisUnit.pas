@@ -516,6 +516,8 @@ procedure TGirisForm.DurumGoster(Visible : Boolean = True; pBarVisible : Boolean
                                  msj : string = 'Ýþleminiz Yapýlýyor , lütfen bekleyiniz...';
                                  imageIndex : integer = 0);
 begin
+   pnlDurum.Left:=(self.width div 2) - (pnlDurum.Width div 2);
+   pnlDurum.Top:=(self.height div 2) - (pnlDurum.height div 2);
    pnlDurum.BringToFront;
    pnlDurum.Visible := Visible;
    pBar.Visible := pBarVisible;

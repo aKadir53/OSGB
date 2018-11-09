@@ -327,6 +327,7 @@ var
   aSahaDenetimVeri : TSahaDenetimler;
 begin
     Self._firmaKod_ := datalar.AktifSirket;
+
     F := Self;
     if (islem in [yeniGozlem, GozlemDuzenle])
     then begin

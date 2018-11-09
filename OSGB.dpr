@@ -114,8 +114,9 @@ begin
 //  FormatSettings.ShortDateFormat := 'dd.mm.yyyy';
 //  FormatSettings.LongDateFormat := 'dd mmmm yyyy dddd';
 
-  if pos('UYUM',paramStr(0)) > 0 then isg := 'UYUMISG.exe' else isg := 'isg.exe';
+  //if pos('UYUM',paramStr(0)) > 0 then isg := 'UYUMISG.exe' else isg := 'isg.exe';
 
+  isg := 'isg.exe';
   datalar.versiyon := inttostr(AppalicationVer);
   if ForceDirectories ('C:\OSGB') then
   begin
@@ -123,7 +124,7 @@ begin
       Then begin
         dosya := TFileStream.Create('C:\OSGB\' + isg,fmCreate);
         try
-        datalar.HTTP1.Get('https://www.noktayazilim.net/' + isg ,TStream(dosya));
+        datalar.HTTP1.Get('http://213.159.30.6/' + isg ,TStream(dosya));
         finally
         dosya.Free;
       end;

@@ -550,6 +550,7 @@ type
     SSGFaliyetKapamaTarihi : String;
     SSGTakipSüresi : String;
     SSGKapamaOnayi : Variant;
+    RDS_ID : string;
   End;
 
   TDOF = record
