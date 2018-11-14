@@ -68,9 +68,12 @@ function FormattedTarihYYMMGG(t, s: string): string;
 function numTOtxt_M(d: extended; p: integer): string;
 function ShowMessage(msg1, msg2, msg3: string; t: string): word;
 function ShowMessageSkin(msg1, msg2, msg3: string; t: string): word;
-function ShowPopupForm(Caption : string ; Tag : integer ; value : string = ''): word; overload;
-function ShowPopupForm(Caption : string ; Tag : integer ; Form : TForm): word;overload;
-function ShowPopupForm(Caption : string; Tag : integer ; value : string ; FormName : string): word ; overload;
+
+function ShowPopupForm(Caption : string ; Tag : integer ; value : string = '' ;imageindex : integer = -1): word; overload;
+function ShowPopupForm(Caption : string ; Tag : integer ; Form : TForm ; imageindex : integer = -1): word;overload;
+function ShowPopupForm(Caption : string; Tag : integer ; value : string ; FormName : string ; imageindex : integer = -1): word ; overload;
+
+
 
 function tarihyap(t: string): Tdate;
 function tarihal(t: Tdate): string;
@@ -441,6 +444,7 @@ Procedure EgitimKaydetCSGBCvpBilgiGuncelle(msg,sorguNo : string);
 Procedure FirmaSorgulCSGBCvpFirmaBilgiGuncelle(firmaSgk : string ; Cvp : isyeriCevapBilgisi);
 
 function DetaySil(Tag : integer ; Tablaname,WhereField,Where : string) : Boolean;
+procedure FirmaBilgiRecordToNull;
 
 
 function findMethod(dllHandle: Cardinal;  methodName: string): FARPROC;
@@ -645,6 +649,45 @@ begin
 
 end;
 
+
+procedure FirmaBilgiRecordToNull;
+begin
+   datalar.FirmaSubeBilgi.SirketKodu := '';
+   datalar.FirmaSubeBilgi.SubeKodu := '';
+   datalar.FirmaSubeBilgi.SirketAdi := '';
+   datalar.FirmaSubeBilgi.Yetkili :=  '';
+   datalar.FirmaSubeBilgi.YetkiliMail := '';
+   datalar.FirmaSubeBilgi.YetkiliMobil := '';
+   datalar.FirmaSubeBilgi.IGU := '';
+   datalar.FirmaSubeBilgi.IGUMail := '';
+   datalar.FirmaSubeBilgi.doktor := '';
+   datalar.FirmaSubeBilgi.doktorMail := '';
+   datalar.FirmaSubeBilgi.calisanTemsilci := '';
+   datalar.FirmaSubeBilgi.calisanTemsilciMail := '';
+   datalar.FirmaSubeBilgi.BascalisanTemsilci := '';
+   datalar.FirmaSubeBilgi.BascalisanTemsilciMail := '';
+   datalar.FirmaSubeBilgi.destekElemani := '';
+   datalar.FirmaSubeBilgi.destekElemaniMail := '';
+   datalar.FirmaSubeBilgi.isveren := '';
+   datalar.FirmaSubeBilgi.ilgiliMailBilgileri := '';
+   datalar.FirmaSubeBilgi.firmaYetkiliMailBilgileri := '';
+   datalar.FirmaSubeBilgi.isgKurulEkibiMailBilgileri := '';
+   datalar.FirmaSubeBilgi.subeSiciNo := '';
+   datalar.FirmaSubeBilgi.DigerSaglikPers := '';
+   datalar.FirmaSubeBilgi.BolgeMudurlukSicilNo := '';
+   datalar.FirmaSubeBilgi.MuayeneProtokolNo := '';
+   datalar.FirmaSubeBilgi.DoktorCalismaDakika := '';
+   datalar.FirmaSubeBilgi.IGUCalismaDakika := '';
+   datalar.FirmaSubeBilgi.DigerSaglikPersCalismaDakika := '';
+   datalar.FirmaSubeBilgi.NaceKod := '';
+   datalar.FirmaSubeBilgi.tehlikeSinifi := '';
+   datalar.FirmaSubeBilgi.Pasif := '';
+   datalar.FirmaSubeBilgi.SemtLokasyon := '';
+   datalar.FirmaSubeBilgi.calisanSayi := '';
+   datalar.FirmaSubeBilgi.Adres := '';
+   datalar.FirmaSubeBilgi.AcikAlan := '';
+   datalar.FirmaSubeBilgi.KapaliAlan := v;
+end;
 
 
 
@@ -8915,7 +8958,7 @@ begin
   Result := frmMessage.ModalResult;
 end;
 
-function ShowPopupForm(Caption : string ; Tag : integer ; Form : TForm): word;
+function ShowPopupForm(Caption : string ; Tag : integer ; Form : TForm;imageindex : integer = -1): word;
 begin
   Application.CreateForm(TfrmPopup, frmPopup);
   try
@@ -8930,6 +8973,8 @@ begin
             end;
          end;
     end;
+    frmPopup.cxTab.Tabs[0].imageindex := imageindex;
+    frmPopup._islem_ := Tag;
     frmPopup.islem_ := Tag;
     frmPopup._caption_ := Caption;
     frmPopup.FGirisForm := TGirisForm(Form);//Application.FindComponent(Form.name) as TGirisForm;
@@ -8941,7 +8986,7 @@ begin
   end;
 end;
 
-function ShowPopupForm(Caption : string; Tag : integer ; value : string): word;
+function ShowPopupForm(Caption : string; Tag : integer ; value : string = ''; imageindex : integer = -1): word;
 begin
   Application.CreateForm(TfrmPopup, frmPopup);
   try
@@ -8957,7 +9002,8 @@ begin
             end;
          end;
     end;
-
+    frmPopup.cxTab.Tabs[0].imageindex := imageindex;
+    frmPopup._islem_ := Tag;
     frmPopup.islem_ := Tag;
     frmPopup._caption_ := Caption;
     frmPopup._value_ := value;
@@ -8969,7 +9015,7 @@ begin
 end;
 
 
-function ShowPopupForm(Caption : string; Tag : integer ; value : string ; FormName : string): word;
+function ShowPopupForm(Caption : string; Tag : integer ; value : string ; FormName : string;imageindex : integer = -1): word;
 var
  F : TfrmPopup;
 begin
@@ -8987,6 +9033,7 @@ begin
             end;
          end;
     end;
+    F.cxTab.Tabs[0].imageindex := imageindex;
     F._islem_ := Tag;
     F.islem_ := Tag;
     F.caption_ := Caption;

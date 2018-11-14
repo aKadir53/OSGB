@@ -75,6 +75,10 @@ type
     procedure PropertiesEditValueChanged(Sender: TObject);
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
     procedure cxButtonCClick(Sender: TObject);
+    procedure DBGridNavigatorButtonsButtonClick(Sender: TObject;
+      AButtonIndex: Integer; var ADone: Boolean);
+    procedure DataWrite(_record_ : Pointer);
+    procedure DataRead(_record_ : Pointer);
 
   private
     { Private declarations }
@@ -164,6 +168,116 @@ begin
 
 
 
+
+end;
+
+procedure TfrmPopupDBGridForm.DataWrite(_record_ : Pointer);
+var
+ s : string;
+ P :  ^TFirmaBilgi;
+ PP : Pointer;
+begin
+  // P := _record_;    böylede kullanabilirdin
+  // s := P.SubeKodu;
+   s := TFirmaBilgi(_record_^).SubeKodu;
+
+   cxGrid3.Dataset.fieldbyname('sirketKod').asstring := TFirmaBilgi(_record_^).SirketKodu;
+   cxGrid3.Dataset.fieldbyname('subeKod').asstring := TFirmaBilgi(_record_^).SubeKodu;
+   cxGrid3.Dataset.fieldbyname('subeTanim').asstring := TFirmaBilgi(_record_^).SirketAdi;
+   cxGrid3.Dataset.fieldbyname('subeSiciNo').asstring := TFirmaBilgi(_record_^).subeSiciNo;
+   cxGrid3.Dataset.fieldbyname('subeDoktor').asstring := TFirmaBilgi(_record_^).doktor;
+   cxGrid3.Dataset.fieldbyname('BolgeMudurlukSicilNo').asstring := TFirmaBilgi(_record_^).BolgeMudurlukSicilNo;
+   cxGrid3.Dataset.fieldbyname('MuayeneProtokolNo').asstring := TFirmaBilgi(_record_^).MuayeneProtokolNo;
+   cxGrid3.Dataset.fieldbyname('IGU').asstring := TFirmaBilgi(_record_^).IGU;
+   cxGrid3.Dataset.fieldbyname('DoktorCalismaDakika').asstring := TFirmaBilgi(_record_^).DoktorCalismaDakika;
+   cxGrid3.Dataset.fieldbyname('IGUCalismaDakika').asstring := TFirmaBilgi(_record_^).IGUCalismaDakika;
+   cxGrid3.Dataset.fieldbyname('NaceKod').asstring := TFirmaBilgi(_record_^).NaceKod;
+   cxGrid3.Dataset.fieldbyname('tehlikeSinifi').asstring := TFirmaBilgi(_record_^).tehlikeSinifi;
+   cxGrid3.Dataset.fieldbyname('DigerSaglikPers').asstring := TFirmaBilgi(_record_^).DigerSaglikPers;
+   cxGrid3.Dataset.fieldbyname('DigerSaglikPersCalismaDakika').asstring := TFirmaBilgi(_record_^).DigerSaglikPersCalismaDakika;
+   cxGrid3.Dataset.fieldbyname('Pasif').asstring := TFirmaBilgi(_record_^).Pasif;
+   cxGrid3.Dataset.fieldbyname('SemtLokasyon').asstring := TFirmaBilgi(_record_^).SemtLokasyon;
+   cxGrid3.Dataset.fieldbyname('calisanSayi').asstring := TFirmaBilgi(_record_^).calisanSayi;
+   cxGrid3.Dataset.fieldbyname('Adres').asstring := TFirmaBilgi(_record_^).Adres;
+   cxGrid3.Dataset.fieldbyname('KapaliAlan').asstring := TFirmaBilgi(_record_^).KapaliAlan;
+   cxGrid3.Dataset.fieldbyname('AcikAlan').asstring := TFirmaBilgi(_record_^).AcikAlan;
+
+end;
+
+
+procedure TfrmPopupDBGridForm.DataRead(_record_ : Pointer);
+var
+ s : string;
+ P :  ^TFirmaBilgi;
+ PP : Pointer;
+begin
+  // P := _record_;    böylede kullanabilirdin
+  // s := P.SubeKodu;
+   s := TFirmaBilgi(_record_^).SubeKodu;
+
+    TFirmaBilgi(_record_^).SirketKodu :=   cxGrid3.Dataset.fieldbyname('sirketKod').asstring;
+    TFirmaBilgi(_record_^).SubeKodu :=   cxGrid3.Dataset.fieldbyname('subeKod').asstring;
+    TFirmaBilgi(_record_^).SirketAdi :=   cxGrid3.Dataset.fieldbyname('subeTanim').asstring;
+    TFirmaBilgi(_record_^).subeSiciNo :=   cxGrid3.Dataset.fieldbyname('subeSiciNo').asstring;
+    TFirmaBilgi(_record_^).doktor :=   cxGrid3.Dataset.fieldbyname('subeDoktor').asstring;
+    TFirmaBilgi(_record_^).BolgeMudurlukSicilNo :=   cxGrid3.Dataset.fieldbyname('BolgeMudurlukSicilNo').asstring;
+    TFirmaBilgi(_record_^).MuayeneProtokolNo :=   cxGrid3.Dataset.fieldbyname('MuayeneProtokolNo').asstring;
+    TFirmaBilgi(_record_^).IGU :=   cxGrid3.Dataset.fieldbyname('IGU').asstring;
+    TFirmaBilgi(_record_^).DoktorCalismaDakika :=   cxGrid3.Dataset.fieldbyname('DoktorCalismaDakika').asstring;
+    TFirmaBilgi(_record_^).IGUCalismaDakika :=   cxGrid3.Dataset.fieldbyname('IGUCalismaDakika').asstring;
+    TFirmaBilgi(_record_^).NaceKod :=   cxGrid3.Dataset.fieldbyname('NaceKod').asstring;
+    TFirmaBilgi(_record_^).tehlikeSinifi :=   cxGrid3.Dataset.fieldbyname('tehlikeSinifi').asstring;
+    TFirmaBilgi(_record_^).DigerSaglikPers :=   cxGrid3.Dataset.fieldbyname('DigerSaglikPers').asstring;
+    TFirmaBilgi(_record_^).DigerSaglikPersCalismaDakika :=   cxGrid3.Dataset.fieldbyname('DigerSaglikPersCalismaDakika').asstring;
+    TFirmaBilgi(_record_^).Pasif :=   cxGrid3.Dataset.fieldbyname('Pasif').asstring;
+    TFirmaBilgi(_record_^).SemtLokasyon :=   cxGrid3.Dataset.fieldbyname('SemtLokasyon').asstring;
+    TFirmaBilgi(_record_^).calisanSayi :=   cxGrid3.Dataset.fieldbyname('calisanSayi').asstring;
+    TFirmaBilgi(_record_^).Adres :=   cxGrid3.Dataset.fieldbyname('Adres').asstring;
+    TFirmaBilgi(_record_^).KapaliAlan :=   cxGrid3.Dataset.fieldbyname('KapaliAlan').asstring;
+    TFirmaBilgi(_record_^).AcikAlan :=   cxGrid3.Dataset.fieldbyname('AcikAlan').asstring;
+
+end;
+
+procedure TfrmPopupDBGridForm.DBGridNavigatorButtonsButtonClick(Sender: TObject;
+  AButtonIndex: Integer; var ADone: Boolean);
+begin
+  inherited;
+  case Tag of
+   TagfrmSube :
+       begin
+           case AButtonIndex of
+             6 ,9: begin
+                    FirmaBilgiRecordToNull;
+                   end;
+             end;
+
+           case AButtonIndex of
+             6 : begin
+                   if mrYes = ShowPopupForm('Yeni Þube Ekle',yeniSube,'',16)
+                   then begin
+                        datalar.FirmaSubeBilgi.SirketKodu := _firmaKod_;
+                        cxGrid3.Dataset.Append;
+                        datawrite(@datalar.FirmaSubeBilgi);
+                        cxGrid3.Dataset.post;
+                   end;
+                 end;
+             9 : begin
+                   dataRead(@datalar.FirmaSubeBilgi);
+                   if mrYes = ShowPopupForm('Þube Düzenle',SubeDuzenle,'',15)
+                   then begin
+                        datalar.FirmaSubeBilgi.SirketKodu := _firmaKod_;
+                        cxGrid3.Dataset.Edit;
+                        datawrite(@datalar.FirmaSubeBilgi);
+                        cxGrid3.Dataset.post;
+                   end;
+                 end;
+
+
+             end;
+       end;
+
+
+  end;
 
 end;
 
@@ -304,17 +418,20 @@ begin
     TagfrmSube :
     begin
         ClientHeight := 300;
-        ClientWidth := 900;
+        ClientWidth := 1200;
         TableName := 'SIRKET_SUBE_TNM';
-        _fields_ := 'sirketKod,subeKod,subeTanim,subeSiciNo,subeDoktor,IGU,DigerSaglikPers,BolgeMudurlukSicilNo,MuayeneProtokolNo,DoktorCalismaDakika,IGUCalismaDakika,DigerSaglikPersCalismaDakika,NaceKod,tehlikeSinifi,Pasif,SemtLokasyon,calisanSayi,Adres';
-        _fieldBaslik_ := ',Þube Kodu,Þube Tanýmý,ÝþYeri Sicil No,Doktor,Ýþ Güvenlik Uzm.,Diðer Sað.Pers,Bölge Md.Scl.No,Muayene Protokol No,Doktor Çalýþma Dk.,Ýþ Gv.Uzm.Çalýsma Dk.,DiðerSaðPersÇDakika,Nace Kodu,TehlikeSinifi,Pasif,Semt/Lokasyon,ÇalýþanSayý,Adres';
-        _fieldTips_ := 'string,string,string,maskEdit9-0009-09-09-9999999-099-09-09-000;1;_,ImageDoktorCombo,ImageDoktorCombo,ImageDoktorCombo,string,string,string,string,string,ButtonEdit,ImageDoktorCombo,CheckBit,string,string,string';
+        _fields_ := 'sirketKod,subeKod,subeTanim,subeSiciNo,subeDoktor,IGU,DigerSaglikPers,BolgeMudurlukSicilNo,MuayeneProtokolNo,DoktorCalismaDakika,IGUCalismaDakika,' +
+                    'DigerSaglikPersCalismaDakika,NaceKod,tehlikeSinifi,Pasif,SemtLokasyon,calisanSayi,Adres,KapaliAlan,AcikAlan';
+        _fieldBaslik_ := ',Þube Kodu,Þube Tanýmý,ÝþYeri Sicil No,Doktor,Ýþ Güvenlik Uzm.,'+
+                         'Diðer Sað.Pers,Bölge Md.Scl.No,Muayene Protokol No,Doktor Çalýþma Dk.,Ýþ Gv.Uzm.Çalýsma Dk.,DiðerSaðPersÇDakika,Nace Kodu,TehlikeSinifi,Pasif,Semt/Lokasyon,ÇalýþanSayý,Adres,K.Alan(m2),A.Alan(m2)';
+        _fieldTips_ := 'string,string,string,maskEdit9-0009-09-09-9999999-099-09-09-000;1;_,ImageDoktorCombo,ImageDoktorCombo,ImageDoktorCombo,string,string,string,string,string,ButtonEdit,ImageDoktorCombo,CheckBit,string,string,string,int,int';
         indexFieldName := 'sirketKod = ' + QuotedStr(_firmaKod_);
         cxPanel.Visible := false;
         cxGroupDoktorlar.Caption := 'Þube Bilgileri';
         cxGrid3.Dataset.BeforePost := ADOBeforePost;
         cxGrid3.Dataset.Connection := datalar.ADOConnection2;
-        cxGrid3.Dataset.SQL.Text := 'Select sirketKod,subeKod,subeTanim,subeSiciNo,subeDoktor,IGU,DigerSaglikPers,BolgeMudurlukSicilNo,MuayeneProtokolNo,DoktorCalismaDakika,IGUCalismaDakika,DigerSaglikPersCalismaDakika,NaceKod,tehlikeSinifi,Pasif,SemtLokasyon,calisanSayi,Adres ' +
+        cxGrid3.Dataset.SQL.Text := 'Select sirketKod,subeKod,subeTanim,subeSiciNo,subeDoktor,IGU,DigerSaglikPers,' +
+                                    'BolgeMudurlukSicilNo,MuayeneProtokolNo,DoktorCalismaDakika,IGUCalismaDakika,DigerSaglikPersCalismaDakika,NaceKod,tehlikeSinifi,Pasif,SemtLokasyon,calisanSayi,Adres,KapaliAlan,AcikAlan ' +
                                     ' from SIRKET_SUBE_TNM where sirketKod = ' + QuotedStr(_firmaKod_);
         cxGrid3.Dataset.Open;
         DBGrid.ClearItems;

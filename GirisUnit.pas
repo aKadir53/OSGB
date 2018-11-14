@@ -234,6 +234,8 @@ type
       parent : TdxLayoutGroup;grup : string ;uzunluk : integer;List : Tstrings);overload;
     procedure setDataStringC(sender : Tform ; fieldName,caption : string;
      parent : TdxLayoutGroup;grup : string ;uzunluk : integer;List : string); overload;
+    procedure setDataStringIC(sender : Tform ; fieldName,caption : string;
+     parent : TdxLayoutGroup;grup : string ;uzunluk : integer;TableName,valueField,DescField : string;filter :string = '');
     procedure setDataString(sender : Tform ; fieldName ,caption: string ;
           parent : TdxLayoutGroup; grup : string;uzunluk : integer;Zorunlu : Boolean = False;
           ObjectName : String = '';ReadOnly : Boolean = False;_Tag_ : integer = 0;
@@ -1786,6 +1788,52 @@ begin
     end;
 
 end;
+
+
+
+procedure TGirisForm.setDataStringIC(sender : Tform ; fieldName,caption : string;
+     parent : TdxLayoutGroup;grup : string ;uzunluk : integer;TableName,valueField,DescField : string ; filter : string = '');
+var
+  cxEditC : TcxImageComboKadir;
+  dxLaC : TdxLayoutItem;
+  dxLaGC : TdxLayoutGroup;
+begin
+  cxEditC := TcxImageComboKadir.Create(self);
+  cxEditC.Conn := datalar.ADOConnection2;
+  cxEditC.Name := fieldName;
+  cxEditC.TableName := TableName;
+  cxEditC.ValueField := valueField;
+  cxEditC.DisplayField := DescField;
+  cxEditC.Filter := filter;
+
+  cxEditC.Properties.DropDownListStyle := lsFixedList;
+  dxLaC := TdxLayoutGroup(parent).CreateItemForControl(cxEditC);
+  dxLaC.Name := 'dxLa'+fieldName;
+  dxLaC.AlignHorz := ahLeft;
+  cxEDitC.Width := uzunluk;
+//  dxLaC.Width := uzunluk;
+  dxLaC.Caption := caption;
+
+  if grup = '' then
+    dxLaC.Parent := parent
+    else begin
+        if Self.FindComponent(grup) = nil
+        then begin
+         dxLaGC := TdxLayoutGroup.Create(self);
+         dxLaGC.Name := grup;
+         dxLaGC.LayoutDirection := ldHorizontal;
+         dxLaGC.Parent := parent;
+         dxLagC.ShowBorder := false;
+        end;
+
+      dxLaC.Parent := TdxLayoutGroup(Self.findcomponent(grup));
+    end;
+  cxEditC.Style.Color := clWhite;
+  cxEditC.OnEnter := cxEditEnter;
+  cxEditC.OnExit := cxEditExit;
+  cxEditC.OnKeyDown := cxTextEditBKeyDown;
+end;
+
 
 
 procedure TGirisForm.setDataStringC(sender : Tform ; fieldName,caption : string;

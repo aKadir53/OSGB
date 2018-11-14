@@ -458,6 +458,21 @@ type
     ilgiliMailBilgileri : string;
     firmaYetkiliMailBilgileri : string;
     isgKurulEkibiMailBilgileri : string;
+    subeSiciNo : string;
+    DigerSaglikPers : string;
+    BolgeMudurlukSicilNo : string;
+    MuayeneProtokolNo : string;
+    DoktorCalismaDakika : string;
+    IGUCalismaDakika : string;
+    DigerSaglikPersCalismaDakika : string;
+    NaceKod : string;
+    tehlikeSinifi : string;
+    Pasif : string;
+    SemtLokasyon : string;
+    calisanSayi : string;
+    Adres : string;
+    KapaliAlan : string;
+    AcikAlan : string;
   End;
 
 type
@@ -821,6 +836,8 @@ Const
   PersonelSirketDegistir = 58;
   PersonelTetkisIste = 61;
   userSifre = 62;
+  yeniSube = 63;
+  SubeDuzenle = 64;
 
 
   sp_HastaGelis = 'exec sp_HastaGelisleri ';

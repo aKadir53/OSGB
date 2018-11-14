@@ -800,6 +800,30 @@ riskDuzenle,yeniRisk :
 
              end;
 
+   YeniSube,SubeDuzenle :
+               begin
+                    datalar.FirmaSubeBilgi.SubeKodu := TcxTextEdit(FindComponent('subeKod')).EditValue;
+                    datalar.FirmaSubeBilgi.SirketAdi := TcxTextEdit(FindComponent('subeTanim')).EditValue;
+                    datalar.FirmaSubeBilgi.subeSiciNo :=  TcxTextEdit(FindComponent('subeSiciNo')).EditValue;
+                    datalar.FirmaSubeBilgi.doktor :=  TcxTextEdit(FindComponent('subeDoktor')).EditValue;
+                    datalar.FirmaSubeBilgi.IGU :=  TcxTextEdit(FindComponent('IGU')).EditValue;
+                    datalar.FirmaSubeBilgi.BolgeMudurlukSicilNo :=  TcxTextEdit(FindComponent('BolgeMudurlukSicilNo')).EditValue;
+                    datalar.FirmaSubeBilgi.MuayeneProtokolNo :=  TcxTextEdit(FindComponent('MuayeneProtokolNo')).EditValue;
+                    datalar.FirmaSubeBilgi.DoktorCalismaDakika :=  TcxTextEdit(FindComponent('DoktorCalismaDakika')).EditValue;
+                    datalar.FirmaSubeBilgi.IGUCalismaDakika :=  TcxTextEdit(FindComponent('IGUCalismaDakika')).EditValue;
+                    datalar.FirmaSubeBilgi.NaceKod :=  TcxTextEdit(FindComponent('NaceKod')).EditValue;
+                    datalar.FirmaSubeBilgi.tehlikeSinifi :=  TcxTextEdit(FindComponent('tehlikeSinifi')).EditValue;
+                    datalar.FirmaSubeBilgi.DigerSaglikPers :=  TcxTextEdit(FindComponent('DigerSaglikPers')).EditValue;
+                    datalar.FirmaSubeBilgi.DigerSaglikPersCalismaDakika :=  TcxTextEdit(FindComponent('DigerSaglikPersCalismaDakika')).EditValue;
+                    datalar.FirmaSubeBilgi.Pasif :=  TcxTextEdit(FindComponent('Pasif')).EditValue;
+                    datalar.FirmaSubeBilgi.SemtLokasyon :=  TcxTextEdit(FindComponent('SemtLokasyon')).EditValue;
+                    datalar.FirmaSubeBilgi.calisanSayi :=  TcxTextEdit(FindComponent('calisanSayi')).EditValue;
+                    datalar.FirmaSubeBilgi.Adres :=  TcxTextEdit(FindComponent('Adres')).EditValue;
+                    datalar.FirmaSubeBilgi.KapaliAlan :=  TcxTextEdit(FindComponent('KapaliAlan')).EditValue;
+                    datalar.FirmaSubeBilgi.AcikAlan :=  TcxTextEdit(FindComponent('AcikAlan')).EditValue;
+
+               end;
+
   end;
 end;
 
@@ -837,8 +861,9 @@ inherited;
   btnYes.TabOrder := 1;
   btnIptal.SetFocus;
 
-  self.Caption := PopupFormCaption(TfrmPopup(self).islem_ ,TabCaption);
-  cxTab.Tabs[0].Caption := TabCaption;
+//  self.Caption := PopupFormCaption(TfrmPopup(self).islem_ ,TabCaption);
+  self.Caption := '';
+  cxTab.Tabs[0].Caption := _caption_;
 
   case TfrmPopup(self).islem_ of
 
@@ -1945,7 +1970,52 @@ ptPersonelTetkikleri :
                       setDataStringKontrol(self,txtTetkikIstem,'istemler','',Kolon1,'',250,150);
 
                end;
+   YeniSube,SubeDuzenle :
+               begin
+                  cxTab.Width := 150;
+                  ClientHeight := 600;
+                  ClientWidth := 450;
+                  TableName := 'SIRKET_SUBE_TNM';
+                  setDataString(self,'subeKod','Þube Kodu',Kolon1,'',50,True,'',False,0,'',ecUpperCase);
+                  TcxTextEdit(FindComponent('subeKod')).EditValue := datalar.FirmaSubeBilgi.SubeKodu;
+                  setDataString(self,'subeTanim','Þube Tanýmý',Kolon1,'',150,True,'',False,0,'',ecUpperCase);
+                  TcxTextEdit(FindComponent('subeTanim')).EditValue := datalar.FirmaSubeBilgi.SirketAdi;
+                  setDataString(self,'subeSiciNo','Þube Sicil No',Kolon1,'',200,True,'',False,0,'',ecUpperCase);
+                  TcxTextEdit(FindComponent('subeSiciNo')).EditValue := datalar.FirmaSubeBilgi.subeSiciNo;
+                  setDataStringIC(self,'subeDoktor','Doktor',kolon1,'',150,'DoktorlarT','kod','tanimi');
+                  TcxImageComboKadir(FindComponent('subeDoktor')).EditValue := datalar.FirmaSubeBilgi.doktor;
+                  setDataStringIC(self,'IGU','ÝþG.Uzmaný',kolon1,'',150,'IGU','kod','tanimi');
+                  TcxImageComboKadir(FindComponent('IGU')).EditValue := datalar.FirmaSubeBilgi.IGU;
+                  setDataString(self,'BolgeMudurlukSicilNo','Müdürlük Sicil No',Kolon1,'',100,True,'',False,0,'',ecUpperCase);
+                  TcxTextEdit(FindComponent('BolgeMudurlukSicilNo')).EditValue := datalar.FirmaSubeBilgi.BolgeMudurlukSicilNo;
+                  setDataString(self,'MuayeneProtokolNo','Protokol No',Kolon1,'',100,True,'',False,0,'',ecUpperCase);
+                  TcxTextEdit(FindComponent('MuayeneProtokolNo')).EditValue := datalar.FirmaSubeBilgi.MuayeneProtokolNo;
+                  setDataString(self,'DoktorCalismaDakika','Doktor Çalýþma Dakika',Kolon1,'',100,True,'',False,0,'',ecUpperCase);
+                  TcxTextEdit(FindComponent('DoktorCalismaDakika')).EditValue := datalar.FirmaSubeBilgi.DoktorCalismaDakika;
+                  setDataString(self,'IGUCalismaDakika','Uzm. Çalýþma Dakika',Kolon1,'',100,True,'',False,0,'',ecUpperCase);
+                  TcxTextEdit(FindComponent('IGUCalismaDakika')).EditValue := datalar.FirmaSubeBilgi.IGUCalismaDakika;
+                  setDataString(self,'NaceKod','Nace Kodu',Kolon1,'',100,True,'',False,0,'',ecUpperCase);
+                  TcxTextEdit(FindComponent('NaceKod')).EditValue := datalar.FirmaSubeBilgi.NaceKod;
+                  setDataStringIC(self,'tehlikeSinifi','Tehlike Sýnýfý',kolon1,'',150,'TehlikeSiniflari','TehlikeSinifi','tanimi');
+                  TcxImageComboKadir(FindComponent('tehlikeSinifi')).EditValue := datalar.FirmaSubeBilgi.tehlikeSinifi;
+                  setDataStringIC(self,'DigerSaglikPers','Saðlýk Personeli',kolon1,'',150,'DigerSaglikPersonel','kod','tanimi');
+                  TcxImageComboKadir(FindComponent('DigerSaglikPers')).EditValue := datalar.FirmaSubeBilgi.DigerSaglikPers;
+                  setDataString(self,'DigerSaglikPersCalismaDakika','D.Saðlýk Per. Çalýþma Dak.',Kolon1,'',100,True,'',False,0,'',ecUpperCase);
+                  TcxTextEdit(FindComponent('DigerSaglikPersCalismaDakika')).EditValue := datalar.FirmaSubeBilgi.DigerSaglikPersCalismaDakika;
+                  setDataString(self,'Pasif','Aktif',Kolon1,'',100,True,'',False,0,'',ecUpperCase);
+                  TcxTextEdit(FindComponent('Pasif')).EditValue := datalar.FirmaSubeBilgi.Pasif;
+                  setDataString(self,'SemtLokasyon','Lokasyon',Kolon1,'',100,True,'',False,0,'',ecUpperCase);
+                  TcxTextEdit(FindComponent('SemtLokasyon')).EditValue := datalar.FirmaSubeBilgi.SemtLokasyon;
+                  setDataString(self,'calisanSayi','Çalýþan Sayýsý',Kolon1,'',100,True,'',False,0,'',ecUpperCase);
+                  TcxTextEdit(FindComponent('calisanSayi')).EditValue := datalar.FirmaSubeBilgi.calisanSayi;
+                  setDataString(self,'Adres','Adres',Kolon1,'',300,True,'',False,0,'',ecUpperCase);
+                  TcxTextEdit(FindComponent('Adres')).EditValue := datalar.FirmaSubeBilgi.Adres;
+                  setDataString(self,'KapaliAlan','Kapalý Alan(m2)',Kolon1,'',50,True,'',False,0,'',ecUpperCase);
+                  TcxTextEdit(FindComponent('KapaliAlan')).EditValue := datalar.FirmaSubeBilgi.KapaliAlan;
+                  setDataString(self,'AcikAlan','Açýk Alan(m2)',Kolon1,'',50,True,'',False,0,'',ecUpperCase);
+                  TcxTextEdit(FindComponent('AcikAlan')).EditValue := datalar.FirmaSubeBilgi.AcikAlan;
 
+               end;
   end;
 
 

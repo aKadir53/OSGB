@@ -316,6 +316,7 @@ type
    KKD : TKKDREcord;
    SeansOlusturPrm : TSeansOlusturPrm;
    TeleEkg : TTeleEKG;
+   FirmaSubeBilgi : TFirmaBilgi;
    PersonelTetkikler : TPersonelTetkikler;
    yardimciIslemMethod: string;
    DigerIslemTalebi : TDigerIslemTalep;
