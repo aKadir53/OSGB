@@ -161,8 +161,21 @@ begin
   begin
     FADO_ILACSARF.Close;
     FADO_ILACSARF.SQL.Clear;
-    sql := 'select * from ' + IfThen (chkSIK.Checked, 'OSGB_MASTER.DBO.ILACLARMM', 'OSGB_MASTER.DBO.ILACLARM') +
-           ' order by NAME1 ' ;
+
+
+    if not chkSIK.Checked
+    then begin
+       sql := 'select * from OSGB_MASTER.DBO.ILACLARM order by NAME1';
+    end
+    else
+    begin
+      sql := 'select *,D.ICD TANI,D.kulYol YOL from OSGB_MASTER.DBO.ILACLARM I ' +
+             ' join OSGB_MASTER.DBO.doktorSIKKullanim D on D.barkod = I.code' +
+             ' where drTC = ' + QuotedStr(datalar.doktorTC) +
+             ' and D.tip = ''ILAC''' +
+             ' order by NAME1 ';
+    end;
+
     datalar.QuerySelect(FADO_ILACSARF, sql);
     FLastSikKull := iTmp;
   end;
@@ -249,6 +262,29 @@ begin
 
               ado := TADOQuery.Create(nil);
               try
+
+                sql := 'if not Exists(select * from OSGB_MASTER.dbo.doktorSIKKullanim where drTC = ' + QuotedStr(datalar.doktorTC) +
+                        ' and  ' +
+                        ' barkod = ' + QuotedStr(Eklenenler.fieldbyname('ETKENMADDE').AsString)+ ')' +
+                        ' begin ' +
+                          'insert into OSGB_MASTER.dbo.doktorSIKKullanim (drTC,barkod,drKod,tip,ICD) ' +
+                          'values(' + QuotedStr(datalar.doktorTC) + ',' +
+                                      QuotedStr(Eklenenler.fieldbyname('ETKENMADDE').AsString) + ',' +
+                                      QuotedStr(datalar.doktorKodu) + ',' +
+                                      QuotedStr('ILAC') + ',' +
+                                      QuotedStr(Eklenenler.fieldbyname('tani').AsString) +
+                                 ')' +
+                        ' end ' +
+                        ' else ' +
+                        ' begin ' +
+                         ' update OSGB_MASTER.dbo.doktorSIKKullanim ' +
+                         ' set ICD = ' + QuotedStr(Eklenenler.fieldbyname('tani').AsString) + ',' +
+                         ' kulYol = ' + QuotedStr(Eklenenler.fieldbyname('Kyolu').AsString) +
+                         ' where drTC = ' + QuotedStr(datalar.doktorTC) +
+                         ' and barkod = ' + QuotedStr(Eklenenler.fieldbyname('ETKENMADDE').AsString) +
+                        ' end';
+
+                (*
                 sql := 'update OSGB_MASTER.dbo.ilacListesi set sikKullan = 1,ICD = ' + QuotedStr(Eklenenler.fieldbyname('tani').AsString) +
                         ' where barkod = ' + QuotedStr(Eklenenler.fieldbyname('ETKENMADDE').AsString);
                 datalar.QueryExec(ado,sql);
@@ -260,6 +296,7 @@ begin
                         '  ICD = ' + SQLValue(Eklenenler.fieldbyname('tani').AsString) +
                         '  where barkod = ' + SQLValue (Eklenenler.fieldbyname('ETKENMADDE').AsString) +
                         ' END';
+                *)
                 datalar.QueryExec(ado,sql);
             //    DataSource1.DataSet.Refresh;
                 (*
@@ -388,6 +425,28 @@ begin
 
               ado := TADOQuery.Create(nil);
               try
+
+                sql := 'if not Exists(select * from OSGB_MASTER.dbo.doktorSIKKullanim where drTC = ' + QuotedStr(datalar.doktorTC) +
+                        ' and  ' +
+                        ' barkod = ' + QuotedStr(Eklenenler.fieldbyname('ETKENMADDE').AsString)+ ')' +
+                        ' begin ' +
+                          'insert into OSGB_MASTER.dbo.doktorSIKKullanim (drTC,barkod,drKod,tip,ICD) ' +
+                          'values(' + QuotedStr(datalar.doktorTC) + ',' +
+                                      QuotedStr(Eklenenler.fieldbyname('ETKENMADDE').AsString) + ',' +
+                                      QuotedStr(datalar.doktorKodu) + ',' +
+                                      QuotedStr('ILAC') + ',' +
+                                      QuotedStr(Eklenenler.fieldbyname('tani').AsString) +
+                                 ')' +
+                        ' end ' +
+                        ' else ' +
+                        ' begin ' +
+                         ' update OSGB_MASTER.dbo.doktorSIKKullanim ' +
+                         ' set ICD = ' + QuotedStr(Eklenenler.fieldbyname('tani').AsString) + ',' +
+                         ' kulYol = ' + QuotedStr(Eklenenler.fieldbyname('Kyolu').AsString) +
+                         ' where drTC = ' + QuotedStr(datalar.doktorTC) +
+                         ' and barkod = ' + QuotedStr(Eklenenler.fieldbyname('ETKENMADDE').AsString) +
+                        ' end';
+              (*
                 sql := 'update ilacListesi set sikKullan = 1 where barkod = ' + QuotedStr(Eklenenler.fieldbyname('ETKENMADDE').AsString);
                 datalar.QueryExec(ado,sql);
 
@@ -398,6 +457,7 @@ begin
                         '  ICD = ' + SQLValue(Eklenenler.fieldbyname('tani').AsString) +
                         '  where barkod = ' + SQLValue (Eklenenler.fieldbyname('ETKENMADDE').AsString) +
                         ' END';
+                *)
                 datalar.QueryExec(ado,sql);
 
                 (*
@@ -569,8 +629,8 @@ begin
               Eklenenler.Append;
               Eklenenler.FieldByName('ETKENMADDE').AsString := FADO_ILACSARF.fieldbyname('code').AsString;
               Eklenenler.FieldByName('formu').AsString := FADO_ILACSARF.fieldbyname('NAME1').AsString;
-              Eklenenler.FieldByName('KYolu').AsString := FADO_ILACSARF.fieldbyname('kulYol').AsString;
-              Eklenenler.FieldByName('tani').AsString := FADO_ILACSARF.fieldbyname('ICD').AsString;
+              Eklenenler.FieldByName('KYolu').AsString := FADO_ILACSARF.fieldbyname('YOL').AsString;
+              Eklenenler.FieldByName('tani').AsString := FADO_ILACSARF.fieldbyname('TANI').AsString;
               Eklenenler.FieldByName('doz').AsString := FADO_ILACSARF.fieldbyname('doz').AsString;
               Eklenenler.FieldByName('adet').AsString := FADO_ILACSARF.fieldbyname('adet').AsString;
               if StrToIntDef (Eklenenler.FieldByName('adet').AsString, -1) <= 0 then

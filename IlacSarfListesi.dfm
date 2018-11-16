@@ -315,6 +315,7 @@ object frmIlacSarf: TfrmIlacSarf
           Visible = False
         end
         object gridIlacSarfColumn5: TcxGridDBColumn
+          Caption = 'EtkenMadde.'
           DataBinding.FieldName = 'EtkenMadde'
           PropertiesClassName = 'TcxTextEditProperties'
           Properties.Alignment.Horz = taLeftJustify
@@ -326,6 +327,7 @@ object frmIlacSarf: TfrmIlacSarf
           Width = 115
         end
         object gridIlacSarfColumn3: TcxGridDBColumn
+          Caption = 'Aktif.'
           DataBinding.FieldName = 'Aktif'
           PropertiesClassName = 'TcxTextEditProperties'
           Properties.Alignment.Horz = taLeftJustify
