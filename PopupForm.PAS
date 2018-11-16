@@ -65,6 +65,8 @@ type
     procedure PropertiesButtonClick(Sender: TObject; AButtonIndex: Integer);
     procedure ButtonClick(Sender: TObject);
     procedure CalismaplaninaAylarikoy;
+    procedure NaceKodPropertiesButtonClick(Sender: TObject;
+       AButtonIndex: Integer);override;
 
   private
     { Private declarations }
@@ -471,6 +473,7 @@ begin
               datalar.YeniRecete.doktor := TcxTextEditKadir(FindComponent('kod')).EditValue;
               datalar.YeniRecete.doktorAdi := TcxLabel(FindComponent('Labelkod')).Caption;
               datalar.YeniRecete.protokolNo := TcxTextEditKadir(FindComponent('ProtokolNo')).EditValue;
+              datalar.YeniRecete.takipNo := TcxTextEditKadir(FindComponent('eReceteNo')).EditValue;
             end;
       TeleEkgDuzenle :
             begin
@@ -996,12 +999,14 @@ inherited;
 
 
           setDataString(self,'ProtokolNo','ProtokolNo',Kolon1,'',307);
+          setDataString(self,'eReceteNo','e-Reçete No',Kolon1,'',307);
           TcxButtonEditKadir(FindComponent('kod')).EditValue := datalar.YeniRecete.doktor;
          // TcxLabel(FindComponent('Labelkod')).Caption := datalar.YeniRecete.doktorAdi;
           TcxTextEdit(FindComponent('ProtokolNo')).EditValue := datalar.YeniRecete.protokolNo;
           TcxTextEdit(FindComponent('ReceteTuru')).EditValue := datalar.YeniRecete.ReceteTuru;
           TcxTextEdit(FindComponent('ReceteAltTuru')).EditValue := datalar.YeniRecete.ReceteAltTuru;
           TcxTextEdit(FindComponent('ReceteTarih')).EditValue := datalar.YeniRecete.Tarih;
+           TcxTextEdit(FindComponent('eReceteNo')).EditValue := datalar.YeniRecete.takipNo;
        end;
 
    TeleEkgDuzenle :
@@ -1976,15 +1981,17 @@ ptPersonelTetkikleri :
                   ClientHeight := 600;
                   ClientWidth := 450;
                   TableName := 'SIRKET_SUBE_TNM';
-                  setDataString(self,'subeKod','Þube Kodu',Kolon1,'',50,True,'',False,0,'',ecUpperCase);
+                  setDataString(self,'subeKod','Þube Kodu',Kolon1,'aa',50,True,'',False,0,'',ecUpperCase);
                   TcxTextEdit(FindComponent('subeKod')).EditValue := datalar.FirmaSubeBilgi.SubeKodu;
                   setDataString(self,'subeTanim','Þube Tanýmý',Kolon1,'',150,True,'',False,0,'',ecUpperCase);
                   TcxTextEdit(FindComponent('subeTanim')).EditValue := datalar.FirmaSubeBilgi.SirketAdi;
-                  setDataString(self,'subeSiciNo','Þube Sicil No',Kolon1,'',200,True,'',False,0,'',ecUpperCase);
+
+                  setDataString(self,'subeSiciNo','Þube Sicil No',Kolon1,'',240,True,'',False,0,'',ecUpperCase,'9-0009-09-09-9999999-099-09-09-000');
                   TcxTextEdit(FindComponent('subeSiciNo')).EditValue := datalar.FirmaSubeBilgi.subeSiciNo;
-                  setDataStringIC(self,'subeDoktor','Doktor',kolon1,'',150,'DoktorlarT','kod','tanimi');
+
+                  setDataStringIC(self,'subeDoktor','Doktor',kolon1,'',150,'DoktorlarT','kod','tanimi','Durum = ''Aktif''');
                   TcxImageComboKadir(FindComponent('subeDoktor')).EditValue := datalar.FirmaSubeBilgi.doktor;
-                  setDataStringIC(self,'IGU','ÝþG.Uzmaný',kolon1,'',150,'IGU','kod','tanimi');
+                  setDataStringIC(self,'IGU','ÝþG.Uzmaný',kolon1,'',150,'IGU','kod','tanimi','Durum = ''Aktif''');
                   TcxImageComboKadir(FindComponent('IGU')).EditValue := datalar.FirmaSubeBilgi.IGU;
                   setDataString(self,'BolgeMudurlukSicilNo','Müdürlük Sicil No',Kolon1,'',100,True,'',False,0,'',ecUpperCase);
                   TcxTextEdit(FindComponent('BolgeMudurlukSicilNo')).EditValue := datalar.FirmaSubeBilgi.BolgeMudurlukSicilNo;
@@ -1994,16 +2001,23 @@ ptPersonelTetkikleri :
                   TcxTextEdit(FindComponent('DoktorCalismaDakika')).EditValue := datalar.FirmaSubeBilgi.DoktorCalismaDakika;
                   setDataString(self,'IGUCalismaDakika','Uzm. Çalýþma Dakika',Kolon1,'',100,True,'',False,0,'',ecUpperCase);
                   TcxTextEdit(FindComponent('IGUCalismaDakika')).EditValue := datalar.FirmaSubeBilgi.IGUCalismaDakika;
-                  setDataString(self,'NaceKod','Nace Kodu',Kolon1,'',100,True,'',False,0,'',ecUpperCase);
+
+                  setDataStringB(self,'NaceKod','Nace Kodu',Kolon1,'',100,List,False,nil,'','',False,True);
+                  TcxButtonEditKadir(FindComponent('NaceKod')).Properties.OnButtonClick := NaceKodPropertiesButtonClick;
                   TcxTextEdit(FindComponent('NaceKod')).EditValue := datalar.FirmaSubeBilgi.NaceKod;
+
                   setDataStringIC(self,'tehlikeSinifi','Tehlike Sýnýfý',kolon1,'',150,'TehlikeSiniflari','TehlikeSinifi','tanimi');
                   TcxImageComboKadir(FindComponent('tehlikeSinifi')).EditValue := datalar.FirmaSubeBilgi.tehlikeSinifi;
                   setDataStringIC(self,'DigerSaglikPers','Saðlýk Personeli',kolon1,'',150,'DigerSaglikPersonel','kod','tanimi');
                   TcxImageComboKadir(FindComponent('DigerSaglikPers')).EditValue := datalar.FirmaSubeBilgi.DigerSaglikPers;
                   setDataString(self,'DigerSaglikPersCalismaDakika','D.Saðlýk Per. Çalýþma Dak.',Kolon1,'',100,True,'',False,0,'',ecUpperCase);
                   TcxTextEdit(FindComponent('DigerSaglikPersCalismaDakika')).EditValue := datalar.FirmaSubeBilgi.DigerSaglikPersCalismaDakika;
-                  setDataString(self,'Pasif','Aktif',Kolon1,'',100,True,'',False,0,'',ecUpperCase);
+
+                  setDataStringChk (Self, 'Pasif', 'Þube Pasif Edilsin', Kolon1, 'aa', 120);
+
+                 // setDataString(self,'Pasif','Aktif',Kolon1,'',100,True,'',False,0,'',ecUpperCase);
                   TcxTextEdit(FindComponent('Pasif')).EditValue := datalar.FirmaSubeBilgi.Pasif;
+
                   setDataString(self,'SemtLokasyon','Lokasyon',Kolon1,'',100,True,'',False,0,'',ecUpperCase);
                   TcxTextEdit(FindComponent('SemtLokasyon')).EditValue := datalar.FirmaSubeBilgi.SemtLokasyon;
                   setDataString(self,'calisanSayi','Çalýþan Sayýsý',Kolon1,'',100,True,'',False,0,'',ecUpperCase);
@@ -2020,6 +2034,13 @@ ptPersonelTetkikleri :
 
 
 
+end;
+
+procedure TfrmPopup.NaceKodPropertiesButtonClick(Sender: TObject;
+  AButtonIndex: Integer);
+begin
+  inherited;
+//
 end;
 
 procedure TfrmPopup.PropertiesEditValueChanged(Sender: TObject);

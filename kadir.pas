@@ -477,9 +477,10 @@ type
 
 
 const
-  LIB_DLL = 'D:\Projeler\VS\c#\EFatura\EFaturaDLL\ClassLibrary1\bin\Debug\EFaturaDLL.dll';
-  LIB_DLL2 = 'D:\Projeler\VS\c#\ListeDLL_Cades\ListeDLL\bin\x86\Debug\NoktaDLL.dll';
- // LIB_DLL = 'EFaturaDLL.dll';
+  //LIB_DLL = 'D:\Projeler\VS\c#\EFatura\EFaturaDLL\ClassLibrary1\bin\Debug\EFaturaDLL.dll';
+ // LIB_DLL2 = 'D:\Projeler\VS\c#\ListeDLL_Cades\ListeDLL\bin\x86\Debug\NoktaDLL.dll';
+  LIB_DLL2 = 'NoktaDLL.dll';
+  LIB_DLL = 'EFaturaDLL.dll';
   _YTL_ = 'YTL';
   _OTL_ = 'TRL';
   harfler = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGGHIJKLMNOPQRSTUVWXYZXW';
@@ -658,9 +659,9 @@ begin
    datalar.FirmaSubeBilgi.Yetkili :=  '';
    datalar.FirmaSubeBilgi.YetkiliMail := '';
    datalar.FirmaSubeBilgi.YetkiliMobil := '';
-   datalar.FirmaSubeBilgi.IGU := '';
+   datalar.FirmaSubeBilgi.IGU := Null;
    datalar.FirmaSubeBilgi.IGUMail := '';
-   datalar.FirmaSubeBilgi.doktor := '';
+   datalar.FirmaSubeBilgi.doktor := Null;
    datalar.FirmaSubeBilgi.doktorMail := '';
    datalar.FirmaSubeBilgi.calisanTemsilci := '';
    datalar.FirmaSubeBilgi.calisanTemsilciMail := '';
@@ -673,7 +674,7 @@ begin
    datalar.FirmaSubeBilgi.firmaYetkiliMailBilgileri := '';
    datalar.FirmaSubeBilgi.isgKurulEkibiMailBilgileri := '';
    datalar.FirmaSubeBilgi.subeSiciNo := '';
-   datalar.FirmaSubeBilgi.DigerSaglikPers := '';
+   datalar.FirmaSubeBilgi.DigerSaglikPers := Null;
    datalar.FirmaSubeBilgi.BolgeMudurlukSicilNo := '';
    datalar.FirmaSubeBilgi.MuayeneProtokolNo := '';
    datalar.FirmaSubeBilgi.DoktorCalismaDakika := '';

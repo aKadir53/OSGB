@@ -227,8 +227,8 @@ const _TableName_ = 'Recete';
       formYukseklik = 650;
 
 const
-//LIB_DLL = 'NoktaDLL.dll';
- LIB_DLL = 'D:\Projeler\VS\c#\ListeDLL_Cades\ListeDLL\bin\x86\Debug\NoktaDLL.dll';
+ LIB_DLL = 'NoktaDLL.dll';
+ //LIB_DLL = 'D:\Projeler\VS\c#\ListeDLL_Cades\ListeDLL\bin\x86\Debug\NoktaDLL.dll';
 
 
 var
@@ -1465,6 +1465,7 @@ begin
   datalar.YeniRecete.Tarih := ADO_Recete.FieldByName('tarih').AsString;
   datalar.YeniRecete.ReceteTuru := ADO_Recete.FieldByName('ReceteTur').AsString;
   datalar.YeniRecete.ReceteAltTuru := ADO_Recete.FieldByName('ReceteAltTur').AsString;
+  datalar.YeniRecete.takipNo := ADO_Recete.FieldByName('eReceteNo').AsString;
 
   if mrYes = ShowPopupForm('Reçete Düzenle',ReceteDuzenle)
   then begin
@@ -1475,6 +1476,7 @@ begin
     ADO_Recete.FieldByName('ReceteAltTur').AsString := datalar.YeniRecete.ReceteAltTuru;
     ADO_Recete.FieldByName('doktor').AsString := datalar.YeniRecete.doktor;//+'-'+datalar.YeniRecete.doktorAdi;
     ADO_Recete.FieldByName('protokolNo').AsString := datalar.YeniRecete.protokolNo;//+'-'+datalar.YeniRecete.doktorAdi;
+    ADO_Recete.FieldByName('eReceteNo').AsString := datalar.YeniRecete.takipNo;
 
     ADO_Recete.Post;
     ADO_Recete.Active := false;

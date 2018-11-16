@@ -88,16 +88,17 @@ uses
 // KadirMedula3 in '..\..\medula3wsdl\KadirMedula3.pas';
 
 const
-  AppalicationVer : integer = 1081;
-  NoktaDLLGuncelle : string = 'E'; // NoktaDLL ve ek dll ler guncellenecekse E , yoksa H
-  // Versiyon info kontrol etmeyi unutma
+  AppalicationVer : integer = 1082;   // Versiyon info kontrol etmeyi unutma  OSGBVersiyon.txt içine AppalicationVer deðerini yaz ftp at
+  DllVersiyon : integer = 2;     //  DLLVersiyon.txt  içine DllVersiyon deðerini yaz ftp at
+
+
 
 {$R *.res}
 {$WEAKLINKRTTI ON}
   {$RTTI EXPLICIT METHODS([]) PROPERTIES([]) FIELDS([])}
 
  var SiteVersiyon,ExeVersiyon: string; V1, V2, V3, V4: word;
-   versiyon,sql,isg : string;
+   versiyon,Dversiyon ,sql,isg : string;
   _exe : PAnsiChar;
   dosya : TFileStream;
 
@@ -132,28 +133,17 @@ begin
 
   try
     versiyon := (datalar.HTTP1.Get('http://www.noktayazilim.net/OSGBVersiyon.txt'));
+    Dversiyon := (datalar.HTTP1.Get('http://www.noktayazilim.net/DLLVersiyon.txt'));
   except
     versiyon := inttostr(AppalicationVer);
   end;
 
   if versiyon = '' then versiyon := inttostr(AppalicationVer);
 
-  if (strtoint(versiyon) > AppalicationVer)
+
+
+  if (strtoint(Dversiyon) > DllVersiyon)
   Then Begin
-    try
-     _exe :=  PAnsiChar(AnsiString('C:\OSGB\' + isg));
-     WinExec(_exe,SW_SHOW);
-    // datalar.KillTask('Diyaliz.exe');
-    except on e : exception do
-      begin
-        ShowMessageSkin(e.Message,'','','info');
-      end;
-    end;
-  End;
-
-
-  if NoktaDLLGuncelle = 'E' then
-  begin
       dosya := TFileStream.Create('C:\OSGB\NoktaDLL.dll',fmCreate);
       datalar.HTTP1.Get('http://www.noktayazilim.net/NoktaDLL.dll' ,TStream(dosya));
       dosya.Free;
@@ -174,7 +164,27 @@ begin
       datalar.HTTP1.Get('http://www.noktayazilim.net/itextsharp.dll' ,TStream(dosya));
       dosya.Free;
 
+  End;
+
+
+
+  if (strtoint(versiyon) > AppalicationVer)
+  Then Begin
+    try
+     _exe :=  PAnsiChar(AnsiString('C:\OSGB\' + isg));
+     WinExec(_exe,SW_SHOW);
+    // datalar.KillTask('Diyaliz.exe');
+    except on e : exception do
+      begin
+        ShowMessageSkin(e.Message,'','','info');
+      end;
     end;
+  End;
+
+
+
+
+
   end;
 
  (*
@@ -190,8 +200,6 @@ begin
 
   GetBuildInfo(Application.ExeName, V1, V2, V3,V4);
   ExeVersiyon:= Format('%d.%d.%d.%d', [V1, V2, V3,V4]);
-
-
 
 
   Application.CreateForm(TfrmLogin, frmLogin);

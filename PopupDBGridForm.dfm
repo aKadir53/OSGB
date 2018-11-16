@@ -382,34 +382,30 @@ object frmPopupDBGridForm: TfrmPopupDBGridForm
       Visible = False
       OnClick = cxButtonCClick
     end
-  end
-  object ListeNaceKods: TListeAc
-    ListeBaslik = 'Nace Kodlari'
-    TColcount = 4
-    TColsW = '50,200,200,80'
-    Table = 'nacekodsView'
-    Conn = DATALAR.ADOConnection2
-    Filtercol = 1
-    BaslikRenk = clBackground
-    DipRenk = clBackground
-    ButtonImajIndex = 132
-    Kolonlar.Strings = (
-      'NACEKODU'
-      'NaceTANIMI'
-      'GrupTanimi'
-      'TEHLIKESINIFI')
-    KolonBasliklari.Strings = (
-      'Nace Kodu'
-      'Nace Tan'#305'm'#305
-      'Grubu'
-      'Tehlike')
-    Calistir = fgEvet
-    BiriktirmeliSecim = False
-    SkinName = 'Lilian'
-    Grup = True
-    GrupCol = 2
-    Left = 232
-    Top = 93
+    object N1: TMenuItem
+      Caption = '-'
+    end
+    object E2: TMenuItem
+      Tag = -9
+      Caption = 'Ekle'
+      ImageIndex = 30
+      Visible = False
+      OnClick = cxButtonCClick
+    end
+    object D1: TMenuItem
+      Tag = -10
+      Caption = 'D'#252'zenle'
+      ImageIndex = 31
+      Visible = False
+      OnClick = cxButtonCClick
+    end
+    object S1: TMenuItem
+      Tag = -11
+      Caption = 'Sil'
+      ImageIndex = 42
+      Visible = False
+      OnClick = cxButtonCClick
+    end
   end
   object cxStyleRepository1: TcxStyleRepository
     PixelsPerInch = 96

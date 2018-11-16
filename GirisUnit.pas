@@ -117,6 +117,7 @@ type
     Sayfa5_Kolon2: TdxLayoutGroup;
     Sayfa5_Kolon3: TdxLayoutGroup;
     Ado_Foto: TADOQuery;
+    ListeNaceKodlari: TListeAc;
 
     procedure cxKaydetClick(Sender: TObject);virtual;
     procedure cxButtonCClick(Sender: TObject);
@@ -133,6 +134,9 @@ type
       AButtonIndex: Integer);virtual;
     procedure cGridcxButtonEditPropertiesButtonClick(Sender: TObject;
       AButtonIndex: Integer);
+    procedure NaceKodPropertiesButtonClick(Sender: TObject;
+      AButtonIndex: Integer); virtual;
+
     procedure KontrolEditValueClear;
     procedure sqlRunLoad;virtual;
     procedure Yukle;virtual;
@@ -239,7 +243,7 @@ type
     procedure setDataString(sender : Tform ; fieldName ,caption: string ;
           parent : TdxLayoutGroup; grup : string;uzunluk : integer;Zorunlu : Boolean = False;
           ObjectName : String = '';ReadOnly : Boolean = False;_Tag_ : integer = 0;
-          DefaultText : string = '' ; EditCharCase : TEditCharCase = ecNormal);
+          DefaultText : string = '' ; EditCharCase : TEditCharCase = ecNormal ; EditMask : string = '');
     procedure setDataStringMemo(sender : Tform ; fieldName ,caption: string ;
           parent : TdxLayoutGroup; grup : string;uzunluk,yukseklik : integer);
     procedure setDataStringB(sender : Tform; fieldName ,caption: string ;
@@ -260,7 +264,7 @@ type
     procedure addButtonTopPanel(sender : Tform ; Name,caption: string ; uzunluk,Tag : integer; Event : TNotifyEvent = nil);
     procedure setDataImage(sender : Tform; Name ,captionItem : string; parent : TdxLayoutGroup; grup : string;uzunluk,yukseklik : integer);
     procedure setDataStringChk(sender : Tform ; fieldName,caption : string;
-     parent : TdxLayoutGroup;grup : string ;uzunluk : integer);
+     parent : TdxLayoutGroup;grup : string ;uzunluk : integer ; tip : CheckTip = ctBol);
     procedure setDataStringCurr(sender : Tform ; fieldName,caption : string;
      parent : TdxLayoutGroup;grup : string ;uzunluk : integer;displayFormat : string = ',0.00';_Tag_ : integer = -100);
     procedure DiyalizTedaviControlleriniFormaEkle(Grp : TdxLayoutGroup);
@@ -338,6 +342,20 @@ implementation
 uses AnaUnit,Data_Modul,FormKontrolUserSet;
 
 {$R *.dfm}
+
+
+procedure TGirisForm.NaceKodPropertiesButtonClick(Sender: TObject;
+  AButtonIndex: Integer);
+var
+  List : ArrayListeSecimler;
+begin
+   List := ListeNaceKodlari.ListeGetir;
+   if High (List) < 0 then Exit;
+   datalar.FirmaSubeBilgi.NaceKod := List[0].kolon1;
+   TcxButtonEditKadir(Sender).EditValue := List[0].kolon1;
+end;
+
+
 function TGirisForm.SirketComboFilter : string;
 var
  where,sube : string;
@@ -1574,26 +1592,51 @@ procedure TGirisForm.setDataString(sender : Tform ; fieldName ,caption: string;
                   parent : TdxLayoutGroup; grup : string;uzunluk : integer ;
                   Zorunlu : Boolean = False;
                   ObjectName : String = '';ReadOnly : Boolean = False;_Tag_ : integer = 0 ;
-                  DefaultText : string = '';EditCharCase : TEditCharCase = ecNormal);
+                  DefaultText : string = '';EditCharCase : TEditCharCase = ecNormal; EditMask : string = '');
 var
   cxEdit : TcxTextEditKadir;
+  cxEditMask : TcxMaskEdit;
   dxLa : TdxLayoutItem;
   dxLaG : TdxLayoutGroup;
+  control : TControl;
 begin
-  cxEdit := TcxTextEditKadir.Create(self);
+   if EditMask = ''
+   then begin
+        cxEdit := TcxTextEditKadir.Create(self);
 
-  cxEdit.Name := ifthen (Trim(ObjectName) = '', fieldName, Trim (ObjectName));
-  cxEdit.Text := DefaultText;
-  cxEdit.Tag := _Tag_;
-  cxEdit.Properties.ReadOnly := ReadOnly;
-  cxEdit.Properties.ValidateOnEnter := True;
-  cxEdit.Properties.CharCase := EditCharCase;
-  cxEdit.BosOlamaz := Zorunlu;//KontrolZorunlumu(TForm(sender).Tag,fieldName); //Zorunlu;
-  dxLa := TdxLayoutGroup(parent).CreateItemForControl(cxEdit);
-//  dxLa.ControlOptions.ShowBorder := true;
+        cxEdit.Name := ifthen (Trim(ObjectName) = '', fieldName, Trim (ObjectName));
+        cxEdit.Text := DefaultText;
+        cxEdit.Tag := _Tag_;
+        cxEdit.Properties.ReadOnly := ReadOnly;
+        cxEdit.Properties.ValidateOnEnter := True;
+        cxEdit.Properties.CharCase := EditCharCase;
+        cxEdit.BosOlamaz := Zorunlu;//KontrolZorunlumu(TForm(sender).Tag,fieldName); //Zorunlu;
+        cxEdit.Width := uzunluk;
+        control := cxEdit;
+   end
+   else
+   begin
+        cxEditMask := TcxMaskEdit.Create(self);
+
+        cxEditMask.Name := ifthen (Trim(ObjectName) = '', fieldName, Trim (ObjectName));
+        cxEditMask.Text := DefaultText;
+        cxEditMask.Tag := _Tag_;
+        cxEditMask.Properties.ReadOnly := ReadOnly;
+        cxEditMask.Properties.ValidateOnEnter := True;
+        cxEditMask.Properties.CharCase := EditCharCase;
+      //  cxEditMask.BosOlamaz := Zorunlu;//KontrolZorunlumu(TForm(sender).Tag,fieldName); //Zorunlu;
+        cxEditMask.Width := uzunluk;
+        cxEditMask.Properties.EditMask := EditMask;
+        control := cxEditMask;
+   end;
+
+
+
+  dxLa := TdxLayoutGroup(parent).CreateItemForControl(control);
+
+  //  dxLa.ControlOptions.ShowBorder := true;
   dxLa.Name := 'dxLa'+fieldName;
   dxLa.AlignHorz := ahLeft;
-  cxEdit.Width := uzunluk;
  // dxLa.Width := uzunluk;
   dxLa.Caption := caption;
 //  SpaceItem := TdxLayoutEmptySpaceItem.Create(self);
@@ -1615,11 +1658,11 @@ begin
  //     SpaceItem.Parent := TdxLayoutGroup(findcomponent(grup));
     end;
 
-  cxEdit.Style.Color := clWhite;
-  cxEdit.OnEnter := cxEditEnter;
-  cxEdit.OnExit := cxEditExit;
-  cxEdit.OnKeyDown := cxTextEditKeyDown;
-  cxEdit.Properties.OnEditValueChanged := PropertiesEditValueChanged;
+  TcxTextEdit(control).Style.Color := clWhite;
+  TcxTextEdit(control).OnEnter := cxEditEnter;
+  TcxTextEdit(control).OnExit := cxEditExit;
+  TcxTextEdit(control).OnKeyDown := cxTextEditKeyDown;
+  TcxTextEdit(control).Properties.OnEditValueChanged := PropertiesEditValueChanged;
 end;
 
 procedure TGirisForm.setDataStringMemo(sender : Tform ; fieldName ,caption: string; parent : TdxLayoutGroup; grup : string;uzunluk,yukseklik : integer);
@@ -1922,7 +1965,7 @@ end;
 
 
 procedure TGirisForm.setDataStringChk(sender : Tform ; fieldName,caption : string;
-     parent : TdxLayoutGroup;grup : string ;uzunluk : integer);
+     parent : TdxLayoutGroup;grup : string ;uzunluk : integer ; tip : CheckTip = ctBol);
 var
   cxCheck : TcxCheckBox;
   dxLaC : TdxLayoutItem;
@@ -1932,11 +1975,24 @@ begin
   cxCheck.Name := fieldName;
   cxCheck.Transparent := True;
   cxCheck.Caption := caption;
+
+  if tip = ctBol
+  then begin
+    cxCheck.Properties.ValueChecked := 'True';
+    cxCheck.Properties.ValueUnchecked := 'False';
+  end
+  else
+  begin
+    cxCheck.Properties.ValueChecked := 1;
+    cxCheck.Properties.ValueUnchecked := 0;
+  end;
+
   dxLaC := TdxLayoutGroup(parent).CreateItemForControl(cxCheck);
   dxLaC.Name := 'dxLa'+fieldName;
   dxLaC.AlignHorz := ahLeft;
   dxLaC.Width := uzunluk;
   dxLaC.Caption := '';
+
 
   if grup = '' then
     dxLaC.Parent := parent

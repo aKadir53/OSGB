@@ -11,6 +11,7 @@ type sqlType = (sql_Select,sql_Exec,sql_sp,sql_fn,sql_new,sql_edit,sql_delete,sq
 type showDialog = (OFShow,OFShowModal);
 type userGroup = (ugUser,ugGroup);
 type izinKontrol = (ikEvet,ikHayir);
+type CheckTip = (ctBol,ctint);
 
 
 type
@@ -416,6 +417,7 @@ type
     doktor : string;
     doktorAdi : string;
     protokolNo : string;
+    takipNo : string;
 end;
 
 type
@@ -444,9 +446,9 @@ type
     Yetkili : string;
     YetkiliMail : String;
     YetkiliMobil : String;
-    IGU : string;
+    IGU : variant;
     IGUMail : string;
-    doktor : string;
+    doktor : variant;
     doktorMail : string;
     calisanTemsilci : string;
     calisanTemsilciMail : string;
@@ -459,7 +461,7 @@ type
     firmaYetkiliMailBilgileri : string;
     isgKurulEkibiMailBilgileri : string;
     subeSiciNo : string;
-    DigerSaglikPers : string;
+    DigerSaglikPers : variant;
     BolgeMudurlukSicilNo : string;
     MuayeneProtokolNo : string;
     DoktorCalismaDakika : string;
