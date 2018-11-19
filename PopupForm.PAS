@@ -53,6 +53,7 @@ type
     cxGridLevel2: TcxGridLevel;
     peryotR: TcxImageComboBox;
     List: TListeAc;
+    Olcumler: TcxCheckGroupKadir;
     procedure txtDozClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure txtMsgEnter(Sender: TObject);
@@ -824,6 +825,12 @@ riskDuzenle,yeniRisk :
                     datalar.FirmaSubeBilgi.Adres :=  TcxTextEdit(FindComponent('Adres')).EditValue;
                     datalar.FirmaSubeBilgi.KapaliAlan :=  TcxTextEdit(FindComponent('KapaliAlan')).EditValue;
                     datalar.FirmaSubeBilgi.AcikAlan :=  TcxTextEdit(FindComponent('AcikAlan')).EditValue;
+
+               end;
+   olcumEkle :
+               begin
+                  datalar.OrtamOlcum.Bolum := TcxImageComboKadir(FindComponent('Bolum')).EditValue;
+                  datalar.OrtamOlcum.Olcumler :=  TcxCheckGroupKadir(FindComponent('Olcumler')).getItemCheckArrayOfString;
 
                end;
 
@@ -2030,6 +2037,24 @@ ptPersonelTetkikleri :
                   TcxTextEdit(FindComponent('AcikAlan')).EditValue := datalar.FirmaSubeBilgi.AcikAlan;
 
                end;
+   olcumEkle :
+               begin
+                  cxTab.Width := 150;
+                  ClientHeight := 600;
+                  ClientWidth := 450;
+                  setDataStringIC(self,'Bolum','Bolum Seçin',kolon1,'',150,'RDS_RiskBolum','kod','tanimi');
+                  TcxImageComboKadir(FindComponent('Bolum')).EditValue := datalar.OrtamOlcum.Bolum;
+
+                  Olcumler.Conn := Datalar.ADOConnection2;
+                  Olcumler.TableName := 'OrtamOlcumTipleri';
+                  Olcumler.Filter := '';
+                  setDataStringKontrol(self,Olcumler,'Olcumler','',kolon1,'',250,250);
+
+
+
+
+               end;
+
   end;
 
 

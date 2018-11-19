@@ -608,6 +608,17 @@ type
     DenetimDefterNo : String;
   end;
 
+  ArrayOfString = array of string;
+
+  TOlcumKriter = record
+    Bolum : String;
+    Olcumler : ArrayOfString;
+  end;
+
+
+
+
+
   TYillikCalismaPlani = record
     faliyetid : integer;
     peryod : integer;
@@ -757,6 +768,7 @@ Const
   TagfrmSirketYillikEgitimPlan = 990;
   TagfrmKroki = 1000;
   TagfrmHastaRaporlari = 1010;
+  TagfrmOrtamOlcum = 1020;
 
 
   Kaydet = 0;
@@ -840,6 +852,8 @@ Const
   userSifre = 62;
   yeniSube = 63;
   SubeDuzenle = 64;
+  olcumEkle =  65;
+  olcumDuzenle = 66;
 
 
   sp_HastaGelis = 'exec sp_HastaGelisleri ';

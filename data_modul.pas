@@ -313,6 +313,7 @@ type
    YeniRecete : TYeniRecete;
    Risk : TRiskRecord;
    SahaDenetim : TSahaDenetim;
+   OrtamOlcum : TOlcumKriter;
    KKD : TKKDREcord;
    SeansOlusturPrm : TSeansOlusturPrm;
    TeleEkg : TTeleEKG;
