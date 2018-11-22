@@ -617,8 +617,9 @@ begin
          datalar.Foto := TJpegImage.Create;
          try
            try
-              Dataset := datalar.QuerySelect('select tanimi,Foto from ' + Table + ' where kod = ' + QuotedStr(where));
+              Dataset := datalar.QuerySelect('select tanimi,Foto,cinsiyet from ' + Table + ' where kod = ' + QuotedStr(where));
               datalar.userTanimi := Dataset.FieldByName('tanimi').AsString;
+              datalar.Cinsiyet := Dataset.FieldByName('cinsiyet').AsVariant;
               if not Dataset.FieldByName('foto').IsNull
               then
                datalar.Foto.Assign(Dataset.FieldByName('foto'))
@@ -637,8 +638,14 @@ begin
            datalar.Foto := TJpegImage.Create;
            g := TBitmap.Create;
 
-           if datalar.IGU <> '' then datalar.FotoImage.GetBitmap(0,g);
-           if datalar.doktorKodu <> '' then datalar.FotoImage.GetBitmap(1,g);
+           //bayan igu 4 erkek 0
+           //bayan doktor 3 erkek 1
+           if datalar.IGU <> '' then
+            if datalar.Cinsiyet = 0 then datalar.FotoImage.GetBitmap(0,g) else datalar.FotoImage.GetBitmap(4,g);
+           if datalar.doktorKodu <> '' then
+            if datalar.Cinsiyet = 0 then datalar.FotoImage.GetBitmap(1,g) else datalar.FotoImage.GetBitmap(3,g);
+
+
             datalar.Foto.Assign(g);
           finally
            g.free;

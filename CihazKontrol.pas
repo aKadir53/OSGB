@@ -326,7 +326,7 @@ begin
   Then begin
    TcxImageComboKadir(FindComponent('KontrolCihaz')).Filter := ' sirketKod = ' + vartostr(TcxImageComboKadir(FindComponent('SirketKod')).EditingValue);
    TcxImageComboKadir(FindComponent('IGU')).TableName := SirketIGUToSQLStr(TcxImageComboKadir(FindComponent('sirketKod')).EditingValue);
-   TcxImageComboKadir(FindComponent('IGU')).Filter := '';
+   TcxImageComboKadir(FindComponent('IGU')).Filter := ' durum = ''Aktif''';
 
   end;
 
@@ -450,7 +450,7 @@ begin
   sirketlerx.DisplayField := 'Tanimi';
   sirketlerx.BosOlamaz := False;
   sirketlerx.Enabled := False;
-  sirketlerx.Filter := '';
+  sirketlerx.Filter := ' durum = ''Aktif''';
   setDataStringKontrol(self,sirketlerx,'IGU','Ýþ Güvenlik Uzm',Kolon1,'',120,0,alNone,'');
 
 

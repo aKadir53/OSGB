@@ -134,7 +134,6 @@ object frmReceteSablon: TfrmReceteSablon
       Align = alTop
       Caption = '  '#304'la'#231'lar  '
       TabOrder = 0
-      ExplicitWidth = 479
       DesignSize = (
         721
         138)

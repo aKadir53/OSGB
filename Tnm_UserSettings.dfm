@@ -55,6 +55,10 @@ object frmUsers: TfrmUsers
     ClientRectTop = 26
     object cxTabSheet1: TcxTabSheet
       Caption = #304#351'lem Yetkiler'
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       object cxGrid2: TcxGrid
         Left = 0
         Top = 0
@@ -96,6 +100,10 @@ object frmUsers: TfrmUsers
     object cxTabSheet2: TcxTabSheet
       Caption = 'Men'#252' Yetkileri'
       ImageIndex = 1
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       object cxGrid1: TcxGrid
         Left = 0
         Top = 0
@@ -250,6 +258,9 @@ object frmUsers: TfrmUsers
       Align = alTop
       PanelStyle.Active = True
       TabOrder = 1
+      ExplicitLeft = 2
+      ExplicitTop = -2
+      ExplicitWidth = 396
       Height = 28
       Width = 394
       object txtYeniGrup: TcxTextEditKadir
@@ -259,6 +270,7 @@ object frmUsers: TfrmUsers
         Align = alClient
         Properties.Alignment.Vert = taVCenter
         TabOrder = 0
+        ExplicitHeight = 21
         Width = 263
       end
       object cxLabel1: TcxLabel

@@ -461,9 +461,9 @@ begin
  sube := ' and IGU = ' + QuotedStr(datalar.IGU);
 
  TcxImageComboKadir(FindComponent('hazirlayan')).TableName := SirketIGUToSQLStr(TcxImageComboKadir(FindComponent('sirketKod')).EditingValue);
- TcxImageComboKadir(FindComponent('hazirlayan')).Filter := '';
+ TcxImageComboKadir(FindComponent('hazirlayan')).Filter := ' durum = ''Aktif''';
  TcxImageComboKadir(FindComponent('doktor')).TableName := SirketDoktorToSQLStr(TcxImageComboKadir(FindComponent('sirketKod')).EditingValue);
- TcxImageComboKadir(FindComponent('doktor')).Filter := '';
+ TcxImageComboKadir(FindComponent('doktor')).Filter := ' durum = ''Aktif''';
 
 (*
  if Assigned(TcxImageComboKadir(FindComponent('subeKod')))

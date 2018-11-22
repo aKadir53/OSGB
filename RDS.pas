@@ -1303,7 +1303,7 @@ begin
   Method.DisplayField := 'Tanimi';
   Method.BosOlamaz := False;
   Method.Enabled := False;
-  Method.Filter := '';
+  Method.Filter := ' durum = ''Aktif''';
   setDataStringKontrol(self,Method,'hazirlayan','Ýþ Güvenlik Uzm',Kolon1,'',120,0,alNone,'');
 
 

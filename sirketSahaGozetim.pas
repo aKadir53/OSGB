@@ -709,7 +709,7 @@ begin
   IGU.ValueField := 'kod';
   IGU.DisplayField := 'Tanimi';
   IGU.BosOlamaz := False;
-  IGU.Filter := '';
+  IGU.Filter := ' durum = ''Aktif''';
   setDataStringKontrol(self,IGU,'hazirlayan','Ýþ Güvenlik Uzm',Kolon1,'trh',100,0,alNone,'');
 
 //  setDataString(self,'hazirlayan','Hazýrlayan',Kolon1,'trh',80,false,'',True);

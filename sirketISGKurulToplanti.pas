@@ -372,7 +372,7 @@ begin
   igu.DisplayField := 'Tanimi';
   igu.BosOlamaz := False;
   igu.Enabled := False;
-  igu.Filter := '';
+  igu.Filter := ' durum = ''Aktif''';
   setDataStringKontrol(self,igu,'igu','Ýþ Güvenlik Uzm',Kolon1,'',150,0,alNone,'');
 
 
@@ -384,7 +384,7 @@ begin
   hekim.ValueField := 'kod';
   hekim.DisplayField := 'Tanimi';
   hekim.BosOlamaz := False;
-  hekim.Filter := '';
+  hekim.Filter := ' durum = ''Aktif''';
   hekim.Enabled := False;
   setDataStringKontrol(self,hekim,'hekim','Ýþyeri Hekimi',Kolon1,'',150,0,alNone,'');
 

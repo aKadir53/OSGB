@@ -216,7 +216,7 @@ begin
     doktorlar.ValueField := 'Kod';
     doktorlar.DisplayField := 'Tanimi';
     doktorlar.BosOlamaz := False;
-    doktorlar.Filter := '';
+    doktorlar.Filter := ' durum = ''Aktif''';
 
   Sablonlar.Active := true;
   SablonDetay.Active := true;

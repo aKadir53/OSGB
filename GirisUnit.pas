@@ -118,6 +118,7 @@ type
     Sayfa5_Kolon3: TdxLayoutGroup;
     Ado_Foto: TADOQuery;
     ListeNaceKodlari: TListeAc;
+    _CINSIYET_: TcxImageComboKadir;
 
     procedure cxKaydetClick(Sender: TObject);virtual;
     procedure cxButtonCClick(Sender: TObject);

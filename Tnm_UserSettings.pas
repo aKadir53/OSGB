@@ -362,7 +362,7 @@ begin
   doktor.ValueField := 'KOD';
   doktor.DisplayField := 'Tanimi';
   doktor.BosOlamaz := False;
-  doktor.Filter := '';
+  doktor.Filter := ' durum = ''Aktif''';
   setDataStringKontrol(self,doktor,'doktor','Doktor',kolon1,'',120);
   OrtakEventAta(doktor);
   doktor.Properties.OnChange := PropertiesEditValueChanged;
@@ -374,7 +374,7 @@ begin
   IGU.ValueField := 'KOD';
   IGU.DisplayField := 'Tanimi';
   IGU.BosOlamaz := False;
-  IGU.Filter := '';
+  IGU.Filter := ' durum = ''Aktif''';
   setDataStringKontrol(self,IGU,'IGU','Ýþ Güvenlik Uzman',kolon1,'',120);
   OrtakEventAta(IGU);
   IGU.Properties.OnChange := PropertiesEditValueChanged;

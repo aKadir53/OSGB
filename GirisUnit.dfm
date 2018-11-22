@@ -625,6 +625,31 @@ object GirisForm: TGirisForm
       ListeAcTus = 0
       Width = 64
     end
+    object _CINSIYET_: TcxImageComboKadir
+      Tag = -100
+      Left = 288
+      Top = 6
+      Properties.ClearKey = 46
+      Properties.Items = <
+        item
+          Description = 'Bay'
+          ImageIndex = 3
+          Value = '0'
+        end
+        item
+          Description = 'Bayan'
+          ImageIndex = 2
+          Value = '1'
+        end>
+      Style.LookAndFeel.NativeStyle = False
+      StyleDisabled.LookAndFeel.NativeStyle = False
+      StyleFocused.LookAndFeel.NativeStyle = False
+      StyleHot.LookAndFeel.NativeStyle = False
+      TabOrder = 9
+      Visible = False
+      BosOlamaz = False
+      Width = 121
+    end
   end
   object cxButton1: TcxButton
     Left = 40
@@ -643,7 +668,7 @@ object GirisForm: TGirisForm
     Align = alClient
     TabOrder = 2
     TabStop = False
-    Properties.ActivePage = sayfa5
+    Properties.ActivePage = sayfa1
     Properties.Style = 11
     Properties.TabHeight = 10
     Properties.TabPosition = tpBottom

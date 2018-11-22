@@ -87,6 +87,12 @@ begin
         setDataString(self,'tanimi','Adý Soyadý',Kolon1,'',200,True);
         setDataString(self,'tcKimlikNo','TC Kimlik No',Kolon1,'',100,True);
 
+        _CINSIYET_.Visible := True;
+        _CINSIYET_.tag := 0;
+        OrtakEventAta(_CINSIYET_);
+        setDataStringKontrol(self,_CINSIYET_,'cinsiyet','Cinsiyeti',kolon1,'',200);
+
+
         bransKodu := TcxImageComboKadir.Create(self);
         bransKodu.Conn := Datalar.ADOConnection2;
         bransKodu.TableName := 'SERVIS_TNM';
@@ -200,6 +206,11 @@ begin
 
         setDataString(self,'tanimi','Adý Soyadý',Kolon1,'',200,True);
         setDataString(self,'tcKimlikNo','TC Kimlik No',Kolon1,'',150,True);
+
+        _CINSIYET_.Visible := True;
+        _CINSIYET_.tag := 0;
+        OrtakEventAta(_CINSIYET_);
+        setDataStringKontrol(self,_CINSIYET_,'cinsiyet','Cinsiyeti',kolon1,'',200);
 
         setDataString(self,'Sinifi','Sýnýfý',Kolon1,'', 20, True);
 

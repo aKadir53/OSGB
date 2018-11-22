@@ -1001,7 +1001,7 @@ inherited;
           Doktorlar.TableName := 'DoktorlarT';
           Doktorlar.ValueField := 'kod';
           Doktorlar.DisplayField := 'tanimi';
-          Doktorlar.Filter := '';
+          Doktorlar.Filter := ' durum = ''Aktif''';
           setDataStringKontrol(self,Doktorlar,'kod','Doktor',kolon1,'',200);
 
 
@@ -1069,7 +1069,7 @@ inherited;
           Doktorlar.TableName := 'SIRKETLER_TNM';
           Doktorlar.ValueField := 'sirketKod';
           Doktorlar.DisplayField := 'Tanimi';
-          Doktorlar.Filter := '';
+          Doktorlar.Filter := ' aKtif = 1';
           TcxImageComboKadir(FindComponent('sirketKod')).Properties.OnEditValueChanged := PropertiesEditValueChanged;
           setDataStringKontrol(self,Doktorlar, 'sirketKod','Firma',Kolon1,'',250);
 
@@ -1130,7 +1130,7 @@ inherited;
           Doktorlar.TableName := 'DoktorlarT';
           Doktorlar.ValueField := 'kod';
           Doktorlar.DisplayField := 'Tanimi';
-          Doktorlar.Filter := '';
+          Doktorlar.Filter := ' durum = ''Aktif''';
           setDataStringKontrol(self,Doktorlar,'Doktor','Doktor',kolon1,'',120);
           TcxImageComboKadir(FindComponent('Doktor')).EditValue := datalar.GelisDuzenleRecord.doktor;
 
@@ -1172,7 +1172,7 @@ inherited;
             Doktorlar.TableName := 'DoktorlarT';
             Doktorlar.ValueField := 'kod';
             Doktorlar.DisplayField := 'tanimi';
-            Doktorlar.Filter := '';
+            Doktorlar.Filter := ' durum = ''Aktif''';
             setDataStringKontrol(self,Doktorlar,'Doktor','Doktor',kolon1,'',120);
           end;
 

@@ -300,7 +300,7 @@ type
    AktifSirketAdi,AktifSirket ,AktifSube ,AktifSubeAdi,_donemSonlandir_ ,TenayMNTRequest , TenayBIORequest , DyobRequest , _database , _Tip : string;
    CentroResponse ,SMSHesapFrom,SMSHesapUser,SMSHesapSifre , AlpemixRun,AlpemixGrupAdi,AlpemixGrupParola : string;
    SMTPSunucu,SMTPUserName,SMTPPassword,SMTPPort : string;
-   _kurumKod  , _donemgoster : integer;
+   _kurumKod  , _donemgoster,Cinsiyet : integer;
    _YazilimGelistirici : integer;
    LisansBitis,LisansBasla,LisansTarih : string;
    LisansLimit : integer;

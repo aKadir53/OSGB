@@ -448,13 +448,13 @@ begin
 
   case Tcontrol(sender).Tag of
   -20 : begin
-          TopluDataset.Dataset0 := datalar.QuerySelect('select * from SirketSahaGozetim_view where id = ' +
-                                                        varTostr(TcxButtonEditKadir(FindComponent('id')).EditValue));
+          TopluDataset.Dataset0 := OrtamOlcumGrid.Dataset;
          // TopluDataset.Dataset1 := SahaGozetimGrid.Dataset;
 
-          PrintYap('DOF','Duzeltici Önleyici Faliyet','',TopluDataset);
+          PrintYap('011','Ortam Olcum','',TopluDataset);
         end;
   -30 : begin
+  (*
           FB := FirmaBilgileri(vartostr(TcxImageComboKadir(FindComponent('sirketKod')).EditValue));
         //  cxExceleGonder(SahaGozetimGrid,'DOF.xls');
           if (mailGonder(FB.YetkiliMail,'DÖF',
@@ -464,7 +464,7 @@ begin
              Then ShowMessageSkin('Email Bilgilendirmesi Yapýldý','','','info')
               else ShowMessageSkin('Email Bilgilendirmesi Yapýlamadý','','','info')
 
-
+       *)
         end;
   -24:begin
        dosya := TOpenDialog.Create(nil);

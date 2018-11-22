@@ -250,6 +250,8 @@ begin
 end;
 
 procedure TfrmFirmaKontrol.cxButtonCClick(Sender: TObject);
+var
+   TopluDataset : TDataSetKadir;
 begin
   inherited;
 
@@ -273,6 +275,13 @@ begin
 
   end;
   -27 : begin
+          TopluDataset.Dataset0 :=
+           datalar.QuerySelect('select * from FirmaKontrol_view where kontrolID = ' + QuotedStr(TcxButtonEditKadir(FindComponent('id')).Text));
+         // TopluDataset.Dataset1 := SahaGozetimGrid.Dataset;
+
+          PrintYap('012','Kontrol Form','',TopluDataset);
+
+
 
         end;
   end;
@@ -360,7 +369,7 @@ begin
 
 
 
-  Kontroler := ListeAcCreate('FirmaKontrol_view','id,sirket,Tarih',
+  Kontroler := ListeAcCreate('(select distinct kontrolID,sirket,Tarih,sirketKod,IGU from FirmaKontrol_view) T ','kontrolID,sirket,Tarih',
                        'ID,ÞirketAdý,Ýþlem Tarihi',
                        '40,250,80','FirmaKontrolList','Firma Kontrolleri',where,3,True);
 
@@ -428,7 +437,7 @@ begin
   IGU.DisplayField := 'Tanimi';
   IGU.BosOlamaz := False;
   IGU.Enabled := False;
-  IGU.Filter := '';
+  IGU.Filter := ' durum = ''Aktif''';
   setDataStringKontrol(self,IGU,'IGU','Ýþ Güvenlik Uzm',Kolon1,'xxid',120,0,alNone,'');
 
 
@@ -440,7 +449,7 @@ begin
   doktor.ValueField := 'kod';
   doktor.DisplayField := 'Tanimi';
   doktor.BosOlamaz := False;
-  doktor.Filter := '';
+  doktor.Filter := ' durum = ''Aktif''';
   doktor.Enabled := False;
   setDataStringKontrol(self,doktor,'doktor','Ýþyeri Hekimi',Kolon1,'xxid',120,0,alNone,'');
 

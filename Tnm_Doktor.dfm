@@ -22,32 +22,32 @@ object frmDoktorlar: TfrmDoktorlar
     Height = 153
     Width = 121
     object Foto: TcxImage
-      Left = 2
-      Top = -2
+      Left = 3
+      Top = 15
       Align = alClient
       Properties.ClearKey = 46
       Properties.PopupMenuLayout.MenuItems = []
       Properties.ReadOnly = False
       Properties.Stretch = True
       TabOrder = 0
-      ExplicitLeft = 3
-      ExplicitTop = 15
-      ExplicitWidth = 115
-      ExplicitHeight = 99
-      Height = 124
-      Width = 117
+      ExplicitLeft = 2
+      ExplicitTop = -2
+      ExplicitWidth = 117
+      ExplicitHeight = 124
+      Height = 99
+      Width = 115
     end
     object cxGroupBox1: TcxGroupBox
-      Left = 2
-      Top = 122
+      Left = 3
+      Top = 114
       Align = alBottom
       PanelStyle.Active = True
       TabOrder = 1
-      ExplicitLeft = 3
-      ExplicitTop = 114
-      ExplicitWidth = 115
+      ExplicitLeft = 2
+      ExplicitTop = 122
+      ExplicitWidth = 117
       Height = 29
-      Width = 117
+      Width = 115
       object cxFotoEkleButton: TcxButton
         Tag = -50
         Left = 2
