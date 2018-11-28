@@ -769,6 +769,7 @@ Const
   TagfrmKroki = 1000;
   TagfrmHastaRaporlari = 1010;
   TagfrmOrtamOlcum = 1020;
+  TagfrmCihazKontrolListesi = 1030;
 
 
   Kaydet = 0;

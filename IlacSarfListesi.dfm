@@ -288,7 +288,7 @@ object frmIlacSarf: TfrmIlacSarf
         Styles.FilterRowInfoText = cxStyle2
         object gridIlacSarfColumn1: TcxGridDBColumn
           Caption = 'Barkod'
-          DataBinding.FieldName = 'Code'
+          DataBinding.FieldName = 'barkod'
           PropertiesClassName = 'TcxTextEditProperties'
           Properties.Alignment.Horz = taLeftJustify
           Properties.Alignment.Vert = taVCenter
@@ -300,7 +300,7 @@ object frmIlacSarf: TfrmIlacSarf
         end
         object gridIlacSarfColumn2: TcxGridDBColumn
           Caption = #304'la'#231' Ad'#305
-          DataBinding.FieldName = 'NAME1'
+          DataBinding.FieldName = 'ilacAdi'
           PropertiesClassName = 'TcxTextEditProperties'
           Properties.Alignment.Horz = taLeftJustify
           Properties.Alignment.Vert = taVCenter
@@ -347,7 +347,7 @@ object frmIlacSarf: TfrmIlacSarf
           Visible = False
         end
         object gridIlacSarfColumn8: TcxGridDBColumn
-          DataBinding.FieldName = 'kulYol'
+          DataBinding.FieldName = 'YOL'
           Visible = False
         end
       end

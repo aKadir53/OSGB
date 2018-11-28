@@ -83,6 +83,7 @@ type
     procedure DataWrite(_record_ : Pointer);
     procedure DataRead(_record_ : Pointer);
     procedure GridColumnAllReadOnly;
+    procedure DBGridDblClick(Sender: TObject);
 
   private
     { Private declarations }
@@ -258,6 +259,14 @@ begin
     TFirmaBilgi(_record_^).KapaliAlan :=   cxGrid3.Dataset.fieldbyname('KapaliAlan').asstring;
     TFirmaBilgi(_record_^).AcikAlan :=   cxGrid3.Dataset.fieldbyname('AcikAlan').asstring;
 
+end;
+
+procedure TfrmPopupDBGridForm.DBGridDblClick(Sender: TObject);
+var
+  ADone : Boolean;
+begin
+  inherited;
+   DBGridNavigatorButtonsButtonClick(self,9,ADone);
 end;
 
 procedure TfrmPopupDBGridForm.DBGridNavigatorButtonsButtonClick(Sender: TObject;

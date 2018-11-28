@@ -1278,23 +1278,33 @@ object GirisForm: TGirisForm
     ParentBackground = False
     ParentColor = False
     ParentFont = False
-    Style.BorderStyle = ebsOffice11
-    Style.Color = clRed
+    Style.BorderColor = clBlack
+    Style.BorderStyle = ebsSingle
+    Style.Color = clDefault
     Style.Font.Charset = DEFAULT_CHARSET
     Style.Font.Color = clWindowText
     Style.Font.Height = -11
     Style.Font.Name = 'Tahoma'
     Style.Font.Style = [fsBold]
+    Style.LookAndFeel.NativeStyle = True
+    Style.LookAndFeel.SkinName = 'UserSkin'
     Style.Shadow = False
+    Style.TransparentBorder = False
     Style.IsFontAssigned = True
+    StyleDisabled.LookAndFeel.NativeStyle = True
+    StyleDisabled.LookAndFeel.SkinName = 'UserSkin'
+    StyleFocused.LookAndFeel.NativeStyle = True
+    StyleFocused.LookAndFeel.SkinName = 'UserSkin'
+    StyleHot.LookAndFeel.NativeStyle = True
+    StyleHot.LookAndFeel.SkinName = 'UserSkin'
     TabOrder = 5
     Visible = False
     Height = 64
     Width = 501
     object pnlDurumImage: TcxImage
       Tag = -100
-      Left = 3
-      Top = 3
+      Left = 2
+      Top = 2
       Align = alLeft
       Picture.Data = {
         0B546478504E47496D61676589504E470D0A1A0A0000000D4948445200000030
@@ -1447,15 +1457,15 @@ object GirisForm: TGirisForm
         7935AE55479994CB0000000049454E44AE426082}
       Properties.GraphicClassName = 'TdxPNGImage'
       TabOrder = 0
-      ExplicitLeft = 2
-      ExplicitTop = 2
-      ExplicitHeight = 60
-      Height = 58
+      ExplicitLeft = 3
+      ExplicitTop = 3
+      ExplicitHeight = 58
+      Height = 60
       Width = 65
     end
     object pnlDurumDurum: TcxGroupBox
-      Left = 68
-      Top = 3
+      Left = 67
+      Top = 2
       Align = alClient
       Alignment = alCenterCenter
       Caption = #304#351'leminiz Yap'#305'l'#305'yor , l'#252'tfen bekleyiniz...'
@@ -1473,21 +1483,21 @@ object GirisForm: TGirisForm
       StyleFocused.LookAndFeel.NativeStyle = True
       StyleHot.LookAndFeel.NativeStyle = True
       TabOrder = 1
-      ExplicitLeft = 67
-      ExplicitTop = 2
-      ExplicitWidth = 432
-      ExplicitHeight = 60
-      Height = 58
-      Width = 430
+      ExplicitLeft = 68
+      ExplicitTop = 3
+      ExplicitWidth = 430
+      ExplicitHeight = 58
+      Height = 60
+      Width = 432
       object pBar: TcxProgressBar
         Left = 2
-        Top = 37
+        Top = 39
         Align = alBottom
         TabOrder = 0
         Visible = False
-        ExplicitTop = 39
-        ExplicitWidth = 428
-        Width = 426
+        ExplicitTop = 37
+        ExplicitWidth = 426
+        Width = 428
       end
     end
   end

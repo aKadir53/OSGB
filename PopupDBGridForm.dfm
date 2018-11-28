@@ -81,6 +81,7 @@ object frmPopupDBGridForm: TfrmPopupDBGridForm
       LevelTabs.Style = 1
       ExceleGonder = False
       object DBGrid: TcxGridDBTableView
+        OnDblClick = DBGridDblClick
         Navigator.Buttons.OnButtonClick = DBGridNavigatorButtonsButtonClick
         Navigator.Buttons.First.Visible = False
         Navigator.Buttons.PriorPage.Visible = False

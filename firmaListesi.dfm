@@ -595,6 +595,12 @@ object frmFirmaListe: TfrmFirmaListe
       ImageIndex = 81
       OnClick = cxButtonCClick
     end
+    object F4: TMenuItem
+      Tag = -7
+      Caption = 'Firma Ekipman Kontrol Listesi'
+      ImageIndex = 7
+      OnClick = cxButtonCClick
+    end
     object N4: TMenuItem
       Caption = '-'
     end

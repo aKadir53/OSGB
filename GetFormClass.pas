@@ -47,7 +47,8 @@ uses message,Data_Modul,AnaUnit,message_y,popupForm,rapor,TedaviKart,Son6AylikTe
              Tnm_Doktor,LabTestAyarlari,SahaSaglikGozetim, CariHesapBorcAlacakToplam,
              PopupDBGridForm,PopupDBVerticalGridForm,AjandaOzet,sirketISGKurulToplanti,
              Tnm_Ilaclar, PersonelEgitimFrm, About_Frm, MerkezBilgisi,sirketYillikCalismaPlan,
-             sirketYillikEgitimPlan,HizmetKart, CihazKontrol,firmaListesi,Kroki,sirketOrtamOlcum;
+             sirketYillikEgitimPlan,HizmetKart, CihazKontrol,firmaListesi,Kroki,sirketOrtamOlcum,
+             firmaCihazKontrolListesi;
 
 
 
@@ -251,6 +252,8 @@ begin
    TagfrmSirketYillikEgitimPlan : Result := TfrmSirketYillikEgitimPlan;
    TagfrmKroki : Result := TfrmKroki;
    TagfrmOrtamOlcum : Result := TfrmSirketOrtamOlcum;
+   TagfrmCihazKontrolListesi : Result := TfrmCihazKontrolListesi;
+
  //  TagfrmAjandaOzet : Result := TfrmAjandaOzet;
   end;
 end;
@@ -322,6 +325,7 @@ begin
    TagfrmLabKabul : Result := frmLabaratuvarKabul;
    TagfrmKroki : Result := frmKroki;
    TagfrmOrtamOlcum : Result := frmSirketOrtamOlcum;
+   TagfrmCihazKontrolListesi : Result := frmCihazKontrolListesi;
 //   TagfrmAjandaOzet : Result := frmAjandaOzet;
 
   end;
@@ -395,6 +399,8 @@ begin
      TagfrmSirketYillikEgitimPlan : frmSirketYillikEgitimPlan  := TfrmSirketYillikEgitimPlan.Create(Tab);
      TagfrmKroki : frmKroki  := TfrmKroki.Create(Tab);
      TagfrmOrtamOlcum : frmSirketOrtamOlcum := TfrmSirketOrtamOlcum.Create(Tab);
+
+     TagfrmCihazKontrolListesi : frmCihazKontrolListesi := TfrmCihazKontrolListesi.Create(Tab);
   end;
   try
     if not (Form is TGirisForm) then
@@ -530,6 +536,7 @@ begin
      TagfrmSirketYillikCalismaPlan : frmSirketYillikCalismaPlan  := TfrmSirketYillikCalismaPlan.Create(Tab);
      TagfrmKroki : frmKroki  := TfrmKroki.Create(Tab);
      TagfrmOrtamOlcum : frmSirketOrtamOlcum := TfrmSirketOrtamOlcum.Create(Tab);
+     TagfrmCihazKontrolListesi : frmCihazKontrolListesi := TfrmCihazKontrolListesi.Create(Tab);
 
   end;
   try
@@ -648,7 +655,8 @@ begin
     TagfrmSirketYillikCalismaPlan : Application.CreateForm(TfrmSirketYillikCalismaPlan , frmSirketYillikCalismaPlan);
     TagfrmSirketYillikEgitimPlan : Application.CreateForm(TfrmSirketYillikEgitimPlan , frmSirketYillikEgitimPlan);
     TagfrmKroki : Application.CreateForm(TfrmKroki, frmKroki);
-    TagfrmOrtamOlcum : Application.CreateForm(TfrmSirketOrtamOlcum, frmSirketOrtamOlcum)
+    TagfrmOrtamOlcum : Application.CreateForm(TfrmSirketOrtamOlcum, frmSirketOrtamOlcum) ;
+     TagfrmCihazKontrolListesi : Application.CreateForm(TfrmCihazKontrolListesi, frmCihazKontrolListesi);
   end;
   try
     Form := TGirisForm(FormClassType(abs(FormTag)));

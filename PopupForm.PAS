@@ -451,6 +451,11 @@ begin
             end;
       ReceteIlacEkle,ReceteIlacDuzenle :
             begin
+
+           if (TcxTextEdit(FindComponent('doz')).EditValue <> '') and
+              (TcxCurrencyEdit(FindComponent('adet')).EditValue <> '') and
+              (TcxCurrencyEdit(FindComponent('adet')).EditValue <> '0')
+            then begin
               datalar.ReceteSatir.barkod := TcxTextEdit(FindComponent('code')).EditValue;
               datalar.ReceteSatir.barkodadi := TcxLabel(FindComponent('Label'+'code')).Caption;
               datalar.ReceteSatir.kutuadet := TcxCurrencyEdit(FindComponent('adet')).EditValue;
@@ -460,6 +465,14 @@ begin
               datalar.ReceteSatir.doz1 := TcxCurrencyEdit(FindComponent('doz1')).EditValue;
               datalar.ReceteSatir.doz2 := TcxCurrencyEdit(FindComponent('doz2')).EditValue;
               datalar.ReceteSatir.kulyol := TcxTextEdit(FindComponent('kulYol')).EditValue;
+            end
+            else
+            begin
+               ShowMessageSkin(TcxLabel(FindComponent('Label'+'code')).Caption + ' için doz veya adet bilgisi girilmemiþ','','','info');
+              exit;
+            end;
+
+
             end;
       ReceteAckEkle,ReceteAckDuzenle,ReceteIlacAckDuzenle,ReceteIlacAckEkle :
             begin

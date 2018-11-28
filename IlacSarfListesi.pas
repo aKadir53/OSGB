@@ -162,24 +162,25 @@ begin
     FADO_ILACSARF.Close;
     FADO_ILACSARF.SQL.Clear;
 
-
+    DurumGoster(True,False,'Ýlaç Listesi Yükleniyor...Lütfen Bekleyiniz...',0);
     if not chkSIK.Checked
     then begin
-       sql := 'select * from OSGB_MASTER.DBO.ILACLARM order by NAME1';
+       sql := 'select *,ICD TANI,kulYOL YOL from OSGB_MASTER.DBO.ilacListesi order by ilacAdi';
     end
     else
     begin
-      sql := 'select *,D.ICD TANI,D.kulYol YOL from OSGB_MASTER.DBO.ILACLARM I ' +
-             ' join OSGB_MASTER.DBO.doktorSIKKullanim D on D.barkod = I.code' +
+      sql := 'select *,D.ICD TANI,D.kulYol YOL from OSGB_MASTER.DBO.ilacListesi I ' +
+             ' join OSGB_MASTER.DBO.doktorSIKKullanim D on D.barkod = I.barkod' +
              ' where drTC = ' + QuotedStr(datalar.doktorTC) +
              ' and D.tip = ''ILAC''' +
-             ' order by NAME1 ';
+             ' order by ilacAdi ';
     end;
 
     datalar.QuerySelect(FADO_ILACSARF, sql);
     FLastSikKull := iTmp;
   end;
   FADO_ILACSARF.First;
+  DurumGoster(False,False,'');
 
 end;
 
@@ -223,7 +224,9 @@ begin
          Eklenenler.First;
          for i := 1 to Eklenenler.RecordCount do
          begin
-           if Eklenenler.fieldbyname('doz').AsString <> ''
+           if (Eklenenler.fieldbyname('doz').AsString <> '') and
+              (Eklenenler.fieldbyname('adet').AsString <> '') and
+              (Eklenenler.fieldbyname('adet').AsString <> '0')
            Then Begin
              if frmHastaRecete.ADO_RECETE_DETAY.Locate('ilacKodu;receteId',VarArrayOf([Eklenenler.fieldbyname('ETKENMADDE').AsString,
                                                                                       frmHastaRecete.ADO_Recete.fieldbyname('id').AsString]),[]) = True
@@ -357,7 +360,7 @@ begin
            End // if end
            Else
            Begin
-              ShowMessageSkin(Eklenenler.fieldbyname('Formu').AsString + ' için doz girilmemiþ','','','info');
+              ShowMessageSkin(Eklenenler.fieldbyname('Formu').AsString + ' için doz veya adet bilgisi girilmemiþ','','','info');
               exit;
            End;
          end; // for end
@@ -627,8 +630,8 @@ begin
     then begin
 
               Eklenenler.Append;
-              Eklenenler.FieldByName('ETKENMADDE').AsString := FADO_ILACSARF.fieldbyname('code').AsString;
-              Eklenenler.FieldByName('formu').AsString := FADO_ILACSARF.fieldbyname('NAME1').AsString;
+              Eklenenler.FieldByName('ETKENMADDE').AsString := FADO_ILACSARF.fieldbyname('barkod').AsString;
+              Eklenenler.FieldByName('formu').AsString := FADO_ILACSARF.fieldbyname('ilacAdi').AsString;
               Eklenenler.FieldByName('KYolu').AsString := FADO_ILACSARF.fieldbyname('YOL').AsString;
               Eklenenler.FieldByName('tani').AsString := FADO_ILACSARF.fieldbyname('TANI').AsString;
               Eklenenler.FieldByName('doz').AsString := FADO_ILACSARF.fieldbyname('doz').AsString;

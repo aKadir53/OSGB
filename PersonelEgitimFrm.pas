@@ -101,7 +101,7 @@ type
   public
     { Public declarations }
     function Init(Sender: TObject) : Boolean; override;
-    function EgitimKaydetCSGB(egitim : egitimBilgisi ; pin,cardType,_xml_,_xmlSOAP_ : string) : egitimBilgisiCevap; overload;
+    function EgitimKaydetCSGB(egitim : egitimBilgisi ; pin,cardType,_xml_,_xmlSOAP_,egitimID : string) : egitimBilgisiCevap; overload;
     function EgitimKaydetCSGB(egitim : cokluEgitimBilgisi ; pin,cardType,_xml_,_xmlSOAP_ : string) : cokluEgitimCevapDVO; overload;
 
   end;
@@ -162,7 +162,7 @@ begin
 end;
 
 
-function TfrmPersonelEgitim.EgitimKaydetCSGB(egitim : egitimBilgisi ; pin,cardType,_xml_,_xmlSOAP_ : string) : egitimBilgisiCevap;
+function TfrmPersonelEgitim.EgitimKaydetCSGB(egitim : egitimBilgisi ; pin,cardType,_xml_,_xmlSOAP_,egitimID : string) : egitimBilgisiCevap;
 var
   sayi,EgitimString : string;
   Cvp : egitimBilgisiCevap;
@@ -184,10 +184,10 @@ begin
       end
       else begin
         ShowMessageSkin(Cvp.message_,'','','info');
-        Cvp.sorguNo := egitim.sorguNo;
+      //  Cvp.sorguNo := egitim.sorguNo;
       end;
 
-      EgitimKaydetCSGBCvpBilgiGuncelle(Cvp.message_,inttostr(Cvp.sorguNo));
+      EgitimKaydetCSGBCvpBilgiGuncelle(Cvp.message_,egitimID);
 
     except
       on E : Exception do
@@ -440,7 +440,7 @@ begin
        if TcxButtonEditKadir(FindComponent('id')).EditingValue = '' then exit;
 
       // if veri <> nil then
-       EgitimKaydetCSGB(veri,pin,cardType,_xml_,_xmlSOAP_);
+       EgitimKaydetCSGB(veri,pin,cardType,_xml_,_xmlSOAP_,TcxButtonEditKadir(FindComponent('id')).Text);
 
      //  if VeriCoklu <> nil then
      //  EgitimKaydetCSGB(VeriCoklu,pin,cardType,_xml_,_xmlSOAP_);
@@ -865,6 +865,7 @@ begin
   TcxImageComboKadir(FindComponent('EgitimTuru')).Properties.OnEditValueChanged := PropertiesEditValueChanged;
 
   addButton(self,nil,'btnEgitimler','','Egitimler',sayfa4_kolon1,'etg',50,ButtonClick,30);
+  TcxButtonKadir(FindComponentButtonName('btnEgitimler',self)).Enabled := False;
 
 
 
@@ -1050,7 +1051,7 @@ begin
 
   case TControl(sender).Tag  of
   Kaydet : begin
-
+                TcxButtonKadir(FindComponentButtonName('btnEgitimler',self)).Enabled := True;
            end;
     end;
 
@@ -1073,6 +1074,7 @@ begin
              xObj := TcxButtonEditKadir (FindComponent('id'));
              xObj.Text := '';
              ResetDetayDataset;
+             TcxButtonKadir(FindComponentButtonName('btnEgitimler',self)).Enabled := False;
            end;
     end;
   finally

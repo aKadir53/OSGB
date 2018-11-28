@@ -183,15 +183,15 @@ type
 
 
   TReceteImzala = procedure(Id : integer;
-                      recete : string;
-                      doktorkullanici : string;
-                      doktrsifre : string;
-                      pin : string;
-                      doktorTc : string;
+                      recete : PWideChar;
+                      doktorkullanici : PWideChar;
+                      doktrsifre : PWideChar;
+                      pin : PWideChar;
+                      doktorTc : PWideChar;
                       TesisKodu : integer;
                        var sonuc : PWideChar;
                       url : string;
-                      cardType : string); stdcall;
+                      cardType : PWideChar); stdcall;
 
   TReceteGonder = procedure(Id : integer;
                       recete : string;
@@ -281,7 +281,7 @@ begin
 
     @imzala := findMethod(dllHandle, 'ReceteImzalaGonder');
     if addr(imzala) <> nil then
-    imzala(receteId,recete,doktorKullanici,doktorsifre,pin,doktorTc,TesisKodu,ss,url,cardType);
+    imzala(receteId,PWidechar(recete),PWidechar(doktorKullanici),PWidechar(doktorsifre),PWidechar(pin),PWidechar(doktorTc),TesisKodu,ss,url,PWidechar(cardType));
 
     ReceteImzalaGonder := ss;
 
@@ -689,12 +689,12 @@ begin
                            if not CheckReceteStatus (True, False, True, True, True) then Exit;
                            if LisansKontrol(fark) = True
                            Then Begin
-                             (*
+
                               case DoktorReceteMedulaGonderimTip(_d_) of
                                imzali :  DurumGoster(True,False,'Reçeteniz Kayýt Ýçin Ýmzalanýyor...Lütfen Bekleyiniz...',1);
                                imzasiz :   DurumGoster(True,False,'Reçeteniz Medula Sistemine Gönderiliyor...Lütfen Bekleyiniz...',1);
                               end;
-                              *)
+
                               try
                                 case DoktorReceteMedulaGonderimTip(_d_) of
                                  imzali :  Sonuc := ReceteImzalaGonder;
@@ -711,7 +711,8 @@ begin
 
                               finally
                                 DurumGoster(False,False,'');
-                               // ShowMessageSkin(Sonuc,'','','info');
+                                if Copy(Sonuc,1,4) <> '0000' then
+                                ShowMessageSkin(Sonuc,'','','info');
                               end;
                            end
                            Else

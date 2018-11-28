@@ -174,7 +174,7 @@ begin
     TcxImageComboKadir(FindComponent('subeKod')).Filter := ' sirketKod = ' +
     QuotedStr(vartostr(TcxImageComboKadir(FindComponent('SirketKod')).EditingValue)) + subeDoktor;
 
-  if datalar.UserGroup = '10'
+  if datalar.UserGroup = '11'
   then
     TcxImageComboKadir(FindComponent('subeKod')).Filter := ' sirketKod = ' +
     QuotedStr(vartostr(TcxImageComboKadir(FindComponent('SirketKod')).EditingValue)) + subeIGU;
@@ -225,19 +225,40 @@ end;
 procedure TfrmSirketOrtamOlcum.cxKaydetClick(Sender: TObject);
 begin
   //SirketKodx.Text := datalar.AktifSirket; giriþ formuna eklendi.
+  if TControl(sender).Tag in [Sil] then
+  begin
+        datalar.ADOConnection2.BeginTrans;
+        try
+         datalar.QueryExec('delete from Ortam_OlcumDetay where ortamOlcumID = ' + TcxButtonEditKadir(FindComponent('id')).Text);
+         datalar.QueryExec('delete from Ortam_Olcum where id = ' + TcxButtonEditKadir(FindComponent('id')).Text);
+         datalar.ADOConnection2.CommitTrans;
+        except on e : exception do
+         begin
+          ShowMessageSkin(e.Message,'','','info');
+          datalar.ADOConnection2.RollbackTrans;
+         end;
+        end;
+  end;
+
+
+
   inherited;
 
   case TControl(sender).Tag  of
-    0 : begin
-         OrtamOlcumGrid.Enabled := True;
-        end;
-    2 : begin
-           TcxImageComboKadir(FindComponent('IGU')).EditValue := datalar.IGU;
-           TcxImageComboKadir(FindComponent('doktor')).EditValue := datalar.doktorKodu;
-           TcxDateEditKadir(FindComponent('Tarih')).EditValue := date;
-           OrtamOlcumGrid.Enabled := False;
-           FaturaDetay;
-        end;
+     Kaydet : begin
+                OrtamOlcumGrid.Enabled := True;
+              end;
+     Yeni :   begin
+                TcxImageComboKadir(FindComponent('IGU')).EditValue := datalar.IGU;
+                TcxImageComboKadir(FindComponent('doktor')).EditValue := datalar.doktorKodu;
+                TcxDateEditKadir(FindComponent('Tarih')).EditValue := date;
+                OrtamOlcumGrid.Enabled := False;
+                FaturaDetay;
+              end;
+
+     Sil :    begin
+                FaturaDetay
+              end;
   end;
 end;
 

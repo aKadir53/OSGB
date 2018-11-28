@@ -251,8 +251,11 @@ type
         parent : TdxLayoutGroup; grup : string;uzunluk:integer; Prms : TListeAc;indexField : Boolean;
         obje:TcxButtonEditKadir;tanimi : string='tanimi';whereColumObjeName : string = '';
         Zorunlu : Boolean = False ; ReadOnly : Boolean = False;_Tag_ : integer = 0);
+
     procedure setDataStringKontrol(sender : Tform;obje : TControl; fieldName,caption : string;
-     parent : TdxLayoutGroup;grup : string ;uzunluk : integer ; Yukseklik : integer = 0 ; Aling : TAlign = alNone; objeName : string = '' ; CaptionAling : TdxCaptionLayout = clTop);
+     parent : TdxLayoutGroup;grup : string ;uzunluk : integer ; Yukseklik : integer = 0 ;
+     Aling : TAlign = alNone; objeName : string = '' ; CaptionAling : TdxCaptionLayout = clTop ; ImmediatePost : Boolean = True);
+
     procedure setDataStringBLabel(sender : Tform ; Name : string;
      parent : TdxLayoutGroup;grup : string;uzunluk : integer;caption : string = '';parentCaption : string = '';fieldName : string = '';
      pBoldText: Boolean = True;
@@ -425,6 +428,14 @@ begin
                                                QuotedStr(vartoStr(AktifPasifTopPanel.EditingValue));
 
            end;
+
+       TagfrmCihazKontrolListesi :
+           begin
+             sql := 'exec sp_firmaCihazKontrolListesi ' + QuotedStr(vartoStr(KurumTipTopPanel.EditingValue));
+
+
+           end;
+
 
        TagfrmReceteler :
            begin
@@ -2057,7 +2068,8 @@ end;
 
 
 procedure TGirisForm.setDataStringKontrol(sender : Tform;obje : TControl; fieldName,caption : string;
-     parent : TdxLayoutGroup;grup : string ;uzunluk : integer ; yukseklik : integer = 0 ; Aling : TAlign = alNone; objeName : string = '' ; CaptionAling : TdxCaptionLayout = clTop);
+     parent : TdxLayoutGroup;grup : string ;uzunluk : integer ; yukseklik : integer = 0 ;
+     Aling : TAlign = alNone; objeName : string = '' ; CaptionAling : TdxCaptionLayout = clTop ; ImmediatePost : Boolean = True);
 var
   dxLaC : TdxLayoutItem;
   dxLaGC : TdxLayoutGroup;
@@ -2111,7 +2123,7 @@ begin
     then begin
       TcxdateEdit(obje).Properties.DateOnError := deNull;
       //TcxdateEdit(obje).Properties.ImmediateDropDownWhenKeyPressed := True;
-      TcxdateEdit(obje).Properties.ImmediatePost := True;
+      TcxdateEdit(obje).Properties.ImmediatePost := ImmediatePost;
       TcxdateEdit(obje).Properties.MaxDate := strtodate('01.01.2500');
       TcxdateEdit(obje).Properties.MinDate := strtodate('01.01.1900');
       TcxdateEdit(obje).Properties.OnValidate := PropertiesValidate;
@@ -2122,6 +2134,7 @@ begin
      TcxCustomEdit(obje).OnEnter := cxEditEnter;
      TcxCustomEdit(obje).OnExit := cxEditExit;
      TcxCustomEdit(obje).OnKeyDown := cxTextEditBKeyDown;
+     TcxImageComboBox(obje).Properties.ImmediatePost := ImmediatePost;
      TcxImageComboBox(obje).Properties.OnEditValueChanged := PropertiesEditValueChanged;
     end;
   end;

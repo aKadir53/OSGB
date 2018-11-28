@@ -1,4 +1,4 @@
-unit firmaListesi;
+unit firmaCihazKontrolListesi;
 
 interface
 
@@ -25,14 +25,10 @@ uses
   dxSkinXmas2008Blue, cxCalendar, cxCurrencyEdit;
 
 type
-  TfrmFirmaListe = class(TGirisForm)
+  TfrmCihazKontrolListesi = class(TGirisForm)
     cxStyleRepository1: TcxStyleRepository;
     cxStyle1: TcxStyle;
     PopupMenu1: TPopupMenu;
-    Tip: TcxRadioGroup;
-    txtay: TcxComboBox;
-    ktip: TcxComboBox;
-    DiyalizTip: TcxRadioGroup;
     popupYil: TPopupMenu;
     ADOTable1: TADOTable;
     DataSource2: TDataSource;
@@ -51,59 +47,21 @@ type
     K1: TMenuItem;
     ikazRed: TcxStyle;
     ikazYellow: TcxStyle;
-    ListesubeTanim: TcxGridDBColumn;
-    ListeIGU: TcxGridDBColumn;
-    ListeIGUAdi: TcxGridDBColumn;
-    ListesubeDoktor: TcxGridDBColumn;
-    ListeDrAdi: TcxGridDBColumn;
-    ListesubeKod: TcxGridDBColumn;
-    ListeSirketKod: TcxGridDBColumn;
-    Listetanimi: TcxGridDBColumn;
-    Listedoktor: TcxGridDBColumn;
-    ListeNaceKod: TcxGridDBColumn;
-    ListeanaFaliyet: TcxGridDBColumn;
-    ListetehlikeSinifi: TcxGridDBColumn;
-    ListeSGKKod: TcxGridDBColumn;
-    ListecalisanSayisi: TcxGridDBColumn;
-    ListeTel1: TcxGridDBColumn;
-    ListeTel2: TcxGridDBColumn;
-    ListeFax: TcxGridDBColumn;
-    ListeYetkili: TcxGridDBColumn;
-    ListeyetkiliTel: TcxGridDBColumn;
-    Listeyetkilimail: TcxGridDBColumn;
-    ListeSEHIR: TcxGridDBColumn;
-    ListeILCE: TcxGridDBColumn;
-    ListeMAHALLE: TcxGridDBColumn;
-    ListeCADDE: TcxGridDBColumn;
-    ListeBUCAK: TcxGridDBColumn;
-    ListeKOY: TcxGridDBColumn;
-    ListeSOKAK: TcxGridDBColumn;
-    ListeAdres: TcxGridDBColumn;
-    ListeVD: TcxGridDBColumn;
-    ListeVN: TcxGridDBColumn;
-    ListeIstigal: TcxGridDBColumn;
-    ListeIsguvenlikUzman: TcxGridDBColumn;
-    ListeSorunluRevirPersonel: TcxGridDBColumn;
-    ListeAktif: TcxGridDBColumn;
-    ListeUser_ID: TcxGridDBColumn;
-    ListeDate_Create: TcxGridDBColumn;
-    ListeIsyeriSicilNo: TcxGridDBColumn;
-    ListeBolgeMudurlukSicilNo: TcxGridDBColumn;
-    ListeIGU_1: TcxGridDBColumn;
-    ListeDigerSaglikPers: TcxGridDBColumn;
-    U1: TMenuItem;
-    D1: TMenuItem;
+    Y1: TMenuItem;
     E1: TMenuItem;
-    N2: TMenuItem;
-    F1: TMenuItem;
-    F2: TMenuItem;
-    N3: TMenuItem;
-    N4: TMenuItem;
-    F3: TMenuItem;
-    F4: TMenuItem;
+    ListeColumn1: TcxGridDBColumn;
+    ListeColumn2: TcxGridDBColumn;
+    ListeColumn3: TcxGridDBColumn;
+    ListeColumn4: TcxGridDBColumn;
+    ListeColumn5: TcxGridDBColumn;
+    ListeColumn6: TcxGridDBColumn;
+    ListeColumn7: TcxGridDBColumn;
+    ListeColumn8: TcxGridDBColumn;
+    ListeColumn9: TcxGridDBColumn;
+    ListeColumn10: TcxGridDBColumn;
+    ListeColumn11: TcxGridDBColumn;
 
     procedure TopPanelPropertiesChange(Sender: TObject);
-    procedure PropertiesEditValueChanged(Sender: TObject);
     procedure btnVazgecClick(Sender: TObject);
     procedure ListeDblClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
@@ -132,21 +90,32 @@ const formGenislik = 700;
       formYukseklik = 600;
 
 var
-  frmFirmaListe: TfrmFirmaListe;
+  frmCihazKontrolListesi: TfrmCihazKontrolListesi;
   ay1 , ay2  , donemYil ,_Tarih_: string;
 implementation
   uses Data_Modul,AnaUnit,HastaRecete;// HastaSeansIsle;
 {$R *.dfm}
 
 
-function TfrmFirmaListe.Init(Sender : TObject) : Boolean;
+function TfrmCihazKontrolListesi.Init(Sender : TObject) : Boolean;
 begin
   Result := False;
-  if Tag = TagfrmFirmaListe
-  then begin
-    TapPanelElemanVisible(True,false,false,false,false,false,True,false,False,True,False,false);
+    TapPanelElemanVisible(True,false,false,false,false,false,true,false,False,false,False,false);
+
 
     KurumTipTopPanel.Properties.Items.Clear;
+    KurumTipTopPanel.Enabled := True;
+    KurumTipTopPanel.Width := 250;
+
+
+    KurumTipTopPanel.Conn := Datalar.ADOConnection2;
+    KurumTipTopPanel.TableName := 'SIRKETLER_TNM_view';
+    KurumTipTopPanel.ValueField := 'SirketKod';
+    KurumTipTopPanel.DisplayField := 'Tanimi';
+    KurumTipTopPanel.BosOlamaz := False;
+    KurumTipTopPanel.Filter := datalar.sirketlerUserFilter;
+
+    (*
     AktifPasifTopPanel.Properties.Items.Clear;
 
     AktifPasifTopPanel.Conn := nil;
@@ -178,106 +147,37 @@ begin
 
 
   end;
+  *)
+
 
   Result := True;
 
 end;
 
-procedure TfrmFirmaListe.btnVazgecClick(Sender: TObject);
+procedure TfrmCihazKontrolListesi.btnVazgecClick(Sender: TObject);
 begin
   close;
 end;
 
-procedure TfrmFirmaListe.cxButtonCClick(Sender: TObject);
+procedure TfrmCihazKontrolListesi.cxButtonCClick(Sender: TObject);
 var
  GirisFormRecord : TGirisFormRecord;
  F : TGirisForm;
  i : integer;
  sirket,sube,igu,iguTc,firmaSgk : string;
 begin
-  datalar.KontrolUserSet := False;
   inherited;
-  if datalar.KontrolUserSet = True then exit;
-
-  datalar.GirisFormRecord.F_firmaKod_ := _Dataset.FieldByName('SirketKod').AsString;
-  datalar.GirisFormRecord.F_sube_ :=    _Dataset.FieldByName('subeKod').AsString;
-  datalar.GirisFormRecord.F_Doktor_ :=  _Dataset.FieldByName('subeDoktor').AsString;
-  datalar.GirisFormRecord.F_Igu_ :=  _Dataset.FieldByName('IGU').AsString;
-  GirisFormRecord.F_firmaKod_ := _Dataset.FieldByName('SirketKod').AsString;
-  GirisFormRecord.F_HastaAdSoyad_ := _Dataset.FieldByName('tanimi').AsString;
-
   case Tcontrol(sender).tag of
  -1 : begin
-        if mrYes = ShowPopupForm('Deðiþtir',FirmaUzmanDegistir)
-        then begin
-             igu := datalar.GirisFormRecord.F_Igu_;
-             try
-               for i := 0 to Liste.Controller.SelectedRowCount - 1 do
-               begin
-                  sirket := GridCellToString(Liste,'sirketKod',i);
-                  sube :=  GridCellToString(Liste,'subeKod',i);
-                  datalar.QueryExec('update SIRKET_SUBE_TNM set IGU = ' + QuotedStr(igu) +
-                                    ' where sirketKod = ' + QuotedStr(sirket) + ' and subeKod = ' + QuotedStr(sube));
-
-               end;
-               ShowMessageSkin('Seçili Firmalarýn Ýþ Güvenliði Uzmaný Deðiþtirildi','','','info');
-             except on e : exception do
-              begin
-                ShowMessageSkin(e.Message,'','','info');
-              end;
-             end;
-        end;
 
       end;
- -2 : begin
-        if mrYes = ShowPopupForm('Deðiþtir',FirmaDoktorDegistir)
-        then begin
-             igu := datalar.GirisFormRecord.F_Doktor_;
-             try
-               for i := 0 to Liste.Controller.SelectedRowCount - 1 do
-               begin
-                  sirket := GridCellToString(Liste,'sirketKod',i);
-                  sube :=  GridCellToString(Liste,'subeKod',i);
-                  datalar.QueryExec('update SIRKET_SUBE_TNM set subeDoktor = ' + QuotedStr(igu) +
-                                    ' where sirketKod = ' + QuotedStr(sirket) + ' and subeKod = ' + QuotedStr(sube));
 
-               end;
-               ShowMessageSkin('Seçili Firmalarýn Ýþyeri Hekimi Deðiþtirildi','','','info');
-             except on e : exception do
-              begin
-                ShowMessageSkin(e.Message,'','','info');
-              end;
-             end;
-        end;
-      end;
- -3 : begin
-         F := FormINIT(TagfrmFirmaISGEkip,GirisFormRecord,ikHayir,'');
-         if F <> nil then F.ShowModal;
-      end;
- -4 :begin
-        F := FormINIT(TagfrmFirmaYetkili,GirisFormRecord,ikHayir,'');
-        if F <> nil then F.ShowModal;
-     end;
- -5 :begin
-       F := FormINIT(TagfrmSirketEkipmanList,GirisFormRecord,ikHayir,'');
-       if F <> nil then F.ShowModal;
-     end;
- -6 : begin
-        iguTC := _Dataset.FieldByName('iguTc').AsString;
-        firmaSgk := _Dataset.FieldByName('SubeSicilNo').AsString;
-        FirmaSorgulaCSGB(firmaSgk,iguTC);//'23627096768');
-      end;
-
- -7 :begin
-       F := FormINIT(TagfrmSirketEkipmanList,GirisFormRecord,ikHayir,'');
-       if F <> nil then F.ShowModal;
-     end;
 
 
   end;
 end;
 
-procedure TfrmFirmaListe.FormCreate(Sender: TObject);
+procedure TfrmCihazKontrolListesi.FormCreate(Sender: TObject);
 begin
   inherited;
   cxPanel.Visible := false;
@@ -297,7 +197,7 @@ begin
   SayfaCaption('','','','','');
 end;
 
-procedure TfrmFirmaListe.ListeDblClick(Sender: TObject);
+procedure TfrmCihazKontrolListesi.ListeDblClick(Sender: TObject);
 var
  Form : TGirisForm;
  GirisFormRecord : TGirisFormRecord;
@@ -327,7 +227,7 @@ begin
 
 end;
 
-procedure TfrmFirmaListe.ListeFocusedRecordChanged(
+procedure TfrmCihazKontrolListesi.ListeFocusedRecordChanged(
   Sender: TcxCustomGridTableView; APrevFocusedRecord,
   AFocusedRecord: TcxCustomGridRecord; ANewItemRecordFocusingChanged: Boolean);
 var
@@ -347,7 +247,7 @@ begin
     *)
 end;
 
-procedure TfrmFirmaListe.ListeStylesGetContentStyle(
+procedure TfrmCihazKontrolListesi.ListeStylesGetContentStyle(
   Sender: TcxCustomGridTableView; ARecord: TcxCustomGridRecord;
   AItem: TcxCustomGridTableItem; out AStyle: TcxStyle);
 var
@@ -371,7 +271,7 @@ begin
  *)
 end;
 
-procedure TfrmFirmaListe.N1Click(Sender: TObject);
+procedure TfrmCihazKontrolListesi.N1Click(Sender: TObject);
 begin
   inherited;
   case TMenuItem(Sender).tag of
@@ -381,7 +281,7 @@ begin
 
 end;
 
-procedure TfrmFirmaListe.popupYilPopup(Sender: TObject);
+procedure TfrmCihazKontrolListesi.popupYilPopup(Sender: TObject);
 var
   I ,yil : integer;
   item : TMenuItem;
@@ -402,23 +302,14 @@ begin
   end;
 end;
 
-procedure TfrmFirmaListe.TopPanelButonClick(Sender: TObject);
+procedure TfrmCihazKontrolListesi.TopPanelButonClick(Sender: TObject);
 begin
   inherited;
-  Liste.ViewData.Expand(true);
+
+ // Liste.DataController.CreateAllItems(True);
 end;
 
-procedure TfrmFirmaListe.PropertiesEditValueChanged(
-  Sender: TObject);
-begin
-  KurumTipTopPanel.Conn := datalar.ADOConnection2;
-  KurumTipTopPanel.TableName := vartoStr(AktifPasifTopPanel.EditingValue);
-  KurumTipTopPanel.DisplayField := 'tanimi';
-  KurumTipTopPanel.ValueField := 'kod';
-  KurumTipTopPanel.Filter := '';
-end;
-
-procedure TfrmFirmaListe.TopPanelPropertiesChange(Sender: TObject);
+procedure TfrmCihazKontrolListesi.TopPanelPropertiesChange(Sender: TObject);
 begin
   inherited;
    Liste.ViewData.Expand(true);

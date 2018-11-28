@@ -512,11 +512,13 @@ var
   where : string;
 
 begin
+
+
     if datalar.UserGroup = '1'
     then
       where := ''
     else
-    if datalar.UserGroup = '10'
+    if (datalar.UserGroup = '10')
     then
       where := ' sirketKod = ' + QuotedStr(datalar.sirketKodu)
     else
@@ -543,6 +545,9 @@ begin
        and
        TcxImageComboKadir(FindComponent('Onay')).EditValue = 1
     then begin
+       TcxImageComboKadir(FindComponent('hazirlayan')).Filter := '';
+       TcxImageComboKadir(FindComponent('hazirlayanDoktor')).Filter := '';
+
        RDSSatirlar.OptionsData.Editing := False;
        RDSSatirlar.OptionsData.Inserting := False;
        RDSSatirlar.OptionsData.Deleting := False;
