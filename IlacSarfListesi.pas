@@ -14,7 +14,7 @@ uses
   dxSkinBlue, dxSkinCaramel, dxSkinCoffee, dxSkiniMaginary, dxSkinLilian,
   dxSkinLiquidSky, dxSkinLondonLiquidSky, dxSkinMcSkin, dxSkinMoneyTwins,
   dxSkinsDefaultPainters, dxSkinscxPCPainter, cxDropDownEdit, cxButtonEdit,
-  KadirLabel;
+  KadirLabel, cxImageComboBox;
 
 type
   TfrmIlacSarf = class(TGirisForm)

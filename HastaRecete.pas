@@ -689,7 +689,6 @@ begin
                            if not CheckReceteStatus (True, False, True, True, True) then Exit;
                            if LisansKontrol(fark) = True
                            Then Begin
-
                               case DoktorReceteMedulaGonderimTip(_d_) of
                                imzali :  DurumGoster(True,False,'Reçeteniz Kayýt Ýçin Ýmzalanýyor...Lütfen Bekleyiniz...',1);
                                imzasiz :   DurumGoster(True,False,'Reçeteniz Medula Sistemine Gönderiliyor...Lütfen Bekleyiniz...',1);
@@ -716,7 +715,7 @@ begin
                               end;
                            end
                            Else
-                            ShowMessageSkin('Lütfen Lisans Bilgilerinizi Kontrol Ediniz...','','','info');
+                            ShowMessageSkin('Lütfen Lisans Bilgilerinizi Kontrol Ediniz...','Kalan Lisans Süreniz : ' + floattoStr(fark),'Detaylý Bilgi Ýçin Sistem Yöneticisine Baþvurunuz','info');
                          end;
 
      // _exe :=  PAnsiChar(AnsiString('C:\NoktaV3\E-imza\imza.exe ' + 'I' + ' '+ _dn_ + ' ' + _gn_ + ' ' + _id_ + ' ' + _d_  + ' ' + datalar.AktifSirket));
@@ -895,6 +894,7 @@ begin
                      ADO_RECETE_DETAY.FieldByName('kullanimYolu').AsString := adoD.FieldByName('kullanimYolu').AsString;
                      ADO_RECETE_DETAY.post;
 
+                     (*
                      ack := IlacReceteAciklama(_dosyaNo_,songel,adoD.FieldByName('ilacKodu').AsString,
                                                 inttostr(adoD.FieldByName('kullanimAdet2').AsInteger *
                                                          adoD.FieldByName('kullanimAdet').AsInteger));
@@ -915,7 +915,7 @@ begin
                         if copy(ADO_ReceteIlacAciklama.FieldByName('aciklama').AsString,1,4) = 'Hata'
                         Then ShowMessageSkin('Dikkat , Doz Bilgisini Kontrol Ediniz','','','info');
                     end;
-
+                              *)
                      adoD.Next;
                   end;
 

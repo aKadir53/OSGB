@@ -88,10 +88,12 @@ uses
 // KadirMedula3 in '..\..\medula3wsdl\KadirMedula3.pas';
 
 const
-  AppalicationVer : integer = 1082;   // Versiyon info kontrol etmeyi unutma  OSGBVersiyon.txt içine AppalicationVer deðerini yaz ftp at
+  AppalicationVer : integer = 1086;   // Versiyon info kontrol etmeyi unutma  OSGBVersiyon.txt içine AppalicationVer deðerini yaz ftp at
   DllVersiyon : integer = 2;     //  DLLVersiyon.txt  içine DllVersiyon deðerini yaz ftp at
 
-
+  NoktaURL : string = 'https://www.noktayazilim.net';
+  OSGBVersiyonURL : string = 'http://www.noktayazilim.net/OSGBVersiyon.txt';
+  DLLVersiyonURL : string = 'http://www.noktayazilim.net/DLLVersiyon.txt';
 
 {$R *.res}
 {$WEAKLINKRTTI ON}
@@ -118,51 +120,70 @@ begin
   //if pos('UYUM',paramStr(0)) > 0 then isg := 'UYUMISG.exe' else isg := 'isg.exe';
 
   isg := 'isg.exe';
+
+  Download('https://www.noktayazilim.net/' + isg,'mavinokta','nokta53Nokta','C:\OSGB\'+isg);
+
   datalar.versiyon := inttostr(AppalicationVer);
   if ForceDirectories ('C:\OSGB') then
   begin
       if FileExists('C:\OSGB\' + isg) = False
       Then begin
-        dosya := TFileStream.Create('C:\OSGB\' + isg,fmCreate);
+        //dosya := TFileStream.Create('C:\OSGB\' + isg,fmCreate);
         try
-        datalar.HTTP1.Get('http://213.159.30.6/' + isg ,TStream(dosya));
+
+         Download('https://www.noktayazilim.net/isg.exe','mavinokta','nokta53Nokta','C:\OSGB\'+isg);
+
+        // datalar.HTTP1.Get('https://noktayazilim.net/' + isg ,TStream(dosya));
         finally
-        dosya.Free;
-      end;
+         //dosya.Free;
+        end;
     end;
 
   try
-    versiyon := (datalar.HTTP1.Get('http://www.noktayazilim.net/OSGBVersiyon.txt'));
-    Dversiyon := (datalar.HTTP1.Get('http://www.noktayazilim.net/DLLVersiyon.txt'));
+    versiyon := (datalar.HTTP1.Get(OSGBVersiyonURL));
+    Dversiyon := (datalar.HTTP1.Get(DLLVersiyonURL));
   except
     versiyon := inttostr(AppalicationVer);
+    Dversiyon := inttostr(DllVersiyon);
   end;
 
   if versiyon = '' then versiyon := inttostr(AppalicationVer);
-
+  if Dversiyon = '' then Dversiyon := inttostr(DllVersiyon);
 
 
   if (strtoint(Dversiyon) > DllVersiyon)
   Then Begin
-      dosya := TFileStream.Create('C:\OSGB\NoktaDLL.dll',fmCreate);
-      datalar.HTTP1.Get('http://www.noktayazilim.net/NoktaDLL.dll' ,TStream(dosya));
-      dosya.Free;
+//      dosya := TFileStream.Create('C:\OSGB\NoktaDLL.dll',fmCreate);
+//      datalar.HTTP1.Get('https://www.noktayazilim.net/NoktaDLL.dll' ,TStream(dosya));
 
-      dosya := TFileStream.Create('C:\OSGB\BouncyCastle.Crypto.dll',fmCreate);
-      datalar.HTTP1.Get('http://www.noktayazilim.net/BouncyCastle.Crypto.dll' ,TStream(dosya));
-      dosya.Free;
+      Download('https://www.noktayazilim.net/NoktaDLL.dll','mavinokta','nokta53Nokta','C:\OSGB\NoktaDLL.dll');
 
-      dosya := TFileStream.Create('C:\OSGB\EdocLib.dll',fmCreate);
-      datalar.HTTP1.Get('http://www.noktayazilim.net/EdocLib.dll' ,TStream(dosya));
-      dosya.Free;
+//      dosya.Free;
 
-      dosya := TFileStream.Create('C:\OSGB\Net.Pkcs11.dll',fmCreate);
-      datalar.HTTP1.Get('http://www.noktayazilim.net/Net.Pkcs11.dll' ,TStream(dosya));
-      dosya.Free;
+  //    dosya := TFileStream.Create('C:\OSGB\BouncyCastle.Crypto.dll',fmCreate);
+ //     datalar.HTTP1.Get('https://www.noktayazilim.net/BouncyCastle.Crypto.dll' ,TStream(dosya));
+      Download('https://www.noktayazilim.net/BouncyCastle.Crypto.dll','mavinokta','nokta53Nokta','C:\OSGB\BouncyCastle.Crypto.dll');
 
-      dosya := TFileStream.Create('C:\OSGB\itextsharp.dll',fmCreate);
-      datalar.HTTP1.Get('http://www.noktayazilim.net/itextsharp.dll' ,TStream(dosya));
-      dosya.Free;
+    //  dosya.Free;
+
+   //   dosya := TFileStream.Create('C:\OSGB\EdocLib.dll',fmCreate);
+    //  datalar.HTTP1.Get('https://www.noktayazilim.net/EdocLib.dll' ,TStream(dosya));
+
+      Download('https://www.noktayazilim.net/EdocLib.dll','mavinokta','nokta53Nokta','C:\OSGB\EdocLib.dll');
+
+    //  dosya.Free;
+
+   //   dosya := TFileStream.Create('C:\OSGB\Net.Pkcs11.dll',fmCreate);
+  //    datalar.HTTP1.Get('https://www.noktayazilim.net/Net.Pkcs11.dll' ,TStream(dosya));
+      Download('https://www.noktayazilim.net/Net.Pkcs11.dll','mavinokta','nokta53Nokta','C:\OSGB\Net.Pkcs11.dll');
+
+    //  dosya.Free;
+
+   //   dosya := TFileStream.Create('C:\OSGB\itextsharp.dll',fmCreate);
+   //   datalar.HTTP1.Get('https://www.noktayazilim.net/itextsharp.dll' ,TStream(dosya));
+      Download('https://www.noktayazilim.net/itextsharp.dll','mavinokta','nokta53Nokta','C:\OSGB\itextsharp.dll');
+
+  //    dosya.Free;
 
   End;
 

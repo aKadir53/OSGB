@@ -512,6 +512,7 @@ type
     F_Tarih1_ : string;
     F_Tarih2_ : string;
     F_ResourceID_ : string;
+    F_FaturaIptal : Boolean;
   End;
 
 type
@@ -653,7 +654,30 @@ type
   end;
 
 
+  TCariHareket = record
+    hareketTipi : string;
+    tutar : double;
+  end;
+
+  TCek = record
+    evrakNo : string;
+    tutar : double;
+    banka : string;
+    sirketKod : string;
+    tedarikciKod : string;
+    kimden : string;
+    kime : string;
+    tip : string;
+    durum : string;
+    vade : Tdate;
+    aciklama : string;
+  end;
+
+
   TIntegerArray = array of Integer;
+
+
+
 Const
   TagfrmHastaKart = 90;
   TagfrmFirmaKart = 100;
@@ -855,6 +879,7 @@ Const
   SubeDuzenle = 64;
   olcumEkle =  65;
   olcumDuzenle = 66;
+  yeniCek = 67;
 
 
   sp_HastaGelis = 'exec sp_HastaGelisleri ';

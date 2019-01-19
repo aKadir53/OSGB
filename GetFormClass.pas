@@ -401,6 +401,7 @@ begin
      TagfrmOrtamOlcum : frmSirketOrtamOlcum := TfrmSirketOrtamOlcum.Create(Tab);
 
      TagfrmCihazKontrolListesi : frmCihazKontrolListesi := TfrmCihazKontrolListesi.Create(Tab);
+     TagfrmPersonelEgitim : frmPersonelEgitim := TfrmPersonelEgitim.Create(Tab);
   end;
   try
     if not (Form is TGirisForm) then
@@ -537,6 +538,8 @@ begin
      TagfrmKroki : frmKroki  := TfrmKroki.Create(Tab);
      TagfrmOrtamOlcum : frmSirketOrtamOlcum := TfrmSirketOrtamOlcum.Create(Tab);
      TagfrmCihazKontrolListesi : frmCihazKontrolListesi := TfrmCihazKontrolListesi.Create(Tab);
+     TagfrmPersonelEgitim : frmPersonelEgitim := TfrmPersonelEgitim.Create(Tab);
+
 
   end;
   try
@@ -694,6 +697,7 @@ begin
     TGirisForm(Form)._Tarih1_ := Value.F_Tarih1_;
     TGirisForm(Form)._Tarih2_ := Value.F_Tarih2_;
     TGirisForm(Form)._ResourceID := Value.F_ResourceID_;
+    TGirisForm(Form)._FaturaIptal := Value.F_FaturaIptal;
 
     TgirisForm(Form).Caption := sFormCaption + ' - ' + sFormAltCaption;
     if ik = ikEvet

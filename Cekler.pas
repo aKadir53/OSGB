@@ -40,6 +40,8 @@ type
     GridCeklerkimden: TcxGridDBBandedColumn;
     GridCeklerkime: TcxGridDBBandedColumn;
     T1: TMenuItem;
+    GridCeklerevrakNo: TcxGridDBBandedColumn;
+    E2: TMenuItem;
     procedure FormCreate(Sender: TObject);
     procedure ButtonClick(Sender: TObject);
     procedure cxKaydetClick(Sender: TObject);override;
@@ -68,6 +70,8 @@ type
 const _TableName_ = 'cari_Cekler';
       formGenislik = 600;
       formYukseklik = 600;
+      insertCek = 'insert into cari_Cekler (evrakNo,VadeTarihi,sirketKod,TedarikciKod,tutar,Tip,Durum,Tarih,user_create,aciklama) ' +
+                  ' values(%s,%s,%s,%s,%g,%s,%s,%s,%s,%s)';
 
 var
   frmCekler: TfrmCekler;
@@ -120,7 +124,7 @@ end;
 
 procedure TfrmCekler.cxButtonCClick(Sender: TObject);
 var
-  fID : string;
+  fID ,sql : string;
 begin
   inherited;
 
@@ -135,6 +139,57 @@ begin
           CekTahsilatIptal(GridCekler.DataController.DataSet.FieldByName('id').AsString,
                            GridCekler.DataController.DataSet.FieldByName('cariHareketid').AsString);
         end;
+  -22 : begin
+           if Tcontrol(sender).Tag = -23
+           then begin
+             datalar.Cek.evrakNo := GridCekler.DataController.DataSet.FieldByName('evrakNo').AsString;
+             datalar.Cek.vade := GridCekler.DataController.DataSet.FieldByName('VadeTarihi').AsDateTime;
+             datalar.Cek.tutar := GridCekler.DataController.DataSet.FieldByName('tutar').AsVariant;
+             datalar.Cek.sirketKod := GridCekler.DataController.DataSet.FieldByName('sirketKod').AsString;
+             datalar.Cek.tedarikciKod := GridCekler.DataController.DataSet.FieldByName('TedarikciKod').AsString;
+             datalar.Cek.tip := GridCekler.DataController.DataSet.FieldByName('Tip').AsString;
+             datalar.CEk.durum := GridCekler.DataController.DataSet.FieldByName('Durum').AsString;
+           end
+           else
+           begin
+             datalar.Cek.evrakNo := '';
+             datalar.Cek.vade := date();
+             datalar.Cek.tutar := 0;
+             datalar.Cek.sirketKod := '';
+             datalar.Cek.tedarikciKod := '';
+             datalar.Cek.tip := '';
+             datalar.CEk.durum := '';
+           end;
+           //datalar.Cek.banka
+           if mrYEs = ShowPopupForm('Çek Tanýmla',yeniCek,'')
+           then begin
+              //evrakNo,VadeTarihi,sirketKod,kimden,TedarikciKod,kime,tutar,Tip,Durum,date_create,user_create
+             (*
+             try
+              sql := Format(insertCek,
+                                       [QuotedStr(datalar.Cek.evrakNo),
+                                        QuotedStr(tarihal(datalar.Cek.vade)),
+                                        ifThen(datalar.Cek.sirketKod <> '',QuotedStr(datalar.Cek.sirketKod),'null'),
+                                        ifThen(datalar.Cek.TedarikciKod <> '',QuotedStr(datalar.Cek.TedarikciKod),'null'),
+                                        datalar.Cek.tutar,
+                                        QuotedStr(datalar.Cek.Tip),
+                                        QuotedStr(datalar.Cek.Durum),
+                                        QuotedStr(FormatDateTime('YYYY-MM-DD HH:NN:SS',now())),
+                                        QuotedStr(datalar.username),
+                                        QuotedStr(datalar.Cek.aciklama)]);
+
+               datalar.QueryExec(sql);
+             except on e : exception do
+              begin
+                ShowMessageSkin(e.Message,'','','info');
+              end;
+             end; *)
+           end;
+
+
+        end;
+
+
   end;
 end;
 

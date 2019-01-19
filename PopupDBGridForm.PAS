@@ -164,7 +164,7 @@ begin
 
   case TmenuItem(sender).Tag of
    -1 : begin
-          EgitimKodlari;
+          //EgitimKodlari;
         end;
 
    -2 : begin

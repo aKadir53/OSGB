@@ -1416,6 +1416,9 @@ procedure TfrmHastaKart.cxKaydetClick(Sender: TObject);
 begin
   case TControl(sender).Tag  of
     0 :begin
+    (*
+        if StrToint(VarToStr(TcxImageComboKadir(FindComponent('VatandasTip')).EditValue)) in [0,1]
+        Then
         if TCKontrol(vartoStr(TcxTextEditKadir(FindComponent('TCKIMLIKNO')).EditingValue)) = False
          Then begin
            ShowMessageSkin('TC Kimlik No Hatalý','Lütfen Kontrol Ediniz','','info');
@@ -1426,8 +1429,10 @@ begin
                                      TcxImageComboKadir(FindComponent('Sube')).Text + ' Þubesine Kayýt Edilecek',
                                      'msg') Then
            exit;
+           *)
     end;
     2 : begin
+    (*
          if datalar.AktifSirket = '' then
          begin
             ShowMessageSkin('Þirket Seçmelisiniz','','','info');
@@ -1436,6 +1441,7 @@ begin
 
         if IsNull (TcxLabel(FindComponent('LabelSirketKod')).Caption) then
         TcxLabel(FindComponent('LabelSirketKod')).Caption := datalar.AktifSirket;
+    *)
     end;
   end;
 
@@ -1447,15 +1453,38 @@ begin
     if not cxKaydetResult then Exit;
 
     case TControl(sender).Tag  of
-      0 : begin
+ Kaydet : begin
            // if TCtoDosyaNo(TcxCustomEdit(FindComponent('TckimlikNo')).EditingValue)
+
+            if StrToint(VarToStr(TcxImageComboKadir(FindComponent('VatandasTip')).EditValue)) in [0,1]
+            Then
+            if TCKontrol(vartoStr(TcxTextEditKadir(FindComponent('TCKIMLIKNO')).EditingValue)) = False
+             Then begin
+               ShowMessageSkin('TC Kimlik No Hatalý','Lütfen Kontrol Ediniz','','info');
+               TcxCustomEdit(FindComponent('TCKIMLIKNO')).SetFocus;
+               exit;
+             end;
+             if MrYes <> ShowMessageSkin('Personel Kartý',TcxImageComboKadir(FindComponent('SirketKod')).Text,
+                                         TcxImageComboKadir(FindComponent('Sube')).Text + ' Þubesine Kayýt Edilecek',
+                                         'msg') Then exit;
+
            FotoNewRecord;
            Kart := sql_none;
           end;
-      1 : begin
+    Sil : begin
             Kart := sql_delete;
           end;
-      2 : begin
+  Yeni : begin
+
+             if datalar.AktifSirket = '' then
+             begin
+                ShowMessageSkin('Þirket Seçmelisiniz','','','info');
+                exit;
+             end;
+
+            if IsNull (TcxLabel(FindComponent('LabelSirketKod')).Caption) then
+            TcxLabel(FindComponent('LabelSirketKod')).Caption := datalar.AktifSirket;
+
             Kart := sql_new;
             dosyaNo.Text := dosyaNoYeniNumaraAl('DN');
             if dosyaNo.Text = '0'
@@ -1479,6 +1508,11 @@ begin
               TcxImageComboBox (FindComponent ('Aktif')).ItemIndex := 2
              else
               TcxImageComboBox (FindComponent ('Aktif')).ItemIndex := 1;
+
+              TcxImageComboBox (FindComponent ('VatandasTip')).EditValue := 0;
+              TcxButtonEditKadir(FindComponent('UYRUGU')).EditValue := 'TR';
+
+
           end;
 
     end;

@@ -9,26 +9,20 @@ uses
   KadirLabel, Data.Win.ADODB, dxSkinsForm, dxSkinsdxStatusBarPainter,
   dxStatusBar, Vcl.ComCtrls, Vcl.ToolWin, Vcl.ImgList, cxClasses, dxNavBarBase,
   dxNavBarCollns,JPEG, Vcl.StdCtrls,pngimage, cxContainer, cxEdit, cxImage,
-  cxTextEdit, cxCurrencyEdit, dxSkinsCore, dxSkinBlue, dxSkinCaramel,
-  dxSkinCoffee, dxSkiniMaginary, dxSkinLilian, dxSkinLiquidSky,
-  dxSkinLondonLiquidSky, dxSkinsDefaultPainters,
-  dxSkinsdxNavBarPainter,GetFormClass, dxSkinscxSchedulerPainter,
+  cxTextEdit, cxCurrencyEdit, dxSkinsCore, GetFormClass, dxSkinscxSchedulerPainter,
    cxStyles, cxScheduler, cxSchedulerStorage, cxSchedulerCustomControls,
   cxSchedulerCustomResourceView, cxSchedulerDayView, cxSchedulerDateNavigator,
   cxSchedulerHolidays, cxSchedulerTimeGridView, cxSchedulerUtils,
   cxSchedulerWeekView, cxSchedulerYearView, cxSchedulerGanttView, cxGroupBox,
   cxRadioGroup, cxSchedulerAggregateStorage, cxSchedulerDBStorage, Menus,
   cxButtons, dxSkinscxPCPainter, cxPCdxBarPopupMenu, cxPC, Vcl.OleCtrls, SHDocVw,
-  dxSkinBlack, dxSkinDarkRoom, dxSkinDarkSide, dxSkinFoggy, dxSkinGlassOceans,
-  dxSkinOffice2007Black, dxSkinOffice2007Blue, dxSkinOffice2007Green,
-  dxSkinOffice2007Pink, dxSkinOffice2007Silver, dxSkinOffice2010Black,
-  dxSkinOffice2010Blue, dxSkinOffice2010Silver, dxSkinPumpkin, dxSkinSeven,
-  dxSkinSharp, dxSkinSilver, dxSkinSpringTime, dxSkinStardust, dxSkinSummer2008,
-  dxSkinValentine, dxSkinXmas2008Blue,cxSchedulerStrs, cxMaskEdit,
+  cxSchedulerStrs, cxMaskEdit,
   cxDropDownEdit, cxImageComboBox, Data.SqlExpr, cxCustomData, cxFilter, cxData,
   cxDataStorage, cxDBData, cxMemo, cxGridLevel, cxGridBandedTableView,
   cxGridDBBandedTableView, cxGridCustomTableView, cxGridTableView,
-  cxGridDBTableView, cxGridCustomView, cxGrid, DB, cxLabel, acPNG;
+  cxGridDBTableView, cxGridCustomView, cxGrid, DB, cxLabel, acPNG, dxSkinBlue,
+  dxSkinCaramel, dxSkinCoffee, dxSkiniMaginary, dxSkinLilian, dxSkinLiquidSky,
+  dxSkinsDefaultPainters, dxSkinsdxNavBarPainter;
 
 type
   TAnaForm = class(TForm)
@@ -139,6 +133,8 @@ type
     cxAdi: TcxLabel;
     cxGrupAdi: TcxLabel;
     Foto: TcxImage;
+    Panel2: TPanel;
+    Label2: TLabel;
     procedure FormCreate(Sender: TObject);
     procedure ToolButton1Click(Sender: TObject);
     procedure FormResize(Sender: TObject);
@@ -146,7 +142,7 @@ type
     procedure MainMenuKadir1LinkClick(Sender: TObject;
       ALink: TdxNavBarItemLink);
     procedure menuclik(_tag_ : integer ; FormID : integer = 0; ShowTip : integer = 0);
-    procedure ToolButton7Click(Sender: TObject);
+    procedure ToolButtonClick(Sender: TObject);
     function GetResourceAsJpeg(const resname: string): TJPEGImage;
   //  function GetResourceAsString(const resname: string): TstringList;
     function GetResourceAsPNG(const resname: string): TPNGImage;
@@ -184,6 +180,7 @@ type
     procedure WMSettingChange(var Message: TMessage); message WM_SETTINGCHANGE;
   protected
     procedure SetUserInfo;
+    procedure SetMenu;
   public
     { Public declarations }
     destructor Destroy; override;
@@ -207,6 +204,28 @@ implementation
 {$R *.dfm}
 {$R xx.res}
 
+procedure TAnaForm.SetMenu;
+var
+ i,j : integer;
+begin
+
+  MainMenuKadir1.KullaniciAdi := datalar.username;
+  MainMenuKadir1.MenuGetir;
+
+  for i := 0 to MainMenuKadir1.Items.Count - 1 do
+  begin
+    for j := 0 to ToolBar1.ButtonCount - 1 do
+    begin
+      if MainMenuKadir1.Items[i].Tag = ToolBar1.Buttons[j].Tag
+      then begin
+        ToolBar1.Buttons[j].Visible := MainMenuKadir1.Items[i].Visible;
+        ToolBar1.Buttons[j].Hint := MainMenuKadir1.Items[i].Hint;
+   //     ToolBar1.Buttons[j].ImageIndex := MainMenuKadir1.Items[i].LargeImageIndex;
+      end;
+
+    end;
+  end;
+end;
 
 procedure TAnaForm.WMSettingChange(var Message: TMessage);
 begin
@@ -401,6 +420,9 @@ begin
   finally
     ado.Free;
   end;
+
+  SetMenu;
+
 end;
 
 procedure TAnaForm.cxButton1Click(Sender: TObject);
@@ -563,11 +585,6 @@ begin
   WebBrowser1.Navigate('https://www.noktayazilim.net/destek/GenelMesajlar2.aspx?Tip=O');
 
 
- try
-  LisansKontrol(f);
- except
-   ShowMessageSkin('Lisans Hatasý','Lütfen Lisans ALýnýz','','info');
- end;
 
 //  cxSetResourceString(@scxEvent,'Olay');
 
@@ -586,6 +603,15 @@ var
  i,j : integer;
  sube , Where : string;
 begin
+
+  try
+    LisansKontrol(f);
+    if f < 10
+    Then ShowMessageSkin('Kalan Lisans Süreniz : ' + floattoStr(f) + ' Gün','Hizmetinizin Aksamamasý Ýçin ,Lütfen Lisans Uzatýnýz','Detaylý Bilgi Ýçin Sistem Yöneticisine Baþvurunuz','info');
+  except
+    ShowMessageSkin('Lisans Hatasý','Lütfen Lisans ALýnýz','','info');
+  end;
+
 
   if pos('UYUM',paramStr(0)) > 0
   then begin
@@ -667,6 +693,10 @@ begin
   MainMenuKadir1.Height := self.ClientHeight - (dxStatusBar1.Height + ToolBar1.Height);
   MainMenuKadir1.Top := 60;
   *)
+
+  SetMenu;
+
+ (*
   MainMenuKadir1.KullaniciAdi := datalar.username;
   MainMenuKadir1.MenuGetir;
 
@@ -678,11 +708,14 @@ begin
       then begin
         ToolBar1.Buttons[j].Visible := MainMenuKadir1.Items[i].Visible;
         ToolBar1.Buttons[j].Hint := MainMenuKadir1.Items[i].Hint;
-        ToolBar1.Buttons[j].ImageIndex := MainMenuKadir1.Items[i].LargeImageIndex;
+   //     ToolBar1.Buttons[j].ImageIndex := MainMenuKadir1.Items[i].LargeImageIndex;
       end;
 
     end;
   end;
+  *)
+
+
 
   scaled := true;
   if (screen.width <> ScreenWidth) then
@@ -697,7 +730,7 @@ begin
  // dxStatusBar1.Panels[1].Width := length(Datalar.AktifSirketAdi) * 8;
   dxStatusBar1.Panels[3].Text := DATALAR._merkezAdi;
   dxStatusBar1.Panels[3].Width := length(dxStatusBar1.Panels[3].Text) * 8;
-  dxStatusBar1.Panels[5].Text := 'Versiyon : ' + datalar.versiyon;
+  dxStatusBar1.Panels[5].Text := 'Versiyon : ' + datalar.versiyon + ' - Lisans Bitiþ Tarihi : ' + FormattedTarih(Datalar.LisansBitis);
   SetUserInfo;
 
 
@@ -777,7 +810,10 @@ begin
    MainMenuKadir1.Goster
   else
    MainMenuKadir1.Gizle;
-   *)
+  *)
+  if MenuPanel.Visible then MenuPanel.Visible := False else MenuPanel.Visible := True;
+
+
 end;
 
 procedure TAnaForm.ToolButton2Click(Sender: TObject);
@@ -785,9 +821,22 @@ begin
   pnl_Ajanda.Visible := True;
 end;
 
-procedure TAnaForm.ToolButton7Click(Sender: TObject);
+procedure TAnaForm.ToolButtonClick(Sender: TObject);
 begin
-  menuclik(TToolButton(sender).Tag);
+
+ case TToolButton(sender).Tag of
+   101 : begin
+           menuclik(TToolButton(sender).Tag,TagfrmDoktorlar,1);
+         end
+
+         else
+           menuclik(TToolButton(sender).Tag);
+
+ end;
+
+
+
+
 end;
 
 procedure TAnaForm.MainMenuKadir1LinkClick(Sender: TObject;

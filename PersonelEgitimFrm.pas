@@ -6,7 +6,8 @@ uses
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
   Dialogs, cxGraphics, cxControls, cxLookAndFeels, cxLookAndFeelPainters,jpeg,
   cxContainer, cxEdit, Menus, StdCtrls, cxButtons, cxGroupBox, DB, ADODB,
-  cxTextEdit, cxMaskEdit, cxButtonEdit, cxDBEdit,kadirType,KadirLabel,Kadir,  GirisUnit,Data_Modul, dxSkinsCore, dxSkinBlue, dxSkinCaramel, dxSkinCoffee,
+  cxTextEdit, cxMaskEdit, cxButtonEdit, cxDBEdit,kadirType,KadirLabel,Kadir,
+  GirisUnit,Data_Modul, dxSkinsCore, dxSkinBlue, dxSkinCaramel, dxSkinCoffee,
   dxSkiniMaginary, dxSkinLilian, dxSkinLiquidSky, dxSkinLondonLiquidSky,
    dxSkinMoneyTwins, dxSkinsDefaultPainters, cxCheckBox, cxLabel, cxcalendar,
   cxStyles, dxSkinscxPCPainter, cxCustomData, cxFilter, cxData, cxDataStorage,
@@ -72,6 +73,7 @@ type
     GridListColumn3: TcxGridDBBandedColumn;
     btnEgitimGonderTek: TcxButtonKadir;
     btnEgitimGonderTekImzager: TcxButtonKadir;
+    EgitimGridSatirlarColumn1: TcxGridDBBandedColumn;
     procedure FormCreate(Sender: TObject);
     procedure ButtonClick(Sender: TObject);
     procedure cxKaydetClick(Sender: TObject);override;
@@ -101,8 +103,9 @@ type
   public
     { Public declarations }
     function Init(Sender: TObject) : Boolean; override;
-    function EgitimKaydetCSGB(egitim : egitimBilgisi ; pin,cardType,_xml_,_xmlSOAP_,egitimID : string) : egitimBilgisiCevap; overload;
-    function EgitimKaydetCSGB(egitim : cokluEgitimBilgisi ; pin,cardType,_xml_,_xmlSOAP_ : string) : cokluEgitimCevapDVO; overload;
+    function EgitimKaydetCSGB(egitim : egitimBilgisi ; pin,cardType,_xml_,_xmlSOAP_,egitimID : string) : egitimBilgisiCevap;
+ //   function EgitimKaydetCSGB(egitim : cokluEgitimBilgisi ; pin,cardType,_xml_,_xmlSOAP_ : string) : cokluEgitimCevapDVO; overload;
+    function EgitimKaydetMASTER(egitim : egitimBilgisi ; pin,cardType,_xml_,_xmlSOAP_,egitimID : string) : string;
 
   end;
 
@@ -170,24 +173,25 @@ begin
     Cvp := egitimBilgisiCevap.Create;
   //  EgitimString := EgitimVerisiXML(egitim);
 
+//  DurumGoster(True,False,'Eðitim Bilgisi Ýmzalanýyor...Lütfen Bekleyiniz...',1);
     EgitimString := EgitimImzala(pin,_xml_,cardType);
 
     DurumGoster(True,False,'Eðitim Bilgisi Gönderiliyor...Lütfen Bekleyiniz...',1);
     try
       Application.ProcessMessages;
       datalar.CSGBsoap.URL := 'http://213.159.30.6/CSGBservice.asmx';
-      Cvp := (datalar.CSGBsoap as CSGBServiceSoap).egitimKaydet(egitim,_xmlSOAP_,EgitimString,_xml_);
+      Cvp := (datalar.CSGBsoap as CSGBServiceSoap).egitimKaydetSOAP(egitim,EgitimString,_xml_);
       EgitimKaydetCSGB := Cvp;
       if Cvp.status = 200
       Then begin
-        ShowMessageSkin('Sorgu No:' + intTostr(Cvp.sorguNo),'','','info');
+        ShowMessageSkin('Sorgu No:' + Cvp.sorguNo,'','','info');
       end
       else begin
         ShowMessageSkin(Cvp.message_,'','','info');
       //  Cvp.sorguNo := egitim.sorguNo;
       end;
 
-      EgitimKaydetCSGBCvpBilgiGuncelle(Cvp.message_,egitimID);
+      EgitimKaydetCSGBCvpBilgiGuncelle(egitimID,Cvp.message_,Cvp.sorguNo);
 
     except
       on E : Exception do
@@ -198,6 +202,39 @@ begin
 end;
 
 
+function TfrmPersonelEgitim.EgitimKaydetMASTER(egitim : egitimBilgisi ; pin,cardType,_xml_,_xmlSOAP_,egitimID : string) : string;
+var
+  sayi,EgitimString : string;
+  Cvp : string;
+begin
+
+    EgitimString := EgitimImzala(pin,_xml_,cardType);
+
+    DurumGoster(True,False,'Eðitim Bilgisi Kaydediliyor...Lütfen Bekleyiniz...',1);
+    try
+      Application.ProcessMessages;
+      datalar.CSGBsoap.URL := 'http://213.159.30.6/CSGBservice.asmx';
+      Cvp := (datalar.CSGBsoap as CSGBServiceSoap).egitimKaydetMASTER(egitim,EgitimString,_xml_,datalar._database,datalar.osgbKodu);
+      EgitimKaydetMASTER := Cvp;
+      if copy(Cvp,1,4) = '0000'
+      Then begin
+        ShowMessageSkin(Cvp,'','','info');
+      end
+      else begin
+        ShowMessageSkin(Cvp,'','','info');
+      //  Cvp.sorguNo := egitim.sorguNo;
+      end;
+
+
+    except
+      on E : Exception do
+      begin
+        ShowmessageSkin(E.Message,'','','info');
+      end;
+    end;
+end;
+
+ (*
 function TfrmPersonelEgitim.EgitimKaydetCSGB(egitim : cokluEgitimBilgisi ; pin,cardType,_xml_,_xmlSOAP_ : string) : cokluEgitimCevapDVO;
 var
   sayi,EgitimString : string;
@@ -222,7 +259,7 @@ begin
         Cvp.sorguNo := egitim.sorguNo;
       end;
 
-      EgitimKaydetCSGBCvpBilgiGuncelle(Cvp.message_,inttostr(Cvp.sorguNo));
+      EgitimKaydetCSGBCvpBilgiGuncelle('0',Cvp.message_,'');
 
     except
       on E : Exception do
@@ -231,6 +268,7 @@ begin
       end;
     end;
 end;
+*)
 
 procedure TfrmPersonelEgitim.EgitimPersonelResize(Sender: TObject);
 begin
@@ -353,7 +391,7 @@ var
   Image : TcxImage;
   Blob : TADOBlobStream;
   Veri : egitimBilgisi;
-  VeriCoklu : cokluEgitimBilgisi;
+//  VeriCoklu : cokluEgitimBilgisi;
 begin
 
   if TcxButtonEditKadir(FindComponent('id')).Text <> ''
@@ -423,27 +461,14 @@ begin
 
   end;
 
- (*
-  if TcxButtonKadir(Sender).ButtonName = 'btnEgitimGonderTekImzager' then
-  begin
-       veri := EgitimVerisi(TcxButtonEditKadir(FindComponent('id')).Text,pin,cardType,_xml_);
-       EgitimKaydetCSGBImzager(veri);
-       btnEgitimGonderTekImzager.Enabled := False;
-  end;
-   *)
+
   if TcxButtonKadir(Sender).ButtonName = 'btnEgitimGonderTek' then
   begin
-
-    //   DurumGoster(True,False,'Eðitim Bilgisi Ýmzalanýyor...Lütfen Bekleyiniz...',1);
-       veri := EgitimVerisi(TcxButtonEditKadir(FindComponent('id')).Text,pin,cardType,_xml_,_xmlSOAP_,VeriCoklu);
-
-       if TcxButtonEditKadir(FindComponent('id')).EditingValue = '' then exit;
-
-      // if veri <> nil then
+       if varToStr(TcxButtonEditKadir(FindComponent('id')).EditingValue) = '' then exit;
+       veri := EgitimVerisi(TcxButtonEditKadir(FindComponent('id')).Text,pin,cardType,_xml_,_xmlSOAP_);
        EgitimKaydetCSGB(veri,pin,cardType,_xml_,_xmlSOAP_,TcxButtonEditKadir(FindComponent('id')).Text);
+//      EgitimKaydetMASTER(veri,pin,cardType,_xml_,_xmlSOAP_,TcxButtonEditKadir(FindComponent('id')).Text);
 
-     //  if VeriCoklu <> nil then
-     //  EgitimKaydetCSGB(VeriCoklu,pin,cardType,_xml_,_xmlSOAP_);
 
        DurumGoster(False,False,'',1);
        (*
@@ -474,7 +499,7 @@ begin
     sql :=
          ' Select e.id, e.BaslamaTarihi,e.BitisTarihi, et.tanimi tanimi, s.Tanimi SirketTanimi ,'+
           ' dbo.egitimCheckStateToTanim(e.EgitimKod,e.EgitimTuru) EgitimBilgi,'+
-          ' EgitimCSGBGonderimSonuc '+
+          ' EgitimCSGBGonderimSonuc,sorguNo '+
           ' from Egitimler e  left join egitimGrup_tnm et on et.Kod = e.EgitimTuru '+
           ' left outer join SIRKETLER_TNM s on s.SirketKod = e.SirketKod ';
      //     ' where e.BaslamaTarihi between ' +
@@ -493,7 +518,7 @@ begin
   else
   if TcxButtonKadir (Sender).ButtonName = 'btnEgitimciEkle' then
   begin
-    if not Egitimci.Dataset.Eof then exit;
+    if Egitimci.Dataset.Eof then exit;
 
     if IsNull (vartostr(TcxTextEditKadir(FindComponent('EgitimciTc')).EditingValue)) then
     begin
@@ -538,7 +563,7 @@ begin
   else
   if TcxButtonKadir (Sender).ButtonName = 'btnEgitimciListesi' then
   begin
-    if not Egitimci.Dataset.Eof then exit;
+    if Egitimci.Dataset.Eof then exit;
     if IsNull (TcxButtonEditKadir (FindComponent('id')).Text) then
     begin
       ShowMessageSkin('Bu iþlem için eðitim kaydý seçmeniz ya da ekrandaki bilgileri kaydetmeniz gerekir.', '', '', 'info');
@@ -635,7 +660,7 @@ begin
   inherited;
   if IsNull (TcxButtonEditKadir (FindComponent('id')).Text) then
   begin
-    ShowMessageSkin('Bu iþlemden önce Eðitim kaydýný kaydetmeniz gerekir.', '', '', 'info');
+    ShowMessageSkin('Bu iþlemden önce Eðitim Bilgisini kaydetmeniz gerekir.', '', '', 'info');
     Exit;
   end;
   ado := TADOQuery.Create(nil);
@@ -646,7 +671,7 @@ begin
       ado1.Connection := datalar.ADOConnection2;
       if TMenuItem (Sender).Tag = -40 then
       begin
-        showmessageSkin ('CÇSB Servisleri aktif deðil ya da servislere ulaþýlamýyor', '', '', 'info');
+        showmessageSkin ('Servisler aktif deðil ya da servislere ulaþýlamýyor', '', '', 'info');
         Exit;
       end;
       sql := 'sp_frmPersonelEgitim ' + TcxButtonEditKadir(FindComponent('id')).Text;
@@ -776,11 +801,17 @@ begin
 
 
   setDataStringB(self,'id','Eðitim No.',Kolon1,'ababa',70,List,True,nil, 'tanimi', '', False, True, -100);
-  setDataString(self,'EgitimCSGBGonderimSonuc','ÇSGB Gönderim Sonucu',Kolon1,'ababa',120, False, '', True);
 
-  addButton(self,btnEgitimGonderTek,'btnEgitimGonderTek','','Eðitim Gönder',Kolon1,'ababa',100,ButtonClick,30);
+  kombo := TcxImageComboKadir.Create(self);
+  kombo.Conn := nil;
+  kombo.BosOlamaz := True;
+  kombo.ItemList := '1;Ýþyeri Hekimi,2;Ýþ Güvenliði Uzmaný';
+  kombo.Filter := '';
+  OrtakEventAta(kombo);
+  setDataStringKontrol(self,kombo,'belgeTipi','Belge Tipi',kolon1,'',100);
 
 
+(*
   if datalar.CSGBImza = 'Imzager' then
   begin
    addButton(self,btnEgitimGonderTekImzager,'btnEgitimGonderTekImzager','','Gönder',Kolon1,'ababa',100,ButtonClick,30);
@@ -790,7 +821,7 @@ begin
   else begin
    btnEgitimGonderTek.Caption  := 'Eðitim Gönder';
   end;
-
+  *)
 
 
  // setDataStringB(self,'SirketKod','Þirket Kodu',Kolon1,'',100,nil, True, SirketKod);
@@ -890,7 +921,7 @@ begin
   //setDataStringC(self,'EgitimTuru','Eðitim Türü',Kolon1,'',100, 'Ýç Eðitim,Dýþ Eðitim,Diðer');
   setDataString(self,'EgitimYeri','Eðitim Yeri',Kolon1,'',100);
   setDataString(self,'SertifikaNo','Sertifika No.',Kolon1,'',100);
-  setDataStringMemo(self,'EgitimIcerigi','Eðitim Açýklama',Kolon1,'',370, 60);
+  setDataStringMemo(self,'EgitimIcerigi','Eðitim Açýklama',Kolon1,'',370, 50);
 
   setDataStringCurr(self,'EgitimBasariPuan','Baþarý Puan',Kolon1,'',100,'0',0);
 
@@ -904,6 +935,14 @@ begin
   kombo.Filter := '';
   OrtakEventAta(kombo);
   setDataStringKontrol(self,kombo,'EgitimUcretiOdendi','Ödendi mi?',kolon1,'ecr',100);
+  setDataStringBLabel(self,'bosSatir',kolon1,'',100,'');
+
+  setDataString(self,'EgitimCSGBGonderimSonuc','ÇSGB Gönderim Sonucu',Kolon1,'Gonder',270, False, '', True);
+  setDataString(self,'sorguNo','ÇSGB SorguNo',Kolon1,'Sorgula',270, False, '', True);
+  addButton(self,btnEgitimGonderTek,'btnEgitimGonderTek','','Eðitim Gönder',Kolon1,'Gonder',100,ButtonClick,30);
+  addButton(self,nil,'btnEgitimSorgu','','Eðitim Sorgula',Kolon1,'Sorgula',100,ButtonClick,30);
+  setDataString(self,'sorguSonuc','ÇSGB Sorgu Sonucu',Kolon1,'',270, False, '', True);
+
 
  (*
   sirketlerxx := TcxImageComboKadir.Create(self);
@@ -917,23 +956,31 @@ begin
   setDataStringKontrol(self,sirketlerxx,'PersonelSirketKod','Þirketler',Sayfa2_Kolon1,'',250,0,alNone,'');
   *)
 
-  addButton(self,nil,'btnPersonelEkle','','Personel Getir',Sayfa2_Kolon1,'PERS',120,ButtonClick);
-  addButton(self,nil,'btnPersonelSil','','Seçili Personeli Sil',Sayfa2_Kolon1,'PERS',120,ButtonClick);
+ // setDataStringBLabel(self,'bosSatir2',kolon3,'',500,'Eðitime Katýlan Personeller');
+  addButton(self,nil,'btnPersonelEkle','','Personel Getir',Kolon3,'PERS',120,ButtonClick);
+  addButton(self,nil,'btnPersonelSil','','Seçili Personeli Sil',Kolon3,'PERS',120,ButtonClick);
 
-  setDataStringKontrol(self,EgitimPersonel,'EgitimPersonel','',sayfa2_kolon1,'',500,1,alClient);
+  setDataStringKontrol(self,EgitimPersonel,'EgitimPersonel','',Kolon3,'',500,300,alNone);
   GridList.Bands [0].Width := EgitimPersonel.Width-5;
   EgitimPersonel.Dataset.BeforePost := BeforePost;
 
-  setDataString(self,'EgitimciUnvan','Ünvaný',Sayfa3_Kolon1,'ad',70,false,'',false,-1);
-  setDataString(self,'EgitimciTc','Tc',Sayfa3_Kolon1,'ad',100,false,'',false,-1);
-  setDataString(self,'egitimciAdiSoyadi','Adý Soyadý',Sayfa3_Kolon1,'ad',150,false,'',false,-1);
-  addButton(self,nil,'btnEgitimciEkle','','Ekle',Sayfa3_Kolon1,'ad',50,ButtonClick,20);
-  addButton(self,nil,'btnEgitimciSil','','Sil',Sayfa3_Kolon1,'ad',50,ButtonClick,20);
+  Kolon2.Width := 20;
+  Kolon4.Visible := false;
 
-  addButton(self,nil,'btnEgitimciListesi','','Listeden Ekle',Sayfa3_Kolon1,'',100,ButtonClick,21);
+  setDataStringBLabel(self,'bosSatir3',kolon3,'',500,'');
+  setDataStringBLabel(self,'bosSatir4',kolon3,'',500,'');
+  setDataString(self,'EgitimciUnvan','Ünvaný',Kolon3,'ad',70,false,'',false,-1);
+  setDataString(self,'EgitimciTc','Tc',Kolon3,'ad',100,false,'',false,-1);
+  setDataString(self,'egitimciAdiSoyadi','Adý Soyadý',Kolon3,'ad',150,false,'',false,-1);
+  addButton(self,nil,'btnEgitimciEkle','','Ekle',Kolon3,'ad',50,ButtonClick,20);
+  addButton(self,nil,'btnEgitimciListesi','','Listeden Ekle',Kolon3,'ad1',100,ButtonClick,21);
+  addButton(self,nil,'btnEgitimciSil','','Eðitimci Sil',Kolon3,'ad1',100,ButtonClick,20);
 
 
-  setDataStringKontrol(self,Egitimci,'Egitimci','',sayfa3_kolon1,'',500,1,alClient);
+  Sayfa3_Kolon2.Visible := False;
+  Sayfa3_Kolon3.Visible := False;
+  setDataStringKontrol(self,Egitimci,'Egitimci','',Kolon3,'',500,100,alNone);
+
 
 
   dateEdit := TcxDateEditKadir.Create(self);
@@ -950,13 +997,16 @@ begin
   addButton(self,nil,'btnEgitimXml','','Veri Xml Olarak Göster',sayfa4_kolon1,'btar',120,ButtonClick,30);
   addButton(self,nil,'btnEgitimSonucDetay','','Gönderim Sonuç Detay',sayfa4_kolon1,'btar',120,ButtonClick,30);
 
-  setDataStringKontrol(self,EgitimGrid,'EgitimGrid','',sayfa4_kolon1,'',840,400);
+  setDataStringKontrol(self,EgitimGrid,'EgitimGrid','',sayfa4_kolon1,'',1,1,alClient);
+  Sayfa4_Kolon2.Visible := False;
+  sayfa4_kolon3.Visible := False;
 
   setDataStringKontrol(self,Foto1,'Foto1','',sayfa5_kolon1,'',400,300);
   addButton(self,nil,'btnFoto1','','Foto Ekle',sayfa5_kolon1,'',120,ButtonClick,30);
 
   setDataStringKontrol(self,Foto2,'Foto2','',sayfa5_kolon1,'',400,300);
   addButton(self,nil,'btnFoto2','','Foto Ekle',sayfa5_kolon1,'',120,ButtonClick,30);
+
 
 
 
@@ -973,7 +1023,7 @@ begin
   TcxGridKadir(FindComponent('EgitimGrid')).Enabled := True;
 //  TcxButtonKadir(FindControl ('btnEgitimGonderTek')).Enabled := False;
 
-  SayfaCaption('Eðitim Bilgileri', 'Eðitime Katýlan Personeller', 'Eðitimci Bilgileri', 'Eðitim CSGB Gönder', 'Eðitim Foto');
+  SayfaCaption('Eðitim Bilgi', '', '', 'Eðitimler Listesi', 'Eðitim Foto');
   //_HastaBilgileriniCaptionGoster_ := True;
 end;
 
@@ -1049,15 +1099,29 @@ var
   xObj : TcxButtonEditKadir;
 begin
 
-  case TControl(sender).Tag  of
-  Kaydet : begin
-                TcxButtonKadir(FindComponentButtonName('btnEgitimler',self)).Enabled := True;
-           end;
-    end;
+
 
   BeginTrans (DATALAR.ADOConnection2);
   try
-    //SirketKodx.Text := datalar.AktifSirket; giriþ formuna eklendi.
+
+      case TControl(sender).Tag  of
+        Kaydet : begin
+                    TcxButtonKadir(FindComponentButtonName('btnEgitimler',self)).Enabled := True;
+                 end;
+
+        Sil    : begin
+                   datalar.QueryExec('delete from EgitimAltDetay where egitimID = ' + TcxButtonEditKadir (FindComponent('id')).EditText);
+                   datalar.QueryExec('delete from Personel_Egitim where egitimID = ' + TcxButtonEditKadir (FindComponent('id')).EditText);
+                   datalar.QueryExec('delete from Personel_Egitim_Egitimci where egitimID = ' + TcxButtonEditKadir (FindComponent('id')).EditText);
+                   datalar.QueryExec('delete from EgitimFoto where egitimID = ' + TcxButtonEditKadir (FindComponent('id')).EditText);
+                   datalar.QueryExec('delete from OSGB_MASTER.DBO.EgitimGonderim where egitimID = ' + TcxButtonEditKadir (FindComponent('id')).EditText);
+                  end;
+
+        end;
+
+
+
+
     inherited;
     //post ettikten sonra veritabanýndan Identity deðeri alýp edit kutusuna yazmasý için....
     case TControl(sender).Tag  of

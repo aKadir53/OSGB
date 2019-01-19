@@ -118,9 +118,9 @@ object frmPersonelEgitim: TfrmPersonelEgitim
   end
   object Egitimci: TcxGridKadir
     Left = 16
-    Top = 153
+    Top = 129
     Width = 425
-    Height = 65
+    Height = 89
     TabOrder = 1
     ExceleGonder = False
     object EgitimciList: TcxGridDBBandedTableView
@@ -272,6 +272,12 @@ object frmPersonelEgitim: TfrmPersonelEgitim
         Width = 85
         Position.BandIndex = 0
         Position.ColIndex = 6
+        Position.RowIndex = 0
+      end
+      object EgitimGridSatirlarColumn1: TcxGridDBBandedColumn
+        DataBinding.FieldName = 'sorguNo'
+        Position.BandIndex = 0
+        Position.ColIndex = 7
         Position.RowIndex = 0
       end
     end
@@ -430,8 +436,8 @@ object frmPersonelEgitim: TfrmPersonelEgitim
     SkinName = 'Lilian'
     Grup = False
     GrupCol = 0
-    Left = 560
-    Top = 40
+    Left = 616
+    Top = 136
   end
   object PopupMenu1: TPopupMenu
     Images = DATALAR.imag24png

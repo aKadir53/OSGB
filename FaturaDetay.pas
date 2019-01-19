@@ -82,6 +82,7 @@ type
     procedure FaturaSatirTutarCustomDrawFooterCell(Sender: TcxGridTableView;
       ACanvas: TcxCanvas; AViewInfo: TcxGridColumnHeaderViewInfo;
       var ADone: Boolean);
+    procedure FormShow(Sender: TObject);
  //   function EArsivGonder(FaturaId : string) : string;
  //   function EArsivIptal(FaturaGuid : string) : string;
  //   function EArsivPDF(FaturaGuid : string ; _tag_ : integer) : string;
@@ -123,8 +124,8 @@ type
 
 
 const
-//LIB_DLL = 'NoktaDLL.dll';
-  LIB_DLL = 'D:\Projeler\VS\c#\EFatura\EFaturaDLL\ClassLibrary1\bin\Debug\EFaturaDLL.dll';
+  LIB_DLL = 'EFaturaDLL.dll';
+ // LIB_DLL = 'D:\Projeler\VS\c#\EFatura\EFaturaDLL\ClassLibrary1\bin\Debug\EFaturaDLL.dll';
   test = 'https://efatura-test.uyumsoft.com.tr/Services/Integration';
   gercek = 'https://efatura.uyumsoft.com.tr/Services/Integration';
 var
@@ -168,17 +169,17 @@ begin
   inherited;
 
   case TControl(sender).Tag  of
-    0 : begin
-         FaturaGrid.Enabled := True;
-        end;
-    2 : begin
-          TcxTextEditKadir(FindComponent('faturaNo')).text := '0';
-          TcxImageComboKadir(FindComponent('FaturaTip')).EditValue := 1;
-          TcxImageComboKadir(FindComponent('ozelKod')).EditValue := 1;
-          TcxDateEditKadir(FindComponent('FaturaTarihi')).EditValue := date;
-          FaturaGrid.Enabled := False;
-          FaturaDetay;
-        end;
+    Kaydet : begin
+              FaturaGrid.Enabled := True;
+             end;
+    Yeni   : begin
+               TcxTextEditKadir(FindComponent('faturaNo')).text := '0';
+               TcxImageComboKadir(FindComponent('FaturaTip')).EditValue := 1;
+               TcxImageComboKadir(FindComponent('ozelKod')).EditValue := 1;
+               TcxDateEditKadir(FindComponent('FaturaTarihi')).EditValue := date;
+               FaturaGrid.Enabled := False;
+               FaturaDetay;
+             end;
   end;
 end;
 
@@ -305,6 +306,7 @@ begin
   TableName := 'Faturalar';
  // TopPanel.Visible := true;
 
+  cxPanelButtonVisible(true,true,false);
 
   Faturalar := ListeAcCreate('faturalarView','Sira,sirketTanimi,FaturaTipTanimi,FaturaTarihi',
                        'ID,Þirket,FaturaTip,FaturaTarihi',
@@ -377,6 +379,21 @@ begin
   //GridFaturalar.DataController.DataSource := DataSource;
   SayfaCaption('','','','','');
   Disabled(self,True);
+
+
+
+end;
+
+procedure TfrmFaturaDetay.FormShow(Sender: TObject);
+begin
+  inherited;
+  if _FaturaIptal  then
+  begin
+     cxTopPanelAltOrta.Enabled := False;
+     Disabled(self,False);
+     FaturaGrid.Enabled := False;
+     cxPanelButtonEnabled(False,False,False);
+  end;
 end;
 
 procedure TfrmFaturaDetay.GozlemYazdir(const GozlemID: integer);

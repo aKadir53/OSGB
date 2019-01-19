@@ -668,7 +668,7 @@ object GirisForm: TGirisForm
     Align = alClient
     TabOrder = 2
     TabStop = False
-    Properties.ActivePage = sayfa1
+    Properties.ActivePage = sayfa3
     Properties.Style = 11
     Properties.TabHeight = 10
     Properties.TabPosition = tpBottom
@@ -1275,28 +1275,29 @@ object GirisForm: TGirisForm
     Left = 364
     Top = 312
     Alignment = alCenterCenter
+    PanelStyle.CaptionIndent = 20
     ParentBackground = False
     ParentColor = False
     ParentFont = False
     Style.BorderColor = clBlack
     Style.BorderStyle = ebsSingle
-    Style.Color = clDefault
+    Style.Color = clTeal
     Style.Font.Charset = DEFAULT_CHARSET
     Style.Font.Color = clWindowText
     Style.Font.Height = -11
     Style.Font.Name = 'Tahoma'
     Style.Font.Style = [fsBold]
     Style.LookAndFeel.NativeStyle = True
-    Style.LookAndFeel.SkinName = 'UserSkin'
+    Style.LookAndFeel.SkinName = 'LiquidSky'
     Style.Shadow = False
     Style.TransparentBorder = False
     Style.IsFontAssigned = True
     StyleDisabled.LookAndFeel.NativeStyle = True
-    StyleDisabled.LookAndFeel.SkinName = 'UserSkin'
+    StyleDisabled.LookAndFeel.SkinName = 'LiquidSky'
     StyleFocused.LookAndFeel.NativeStyle = True
-    StyleFocused.LookAndFeel.SkinName = 'UserSkin'
+    StyleFocused.LookAndFeel.SkinName = 'LiquidSky'
     StyleHot.LookAndFeel.NativeStyle = True
-    StyleHot.LookAndFeel.SkinName = 'UserSkin'
+    StyleHot.LookAndFeel.SkinName = 'LiquidSky'
     TabOrder = 5
     Visible = False
     Height = 64
@@ -1457,9 +1458,7 @@ object GirisForm: TGirisForm
         7935AE55479994CB0000000049454E44AE426082}
       Properties.GraphicClassName = 'TdxPNGImage'
       TabOrder = 0
-      ExplicitLeft = 3
-      ExplicitTop = 3
-      ExplicitHeight = 58
+      Transparent = True
       Height = 60
       Width = 65
     end
@@ -1472,31 +1471,26 @@ object GirisForm: TGirisForm
       PanelStyle.Active = True
       ParentFont = False
       Style.Font.Charset = DEFAULT_CHARSET
-      Style.Font.Color = clRed
-      Style.Font.Height = -11
+      Style.Font.Color = clBlack
+      Style.Font.Height = -12
       Style.Font.Name = 'Tahoma'
       Style.Font.Style = [fsBold]
       Style.LookAndFeel.NativeStyle = True
-      Style.TextColor = clRed
+      Style.Shadow = False
+      Style.TextColor = clBlack
       Style.IsFontAssigned = True
       StyleDisabled.LookAndFeel.NativeStyle = True
       StyleFocused.LookAndFeel.NativeStyle = True
       StyleHot.LookAndFeel.NativeStyle = True
       TabOrder = 1
-      ExplicitLeft = 68
-      ExplicitTop = 3
-      ExplicitWidth = 430
-      ExplicitHeight = 58
       Height = 60
       Width = 432
       object pBar: TcxProgressBar
         Left = 2
-        Top = 39
+        Top = 38
         Align = alBottom
         TabOrder = 0
         Visible = False
-        ExplicitTop = 37
-        ExplicitWidth = 426
         Width = 428
       end
     end
@@ -2562,5 +2556,11 @@ object GirisForm: TGirisForm
     GrupCol = 2
     Left = 648
     Top = 109
+  end
+  object Timer1: TTimer
+    Enabled = False
+    OnTimer = Timer1Timer
+    Left = 456
+    Top = 400
   end
 end

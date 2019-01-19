@@ -9,8 +9,9 @@ uses
    cxContainer, cxEdit, cxLabel, cxProgressBar,ShellApi,TlHelp32,
   IdBaseComponent, IdComponent, IdTCPConnection, IdTCPClient, IdHTTP,
   Vcl.StdCtrls, cxButtons, dxStatusBar, Vcl.ExtCtrls,ShlObj,ActiveX,ComObj,
-  dxSkinsdxStatusBarPainter, acPNG,
-  Menus,cxLookAndFeels, dxSkinsForm;
+  dxSkinsdxStatusBarPainter, acPNG, WinInet,
+  Menus,cxLookAndFeels, dxSkinsForm, IdIOHandler, IdIOHandlerSocket,
+  IdIOHandlerStack, IdSSL, IdSSLOpenSSL;
 
 type
   TfrmYv = class(TForm)
@@ -23,6 +24,8 @@ type
     UyumImage: TImage;
     NoktaImage: TImage;
     dxSkinController1: TdxSkinController;
+    HTTP1id: TIdHTTP;
+    IdSSLIOHandlerSocketOpenSSL1: TIdSSLIOHandlerSocketOpenSSL;
     procedure HTTP1WorkBegin(ASender: TObject; AWorkMode: TWorkMode;
       AWorkCountMax: Int64);
     procedure cxButton1Click(Sender: TObject);
@@ -33,6 +36,7 @@ type
     function KillTaskt(Dosyadi: string): integer;
     function DesktopPath : string;
     procedure FormShow(Sender: TObject);
+    function Download(URL, User, Pass, FileName :  string ; FullURL : string = '443'): Boolean;
   private
     { Private declarations }
   public
@@ -51,6 +55,55 @@ var
   implementation
 
 {$R *.dfm}
+
+function TfrmYv.Download(URL, User, Pass, FileName :  string ; FullURL : string = '443'): Boolean;
+const
+  BufferSize = 1024;
+var
+  hSession, hURL: HInternet;
+  Buffer: array[1..BufferSize] of Byte;
+  BufferLen: DWORD;
+  F: File;
+begin
+   Result := False;
+   hSession := InternetOpen('', INTERNET_OPEN_TYPE_PRECONFIG, nil, nil, 0) ;
+
+   // Establish the secure connection
+   InternetConnect (
+     hSession,
+     PChar(FullURL),
+     INTERNET_DEFAULT_HTTPS_PORT,
+     PChar(User),
+     PChar(Pass),
+     INTERNET_SERVICE_HTTP,
+     0,
+     0
+   );
+
+  try
+    hURL := InternetOpenURL(hSession, PChar(URL), nil, 0, 0, 0) ;
+    try
+      AssignFile(f, FileName);
+      Rewrite(f,1);
+      try
+        repeat
+          InternetReadFile(hURL, @Buffer, SizeOf(Buffer), BufferLen) ;
+          BlockWrite(f, Buffer, BufferLen)
+        until BufferLen = 0;
+      finally
+        CloseFile(f) ;
+        Result := True;
+        Progress.Position := Progress.Position + 1;
+        Application.ProcessMessages;
+      end;
+    finally
+      InternetCloseHandle(hURL)
+    end
+  finally
+    InternetCloseHandle(hSession)
+  end;
+end;
+
 
 
 function TfrmYv.DesktopPath : string;
@@ -78,6 +131,7 @@ procedure TfrmYv.FormShow(Sender: TObject);
 var
   p : string;
 begin
+(*
   p := paramStr(0);
   if pos('UYUM',p) > 0
   then begin
@@ -92,7 +146,7 @@ begin
     NoktaImage.Visible := True;
   End;
 
-
+  *)
 
 end;
 
@@ -154,78 +208,118 @@ var
 begin
 
  KillTaskt('OSGB.exe');
- KillTaskt('UYUMOSGB.exe');
+// KillTaskt('UYUMOSGB.exe');
 
 
  if ForceDirectories ('C:\OSGB') then
   begin
 
-   // if FileExists('C:\OSGB\AlpemixCMX.exe') = False
-  //  Then begin
+    if FileExists('C:\OSGB\ALPEMIXCMX.exe') = False
+    Then begin
       try
         filename := 'ALPEMIXCMX.exe';
-        dosya := TFileStream.Create('C:\OSGB\ALPEMIXCMX.exe',fmCreate);
-        HTTP1.Get('http://www.noktayazilim.net/ALPEMIXCMX.exe' ,TStream(dosya));
-      except
-        dosya.free;
+       // KillTaskt(filename);
+   //     dosya := TFileStream.Create('C:\OSGB\ALPEMIXCMX.exe',fmCreate);
+  //      HTTP1.Get('https://www.noktayazilim.net/ALPEMIXCMX.exe' ,TStream(dosya));
+        Download('https://www.noktayazilim.net/'+filename,'mavinokta','nokta53Nokta','C:\OSGB\'+filename);
+      finally
+     //   dosya.free;
       end;
-  //  end;
+    end;
 
    // if FileExists('C:\OSGB\NoktaDLL.dll') = False
    // Then begin
+     try
       filename := 'NoktaDLL.dll';
-      dosya := TFileStream.Create('C:\OSGB\NoktaDLL.dll',fmCreate);
-      HTTP1.Get('http://www.noktayazilim.net/NoktaDLL.dll' ,TStream(dosya));
+//      dosya := TFileStream.Create('C:\OSGB\NoktaDLL.dll',fmCreate);
+//      HTTP1.Get('https://www.noktayazilim.net/NoktaDLL.dll' ,TStream(dosya));
+      Download('https://www.noktayazilim.net/'+filename,'mavinokta','nokta53Nokta','C:\OSGB\'+filename);
+     finally
+//      dosya.free;
+     end;
    // end;
 
       // if FileExists('C:\OSGB\NoktaDLL.dll') = False
    // Then begin
+     try
       filename := 'EFaturaDLL.dll';
-      dosya := TFileStream.Create('C:\OSGB\EFaturaDLL.dll',fmCreate);
-      HTTP1.Get('http://www.noktayazilim.net/EFaturaDLL.dll' ,TStream(dosya));
+//      dosya := TFileStream.Create('C:\OSGB\EFaturaDLL.dll',fmCreate);
+//      HTTP1.Get('https://www.noktayazilim.net/EFaturaDLL.dll' ,TStream(dosya));
+      Download('https://www.noktayazilim.net/'+filename,'mavinokta','nokta53Nokta','C:\OSGB\'+filename);
+     finally
+//      dosya.free;
+     end;
    // end;
 
+     try
       filename := 'SmsApi.dll';
-      dosya := TFileStream.Create('C:\OSGB\SmsApi.dll',fmCreate);
-      HTTP1.Get('http://www.noktayazilim.net/SmsApi.dll' ,TStream(dosya));
-
+  //    dosya := TFileStream.Create('C:\OSGB\SmsApi.dll',fmCreate);
+//      HTTP1.Get('https://www.noktayazilim.net/SmsApi.dll' ,TStream(dosya));
+      Download('https://www.noktayazilim.net/'+filename,'mavinokta','nokta53Nokta','C:\OSGB\'+filename);
+      finally
+ //      dosya.free;
+     end;
 
   //  if FileExists('C:\OSGB\BouncyCastle.Crypto.dll') = False
    // Then begin
+     try
       filename := 'BouncyCastle.Crypto.dll';
-      dosya := TFileStream.Create('C:\OSGB\BouncyCastle.Crypto.dll',fmCreate);
-      HTTP1.Get('http://www.noktayazilim.net/BouncyCastle.Crypto.dll' ,TStream(dosya));
+//      dosya := TFileStream.Create('C:\OSGB\BouncyCastle.Crypto.dll',fmCreate);
+//      HTTP1.Get('https://www.noktayazilim.net/BouncyCastle.Crypto.dll' ,TStream(dosya));
+      Download('https://www.noktayazilim.net/'+filename,'mavinokta','nokta53Nokta','C:\OSGB\'+filename);
+     finally
+//              dosya.free;
+     end;
    // end;
+
 
    // if FileExists('C:\OSGB\EdocLib.dll') = False
    // Then begin
+     try
       filename := 'EdocLib.dll';
-      dosya := TFileStream.Create('C:\OSGB\EdocLib.dll',fmCreate);
-      HTTP1.Get('http://www.noktayazilim.net/EdocLib.dll' ,TStream(dosya));
+ //     dosya := TFileStream.Create('C:\OSGB\EdocLib.dll',fmCreate);
+//      HTTP1.Get('https://www.noktayazilim.net/EdocLib.dll' ,TStream(dosya));
+      Download('https://www.noktayazilim.net/'+filename,'mavinokta','nokta53Nokta','C:\OSGB\'+filename);
+
+     finally
+//              dosya.free;
+     end;
    // end;
 
    // if FileExists('C:\OSGB\Net.Pkcs11.dll') = False
   //  Then begin
+     try
       filename := 'Net.Pkcs11.dll';
-      dosya := TFileStream.Create('C:\OSGB\Net.Pkcs11.dll',fmCreate);
-      HTTP1.Get('http://www.noktayazilim.net/Net.Pkcs11.dll' ,TStream(dosya));
+//      dosya := TFileStream.Create('C:\OSGB\Net.Pkcs11.dll',fmCreate);
+//      HTTP1.Get('https://www.noktayazilim.net/Net.Pkcs11.dll' ,TStream(dosya));
+      Download('https://www.noktayazilim.net/'+filename,'mavinokta','nokta53Nokta','C:\OSGB\'+filename);
+
+     finally
+//              dosya.free;
+     end;
    // end;
 
      // if FileExists('C:\OSGB\Net.Pkcs11.dll') = False
   //  Then begin
+     try
       filename := 'Microsoft.Web.Services3.dll';
-      dosya := TFileStream.Create('C:\OSGB\Microsoft.Web.Services3.dll',fmCreate);
-      HTTP1.Get('http://www.noktayazilim.net/Microsoft.Web.Services3.dll' ,TStream(dosya));
+//      dosya := TFileStream.Create('C:\OSGB\Microsoft.Web.Services3.dll',fmCreate);
+//      HTTP1.Get('https://www.noktayazilim.net/Microsoft.Web.Services3.dll' ,TStream(dosya));
+      Download('https://www.noktayazilim.net/'+filename,'mavinokta','nokta53Nokta','C:\OSGB\'+filename);
+
+     finally
+//              dosya.free;
+     end;
    // end;
 
 
-      filename := 'RDP.rtf';
-      dosya := TFileStream.Create('C:\OSGB\RDP.rtf',fmCreate);
-      HTTP1.Get('http://www.noktayazilim.net/RDP.rtf' ,TStream(dosya));
+   //   filename := 'RDP.rtf';
+   //   dosya := TFileStream.Create('C:\OSGB\RDP.rtf',fmCreate);
+   //   HTTP1.Get('https://www.noktayazilim.net/RDP.rtf' ,TStream(dosya));
 
-      filename := 'SonucRaporu.rtf';
-      dosya := TFileStream.Create('C:\OSGB\RDP.SonucRaporu',fmCreate);
-      HTTP1.Get('http://www.noktayazilim.net/SonucRaporu.rtf' ,TStream(dosya));
+    //  filename := 'SonucRaporu.rtf';
+    //  dosya := TFileStream.Create('C:\OSGB\RDP.SonucRaporu',fmCreate);
+    //  HTTP1.Get('https://www.noktayazilim.net/SonucRaporu.rtf' ,TStream(dosya));
 
 
    // if FileExists('C:\OSGB\OSGB.exe') = False
@@ -233,9 +327,15 @@ begin
 
     if pos('UYUM',paramStr(0)) > 0 then exeFile := UYUM else exeFile := Nokta;
      begin
+     try
       filename := exeFile;
-      dosya := TFileStream.Create('C:\OSGB\' + exefile,fmCreate);
-      HTTP1.Get('http://www.noktayazilim.net/' + exefile ,TStream(dosya));
+//      dosya := TFileStream.Create('C:\OSGB\' + exefile,fmCreate);
+//      HTTP1.Get('https://www.noktayazilim.net/' + exefile ,TStream(dosya));
+      Download('https://www.noktayazilim.net/'+filename,'mavinokta','nokta53Nokta','C:\OSGB\'+filename);
+
+     finally
+//              dosya.free;
+     end;
   //  end;
 
      end;

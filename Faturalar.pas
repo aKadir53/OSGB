@@ -11,19 +11,13 @@ uses
   kadir, kadirMedula3, KadirType,GetFormClass,GirisUnit,
   StdCtrls, Buttons, sBitBtn, ExtCtrls, cxContainer, cxLabel, cxTextEdit, cxGridExportLink,
   cxMaskEdit, cxDropDownEdit, cxCalendar, sCheckBox, dxSkinsCore,
-  dxSkinsDefaultPainters, dxSkinscxPCPainter, dxSkinBlack, dxSkinBlue,
-  dxSkinCaramel, dxSkinCoffee, dxSkinDarkRoom, dxSkinDarkSide, dxSkinFoggy,
-  dxSkinGlassOceans, dxSkiniMaginary, dxSkinLilian, dxSkinLiquidSky,
-  dxSkinLondonLiquidSky, dxSkinMcSkin, dxSkinMoneyTwins, dxSkinOffice2007Black,
-  dxSkinOffice2007Blue, dxSkinOffice2007Green, dxSkinOffice2007Pink,
-  dxSkinOffice2007Silver, dxSkinOffice2010Black, dxSkinOffice2010Blue,
-  dxSkinOffice2010Silver, dxSkinPumpkin, dxSkinSeven, dxSkinSharp, dxSkinSilver,
-  dxSkinSpringTime, dxSkinStardust, dxSkinSummer2008, dxSkinValentine,
-  dxSkinXmas2008Blue, Menus, cxGroupBox, cxRadioGroup, sGauge,
+  Menus, cxGroupBox, cxRadioGroup, sGauge,
   cxPCdxBarPopupMenu, cxMemo, cxPC, cxCheckBox, rxAnimate, rxGIFCtrl,
   JvExControls, JvAnimatedImage, JvGIFCtrl, cxButtons, cxCurrencyEdit,
   cxGridBandedTableView, cxGridDBBandedTableView, KadirLabel, cxImage,
-  cxImageComboBox,cxCheckGroup;
+  cxImageComboBox,cxCheckGroup, dxSkinBlue, dxSkinCaramel, dxSkinCoffee,
+  dxSkiniMaginary, dxSkinLilian, dxSkinLiquidSky, dxSkinsDefaultPainters,
+  dxSkinscxPCPainter;
 
 type
   TfrmFaturalar = class(TGirisForm)
@@ -92,6 +86,7 @@ type
     F1: TMenuItem;
     E5: TMenuItem;
     T1: TMenuItem;
+    GridFaturalarColumn2: TcxGridDBColumn;
     procedure Fatura(islem: Integer);
     procedure cxButtonCClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
@@ -448,6 +443,7 @@ begin
                    begin
                       fID := GridCellToString(GridFaturalar,'sira',0);
                       GirisRecord.F_FaturaNO_ := fID;
+                      GirisRecord.F_FaturaIptal :=  GridCellToBoolean(GridFaturalar,'iptal',0);
                    end;
    yeniFatura :
                    begin
@@ -467,6 +463,7 @@ begin
    FaturaTahsilatEkle :
                    begin
                        fID := GridCellToString(GridFaturalar,'sirketKod',0);
+                       datalar.CariHareket.tutar := GridCellToDouble(GridFaturalar,'faturaGenelTutar',0);
                        if mrYEs = ShowPopupForm('Fatura Tahsilat Ekle',FaturaTahsilatEkle,fID)
                        then begin
 

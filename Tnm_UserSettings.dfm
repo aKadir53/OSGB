@@ -4,7 +4,7 @@ object frmUsers: TfrmUsers
   Top = 0
   Caption = 'frmUsers'
   ClientHeight = 562
-  ClientWidth = 760
+  ClientWidth = 884
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -41,9 +41,9 @@ object frmUsers: TfrmUsers
     Width = 121
   end
   object cxPageControl1: TcxPageControl
-    Left = 402
+    Left = 414
     Top = 0
-    Width = 358
+    Width = 470
     Height = 562
     Align = alRight
     TabOrder = 1
@@ -51,31 +51,37 @@ object frmUsers: TfrmUsers
     Properties.Style = 11
     ClientRectBottom = 555
     ClientRectLeft = 3
-    ClientRectRight = 351
+    ClientRectRight = 463
     ClientRectTop = 26
     object cxTabSheet1: TcxTabSheet
       Caption = #304#351'lem Yetkiler'
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
+      ExplicitWidth = 348
       object cxGrid2: TcxGrid
         Left = 0
         Top = 0
-        Width = 348
+        Width = 460
         Height = 529
         Align = alClient
         TabOrder = 0
+        ExplicitWidth = 348
         object cxGridUserSet: TcxGridDBTableView
+          PopupMenu = PopupMenu2
           DataController.DataModeController.DetailInSQLMode = True
           DataController.DataSource = UserSettings_DataSource
+          DataController.Filter.Options = [fcoCaseInsensitive]
+          DataController.Options = [dcoCaseInsensitive, dcoAssignGroupingValues, dcoAssignMasterDetailKeys, dcoSaveExpanding]
           DataController.Summary.DefaultGroupSummaryItems = <>
           DataController.Summary.FooterSummaryItems = <>
           DataController.Summary.SummaryGroups = <>
+          DataController.OnFilterRecord = cxGridUserSetDataControllerFilterRecord
+          FilterRow.InfoText = #304#351'lem Aramak i'#231'in Yaz'#305'n'#305'z...'
+          FilterRow.Visible = True
+          FilterRow.ApplyChanges = fracImmediately
           OptionsData.Deleting = False
           OptionsData.Inserting = False
           OptionsView.GroupByBox = False
           OptionsView.GroupRowHeight = 25
+          Styles.FilterBox = cxStyle2
           object cxGridUserSetModul: TcxGridDBColumn
             DataBinding.FieldName = 'Modul'
             PropertiesClassName = 'TcxTextEditProperties'
@@ -90,6 +96,8 @@ object frmUsers: TfrmUsers
           end
           object cxGridUserSetIzin: TcxGridDBColumn
             DataBinding.FieldName = 'Izin'
+            PropertiesClassName = 'TcxCheckBoxProperties'
+            Properties.OnEditValueChanged = cxGridUserSetIzinPropertiesEditValueChanged
           end
         end
         object cxGridLevel1: TcxGridLevel
@@ -100,26 +108,31 @@ object frmUsers: TfrmUsers
     object cxTabSheet2: TcxTabSheet
       Caption = 'Men'#252' Yetkileri'
       ImageIndex = 1
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
+      ExplicitWidth = 348
       object cxGrid1: TcxGrid
         Left = 0
         Top = 0
-        Width = 348
+        Width = 460
         Height = 529
         Align = alClient
         TabOrder = 0
+        ExplicitWidth = 348
         object cxGridMenuSet: TcxGridDBTableView
           DataController.DataModeController.DetailInSQLMode = True
           DataController.DataSource = User_Menu_Settings_DataSource
+          DataController.Filter.Options = [fcoCaseInsensitive]
+          DataController.Options = [dcoCaseInsensitive, dcoAssignGroupingValues, dcoAssignMasterDetailKeys, dcoSaveExpanding]
           DataController.Summary.DefaultGroupSummaryItems = <>
           DataController.Summary.FooterSummaryItems = <>
           DataController.Summary.SummaryGroups = <>
+          FilterRow.InfoText = 'Arama Yapmak '#304#231'in men'#252' bilgisini yaz'#305'n'#305'z...'
+          FilterRow.SeparatorColor = 8454143
+          FilterRow.Visible = True
+          FilterRow.ApplyChanges = fracImmediately
           OptionsData.Deleting = False
           OptionsData.Inserting = False
           OptionsView.GroupByBox = False
+          Styles.FilterBox = cxStyle2
           object cxGridMenuSetCOLUMN1: TcxGridDBColumn
             DataBinding.FieldName = 'COLUMN1'
             Visible = False
@@ -130,6 +143,7 @@ object frmUsers: TfrmUsers
             FooterAlignmentHorz = taCenter
             HeaderAlignmentHorz = taCenter
             Options.Editing = False
+            Width = 240
           end
           object cxGridMenuSetKAYITID: TcxGridDBColumn
             DataBinding.FieldName = 'KAYITID'
@@ -149,6 +163,7 @@ object frmUsers: TfrmUsers
                 Caption = 'Gizle'
                 Value = '0'
               end>
+            Properties.OnEditValueChanged = cxGridMenuSetCOLUMN2PropertiesEditValueChanged
             HeaderAlignmentHorz = taCenter
             Width = 126
           end
@@ -258,9 +273,6 @@ object frmUsers: TfrmUsers
       Align = alTop
       PanelStyle.Active = True
       TabOrder = 1
-      ExplicitLeft = 2
-      ExplicitTop = -2
-      ExplicitWidth = 396
       Height = 28
       Width = 394
       object txtYeniGrup: TcxTextEditKadir
@@ -270,7 +282,6 @@ object frmUsers: TfrmUsers
         Align = alClient
         Properties.Alignment.Vert = taVCenter
         TabOrder = 0
-        ExplicitHeight = 21
         Width = 263
       end
       object cxLabel1: TcxLabel
@@ -327,8 +338,8 @@ object frmUsers: TfrmUsers
   end
   object PopupMenu1: TPopupMenu
     Images = DATALAR.imag24png
-    Left = 32
-    Top = 88
+    Left = 312
+    Top = 24
     object Kapat1: TMenuItem
       Tag = 9999
       Caption = 'Kapat'
@@ -411,5 +422,25 @@ object frmUsers: TfrmUsers
       'select * from UserGroupMenuSettings where kullanici = '#39'1'#39)
     Left = 72
     Top = 416
+  end
+  object cxStyleRepository2: TcxStyleRepository
+    PixelsPerInch = 96
+    object cxStyle2: TcxStyle
+      AssignedValues = [svColor]
+      Color = 8454143
+    end
+  end
+  object PopupMenu2: TPopupMenu
+    Left = 512
+    Top = 128
+    object S1: TMenuItem
+      Tag = 1
+      Caption = 'T'#252'm Sekmeleri A'#231
+      OnClick = S1Click
+    end
+    object T1: TMenuItem
+      Caption = 'T'#252'm Sekmeleri Kapat'
+      OnClick = S1Click
+    end
   end
 end

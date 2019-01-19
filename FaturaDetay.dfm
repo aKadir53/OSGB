@@ -13,6 +13,7 @@ object frmFaturaDetay: TfrmFaturaDetay
   OldCreateOrder = False
   Position = poMainFormCenter
   OnCreate = FormCreate
+  OnShow = FormShow
   PixelsPerInch = 96
   TextHeight = 13
   object FaturaGrid: TcxGridKadir

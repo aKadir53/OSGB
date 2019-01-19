@@ -23,7 +23,8 @@ uses
   dxSkinOffice2007Silver, dxSkinOffice2010Black, dxSkinOffice2010Blue,
   dxSkinOffice2010Silver, dxSkinPumpkin, dxSkinSeven, dxSkinSharp, dxSkinSilver,
   dxSkinSpringTime, dxSkinStardust, dxSkinSummer2008, dxSkinValentine,
-  dxSkinXmas2008Blue, cxRadioGroup, cxCheckComboBox, cxCheckGroup, Vcl.ImgList;
+  dxSkinXmas2008Blue, cxRadioGroup, cxCheckComboBox, cxCheckGroup, Vcl.ImgList,
+  JvExControls, JvAnimatedImage, JvGIFCtrl;
 type
   TControlAccess = class(TControl);
   TcxLookAndFeelAccess = class(TcxLookAndFeel);
@@ -119,6 +120,7 @@ type
     Ado_Foto: TADOQuery;
     ListeNaceKodlari: TListeAc;
     _CINSIYET_: TcxImageComboKadir;
+    Timer1: TTimer;
 
     procedure cxKaydetClick(Sender: TObject);virtual;
     procedure cxButtonCClick(Sender: TObject);
@@ -138,6 +140,7 @@ type
     procedure NaceKodPropertiesButtonClick(Sender: TObject;
       AButtonIndex: Integer); virtual;
 
+    procedure CustomEditClear;virtual;
     procedure KontrolEditValueClear;
     procedure sqlRunLoad;virtual;
     procedure Yukle;virtual;
@@ -168,6 +171,7 @@ type
     procedure FormCreate(Sender: TObject);
     procedure SayfalarChange(Sender: TObject);
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
+    procedure Timer1Timer(Sender: TObject);
 
   private
     F_dosyaNO_ : string;
@@ -205,6 +209,7 @@ type
     F_Tarih1_ : string;
     F_Tarih2_ : string;
     F_ResourceID_ : string;
+    F_FaturaIptal : Boolean;
   protected
     F_IDENTITY : Integer;
     function IsPostControl (const aComponent : TComponent) : Boolean;
@@ -264,7 +269,7 @@ type
     procedure addButton(sender : Tform ;cxButton:TcxButtonKadir;
                         Name ,captionItem,captionButton: string; parent : TdxLayoutGroup;
                         grup : string;uzunluk : integer;
-                        Event : TNotifyEvent = nil;Tag : integer = 0);
+                        Event : TNotifyEvent = nil;Tag : integer = 0;yukseklik : integer = 21);
     procedure addButtonTopPanel(sender : Tform ; Name,caption: string ; uzunluk,Tag : integer; Event : TNotifyEvent = nil);
     procedure setDataImage(sender : Tform; Name ,captionItem : string; parent : TdxLayoutGroup; grup : string;uzunluk,yukseklik : integer);
     procedure setDataStringChk(sender : Tform ; fieldName,caption : string;
@@ -317,6 +322,7 @@ type
     property _Tarih1_ : string read F_Tarih1_ write F_Tarih1_;
     property _Tarih2_ : string read F_Tarih2_ write F_Tarih2_;
     property _ResourceID : string read F_ResourceID_ write F_ResourceID_;
+    property _FaturaIptal : Boolean read F_FaturaIptal write F_FaturaIptal;
 
   end;
 
@@ -544,6 +550,11 @@ begin
   chkList.Visible := ChkListe;
 end;
 
+procedure TGirisForm.Timer1Timer(Sender: TObject);
+begin
+  //pnlDurumImage.Picture.Assign(imzaGif);
+end;
+
 procedure TGirisForm.DurumGoster(Visible : Boolean = True; pBarVisible : Boolean = False ;
                                  msj : string = 'Ýþleminiz Yapýlýyor , lütfen bekleyiniz...';
                                  imageIndex : integer = 0);
@@ -556,6 +567,7 @@ begin
    pnlDurumDurum.Caption := msj;
    pnlDurumImage.Clear;
    pnlDurumImageList.GetBitmap(imageIndex,pnlDurumImage.Picture.Bitmap);
+   //imzaGif.Animate := True;
    Application.ProcessMessages;
 end;
 
@@ -1044,17 +1056,23 @@ begin
   for x := 0 to _say do
   begin
    _obje_ := TcxCustomEdit(_form.Components[x]);
-
    if ((_obje_.ClassName = 'TcxButtonEditKadir') and
       (TcxButtonEditKadir(_obje_).indexField = True))
     Then begin
      TcxButtonEditKadir(_obje_).Enabled := True;
     end
-    else
+    else begin
       if IsDisableControl (_obje_)
       Then
         TControl(_obje_).Enabled := False;
+    end;
+
+   if (_obje_.ClassName = 'TcxButtonEditKadir') then TcxButtonEditKadir(_obje_).Enabled := indexField;
+
   end;
+
+
+
 end;
 
 
@@ -1290,17 +1308,25 @@ begin
       list := TcxButtonEditKadir(sender).ListeAc.ListeGetir;
       datalar.ButtonEditSecimlist := list;
       if length(list) = 0 then begin
-       TcxButtonEditKadir(sender).ListeAc.Where := where;
-       exit;
+        TcxButtonEditKadir(sender).ListeAc.Where := where;
+        TcxButtonEditKadir(sender).Text := '';
+        TcxButtonEditKadir(sender).tanimDeger := '';
+        TcxButtonEditKadir(sender).kolon3 := '';
+        TcxButtonEditKadir(sender).kolon4 := '';
+        indexKaydiBul(varTostr(TcxCustomEdit(sender).EditingValue),TcxButtonEditKadir(sender).name);
+        exit;
       end;
       TcxButtonEditKadir(sender).Text := list[0].kolon1;
       TcxButtonEditKadir(sender).tanimDeger := list[0].kolon2;
+      TcxButtonEditKadir(sender).kolon3 := list[0].kolon3;
+      TcxButtonEditKadir(sender).kolon4 := list[0].kolon4;
+
 
       TcxLabel(FindComponent('label'+TcxButtonEditKadir(sender).Name)).Caption := list[0].kolon2;
 
       if (TcxButtonEditKadir(sender).indexField = True)
       then begin
-        indexKaydiBul(TcxCustomEdit(sender).EditingValue,TcxButtonEditKadir(sender).name);
+        indexKaydiBul(varTostr(TcxCustomEdit(sender).EditingValue),TcxButtonEditKadir(sender).name);
        // TcxButtonEditKadir(sender).Properties.ReadOnly := True;
       end;
       TcxButtonEditKadir(sender).ListeAc.Where := where;
@@ -1319,6 +1345,25 @@ begin
   Datalar.ButtonEditSecimlist := List;
 end;
 
+
+procedure TGirisForm.CustomEditClear;
+var
+ _obje_ : TComponent;
+ i : integer;
+ name : string;
+begin
+     for i := 0 to self.ComponentCount - 1 do
+     begin
+        _obje_ := self.Components[i];
+         if (_obje_ is TcxCustomEdit)
+           then
+             if TcxCustomEdit(_obje_).Visible
+             then begin
+               name := TcxCustomEdit(_obje_).Name;
+               TcxCustomEdit(_obje_).Clear;
+             end;
+     end;
+end;
 
 procedure TGirisForm.cxButtonKadir1Click(Sender: TObject);
 var
@@ -1517,7 +1562,7 @@ end;
 procedure TGirisForm.addButton(sender : Tform;cxButton : TcxButtonKadir; Name ,
                               captionItem,captionButton: string; parent : TdxLayoutGroup;
                               grup : string;uzunluk : integer;
-                              Event : TNotifyEvent = nil;Tag : integer = 0);
+                              Event : TNotifyEvent = nil;Tag : integer = 0;yukseklik : integer = 21);
 var
 //  cxButton : TcxButton;
   dxLa : TdxLayoutItem;
@@ -1538,6 +1583,7 @@ begin
   dxLa.Name := 'dxLaB'+Name;
   dxLa.AlignHorz := ahLeft;
   dxLa.Width := uzunluk;
+  dxLa.Height := yukseklik;
   dxLa.Caption := captionItem;
   dxLa.Visible := not cxButton.NewButtonVisible;
   if grup = '' then
@@ -2680,7 +2726,7 @@ procedure TGirisForm.Image2Click(Sender: TObject);
 begin
   if UserRight('Kullanýcý Ýþlemleri', 'KontrolUserSet') = False
   then begin
-    ShowMessageSkin('Bu Ýþlem Ýçin Yetkiniz Bulunmamaktadýr !','','','info');
+    ShowMessageSkin('Bu Ýþlem Ýçin Yetkiniz Bulunmamaktadýr !','Kullanýcý Ýþlemleri','KontrolUserSet','info');
     exit;
   end;
   Application.CreateForm(TfrmKontrolUserSet, frmKontrolUserSet);

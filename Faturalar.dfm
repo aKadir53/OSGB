@@ -283,6 +283,24 @@ object frmFaturalar: TfrmFaturalar
             HeaderAlignmentHorz = taCenter
             HeaderAlignmentVert = vaCenter
           end
+          object GridFaturalarColumn2: TcxGridDBColumn
+            Caption = #304'ptal'
+            DataBinding.FieldName = 'iptal'
+            PropertiesClassName = 'TcxImageComboBoxProperties'
+            Properties.Alignment.Horz = taCenter
+            Properties.Alignment.Vert = taVCenter
+            Properties.Images = DATALAR.global_img_list4
+            Properties.Items = <
+              item
+                Description = #304'ptal'
+                ImageIndex = 131
+                Value = True
+              end
+              item
+                Value = False
+              end>
+            HeaderAlignmentHorz = taCenter
+          end
         end
         object cxGridLevel2: TcxGridLevel
           Caption = 'Hastalar'
@@ -381,10 +399,6 @@ object frmFaturalar: TfrmFaturalar
     object cxTabSheet2: TcxTabSheet
       Caption = 'Log'
       ImageIndex = 1
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object txtLog: TcxMemo
         Left = 0
         Top = 0

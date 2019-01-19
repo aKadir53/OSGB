@@ -1072,8 +1072,8 @@ object frmHastaRecete: TfrmHastaRecete
     MasterFields = 'id'
     MasterSource = DataSource4
     TableName = 'ReceteAciklama'
-    Left = 684
-    Top = 60
+    Left = 644
+    Top = 68
   end
   object DataSource5: TDataSource
     DataSet = ADO_RECETE_DETAY
@@ -1197,7 +1197,7 @@ object frmHastaRecete: TfrmHastaRecete
       'Tani Kodu'
       'Tani Tan'#305'm'#305)
     Calistir = fgEvet
-    BiriktirmeliSecim = False
+    BiriktirmeliSecim = True
     Grup = False
     GrupCol = 0
     Left = 252

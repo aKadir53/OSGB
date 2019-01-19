@@ -3,7 +3,7 @@ object frmCekler: TfrmCekler
   Top = 0
   Caption = 'frmCekler'
   ClientHeight = 307
-  ClientWidth = 790
+  ClientWidth = 912
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -17,13 +17,12 @@ object frmCekler: TfrmCekler
   object GridCek: TcxGridKadir
     Left = 0
     Top = 0
-    Width = 790
+    Width = 912
     Height = 307
     Align = alClient
     TabOrder = 0
     ExcelFileName = 'Cekler'
     ExceleGonder = True
-    ExplicitWidth = 715
     object GridCekler: TcxGridDBBandedTableView
       DataController.Summary.DefaultGroupSummaryItems = <>
       DataController.Summary.FooterSummaryItems = <>
@@ -39,7 +38,7 @@ object frmCekler: TfrmCekler
       Bands = <
         item
           Caption = 'Cekler'
-          Width = 831
+          Width = 872
         end>
       object GridCeklerid: TcxGridDBBandedColumn
         DataBinding.FieldName = 'id'
@@ -74,7 +73,7 @@ object frmCekler: TfrmCekler
         HeaderAlignmentHorz = taCenter
         Width = 84
         Position.BandIndex = 0
-        Position.ColIndex = 5
+        Position.ColIndex = 6
         Position.RowIndex = 0
       end
       object GridCekleraciklama: TcxGridDBBandedColumn
@@ -83,7 +82,7 @@ object frmCekler: TfrmCekler
         HeaderAlignmentHorz = taCenter
         Width = 198
         Position.BandIndex = 0
-        Position.ColIndex = 6
+        Position.ColIndex = 7
         Position.RowIndex = 0
       end
       object GridCeklerTip: TcxGridDBBandedColumn
@@ -91,7 +90,7 @@ object frmCekler: TfrmCekler
         HeaderAlignmentHorz = taCenter
         Width = 24
         Position.BandIndex = 0
-        Position.ColIndex = 3
+        Position.ColIndex = 4
         Position.RowIndex = 0
       end
       object GridCeklerDurum: TcxGridDBBandedColumn
@@ -99,7 +98,7 @@ object frmCekler: TfrmCekler
         Visible = False
         Width = 51
         Position.BandIndex = 0
-        Position.ColIndex = 7
+        Position.ColIndex = 8
         Position.RowIndex = 0
       end
       object GridCeklersirketKod: TcxGridDBBandedColumn
@@ -107,7 +106,7 @@ object frmCekler: TfrmCekler
         Visible = False
         Width = 22
         Position.BandIndex = 0
-        Position.ColIndex = 8
+        Position.ColIndex = 9
         Position.RowIndex = 0
       end
       object GridCeklerTedarikciKod: TcxGridDBBandedColumn
@@ -115,7 +114,7 @@ object frmCekler: TfrmCekler
         Visible = False
         Width = 22
         Position.BandIndex = 0
-        Position.ColIndex = 9
+        Position.ColIndex = 10
         Position.RowIndex = 0
       end
       object GridCeklerkod: TcxGridDBBandedColumn
@@ -123,7 +122,7 @@ object frmCekler: TfrmCekler
         Visible = False
         Width = 23
         Position.BandIndex = 0
-        Position.ColIndex = 10
+        Position.ColIndex = 11
         Position.RowIndex = 0
       end
       object GridCeklertanimi: TcxGridDBBandedColumn
@@ -132,7 +131,7 @@ object frmCekler: TfrmCekler
         HeaderAlignmentHorz = taCenter
         Width = 65
         Position.BandIndex = 0
-        Position.ColIndex = 4
+        Position.ColIndex = 5
         Position.RowIndex = 0
       end
       object GridCeklerkimden: TcxGridDBBandedColumn
@@ -141,7 +140,7 @@ object frmCekler: TfrmCekler
         HeaderAlignmentHorz = taCenter
         Width = 189
         Position.BandIndex = 0
-        Position.ColIndex = 11
+        Position.ColIndex = 12
         Position.RowIndex = 0
       end
       object GridCeklerkime: TcxGridDBBandedColumn
@@ -150,7 +149,18 @@ object frmCekler: TfrmCekler
         HeaderAlignmentHorz = taCenter
         Width = 120
         Position.BandIndex = 0
-        Position.ColIndex = 12
+        Position.ColIndex = 13
+        Position.RowIndex = 0
+      end
+      object GridCeklerevrakNo: TcxGridDBBandedColumn
+        Caption = 'Evrak No'
+        DataBinding.FieldName = 'evrakNo'
+        PropertiesClassName = 'TcxTextEditProperties'
+        Properties.Alignment.Horz = taCenter
+        Properties.Alignment.Vert = taVCenter
+        HeaderAlignmentHorz = taCenter
+        Position.BandIndex = 0
+        Position.ColIndex = 3
         Position.RowIndex = 0
       end
     end
@@ -190,17 +200,25 @@ object frmCekler: TfrmCekler
     object Y1: TMenuItem
       Tag = -20
       Caption = 'Tahsil Et'
-      ImageIndex = 28
+      ImageIndex = 14
       OnClick = cxButtonCClick
     end
     object T1: TMenuItem
       Tag = -21
       Caption = 'Tahsilat '#304'ptal'
+      ImageIndex = 16
       OnClick = cxButtonCClick
     end
     object E1: TMenuItem
       Tag = 9997
       Caption = 'Excele G'#246'nder'
+      ImageIndex = 75
+      OnClick = cxButtonCClick
+    end
+    object E2: TMenuItem
+      Tag = -22
+      Caption = 'Yeni '#199'ek Tan'#305'mla'
+      ImageIndex = 30
       OnClick = cxButtonCClick
     end
   end

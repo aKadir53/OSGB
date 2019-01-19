@@ -9,7 +9,8 @@ uses
   IdComponent, IdTCPConnection, IdTCPClient, IdHTTP, InvokeRegistry, Rio,SOAPHTTPTrans,
   SOAPHTTPClient,  ImgList, Controls, XMLDoc, FileCtrl,HizmetKayitIslemleriWS,
   Dialogs, cxGraphics, dxmdaset, ExtCtrls, xmldom, Provider, Xmlxform, DBClient,XMLIntf,
-  RxMemDS,strUtils,Registry, SQLMemMain, KadirLabel,jpeg,Graphics,PNGImage;
+  RxMemDS,strUtils,Registry, SQLMemMain, KadirLabel,jpeg,Graphics,PNGImage,
+  IdIOHandler, IdIOHandlerSocket, IdIOHandlerStack, IdSSL, IdSSLOpenSSL;
 
 
 type
@@ -318,6 +319,8 @@ type
    SeansOlusturPrm : TSeansOlusturPrm;
    TeleEkg : TTeleEKG;
    FirmaSubeBilgi : TFirmaBilgi;
+   CariHareket : TCariHareket;
+   Cek : TCek;
    PersonelTetkikler : TPersonelTetkikler;
    yardimciIslemMethod: string;
    DigerIslemTalebi : TDigerIslemTalep;

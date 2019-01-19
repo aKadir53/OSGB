@@ -280,7 +280,7 @@ object frmIlacSarf: TfrmIlacSarf
         OptionsView.DataRowHeight = 21
         OptionsView.Footer = True
         OptionsView.GroupByBox = False
-        OptionsView.HeaderHeight = 25
+        OptionsView.HeaderHeight = 30
         OptionsView.Indicator = True
         Styles.Content = cxStyle1
         Styles.FilterBox = cxStyle2
@@ -308,7 +308,7 @@ object frmIlacSarf: TfrmIlacSarf
           HeaderAlignmentHorz = taCenter
           HeaderAlignmentVert = vaCenter
           Styles.Header = cxStyle3
-          Width = 335
+          Width = 331
         end
         object gridIlacSarfColumn4: TcxGridDBColumn
           DataBinding.FieldName = 'ReceteTip'
@@ -324,19 +324,29 @@ object frmIlacSarf: TfrmIlacSarf
           HeaderAlignmentHorz = taCenter
           HeaderAlignmentVert = vaCenter
           Styles.Header = cxStyle3
-          Width = 115
+          Width = 118
         end
         object gridIlacSarfColumn3: TcxGridDBColumn
-          Caption = 'Aktif.'
-          DataBinding.FieldName = 'Aktif'
-          PropertiesClassName = 'TcxTextEditProperties'
-          Properties.Alignment.Horz = taLeftJustify
+          Caption = #214'deme Kapsam'#305
+          DataBinding.FieldName = 'ReceteTip'
+          PropertiesClassName = 'TcxImageComboBoxProperties'
+          Properties.Alignment.Horz = taCenter
           Properties.Alignment.Vert = taVCenter
+          Properties.Items = <
+            item
+              Description = 'Evet'
+              ImageIndex = 0
+              Value = 'A'
+            end
+            item
+              Description = 'Hay'#305'r'
+              Value = 'P'
+            end>
           GroupSummaryAlignment = taCenter
           HeaderAlignmentHorz = taCenter
-          HeaderAlignmentVert = vaCenter
+          HeaderAlignmentVert = vaBottom
           Styles.Header = cxStyle3
-          Width = 63
+          Width = 64
         end
         object gridIlacSarfColumn6: TcxGridDBColumn
           DataBinding.FieldName = 'doz'

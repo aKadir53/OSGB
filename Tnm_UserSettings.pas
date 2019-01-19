@@ -14,7 +14,7 @@ uses
   dxSkinCaramel, dxSkinCoffee, dxSkiniMaginary, dxSkinLilian, dxSkinLiquidSky,
   dxSkinLondonLiquidSky, dxSkinMcSkin, dxSkinMoneyTwins, dxSkinsDefaultPainters,
   cxPCdxBarPopupMenu, cxRadioGroup, cxPC, cxListBox, Vcl.ExtCtrls, Vcl.Buttons,
-  cxLabel;
+  cxLabel, cxCheckBox;
 
 
 
@@ -69,6 +69,11 @@ type
     UserGroup_Menu_Settings: TADOQuery;
     UserGroupSettings: TADOQuery;
     cxGridUserGrupSifreDegistirmePeryod: TcxGridDBColumn;
+    cxStyleRepository2: TcxStyleRepository;
+    cxStyle2: TcxStyle;
+    PopupMenu2: TPopupMenu;
+    S1: TMenuItem;
+    T1: TMenuItem;
     procedure FormCreate(Sender: TObject);
 
     procedure cxTextEditKeyDown(Sender: TObject; var Key: Word;
@@ -97,6 +102,12 @@ type
       var Action: TDataAction);
     procedure UserGroupAfterDelete(DataSet: TDataSet);
     procedure sqlRunLoad;override;
+    procedure cxGridUserSetDataControllerFilterRecord(
+      ADataController: TcxCustomDataController; ARecordIndex: Integer;
+      var Accept: Boolean);
+    procedure S1Click(Sender: TObject);
+    procedure cxGridUserSetIzinPropertiesEditValueChanged(Sender: TObject);
+    procedure cxGridMenuSetCOLUMN2PropertiesEditValueChanged(Sender: TObject);
   private
     { Private declarations }
     FEskiSifre : StrinG;
@@ -112,10 +123,10 @@ var
 
 
 implementation
-uses cxCheckBox, cxCalendar, StrUtils, AnaUnit, TransUtils;
+uses  cxCalendar, StrUtils, AnaUnit, TransUtils;
 {$R *.dfm}
 const _TableName_ = 'Users';
-      formGenislik = 780;
+      formGenislik = 900;
       formYukseklik = 500;
       dr = 1;
       ig = 2;
@@ -181,6 +192,19 @@ begin
 end;
 
 
+procedure TfrmUsers.S1Click(Sender: TObject);
+begin
+  inherited;
+
+  if TMenuItem(sender).Tag = 1 then
+    cxGridUserSet.DataController.Groups.FullExpand
+  else
+   cxGridUserSet.DataController.Groups.FullCollapse;
+
+
+
+end;
+
 procedure TfrmUsers.SayfalarPageChanging(Sender: TObject; NewPage: TcxTabSheet;
   var AllowChange: Boolean);
 begin
@@ -220,6 +244,9 @@ begin
 
     User_Menu_Settings.Active := true;
     User_Menu_Settings .Filter := 'kullanici = ' + QuotedStr(TcxButtonEditKadir(sender).Text);
+
+    cxGridUserSet.DataController.Groups.FullExpand;
+
   end;
 end;
 
@@ -250,6 +277,13 @@ end;
 
 
 
+procedure TfrmUsers.cxGridMenuSetCOLUMN2PropertiesEditValueChanged(
+  Sender: TObject);
+begin
+  inherited;
+  cxGridMenuSet.DataController.Post;
+end;
+
 procedure TfrmUsers.cxGridUserGrupFocusedRecordChanged(
   Sender: TcxCustomGridTableView; APrevFocusedRecord,
   AFocusedRecord: TcxCustomGridRecord; ANewItemRecordFocusingChanged: Boolean);
@@ -268,6 +302,21 @@ begin
  // UserGroup_Menu_Settings.Filter := 'Kullanici = ' + QuotedStr(UserGroup.FieldByName('KODU').AsString);
  // UserGroupSettings.Filter := 'Kullanici = ' + QuotedStr(UserGroup.FieldByName('KODU').AsString);
 
+end;
+
+procedure TfrmUsers.cxGridUserSetDataControllerFilterRecord(
+  ADataController: TcxCustomDataController; ARecordIndex: Integer;
+  var Accept: Boolean);
+begin
+  inherited;
+  //  cxGridUserSet.DataController.Groups.FullExpand;
+end;
+
+procedure TfrmUsers.cxGridUserSetIzinPropertiesEditValueChanged(
+  Sender: TObject);
+begin
+  inherited;
+   cxGridUserSet.DataController.Post;
 end;
 
 procedure TfrmUsers.cxTextEditBKeyDown(Sender: TObject; var Key: Word;
@@ -407,6 +456,7 @@ begin
   UserSettings.Filtered := True;
   User_Menu_Settings.Filtered := True;
   UserGroup.Active := True;
+
 
   SayfaCaption('Kullanýcý Ýþlemleri','Grup Ýþlemleri','','','');
 

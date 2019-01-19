@@ -81,8 +81,8 @@ type
     dxLayoutControl2Group1: TdxLayoutGroup;
     aTimer: TTimer;
     NoktaImage: TcxImage;
-    UYUMImage: TcxImage;
     btnSifreUnuttum: TcxButton;
+    Label2: TLabel;
 
     procedure FormCreate(Sender: TObject);
     procedure FormActivate(Sender: TObject);
@@ -289,6 +289,7 @@ begin
       RegYaz('OSGB_Userdescription', datalar.usernameAdi + ' (' + datalar.UserGroupName + ')');
       dxStatusBar1.Panels [1].Text := datalar.usernameAdi + ' (' + datalar.UserGroupName + ')';
       dxStatusBar1.Panels [1].Width := Length (dxStatusBar1.Panels [1].Text) * 8;
+      datalar._database := txtDataBase.Text;
 
   (*
       if datalar.UserGroup = '1' then
@@ -496,12 +497,12 @@ begin
          //  Regyaz('OSGB_YazilimGelistirici',IntToStr (iYazilimGelistirici));
            if Datalar.YazilimFirma = 'UYUM'
            then begin
-            UYUMImage.Visible := True;
+            //UYUMImage.Visible := True;
             NoktaImage.Visible := False;
            end
            Else
            Begin
-             UYUMImage.Visible := False;
+             //UYUMImage.Visible := False;
              NoktaImage.Visible := True;
            End;
       //     Image1abx.Visible := iYazilimGelistirici = 1;
@@ -648,12 +649,12 @@ begin
    DATALAR._YazilimGelistirici := iYazGel;
    if Datalar.YazilimFirma = 'UYUM'
    then begin
-    UYUMImage.Visible := True;
+    //UYUMImage.Visible := True;
     NoktaImage.Visible := False;
    end
    Else
    Begin
-     UYUMImage.Visible := False;
+     //UYUMImage.Visible := False;
      NoktaImage.Visible := True;
    End;
   // Image1abx.Visible := iYazGel = 1;

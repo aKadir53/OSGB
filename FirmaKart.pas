@@ -237,6 +237,8 @@ end;
 
 procedure TfrmFirmaKart.PropertiesEditValueChanged(
   Sender: TObject);
+var
+ firmaTip : integer;
 begin
   inherited;
 
@@ -267,6 +269,17 @@ begin
     TcxImageComboKadir(FindComponent('MAHALLE')).Filter := 'KOYKODU = ' + QuotedStr(TcxImageComboKadir(FindComponent('KOY')).EditingValue);
     if FindComponent('MAHALLE') <> nil Then TcxImageComboKadir(FindComponent('MAHALLE')).EditValue := '';
   end ;
+
+  if TcxImageComboKadir(sender).Name = 'FirmaTip'
+  Then begin
+    firmaTip := TcxImageComboKadir(sender).EditValue;
+    if firmaTip in [1,3]
+    then begin
+        Kolon3.Visible := true;
+    end
+    else Kolon3.Visible := false;
+
+  end;
 
 end;
 
@@ -632,6 +645,19 @@ begin
 
 
   setDataStringB(self,'SirketKod','Þirket Kodu',Kolon1,'',80,List,True,nil,'','',True,True,1);
+
+  tehlikeSinifi := TcxImageComboKadir.Create(self);
+  tehlikeSinifi.Conn := nil;
+  tehlikeSinifi.ItemList := '1;Firma,2;Tedarikçi,3;Firma+Tedarikçi,4;Taþören Firma';
+  tehlikeSinifi.BosOlamaz := False;
+  tehlikeSinifi.Filter := '';
+  setDataStringKontrol(self,tehlikeSinifi,'FirmaTip','Firma Tipi',kolon1,'',120);
+
+
+  OrtakEventAta(tehlikeSinifi);
+
+
+
   setDataString(self,'tanimi','Firma Adý  ',Kolon1,'',350,True);
   setDataStringKontrol(self,NaceKod, 'NaceKod','Nace Kodu  ',Kolon1,'',130);
   setDataString(self,'anaFaliyet','Firma Ana Faaliye',Kolon1,'',450,True);

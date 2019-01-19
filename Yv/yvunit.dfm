@@ -3,7 +3,7 @@ object frmYv: TfrmYv
   Top = 0
   BorderStyle = bsDialog
   Caption = 'Mavi Nokta Bilgi Teknolojileri Ltd.'#350'ti.'
-  ClientHeight = 147
+  ClientHeight = 146
   ClientWidth = 621
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
@@ -1947,6 +1947,7 @@ object frmYv: TfrmYv
       FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
       FFFFFFFFFFFF}
     Transparent = True
+    Visible = False
   end
   object NoktaImage: TImage
     Left = 39
@@ -3289,7 +3290,7 @@ object frmYv: TfrmYv
   end
   object dxStatusBar1: TdxStatusBar
     Left = 0
-    Top = 127
+    Top = 126
     Width = 621
     Height = 20
     Panels = <
@@ -3304,6 +3305,7 @@ object frmYv: TfrmYv
     Font.Style = []
   end
   object HTTP1: TIdHTTP
+    IOHandler = IdSSLIOHandlerSocketOpenSSL1
     OnWork = HTTP1Work
     OnWorkBegin = HTTP1WorkBegin
     OnWorkEnd = HTTP1WorkEnd
@@ -3333,5 +3335,37 @@ object frmYv: TfrmYv
     UseSkins = False
     Left = 392
     Top = 88
+  end
+  object HTTP1id: TIdHTTP
+    OnWork = HTTP1Work
+    OnWorkBegin = HTTP1WorkBegin
+    OnWorkEnd = HTTP1WorkEnd
+    AllowCookies = True
+    HandleRedirects = True
+    ProxyParams.BasicAuthentication = False
+    ProxyParams.ProxyPort = 0
+    Request.ContentLength = -1
+    Request.ContentRangeEnd = -1
+    Request.ContentRangeStart = -1
+    Request.ContentRangeInstanceLength = -1
+    Request.ContentType = 'text/html'
+    Request.Accept = 'text/html, */*'
+    Request.BasicAuthentication = False
+    Request.UserAgent = 'Mozilla/3.0 (compatible; Indy Library)'
+    Request.Ranges.Units = 'bytes'
+    Request.Ranges = <>
+    HTTPOptions = [hoForceEncodeParams]
+    Left = 320
+    Top = 8
+  end
+  object IdSSLIOHandlerSocketOpenSSL1: TIdSSLIOHandlerSocketOpenSSL
+    MaxLineAction = maException
+    Port = 0
+    DefaultPort = 0
+    SSLOptions.Mode = sslmUnassigned
+    SSLOptions.VerifyMode = []
+    SSLOptions.VerifyDepth = 0
+    Left = 400
+    Top = 8
   end
 end
