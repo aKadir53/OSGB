@@ -54,6 +54,10 @@ type
     peryotR: TcxImageComboBox;
     List: TListeAc;
     Olcumler: TcxCheckGroupKadir;
+    Grid: TcxGridDBTableView;
+    cxGridKadir1Level1: TcxGridLevel;
+    cxGridKadir1: TcxGridKadir;
+    GridColumn1: TcxGridDBColumn;
     procedure txtDozClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure txtMsgEnter(Sender: TObject);
@@ -68,6 +72,8 @@ type
     procedure CalismaplaninaAylarikoy;
     procedure cxButtonEditPropertiesButtonClick(Sender: TObject;
        AButtonIndex: Integer);override;
+    procedure BeforePost(DataSet: TDataSet);
+
 
   private
     { Private declarations }
@@ -267,6 +273,13 @@ begin
 
 end;
 
+
+procedure TfrmPopup.BeforePost(DataSet: TDataSet);
+begin
+  cxGridKadir1.Dataset.FieldByName('sirketKod').AsString := datalar.FirmaSubeBilgi.SirketKodu;
+  cxGridKadir1.Dataset.FieldByName('subeKod').AsString := datalar.FirmaSubeBilgi.SubeKodu;
+
+end;
 
 procedure TfrmPopup.ButtonClick(Sender: TObject);
 var
@@ -2124,8 +2137,8 @@ ptPersonelTetkikleri :
    YeniSube,SubeDuzenle :
                begin
                   cxTab.Width := 150;
-                  ClientHeight := 600;
-                  ClientWidth := 450;
+                  ClientHeight := 700;
+                  ClientWidth := 460;
                   TableName := 'SIRKET_SUBE_TNM';
                   setDataString(self,'subeKod','Þube Kodu',Kolon1,'aa',50,True,'',False,0,'',ecUpperCase);
                   TcxTextEdit(FindComponent('subeKod')).EditValue := datalar.FirmaSubeBilgi.SubeKodu;
@@ -2139,6 +2152,21 @@ ptPersonelTetkikleri :
                   TcxImageComboKadir(FindComponent('subeDoktor')).EditValue := datalar.FirmaSubeBilgi.doktor;
                   setDataStringIC(self,'IGU','ÝþG.Uzmaný',kolon1,'',150,'IGU','kod','tanimi','Durum = ''Aktif''');
                   TcxImageComboKadir(FindComponent('IGU')).EditValue := datalar.FirmaSubeBilgi.IGU;
+
+                  setDataStringKontrol(self,cxGridKadir1,'cxGridKadir1','Yardýmcý Uzmanlar',Kolon1,'',150,100,alNone,'',clLeft);
+                  cxGridKadir1.Visible := True;
+                  cxGridKadir1.Dataset.BeforePost := BeforePost;
+                  cxGridKadir1.Dataset.Connection := datalar.ADOConnection2;
+                  cxGridKadir1.Dataset.SQL.Text := 'select * from SIRKET_SUBE_IGU where sirketKod = ' + QuotedStr(datalar.FirmaSubeBilgi.SirketKodu) +
+                                                   ' and subeKod = ' + QuotedStr(datalar.FirmaSubeBilgi.SubeKodu);
+                  cxGridKadir1.Dataset.Open;
+
+                  TcxImageComboBoxProperties(Grid.Columns[0].Properties).Items :=
+                   TcxImageComboBoxProperties(TcxImageComboKadir(FindComponent('IGU')).Properties).Items;
+
+
+
+
                   setDataString(self,'BolgeMudurlukSicilNo','Müdürlük Sicil No',Kolon1,'',100,True,'',False,0,'',ecUpperCase);
                   TcxTextEdit(FindComponent('BolgeMudurlukSicilNo')).EditValue := datalar.FirmaSubeBilgi.BolgeMudurlukSicilNo;
                   setDataString(self,'MuayeneProtokolNo','Protokol No',Kolon1,'',100,True,'',False,0,'',ecUpperCase);

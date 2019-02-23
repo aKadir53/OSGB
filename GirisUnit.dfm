@@ -835,6 +835,7 @@ object GirisForm: TGirisForm
         Align = alClient
         TabOrder = 0
         LayoutLookAndFeel = dxLayoutSkinLookAndFeel1
+        ExplicitTop = 1
         object sayfa3_dxLayoutGroup1: TdxLayoutGroup
           AlignHorz = ahLeft
           AlignVert = avTop
@@ -1275,13 +1276,14 @@ object GirisForm: TGirisForm
     Left = 364
     Top = 312
     Alignment = alCenterCenter
+    PanelStyle.Active = True
     PanelStyle.CaptionIndent = 20
     ParentBackground = False
     ParentColor = False
     ParentFont = False
-    Style.BorderColor = clBlack
+    Style.BorderColor = clHotLight
     Style.BorderStyle = ebsSingle
-    Style.Color = clTeal
+    Style.Color = clHotLight
     Style.Font.Charset = DEFAULT_CHARSET
     Style.Font.Color = clWindowText
     Style.Font.Height = -11
@@ -1300,8 +1302,8 @@ object GirisForm: TGirisForm
     StyleHot.LookAndFeel.SkinName = 'LiquidSky'
     TabOrder = 5
     Visible = False
-    Height = 64
-    Width = 501
+    Height = 76
+    Width = 505
     object pnlDurumImage: TcxImage
       Tag = -100
       Left = 2
@@ -1458,8 +1460,7 @@ object GirisForm: TGirisForm
         7935AE55479994CB0000000049454E44AE426082}
       Properties.GraphicClassName = 'TdxPNGImage'
       TabOrder = 0
-      Transparent = True
-      Height = 60
+      Height = 72
       Width = 65
     end
     object pnlDurumDurum: TcxGroupBox
@@ -1468,11 +1469,13 @@ object GirisForm: TGirisForm
       Align = alClient
       Alignment = alCenterCenter
       Caption = #304#351'leminiz Yap'#305'l'#305'yor , l'#252'tfen bekleyiniz...'
-      PanelStyle.Active = True
+      ParentBackground = False
+      ParentColor = False
       ParentFont = False
+      Style.Color = clBtnFace
       Style.Font.Charset = DEFAULT_CHARSET
       Style.Font.Color = clBlack
-      Style.Font.Height = -12
+      Style.Font.Height = -15
       Style.Font.Name = 'Tahoma'
       Style.Font.Style = [fsBold]
       Style.LookAndFeel.NativeStyle = True
@@ -1483,15 +1486,15 @@ object GirisForm: TGirisForm
       StyleFocused.LookAndFeel.NativeStyle = True
       StyleHot.LookAndFeel.NativeStyle = True
       TabOrder = 1
-      Height = 60
-      Width = 432
+      Height = 72
+      Width = 436
       object pBar: TcxProgressBar
         Left = 2
-        Top = 38
+        Top = 46
         Align = alBottom
         TabOrder = 0
         Visible = False
-        Width = 428
+        Width = 432
       end
     end
   end

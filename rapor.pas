@@ -333,6 +333,7 @@ begin
   try
     template.Position := 0;
     Report.SaveToStream(template);
+
     if datalar.ADO_RAPORLAR.Active = true
     Then Begin
       datalar.ADO_RAPORLAR.Edit;

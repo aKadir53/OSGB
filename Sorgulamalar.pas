@@ -32,7 +32,6 @@ type
     gridRaporlar: TDBGridEh;
     Panel11: TPanel;
     Image3: TImage;
-    txtAciklama: TcxDBMemo;
     cxTabSheet7: TcxTabSheet;
     cxGrid3: TcxGrid;
     cxGrid3DBBandedTableView1: TcxGridDBBandedTableView;
@@ -70,6 +69,14 @@ type
     E3: TMenuItem;
     btnSQLRun: TcxButton;
     txtSP_name: TcxComboBox;
+    txtParams: TcxTextEdit;
+    txtParamsTip: TcxTextEdit;
+    txtIC_Params: TcxTextEdit;
+    Label1: TLabel;
+    Label2: TLabel;
+    Label3: TLabel;
+    prm_Yenile: TcxButton;
+    pnlSP: TPanel;
     procedure Raporlar;
     procedure O1Click(Sender: TObject);
     procedure btnSorgulamalarKaydetClick(Sender: TObject);
@@ -80,6 +87,8 @@ type
     procedure E3Click(Sender: TObject);
     procedure btnSQLRunClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
+    procedure prm_YenileClick(Sender: TObject);
+    procedure ADO_SQL1AfterScroll(DataSet: TDataSet);
 
   private
     { Private declarations }
@@ -104,24 +113,36 @@ begin
   Result := True;
 end;
 
+procedure TfrmSorgulamalar.ADO_SQL1AfterScroll(DataSet: TDataSet);
+begin
+  inherited;
+  if Panel6.Visible = True then btnSorguyuDegistir.Click;
+end;
+
 procedure TfrmSorgulamalar.btnSorguCalistirClick(Sender: TObject);
 var
   kod : string;
   F : TGirisForm;
   GirisRecord : TGirisFormRecord;
 begin
-  cxTab.Tabs[0].Caption := '';
-  cxTab.Tabs[0].Caption := cap + ' - ' + ADO_SQL1.fieldbyname('raporAdi').AsString;
+  //cxTab.Tabs[0].Caption := '';
+  //cxTab.Tabs[0].Caption := cap + ' - ' + ADO_SQL1.fieldbyname('raporAdi').AsString;
 
   sp := ADO_SQL1.fieldbyname('sp').AsString;
   kod := ADO_SQL1.fieldbyname('raporKodu').AsString;
 
   GirisRecord.F_sp_ := sp;
   GirisRecord.F_kod_ := kod;
+
   F := FormINIT(TagfrmSorguCalistir,GirisRecord,ikHayir,'');
+
+  TGirisForm(F)._fields_ := ADO_SQL1.fieldbyname('_params_').AsString;
+  TGirisForm(F)._fieldTips_ := ADO_SQL1.fieldbyname('_paramsTip_').AsString;
+  TGirisForm(F)._ICParams_ := ADO_SQL1.fieldbyname('IC_Params').AsString;
+
+  TGirisForm(F).cxTab.Tabs[0].Caption := ADO_SQL1.fieldbyname('raporAdi').AsString;
+
   if F <> nil then F.ShowModal;
-
-
 
 
 
@@ -130,7 +151,7 @@ end;
 procedure TfrmSorgulamalar.btnSorgulamalarKapatClick(Sender: TObject);
 begin
    Panel6.Visible := False;
-   txtAciklama.Visible := true;
+   //txtAciklama.Visible := true;
 end;
 
 procedure TfrmSorgulamalar.btnSorgulamalarKaydetClick(Sender: TObject);
@@ -170,6 +191,9 @@ begin
              ' set raporadi = ' + QuotedStr(txtRaporAdi.Text) +
              ',sp = ' + QuotedStr(txtSP_name.Text) +
              ',aciklama = ' + QuotedStr(cxDBMemo1.text) +
+             ',_params_ = ' + QuotedStr(txtParams.Text) +
+             ',_paramsTip_ = ' + QuotedStr(txtParamsTip.Text) +
+             ',IC_Params = ' + QuotedStr(txtIC_Params.Text) +
              ' where raporkodu = ' + QuotedStr(txtRaporKodu.Text);
 
       ado.Close;
@@ -218,7 +242,7 @@ begin
     case TsBitBtn(sender).Tag of
       27 : Begin
               panel6.Visible := true;
-              txtAciklama.Visible := false;
+              //txtAciklama.Visible := false;
 
               sql := 'declare @dn varchar(3) ' +
                      'select @dn = convert(varchar,isnull(max(raporKodu),0)+1) from Raporlar1 ' +
@@ -231,14 +255,55 @@ begin
            End;
       25 : Begin
               panel6.Visible := true;
-                txtAciklama.Visible := false;
+             //   txtAciklama.Visible := false;
               txtRaporKodu.Text := ADO_SQL1.fieldbyname('raporKodu').AsString;
               txtRaporAdi.Text := ADO_SQL1.fieldbyname('raporAdi').AsString;
               txtSP_name.Text := ADO_SQL1.fieldbyname('sp').AsString;
+              txtParams.Text := ADO_SQL1.fieldbyname('_params_').AsString;
+              txtParamsTip.Text := ADO_SQL1.fieldbyname('_paramsTip_').AsString;
+              txtIC_Params.Text := ADO_SQL1.fieldbyname('IC_Params').AsString;
             End;
 
     end;
 
+
+end;
+
+procedure TfrmSorgulamalar.prm_YenileClick(Sender: TObject);
+var
+  sql , sp : string;
+  s : integer;
+  ado : TADOQuery;
+begin
+
+    ado := TADOQuery.Create(nil);
+    ado.Connection := datalar.ADOConnection2;
+    try
+      sql := 'select name,' +
+             '(case xtype ' +
+                    ' when 167 then ''string''' +
+                    ' when 56 then ''int''' +
+                    ' when 62 then ''float''' +
+                    ' when 61 then ''tarih'' end ' +
+             ') as tip from syscolumns where id = ( select id from sysobjects where name = ' + QuotedStr(txtSP_name.EditingText) + ')';
+      ado.close;
+      ado.SQL.Clear;
+      datalar.QuerySelect(ado,sql);
+
+      txtParams.Text := '';
+      txtParamsTip.Text := '';
+
+      for s := 1 to ado.RecordCount do
+      Begin
+        txtParams.Text := txtParams.Text + ado.FieldByName('name').AsString + ',';
+        txtParamsTip.Text := txtParamsTip.Text + ado.FieldByName('tip').AsString + ',';
+        ado.next;
+      End;
+
+
+    finally
+      ado.free;
+    end;
 
 end;
 

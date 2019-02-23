@@ -64,6 +64,8 @@ type
     E2: TMenuItem;
     D1: TMenuItem;
     S1: TMenuItem;
+    GrpAciklamaText: TcxGroupBox;
+    txtAciklamaText: TcxMemo;
     procedure FormCreate(Sender: TObject);
     procedure txtMsgEnter(Sender: TObject);
     procedure FormShow(Sender: TObject);
@@ -164,7 +166,8 @@ begin
 
   case TmenuItem(sender).Tag of
    -1 : begin
-          //EgitimKodlari;
+          GrpAciklamaText.Visible := True;
+          txtAciklamaText.Text := EgitimKodlari;
         end;
 
    -2 : begin
@@ -319,7 +322,8 @@ var
 begin
   inherited;
   DBGrid.DataController.DataSet.Post;
-  if DBGrid.Controller.FocusedColumnIndex = 5
+  if (DBGrid.Controller.FocusedColumnIndex = 5) and
+     (Tag = 9013)
   then begin
     DBgrid.Columns[8].PropertiesClassName := 'TcxImageComboBoxProperties';
     _v_ := DBgrid.GetColumnByFieldName('ISGEkipId').EditValue;
@@ -596,7 +600,7 @@ var
  Columns,Baslik,Tips,Edits,IC_Params,IC_Param : TstringList;
  FItem : TcxImageComboBoxItem;
  ado : TADOQuery;
- field1,field2,table,MaskEdit : string;
+ field1,field2,table,MaskEdit,filter : string;
 begin
   Columns := TStringList.Create;
   try
@@ -711,7 +715,14 @@ begin
                      table := StringReplace(IC_Param[0],'|',',', [rfReplaceAll]);
                      field1 := IC_Param[1];
                      field2 := IC_Param[2];
-                     datalar.QuerySelect(ado,'select * from ' + table);
+
+                     if IC_Param.Count = 4
+                     then
+                      filter := ' where ' + IC_Param[3]
+                     else
+                      filter := '';
+
+                     datalar.QuerySelect(ado,'select * from ' + table + filter);
                      ado.First;
                      while not ado.Eof do
                      begin
@@ -872,6 +883,7 @@ var
   sql : string;
 begin
   inherited;
+   GrpAciklamaText.Visible := False;
    ado := TADOQuery.Create(nil);
   try
     ado.Connection := datalar.ADOConnection2;

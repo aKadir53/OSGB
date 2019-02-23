@@ -197,9 +197,15 @@ var
   _targetGroup_ : TdxNavBarGroup;
 
 implementation
-      uses Tnm_Ilaclar,Tnm_LabTest,
-      Data_Modul,HastaKart,Login,EventCompletDurumBildir,
-      Tnm_UserSettings, sifreDegis, Update_G;
+      uses Tnm_Ilaclar,
+      Tnm_LabTest,
+      Data_Modul,
+      HastaKart,
+      Login,
+      EventCompletDurumBildir,
+      Tnm_UserSettings,
+      sifreDegis,
+      Update_G;
 
 {$R *.dfm}
 {$R xx.res}

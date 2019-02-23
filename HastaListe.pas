@@ -153,7 +153,7 @@ begin
 //  GirisFormRecord.F_provizyonTarihi_ := _Dataset.FieldByName('BHDAT').AsString;
   GirisFormRecord.F_HastaAdSoyad_ := _Dataset.FieldByName('HASTAADI').AsString + ' ' +
                                      _Dataset.FieldByName('HASTASOYADI').AsString;
-//  GirisFormRecord.F_TakipNo_ := _Dataset.FieldByName('TakýpNO').AsString;
+//  GirisFormRecord.F_TakipNo_ := _Dataset.FieldByName('TakypNO').AsString;
   GirisFormRecord.F_TC_ := _Dataset.FieldByName('TCKimlikNo').AsString;
 
   GirisFormRecord.F_firmaKod_ := _Dataset.FieldByName('SirketKod').AsString;
@@ -290,16 +290,12 @@ begin
   end;
  end;
   (*
-
-
-   if UserRight('Hasta Kartý', 'Giriþ') = False
+   if UserRight('Hasta Karty', 'Giri?') = False
    then begin
-       ShowMessageSkin('Bu Ýþlem Ýçin Yetkiniz Bulunmamaktadýr !','','','info');
+       ShowMessageSkin('Bu Y?lem Yçin Yetkiniz Bulunmamaktadyr !','','','info');
        exit;
    end;
-
     try
-
            if datalar.HkA = 0
            Then Begin
             frmHastaKarti := TfrmHastaKarti.Create(self);
@@ -307,7 +303,6 @@ begin
             frmHastaKarti.Top := 2;
             frmHastaKarti.Left := 2 + frmHastaListe.Width + 5;
            End;
-
            frmHastaKarti.Combo;
            frmHastaKarti.ilCombo;
            frmHastaKarti.yakinlikCombo;
@@ -319,7 +314,6 @@ begin
            frmHastaKarti.Disable;
     except
     end;
-
              *)
 
 end;

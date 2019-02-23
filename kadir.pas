@@ -11,7 +11,7 @@ uses Windows, Messages, SysUtils, Variants, Classes, Graphics, Vcl.Controls, Con
   cxDBLookupComboBox,winsock,  DBCtrlsEh, EncdDecd,cxStyles, cxCustomData, cxGraphics,
   cxFilter, cxData, cxDropDownEdit,MedEczane,JclGraphics,
   IdCoderMIME, cxDataStorage, cxEdit, cxControls, cxGridCustomView, cxGridDBTableView,
-  cxCheckListBox,cxGridCustomTableView, cxGridTableView, cxGridBandedTableView, cxClasses,
+  cxCheckListBox,cxGridCustomTableView, cxGridTableView, cxGridBandedTableView,cxGridDBBandedTableView, cxClasses,
   cxGroupBox, cxRadioGroup,cxGridLevel, cxGrid, cxCheckBox, cxImageComboBox, cxTextEdit, cxButtonEdit,
   cxCalendar,dxLayoutContainer, dxLayoutControl,cxPC, cxImage,
   frxExportPDF ,CSGBService,IOUtils;
@@ -375,7 +375,8 @@ procedure AdoGelisEnabledMenuItem(Bar : TToolBar;Item : TMenuItem;Enabled : Bool
 function FindToolButton(Bar : TToolBar ; ButtonName : String) : TToolButtonKadir;
 procedure SatiriRenklendir(Grid: TAdvStringGrid; Satir, ColonSayisi: integer;  renk: tcolor);
 //procedure TDISDoktorIDGetir(Tc : string ; var ID : integer);
-function GridCellToString(Grid : TcxGridDBTableView; ColonName : string ; Row : integer) : Variant;
+function GridCellToString(Grid : TcxGridDBBandedTableView; ColonName : string ; Row : integer) : Variant;overload;
+function GridCellToString(Grid : TcxGridDBTableView; ColonName : string ; Row : integer) : Variant;overload;
 function GridCellToDouble(Grid : TcxGridDBTableView; ColonName : string ; Row : integer) : Variant;
 function GridCellToBoolean(Grid : TcxGridDBTableView; ColonName : string ; Row : integer) : Boolean;
 procedure GridCellSetValue(Grid : TcxGridDBTableView; ColonName : string ; Row : integer ; Value : Variant);
@@ -429,7 +430,7 @@ function GuncellemeTakipScriptPush: Boolean;
 procedure YeniOSGBFirmaVeritabani;
 function SubeIGUDoktorAtanmismi(sirketKod : string) : integer;
 function FindComponentButtonName(const AName: string ; Form : TForm): TComponent;
-function FirmaSorgulaCSGB(firmaSGK , iguTC : string) : isyeriCevapBilgisi;
+function FirmaSorgulaCSGB(firmaSGK , iguTC : string) : isyeriCevapDVO;
 //function EgitimKaydetCSGB(egitim : egitimBilgisi ; pin,cardType,_xml_ : string) : egitimBilgisiCevap;overload;
 //function EgitimKaydetCSGB(egitim : cokluEgitimBilgisi ; pin,cardType,_xml_ : string) : cokluEgitimCevapDVO;overload;
 //function EgitimKaydetCSGBImzager(egitim : egitimBilgisi) : egitimBilgisiCevap;
@@ -438,12 +439,13 @@ function EgitimVerisiXML(egitim : egitimBilgisi) : string;
 //function EgitimImzala(pin,egitim,cardType : string): string;
 function EgitimImzali : string;
 function EgitimHash(egitim : string): string;
-//Function EgitimKodlari : egitimListesiBilgisi;
+Function EgitimKodlari : String;
 procedure SetAnaFormFoto;
 Function myFileSize(filename : string) : integer;
 
+Procedure EgitimSorgulaCSGBCvpBilgiGuncelle(cvp : ArrayOfEgitimBilgisiCevap);
 Procedure EgitimKaydetCSGBCvpBilgiGuncelle(egitimId,msg,sorguNo : string);
-Procedure FirmaSorgulCSGBCvpFirmaBilgiGuncelle(firmaSgk : string ; Cvp : isyeriCevapBilgisi);
+Procedure FirmaSorgulCSGBCvpFirmaBilgiGuncelle(firmaSgk : string ; Cvp : isyeriCevapDVO);
 
 function DetaySil(Tag : integer ; Tablaname,WhereField,Where : string) : Boolean;
 procedure FirmaBilgiRecordToNull;
@@ -776,19 +778,31 @@ begin
 end;
 
 
-(*
-Function EgitimKodlari : egitimListesiBilgisi;
+
+Function EgitimKodlari : String;
 var
   Cvp : egitimListesiBilgisi;
+  Egitim : egitimKodu;
+  EgitimListString : String;
 begin
     Cvp := egitimListesiBilgisi.Create;
     try
       Application.ProcessMessages;
       datalar.CSGBsoap.URL := 'http://213.159.30.6/CSGBservice.asmx';
-      Cvp := (datalar.CSGBsoap as CSGBServiceSoap).egitimKodlariGetir;
-      EgitimKodlari := Cvp;
-      if Cvp.status = 200 then ShowMessageSkin('Ýþlem Baþarýlý','','','info');
-      
+      Cvp := (datalar.CSGBsoap as CSGBServiceSoap).egitimKodlariGetir('');
+
+      if Cvp.status = 200
+      then begin
+       for Egitim in Cvp.egitimListesi do
+         begin
+            EgitimListString := EgitimListString + intTostr(Egitim.kodu) + ' : ' + Egitim.aciklama + ' - ' + intTostr(Egitim.aktif) + #13;
+         end;
+
+       ShowMessageSkin('Ýþlem Baþarýlý',EgitimListString,'','info');
+       EgitimKodlari := EgitimListString;
+      end;
+
+
     except
       on E : Exception do
       begin
@@ -796,7 +810,7 @@ begin
       end;
     end;
 end;
-           *)
+
 
 function EgitimHash(egitim : string): string;
 var
@@ -940,13 +954,23 @@ begin
       Veri.egitimTur := ado.FieldByName('EgitimYontem').AsInteger;
       Veri.egitimYer := ado.FieldByName('EgitimTip').AsInteger;
       Veri.firmaKodu := ado.FieldByName('FirmaKodu').AsString;
-      Veri.isgProfTckNo :=  ado.FieldByName('egitimciTC').AsLargeInt;
+      Veri.isgProfTckNo :=  ado.FieldByName('isgProf').AsLargeInt;
       Veri.sgkTescilNo := ado.FieldByName('sgkSicil').AsString;
 
       sql := 'select * from Personel_Egitim E ' +
              ' join PersonelKart P on P.dosyaNo = E.PersonelDosyaNo ' +
-             ' where EgitimID = ' + id;
+             ' where EgitimID = ' + id +
+             ' order by P.TCKIMLIKNO ';
       datalar.QuerySelect(ado,sql);
+
+      if ado.eof
+      then begin
+         ShowMessageSkin('Eðitime Katýlan Personel Bilgisi Tanýmlý Deðil','','','info');
+         Veri := nil;
+         exit;
+      end;
+
+
       i := 0;
       SetLength(calisanlar ,ado.RecordCount);
       while not ado.eof do
@@ -959,14 +983,31 @@ begin
       end;
       Veri.calisan := calisanlar;
 
-      sql := 'select * from EgitimAltDetay E ' +
+      sql := 'select isnull(ET.EntagrasyonKodu,0) EntagrasyonKodu,isnull(E.sure,0) sure from EgitimAltDetay E ' +
              '   join Egitim_Tnm ET on ET.Kod = E.kod ' +
-             ' where EgitimID = ' + id;
+             ' where EgitimID = ' + id +
+             ' order by ET.EntagrasyonKodu ';
       datalar.QuerySelect(ado,sql);
+
+      if ado.eof
+      then begin
+         ShowMessageSkin('Eðitim Bilgisi Tanýmlý Deðil','','','info');
+         Veri := nil;
+         exit;
+      end;
+
       i := 0;
       SetLength(egitimler,ado.RecordCount);
       while not ado.eof do
       begin
+        if (ado.FieldByName('EntagrasyonKodu').AsInteger = 0) or
+           (ado.FieldByName('sure').AsInteger = 0)
+        then
+        begin
+          ShowMessageSkin('Eðitim Detay Bilgisi Tanýmý Hatalý','Kod yada Süre Bilgisi boþ olamaz','','info');
+          Veri := nil;
+          exit;
+        end;
         egitim := egitimObject.Create;
         egitim.egitimKoduId := ado.FieldByName('EntagrasyonKodu').AsInteger;
         egitim.egitimSuresi := ado.FieldByName('sure').AsInteger;
@@ -975,15 +1016,15 @@ begin
         ado.Next;
       end;
       Veri.egitim := egitimler;
-      EgitimVerisi := Veri;
    finally
-     ado.Free;
+      EgitimVerisi := Veri;
+      ado.Free;
    end;
 
 end;
 
 
-Procedure FirmaSorgulCSGBCvpFirmaBilgiGuncelle(firmaSgk : string ; Cvp : isyeriCevapBilgisi);
+Procedure FirmaSorgulCSGBCvpFirmaBilgiGuncelle(firmaSgk : string ; Cvp : isyeriCevapDVO);
 var
   sql : string;
 begin
@@ -1003,6 +1044,22 @@ begin
          ' where id = ' + QuotedStr(egitimId);
   datalar.QueryExec(sql);
 end;
+
+Procedure EgitimSorgulaCSGBCvpBilgiGuncelle(cvp : ArrayOfEgitimBilgisiCevap);
+var
+  sql : string;
+  e : egitimBilgisiCevap;
+begin
+  for e in cvp do
+  begin
+    sql := 'update Egitimler set sorguSonuc = ' + QuotedStr(e.message_) +
+           ' ,sorguSonucKodu = ' + inttoStr(e.status) +
+           ' where sorguNo = ' + QuotedStr(e.sorguNo);
+    datalar.QueryExec(sql);
+  end;
+
+end;
+
 
 (*
 function EgitimKaydetCSGB(egitim : egitimBilgisi ; pin,cardType,_xml_ : string) : egitimBilgisiCevap;
@@ -1110,16 +1167,17 @@ end;
   *)
 
 
-function FirmaSorgulaCSGB(firmaSGK , iguTC : string) : isyeriCevapBilgisi;
+function FirmaSorgulaCSGB(firmaSGK , iguTC : string) : isyeriCevapDVO;
 var
-  sayi : string;
-  Cvp : isyeriCevapBilgisi;
+  sayi,url : string;
+  Cvp : isyeriCevapDVO;
 begin
-    Cvp := isyeriCevapBilgisi.Create;
+    url := datalar.CSGBUrl;
+    Cvp := isyeriCevapDVO.Create;
     try
       Application.ProcessMessages;
       datalar.CSGBsoap.URL := 'http://213.159.30.6/CSGBservice.asmx';
-      Cvp := (datalar.CSGBsoap as CSGBServiceSoap).isyeriBilgisi(firmaSGK,iguTC);
+      Cvp := (datalar.CSGBsoap as CSGBServiceSoap).isyeriBilgisiSOAP(firmaSGK,iguTC,url);
       FirmaSorgulaCSGB := Cvp;
       if Cvp.status = 200
       Then begin
@@ -1977,6 +2035,14 @@ begin
     FreeAndNil (Result);
     raise;
   end;
+end;
+
+function GridCellToString(Grid : TcxGridDBBandedTableView; ColonName : string ; Row : integer) : Variant;
+begin
+  GridCellToString := '';
+    GridCellToString := vartoStr(Grid.DataController.GetValue(
+      Grid.Controller.SelectedRows[Row].RecordIndex,
+        Grid.DataController.GetItemByFieldName(ColonName).Index));
 end;
 
 function GridCellToString(Grid : TcxGridDBTableView; ColonName : string ; Row : integer) : Variant;

@@ -419,6 +419,45 @@ begin
                                                      QuotedStr(datalar.AktifSube);
 
            end;
+
+       TagfrmFirmaPersonelEgitimList :
+           begin
+
+              if chkList.EditValue = '0' then
+              begin
+
+               sql :=
+                   ' Select e.id, e.BaslamaTarihi,e.BitisTarihi, et.tanimi tanimi, s.Tanimi SirketTanimi ,'+
+                    ' dbo.fn_egitimAltDetay(e.id) EgitimBilgi,'+
+                    ' EgitimCSGBGonderimSonuc,sorguNo,sorguSonuc,I.tanimi IGU,' +
+                    '(select top 1 egitimciAdiSoyadi from Personel_Egitim_Egitimci where EgitimID = e.id) egitimci ' +
+
+                    ' from Egitimler e  left join egitimGrup_tnm et on et.Kod = e.EgitimTuru '+
+                    ' left outer join SIRKETLER_TNM s on s.SirketKod = e.SirketKod ' +
+                    ' left join IGU I on I.kod = e.IGU ' +
+                    ' where e.BaslamaTarihi between ' + txtTopPanelTarih1.GetSQLValue +
+                    ' and ' + txtTopPanelTarih2.GetSQLValue;
+
+              end
+              else
+              begin
+                 sql :=
+                   'Select e.id, e.BaslamaTarihi,e.BitisTarihi, et.tanimi tanimi, s.Tanimi SirketTanimi , ' +
+                   ' dbo.fn_egitimAltDetay(e.id) EgitimBilgi, ' +
+                   ' EgitimCSGBGonderimSonuc,sorguNo,sorguSonuc,I.tanimi IGU,(select top 1 egitimciAdiSoyadi from Personel_Egitim_Egitimci where EgitimID = e.id) egitimci,' +
+                   ' Pk.TCKIMLIKNO personelTc,Pk.HASTAADI + '' '' + pk.HASTASOYADI personelAdi '+
+                   ' from Egitimler e '+
+                   ' left join egitimGrup_tnm et on et.Kod = e.EgitimTuru '+
+                   ' left outer join SIRKETLER_TNM s on s.SirketKod = e.SirketKod  left join IGU I on I.kod = e.IGU '+
+                   ' left join Personel_Egitim Pe on Pe.EgitimID = e.id '+
+                   ' left join PersonelKart Pk on Pk.dosyaNO = Pe.PersonelDosyaNo ' +
+                   ' where e.BaslamaTarihi between ' + txtTopPanelTarih1.GetSQLValue +
+                   ' and ' + txtTopPanelTarih2.GetSQLValue +
+                   ' order by e.id ';
+              end;
+
+
+           end;
        TagfrmDoktorHastaListe :
            begin
               sql := 'exec sp_frmDoktorPersonelListesi ' + QuotedStr(ifThen(KurumTipTopPanel.EditingValue=1,datalar.AktifSirket,'')) + ',' +
@@ -503,6 +542,7 @@ begin
            end;
 
      end;
+     if sql = '' then exit;
      datalar.QuerySelect(ADO,sql);
      ResultDataset := ADO;
    finally

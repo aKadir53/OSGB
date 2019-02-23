@@ -49,11 +49,11 @@ object frmSorgulamalar: TfrmSorgulamalar
           ExplicitHeight = 595
         end
         object Panel6: TPanel
-          Left = 1056
+          Left = 853
           Top = 1
-          Width = 229
+          Width = 432
           Height = 588
-          Align = alRight
+          Align = alClient
           Font.Charset = TURKISH_CHARSET
           Font.Color = clWindowText
           Font.Height = -11
@@ -62,68 +62,122 @@ object frmSorgulamalar: TfrmSorgulamalar
           ParentFont = False
           TabOrder = 0
           Visible = False
+          ExplicitLeft = 1056
+          ExplicitWidth = 229
           object Label13: TLabel
-            Left = 14
-            Top = 7
-            Width = 65
+            Left = 1
+            Top = 114
+            Width = 430
             Height = 13
-            Caption = 'Rapor Kodu'
+            Align = alTop
+            Caption = 'Parametreler'
+            ExplicitTop = 103
+            ExplicitWidth = 76
           end
           object Label14: TLabel
-            Left = 14
-            Top = 53
-            Width = 55
+            Left = 1
+            Top = 35
+            Width = 430
             Height = 13
+            Align = alTop
             Caption = 'Rapor Ad'#305
+            ExplicitLeft = 14
+            ExplicitTop = 53
+            ExplicitWidth = 55
           end
           object Label15: TLabel
-            Left = 14
-            Top = 99
-            Width = 75
-            Height = 13
+            Left = 1
+            Top = 69
+            Width = 430
+            Height = 18
+            Align = alTop
             Caption = 'Rapor SQL SP'
           end
           object Label18: TLabel
-            Left = 14
-            Top = 145
-            Width = 52
+            Left = 1
+            Top = 216
+            Width = 430
             Height = 13
+            Align = alTop
             Caption = 'A'#231#305'klama'
+            ExplicitLeft = 14
+            ExplicitTop = 222
+            ExplicitWidth = 52
+          end
+          object Label1: TLabel
+            Left = 1
+            Top = 148
+            Width = 430
+            Height = 13
+            Align = alTop
+            Caption = 'Parametre Tipleri'
+            ExplicitTop = 137
+            ExplicitWidth = 99
+          end
+          object Label2: TLabel
+            Left = 1
+            Top = 182
+            Width = 430
+            Height = 13
+            Align = alTop
+            Caption = 'Combo Tip'
+            ExplicitTop = 171
+            ExplicitWidth = 59
+          end
+          object Label3: TLabel
+            Left = 1
+            Top = 1
+            Width = 430
+            Height = 13
+            Align = alTop
+            Caption = 'Rapor Kodu'
+            ExplicitWidth = 65
           end
           object cxDBMemo1: TcxDBMemo
-            Left = 14
-            Top = 164
+            Left = 1
+            Top = 229
+            Align = alTop
             DataBinding.DataField = 'Aciklama'
             DataBinding.DataSource = DataSource2
             TabOrder = 0
-            Height = 177
-            Width = 211
+            ExplicitTop = 218
+            Height = 127
+            Width = 430
           end
           object txtSP_name_: TcxImageComboKadir
             Left = 6
-            Top = 422
+            Top = 462
             Properties.ClearKey = 46
             Properties.Items = <>
             TabOrder = 1
+            Visible = False
             Conn = DATALAR.ADOConnection2
             BosOlamaz = False
             Width = 201
           end
           object txtRaporAdi: TcxTextEdit
-            Left = 16
-            Top = 72
+            Left = 1
+            Top = 48
+            Align = alTop
             TabOrder = 2
-            Width = 201
+            ExplicitLeft = 16
+            ExplicitTop = 72
+            ExplicitWidth = 201
+            Width = 430
           end
           object txtRaporKodu: TcxTextEdit
-            Left = 16
-            Top = 26
+            Left = 1
+            Top = 14
+            Align = alTop
             TabOrder = 3
-            Width = 121
+            ExplicitLeft = 16
+            ExplicitTop = 26
+            ExplicitWidth = 121
+            Width = 430
           end
           object btnSorgulamalarKaydet: TcxButton
-            Left = 16
-            Top = 347
+            Left = 184
+            Top = 366
             Width = 75
             Height = 25
             Caption = 'Kaydet'
@@ -131,20 +185,74 @@ object frmSorgulamalar: TfrmSorgulamalar
             OnClick = btnSorgulamalarKaydetClick
           end
           object btnSorgulamalarKapat: TcxButton
-            Left = 97
-            Top = 347
+            Left = 273
+            Top = 366
             Width = 75
             Height = 25
             Caption = 'Kapat'
             TabOrder = 5
             OnClick = btnSorgulamalarKapatClick
           end
-          object txtSP_name: TcxComboBox
-            Left = 16
-            Top = 118
+          object txtParams: TcxTextEdit
+            Left = 1
+            Top = 127
+            Align = alTop
             TabOrder = 6
-            Text = 'txtSP_name'
-            Width = 201
+            ExplicitLeft = 16
+            ExplicitTop = 145
+            ExplicitWidth = 201
+            Width = 430
+          end
+          object txtParamsTip: TcxTextEdit
+            Left = 1
+            Top = 161
+            Align = alTop
+            TabOrder = 7
+            ExplicitLeft = 16
+            ExplicitTop = 172
+            ExplicitWidth = 201
+            Width = 430
+          end
+          object txtIC_Params: TcxTextEdit
+            Left = 1
+            Top = 195
+            Align = alTop
+            TabOrder = 8
+            ExplicitLeft = 16
+            ExplicitTop = 199
+            ExplicitWidth = 201
+            Width = 430
+          end
+          object pnlSP: TPanel
+            Left = 1
+            Top = 87
+            Width = 430
+            Height = 27
+            Align = alTop
+            Caption = 'pnlSP'
+            TabOrder = 9
+            ExplicitTop = 97
+            object txtSP_name: TcxComboBox
+              Left = 1
+              Top = 1
+              Align = alLeft
+              TabOrder = 0
+              Text = 'txtSP_name'
+              Width = 312
+            end
+            object prm_Yenile: TcxButton
+              Left = 313
+              Top = 1
+              Width = 116
+              Height = 25
+              Align = alClient
+              Caption = 'Parametre Yenile'
+              TabOrder = 1
+              OnClick = prm_YenileClick
+              ExplicitLeft = 312
+              ExplicitTop = 16
+              ExplicitWidth = 115
+            end
           end
         end
         object gridRaporlar: TDBGridEh
@@ -2426,17 +2534,6 @@ object frmSorgulamalar: TfrmSorgulamalar
             OnClick = btnSorguCalistirClick
           end
         end
-        object txtAciklama: TcxDBMemo
-          Left = 853
-          Top = 1
-          Align = alClient
-          DataBinding.DataField = 'Aciklama'
-          DataBinding.DataSource = DataSource2
-          Properties.ReadOnly = True
-          TabOrder = 3
-          Height = 588
-          Width = 203
-        end
       end
     end
     object cxTabSheet7: TcxTabSheet
@@ -2543,11 +2640,12 @@ object frmSorgulamalar: TfrmSorgulamalar
   object ADO_SQL1: TADOQuery
     Connection = DATALAR.ADOConnection2
     CursorType = ctStatic
+    AfterScroll = ADO_SQL1AfterScroll
     Parameters = <>
     SQL.Strings = (
       'select * from raporlar1')
-    Left = 600
-    Top = 278
+    Left = 560
+    Top = 270
   end
   object DataSource2: TDataSource
     DataSet = ADO_SQL1

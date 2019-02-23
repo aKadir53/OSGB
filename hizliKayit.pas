@@ -604,7 +604,9 @@ begin
         else begin
           RollBackTrans (datalar.ADOConnection2);
           GridList.Row := iRowC + 1;
-          showmessageSkin (IntToStr (iRowC + 1) + '. satýrda hata oluþtu, aktarým iþlemi tamamlanamadý.', '', '', 'info');
+          showmessageSkin (IntToStr (iRowC + 1) + '. satýrda hata oluþtu, aktarým iþlemi tamamlanamadý.',
+                           'Personel Bilgisi :  ' +GridList.Cells[colAdi,_row_] + ' ' + GridList.Cells[colSoyadi,_row_] ,
+                           '', 'info');
         end;
       end;
     finally

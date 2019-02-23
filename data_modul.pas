@@ -342,6 +342,7 @@ type
    faturaKayitURL : string;
    hizmetKayitURL : string;
    receteURL :string;
+   IBYSURL :string;
    raporIlacURL :string;
    DonemSonlandir :string;
    ButtonEditSecimlist : ArrayListeSecimler;
@@ -454,9 +455,12 @@ begin
     if username = 'demo' then begin
       _db_ := 'OSGB_UZMAN';
       servername := '213.159.30.6';
-      pSQLPassword := '5353';
-      pSQLUserName := 'Nokta';
+      pSQLPassword := 'nokta53Nokta';
+      pSQLUserName := 'noktaosgb';
     end;
+      pSQLPassword := 'nokta53Nokta';
+      pSQLUserName := 'noktaosgB';
+
     if (_db_ <> '')
     Then Begin
       ADOConnection2.Connected := false;

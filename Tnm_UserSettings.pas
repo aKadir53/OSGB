@@ -654,7 +654,8 @@ var
   c : char;
 begin
 
-  case TcxImageComboKadir(FindComponent('Grup')).EditValue of
+  case ((TcxImageComboKadir(FindComponent('Grup')).EditValue)
+       and (TcxButton(sender).Tag = Kaydet)) of
    2 : if vartoStr(TcxImageComboKadir(FindComponent('Doktor')).EditValue) = ''
        Then begin
           ShowMessageSkin('Doktor Grubu için Doktor Seçimi Yapmak Zorundasýnýz','','','info');
@@ -707,7 +708,9 @@ begin
       and not isNull (TcxTextEditKadir (FindComponent ('password')).Text) then
       if not SifreGecerliMi (TcxTextEditKadir (FindComponent ('password')).Text, 6, 1, 0, 0, 1) then Exit;
   end;
+
   BeginTrans (DATALAR.ADOConnection2);
+
   try
     if TcxButton(sender).Tag = 1 then
     begin
@@ -736,16 +739,19 @@ begin
 
     end;
 
+
+
+
     inherited;
 
     if not cxKaydetResult then Exit;
 
     case TcxButton(sender).Tag  of
-      2 : begin
+  Yeni : begin
              IslemveMenuGorunumSetEkle(ugUser);
 
           end;
-      1 : begin
+    Sil : begin
 
            // post;
            //ShowMessage('Ýptal');

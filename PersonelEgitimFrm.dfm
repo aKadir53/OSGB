@@ -3,7 +3,7 @@ object frmPersonelEgitim: TfrmPersonelEgitim
   Top = 0
   Caption = 'frmPersonelEgitim'
   ClientHeight = 446
-  ClientWidth = 683
+  ClientWidth = 874
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -42,7 +42,7 @@ object frmPersonelEgitim: TfrmPersonelEgitim
         Caption = 'Dosya No.'
         DataBinding.FieldName = 'PersonelDosyaNo'
         PropertiesClassName = 'TcxTextEditProperties'
-        Properties.Alignment.Horz = taLeftJustify
+        Properties.Alignment.Horz = taCenter
         Properties.Alignment.Vert = taVCenter
         Properties.ReadOnly = True
         FooterAlignmentHorz = taCenter
@@ -55,6 +55,8 @@ object frmPersonelEgitim: TfrmPersonelEgitim
       end
       object GridListGrupKod: TcxGridDBBandedColumn
         DataBinding.FieldName = 'PersonelAdiSoyadi'
+        PropertiesClassName = 'TcxTextEditProperties'
+        Properties.Alignment.Vert = taVCenter
         Options.Editing = False
         Width = 235
         Position.BandIndex = 0
@@ -200,10 +202,10 @@ object frmPersonelEgitim: TfrmPersonelEgitim
     end
   end
   object EgitimGrid: TcxGridKadir
-    Left = -136
-    Top = -16
-    Width = 841
-    Height = 139
+    Left = -191
+    Top = 8
+    Width = 1016
+    Height = 227
     TabOrder = 2
     ExceleGonder = False
     object EgitimGridSatirlar: TcxGridDBBandedTableView
@@ -215,31 +217,43 @@ object frmPersonelEgitim: TfrmPersonelEgitim
       OptionsData.Deleting = False
       OptionsData.Editing = False
       OptionsData.Inserting = False
+      OptionsSelection.MultiSelect = True
+      OptionsView.CellAutoHeight = True
       OptionsView.GridLines = glHorizontal
-      OptionsView.GroupByBox = False
       OptionsView.GroupByHeaderLayout = ghlHorizontal
       Bands = <
         item
           Caption = 'E'#287'itimler'
-          Width = 818
+          Width = 946
         end>
       object EgitimGridSatirlarid: TcxGridDBBandedColumn
+        Caption = 'E'#287'itim No.'
         DataBinding.FieldName = 'id'
-        Width = 31
+        PropertiesClassName = 'TcxTextEditProperties'
+        Properties.Alignment.Horz = taCenter
+        HeaderAlignmentHorz = taCenter
+        Styles.Content = cxStyle1
+        Width = 50
         Position.BandIndex = 0
         Position.ColIndex = 0
         Position.RowIndex = 0
       end
       object EgitimGridSatirlarBaslamaTarihi: TcxGridDBBandedColumn
         DataBinding.FieldName = 'BaslamaTarihi'
-        Width = 130
+        PropertiesClassName = 'TcxDateEditProperties'
+        Properties.Alignment.Horz = taCenter
+        HeaderAlignmentHorz = taCenter
+        Width = 103
         Position.BandIndex = 0
         Position.ColIndex = 1
         Position.RowIndex = 0
       end
       object EgitimGridSatirlarBitisTarihi: TcxGridDBBandedColumn
         DataBinding.FieldName = 'BitisTarihi'
-        Width = 128
+        PropertiesClassName = 'TcxTextEditProperties'
+        Properties.Alignment.Horz = taCenter
+        HeaderAlignmentHorz = taCenter
+        Width = 101
         Position.BandIndex = 0
         Position.ColIndex = 2
         Position.RowIndex = 0
@@ -247,20 +261,26 @@ object frmPersonelEgitim: TfrmPersonelEgitim
       object EgitimGridSatirlartanimi: TcxGridDBBandedColumn
         Caption = 'T'#252'r'#252
         DataBinding.FieldName = 'tanimi'
-        Width = 42
+        PropertiesClassName = 'TcxTextEditProperties'
+        Properties.Alignment.Horz = taCenter
+        HeaderAlignmentHorz = taCenter
+        Width = 54
         Position.BandIndex = 0
         Position.ColIndex = 3
         Position.RowIndex = 0
       end
       object EgitimGridSatirlarSirketTanimi: TcxGridDBBandedColumn
+        Caption = 'Sirket Tanimi'
         DataBinding.FieldName = 'SirketTanimi'
-        Width = 164
+        HeaderAlignmentHorz = taCenter
+        Width = 208
         Position.BandIndex = 0
         Position.ColIndex = 4
         Position.RowIndex = 0
       end
       object EgitimGridSatirlarEgitimBilgi: TcxGridDBBandedColumn
         DataBinding.FieldName = 'EgitimBilgi'
+        Visible = False
         Width = 249
         Position.BandIndex = 0
         Position.ColIndex = 5
@@ -269,15 +289,57 @@ object frmPersonelEgitim: TfrmPersonelEgitim
       object EgitimGridSatirlarEgitimCSGBGonderimSonuc: TcxGridDBBandedColumn
         Caption = 'Gonderim Sonuc'
         DataBinding.FieldName = 'EgitimCSGBGonderimSonuc'
-        Width = 85
+        HeaderAlignmentHorz = taCenter
+        Width = 107
+        Position.BandIndex = 0
+        Position.ColIndex = 9
+        Position.RowIndex = 0
+      end
+      object EgitimGridSatirlarColumn1: TcxGridDBBandedColumn
+        Caption = 'Sorgu No'
+        DataBinding.FieldName = 'sorguNo'
+        HeaderAlignmentHorz = taCenter
+        Width = 81
+        Position.BandIndex = 0
+        Position.ColIndex = 10
+        Position.RowIndex = 0
+      end
+      object EgitimGridSatirlarColumn2: TcxGridDBBandedColumn
+        Caption = 'Sorgu Sonucu'
+        DataBinding.FieldName = 'sorguSonuc'
+        PropertiesClassName = 'TcxMemoProperties'
+        HeaderAlignmentHorz = taCenter
+        Width = 81
         Position.BandIndex = 0
         Position.ColIndex = 6
         Position.RowIndex = 0
       end
-      object EgitimGridSatirlarColumn1: TcxGridDBBandedColumn
-        DataBinding.FieldName = 'sorguNo'
+      object EgitimGridSatirlarColumn3: TcxGridDBBandedColumn
+        Caption = 'isgProf'
+        DataBinding.FieldName = 'IGU'
+        PropertiesClassName = 'TcxTextEditProperties'
+        Properties.Alignment.Horz = taCenter
+        HeaderAlignmentHorz = taCenter
+        Width = 62
         Position.BandIndex = 0
         Position.ColIndex = 7
+        Position.RowIndex = 0
+      end
+      object EgitimGridSatirlarColumn4: TcxGridDBBandedColumn
+        Caption = 'E'#287'itimi Veren'
+        DataBinding.FieldName = 'egitimci'
+        PropertiesClassName = 'TcxTextEditProperties'
+        Properties.Alignment.Horz = taCenter
+        HeaderAlignmentHorz = taCenter
+        Position.BandIndex = 0
+        Position.ColIndex = 8
+        Position.RowIndex = 0
+      end
+      object EgitimGridSatirlarColumn5: TcxGridDBBandedColumn
+        Caption = 'Sorgu Sonuc Kodu'
+        DataBinding.FieldName = 'sorguSonucKodu'
+        Position.BandIndex = 0
+        Position.ColIndex = 11
         Position.RowIndex = 0
       end
     end
@@ -494,8 +556,8 @@ object frmPersonelEgitim: TfrmPersonelEgitim
     Top = 128
   end
   object Egitimler: TListeAc
-    TColcount = 3
-    TColsW = '50,200,50'
+    TColcount = 4
+    TColsW = '50,200,50,50'
     Table = 'Egitim_Tnm'
     Conn = DATALAR.ADOConnection2
     Filtercol = 0
@@ -505,16 +567,26 @@ object frmPersonelEgitim: TfrmPersonelEgitim
     Kolonlar.Strings = (
       'kod'
       'tanimi'
-      'sure')
+      'sure'
+      'EntagrasyonKodu')
     KolonBasliklari.Strings = (
       'Kod'
       'Tan'#305'm'#305
-      'S'#252're')
+      'S'#252're'
+      'IBYS Kod')
     Calistir = fgEvet
     BiriktirmeliSecim = False
+    SkinName = 'UserSkin'
     Grup = False
     GrupCol = 0
     Left = 560
     Top = 136
+  end
+  object cxStyleRepository1: TcxStyleRepository
+    PixelsPerInch = 96
+    object cxStyle1: TcxStyle
+      AssignedValues = [svTextColor]
+      TextColor = clRed
+    end
   end
 end

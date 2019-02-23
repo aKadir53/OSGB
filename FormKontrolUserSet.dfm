@@ -23,10 +23,9 @@ object frmKontrolUserSet: TfrmKontrolUserSet
     Align = alClient
     TabOrder = 0
     Properties.ActivePage = cxTabSheet1
-    ClientRectBottom = 468
-    ClientRectLeft = 3
-    ClientRectRight = 479
-    ClientRectTop = 26
+    ClientRectBottom = 475
+    ClientRectRight = 486
+    ClientRectTop = 24
     object cxTabSheet1: TcxTabSheet
       Caption = 'Form Kontrol Yetki Atamas'#305
       ImageIndex = 0
@@ -37,13 +36,13 @@ object frmKontrolUserSet: TfrmKontrolUserSet
         Caption = 'Kontrolller'
         PanelStyle.Active = True
         TabOrder = 0
-        Height = 402
+        Height = 411
         Width = 478
         object Kontroller: TcxListView
           Left = 2
           Top = 23
           Width = 474
-          Height = 377
+          Height = 386
           Align = alClient
           Columns = <
             item
@@ -96,17 +95,15 @@ object frmKontrolUserSet: TfrmKontrolUserSet
       end
       object cxGroupBox1: TcxGroupBox
         Left = 0
-        Top = 402
+        Top = 411
         Align = alBottom
         Caption = '.'
         PanelStyle.Active = True
         TabOrder = 1
-        ExplicitLeft = 128
-        ExplicitTop = 399
         Height = 40
-        Width = 476
+        Width = 486
         object cxButton1: TcxButton
-          Left = 290
+          Left = 300
           Top = 2
           Width = 90
           Height = 36
@@ -190,7 +187,7 @@ object frmKontrolUserSet: TfrmKontrolUserSet
           OnClick = cxButton1Click
         end
         object cxButton2: TcxButton
-          Left = 380
+          Left = 390
           Top = 2
           Width = 94
           Height = 36
@@ -282,13 +279,13 @@ object frmKontrolUserSet: TfrmKontrolUserSet
         PanelStyle.Active = True
         TabOrder = 2
         Visible = False
-        Height = 402
-        Width = 0
+        Height = 411
+        Width = 8
         object cxGrid1: TcxGrid
           Left = 2
           Top = 19
-          Width = 0
-          Height = 381
+          Width = 4
+          Height = 390
           Align = alClient
           TabOrder = 0
           object cxGridKontrolUser: TcxGridDBTableView
@@ -350,13 +347,13 @@ object frmKontrolUserSet: TfrmKontrolUserSet
         Caption = 'Kontrolller'
         PanelStyle.Active = True
         TabOrder = 0
-        Height = 442
+        Height = 451
         Width = 478
         object InputKontroller: TcxListView
           Left = 2
           Top = 2
           Width = 474
-          Height = 398
+          Height = 407
           Align = alClient
           Columns = <
             item
@@ -386,13 +383,11 @@ object frmKontrolUserSet: TfrmKontrolUserSet
         end
         object cxGroupBox5: TcxGroupBox
           Left = 2
-          Top = 400
+          Top = 409
           Align = alBottom
           Caption = '.'
           PanelStyle.Active = True
           TabOrder = 1
-          ExplicitLeft = 128
-          ExplicitTop = 399
           Height = 40
           Width = 474
           object cxButton3: TcxButton

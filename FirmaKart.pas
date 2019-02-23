@@ -639,10 +639,11 @@ begin
   Sayfa3_Kolon3.Width := 0;
   Sayfa3_Kolon2.Width := 0;
 
-  List := ListeAcCreate('SIRKETLER_TNM','sirketKod,tanimi,Aktif',
+  List := ListeAcCreate('SIRKETLER_TNM_view','sirketKod,tanimi,Aktif',
                        'SirketKod,Sirket,Durum',
                        '50,250,50','SirketKod','Firma Listesi','',5,True);
 
+  List.Where := datalar.sirketlerUserFilter;
 
   setDataStringB(self,'SirketKod','Þirket Kodu',Kolon1,'',80,List,True,nil,'','',True,True,1);
 

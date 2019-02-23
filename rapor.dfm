@@ -3,8 +3,8 @@ object frmRapor: TfrmRapor
   Top = 137
   BorderStyle = bsToolWindow
   Caption = '-'
-  ClientHeight = 319
-  ClientWidth = 600
+  ClientHeight = 70
+  ClientWidth = 309
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -19,11 +19,12 @@ object frmRapor: TfrmRapor
   TextHeight = 13
   object StatusBar1: TStatusBar
     Left = 0
-    Top = 300
-    Width = 600
+    Top = 51
+    Width = 309
     Height = 19
     Panels = <>
-    ExplicitTop = 314
+    ExplicitTop = 300
+    ExplicitWidth = 600
   end
   object memo: TDBMemo
     Left = 128
@@ -38,13 +39,14 @@ object frmRapor: TfrmRapor
   object Panel1: TPanel
     Left = 0
     Top = 0
-    Width = 600
-    Height = 300
+    Width = 309
+    Height = 51
     Align = alClient
     BevelInner = bvLowered
     Caption = 'Panel1'
     TabOrder = 2
-    ExplicitHeight = 314
+    ExplicitWidth = 600
+    ExplicitHeight = 300
     object btnOnIzle: TcxButton
       Left = 205
       Top = 3
@@ -548,15 +550,13 @@ object frmRapor: TfrmRapor
     UserName = 'frxDBDataset9'
     CloseDataSource = False
     BCDToCurrency = False
-    Left = 232
-    Top = 24
+    Left = 376
   end
   object frxDBDataset10: TfrxDBDataset
     UserName = 'frxDBDataset10'
     CloseDataSource = False
     BCDToCurrency = False
-    Left = 264
-    Top = 8
+    Left = 400
   end
   object frxDBDataset11: TfrxDBDataset
     UserName = 'frxDBDataset11'

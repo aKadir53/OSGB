@@ -55,7 +55,6 @@ object frmUsers: TfrmUsers
     ClientRectTop = 26
     object cxTabSheet1: TcxTabSheet
       Caption = #304#351'lem Yetkiler'
-      ExplicitWidth = 348
       object cxGrid2: TcxGrid
         Left = 0
         Top = 0
@@ -63,7 +62,6 @@ object frmUsers: TfrmUsers
         Height = 529
         Align = alClient
         TabOrder = 0
-        ExplicitWidth = 348
         object cxGridUserSet: TcxGridDBTableView
           PopupMenu = PopupMenu2
           DataController.DataModeController.DetailInSQLMode = True
@@ -108,7 +106,10 @@ object frmUsers: TfrmUsers
     object cxTabSheet2: TcxTabSheet
       Caption = 'Men'#252' Yetkileri'
       ImageIndex = 1
+      ExplicitLeft = 0
+      ExplicitTop = 0
       ExplicitWidth = 348
+      ExplicitHeight = 0
       object cxGrid1: TcxGrid
         Left = 0
         Top = 0

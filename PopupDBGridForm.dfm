@@ -4,7 +4,7 @@ object frmPopupDBGridForm: TfrmPopupDBGridForm
   BorderIcons = []
   BorderStyle = bsDialog
   Caption = 'Popup Form'
-  ClientHeight = 320
+  ClientHeight = 411
   ClientWidth = 769
   Color = 13750737
   Font.Charset = TURKISH_CHARSET
@@ -22,10 +22,11 @@ object frmPopupDBGridForm: TfrmPopupDBGridForm
   TextHeight = 13
   object cxPanelBottom: TcxGroupBox
     Left = 0
-    Top = 285
+    Top = 376
     Align = alBottom
     PanelStyle.Active = True
     TabOrder = 0
+    ExplicitTop = 285
     Height = 35
     Width = 769
     object btnYes: TcxButton
@@ -62,13 +63,14 @@ object frmPopupDBGridForm: TfrmPopupDBGridForm
     Style.Font.Style = [fsBold]
     Style.IsFontAssigned = True
     TabOrder = 1
-    Height = 285
+    ExplicitHeight = 285
+    Height = 271
     Width = 769
     object cxGrid3: TcxGridKadir
       Left = 3
       Top = 36
       Width = 763
-      Height = 134
+      Height = 120
       Align = alClient
       Font.Charset = TURKISH_CHARSET
       Font.Color = clWindowText
@@ -80,6 +82,7 @@ object frmPopupDBGridForm: TfrmPopupDBGridForm
       LevelTabs.ImageBorder = 2
       LevelTabs.Style = 1
       ExceleGonder = False
+      ExplicitHeight = 134
       object DBGrid: TcxGridDBTableView
         OnDblClick = DBGridDblClick
         Navigator.Buttons.OnButtonClick = DBGridNavigatorButtonsButtonClick
@@ -342,10 +345,12 @@ object frmPopupDBGridForm: TfrmPopupDBGridForm
     end
     object GrpAciklama: TcxGroupBox
       Left = 3
-      Top = 170
+      Top = 156
       Align = alBottom
       TabOrder = 2
       Visible = False
+      ExplicitLeft = 51
+      ExplicitTop = 202
       Height = 105
       Width = 763
       object txtAciklama: TcxDBRichEdit
@@ -357,6 +362,32 @@ object frmPopupDBGridForm: TfrmPopupDBGridForm
         Height = 80
         Width = 757
       end
+    end
+  end
+  object GrpAciklamaText: TcxGroupBox
+    Left = 0
+    Top = 271
+    Align = alBottom
+    TabOrder = 2
+    Visible = False
+    ExplicitLeft = 51
+    ExplicitTop = 202
+    ExplicitWidth = 763
+    Height = 105
+    Width = 769
+    object txtAciklamaText: TcxMemo
+      Left = 3
+      Top = 22
+      Align = alClient
+      Lines.Strings = (
+        'txtAciklamaText')
+      TabOrder = 0
+      ExplicitLeft = 280
+      ExplicitTop = 40
+      ExplicitWidth = 185
+      ExplicitHeight = 89
+      Height = 80
+      Width = 763
     end
   end
   object PopupMenu1: TPopupMenu

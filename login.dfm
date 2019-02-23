@@ -928,6 +928,10 @@ object frmLogin: TfrmLogin
       Caption = 'cxTabSheet1'
       ImageIndex = 2
       TabVisible = False
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       object Label1: TLabel
         Left = 154
         Top = 62
@@ -2089,6 +2093,7 @@ object frmLogin: TfrmLogin
       Font.Name = 'MS Sans Serif'
       Font.Style = [fsBold]
       ParentFont = False
+      OnClick = btnVazgecClick
     end
     object btnSifreUnuttum: TcxButton
       Left = 2
@@ -2228,7 +2233,8 @@ object frmLogin: TfrmLogin
     Top = 8
   end
   object dxLayoutLookAndFeelList1: TdxLayoutLookAndFeelList
-    Top = 88
+    Left = 8
+    Top = 128
     object dxLayoutSkinLookAndFeel1: TdxLayoutSkinLookAndFeel
       ItemOptions.CaptionOptions.Font.Charset = DEFAULT_CHARSET
       ItemOptions.CaptionOptions.Font.Color = clWindowText

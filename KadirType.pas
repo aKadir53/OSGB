@@ -794,6 +794,7 @@ Const
   TagfrmHastaRaporlari = 1010;
   TagfrmOrtamOlcum = 1020;
   TagfrmCihazKontrolListesi = 1030;
+  TagfrmFirmaPersonelEgitimList = 1040;
 
 
   Kaydet = 0;

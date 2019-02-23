@@ -6,30 +6,36 @@ uses
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
   Dialogs, StdCtrls, Buttons, sBitBtn, ExtCtrls, Grids, BaseGrid, AdvGrid,strUtils,
   db, kadir, adodb, cxCustomData, cxGraphics, cxFilter, cxData, cxDataStorage,
-  kadirLabel,kadirType,GirisUnit,
-  cxEdit, cxDBData, cxGridLevel, cxClasses, cxControls,
+  kadirLabel,kadirType,GirisUnit,cxImageComboBox,cxMaskEdit,cxTextEdit,cxRichEdit,
+  cxEdit, cxDBData, cxGridLevel, cxClasses, cxControls,cxCheckBox,cxButtonEdit,
   cxGridCustomView, cxGridCustomTableView, cxGridTableView, cxGridDBTableView,
   cxGrid, cxLookAndFeels, cxLookAndFeelPainters, DBTables, AdvObj, Menus,
   dxSkinsCore, dxSkinBlue, dxSkinCaramel, dxSkinCoffee, dxSkiniMaginary,
   dxSkinLilian, dxSkinLiquidSky, dxSkinLondonLiquidSky, dxSkinMcSkin,
-  dxSkinMoneyTwins, dxSkinsDefaultPainters, cxButtons;
+  dxSkinMoneyTwins, dxSkinsDefaultPainters, cxButtons, cxStyles,
+  dxSkinscxPCPainter, cxCurrencyEdit, dxmdaset, cxGridBandedTableView,
+  cxGridDBBandedTableView;
 
 
 type
   TfrmRaporCalistir = class(TGirisForm)
-    pnlTitle: TPanel;
     pnlOnay: TPanel;
     txtinfo: TLabel;
-    gridParams: TAdvStringGrid;
-    txtHatalar: TMemo;
     DataSource1: TDataSource;
     btnCalistirGoruntule: TcxButton;
+    memParamsData: TdxMemData;
+    memParamsDataname: TStringField;
+    memParamsDatatip: TStringField;
+    memParamsData_DS: TDataSource;
+    memParamsDatavalue: TStringField;
+    memParamsDataparams: TStringField;
+    memParamsDatasira: TIntegerField;
 
    procedure sp_params(_sp_ , _kod_ : string);
-    procedure gridParamsGetEditorType(Sender: TObject; ACol, ARow: Integer;
-      var AEditor: TEditorType);
     procedure btnCalistirGoruntuleClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
+    procedure SetGrid;
+    procedure FormShow(Sender: TObject);
 
   private
     { Private declarations }
@@ -42,6 +48,7 @@ type
 var
   frmRaporCalistir: TfrmRaporCalistir;
   sp_name , _kod : string;
+  ParametreYukleOK : integer = 0;
   dataset : Tdataset;
 
 implementation
@@ -51,6 +58,7 @@ implementation
 
 function TfrmRaporCalistir.Init(Sender : TObject) : Boolean;
 begin
+ Image2.Visible := False;
  sp_params(_sp_,_kod_);
  result := True;
 end;
@@ -60,14 +68,20 @@ var
   sql : string;
   s : integer;
   ado : TADOQuery;
+  Columns : TStringList;
 begin
-    ado := TADOQuery.Create(nil);
-    ado.Connection := datalar.ADOConnection2;
 
 
-    sp_name := _sp_;
-    _kod := _kod_;
 
+  //  ado := TADOQuery.Create(nil);
+ //   ado.Connection := datalar.ADOConnection2;
+
+    Columns := TStringList.Create;
+    try
+        Split(',',_fields_,Columns);
+        sp_name := _sp_;
+        _kod := _kod_;
+  (*
     sql := 'select name,' +
            '(case xtype ' +
                   ' when 167 then ''string''' +
@@ -78,69 +92,62 @@ begin
     ado.close;
     ado.SQL.Clear;
     datalar.QuerySelect(ado,sql);
-//    sp_params := datalar.ADO_SQL4;
+    *)
+//        ClientHeight := dxStatusBar1.Height + cxTopPanel.Height + pnlTitle.Height + btnCalistirGoruntule.Height + 50 + (Columns.Count * 23);
 
-    Grid_Temizle(gridParams);
+    finally
+   //  ado.free;
+     Columns.Free;
+    end;
 
-    for s := 1 to ado.RecordCount do
-    Begin
-        gridParams.ints[0,s] := s;
-        gridParams.Cells[1,s] := copy(ado.fieldbyname('name').AsString,2,100);
-        gridParams.Cells[3,s] := ado.fieldbyname('tip').AsString;
-        ado.Next;
-        gridParams.AddRow;
-    End;
+
 end;
 
 procedure TfrmRaporCalistir.FormCreate(Sender: TObject);
 begin
   cxPanel.Visible := False;
+  SayfaCaption('Parametreler','','','','');
 end;
 
-procedure TfrmRaporCalistir.gridParamsGetEditorType(Sender: TObject; ACol,
-  ARow: Integer; var AEditor: TEditorType);
+procedure TfrmRaporCalistir.FormShow(Sender: TObject);
 begin
-
-   if gridParams.Cells[3,arow] = 'string'
-   Then AEditor := edComboEdit;
-
-   if gridParams.Cells[3,arow] = 'integer'
-   Then AEditor := edSpinEdit;
-
-   if gridParams.Cells[3,arow] = 'float'
-   Then AEditor := edFloat;
-
-   if gridParams.Cells[3,arow] = 'tarih'
-   Then AEditor := edDateEdit;
-
-
+  inherited;
+  SetGrid;
 end;
 
 procedure TfrmRaporCalistir.btnCalistirGoruntuleClick(Sender: TObject);
 var
-   sql , sqlp , _prm_: string;
-   s,pcount , ic ,rs: integer;
+   sql , sqlp , _prm_ ,prmAd : string;
+   s,pcount , ic ,rs , i: integer;
    ds : tdataset;
    ct : double;
     _footerItem: TcxGridDBTableSummaryItem;
     fieldTip : TFieldType;
     TopluDataset : TDataSetKadir;
+    Columns : TStringList;
+    obje : TComponent;
 begin
+    Columns := TStringList.Create;
+     try
+       Split(',',_fields_,Columns);
+       for i := 0 to Columns.Count - 1 do
+       begin
+        _prm_ := 'Param_'+copy(Columns[i],2,100);
+        prmAd := Columns[i];
+        obje := FindComponent(_prm_);
 
-    pcount := gridParams.RowCount - 2;
+        if vartoStr(TcxCustomEdit(obje).EditValue) = '' then Continue; // boþ ise parametreyi atla sp default olsun
 
-    for s := 1 to pcount do
-    Begin
+        if obje.ClassName = 'TcxDateEditKadir'
+        then
+          sqlp := sqlp + ',' + prmAd + ' = ' + TcxDateEditKadir(obje).GetSQLValue
+        else
+          sqlp := sqlp + ',' + prmAd + ' = ' + QuotedStr(vartoStr(TcxCustomEdit(obje).EditValue));
+       end;
 
-       if gridParams.Cells[3,s] = 'tarih'
-       Then Begin
-           _prm_ := tarihal(strtodate(gridParams.Cells[2,s]));
-       End
-       Else _prm_ := gridParams.Cells[2,s];
-
-        sqlp := sqlp + ',' + QuotedStr(_prm_);
-
-    End;
+     finally
+       Columns.Free;
+     end;
 
      sql := 'exec ' + sp_name + ' ' + trim(copy(sqlp,2,1000));
 
@@ -198,5 +205,128 @@ begin
      close;
 
 end;
+
+
+procedure TfrmRaporCalistir.SetGrid;
+var
+ i,r,colswidth : integer;
+ Columns,Baslik,Edits,IC_Params,IC_Param,Tips : TStringList;
+ FItem : TcxImageComboBoxItem;
+ ado : TADOQuery;
+ field1,field2,table,MaskEdit,filter,prm,prmAd : string;
+ IC : TcxImageComboKadir;
+ Tarih : TcxDateEditKadir;
+begin
+    if _fieldTips_ = '' then exit;
+
+    Tips := TStringList.Create;
+    IC_Params := TStringList.Create;
+    IC_Param := TStringList.Create;
+    Columns := TStringList.Create;
+
+    try
+       Split(',',_fields_,Columns);
+       Split(',',_fieldTips_,Tips);
+       ExtractStrings([';'],[],PChar(_ICParams_),IC_Params);
+
+       for i := 0 to Columns.Count - 1 do
+       begin
+        prm := 'Param_'+copy(Columns[i],2,100);
+        prmAd := copy(Columns[i],2,100);
+
+        if SameText (Tips[i], 'int') then
+         begin
+           setDataStringCurr(self,prm,prmAd,kolon1,'',150,'0,',1);
+         end;
+        if SameText (Tips[i], 'string') then
+         begin
+          setDataString(self,prm,prmAd,Kolon1,'',150);
+
+         end;
+        if Pos('maskEdit',Tips[i]) > 0 then
+         begin
+
+         end;
+        if SameText (Tips[i], 'memo') then
+         begin
+
+         end;
+        if SameText (Tips[i], 'Check') then
+         begin
+
+         end;
+
+        if SameText (Tips[i], 'CheckBit') then
+         begin
+
+         end;
+
+        if SameText (Tips[i], 'tarih') then
+         begin
+            Tarih := TcxDateEditKadir.Create(self);
+            setDataStringKontrol(self,Tarih,prm,prmAd,kolon1,'',150);
+         end;
+
+        if SameText (Tips[i], 'ButtonEdit') then
+         begin
+         end;
+
+
+        if SameText (Tips[i], 'IC')
+        then begin
+             IC_Param.Clear;
+             ExtractStrings([','],[],pchar(IC_Params[i]),IC_Param);
+             if IC_Params.Count > 0 then
+             begin
+                table := StringReplace(IC_Param[0],'|',',', [rfReplaceAll]);
+
+                IC := TcxImageComboKadir.Create(self);
+
+                if table <> 'nil' then  // 0;nil,E|Evet-H|Hayýr-Y|Yok
+                begin
+                  field1 := IC_Param[1];
+                  field2 := IC_Param[2];
+
+                  if IC_Param.Count = 4
+                  then
+                   filter := ' where ' + IC_Param[3]
+                  else
+                   filter := '';
+
+                  IC.Conn := Datalar.ADOConnection2;
+                  IC.TableName := table;
+                  IC.ValueField := field1;
+                  IC.DisplayField := field2;
+                  IC.BosOlamaz := True;
+                end
+                else
+                begin
+                  field1 := IC_Param[1];
+                  field1 := StringReplace(field1,'|',';', [rfReplaceAll]);  // | to ;
+                  field1 := StringReplace(field1,'-',',', [rfReplaceAll]);  // - to ,
+                  IC.Conn := nil;
+                  IC.ItemList := field1;
+                end;
+                IC.Filter := filter;
+                OrtakEventAta(IC);
+                setDataStringKontrol(self,IC,prm,prmAd,kolon1,'',150);
+             end;
+
+        end;
+
+       end; // for end
+
+       ClientHeight := dxStatusBar1.Height + cxTopPanel.Height  + btnCalistirGoruntule.Height + 50 + (Columns.Count * 23);
+
+    finally
+        Tips.Free;
+        IC_Params.Free;
+        IC_Param.Free;
+        Columns.Free;
+    end;
+
+end;
+
+
 
 end.

@@ -105,6 +105,7 @@ type
     procedure LoginSayfalarChange(Sender: TObject);
     procedure aTimerTimer(Sender: TObject);
     procedure btnSifreUnuttumClick(Sender: TObject);
+    procedure btnVazgecClick(Sender: TObject);
   private
     { Private declarations }
   public
@@ -396,6 +397,8 @@ begin
 
   FormatSettings.DecimalSeparator := '.';
   FormatSettings.ThousandSeparator := ',';
+
+
   action := cafree;
 
 end;
@@ -552,6 +555,11 @@ begin
      finally
       ado.free;
      end;
+end;
+
+procedure TfrmLogin.btnVazgecClick(Sender: TObject);
+begin
+ datalar.KillTaskw('OSGB.exe');
 end;
 
 procedure TfrmLogin.cxButtonEditKadir1PropertiesButtonClick(Sender: TObject;

@@ -34,9 +34,9 @@ object frmFirmaKart: TfrmFirmaKart
       Properties.Stretch = True
       TabOrder = 0
       ExplicitLeft = 2
-      ExplicitTop = 5
+      ExplicitTop = -2
       ExplicitWidth = 106
-      ExplicitHeight = 114
+      ExplicitHeight = 121
       Height = 96
       Width = 104
     end

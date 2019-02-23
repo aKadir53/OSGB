@@ -384,6 +384,9 @@ object frmHastaListe: TfrmHastaListe
       object cxTabSheet1: TcxTabSheet
         Caption = 'Uyar'#305' Bilgisi'
         ImageIndex = 133
+        ExplicitLeft = 4
+        ExplicitWidth = 1155
+        ExplicitHeight = 34
         object txtUyariMesaj: TcxMemo
           Left = 0
           Top = 0
@@ -398,6 +401,8 @@ object frmHastaListe: TfrmHastaListe
           StyleHot.LookAndFeel.NativeStyle = False
           StyleHot.LookAndFeel.SkinName = 'McSkin'
           TabOrder = 0
+          ExplicitWidth = 1155
+          ExplicitHeight = 34
           Height = 31
           Width = 1153
         end

@@ -48,7 +48,7 @@ uses message,Data_Modul,AnaUnit,message_y,popupForm,rapor,TedaviKart,Son6AylikTe
              PopupDBGridForm,PopupDBVerticalGridForm,AjandaOzet,sirketISGKurulToplanti,
              Tnm_Ilaclar, PersonelEgitimFrm, About_Frm, MerkezBilgisi,sirketYillikCalismaPlan,
              sirketYillikEgitimPlan,HizmetKart, CihazKontrol,firmaListesi,Kroki,sirketOrtamOlcum,
-             firmaCihazKontrolListesi;
+             firmaCihazKontrolListesi,PersonelFirmaEgitimListesi;
 
 
 
@@ -253,6 +253,7 @@ begin
    TagfrmKroki : Result := TfrmKroki;
    TagfrmOrtamOlcum : Result := TfrmSirketOrtamOlcum;
    TagfrmCihazKontrolListesi : Result := TfrmCihazKontrolListesi;
+   TagfrmFirmaPersonelEgitimList : Result := TfrmPersonelFirmaEgitimListe;
 
  //  TagfrmAjandaOzet : Result := TfrmAjandaOzet;
   end;
@@ -326,6 +327,7 @@ begin
    TagfrmKroki : Result := frmKroki;
    TagfrmOrtamOlcum : Result := frmSirketOrtamOlcum;
    TagfrmCihazKontrolListesi : Result := frmCihazKontrolListesi;
+   TagfrmFirmaPersonelEgitimList : Result := frmPersonelFirmaEgitimListe;
 //   TagfrmAjandaOzet : Result := frmAjandaOzet;
 
   end;
@@ -402,6 +404,7 @@ begin
 
      TagfrmCihazKontrolListesi : frmCihazKontrolListesi := TfrmCihazKontrolListesi.Create(Tab);
      TagfrmPersonelEgitim : frmPersonelEgitim := TfrmPersonelEgitim.Create(Tab);
+     TagfrmFirmaPersonelEgitimList : frmPersonelFirmaEgitimListe := TfrmPersonelFirmaEgitimListe.Create(Tab);
   end;
   try
     if not (Form is TGirisForm) then
@@ -539,6 +542,8 @@ begin
      TagfrmOrtamOlcum : frmSirketOrtamOlcum := TfrmSirketOrtamOlcum.Create(Tab);
      TagfrmCihazKontrolListesi : frmCihazKontrolListesi := TfrmCihazKontrolListesi.Create(Tab);
      TagfrmPersonelEgitim : frmPersonelEgitim := TfrmPersonelEgitim.Create(Tab);
+     TagfrmFirmaPersonelEgitimList : frmPersonelFirmaEgitimListe:= TfrmPersonelFirmaEgitimListe.Create(Tab);
+
 
 
   end;
@@ -659,7 +664,8 @@ begin
     TagfrmSirketYillikEgitimPlan : Application.CreateForm(TfrmSirketYillikEgitimPlan , frmSirketYillikEgitimPlan);
     TagfrmKroki : Application.CreateForm(TfrmKroki, frmKroki);
     TagfrmOrtamOlcum : Application.CreateForm(TfrmSirketOrtamOlcum, frmSirketOrtamOlcum) ;
-     TagfrmCihazKontrolListesi : Application.CreateForm(TfrmCihazKontrolListesi, frmCihazKontrolListesi);
+    TagfrmCihazKontrolListesi : Application.CreateForm(TfrmCihazKontrolListesi, frmCihazKontrolListesi);
+    TagfrmFirmaPersonelEgitimList : Application.CreateForm(TfrmPersonelFirmaEgitimListe,frmPersonelFirmaEgitimListe);
   end;
   try
     Form := TGirisForm(FormClassType(abs(FormTag)));

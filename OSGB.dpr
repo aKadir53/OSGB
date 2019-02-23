@@ -15,7 +15,6 @@ uses
   Tnm_LabTest in 'Tnm_LabTest.pas' {frmLabTest},
   login in 'login.pas' {frmLogin},
   TedaviKart in 'TedaviKart.pas' {frmTedaviBilgisi},
-  AcilisMesajForm in 'AcilisMesajForm.pas' {Form2},
   data_modul in 'data_modul.pas' {DATALAR: TDataModule},
   rapor in 'rapor.pas' {frmRapor},
   HastaKart in 'HastaKart.pas' {frmHastaKart},
@@ -57,7 +56,6 @@ uses
   labParametreleri in 'labParametreleri.pas' {frmLabParams},
   labaratuvarKabul in 'labaratuvarKabul.pas' {frmLabaratuvarKabul},
   LabSonucGir in 'LabSonucGir.pas' {frmLabSonucGir},
-  HastaListe in 'HastaListe.pas' {frmHastaListe},
   GrupDetayTanim in 'GrupDetayTanim.pas' {frmGrupDetayTanim},
   MESSAGE_y in 'MESSAGE_y.PAS' {frmMessage_y},
   EventCompletDurumBildir in 'EventCompletDurumBildir.pas' {frmEventDurumBildir},
@@ -83,24 +81,27 @@ uses
   DokumanYukle in 'DokumanYukle.pas' {frmDokumanYonetim},
   TransUtils in 'TransUtils.pas',
   DestekSorunBildir in 'DestekSorunBildir.pas' {frmDestekSorunBildir},
-  CSGBservice in 'CSGBservice.pas';
+  CSGBservice in 'CSGBservice.pas',
+  Anamnez in 'Anamnez.pas' {frmAnamnez},
+  HastaListe in 'HastaListe.pas' {frmHastaListe};
 
 // KadirMedula3 in '..\..\medula3wsdl\KadirMedula3.pas';
 
 const
-  AppalicationVer : integer = 1086;   // Versiyon info kontrol etmeyi unutma  OSGBVersiyon.txt içine AppalicationVer deðerini yaz ftp at
-  DllVersiyon : integer = 2;     //  DLLVersiyon.txt  içine DllVersiyon deðerini yaz ftp at
+  AppalicationVer : integer = 1093;   // Versiyon info kontrol etmeyi unutma  OSGBVersiyon.txt içine AppalicationVer deðerini yaz ftp at
+  OSGBDllVersiyon : integer = 5;     //  DLLVersiyon.txt  içine DllVersiyon deðerini yaz ftp at
+                                     // isg.exe yapý deðiþikliðinden sonra buna gerek kalmýyor
 
   NoktaURL : string = 'https://www.noktayazilim.net';
   OSGBVersiyonURL : string = 'http://www.noktayazilim.net/OSGBVersiyon.txt';
-  DLLVersiyonURL : string = 'http://www.noktayazilim.net/DLLVersiyon.txt';
+  DLLVersiyonURL : string = 'http://www.noktayazilim.net/OSGBDLLVersiyon.txt';
 
 {$R *.res}
 {$WEAKLINKRTTI ON}
   {$RTTI EXPLICIT METHODS([]) PROPERTIES([]) FIELDS([])}
 
  var SiteVersiyon,ExeVersiyon: string; V1, V2, V3, V4: word;
-   versiyon,Dversiyon ,sql,isg : string;
+   versiyon,Dversiyon ,sql,isg,isgOld : string;
   _exe : PAnsiChar;
   dosya : TFileStream;
 
@@ -110,6 +111,8 @@ begin
   Application.MainFormOnTaskbar := True;
   Application.CreateForm(TDATALAR, DATALAR);
   Application.CreateForm(TAnaForm, AnaForm);
+ // Application.CreateForm(TfrmHastaListe, frmHastaListe);
+  //  Application.CreateForm(TfrmAnamnez, frmAnamnez);
   //Application.CreateForm(TfrmUpdate, frmUpdate);???
 
   // form2.show;
@@ -119,9 +122,10 @@ begin
 
   //if pos('UYUM',paramStr(0)) > 0 then isg := 'UYUMISG.exe' else isg := 'isg.exe';
 
-  isg := 'isg.exe';
+  isgOld := 'isg9.exe';
+  isg := 'isg10.exe';
 
-  Download('https://www.noktayazilim.net/' + isg,'mavinokta','nokta53Nokta','C:\OSGB\'+isg);
+//  Download('https://www.noktayazilim.net/' + isg,'mavinokta','nokta53Nokta','C:\OSGB\'+isg);
 
   datalar.versiyon := inttostr(AppalicationVer);
   if ForceDirectories ('C:\OSGB') then
@@ -130,10 +134,10 @@ begin
       Then begin
         //dosya := TFileStream.Create('C:\OSGB\' + isg,fmCreate);
         try
-
-         Download('https://www.noktayazilim.net/isg.exe','mavinokta','nokta53Nokta','C:\OSGB\'+isg);
-
-        // datalar.HTTP1.Get('https://noktayazilim.net/' + isg ,TStream(dosya));
+          Download('https://www.noktayazilim.net/isg/'+isg,'mavinokta','nokta53Nokta','C:\OSGB\'+isg);
+          DeleteFile('C:\OSGB\isg.exe');
+          CopyFile(pChar('C:\OSGB\'+isg),pChar('C:\OSGB\isg.exe'),true);
+          DeleteFile('C:\OSGB\'+isgOld);
         finally
          //dosya.Free;
         end;
@@ -144,44 +148,24 @@ begin
     Dversiyon := (datalar.HTTP1.Get(DLLVersiyonURL));
   except
     versiyon := inttostr(AppalicationVer);
-    Dversiyon := inttostr(DllVersiyon);
+    Dversiyon := inttostr(OSGBDllVersiyon);
   end;
 
   if versiyon = '' then versiyon := inttostr(AppalicationVer);
-  if Dversiyon = '' then Dversiyon := inttostr(DllVersiyon);
+  if Dversiyon = '' then Dversiyon := inttostr(OSGBDllVersiyon);
 
 
-  if (strtoint(Dversiyon) > DllVersiyon)
+  if 1=2//(strtoint(Dversiyon) > OSGBDllVersiyon)
   Then Begin
 //      dosya := TFileStream.Create('C:\OSGB\NoktaDLL.dll',fmCreate);
 //      datalar.HTTP1.Get('https://www.noktayazilim.net/NoktaDLL.dll' ,TStream(dosya));
 
       Download('https://www.noktayazilim.net/NoktaDLL.dll','mavinokta','nokta53Nokta','C:\OSGB\NoktaDLL.dll');
-
-//      dosya.Free;
-
-  //    dosya := TFileStream.Create('C:\OSGB\BouncyCastle.Crypto.dll',fmCreate);
- //     datalar.HTTP1.Get('https://www.noktayazilim.net/BouncyCastle.Crypto.dll' ,TStream(dosya));
       Download('https://www.noktayazilim.net/BouncyCastle.Crypto.dll','mavinokta','nokta53Nokta','C:\OSGB\BouncyCastle.Crypto.dll');
-
-    //  dosya.Free;
-
-   //   dosya := TFileStream.Create('C:\OSGB\EdocLib.dll',fmCreate);
-    //  datalar.HTTP1.Get('https://www.noktayazilim.net/EdocLib.dll' ,TStream(dosya));
-
       Download('https://www.noktayazilim.net/EdocLib.dll','mavinokta','nokta53Nokta','C:\OSGB\EdocLib.dll');
-
-    //  dosya.Free;
-
-   //   dosya := TFileStream.Create('C:\OSGB\Net.Pkcs11.dll',fmCreate);
-  //    datalar.HTTP1.Get('https://www.noktayazilim.net/Net.Pkcs11.dll' ,TStream(dosya));
       Download('https://www.noktayazilim.net/Net.Pkcs11.dll','mavinokta','nokta53Nokta','C:\OSGB\Net.Pkcs11.dll');
-
-    //  dosya.Free;
-
-   //   dosya := TFileStream.Create('C:\OSGB\itextsharp.dll',fmCreate);
-   //   datalar.HTTP1.Get('https://www.noktayazilim.net/itextsharp.dll' ,TStream(dosya));
       Download('https://www.noktayazilim.net/itextsharp.dll','mavinokta','nokta53Nokta','C:\OSGB\itextsharp.dll');
+      Download('https://www.noktayazilim.net/Microsoft.VisualBasic.PowerPacks.Vs.dll','mavinokta','nokta53Nokta','C:\OSGB\Microsoft.VisualBasic.PowerPacks.Vs.dll');
 
   //    dosya.Free;
 
@@ -192,7 +176,7 @@ begin
   if (strtoint(versiyon) > AppalicationVer)
   Then Begin
     try
-     _exe :=  PAnsiChar(AnsiString('C:\OSGB\' + isg));
+     _exe :=  PAnsiChar(AnsiString('C:\OSGB\isg.exe'));
      WinExec(_exe,SW_SHOW);
     // datalar.KillTask('Diyaliz.exe');
     except on e : exception do
