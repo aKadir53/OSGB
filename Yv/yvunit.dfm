@@ -3331,6 +3331,8 @@ object frmYv: TfrmYv
     Top = 80
   end
   object dxSkinController1: TdxSkinController
+    Kind = lfOffice11
+    NativeStyle = False
     SkinName = 'UserSkin'
     UseSkins = False
     Left = 392
