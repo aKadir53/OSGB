@@ -39,7 +39,7 @@ implementation
 uses message,Data_Modul,AnaUnit,message_y,popupForm,rapor,TedaviKart,Son6AylikTetkikSonuc,
              HastaRecete,sifreDegis,HastaTetkikEkle,DokumanYukle,RTFSablon,
              Receteler,Sorgulamalar,sorguRaporCalistir,CariHareketGiris,CariHesapExtresi,
-             HastaKart,FirmaKart,hizliKayit,receteSablonlari,RDS,KKD,Tedarikci,Cekler,
+             PersonelKart,FirmaKart,hizliKayit,receteSablonlari,RDS,KKD,Tedarikci,Cekler,
              HastaListe,IsKazasi,Anamnez,GrupDetayTanim,Sozlesmeler,KasaBanka,
              Tnm_UserSettings,HastaAsiKarti,HastaTaniKart,sirketSahaGozetim, sirketSahaDenetim,
              KurumLogin,Update_G, labaratuvarKabul,Faturalar,FaturaDetay, FirmaKontrol,
@@ -56,7 +56,7 @@ uses message,Data_Modul,AnaUnit,message_y,popupForm,rapor,TedaviKart,Son6AylikTe
 function FormTabImageIndex(formId : integer) : integer;
 begin
    case formId of
-     TagfrmHastaKart : Result := 39;
+     TagfrmPersonelKart : Result := 39;
      TagfrmFirmaKart : Result := -1;
      TagfrmMerkezBilgisi : Result := -1;
      TagfrmHizmetKart : Result := -1;
@@ -189,7 +189,7 @@ end;
 function FormClass(formId : integer) : TComponentClass;
 begin
   case abs(formId) of
-   TagfrmHastaKart : Result := TfrmHastaKart;
+   TagfrmPersonelKart : Result := TfrmPersonelKart;
    TagfrmFirmaKart : Result := TfrmFirmaKart;
    TagfrmMerkezBilgisi : Result := TfrmMerkezBilgisi;
    TagfrmHizmetKart : Result := TfrmHizmetKart;
@@ -262,7 +262,7 @@ end;
 function FormClassType(formId : integer) : TComponent;
 begin
   case abs(formId) of
-   TagfrmHastaKart : Result := frmHastaKart;
+   TagfrmPersonelKart : Result := frmPersonelKart;
    TagfrmFirmaKart : Result := frmFirmaKart;
    TagfrmMerkezBilgisi : Result := frmMerkezBilgisi;
    TagfrmHizmetKart : Result := frmHizmetKart;
@@ -357,7 +357,7 @@ begin
   end;
   bTamam := False;
   case abs(FormTag) of
-     TagfrmHastaKart : frmHastaKart := TfrmHastaKart.Create(Tab);
+     TagfrmPersonelKart : frmPersonelKart := TfrmPersonelKart.Create(Tab);
      TagfrmFirmaKart : frmFirmaKart := TfrmFirmaKart.Create(Tab);
      TagfrmMerkezBilgisi : frmMerkezBilgisi := TfrmMerkezBilgisi.Create(Tab);
      TagfrmHizmetKart : frmHizmetKart := TfrmHizmetKart.Create(Tab);
@@ -495,7 +495,7 @@ begin
   end;
   bTamam := False;
   case abs(FormTag) of
-     TagfrmHastaKart : frmHastaKart := TfrmHastaKart.Create(Tab);
+     TagfrmPersonelKart : frmPersonelKart := TfrmPersonelKart.Create(Tab);
      TagfrmFirmaKart : frmFirmaKart := TfrmFirmaKart.Create(Tab);
      TagfrmMerkezBilgisi : frmMerkezBilgisi := TfrmMerkezBilgisi.Create(Tab);
      TagfrmHizmetKart : frmHizmetKart := TfrmHizmetKart.Create(Tab);
