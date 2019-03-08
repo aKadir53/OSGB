@@ -24,7 +24,7 @@ type
     UserSettings_DataSource: TDataSource;
     cxKullaniciAdi: TcxButtonEditKadir;
     User_Menu_Settings_DataSource: TDataSource;
-    User_Menu_Settings: TADOTable;
+    User_Menu_Settings_: TADOTable;
     cxPageControl1: TcxPageControl;
     cxTabSheet1: TcxTabSheet;
     cxGrid2: TcxGrid;
@@ -74,6 +74,7 @@ type
     PopupMenu2: TPopupMenu;
     S1: TMenuItem;
     T1: TMenuItem;
+    User_Menu_Settings: TADOQuery;
     procedure FormCreate(Sender: TObject);
 
     procedure cxTextEditKeyDown(Sender: TObject; var Key: Word;

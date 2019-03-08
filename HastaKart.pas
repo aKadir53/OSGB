@@ -85,36 +85,16 @@ type
     N3: TMenuItem;
     G2: TMenuItem;
     T2: TMenuItem;
-    IseGirisMuayene: TcxGridKadir;
-    GridList: TcxGridDBBandedTableView;
-    GridListMuayeneSoru: TcxGridDBBandedColumn;
-    GridListGrupKod: TcxGridDBBandedColumn;
-    GridListaltGrupKod: TcxGridDBBandedColumn;
-    GridListGrupTanimi: TcxGridDBBandedColumn;
-    GridListaltGrupTanimi: TcxGridDBBandedColumn;
-    GridListvalue: TcxGridDBBandedColumn;
-    GridListtarih: TcxGridDBBandedColumn;
-    GridListvalueObjevalues: TcxGridDBBandedColumn;
-    GridListvalueTip: TcxGridDBBandedColumn;
-    GridListDesc: TcxGridDBBandedColumn;
-    IseGirisMuayeneLevel1: TcxGridLevel;
     cxStyleRepository2: TcxStyleRepository;
     cxStyle3: TcxStyle;
     A1: TMenuItem;
     cxGridGelislerPROTOKOLNO: TcxGridDBBandedColumn;
-    GridPersonelEgitim: TcxGridKadir;
-    GridEgitim: TcxGridDBBandedTableView;
-    cxGridLevel1: TcxGridLevel;
-    GridEgitimColumn1: TcxGridDBBandedColumn;
-    GridEgitimColumn2: TcxGridDBBandedColumn;
-    GridEgitimColumn3: TcxGridDBBandedColumn;
-    GridEgitimColumn4: TcxGridDBBandedColumn;
-    GridEgitimColumn5: TcxGridDBBandedColumn;
     Meslekler: TListeAc;
     MESLEK: TcxButtonEditKadir;
     ActionList1: TActionList;
     PersonelKaydet: TAction;
     YeniMuayene: TAction;
+    Splitter_Muayene: TSplitter;
     procedure FormCreate(Sender: TObject);
     procedure cxKaydetClick(Sender: TObject);override;
     procedure cxButtonCClick(Sender: TObject);
@@ -164,7 +144,7 @@ type
     function Init(Sender: TObject) : Boolean; override;
   end;
 
-const _TableName_ = 'PersonelKart';
+const _TableName_ = 'HastaKart';
       formGenislik = 750;
       formYukseklik = 580;
       sqlInsert = 'exec sp_YeniHastaKarti ';//,%s,%s,%s,%s,%s,%s';
@@ -200,19 +180,7 @@ begin
     550 : TopluPasifYap (True);
     555 : TopluPasifYap (False);
     -50 : begin
-            ado := TADOQuery.Create(nil);
-            try
-              ado.Connection := datalar.ADOConnection2;
-              sql := 'sp_frmPersonelEgitim @EgitimId = ' + GridPersonelEgitim.Dataset.FieldByName('egitimID').AsString +
-                     ',@PersonelDosyaNo = ' + QuotedStr(dosyaNo.Text);
-              datalar.QuerySelect(ado, sql);
-              TopluDataset.Dataset0 := ado;
-          //    TopluDataset.Dataset1 := datalar.QuerySelect('select * from EgitimAltDetay where egitimId = '  + GridPersonelEgitim.Dataset.FieldByName('egitimID').AsString);
 
-              PrintYap('005','Personel Eðitimi Sertifikasý','',TopluDataset,kadirType.pTNone);
-            finally
-             ado.free;
-            end;
          end;
          else
          begin
@@ -234,7 +202,7 @@ procedure TfrmHastaKart.SirketlerPropertiesChange(Sender: TObject);
 var
   sube : string;
 begin
-
+  (*
   if not IsNull (datalar.doktorKodu)
   then
      sube := ' and subeDoktor = ' + QuotedStr(datalar.doktorKodu)
@@ -246,12 +214,12 @@ begin
      sube := ' and DigerSaglikPers = ' + QuotedStr(datalar.DSPers)
   else
     sube := '';
+    *)
+//  TcxImageComboKadir(FindComponent('Sube')).TableName := 'SIRKET_SUBE_TNM';
+//  TcxImageComboKadir(FindComponent('Sube')).Filter := ' SirketKod = ' +
+//  QuotedStr(varToStr(TcxImageComboKadir(FindComponent('SirketKod')).EditValue)) + sube;// + ' and (Pasif = 0 or Pasif is Null)';
 
-  TcxImageComboKadir(FindComponent('Sube')).TableName := 'SIRKET_SUBE_TNM';
-  TcxImageComboKadir(FindComponent('Sube')).Filter := ' SirketKod = ' +
-  QuotedStr(varToStr(TcxImageComboKadir(FindComponent('SirketKod')).EditValue)) + sube;// + ' and (Pasif = 0 or Pasif is Null)';
-
-
+  (*
   if (TcxImageComboKadir(Sender).name = 'SirketKod') or
      (TcxImageComboKadir(Sender).name = 'sube')
   then
@@ -261,7 +229,7 @@ begin
                               vartostr(TcxImageComboKadir(FindComponent('Sube')).EditValue));
   end;
 
-
+    *)
 
 end;
 
@@ -272,72 +240,6 @@ var
   item : TcxRadioGroupItem;
 begin
 
-  if IseGirisMuayene.Dataset.FieldByName('ValueTip').AsString = 'R'
-  then begin
-    ValuesCombo := TStringList.Create;
-    try
-      ValueObjeValues := IseGirisMuayene.Dataset.FieldByName('ValueObjeValues').AsString;
-      GridListValue.PropertiesClassName := 'TcxRadioGroupProperties';
-      TcxRadioGroupProperties(GridListValue.Properties).Items.Clear;
-      ExtractStrings([','], [], PChar(ValueObjeValues),ValuesCombo);
-      for ValueCombo in  ValuesCombo  do
-      begin
-        item := TcxRadioGroupProperties(GridListValue.Properties).Items.Add;
-        item.Caption := ValueCombo;
-        item.Value := ValueCombo;
-      end;
-    finally
-      ValuesCombo.Free;
-    end;
-  end
-  else
-  if IseGirisMuayene.Dataset.FieldByName('ValueTip').AsString = 'B'
-  then begin
-       GridListValue.PropertiesClassName := 'TcxCheckBoxProperties';
-       TcxCheckBoxProperties(GridListValue.Properties).ValueChecked := '1';
-       TcxCheckBoxProperties(GridListValue.Properties).ValueUnchecked := '0';
-       TcxCheckBoxProperties(GridListValue.Properties).ValueGrayed := '';
-  end
-  Else
-  if IseGirisMuayene.Dataset.FieldByName('ValueTip').AsString = 'C'
-  then begin
-    if length(IseGirisMuayene.Dataset.FieldByName('ValueTip').AsString) = 2
-    then begin
-      ValuesCombo := TStringList.Create;
-      try
-        ValueObjeValues := IseGirisMuayene.Dataset.FieldByName('defaultValue').AsString;
-        GridListDesc.Options.Editing := True;
-        GridListDesc.PropertiesClassName := 'TcxComboBoxProperties';
-        TcxComboBoxProperties(GridListDesc.Properties).Items.Clear;
-        ExtractStrings([','], [], PChar(ValueObjeValues),ValuesCombo);
-        for ValueCombo in  ValuesCombo  do
-        begin
-         TcxComboBoxProperties(GridListDesc.Properties).Items.Add(ValueCombo);
-        end;
-      finally
-        ValuesCombo.Free;
-      end;
-    end;
-    GridListDesc.Options.Editing:= True;
-    ValuesCombo := TStringList.Create;
-    try
-      ValueObjeValues := IseGirisMuayene.Dataset.FieldByName('ValueObjeValues').AsString;
-      GridListValue.PropertiesClassName := 'TcxComboBoxProperties';
-      TcxComboBoxProperties(GridListValue.Properties).Items.Clear;
-      ExtractStrings([','], [], PChar(ValueObjeValues),ValuesCombo);
-      for ValueCombo in  ValuesCombo  do
-      begin
-       TcxComboBoxProperties(GridListValue.Properties).Items.Add(ValueCombo);
-      end;
-    finally
-      ValuesCombo.Free;
-    end;
-  end
-  else
-  begin
-    GridListValue.PropertiesClassName := 'TcxTextEditProperties';
-    GridListDesc.Options.Editing:= True;
-  end;
 end;
 
 
@@ -779,8 +681,8 @@ begin
     exit;
   end;
 
-  TListeAc(FindComponent('ListdosyaNo')).Where := ' SirketKod = ' + QuotedStr(datalar.AktifSirket) +
-                                                   ' and Sube in (select datavalue from dbo.strtotable(' + QuotedStr(datalar.AktifSube) + ','',''))';
+  TListeAc(FindComponent('ListdosyaNo')).Where := ' SirketKod = ' + QuotedStr(datalar.AktifSirket);
+                                                 //  ' and Sube in (select datavalue from dbo.strtotable(' + QuotedStr(datalar.AktifSube) + ','',''))';
   inherited;
 
   if length(datalar.ButtonEditSecimlist) > 0 then
@@ -834,10 +736,6 @@ begin
            Gelisler(TcxButtonEditKadir(sender).Text);
       //     _gelisNO_ := ADO_Gelisler.FieldByName('gelisNO').AsString;
 
-          GridPersonelEgitim.Dataset.Connection := datalar.ADOConnection2;
-          GridPersonelEgitim.Dataset.SQL.Text := 'exec sp_frmPersonelEgitim @PersonelDosyaNo = ' + QuotedStr(dosyaNo.Text);
-          GridPersonelEgitim.Dataset.Open;
-//          GridEgitim.DataController.CreateAllItems(True);
 
         except
 
@@ -886,14 +784,9 @@ begin
       datalar.Bilgi.Doktor := ADO_Gelisler.FieldByName('doktor').AsString;
       datalar.Bilgi.ProvizyonTarihi := ADO_Gelisler.FieldByName('Tarih').AsString;
 
-      IseGirisMuayene.Dataset.Connection := datalar.ADOConnection2;
-      IseGirisMuayene.Dataset.SQL.Text := 'sp_frmPersonelIseGirisMuayene ' + QuotedStr(dosyaNo.Text)+ ',' +
-                                                                         _gelisNO_ + ',' + QuotedStr('0');
-      IseGirisMuayene.Dataset.Open;
-      GridList.ViewData.Expand(true);
-    end
-    else
-      IseGirisMuayene.Dataset.close;
+    end;
+
+
 
   end;
 end;
@@ -1014,8 +907,6 @@ begin
     enabled;
     FormInputZorunluKontrolPaint(self,$00FCDDD1);
 
-    IseGirisMuayene.Dataset.AfterScroll := ADO_WebServisErisimAfterScroll;
-    GridList.ViewData.Expand(true);
     Result := True;
   end;
 
@@ -1052,16 +943,16 @@ begin
 
   indexFieldName := 'dosyaNo';
   TableName := _TableName_;
-  Olustur(self,_TableName_,'Personel Taným Kartý',22,sqlInsert);
+  Olustur(self,_TableName_,'Hasta Taným Kartý',22,sqlInsert);
   cxPanel.Visible := false;
   Sayfa3_Kolon3.Width := 0;
   Sayfa3_Kolon2.Width := 0;
 
-  List := ListeAcCreate('PersonelKart','dosyaNo,HASTAADI,HASTASOYADI,TCKIMLIKNO,Aktif',
-                       'DosyaNo,PersonelAdý,Soyadý,TCKimlikNo,Durum',
-                       '50,100,100,80,50','ListdosyaNo','Personel Listesi',
-                       ' SirketKod = ' + QuotedStr(datalar.AktifSirket) +
-                       ' and Sube in (select datavalue from dbo.strtotable(' + QuotedStr(datalar.AktifSube) + ','',''))',
+  List := ListeAcCreate('HastaKart','dosyaNo,HASTAADI,HASTASOYADI,TCKIMLIKNO,Aktif',
+                       'DosyaNo,HastaAdý,HastaSoyadý,TCKimlikNo,Durum',
+                       '50,100,100,80,50','ListdosyaNo','Hastalar',
+                       ' SirketKod = ' + QuotedStr(datalar.AktifSirket), //+
+                      // ' and Sube in (select datavalue from dbo.strtotable(' + QuotedStr(datalar.AktifSube) + ','',''))',
                         5,True,Self);
 
 
@@ -1097,7 +988,7 @@ begin
   setDataStringKontrol(self,KANGRUBU, 'KANGRUBU','Kan Grubu  ',Kolon1,'',100);
   setDataStringKontrol(self,CINSIYETI, 'CINSIYETI','Cinsiyeti  ',Kolon1,'',100);
   setDataStringKontrol(self,MEDENI, 'MEDENI','Medeni Hal  ',Kolon1,'',100);
-  setDataStringCurr(self,'CocukSayi','Çocuk Say.',kolon1,'',40,'0,',1);
+//  setDataStringCurr(self,'CocukSayi','Çocuk Say.',kolon1,'',40,'0,',1);
 
   setDataStringKontrol(self,VatandasTip, 'VatandasTip','Vatandaþ Tipi  ',Kolon1,'',100);
   UYRUK := ListeAcCreate('SKRS_ULKE_KODLARI','KODU,ADI','Kod,Ülke Adi',
@@ -1113,42 +1004,7 @@ begin
   EGITIM.Filter := '';
   OrtakEventAta(EGITIM);
   setDataStringKontrol(self,EGITIM,'EGITIM_DURUMU','Eðitim Durumu',kolon1,'',130);
-(*
-  bolum := TcxImageComboKadir.Create(self);
-  bolum.Conn := Datalar.ADOConnection2;
-  bolum.TableName := 'MeslekKodlari';
-  bolum.ValueField := 'kod';
-  bolum.DisplayField := 'tanimi';
-  bolum.Filter := '';
-  bolum.BosOlamaz := True;
-  setDataStringKontrol(self,bolum,'MESLEK','Meslek',kolon1,'',130);
- *)
 
-
-  (*
-  Kurum := TcxImageComboKadir.Create(self);
-  Kurum.Conn := Datalar.ADOConnection2;
-  Kurum.TableName := 'Kurumlar';
-  Kurum.ValueField := 'Kurum';
-  Kurum.DisplayField := 'ADI1';
-  Kurum.BosOlamaz := True;
-  Kurum.Filter := '';
-  OrtakEventAta(Kurum);
-  setDataStringKontrol(self,Kurum,'Kurum','Kurum',kolon2,'',120);
-
-  DEV_KURUM := TcxImageComboKadir.Create(self);
-  DEV_KURUM.Conn := Datalar.ADOConnection2;
-  DEV_KURUM.TableName := 'DevredilenKurum_Tnm';
-  DEV_KURUM.ValueField := 'kod';
-  DEV_KURUM.DisplayField := 'tanimi';
-  DEV_KURUM.BosOlamaz := True;
-  DEV_KURUM.Filter := '';
-  OrtakEventAta(DEV_KURUM);
-  setDataStringKontrol(self,DEV_KURUM,'KurumTip','Dev. Kurum',kolon2,'',120);
-
-
-  setDataStringKontrol(self,DURUM, 'Durum','Sigortalý Tipi',Kolon2,'',70);
-  *)
 
   Sirketlerx := TcxImageComboKadir.Create(self);
   Sirketlerx.Conn := Datalar.ADOConnection2;
@@ -1165,7 +1021,7 @@ begin
   setDataStringKontrol(self,sirketlerx,'SirketKod','Þirket',Kolon2,'',250,0,alNone,'');
 
  // OrtakEventAta(sirketlerx);
-
+(*
   subeler := TcxImageComboKadir.Create(self);
   subeler.Conn := Datalar.ADOConnection2;
   subeler.TableName := 'SIRKET_SUBE_TNM';
@@ -1176,9 +1032,11 @@ begin
  // ' SirketKod = ' + QuotedStr(varToStr(TcxImageComboKadir(FindComponent('SirketKod')).EditValue));
  //   setDataStringBLabel(Self, 'SirketKod', Kolon4, '', 0, '', '', 'SirketKod');
   setDataStringKontrol(self,subeler,'sube','Þube',Kolon2,'',120);
+  *)
+
  // OrtakEventAta(subeler);
   sirketlerx.Properties.OnEditValueChanged := SirketlerPropertiesChange;
-  subeler.Properties.OnEditValueChanged := SirketlerPropertiesChange;
+ // subeler.Properties.OnEditValueChanged := SirketlerPropertiesChange;
 
   setDataString(self,'SicilNo','Sigorta No',Kolon2,'',70);
   setDataStringBLabel(self,'BosSatir1',Kolon2,'',10);
@@ -1255,12 +1113,12 @@ begin
   setDataStringKontrol(self,cxFotoPanel , 'cxFotoPanel','',Kolon4,'',110);
   setDataStringKontrol(self,txtAktif , 'Aktif','',Kolon4,'',110);
 
+  (*
+
   addButton(self,nil,'btnTopluAktif','','Toplu &Aktif Yap',Kolon4,'',110,ButtonClick, 555);
   addButton(self,nil,'btnTopluPasif','','Toplu &Pasif Yap',Kolon4,'',110,ButtonClick, 550);
 
   setDataStringBLabel(self,'MuayenePeryotBaslik',Kolon4,'',110,'Muayene Peryodu');
- // TcxLabel(FindComponent('MuayenePeryotBaslik')).Style.Font.Color := clRed;
-
 
   muayenePeryot := TcxImageComboKadir.Create(self);
   muayenePeryot.Conn := nil;
@@ -1280,12 +1138,13 @@ begin
   tetkikIstemGrupSablon.Filter := '';
   setDataStringKontrol(self,tetkikIstemGrupSablon,'tetkikIstemGrupSablon','',kolon4,'',110);
   OrtakEventAta(tetkikIstemGrupSablon);
-
+    *)
 
   BASLANGIC := TcxDateEditKadir.Create(self);
   BASLANGIC.ValueTip := tvString;
   setDataStringKontrol(self,BASLANGIC, 'BASLANGIC','Ýþe Baþlama Tarihi',Kolon3,'',100);
 
+  (*
   askerlik := TcxImageComboKadir.Create(self);
   askerlik.Conn := nil;
   askerlik.ItemList := '1;Yapýldý,2;Muaf,3;Yapýlmadý';
@@ -1334,9 +1193,9 @@ begin
   setDataString(self,'yaptigiIsinTanimi','Ýþ Tanýmý',Kolon3,'',200,True);
 
 // meslekler := ListeAcCreate('MeslekKodlari','kod,tanimi','Meslekler','100,300','Kodu','Meslek Tanýmý','',2);
-
-  setDataStringKontrol(self,MESLEK, 'MESLEK','Meslek Kodu  ',Kolon3,'',80);
-  setDataString(self,'MESLEKADI','Meslek Tanimi',Kolon3,'',200,false,'',True);
+        *)
+  setDataStringKontrol(self,MESLEK, 'MESLEK','Meslek Kodu  ',Kolon1,'',80);
+  setDataString(self,'MESLEKADI','Meslek Tanimi',Kolon1,'',200,false,'',True);
 //  OrtakEventAta(meslekKod);
 
   setDataStringBLabel(self,'bosSatir2',Kolon3,'',350);
@@ -1348,25 +1207,27 @@ begin
 
 
 
-  setDataStringMemo(self,'soygecmis','Soy Geçmiþ',sayfa3_Kolon1,'',630,40);
+ // setDataStringMemo(self,'soygecmis','Soy Geçmiþ',sayfa3_Kolon1,'',630,40);
   setDataStringMemo(self,'hastaNot','Tedavi Geçmiþ',sayfa3_Kolon1,'',630,40);
   setDataStringMemo(self,'diger','Hasta Özel Durum',sayfa3_Kolon1,'',630,40);
 
   setDataStringKontrol(self,txtSeansSikayet , 'GELHAST','Kronik Hast/Baðým',sayfa3_Kolon1,'',300);
 
-  setDataStringCurr(self,'idealKilo','Kilo',sayfa3_Kolon1,'kilo',50,'0.00', 1);
-  setDataStringCurr(self,'boy','Boy',sayfa3_Kolon1,'_boy_',50,'0', 1);
-  setDataStringC(self,'HbsAg','HbsAg',sayfa3_Kolon1,'hbs',40,'-,+');
-  setDataStringC(self,'AntiHbs','AntiHbs',sayfa3_Kolon1,'hbs',40,'-,+');
-  setDataStringC(self,'AntiHCV','AntiHCV',sayfa3_Kolon1,'_hbs_',40,'-,+');
-  setDataStringC(self,'HIV','AntiHIV',sayfa3_Kolon1,'_hbs_',40,'-,+');
+  setDataStringCurr(self,'idealKilo','Kilo',Kolon1,'kilo',50,'0.00', 1);
+  setDataStringCurr(self,'boy','Boy',Kolon1,'_boy_',50,'0', 1);
+
+ // setDataStringC(self,'HbsAg','HbsAg',sayfa3_Kolon1,'hbs',40,'-,+');
+ // setDataStringC(self,'AntiHbs','AntiHbs',sayfa3_Kolon1,'hbs',40,'-,+');
+ // setDataStringC(self,'AntiHCV','AntiHCV',sayfa3_Kolon1,'_hbs_',40,'-,+');
+ // setDataStringC(self,'HIV','AntiHIV',sayfa3_Kolon1,'_hbs_',40,'-,+');
 
 
 
  // setDataStringKontrol(self,IseGirisMuayene,'IseGirisMuayene','',sayfa4_Kolon1,'',800,350,alClient);
-  setDataStringKontrol(self,GridPersonelEgitim,'GridPersonelEgitim','',sayfa2_Kolon1,'',800,290,alNone);
-  addButton(self,nil,'btnSertifikaP','','Yazdýr',sayfa2_Kolon1,'',50,ButtonClick,-50);
+//  setDataStringKontrol(self,GridPersonelEgitim,'GridPersonelEgitim','',sayfa2_Kolon1,'',800,290,alNone);
+ // addButton(self,nil,'btnSertifikaP','','Yazdýr',sayfa2_Kolon1,'',50,ButtonClick,-50);
 
+  (*
   setDataString(self,'EskiFirma1','1.Firma',sayfa4_Kolon1,'',300,false,'',False);
   setDataString(self,'EskiIskolu1','Ýþ Kolu',sayfa4_Kolon1,'',200,false,'',False);
   setDataString(self,'EskiYaptigiIs1','Yaptýðý Ýþ',sayfa4_Kolon1,'',200,false,'',False);
@@ -1376,18 +1237,22 @@ begin
   setDataString(self,'EskiIskolu2','Ýþ Kolu',sayfa4_Kolon1,'',200,false,'',False);
   setDataString(self,'EskiYaptigiIs2','Yaptýðý Ýþ',sayfa4_Kolon1,'',200,false,'',False);
   setDataString(self,'EskiGiris_CikisTarihi2','Giriþ - Çýkýþ Tarihi',sayfa4_Kolon1,'',200,false,'',False);
-
+    *)
  // tableColumnDescCreate;
   cxpnlHastaGelisler.Parent := sayfa1;
+  Splitter_Muayene.Parent := sayfa1;
+
   cxpnlHastaGelisler.Align := alBottom;
+  Splitter_Muayene.Align := alBottom;
 
   SayfaCaption('Kimlik Bilgileri','Eðitim Bilgileri','Öz Geçmiþ','Çalýþma Geçmiþi','');
 
+ (*
   if datalar.UserGroup <> '2'
   then begin
     sayfa3.TabVisible := False;
   end;
-
+   *)
 
   Disabled(self,True);
 
@@ -1464,8 +1329,8 @@ begin
                TcxCustomEdit(FindComponent('TCKIMLIKNO')).SetFocus;
                exit;
              end;
-             if MrYes <> ShowMessageSkin('Personel Kartý',TcxImageComboKadir(FindComponent('SirketKod')).Text,
-                                         TcxImageComboKadir(FindComponent('Sube')).Text + ' Þubesine Kayýt Edilecek',
+             if MrYes <> ShowMessageSkin('Hasta ',TcxImageComboKadir(FindComponent('SirketKod')).Text,
+                                         ' Merkezine Kayýt Edilecek',
                                          'msg') Then exit;
 
            FotoNewRecord;
@@ -1494,12 +1359,12 @@ begin
             foto.Picture.Assign(nil);
             HastaGelis (dosyaNo.Text, ADO_Gelisler);
             TcxImageComboKadir(FindComponent('SirketKod')).EditValue := datalar.AktifSirket;
-            TcxImageComboKadir(FindComponent('Sube')).EditValue :=
-            ifThen(datalar.AktifSube = '','00',ifThen(pos(',',datalar.AktifSube) > 0,'00',datalar.AktifSube));
+          //  TcxImageComboKadir(FindComponent('Sube')).EditValue :=
+         //   ifThen(datalar.AktifSube = '','00',ifThen(pos(',',datalar.AktifSube) > 0,'00',datalar.AktifSube));
 
-            TcxImageComboKadir(FindComponent('muayenePeryot')).EditValue :=
-            SirketSubeTehlikeSinifi(vartostr(TcxImageComboKadir(FindComponent('SirketKod')).EditValue),
-                                    vartostr(TcxImageComboKadir(FindComponent('Sube')).EditValue));
+         //   TcxImageComboKadir(FindComponent('muayenePeryot')).EditValue :=
+        //    SirketSubeTehlikeSinifi(vartostr(TcxImageComboKadir(FindComponent('SirketKod')).EditValue),
+         //                           vartostr(TcxImageComboKadir(FindComponent('Sube')).EditValue));
 
             if IsNull (TcxLabel(FindComponent('LabelSirketKod')).Caption) then
               TcxLabel(FindComponent('LabelSirketKod')).Caption := datalar.AktifSirket;
@@ -1647,7 +1512,7 @@ begin
           if F <> nil then F.ShowModal;
        end;
  -26 : begin
-         EpikrizYaz(dosyaNo.Text,ADO_Gelisler.FieldByName('gelisNo').AsString,false,IseGirisMuayene.Dataset);
+       //  EpikrizYaz(dosyaNo.Text,ADO_Gelisler.FieldByName('gelisNo').AsString,false,IseGirisMuayene.Dataset);
        end;
  -27 : begin
          GelisAc;

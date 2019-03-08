@@ -783,7 +783,7 @@ Function EgitimKodlari : String;
 var
   Cvp : egitimListesiBilgisi;
   Egitim : egitimKodu;
-  EgitimListString : String;
+  EgitimListString,sql : String;
 begin
     Cvp := egitimListesiBilgisi.Create;
     try
@@ -795,6 +795,22 @@ begin
       then begin
        for Egitim in Cvp.egitimListesi do
          begin
+            try
+               sql := 'if not exists(select * from Egitim_Tnm where EntagrasyonKodu = ' +  inttostr(Egitim.kodu) + ')'+
+                     ' begin ' +
+                     '  insert into Egitim_Tnm (tanimi,grup,EntagrasyonKodu,aktif) ' +
+                     '  values (' + QuotedStr(Egitim.aciklama) + ',NULL,' + inttostr(Egitim.kodu) + ',1)' +
+                     ' end ' +
+                     ' else ' +
+                     ' begin ' +
+                     '  update Egitim_Tnm ' +
+                     '  set tanimi = ' + QuotedStr(Egitim.aciklama)  + ',aktif = 1 ' +
+                     '  where EntagrasyonKodu = ' + inttostr(Egitim.kodu) +
+                     ' end';
+               datalar.QueryExec(sql);
+            except
+
+            end;
             EgitimListString := EgitimListString + intTostr(Egitim.kodu) + ' : ' + Egitim.aciklama + ' - ' + intTostr(Egitim.aktif) + #13;
          end;
 
@@ -1028,9 +1044,11 @@ Procedure FirmaSorgulCSGBCvpFirmaBilgiGuncelle(firmaSgk : string ; Cvp : isyeriC
 var
   sql : string;
 begin
-  sql := 'update SIRKET_SUBE_TNM set calisanSayi = ' + inttoStr(Cvp.calisanSayisi) +
+  sql := ' set nocount on ' +
+         ' update SIRKET_SUBE_TNM set calisanSayi = ' + inttoStr(Cvp.calisanSayisi) +
          ' where subeSiciNo = ' +
-           '(select subeSiciNo from SIRKETLER_TNM_view where subeSicilNo = ' + QuotedStr(firmaSgk) + ')';
+         '(select subeSiciNo from SIRKETLER_TNM_view where subeSicilNo = ' + QuotedStr(firmaSgk) + ')' +
+         ' set nocount off ';
   datalar.QueryExec(sql);
 end;
 
@@ -1039,9 +1057,11 @@ Procedure EgitimKaydetCSGBCvpBilgiGuncelle(egitimId,msg,sorguNo : string);
 var
   sql : string;
 begin
-  sql := 'update Egitimler set EgitimCSGBGonderimSonuc = ' + QuotedStr(msg) +
+  sql := ' set nocount on ' +
+         ' update Egitimler set EgitimCSGBGonderimSonuc = ' + QuotedStr(msg) +
          ',sorguNo = ' + QuotedStr(sorguNo) +
-         ' where id = ' + QuotedStr(egitimId);
+         ' where id = ' + QuotedStr(egitimId) +
+         ' set nocount off';
   datalar.QueryExec(sql);
 end;
 
@@ -1052,9 +1072,11 @@ var
 begin
   for e in cvp do
   begin
-    sql := 'update Egitimler set sorguSonuc = ' + QuotedStr(e.message_) +
+    sql := ' set nocount on ' +
+           ' update Egitimler set sorguSonuc = ' + QuotedStr(e.message_) +
            ' ,sorguSonucKodu = ' + inttoStr(e.status) +
-           ' where sorguNo = ' + QuotedStr(e.sorguNo);
+           ' where sorguNo = ' + QuotedStr(e.sorguNo) +
+           ' set nocount off';
     datalar.QueryExec(sql);
   end;
 

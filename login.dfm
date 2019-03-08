@@ -928,10 +928,6 @@ object frmLogin: TfrmLogin
       Caption = 'cxTabSheet1'
       ImageIndex = 2
       TabVisible = False
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object Label1: TLabel
         Left = 154
         Top = 62
@@ -2229,7 +2225,7 @@ object frmLogin: TfrmLogin
     SkinName = 'coffee'
     Grup = False
     GrupCol = 0
-    Left = 96
+    Left = 240
     Top = 8
   end
   object dxLayoutLookAndFeelList1: TdxLayoutLookAndFeelList

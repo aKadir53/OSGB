@@ -1,0 +1,48 @@
+﻿	<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+		<PropertyGroup>
+			<ProjectGuid>{0A483DEB-E645-43FC-91C3-8BD6B28A2F21}</ProjectGuid>
+		</PropertyGroup>
+		<ItemGroup>
+			<Projects Include="UYUMOSGB.dproj">
+				<Dependencies/>
+			</Projects>
+			<Projects Include="Yv\Yv.dproj">
+				<Dependencies/>
+			</Projects>
+		</ItemGroup>
+		<ProjectExtensions>
+			<Borland.Personality>Default.Personality.12</Borland.Personality>
+			<Borland.ProjectType/>
+			<BorlandProject>
+				<Default.Personality/>
+			</BorlandProject>
+		</ProjectExtensions>
+		<Target Name="UYUMOSGB">
+			<MSBuild Projects="UYUMOSGB.dproj"/>
+		</Target>
+		<Target Name="UYUMOSGB:Clean">
+			<MSBuild Projects="UYUMOSGB.dproj" Targets="Clean"/>
+		</Target>
+		<Target Name="UYUMOSGB:Make">
+			<MSBuild Projects="UYUMOSGB.dproj" Targets="Make"/>
+		</Target>
+		<Target Name="Yv">
+			<MSBuild Projects="Yv\Yv.dproj"/>
+		</Target>
+		<Target Name="Yv:Clean">
+			<MSBuild Projects="Yv\Yv.dproj" Targets="Clean"/>
+		</Target>
+		<Target Name="Yv:Make">
+			<MSBuild Projects="Yv\Yv.dproj" Targets="Make"/>
+		</Target>
+		<Target Name="Build">
+			<CallTarget Targets="UYUMOSGB;Yv"/>
+		</Target>
+		<Target Name="Clean">
+			<CallTarget Targets="UYUMOSGB:Clean;Yv:Clean"/>
+		</Target>
+		<Target Name="Make">
+			<CallTarget Targets="UYUMOSGB:Make;Yv:Make"/>
+		</Target>
+		<Import Condition="Exists('$(BDS)\Bin\CodeGear.Group.Targets')" Project="$(BDS)\Bin\CodeGear.Group.Targets"/>
+	</Project>

@@ -271,18 +271,18 @@ var
 begin
  // datalar.Bilgi.dosyaNo := ado_BransKodlari.FieldByName('dosyaNo').AsString;
 //  FormINIT(TagfrmHastaKart,AnaForm,ado_BransKodlari.FieldByName('dosyaNo').AsString);
- if FindTab(AnaForm.sayfalar,TagfrmHastaKart)
+ if FindTab(AnaForm.sayfalar,TagfrmPersonelKart)
  Then begin
-   Form := TGirisForm(FormClassType(TagfrmHastaKart));
-   TGirisForm(FormClassType(TagfrmHastaKart))._TC_ := '';
-   TGirisForm(FormClassType(TagfrmHastaKart))._dosyaNO_ := _Dataset.FieldByName('dosyaNo').AsString;
-   TGirisForm(FormClassType(TagfrmHastaKart)).Init(Form);
+   Form := TGirisForm(FormClassType(TagfrmPersonelKart));
+   TGirisForm(FormClassType(TagfrmPersonelKart))._TC_ := '';
+   TGirisForm(FormClassType(TagfrmPersonelKart))._dosyaNO_ := _Dataset.FieldByName('dosyaNo').AsString;
+   TGirisForm(FormClassType(TagfrmPersonelKart)).Init(Form);
  end
  Else begin
   bTamam := False;
-  aTabSheet := NewTab(AnaForm.sayfalar,TagfrmHastaKart);
+  aTabSheet := NewTab(AnaForm.sayfalar,TagfrmPersonelKart);
   try
-    Form := FormINIT(TagfrmHastaKart,self,_Dataset.FieldByName('dosyaNo').AsString,aTabSheet,ikEvet,'','');
+    Form := FormINIT(TagfrmPersonelKart,self,_Dataset.FieldByName('dosyaNo').AsString,aTabSheet,ikEvet,'','');
     bTamam := Form <> nil;
     if bTamam then Form.show;
   finally

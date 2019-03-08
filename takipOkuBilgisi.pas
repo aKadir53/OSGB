@@ -104,14 +104,15 @@ var
   Takip : TTakipBilgisi;
 
 implementation
-uses HastaKart, rapor;
+uses //HastaKart,
+     rapor;
 {$R *.dfm}
 
 
 function TfrmTakipBilgisiOku.Init(Sender: TObject) : Boolean;
 begin
   inherited;
-  Olustur(self,_TableName_,'Takip Bilgisi Oku',22,sqlInsert);
+ // Olustur(self,_TableName_,'Takip Bilgisi Oku',22,sqlInsert);
   Menu := MainMenu;
   cxPanel.Visible := false;
   SayfaCaption('','','','','');

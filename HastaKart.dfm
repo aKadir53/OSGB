@@ -20,6 +20,16 @@ object frmHastaKart: TfrmHastaKart
   OnShow = FormShow
   PixelsPerInch = 96
   TextHeight = 13
+  object Splitter_Muayene: TSplitter
+    Left = 0
+    Top = 397
+    Width = 806
+    Height = 3
+    Cursor = crVSplit
+    Align = alBottom
+    ExplicitLeft = -3
+    ExplicitTop = 449
+  end
   object CINSIYETI: TcxImageComboKadir
     Left = 144
     Top = 8
@@ -253,8 +263,9 @@ object frmHastaKart: TfrmHastaKart
     Width = 121
   end
   object cxpnlHastaGelisler: TcxGroupBox
-    Left = 8
-    Top = 416
+    Left = 0
+    Top = 400
+    Align = alBottom
     Caption = 'Muayeneler'
     ParentFont = False
     Style.Font.Charset = DEFAULT_CHARSET
@@ -264,13 +275,13 @@ object frmHastaKart: TfrmHastaKart
     Style.Font.Style = [fsBold]
     Style.IsFontAssigned = True
     TabOrder = 0
-    Height = 153
-    Width = 800
+    Height = 214
+    Width = 806
     object cxGridGelis: TcxGrid
       Left = 3
       Top = 15
-      Width = 794
-      Height = 128
+      Width = 800
+      Height = 189
       Align = alClient
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clWindowText
@@ -516,7 +527,7 @@ object frmHastaKart: TfrmHastaKart
         Value = 1
       end
       item
-        Description = 'Yeni'
+        Description = 'Misafir'
         Value = 2
       end>
     Style.TextStyle = [fsBold]
@@ -563,217 +574,6 @@ object frmHastaKart: TfrmHastaKart
     Height = 64
     Width = 89
   end
-  object IseGirisMuayene: TcxGridKadir
-    Left = 8
-    Top = 301
-    Width = 513
-    Height = 109
-    TabOrder = 12
-    Visible = False
-    ExceleGonder = False
-    object GridList: TcxGridDBBandedTableView
-      DataController.DataSource = DataSource1
-      DataController.Summary.DefaultGroupSummaryItems = <>
-      DataController.Summary.FooterSummaryItems = <>
-      DataController.Summary.SummaryGroups = <>
-      OptionsCustomize.ColumnFiltering = False
-      OptionsCustomize.ColumnSorting = False
-      OptionsView.GridLines = glHorizontal
-      OptionsView.GroupByBox = False
-      OptionsView.GroupByHeaderLayout = ghlHorizontal
-      Styles.Inactive = cxStyle1
-      Styles.Group = cxStyle3
-      Bands = <
-        item
-          Caption = #304#351'e Giri'#351' Muayene Bilgileri'
-          Width = 667
-        end>
-      object GridListMuayeneSoru: TcxGridDBBandedColumn
-        DataBinding.FieldName = 'MuayeneSoru'
-        PropertiesClassName = 'TcxTextEditProperties'
-        Properties.Alignment.Horz = taLeftJustify
-        Properties.Alignment.Vert = taVCenter
-        Properties.ReadOnly = True
-        FooterAlignmentHorz = taCenter
-        HeaderAlignmentHorz = taCenter
-        Options.Editing = False
-        Styles.Content = cxStyle1
-        Width = 286
-        Position.BandIndex = 0
-        Position.ColIndex = 0
-        Position.RowIndex = 0
-      end
-      object GridListGrupKod: TcxGridDBBandedColumn
-        DataBinding.FieldName = 'GrupKod'
-        Visible = False
-        Position.BandIndex = 0
-        Position.ColIndex = 2
-        Position.RowIndex = 0
-      end
-      object GridListaltGrupKod: TcxGridDBBandedColumn
-        DataBinding.FieldName = 'altGrupKod'
-        Visible = False
-        Position.BandIndex = 0
-        Position.ColIndex = 1
-        Position.RowIndex = 0
-      end
-      object GridListGrupTanimi: TcxGridDBBandedColumn
-        DataBinding.FieldName = 'GrupTanimi'
-        Visible = False
-        GroupIndex = 0
-        Position.BandIndex = 0
-        Position.ColIndex = 3
-        Position.RowIndex = 0
-        IsCaptionAssigned = True
-      end
-      object GridListaltGrupTanimi: TcxGridDBBandedColumn
-        DataBinding.FieldName = 'altGrupTanimi'
-        Visible = False
-        GroupIndex = 1
-        Position.BandIndex = 0
-        Position.ColIndex = 4
-        Position.RowIndex = 0
-        IsCaptionAssigned = True
-      end
-      object GridListvalue: TcxGridDBBandedColumn
-        Caption = 'Cevap'
-        DataBinding.FieldName = 'value'
-        PropertiesClassName = 'TcxComboBoxProperties'
-        Properties.Alignment.Horz = taCenter
-        Properties.Alignment.Vert = taVCenter
-        HeaderAlignmentHorz = taCenter
-        Width = 62
-        Position.BandIndex = 0
-        Position.ColIndex = 5
-        Position.RowIndex = 0
-      end
-      object GridListtarih: TcxGridDBBandedColumn
-        Caption = 'Tarih'
-        DataBinding.FieldName = 'tarih'
-        HeaderAlignmentHorz = taCenter
-        Width = 55
-        Position.BandIndex = 0
-        Position.ColIndex = 7
-        Position.RowIndex = 0
-      end
-      object GridListvalueObjevalues: TcxGridDBBandedColumn
-        DataBinding.FieldName = 'valueObjevalues'
-        Visible = False
-        Position.BandIndex = 0
-        Position.ColIndex = 8
-        Position.RowIndex = 0
-      end
-      object GridListvalueTip: TcxGridDBBandedColumn
-        DataBinding.FieldName = 'valueTip'
-        Visible = False
-        Position.BandIndex = 0
-        Position.ColIndex = 9
-        Position.RowIndex = 0
-      end
-      object GridListDesc: TcxGridDBBandedColumn
-        Caption = 'A'#231#305'klama'
-        DataBinding.FieldName = 'aciklama'
-        HeaderAlignmentHorz = taCenter
-        Width = 234
-        Position.BandIndex = 0
-        Position.ColIndex = 6
-        Position.RowIndex = 0
-      end
-    end
-    object IseGirisMuayeneLevel1: TcxGridLevel
-      GridView = GridList
-    end
-  end
-  object GridPersonelEgitim: TcxGridKadir
-    Left = 8
-    Top = 186
-    Width = 709
-    Height = 109
-    TabOrder = 13
-    ExceleGonder = False
-    object GridEgitim: TcxGridDBBandedTableView
-      DataController.Summary.DefaultGroupSummaryItems = <>
-      DataController.Summary.FooterSummaryItems = <>
-      DataController.Summary.SummaryGroups = <>
-      OptionsCustomize.ColumnFiltering = False
-      OptionsCustomize.ColumnSorting = False
-      OptionsData.Deleting = False
-      OptionsData.Editing = False
-      OptionsData.Inserting = False
-      OptionsView.GridLines = glHorizontal
-      OptionsView.GroupByBox = False
-      OptionsView.GroupByHeaderLayout = ghlHorizontal
-      Styles.Inactive = cxStyle1
-      Styles.Group = cxStyle3
-      Bands = <
-        item
-          Caption = 'Personelin Kat'#305'ld'#305#287#305' E'#287'itim Bilgileri'
-          Width = 690
-        end>
-      object GridEgitimColumn1: TcxGridDBBandedColumn
-        Caption = 'Personel Ad'#305
-        DataBinding.FieldName = 'PersonelAdiSoyadi'
-        PropertiesClassName = 'TcxTextEditProperties'
-        Properties.Alignment.Horz = taCenter
-        Properties.Alignment.Vert = taVCenter
-        HeaderAlignmentHorz = taCenter
-        Width = 250
-        Position.BandIndex = 0
-        Position.ColIndex = 0
-        Position.RowIndex = 0
-      end
-      object GridEgitimColumn2: TcxGridDBBandedColumn
-        Caption = 'E'#287'itim Ad'#305
-        DataBinding.FieldName = 'EgitimAdi'
-        PropertiesClassName = 'TcxTextEditProperties'
-        Properties.Alignment.Horz = taCenter
-        Properties.Alignment.Vert = taVCenter
-        HeaderAlignmentHorz = taCenter
-        Width = 200
-        Position.BandIndex = 0
-        Position.ColIndex = 1
-        Position.RowIndex = 0
-      end
-      object GridEgitimColumn3: TcxGridDBBandedColumn
-        Caption = 'Ba'#351'lama Tarihi'
-        DataBinding.FieldName = 'BaslamaTarihi'
-        PropertiesClassName = 'TcxTextEditProperties'
-        Properties.Alignment.Horz = taCenter
-        Properties.Alignment.Vert = taVCenter
-        HeaderAlignmentHorz = taCenter
-        Width = 150
-        Position.BandIndex = 0
-        Position.ColIndex = 2
-        Position.RowIndex = 0
-      end
-      object GridEgitimColumn4: TcxGridDBBandedColumn
-        Caption = 'S'#252're'
-        DataBinding.FieldName = 'Sure'
-        PropertiesClassName = 'TcxTextEditProperties'
-        Properties.Alignment.Horz = taCenter
-        Properties.Alignment.Vert = taVCenter
-        HeaderAlignmentHorz = taCenter
-        Position.BandIndex = 0
-        Position.ColIndex = 3
-        Position.RowIndex = 0
-      end
-      object GridEgitimColumn5: TcxGridDBBandedColumn
-        Caption = 'E'#287'itim '#304#231'eri'#287'i'
-        DataBinding.FieldName = 'EgitimIcerigi'
-        PropertiesClassName = 'TcxMemoProperties'
-        Properties.ScrollBars = ssVertical
-        Properties.VisibleLineCount = 3
-        HeaderAlignmentHorz = taCenter
-        Width = 350
-        Position.BandIndex = 0
-        Position.ColIndex = 4
-        Position.RowIndex = 0
-      end
-    end
-    object cxGridLevel1: TcxGridLevel
-      GridView = GridEgitim
-    end
-  end
   object MESLEK: TcxButtonEditKadir
     Left = 520
     Top = 160
@@ -783,7 +583,7 @@ object frmHastaKart: TfrmHastaKart
         Kind = bkEllipsis
       end>
     Properties.OnButtonClick = cxButtonEditPropertiesButtonClick
-    TabOrder = 14
+    TabOrder = 12
     ListeAc = Meslekler
     indexField = False
     ListeAcTus = 0
@@ -868,35 +668,33 @@ object frmHastaKart: TfrmHastaKart
       ImageIndex = 79
       object MenucxYeni: TMenuItem
         Tag = 2
-        Caption = 'Yeni Personel'
+        Caption = 'Yeni Hasta'
         ImageIndex = 82
         OnClick = cxKaydetClick
       end
       object MenucxKaydet: TMenuItem
         Action = PersonelKaydet
-        Caption = 'Personel Kaydet'
       end
       object MenucxIptal: TMenuItem
         Tag = 1
-        Caption = 'Personel Kart Sil'
+        Caption = 'Kart Sil'
         ImageIndex = 33
         OnClick = cxKaydetClick
       end
       object GeliA1: TMenuItem
         Tag = -27
         Action = YeniMuayene
-        Caption = 'Yeni Muayene'
       end
       object G1: TMenuItem
         Tag = -31
-        Caption = 'Muayeneyi D'#252'zenle'
+        Caption = 'Geli'#351' D'#252'zenle'
         ImageIndex = 49
         Visible = False
         OnClick = cxButtonCClick
       end
       object G2: TMenuItem
         Tag = -33
-        Caption = 'Se'#231'ili Muayeneyi Sil'
+        Caption = 'Geli'#351' Sil'
         ImageIndex = 50
         OnClick = cxButtonCClick
       end
@@ -1006,13 +804,13 @@ object frmHastaKart: TfrmHastaKart
     Left = 632
     Top = 320
     object PersonelKaydet: TAction
-      Caption = 'PersonelKaydet'
+      Caption = 'Kaydet'
       ImageIndex = 83
       ShortCut = 16459
       OnExecute = cxKaydetClick
     end
     object YeniMuayene: TAction
-      Caption = 'YeniMuayene'
+      Caption = 'Yeni Geli'#351
       ImageIndex = 48
       ShortCut = 16461
       OnExecute = cxButtonCClick

@@ -202,8 +202,8 @@ object frmPersonelEgitim: TfrmPersonelEgitim
     end
   end
   object EgitimGrid: TcxGridKadir
-    Left = -191
-    Top = 8
+    Left = -71
+    Top = -40
     Width = 1016
     Height = 227
     TabOrder = 2
@@ -498,8 +498,8 @@ object frmPersonelEgitim: TfrmPersonelEgitim
     SkinName = 'Lilian'
     Grup = False
     GrupCol = 0
-    Left = 616
-    Top = 136
+    Left = 584
+    Top = 104
   end
   object PopupMenu1: TPopupMenu
     Images = DATALAR.imag24png

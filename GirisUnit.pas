@@ -1502,7 +1502,7 @@ begin
 
 // form hastakartý ve textkontrol tc ise bu tc kontrol ediliyor sistemde kayýtlý ise uyarý
   if (TcxCustomEdit(sender).Name = 'TCKIMLIKNO') and
-     (TGirisForm(Self).Name = 'frmHastaKart') and
+     (TGirisForm(Self).Name = 'frmPersonelKart') and
      (sqlRun.State = dsInsert)
   then begin
     if TCKontrol(vartoStr(TcxTextEditKadir(sender).EditingValue)) = True

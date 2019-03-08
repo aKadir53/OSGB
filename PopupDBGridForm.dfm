@@ -26,7 +26,6 @@ object frmPopupDBGridForm: TfrmPopupDBGridForm
     Align = alBottom
     PanelStyle.Active = True
     TabOrder = 0
-    ExplicitTop = 285
     Height = 35
     Width = 769
     object btnYes: TcxButton
@@ -63,7 +62,6 @@ object frmPopupDBGridForm: TfrmPopupDBGridForm
     Style.Font.Style = [fsBold]
     Style.IsFontAssigned = True
     TabOrder = 1
-    ExplicitHeight = 285
     Height = 271
     Width = 769
     object cxGrid3: TcxGridKadir
@@ -82,7 +80,6 @@ object frmPopupDBGridForm: TfrmPopupDBGridForm
       LevelTabs.ImageBorder = 2
       LevelTabs.Style = 1
       ExceleGonder = False
-      ExplicitHeight = 134
       object DBGrid: TcxGridDBTableView
         OnDblClick = DBGridDblClick
         Navigator.Buttons.OnButtonClick = DBGridNavigatorButtonsButtonClick
@@ -349,8 +346,6 @@ object frmPopupDBGridForm: TfrmPopupDBGridForm
       Align = alBottom
       TabOrder = 2
       Visible = False
-      ExplicitLeft = 51
-      ExplicitTop = 202
       Height = 105
       Width = 763
       object txtAciklama: TcxDBRichEdit
@@ -370,9 +365,6 @@ object frmPopupDBGridForm: TfrmPopupDBGridForm
     Align = alBottom
     TabOrder = 2
     Visible = False
-    ExplicitLeft = 51
-    ExplicitTop = 202
-    ExplicitWidth = 763
     Height = 105
     Width = 769
     object txtAciklamaText: TcxMemo
@@ -382,10 +374,6 @@ object frmPopupDBGridForm: TfrmPopupDBGridForm
       Lines.Strings = (
         'txtAciklamaText')
       TabOrder = 0
-      ExplicitLeft = 280
-      ExplicitTop = 40
-      ExplicitWidth = 185
-      ExplicitHeight = 89
       Height = 80
       Width = 763
     end

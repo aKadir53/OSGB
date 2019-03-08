@@ -17,7 +17,6 @@ uses
   TedaviKart in 'TedaviKart.pas' {frmTedaviBilgisi},
   data_modul in 'data_modul.pas' {DATALAR: TDataModule},
   rapor in 'rapor.pas' {frmRapor},
-  HastaKart in 'HastaKart.pas' {frmHastaKart},
   Tnm_UserSettings in 'Tnm_UserSettings.pas' {frmUsers},
   FormKontrolUserSet in 'FormKontrolUserSet.pas' {frmKontrolUserSet},
   KadirType in 'KadirType.pas',
@@ -33,7 +32,6 @@ uses
   HastaTetkikEkle in 'HastaTetkikEkle.pas' {frmHastaTetkikEkle},
   IlacSarfListesi in 'IlacSarfListesi.pas' {frmIlacSarf},
   PopupDBGridForm in 'PopupDBGridForm.PAS' {frmPopupDBGridForm},
-  GetFormClass in 'GetFormClass.pas',
   HastaTaniKart in 'HastaTaniKart.pas' {frmTaniKart},
   KurumLogin in 'KurumLogin.pas' {frmKurumBilgi},
   MedulaKurumSifreDegis in 'MedulaKurumSifreDegis.pas' {KurumSifreDegisForm},
@@ -83,7 +81,13 @@ uses
   DestekSorunBildir in 'DestekSorunBildir.pas' {frmDestekSorunBildir},
   CSGBservice in 'CSGBservice.pas',
   Anamnez in 'Anamnez.pas' {frmAnamnez},
-  HastaListe in 'HastaListe.pas' {frmHastaListe};
+  HastaListe in 'HastaListe.pas' {frmHastaListe},
+  PersonelKart in 'PersonelKart.pas' {frmPersonelKart},
+  GetFormClass in 'GetFormClass.pas',
+
+
+  //Klinik Diyaliz
+  HastaKart in 'HastaKart.pas' {frmHastaKart};
 
 // KadirMedula3 in '..\..\medula3wsdl\KadirMedula3.pas';
 
@@ -111,7 +115,8 @@ begin
   Application.MainFormOnTaskbar := True;
   Application.CreateForm(TDATALAR, DATALAR);
   Application.CreateForm(TAnaForm, AnaForm);
- // Application.CreateForm(TfrmHastaListe, frmHastaListe);
+
+  // Application.CreateForm(TfrmHastaListe, frmHastaListe);
   //  Application.CreateForm(TfrmAnamnez, frmAnamnez);
   //Application.CreateForm(TfrmUpdate, frmUpdate);???
 
@@ -121,6 +126,9 @@ begin
 //  FormatSettings.LongDateFormat := 'dd mmmm yyyy dddd';
 
   //if pos('UYUM',paramStr(0)) > 0 then isg := 'UYUMISG.exe' else isg := 'isg.exe';
+
+
+  datalar.programTip := copy(ExtractFileName(Application.ExeName),1,1);
 
   isgOld := 'isg9.exe';
   isg := 'isg10.exe';

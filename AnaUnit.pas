@@ -200,7 +200,7 @@ implementation
       uses Tnm_Ilaclar,
       Tnm_LabTest,
       Data_Modul,
-      HastaKart,
+      PersonelKart,
       Login,
       EventCompletDurumBildir,
       Tnm_UserSettings,
@@ -216,6 +216,7 @@ var
 begin
 
   MainMenuKadir1.KullaniciAdi := datalar.username;
+  MainMenuKadir1.ProgramTip := 'O';// datalar.programTip
   MainMenuKadir1.MenuGetir;
 
   for i := 0 to MainMenuKadir1.Items.Count - 1 do
@@ -902,17 +903,17 @@ begin
            tc := InputBox('Personel Ara','Tc Kimlik No','');
            if IsNull (TC) then Exit;
 
-           if FindTab(AnaForm.sayfalar,TagfrmHastaKart)
+           if FindTab(AnaForm.sayfalar,TagfrmPersonelKart)
            Then begin
-             F := TGirisForm(FormClassType(TagfrmHastaKart));
-             TGirisForm(FormClassType(TagfrmHastaKart))._TC_ := tc;
-             TGirisForm(FormClassType(TagfrmHastaKart)).Init(F);
+             F := TGirisForm(FormClassType(TagfrmPersonelKart));
+             TGirisForm(FormClassType(TagfrmPersonelKart))._TC_ := tc;
+             TGirisForm(FormClassType(TagfrmPersonelKart)).Init(F);
            end
            Else begin
             bTamam := False;
-            aTabSheet := NewTab(AnaForm.sayfalar,TagfrmHastaKart);
+            aTabSheet := NewTab(AnaForm.sayfalar,TagfrmPersonelKart);
             try
-              F := FormINIT(TagfrmHastaKart,self,'',aTabSheet,ikEvet,'',tc);
+              F := FormINIT(TagfrmPersonelKart,self,'',aTabSheet,ikEvet,'',tc);
               bTamam := F <> nil;
               if bTamam then F.show;
             finally

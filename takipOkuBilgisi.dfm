@@ -229,6 +229,10 @@ object frmTakipBilgisiOku: TfrmTakipBilgisiOku
         object TabSheet7: TTabSheet
           Caption = 'Tan'#305' Bilgisi'
           ImageIndex = 74
+          ExplicitLeft = 0
+          ExplicitTop = 0
+          ExplicitWidth = 0
+          ExplicitHeight = 0
           object DBGridEh8: TDBGridEh
             Left = 0
             Top = 0
@@ -286,6 +290,10 @@ object frmTakipBilgisiOku: TfrmTakipBilgisiOku
         object TabSheet10: TTabSheet
           Caption = 'Yatak Bilgisi'
           ImageIndex = 66
+          ExplicitLeft = 0
+          ExplicitTop = 0
+          ExplicitWidth = 0
+          ExplicitHeight = 0
           object DBGridEh4: TDBGridEh
             Left = 0
             Top = 0
@@ -461,6 +469,10 @@ object frmTakipBilgisiOku: TfrmTakipBilgisiOku
         object TabSheet4: TTabSheet
           Caption = 'TetkikveRadyoloji'
           ImageIndex = 72
+          ExplicitLeft = 0
+          ExplicitTop = 0
+          ExplicitWidth = 0
+          ExplicitHeight = 0
           object DBGridEh2: TDBGridEh
             Left = 0
             Top = 0
@@ -559,6 +571,10 @@ object frmTakipBilgisiOku: TfrmTakipBilgisiOku
         object TabSheet8: TTabSheet
           Caption = 'Malzeme'
           ImageIndex = 67
+          ExplicitLeft = 0
+          ExplicitTop = 0
+          ExplicitWidth = 0
+          ExplicitHeight = 0
           object DBGridEh6: TDBGridEh
             Left = 0
             Top = 0
@@ -664,6 +680,10 @@ object frmTakipBilgisiOku: TfrmTakipBilgisiOku
     object TabSheet5: TTabSheet
       Caption = 'Log'
       ImageIndex = 36
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       object txtLog: TMemo
         Left = 0
         Top = 0

@@ -106,18 +106,12 @@
 			<DCCReference Include="TedaviKart.pas">
 				<Form>frmTedaviBilgisi</Form>
 			</DCCReference>
-			<DCCReference Include="AcilisMesajForm.pas">
-				<Form>Form2</Form>
-			</DCCReference>
 			<DCCReference Include="data_modul.pas">
 				<Form>DATALAR</Form>
 				<DesignClass>TDataModule</DesignClass>
 			</DCCReference>
 			<DCCReference Include="rapor.pas">
 				<Form>frmRapor</Form>
-			</DCCReference>
-			<DCCReference Include="HastaKart.pas">
-				<Form>frmHastaKart</Form>
 			</DCCReference>
 			<DCCReference Include="Tnm_UserSettings.pas">
 				<Form>frmUsers</Form>
@@ -160,7 +154,6 @@
 			<DCCReference Include="PopupDBGridForm.PAS">
 				<Form>frmPopupDBGridForm</Form>
 			</DCCReference>
-			<DCCReference Include="GetFormClass.pas"/>
 			<DCCReference Include="HastaTaniKart.pas">
 				<Form>frmTaniKart</Form>
 			</DCCReference>
@@ -226,9 +219,6 @@
 			</DCCReference>
 			<DCCReference Include="LabSonucGir.pas">
 				<Form>frmLabSonucGir</Form>
-			</DCCReference>
-			<DCCReference Include="HastaListe.pas">
-				<Form>frmHastaListe</Form>
 			</DCCReference>
 			<DCCReference Include="GrupDetayTanim.pas">
 				<Form>frmGrupDetayTanim</Form>
@@ -304,6 +294,20 @@
 				<Form>frmDestekSorunBildir</Form>
 			</DCCReference>
 			<DCCReference Include="CSGBservice.pas"/>
+			<DCCReference Include="Anamnez.pas">
+				<Form>frmAnamnez</Form>
+			</DCCReference>
+			<DCCReference Include="HastaListe.pas">
+				<Form>frmHastaListe</Form>
+				<FormType>dfm</FormType>
+			</DCCReference>
+			<DCCReference Include="PersonelKart.pas">
+				<Form>frmPersonelKart</Form>
+			</DCCReference>
+			<DCCReference Include="GetFormClass.pas"/>
+			<DCCReference Include="HastaKart.pas">
+				<Form>frmHastaKart</Form>
+			</DCCReference>
 			<BuildConfiguration Include="Debug">
 				<Key>Cfg_2</Key>
 				<CfgParent>Base</CfgParent>

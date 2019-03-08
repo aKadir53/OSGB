@@ -385,6 +385,7 @@ object frmHastaListe: TfrmHastaListe
         Caption = 'Uyar'#305' Bilgisi'
         ImageIndex = 133
         ExplicitLeft = 4
+        ExplicitTop = 0
         ExplicitWidth = 1155
         ExplicitHeight = 34
         object txtUyariMesaj: TcxMemo
@@ -401,8 +402,6 @@ object frmHastaListe: TfrmHastaListe
           StyleHot.LookAndFeel.NativeStyle = False
           StyleHot.LookAndFeel.SkinName = 'McSkin'
           TabOrder = 0
-          ExplicitWidth = 1155
-          ExplicitHeight = 34
           Height = 31
           Width = 1153
         end

@@ -296,7 +296,7 @@ type
    _saglikNetPass , _firmaSKRS , _usermernis , _passmernis, UserGroup, UserGroupName : string;
    _doktorReceteUser,_doktorRecetePas,_KurumSKRS_, _userSaglikNet_ , _passSaglikNet_ , _userSaglikNet2_ , _passSaglikNet2_ , itsGLN , itsUser , itsPass: string;
    _merkezAdi , _DyobKurumKodu_,_DyobSifre_,_DyobServiceKodu_ , doktorTip , bashekimKodu,hekimKodu,ImajFTPServer : string;
-   _medulaOrtam_ , WanIp,WanIpURL ,_firmaKod_ , osgbKodu : string;
+   _medulaOrtam_ , WanIp,WanIpURL ,_firmaKod_ , osgbKodu , programTip : string;
    TakipDevam : boolean;
    AktifSirketAdi,AktifSirket ,AktifSube ,AktifSubeAdi,_donemSonlandir_ ,TenayMNTRequest , TenayBIORequest , DyobRequest , _database , _Tip : string;
    CentroResponse ,SMSHesapFrom,SMSHesapUser,SMSHesapSifre , AlpemixRun,AlpemixGrupAdi,AlpemixGrupParola : string;

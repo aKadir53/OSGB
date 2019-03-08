@@ -86,7 +86,8 @@ type
     procedure DataRead(_record_ : Pointer);
     procedure GridColumnAllReadOnly;
     procedure DBGridDblClick(Sender: TObject);
-
+    procedure TehlikeSinifEgitimSureleriEkle;
+    procedure TehlikeSinifEgitimGrupSureleriEkle;
   private
     { Private declarations }
   public
@@ -843,6 +844,72 @@ begin
 
 end;
 
+procedure TfrmPopupDBGridForm.TehlikeSinifEgitimSureleriEkle;
+var
+ sql : string;
+begin
+    sql :=
+    'declare @tehlikesinifi varchar(10) ' +
+    'declare x cursor for ' +
+    'select TehlikeSinifi from tehlikeSiniflari ' +
+    'order by id ' +
+    'open x ' +
+
+    'fetch next from x ' +
+    'INTO @tehlikesinifi ' +
+
+    'while @@fetch_status = 0 ' +
+    'begin ' +
+      'insert into TehlikeSinifEgitimSureleri ' +
+
+      'select @tehlikesinifi,Kod,0,0 from Egitim_tnm E ' +
+      'left join TehlikeSinifEgitimSureleri TS on TS.EgitimKodu = E.Kod and TS.TehlikeSinifi = @tehlikesinifi ' +
+      'where aktif = 1 and TS.EgitimKodu is null ' +
+      'fetch next from x ' +
+       ' INTO @tehlikesinifi ' +
+
+    'end ' +
+
+    'close x ' +
+    'DEALLOCATE x ';
+    datalar.QueryExec(sql);
+
+end;
+
+
+procedure TfrmPopupDBGridForm.TehlikeSinifEgitimGrupSureleriEkle;
+var
+ sql : string;
+begin
+    sql :=
+    'declare @tehlikesinifi varchar(10) ' +
+    'declare x cursor for ' +
+    'select TehlikeSinifi from tehlikeSiniflari ' +
+    'order by id ' +
+    'open x ' +
+
+    'fetch next from x ' +
+    'INTO @tehlikesinifi ' +
+
+    'while @@fetch_status = 0 ' +
+    'begin ' +
+      'insert into TehlikeSinifEgitimGrupSureleri ' +
+
+      'select @tehlikesinifi,Kod,0,0 from EgitimGrup_tnm E ' +
+      'left join TehlikeSinifEgitimGrupSureleri TS on TS.EgitimGrupKodu = E.Kod and TS.TehlikeSinifi = @tehlikesinifi ' +
+      'where TS.EgitimGrupKodu is null ' +
+      'fetch next from x ' +
+       ' INTO @tehlikesinifi ' +
+
+    'end ' +
+
+    'close x ' +
+    'DEALLOCATE x ';
+    datalar.QueryExec(sql);
+
+end;
+
+
 procedure TfrmPopupDBGridForm.Yukle;
 begin
   inherited;
@@ -950,6 +1017,32 @@ begin
        GrpAciklama.Visible := false;
        txtAciklama.DataBinding.DataSource := nil;
     end;
+
+    if (txtTable.Text = 'Tehlike Sýnýfý Eðitim Süreleri') or
+       (txtTable.Text = 'Tehlike Sýnýfý Eðitim Grubu Süreleri')
+    then begin
+
+      if txtTable.Text = 'Tehlike Sýnýfý Eðitim Süreleri' then TehlikeSinifEgitimSureleriEkle else TehlikeSinifEgitimGrupSureleriEkle;
+      DbGrid.Columns[0].Options.Editing := False;
+      DbGrid.Columns[1].Options.Editing := False;
+      DBGrid.NewItemRow.Visible := False;
+      DbGrid.NavigatorButtons.Delete.Visible := False;
+      DbGrid.NavigatorButtons.Insert.Visible := False;
+      DBGrid.OptionsData.Deleting := False;
+    end
+    else
+    begin
+      DbGrid.Columns[0].Options.Editing := True;
+      DbGrid.Columns[1].Options.Editing := True;
+      DBGrid.NewItemRow.Visible := True;
+      DbGrid.NavigatorButtons.Delete.Visible := True;
+      DbGrid.NavigatorButtons.Insert.Visible := True;
+      DBGrid.OptionsData.Deleting := True;
+    end;
+
+
+
+
   (*
     if txtTable.Text = 'Ýþ Ekipmaný Tanýmla'
     then begin

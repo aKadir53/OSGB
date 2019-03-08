@@ -24,7 +24,6 @@ object frmRaporCalistir: TfrmRaporCalistir
     Align = alBottom
     Color = clBackground
     TabOrder = 0
-    ExplicitWidth = 332
     object txtinfo: TLabel
       Left = 7
       Top = 11
@@ -344,7 +343,6 @@ object frmRaporCalistir: TfrmRaporCalistir
       Font.Style = [fsBold]
       ParentFont = False
       OnClick = btnCalistirGoruntuleClick
-      ExplicitWidth = 330
     end
   end
   object DataSource1: TDataSource

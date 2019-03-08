@@ -679,7 +679,7 @@ type
 
 
 Const
-  TagfrmHastaKart = 90;
+  TagfrmPersonelKart = 90;
   TagfrmFirmaKart = 100;
   TagfrmMerkezBilgisi = 105;
   TagfrmHizmetKart = 735;
@@ -795,6 +795,9 @@ Const
   TagfrmOrtamOlcum = 1020;
   TagfrmCihazKontrolListesi = 1030;
   TagfrmFirmaPersonelEgitimList = 1040;
+
+  TagfrmHastaKart = 5001;
+
 
 
   Kaydet = 0;

@@ -668,7 +668,7 @@ object GirisForm: TGirisForm
     Align = alClient
     TabOrder = 2
     TabStop = False
-    Properties.ActivePage = sayfa3
+    Properties.ActivePage = sayfa1
     Properties.Style = 11
     Properties.TabHeight = 10
     Properties.TabPosition = tpBottom
@@ -835,7 +835,6 @@ object GirisForm: TGirisForm
         Align = alClient
         TabOrder = 0
         LayoutLookAndFeel = dxLayoutSkinLookAndFeel1
-        ExplicitTop = 1
         object sayfa3_dxLayoutGroup1: TdxLayoutGroup
           AlignHorz = ahLeft
           AlignVert = avTop

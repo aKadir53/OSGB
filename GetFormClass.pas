@@ -36,21 +36,78 @@ function PopupFormCaption(islemTag : integer ; var TabCaption : string) : String
 
 implementation
 
-uses message,Data_Modul,AnaUnit,message_y,popupForm,rapor,TedaviKart,Son6AylikTetkikSonuc,
-             HastaRecete,sifreDegis,HastaTetkikEkle,DokumanYukle,RTFSablon,
-             Receteler,Sorgulamalar,sorguRaporCalistir,CariHareketGiris,CariHesapExtresi,
-             PersonelKart,FirmaKart,hizliKayit,receteSablonlari,RDS,KKD,Tedarikci,Cekler,
-             HastaListe,IsKazasi,Anamnez,GrupDetayTanim,Sozlesmeler,KasaBanka,
-             Tnm_UserSettings,HastaAsiKarti,HastaTaniKart,sirketSahaGozetim, sirketSahaDenetim,
-             KurumLogin,Update_G, labaratuvarKabul,Faturalar,FaturaDetay, FirmaKontrol,
-             MedulaKurumSifreDegis,labParametreleri,SirketSozlesme,FirmaEkipmanList,
-             Tnm_Doktor,LabTestAyarlari,SahaSaglikGozetim, CariHesapBorcAlacakToplam,
-             PopupDBGridForm,PopupDBVerticalGridForm,AjandaOzet,sirketISGKurulToplanti,
-             Tnm_Ilaclar, PersonelEgitimFrm, About_Frm, MerkezBilgisi,sirketYillikCalismaPlan,
-             sirketYillikEgitimPlan,HizmetKart, CihazKontrol,firmaListesi,Kroki,sirketOrtamOlcum,
-             firmaCihazKontrolListesi,PersonelFirmaEgitimListesi;
+uses
+    message,
+    Data_Modul,
+    AnaUnit,
+    message_y,
+    popupForm,
+    rapor,
+    TedaviKart,
+    Son6AylikTetkikSonuc,
+    HastaRecete,
+    sifreDegis,
+    HastaTetkikEkle,
+    DokumanYukle,
+    RTFSablon,
+    Receteler,
+    Sorgulamalar,
+    sorguRaporCalistir,
+    CariHareketGiris,
+    CariHesapExtresi,
+    PersonelKart,
+    FirmaKart,
+    hizliKayit,
+    receteSablonlari,
+    RDS,
+    KKD,
+    Tedarikci,
+    Cekler,
+    HastaListe,
+    IsKazasi,
+    Anamnez,
+    GrupDetayTanim,
+    Sozlesmeler,
+    KasaBanka,
+    Tnm_UserSettings,
+    HastaAsiKarti,
+    HastaTaniKart,
+    sirketSahaGozetim,
+    sirketSahaDenetim,
+    KurumLogin,
+    Update_G,
+    labaratuvarKabul,
+    Faturalar,
+    FaturaDetay,
+    FirmaKontrol,
+    MedulaKurumSifreDegis,
+    labParametreleri,
+    SirketSozlesme,
+    FirmaEkipmanList,
+    Tnm_Doktor,
+    LabTestAyarlari,
+    SahaSaglikGozetim,
+    CariHesapBorcAlacakToplam,
+    PopupDBGridForm,
+    PopupDBVerticalGridForm,
+    AjandaOzet,
+    sirketISGKurulToplanti,
+    Tnm_Ilaclar,
+    PersonelEgitimFrm,
+    About_Frm,
+    MerkezBilgisi,
+    sirketYillikCalismaPlan,
+    sirketYillikEgitimPlan,
+    HizmetKart,
+    CihazKontrol,
+    firmaListesi,
+    Kroki,
+    sirketOrtamOlcum,
+    firmaCihazKontrolListesi,
+    PersonelFirmaEgitimListesi,
 
-
+    HastaKart
+    ;
 
 
 function FormTabImageIndex(formId : integer) : integer;
@@ -255,6 +312,11 @@ begin
    TagfrmCihazKontrolListesi : Result := TfrmCihazKontrolListesi;
    TagfrmFirmaPersonelEgitimList : Result := TfrmPersonelFirmaEgitimListe;
 
+
+
+   TagfrmHastaKart : Result := TfrmHastaKart;
+
+
  //  TagfrmAjandaOzet : Result := TfrmAjandaOzet;
   end;
 end;
@@ -328,6 +390,10 @@ begin
    TagfrmOrtamOlcum : Result := frmSirketOrtamOlcum;
    TagfrmCihazKontrolListesi : Result := frmCihazKontrolListesi;
    TagfrmFirmaPersonelEgitimList : Result := frmPersonelFirmaEgitimListe;
+
+
+   TagfrmHastaKart : Result := frmHastaKart;
+
 //   TagfrmAjandaOzet : Result := frmAjandaOzet;
 
   end;
@@ -405,6 +471,10 @@ begin
      TagfrmCihazKontrolListesi : frmCihazKontrolListesi := TfrmCihazKontrolListesi.Create(Tab);
      TagfrmPersonelEgitim : frmPersonelEgitim := TfrmPersonelEgitim.Create(Tab);
      TagfrmFirmaPersonelEgitimList : frmPersonelFirmaEgitimListe := TfrmPersonelFirmaEgitimListe.Create(Tab);
+
+
+     TagfrmHastaKart : frmHastaKart  := TfrmHastaKart.Create(Tab);
+
   end;
   try
     if not (Form is TGirisForm) then
@@ -545,6 +615,7 @@ begin
      TagfrmFirmaPersonelEgitimList : frmPersonelFirmaEgitimListe:= TfrmPersonelFirmaEgitimListe.Create(Tab);
 
 
+     TagfrmHastaKart : frmHastaKart  := TfrmHastaKart.Create(Tab);
 
   end;
   try
@@ -666,6 +737,10 @@ begin
     TagfrmOrtamOlcum : Application.CreateForm(TfrmSirketOrtamOlcum, frmSirketOrtamOlcum) ;
     TagfrmCihazKontrolListesi : Application.CreateForm(TfrmCihazKontrolListesi, frmCihazKontrolListesi);
     TagfrmFirmaPersonelEgitimList : Application.CreateForm(TfrmPersonelFirmaEgitimListe,frmPersonelFirmaEgitimListe);
+
+
+    TagfrmHastaKart : Application.CreateForm(TfrmHastaKart,frmHastaKart);
+
   end;
   try
     Form := TGirisForm(FormClassType(abs(FormTag)));

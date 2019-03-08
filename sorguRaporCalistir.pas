@@ -127,6 +127,8 @@ var
     Columns : TStringList;
     obje : TComponent;
 begin
+
+  try
     Columns := TStringList.Create;
      try
        Split(',',_fields_,Columns);
@@ -155,16 +157,7 @@ begin
      datalar.Ado_Sorgulamalar.SQL.Clear;
      datalar.QuerySelect(datalar.Ado_Sorgulamalar,sql);
 
-   //  rs := 1;
-   //  datalar.Ado_Sorgulamalar.Recordset := datalar.Ado_Sorgulamalar.NextRecordset(rs);
-
-
      ds := datalar.Ado_Sorgulamalar;
-//     DataSource1.DataSet := ds;
-//     frmSorguRapor.cxGridDBBandedTableView1.DataController.DataSource := DataSource1;
-//     frmSorguRapor.cxGridDBBandedTableView1.DataController.CreateAllItems(true);
-
-
 
      frmSorgulamalar.cxGrid3DBBandedTableView1.ClearItems;
      frmSorgulamalar.cxGrid3DBBandedTableView1.DataController.CreateAllItems(true);
@@ -196,10 +189,14 @@ begin
      end;
 
 
-      TopluDataset.Dataset0 := datalar.Ado_Sorgulamalar;
+     TopluDataset.Dataset0 := datalar.Ado_Sorgulamalar;
      PrintYap(_kod,sp_name,'',TopluDataset,pTNone);
 
+  finally
      datalar.ADO_RAPORLAR1.Active := false;
+     datalar.Ado_Sorgulamalar.Active := false;
+  end;
+
      frmSorgulamalar.cxPageControl2.ActivePageIndex := 1;
 
      close;

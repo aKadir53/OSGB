@@ -106,10 +106,6 @@ object frmUsers: TfrmUsers
     object cxTabSheet2: TcxTabSheet
       Caption = 'Men'#252' Yetkileri'
       ImageIndex = 1
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 348
-      ExplicitHeight = 0
       object cxGrid1: TcxGrid
         Left = 0
         Top = 0
@@ -117,7 +113,6 @@ object frmUsers: TfrmUsers
         Height = 529
         Align = alClient
         TabOrder = 0
-        ExplicitWidth = 348
         object cxGridMenuSet: TcxGridDBTableView
           DataController.DataModeController.DetailInSQLMode = True
           DataController.DataSource = User_Menu_Settings_DataSource
@@ -316,20 +311,20 @@ object frmUsers: TfrmUsers
     CursorType = ctStatic
     BeforePost = UserSettingsBeforePost
     TableName = 'UserSettings'
-    Left = 56
-    Top = 216
+    Left = 40
+    Top = 176
   end
   object UserSettings_DataSource: TDataSource
     DataSet = UserSettings
     Left = 88
-    Top = 216
+    Top = 184
   end
   object User_Menu_Settings_DataSource: TDataSource
     DataSet = User_Menu_Settings
-    Left = 88
-    Top = 272
+    Left = 104
+    Top = 336
   end
-  object User_Menu_Settings: TADOTable
+  object User_Menu_Settings_: TADOTable
     Connection = DATALAR.ADOConnection2
     CursorType = ctStatic
     BeforePost = UserSettingsBeforePost
@@ -398,13 +393,13 @@ object frmUsers: TfrmUsers
     AfterDelete = UserGroupAfterDelete
     OnDeleteError = UserGroupDeleteError
     TableName = 'UserGroups'
-    Left = 240
-    Top = 208
+    Left = 264
+    Top = 192
   end
   object UserGroup_DataSource: TDataSource
     DataSet = UserGroup
-    Left = 248
-    Top = 256
+    Left = 328
+    Top = 200
   end
   object UserGroup_Menu_Settings: TADOQuery
     Connection = DATALAR.ADOConnection2
@@ -443,5 +438,14 @@ object frmUsers: TfrmUsers
       Caption = 'T'#252'm Sekmeleri Kapat'
       OnClick = S1Click
     end
+  end
+  object User_Menu_Settings: TADOQuery
+    Connection = DATALAR.ADOConnection2
+    Parameters = <>
+    SQL.Strings = (
+      'select Kullanici,MI.Menu,UMS.ID,Izin from UserMenuSettings UMS'
+      'join MenuIslem MI on MI.KAYITID = UMS.ID')
+    Left = 56
+    Top = 336
   end
 end

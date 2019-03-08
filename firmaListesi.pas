@@ -309,7 +309,7 @@ begin
 
  if FindTab(AnaForm.sayfalar,TagfrmFirmaKart)
  Then begin
-   Form := TGirisForm(FormClassType(TagfrmHastaKart));
+   Form := TGirisForm(FormClassType(TagfrmPersonelKart));
    TGirisForm(FormClassType(TagfrmFirmaKart))._firmaKod_ := _Dataset.FieldByName('sirketKod').AsString;
    TGirisForm(FormClassType(TagfrmFirmaKart)).Init(Form);
  end

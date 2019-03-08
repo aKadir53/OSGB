@@ -109,7 +109,7 @@ type
   public
     { Public declarations }
     function Init(Sender: TObject) : Boolean; override;
-    function EgitimSorgulaCSGB(sorguNo : Arrayofstring) : Boolean;
+    function EgitimSorgulaCSGB(sorguNo : Arrayofstring; var sorguSonuc,sonucKodu : string) : Boolean;
     function EgitimKaydetCSGB(egitim : egitimBilgisi ; pin,cardType,_xml_,_xmlSOAP_,egitimID : string) : egitimBilgisiCevap;
  //   function EgitimKaydetCSGB(egitim : cokluEgitimBilgisi ; pin,cardType,_xml_,_xmlSOAP_ : string) : cokluEgitimCevapDVO; overload;
     function EgitimKaydetMASTER(egitim : egitimBilgisi ; pin,cardType,_xml_,_xmlSOAP_,egitimID : string) : string;
@@ -172,7 +172,7 @@ begin
 end;
 
 
-function TfrmPersonelEgitim.EgitimSorgulaCSGB(sorguNo : Arrayofstring) : Boolean;
+function TfrmPersonelEgitim.EgitimSorgulaCSGB(sorguNo : Arrayofstring ; var sorguSonuc,sonucKodu : string) : Boolean;
 var
   sayi,EgitimString,url,cmsg : string;
   Cvps : ArrayOfEgitimBilgisiCevap;
@@ -192,6 +192,8 @@ begin
       begin
         cmsg := cmsg + 'SorguNo : ' + Cvp.sorguNo + ' - Sonuç : ' + Cvp.message_ + #13
       end;
+      sorguSonuc := cmsg;
+      sonucKodu := inttoStr(Cvp.status);
 
       ShowMessageSkin('Sorgu Tamamlandý' + #13,cmsg,'','info');
     except
@@ -408,9 +410,12 @@ end;
 
 procedure TfrmPersonelEgitim.PropertiesEditValueChanged(Sender: TObject);
 var
-  xDeger ,where: String;
+  xDeger ,where : String;
+  obje : TComponent;
 begin
   inherited;
+
+
 (*
   if not sametext (TcxImageComboKadir(Sender).name, 'EgitimTuru') then Exit;
   TcxCheckGroupKadir(FindComponent('Egitimkod')).Clear;
@@ -424,9 +429,21 @@ begin
 
  if TcxImageComboKadir(Sender).Name = 'SirketKod'
  Then begin
-     TcxImageComboKadir(FindComponent('IGU')).Filter := ' kod in (select IGU from SIRKET_SUBE_TNM where sirketKod = ' + quotedStr( varToStr(TcxImageComboKadir(Sender).EditValue)) +')';
-     TcxImageComboKadir(FindComponent('IGU')).ItemIndex := 0;
- //    TcxImageComboKadir(FindComponent('IGU')).Enabled := False;
+
+     if EgitimPersonel.Dataset.RecordCount > 0
+     Then begin
+       TcxImageComboKadir(Sender).Reset;
+     end
+     else
+     begin
+       TcxImageComboKadir(FindComponent('IGU')).Filter := ' kod in (select IGU from SIRKET_SUBE_TNM where sirketKod = ' + quotedStr( varToStr(TcxImageComboKadir(Sender).EditValue)) +')';
+       TcxImageComboKadir(FindComponent('IGU')).ItemIndex := 0;
+   //    TcxImageComboKadir(FindComponent('IGU')).Enabled := False;
+
+     end;
+
+
+
  end
  else
  begin
@@ -462,6 +479,7 @@ var
   Blob : TADOBlobStream;
   Veri : egitimBilgisi;
   sorguNolari : ArrayOfString;
+  sorguSonuc,sonucKodu : string;
 //  VeriCoklu : cokluEgitimBilgisi;
 begin
 
@@ -548,13 +566,23 @@ begin
            sorguNolari[i] := GridCellToString(EgitimGridSatirlar,'sorguNo',i);
        end;
     end;
-    EgitimSorgulaCSGB(sorguNolari);
-
+    EgitimSorgulaCSGB(sorguNolari,sorguSonuc,sonucKodu);
+    if (TcxButtonKadir(Sender).ButtonName = 'btnEgitimSorgu')
+    Then begin
+       TcxTextEdit(FindComponent('sorguSonucKodu')).Text := sonucKodu;
+       TcxMemo(FindComponent('sorguSonuc')).Text := sorguSonuc;
+    end;
   end
   else
   if (TcxButtonKadir(Sender).ButtonName = 'btnEgitimGonderTek') or
      (TcxButtonKadir(Sender).ButtonName = 'btnEgitimGonder')
   then begin
+       if cxKaydet.Enabled = True
+       Then begin
+          ShowMessageSkin('Bu iþlem için ekrandaki bilgileri kaydetmeniz gerekir.', '', '', 'info');
+          Exit;
+       end;
+
        if TcxButtonKadir(Sender).ButtonName = 'btnEgitimGonderTek'
        then
           ID := TcxButtonEditKadir(FindComponent('id')).Text
@@ -715,6 +743,13 @@ begin
   else
   if TcxButtonKadir (Sender).ButtonName = 'btnPersonelEkle' then
   begin
+    if cxKaydet.Enabled = True
+    Then begin
+      ShowMessageSkin('Bu iþlem için ekrandaki bilgileri kaydetmeniz gerekir.', '', '', 'info');
+      Exit;
+    end;
+
+
     if IsNull (TcxButtonEditKadir (FindComponent('id')).Text) then
     begin
       ShowMessageSkin('Bu iþlem için eðitim kaydý seçmeniz ya da ekrandaki bilgileri kaydetmeniz gerekir.', '', '', 'info');

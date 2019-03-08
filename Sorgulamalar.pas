@@ -30,8 +30,6 @@ type
     Label18: TLabel;
     cxDBMemo1: TcxDBMemo;
     gridRaporlar: TDBGridEh;
-    Panel11: TPanel;
-    Image3: TImage;
     cxTabSheet7: TcxTabSheet;
     cxGrid3: TcxGrid;
     cxGrid3DBBandedTableView1: TcxGridDBBandedTableView;
@@ -61,10 +59,6 @@ type
     txtRaporKodu: TcxTextEdit;
     btnSorgulamalarKaydet: TcxButton;
     btnSorgulamalarKapat: TcxButton;
-    btnYeniSorgu: TcxButton;
-    btnSorguyuDegistir: TcxButton;
-    btnSorguyuSil: TcxButton;
-    btnSorguCalistir: TcxButton;
     N2: TMenuItem;
     E3: TMenuItem;
     btnSQLRun: TcxButton;
@@ -81,14 +75,13 @@ type
     procedure O1Click(Sender: TObject);
     procedure btnSorgulamalarKaydetClick(Sender: TObject);
     procedure btnSorgulamalarKapatClick(Sender: TObject);
-    procedure btnYeniSorguClick(Sender: TObject);
-    procedure btnSorguyuSilClick(Sender: TObject);
-    procedure btnSorguCalistirClick(Sender: TObject);
     procedure E3Click(Sender: TObject);
     procedure btnSQLRunClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure prm_YenileClick(Sender: TObject);
     procedure ADO_SQL1AfterScroll(DataSet: TDataSet);
+    procedure Y1Click(Sender: TObject);
+    procedure SatirYukle;
 
   private
     { Private declarations }
@@ -116,36 +109,7 @@ end;
 procedure TfrmSorgulamalar.ADO_SQL1AfterScroll(DataSet: TDataSet);
 begin
   inherited;
-  if Panel6.Visible = True then btnSorguyuDegistir.Click;
-end;
-
-procedure TfrmSorgulamalar.btnSorguCalistirClick(Sender: TObject);
-var
-  kod : string;
-  F : TGirisForm;
-  GirisRecord : TGirisFormRecord;
-begin
-  //cxTab.Tabs[0].Caption := '';
-  //cxTab.Tabs[0].Caption := cap + ' - ' + ADO_SQL1.fieldbyname('raporAdi').AsString;
-
-  sp := ADO_SQL1.fieldbyname('sp').AsString;
-  kod := ADO_SQL1.fieldbyname('raporKodu').AsString;
-
-  GirisRecord.F_sp_ := sp;
-  GirisRecord.F_kod_ := kod;
-
-  F := FormINIT(TagfrmSorguCalistir,GirisRecord,ikHayir,'');
-
-  TGirisForm(F)._fields_ := ADO_SQL1.fieldbyname('_params_').AsString;
-  TGirisForm(F)._fieldTips_ := ADO_SQL1.fieldbyname('_paramsTip_').AsString;
-  TGirisForm(F)._ICParams_ := ADO_SQL1.fieldbyname('IC_Params').AsString;
-
-  TGirisForm(F).cxTab.Tabs[0].Caption := ADO_SQL1.fieldbyname('raporAdi').AsString;
-
-  if F <> nil then F.ShowModal;
-
-
-
+  if Panel6.Visible = True then SatirYukle;
 end;
 
 procedure TfrmSorgulamalar.btnSorgulamalarKapatClick(Sender: TObject);
@@ -163,14 +127,14 @@ begin
   try
     ado.Connection := datalar.ADOConnection2;
 
-    sql := 'select * from raporlar1 where raporkodu = ' + QuotedStr(txtRaporKodu.Text);
+    sql := 'select * from OSGB_MASTER.DBO.raporlar1 where raporkodu = ' + QuotedStr(txtRaporKodu.Text);
     ado.Close;
     ado.SQL.Clear;
     datalar.QuerySelect(ado,sql);
 
     if ado.Eof
     Then Begin
-      sql := 'insert into raporlar1 (raporKodu,raporAdi,sp,rapor,aciklama) ' +
+      sql := 'insert into OSGB_MASTER.DBO.raporlar1 (raporKodu,raporAdi,sp,rapor,aciklama) ' +
              ' values(' + QuotedStr(txtRaporKodu.Text) + ',' +
                           QuotedStr(txtRaporAdi.Text)  + ',' +
                           QuotedStr(txtSP_name.Text) + ',' +
@@ -187,7 +151,7 @@ begin
     //    panel2.Visible := false;
     End
     Else Begin
-      sql := 'update raporlar1 ' +
+      sql := 'update OSGB_MASTER.DBO.raporlar1 ' +
              ' set raporadi = ' + QuotedStr(txtRaporAdi.Text) +
              ',sp = ' + QuotedStr(txtSP_name.Text) +
              ',aciklama = ' + QuotedStr(cxDBMemo1.text) +
@@ -205,67 +169,6 @@ begin
   finally
     ado.Free;
   end;
-
-end;
-
-procedure TfrmSorgulamalar.btnSorguyuSilClick(Sender: TObject);
-var
-  sql : string;
-begin
-
-    if MrYes = ShowMessageSkin('Rapor Bilgisi Silinecek','Emin misiniz?','','msg')
-    Then Begin
-         sql := 'delete from Raporlar1 where raporKodu = ' + QuotedStr(ADO_SQL1.fieldbyname('raporKodu').AsString);
-         datalar.ADO_SQL.close;
-         datalar.ADO_SQL.SQL.Clear;
-         datalar.QueryExec(datalar.ADO_SQL,sql);
-    End;
-
-    Raporlar;
-
-end;
-
-procedure TfrmSorgulamalar.btnYeniSorguClick(Sender: TObject);
-var
-   sql : string;
-begin
-   (*
-    txtSP_name.TableName := 'VW_Spler';
-    txtSP_name.ValueField := 'id';
-    txtSP_name.DisplayField := 'name';
-    txtSP_name.Filter := '';
-     *)
-    ComboDoldurName('select name from VW_Spler',txtSP_name);
-
-
-
-    case TsBitBtn(sender).Tag of
-      27 : Begin
-              panel6.Visible := true;
-              //txtAciklama.Visible := false;
-
-              sql := 'declare @dn varchar(3) ' +
-                     'select @dn = convert(varchar,isnull(max(raporKodu),0)+1) from Raporlar1 ' +
-                     ' select (replicate(''0'',3-len(@Dn)) +@Dn) as RaporNo ' ;
-              datalar.ADO_SQL3.close;
-              datalar.ADO_SQL3.SQL.Clear;
-              datalar.QuerySelect(datalar.ADO_SQL3,sql);
-
-              txtRaporKodu.Text := datalar.ADO_SQL3.fieldbyname('RaporNo').AsString;
-           End;
-      25 : Begin
-              panel6.Visible := true;
-             //   txtAciklama.Visible := false;
-              txtRaporKodu.Text := ADO_SQL1.fieldbyname('raporKodu').AsString;
-              txtRaporAdi.Text := ADO_SQL1.fieldbyname('raporAdi').AsString;
-              txtSP_name.Text := ADO_SQL1.fieldbyname('sp').AsString;
-              txtParams.Text := ADO_SQL1.fieldbyname('_params_').AsString;
-              txtParamsTip.Text := ADO_SQL1.fieldbyname('_paramsTip_').AsString;
-              txtIC_Params.Text := ADO_SQL1.fieldbyname('IC_Params').AsString;
-            End;
-
-    end;
-
 
 end;
 
@@ -336,8 +239,9 @@ end;
 
 procedure TfrmSorgulamalar.FormCreate(Sender: TObject);
 begin
-  Menu := PopupMenu1;
+  Menu := ToolMenu;
   cxPanel.Visible := False;
+  Image2.Visible := False;
 end;
 
 procedure TfrmSorgulamalar.O1Click(Sender: TObject);
@@ -389,8 +293,87 @@ procedure TfrmSorgulamalar.Raporlar;
 var
   sql : string;
 begin
-  sql := 'select * from raporlar1';
+  sql := 'select * from OSGB_MASTER.DBO.raporlar1';
   datalar.QuerySelect(ADO_SQL1,sql);
+end;
+
+procedure TfrmSorgulamalar.SatirYukle;
+begin
+    panel6.Visible := true;
+   //   txtAciklama.Visible := false;
+    txtRaporKodu.Text := ADO_SQL1.fieldbyname('raporKodu').AsString;
+    txtRaporAdi.Text := ADO_SQL1.fieldbyname('raporAdi').AsString;
+    txtSP_name.Text := ADO_SQL1.fieldbyname('sp').AsString;
+    txtParams.Text := ADO_SQL1.fieldbyname('_params_').AsString;
+    txtParamsTip.Text := ADO_SQL1.fieldbyname('_paramsTip_').AsString;
+    txtIC_Params.Text := ADO_SQL1.fieldbyname('IC_Params').AsString;
+end;
+
+procedure TfrmSorgulamalar.Y1Click(Sender: TObject);
+var
+  sql : string;
+  kod : string;
+  F : TGirisForm;
+  GirisRecord : TGirisFormRecord;
+  ado : TADOQuery;
+begin
+  inherited;
+  ComboDoldurName('select name from VW_Spler',txtSP_name);
+  case TMenuItem(sender).Tag of
+   -1 : begin
+              ado := TADOQuery.Create(nil);
+              ado.Connection := datalar.ADOConnection2;
+              try
+                panel6.Visible := true;
+
+                sql := 'declare @dn varchar(3) ' +
+                       'select @dn = convert(varchar,isnull(max(raporKodu),0)+1) from OSGB_MASTER.DBO.Raporlar1 ' +
+                       ' select (replicate(''0'',3-len(@Dn)) +@Dn) as RaporNo ' ;
+
+                datalar.QuerySelect(ado,sql);
+                txtRaporKodu.Text := ado.fieldbyname('RaporNo').AsString;
+              finally
+                ado.free;
+              end;
+        end;
+   -2 : begin
+          SatirYukle;
+        end;
+   -3 : begin
+   (*
+          if MrYes = ShowMessageSkin('Rapor Bilgisi Silinecek','Emin misiniz?','','msg')
+          Then Begin
+               sql := 'delete from Raporlar1 where raporKodu = ' + QuotedStr(ADO_SQL1.fieldbyname('raporKodu').AsString);
+               datalar.QueryExec(sql);
+          End;
+     *)
+          Raporlar;
+        end;
+   -4 : begin
+            //cxTab.Tabs[0].Caption := '';
+            //cxTab.Tabs[0].Caption := cap + ' - ' + ADO_SQL1.fieldbyname('raporAdi').AsString;
+
+            sp := ADO_SQL1.fieldbyname('sp').AsString;
+            kod := ADO_SQL1.fieldbyname('raporKodu').AsString;
+
+            GirisRecord.F_sp_ := sp;
+            GirisRecord.F_kod_ := kod;
+
+            F := FormINIT(TagfrmSorguCalistir,GirisRecord,ikHayir,'');
+
+            TGirisForm(F)._fields_ := ADO_SQL1.fieldbyname('_params_').AsString;
+            TGirisForm(F)._fieldTips_ := ADO_SQL1.fieldbyname('_paramsTip_').AsString;
+            TGirisForm(F)._ICParams_ := ADO_SQL1.fieldbyname('IC_Params').AsString;
+
+            TGirisForm(F).cxTab.Tabs[0].Caption := ADO_SQL1.fieldbyname('raporAdi').AsString;
+
+            if F <> nil then F.ShowModal;
+        end;
+
+
+  end;
+
+
 end;
 
 end.
