@@ -30,6 +30,9 @@ type
     GridKasaHareketAlacak: TcxGridDBBandedColumn;
     GridKasaHareketbakiye: TcxGridDBBandedColumn;
     GridKasaHareketaciklama: TcxGridDBBandedColumn;
+    cxStyleRepository2: TcxStyleRepository;
+    cxStyle2: TcxStyle;
+    cxStyle1: TcxStyle;
     procedure FormCreate(Sender: TObject);
     procedure ButtonClick(Sender: TObject);
     procedure cxKaydetClick(Sender: TObject);override;
@@ -44,6 +47,9 @@ type
     procedure SayfalarChange(Sender: TObject);
     procedure cxButtonCClick(Sender: TObject);
     procedure PropertiesEditValueChanged(Sender: TObject);override;
+    procedure GridKasaHareketStylesGetContentStyle(
+      Sender: TcxCustomGridTableView; ARecord: TcxCustomGridRecord;
+      AItem: TcxCustomGridTableItem; out AStyle: TcxStyle);
   private
     { Private declarations }
   protected
@@ -197,6 +203,33 @@ end;
 function TfrmKasaBanka.GetEgitimPersonelSQL: String;
 
 begin
+
+end;
+
+procedure TfrmKasaBanka.GridKasaHareketStylesGetContentStyle(
+  Sender: TcxCustomGridTableView; ARecord: TcxCustomGridRecord;
+  AItem: TcxCustomGridTableItem; out AStyle: TcxStyle);
+var
+  id : integer;
+  s : string;
+begin
+  inherited;
+ try
+
+    s := varToStr(ARecord.Values[4]);
+    if (s = 'Gün Sonu Toplam') or
+       (s = 'Devreden Kasa')
+    then begin
+       AStyle := cxStyle2;
+    end;
+
+    if (s = 'Önceki Günden Gelen')
+    then begin
+       AStyle := cxStyle1;
+    end;
+
+ except
+ end;
 
 end;
 

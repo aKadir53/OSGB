@@ -307,6 +307,7 @@ function TCdenDosyaNoGelisNo(tc, tarih1, tarih2: string;
   var DosyaNo, GelisNo, id: string): integer;
 function EncodeFile(const filename: string): AnsiString;
 function FIleToByteArray(const filename: string): TByteDynArray;
+function FileToString(const AFileName: string): AnsiString;
 function TrtoEng(str: string): string;
 function Encode64(s: string): string;
 function Decode64(s: string): string;
@@ -587,24 +588,32 @@ begin
    );
 
   try
-    hURL := InternetOpenURL(hSession, PChar(URL), nil, 0, 0, 0) ;
-    try
-      AssignFile(f, FileName);
-      Rewrite(f,1);
-      try
-        repeat
-          InternetReadFile(hURL, @Buffer, SizeOf(Buffer), BufferLen) ;
-          BlockWrite(f, Buffer, BufferLen)
-        until BufferLen = 0;
-      finally
-        CloseFile(f) ;
-        Result := True;
+    hURL := InternetOpenURL(hSession, PChar(URL), nil, 0, INTERNET_FLAG_RELOAD, 0) ;
+    if Assigned(hURL) then
+    begin
+        try
+          AssignFile(f, FileName);
+          Rewrite(f,1);
+          try
+            repeat
+              InternetReadFile(hURL, @Buffer, SizeOf(Buffer), BufferLen) ;
+              BlockWrite(f, Buffer, BufferLen)
+            until BufferLen = 0;
+          finally
+            CloseFile(f) ;
+            Result := True;
+          end;
+          if pos('404.0 - Not Found',FileToString(FileName)) > 0
+          then
+           raise Exception.CreateFmt('Sayfa Bulunamadý %s', [Url]);
 
-
-      end;
-    finally
-      InternetCloseHandle(hURL)
+        finally
+          InternetCloseHandle(hURL)
+        end
     end
+    else
+      raise Exception.CreateFmt('Url Hatasý %s', [Url]);
+
   finally
     InternetCloseHandle(hSession)
   end;
@@ -3401,6 +3410,24 @@ begin
     CloseFile(F);
   end;
 end;
+
+function FileToString(const AFileName: string): AnsiString;
+ var f: TFileStream; l_onexite: Integer;
+begin
+    Result := '';
+    f := TFileStream.Create(AFileName, fmOpenRead or fmShareDenyWrite);
+    try
+      l_onexite := f.Size;
+      if l_onexite > 0
+      then begin
+       SetLength(Result, l_onexite);
+       F.ReadBuffer(Result[1], l_onexite);
+      end;
+    finally
+      F.Free;
+    end;
+end;
+
 
 procedure DateToXsdate(var xsDate: Txsdatetime; date: Tdatetime);
 var

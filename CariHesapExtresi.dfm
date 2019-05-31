@@ -164,4 +164,18 @@ object frmCariHesapEkstre: TfrmCariHesapEkstre
     Left = 216
     Top = 88
   end
+  object cxStyleRepository2: TcxStyleRepository
+    Left = 72
+    Top = 56
+    PixelsPerInch = 96
+    object cxStyle2: TcxStyle
+      AssignedValues = [svColor, svFont]
+      Color = clBlack
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -11
+      Font.Name = 'MS Sans Serif'
+      Font.Style = [fsBold]
+    end
+  end
 end

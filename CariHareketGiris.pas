@@ -12,7 +12,7 @@ uses
   cxStyles, dxSkinscxPCPainter, cxCustomData, cxFilter, cxData, cxDataStorage,
   cxDBData, cxDropDownEdit, cxGridLevel, cxGridCustomTableView, cxGridTableView,
   cxGridBandedTableView, cxGridDBBandedTableView, cxClasses, cxGridCustomView,
-  cxGrid, cxPC;
+  cxGrid, cxPC,dxLayoutContainer;
 
 
 
@@ -64,7 +64,17 @@ procedure TfrmCariHareket.PropertiesEditValueChanged(Sender: TObject);
 var
   xDeger : String;
 begin
-  //
+  if TcxImageComboKadir(sender).Name = 'islemTuru'
+  Then begin
+    if varToStr(TcxImageComboKadir(FindComponent('islemTuru')).EditingValue) = '1'
+    Then begin
+     TdxLayoutItem(FindComponent('dxLaKasaBankaHesapKodu')).Visible := False;
+    end
+    else
+    begin
+      TdxLayoutItem(FindComponent('dxLaKasaBankaHesapKodu')).Visible := True;
+    end;
+  end
 end;
 
 procedure TfrmCariHareket.ButtonClick(Sender: TObject);
@@ -198,10 +208,19 @@ begin
   setDataStringB(self,'id','Cari ID',Kolon1,'',70,List,True,nil, 'tanimi', '', False, True, -100);
   TcxButtonEditKadir(FindComponent('id')).Identity := True;
 
+
+  sirketlerx := TcxImageComboKadir.Create(self);
+  sirketlerx.Conn := nil;
+  sirketlerx.ItemList := '1;Tahakkuk,2;Tahsil-Tediye';
+  sirketlerx.BosOlamaz := False;
+  sirketlerx.Filter := '';
+  sirketlerx.Tag := -100;
+  setDataStringKontrol(self,sirketlerx,'islemTuru','Ýþlem Türü',Kolon1,'',100,0,alNone,'');
+
   dateEdit := TcxDateEditKadir.Create(self);
   dateEdit.ValueTip := tvDate;
-  dateEdit.Properties.Kind := ckdatetime;
-  setDataStringKontrol(self,dateEdit, 'tarih','Ýþlem Zamaný',Kolon1,'',145);
+ // dateEdit.Properties.Kind := ckdatetime;
+  setDataStringKontrol(self,dateEdit, 'tarih','Ýþlem Zamaný',Kolon1,'',100);
 
 
 
@@ -210,12 +229,22 @@ begin
 
   sirketlerx := TcxImageComboKadir.Create(self);
   sirketlerx.Conn := Datalar.ADOConnection2;
-  sirketlerx.TableName := 'SIRKETLER_TNM_view';
-  sirketlerx.ValueField := 'SirketKod';
+  sirketlerx.TableName := 'CariHesapView';
+  sirketlerx.ValueField := 'Kod';
   sirketlerx.DisplayField := 'Tanimi';
   sirketlerx.BosOlamaz := False;
   sirketlerx.Filter := '';
-  setDataStringKontrol(self,sirketlerx,'cariKod','Þirket',Kolon1,'',250,0,alNone,'');
+  setDataStringKontrol(self,sirketlerx,'CariKod','Firma Hesap',Kolon1,'',250,0,alNone,'');
+
+
+  sirketlerx := TcxImageComboKadir.Create(self);
+  sirketlerx.Conn := Datalar.ADOConnection2;
+  sirketlerx.TableName := 'Cari_Hesaplar';
+  sirketlerx.ValueField := 'Kod';
+  sirketlerx.DisplayField := 'Tanimi';
+  sirketlerx.BosOlamaz := False;
+  sirketlerx.Filter := '';
+  setDataStringKontrol(self,sirketlerx,'KasaBankaHesapKodu','Kasa/Banka Hesap',Kolon1,'',250,0,alNone,'');
 
 
   setDataString(self,'evrakNo','Evrak No',Kolon1,'',100);
@@ -270,23 +299,33 @@ end;
 procedure TfrmCariHareket.cxKaydetClick(Sender: TObject);
 var
   xObj : TcxButtonEditKadir;
+  Tutar : double;
 begin
   //SirketKodx.Text := datalar.AktifSirket; giriþ formuna eklendi.
+  if (TcxImageComboKadir(FindComponent('islemTuru')).EditValue = 2)
+     and (varToStr(TcxImageComboKadir(FindComponent('KasaBankaHesapKodu')).EditValue) = '')
+  then begin
+    ShowMessageSkin('Ýþlem Türü Tahsil-Tediye Seçili iken Kasa/Banka Tarafý Boþ Olamaz','','','info');
+    TcxImageComboKadir(FindComponent('KasaBankaHesapKodu')).SetFocus;
+    exit;
+  end;
+
   inherited;
   //post ettikten sonra veritabanýndan Identity deðeri alýp edit kutusuna yazmasý için....
   case TControl(sender).Tag  of
-    0 : begin
+  Kaydet : begin
+      TcxButtonEditKadir(FindComponent('id')).Enabled := True;
       xObj := TcxButtonEditKadir (FindComponent('id'));
       if IsNull (xObj.EditingValue) then
       begin
         xObj.Text := IntToStr (F_IDENTITY);
-
-      end;
+       end;
     end;
-    2 : begin
+
+ Yeni : begin
       xObj := TcxButtonEditKadir (FindComponent('id'));
       xObj.Text := '';
-
+      TcxButtonEditKadir(FindComponent('id')).Enabled := False;
     end;
   end;
 end;

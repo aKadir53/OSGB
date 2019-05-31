@@ -361,6 +361,7 @@ type
    CSGBImza : string;
    CSGBSifre : string;
    CSGBFirmaKod : string;
+   versiyonDownloadURL : string;
  //  Foto : TPngImage;
    Foto : TJpegImage;
    userTanimi : String;

@@ -35,13 +35,17 @@ object frmKasaBanka: TfrmKasaBanka
       OptionsView.GridLines = glHorizontal
       OptionsView.GroupByBox = False
       OptionsView.GroupByHeaderLayout = ghlHorizontal
+      Styles.OnGetContentStyle = GridKasaHareketStylesGetContentStyle
       Bands = <
         item
           Caption = 'Kasa Defteri'
-          Width = 575
+          Width = 743
         end>
       object GridKasaHareketTarih: TcxGridDBBandedColumn
         DataBinding.FieldName = 'Tarih'
+        PropertiesClassName = 'TcxTextEditProperties'
+        Properties.Alignment.Horz = taCenter
+        Properties.Alignment.Vert = taVCenter
         HeaderAlignmentHorz = taCenter
         HeaderAlignmentVert = vaCenter
         Width = 86
@@ -52,6 +56,8 @@ object frmKasaBanka: TfrmKasaBanka
       object GridKasaHareketBorc: TcxGridDBBandedColumn
         Caption = 'Giren'
         DataBinding.FieldName = 'Borc'
+        PropertiesClassName = 'TcxCurrencyEditProperties'
+        Properties.DisplayFormat = ',0.00;-,0.00'
         HeaderAlignmentHorz = taCenter
         HeaderAlignmentVert = vaCenter
         Width = 74
@@ -62,6 +68,8 @@ object frmKasaBanka: TfrmKasaBanka
       object GridKasaHareketAlacak: TcxGridDBBandedColumn
         Caption = #199#305'kan'
         DataBinding.FieldName = 'Alacak'
+        PropertiesClassName = 'TcxCurrencyEditProperties'
+        Properties.DisplayFormat = ',0.00;-,0.00'
         HeaderAlignmentHorz = taCenter
         HeaderAlignmentVert = vaCenter
         Width = 72
@@ -72,6 +80,8 @@ object frmKasaBanka: TfrmKasaBanka
       object GridKasaHareketbakiye: TcxGridDBBandedColumn
         Caption = 'Devreden'
         DataBinding.FieldName = 'bakiye'
+        PropertiesClassName = 'TcxCurrencyEditProperties'
+        Properties.DisplayFormat = ',0.00;-,0.00'
         HeaderAlignmentHorz = taCenter
         HeaderAlignmentVert = vaCenter
         Width = 75
@@ -132,5 +142,26 @@ object frmKasaBanka: TfrmKasaBanka
   object DataSource1: TDataSource
     Left = 64
     Top = 208
+  end
+  object cxStyleRepository2: TcxStyleRepository
+    Left = 72
+    Top = 56
+    PixelsPerInch = 96
+    object cxStyle2: TcxStyle
+      AssignedValues = [svFont]
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -11
+      Font.Name = 'Tahoma'
+      Font.Style = [fsBold]
+    end
+    object cxStyle1: TcxStyle
+      AssignedValues = [svFont]
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = 8421631
+      Font.Height = -11
+      Font.Name = 'Tahoma'
+      Font.Style = [fsBold]
+    end
   end
 end

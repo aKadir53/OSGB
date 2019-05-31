@@ -2297,6 +2297,13 @@ begin
           TcxImageComboKadir(FindComponent('Siddet_2')).EditValue;
    end;
   end
+  else
+  if TcxImageComboKadir(sender).Tag = -5
+  Then begin
+
+
+
+  end
   else if TcxImageComboKadir(sender).Tag = -100
   then begin
    case  datalar.Risk.Method of

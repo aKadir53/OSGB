@@ -37,11 +37,15 @@ type
     cxStyle1: TcxStyle;
     cxStyle2: TcxStyle;
     lemler1: TMenuItem;
+    cxFotoPanel: TcxGroupBox;
+    Foto: TcxImage;
+    cxFotoEkleButton: TcxButton;
     procedure FormCreate(Sender: TObject);
     procedure cxKaydetClick(Sender: TObject);override;
     procedure cxButtonEditPropertiesButtonClick(Sender: TObject;
       AButtonIndex: Integer);override;
-
+    procedure FotoEkle;
+    procedure cxFotoEkleButtonClick(Sender: TObject);
   private
     { Private declarations }
   protected
@@ -70,6 +74,51 @@ implementation
 {$R *.dfm}
 
 
+
+procedure TfrmMerkezBilgisi.FotoEkle;
+var
+ Fo : TFileOpenDialog;
+ filename,dosyaNo : string;
+ jp : TJPEGImage;
+ bBasarili : Boolean;
+begin
+ (*
+  dosyaNo := TcxButtonEditKadir(FindComponent('SirketKod')).Text;
+  datalar.ADO_Foto.SQL.Text := Format(FotoTable,[#39+dosyaNo+#39]);
+  datalar.ADO_FOTO.Open;
+  if datalar.ADO_FOTO.Eof then
+  begin
+    datalar.ADO_FOTO.Append;
+    DATALAR.ADO_FOTO.fieldByName ('SirketKod').AsString := dosyaNo;
+  end
+  *)
+ // else datalar.ADO_FOTO.Edit;
+  bBasarili := False;
+  try
+    Fo := TFileOpenDialog.Create(nil);
+    try
+      if not fo.Execute then Exit;
+      filename := fo.FileName;
+    finally
+      fo.Free;
+    end;
+    Foto.Picture.LoadFromFile(filename);
+   (*
+    jp := TJpegimage.Create;
+    try
+      jp.Assign(FOTO.Picture);
+      sqlRun.FieldByName('Logo').Assign(jp);
+      sqlRun.Post;
+      bBasarili := True;
+    finally
+      jp.Free;
+    end;
+    *)
+  finally
+    if not bBasarili then sqlRun.Cancel;
+
+  end;
+end;
 
 procedure TfrmMerkezBilgisi.cxButtonEditPropertiesButtonClick(Sender: TObject;
   AButtonIndex: Integer);
@@ -130,6 +179,7 @@ begin
 
   setDataStringB(self,'MerkezKodu','Merkez Kodu',Kolon1,'',80,List,True,nil,'','',True,True,1);
   setDataString(self,'MerkezAdi','Merkez Adý  ',Kolon1,'',350,True);
+  setDataString(self,'BelgeNo','Belge No',Kolon1,'',80,True);
   setDataString(self,'Adres','Adres',Kolon1,'',350,True);
   setDataString(self,'KapiNo','Kapý No',Kolon1,'',30,True);
   setDataString(self,'PostaKodu','Posta Kodu',Kolon1,'',50,True);
@@ -148,6 +198,7 @@ begin
   setDataString(self,'webUrl','web Url',Kolon1,'',350,True);
   setDataString(self,'SGKSicilNo','SGK Sicil No',Kolon2,'',200,True);
   setDataString(self,'MERSISNo','MERSÝS No',Kolon2,'',120,True);
+
   setDataString(self,'BankaAdi1','Banka Adý 1',Kolon2,'',120,True);
   setDataString(self,'IBAN1','IBAN 1',Kolon2,'',150,True);
   setDataString(self,'BankaAdi2','Banka Adý 2',Kolon2,'',120,True);
@@ -167,6 +218,9 @@ begin
   setDataStringKontrol(self,MerkezTip,'MerkezTipi','Merkez Tipi',kolon1,'',100);
   OrtakEventAta(MerkezTip);
 
+
+  setDataStringKontrol(self,cxFotoPanel , 'cxFotoPanel','',Kolon3,'',150);
+
   tableColumnDescCreate;
 
   SayfaCaption('Merkez Bilgileri','','' ,'','');
@@ -174,6 +228,12 @@ begin
 
  end;
 
+
+procedure TfrmMerkezBilgisi.cxFotoEkleButtonClick(Sender: TObject);
+begin
+  inherited;
+  FotoEkle;
+end;
 
 procedure TfrmMerkezBilgisi.cxKaydetClick(Sender: TObject);
 begin

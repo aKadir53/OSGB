@@ -538,7 +538,8 @@ begin
        TagfrmKasaBanka :
            begin
              sql := 'exec sp_KasaDefteri ' +      txtTopPanelTarih1.GetSQLValue + ',' +
-                                                  txtTopPanelTarih2.GetSQLValue;
+                                                  txtTopPanelTarih2.GetSQLValue + ',' +
+                                                  QuotedStr(vartoStr(KurumTipTopPanel.EditingValue));
            end;
 
      end;

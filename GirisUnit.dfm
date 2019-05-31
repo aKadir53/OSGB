@@ -681,6 +681,10 @@ object GirisForm: TGirisForm
     object sayfa1: TcxTabSheet
       Caption = 'sayfa1'
       ImageIndex = 2
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       object Sayfa1_dxLayoutControl1: TdxLayoutControl
         Left = 0
         Top = 0
@@ -779,6 +783,10 @@ object GirisForm: TGirisForm
     object sayfa2: TcxTabSheet
       Caption = 'sayfa2'
       ImageIndex = 1
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       object sayfa2_dxLayoutControl3: TdxLayoutControl
         Left = 0
         Top = 0
@@ -825,6 +833,10 @@ object GirisForm: TGirisForm
     object sayfa3: TcxTabSheet
       Caption = 'sayfa3'
       ImageIndex = 2
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       object sayfa3_dxLayoutControl2: TdxLayoutControl
         Left = 0
         Top = 0
@@ -877,6 +889,10 @@ object GirisForm: TGirisForm
     object sayfa4: TcxTabSheet
       Caption = 'sayfa4'
       ImageIndex = 3
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       object dxLayoutControl1: TdxLayoutControl
         Left = 0
         Top = 0
@@ -929,6 +945,10 @@ object GirisForm: TGirisForm
     object sayfa5: TcxTabSheet
       Caption = 'sayfa5'
       ImageIndex = 2
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       object dxLayoutControl2: TdxLayoutControl
         Left = 0
         Top = 0
@@ -982,6 +1002,10 @@ object GirisForm: TGirisForm
       Caption = 'sayfaList'
       ImageIndex = 3
       TabVisible = False
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       object cxGridGiris: TcxGrid
         Left = 58
         Top = 29
@@ -1489,10 +1513,11 @@ object GirisForm: TGirisForm
       Width = 436
       object pBar: TcxProgressBar
         Left = 2
-        Top = 46
+        Top = 49
         Align = alBottom
         TabOrder = 0
         Visible = False
+        ExplicitTop = 46
         Width = 432
       end
     end
@@ -1526,6 +1551,7 @@ object GirisForm: TGirisForm
       OnExit = cxEditExit
       BosOlamaz = False
       ValueTip = tvString
+      ExplicitHeight = 21
       Width = 98
     end
     object txtTopPanelTarih2: TcxDateEditKadir
@@ -1548,6 +1574,7 @@ object GirisForm: TGirisForm
       OnExit = cxEditExit
       BosOlamaz = False
       ValueTip = tvString
+      ExplicitHeight = 21
       Width = 98
     end
     object btnListTopPanel: TcxButtonKadir
@@ -1590,6 +1617,7 @@ object GirisForm: TGirisForm
       TabOrder = 3
       OnEnter = cxEditEnter
       OnExit = cxEditExit
+      ExplicitHeight = 21
       Width = 30
     end
     object txtSeansTopPanel: TcxComboBox
@@ -1620,6 +1648,7 @@ object GirisForm: TGirisForm
       TabOrder = 4
       OnEnter = cxEditEnter
       OnExit = cxEditExit
+      ExplicitHeight = 21
       Width = 50
     end
     object SysTakipNoVar: TcxImageComboKadir
@@ -1653,6 +1682,7 @@ object GirisForm: TGirisForm
       OnEnter = cxEditEnter
       OnExit = cxEditExit
       BosOlamaz = False
+      ExplicitHeight = 21
       Width = 45
     end
     object ENabizMesajTipi: TcxImageComboKadir
@@ -1690,6 +1720,7 @@ object GirisForm: TGirisForm
       OnEnter = cxEditEnter
       OnExit = cxEditExit
       BosOlamaz = False
+      ExplicitHeight = 21
       Width = 35
     end
     object AktifPasifTopPanel: TcxImageComboKadir
@@ -1726,6 +1757,7 @@ object GirisForm: TGirisForm
       OnEnter = cxEditEnter
       OnExit = cxEditExit
       BosOlamaz = False
+      ExplicitHeight = 21
       Width = 88
     end
     object DiyalizTipTopPanel: TcxImageComboKadir
@@ -1764,6 +1796,7 @@ object GirisForm: TGirisForm
       OnExit = cxEditExit
       OnKeyDown = cxTextEditKeyDown
       BosOlamaz = False
+      ExplicitHeight = 21
       Width = 139
     end
     object txtDonemTopPanel: TcxDonemComboKadir
@@ -1788,6 +1821,7 @@ object GirisForm: TGirisForm
       OnEnter = cxEditEnter
       OnExit = cxEditExit
       BosOlamaz = False
+      ExplicitHeight = 21
       Width = 109
     end
     object KurumTipTopPanel: TcxImageComboKadir
@@ -1820,6 +1854,7 @@ object GirisForm: TGirisForm
       OnEnter = cxEditEnter
       OnExit = cxEditExit
       BosOlamaz = False
+      ExplicitHeight = 21
       Width = 115
     end
     object chkList: TcxCheckGroup
@@ -1878,6 +1913,7 @@ object GirisForm: TGirisForm
       OnEnter = cxEditEnter
       OnExit = cxEditExit
       OnKeyDown = cxTextEditKeyDown
+      ExplicitHeight = 21
       Width = 205
     end
   end

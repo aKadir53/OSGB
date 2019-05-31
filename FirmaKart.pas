@@ -643,6 +643,8 @@ begin
                        'SirketKod,Sirket,Durum',
                        '50,250,50','SirketKod','Firma Listesi','',5,True);
 
+
+  //datalar.UserGroup
   List.Where := datalar.sirketlerUserFilter;
 
   setDataStringB(self,'SirketKod','Þirket Kodu',Kolon1,'',80,List,True,nil,'','',True,True,1);

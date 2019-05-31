@@ -33,6 +33,8 @@ type
     GridListALACAK: TcxGridDBBandedColumn;
     GridListBAKIYE: TcxGridDBBandedColumn;
     GridListBAKIYETIPI: TcxGridDBBandedColumn;
+    cxStyleRepository2: TcxStyleRepository;
+    cxStyle2: TcxStyle;
     procedure FormCreate(Sender: TObject);
     procedure ButtonClick(Sender: TObject);
     procedure cxKaydetClick(Sender: TObject);override;

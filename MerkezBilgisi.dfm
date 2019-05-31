@@ -16,10 +16,42 @@ object frmMerkezBilgisi: TfrmMerkezBilgisi
   OldCreateOrder = False
   Position = poDefault
   OnCreate = FormCreate
-  ExplicitWidth = 320
-  ExplicitHeight = 240
   PixelsPerInch = 96
   TextHeight = 13
+  object cxFotoPanel: TcxGroupBox
+    Left = 608
+    Top = 35
+    Caption = 'Logo'
+    TabOrder = 0
+    Height = 182
+    Width = 150
+    object Foto: TcxImage
+      Tag = 100
+      Left = 3
+      Top = 15
+      Align = alClient
+      Properties.PopupMenuLayout.MenuItems = []
+      Properties.Stretch = True
+      TabOrder = 0
+      ExplicitWidth = 104
+      ExplicitHeight = 96
+      Height = 129
+      Width = 144
+    end
+    object cxFotoEkleButton: TcxButton
+      Tag = -50
+      Left = 3
+      Top = 144
+      Width = 144
+      Height = 28
+      Align = alBottom
+      Caption = 'Ekle'
+      TabOrder = 1
+      OnClick = cxFotoEkleButtonClick
+      ExplicitTop = 111
+      ExplicitWidth = 104
+    end
+  end
   object PopupMenu1: TPopupMenu
     Images = DATALAR.imag24png
     Left = 176

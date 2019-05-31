@@ -495,7 +495,7 @@ object frmFaturalar: TfrmFaturalar
     end
   end
   object cxStyleRepository2: TcxStyleRepository
-    Left = 16
+    Left = 72
     Top = 56
     PixelsPerInch = 96
     object cxStyle2: TcxStyle

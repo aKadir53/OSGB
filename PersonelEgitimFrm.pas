@@ -830,6 +830,8 @@ begin
       TopluDataset.Dataset0 := ado;
       TopluDataset.Dataset0.Name := 'PersonelEgitimleri';
 
+      TopluDataset.Dataset1 := datalar.QuerySelect('select * from merkezBilgisi');
+
      (*
       sql := 'declare @ek varchar(max),@et int ' +
              ' select @ek = EgitimKod,@et = EgitimTuru from egitimler where id = ' + TcxButtonEditKadir(FindComponent('id')).Text +
@@ -1102,7 +1104,7 @@ begin
   Egitimler.Filter := ' grup = -1';// grup = ' + ifThen(_value_ = '','0',_value_);
  *)
  // setDataStringKontrol(self,Egitimler,'Egitimkod','Eðitimler',kolon1,'',450,140);
-  setDataStringKontrol(self,EgitimAltDetayGrid,'EgitimAltDetayGrid','Eðitim Alt Detay',kolon1,'',370,130,alNone,'',clLeft);
+  setDataStringKontrol(self,EgitimAltDetayGrid,'EgitimAltDetayGrid','Eðitim Alt Detay',kolon1,'',370,300,alNone,'',clLeft);
  // Egitimler.Caption := '';
 
 
@@ -1125,13 +1127,14 @@ begin
   setDataStringKontrol(self,kombo,'EgitimUcretiOdendi','Ödendi mi?',kolon1,'ecr',100);
   setDataStringBLabel(self,'bosSatir',kolon1,'',100,'');
 
-  setDataString(self,'EgitimCSGBGonderimSonuc','ÝBYS Gönderim Sonucu',Kolon1,'Gonder',270, False, '', True);
-  setDataString(self,'sorguNo','ÝBYS SorguNo',Kolon1,'Sorgula',270, False, '', True);
-  addButton(self,btnEgitimGonderTek,'btnEgitimGonderTek','','Eðitim Gönder',Kolon1,'Gonder',100,ButtonClick,30);
-  addButton(self,nil,'btnEgitimSorgu','','Eðitim Sorgula',Kolon1,'Sorgula',100,ButtonClick,30);
+  setDataStringBLabel(self,'bosSatirIBYS',kolon4,'',370,'ÝBYS Gönderim ve Sorgulama');
+  setDataString(self,'EgitimCSGBGonderimSonuc','ÝBYS Gönderim Sonucu',Kolon4,'Gonder',150, False, '', True);
+  setDataString(self,'sorguNo','ÝBYS SorguNo',Kolon4,'Sorgula',150, False, '', True);
+  addButton(self,btnEgitimGonderTek,'btnEgitimGonderTek','','Eðitim Gönder',Kolon4,'Gonder',90,ButtonClick,30);
+  addButton(self,nil,'btnEgitimSorgu','','Eðitim Sorgula',Kolon4,'Sorgula',90,ButtonClick,30);
 //  setDataString(self,'sorguSonuc','ÇSGB Sorgu Sonucu',Kolon1,'',270, False, '', True);
-  setDataStringMemo(self,'sorguSonuc','ÝBYS Sorgu Sonucu',Kolon1,'',270, 50);
-  setDataString(self,'sorguSonucKodu','ÝBYS Sorgu Sonucu Kodu',Kolon1,'',50, False, '', True);
+  setDataStringMemo(self,'sorguSonuc','ÝBYS Sorgu Sonucu',Kolon4,'',150, 50);
+  setDataString(self,'sorguSonucKodu','ÝBYS Sorgu Sonucu Kodu',Kolon4,'',50, False, '', True);
  (*
   sirketlerxx := TcxImageComboKadir.Create(self);
   sirketlerxx.Conn := Datalar.ADOConnection2;
@@ -1144,22 +1147,22 @@ begin
   setDataStringKontrol(self,sirketlerxx,'PersonelSirketKod','Þirketler',Sayfa2_Kolon1,'',250,0,alNone,'');
   *)
 
- // setDataStringBLabel(self,'bosSatir2',kolon3,'',500,'Eðitime Katýlan Personeller');
+  setDataStringBLabel(self,'bosSatir2',kolon3,'',430,'Eðitime Katýlan Personeller');
   addButton(self,nil,'btnPersonelEkle','','Personel Getir',Kolon3,'PERS',120,ButtonClick);
   addButton(self,nil,'btnPersonelSil','','Seçili Personeli Sil',Kolon3,'PERS',120,ButtonClick);
 
-  setDataStringKontrol(self,EgitimPersonel,'EgitimPersonel','',Kolon3,'',500,300,alNone);
+  setDataStringKontrol(self,EgitimPersonel,'EgitimPersonel','',Kolon3,'',430,300,alNone);
   GridList.Bands [0].Width := EgitimPersonel.Width-5;
   EgitimPersonel.Dataset.BeforePost := BeforePost;
 
-  Kolon2.Width := 20;
-  Kolon4.Visible := false;
+  Kolon2.Width := 10;
+ // Kolon4.Visible := false;
 
-  setDataStringBLabel(self,'bosSatir3',kolon3,'',500,'');
-  setDataStringBLabel(self,'bosSatir4',kolon3,'',500,'');
-  setDataString(self,'EgitimciUnvan','Ünvaný',Kolon3,'ad',70,false,'',false,-1);
-  setDataString(self,'EgitimciTc','Tc',Kolon3,'ad',100,false,'',false,-1);
-  setDataString(self,'egitimciAdiSoyadi','Adý Soyadý',Kolon3,'ad',150,false,'',false,-1);
+  setDataStringBLabel(self,'bosSatir4',kolon3,'',440,'');
+  setDataStringBLabel(self,'bosSatir3',kolon3,'',430,'Eðitimci Bilgileri');
+  setDataString(self,'EgitimciUnvan','Ünvaný',Kolon3,'ad',50,false,'',false,-1);
+  setDataString(self,'EgitimciTc','Tc',Kolon3,'ad',90,false,'',false,-1);
+  setDataString(self,'egitimciAdiSoyadi','Adý Soyadý',Kolon3,'ad',100,false,'',false,-1);
   addButton(self,nil,'btnEgitimciEkle','','Ekle',Kolon3,'ad',50,ButtonClick,20);
   addButton(self,nil,'btnEgitimciListesi','','Listeden Ekle',Kolon3,'ad1',100,ButtonClick,21);
   addButton(self,nil,'btnEgitimciSil','','Eðitimci Sil',Kolon3,'ad1',100,ButtonClick,20);
@@ -1167,7 +1170,7 @@ begin
 
   Sayfa3_Kolon2.Visible := False;
   Sayfa3_Kolon3.Visible := False;
-  setDataStringKontrol(self,Egitimci,'Egitimci','',Kolon3,'',500,100,alNone);
+  setDataStringKontrol(self,Egitimci,'Egitimci','',Kolon3,'',430,100,alNone);
 
 
 

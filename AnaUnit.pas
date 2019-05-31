@@ -661,6 +661,7 @@ begin
     Where := '';
     Sube := '';
   end;
+
   datalar.sirketlerUserFilter := where + sube;
   Sirketler.Conn := Datalar.ADOConnection2;
   Sirketler.TableName := 'SIRKETLER_TNM_view';
