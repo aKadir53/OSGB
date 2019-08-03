@@ -3,15 +3,17 @@ object frmPersonelEgitim: TfrmPersonelEgitim
   Top = 0
   Caption = 'frmPersonelEgitim'
   ClientHeight = 446
-  ClientWidth = 874
+  ClientWidth = 917
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
   Font.Height = -11
   Font.Name = 'Tahoma'
   Font.Style = []
+  KeyPreview = True
   OldCreateOrder = False
   OnCreate = FormCreate
+  OnKeyDown = FormKeyDown
   PixelsPerInch = 96
   TextHeight = 13
   object EgitimPersonel: TcxGridKadir
@@ -209,6 +211,7 @@ object frmPersonelEgitim: TfrmPersonelEgitim
     TabOrder = 2
     ExceleGonder = False
     object EgitimGridSatirlar: TcxGridDBBandedTableView
+      DataController.DataSource = memDataEgitimlerDS
       DataController.Summary.DefaultGroupSummaryItems = <>
       DataController.Summary.FooterSummaryItems = <>
       DataController.Summary.SummaryGroups = <>
@@ -528,6 +531,9 @@ object frmPersonelEgitim: TfrmPersonelEgitim
         Caption = 'E'#287'itim Bilgisini '#304'BYS'#39'ye G'#246'nder'
         OnClick = cxButtonCClick
       end
+      object N1: TMenuItem
+        Caption = '-'
+      end
     end
   end
   object Egitimciler: TListeAc
@@ -588,5 +594,27 @@ object frmPersonelEgitim: TfrmPersonelEgitim
       AssignedValues = [svTextColor]
       TextColor = clRed
     end
+  end
+  object memDataEgitimler: TdxMemData
+    Active = True
+    Indexes = <
+      item
+        SortOptions = []
+      end>
+    Persistent.Data = {
+      5665728FC2F5285C8FFE3F090000000200000005000400736563000700000001
+      00080074616B69704E6F00060000000100080068617374614E6F001400000001
+      0009006861737461616469001E00000001000C006861737461536F7941646900
+      0400000001000900427261734B6F6475000100000001000B0054656461766954
+      757275000100000001000600447572756D000800000006000B0054414B495054
+      5554415200}
+    SortOptions = [soDesc, soCaseInsensitive]
+    Left = 760
+    Top = 231
+  end
+  object memDataEgitimlerDS: TDataSource
+    DataSet = memDataEgitimler
+    Left = 760
+    Top = 280
   end
 end

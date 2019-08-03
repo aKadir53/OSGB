@@ -3305,7 +3305,6 @@ object frmYv: TfrmYv
     Font.Style = []
   end
   object HTTP1: TIdHTTP
-    IOHandler = IdSSLIOHandlerSocketOpenSSL1
     OnWork = HTTP1Work
     OnWorkBegin = HTTP1WorkBegin
     OnWorkEnd = HTTP1WorkEnd
@@ -3357,8 +3356,8 @@ object frmYv: TfrmYv
     Request.Ranges.Units = 'bytes'
     Request.Ranges = <>
     HTTPOptions = [hoForceEncodeParams]
-    Left = 320
-    Top = 8
+    Left = 232
+    Top = 88
   end
   object IdSSLIOHandlerSocketOpenSSL1: TIdSSLIOHandlerSocketOpenSSL
     MaxLineAction = maException

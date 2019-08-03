@@ -783,6 +783,42 @@ begin
     end;
 end;
 
+(*
+
+function Tdatalar.QuerySelect (sql:string) : TdxMemData;
+var
+  Data : TdxMemData;
+  ado : TADOQuery;
+begin
+    ado := TADOQuery.Create(nil);
+    Result := TdxMemData.Create(nil);
+    try
+      ado.Connection := ADOConnection2;
+      ado.Close;
+      ado.SQL.Clear ;
+      if Copy(AnsiUppercase(sql) ,1, 6) = 'SELECT'
+      Then sql := 'SET TRANSACTION ISOLATION LEVEL READ UNCOMMITTED  '+ sql;
+      ado.SQL.Add (sql);
+  //    Q.Prepare;
+      ado.Open;
+
+      if not ado.Eof then
+      begin
+         Data.LoadFromDataSet(ado);
+
+
+
+
+      end;
+
+
+    except
+      FreeAndNil (Result);
+      raise;
+    end;
+end;
+*)
+
 function TDATALAR.UygulamaBaglantiTanimi: String;
 begin
   Result := 'Mavi Nokta e-Reçete Masaüstü Uyg. v.'+versiyon;

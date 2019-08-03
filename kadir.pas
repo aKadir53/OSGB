@@ -3,7 +3,7 @@ unit kadir;
 interface
 
 uses Windows, Messages, SysUtils, Variants, Classes, Graphics, Vcl.Controls, Consts,
-  Dialogs, ADODB, registry, ComCtrls, StdCtrls, db, ExtCtrls,comObj,
+  Dialogs, ADODB, registry, ComCtrls, StdCtrls, db, ExtCtrls,comObj, dxmdaset,
   ShellApi, forms, data_modul, Grids,  Rio, SOAPHTTPClient,cxGridExportLink,
   xsbuiltIns,  Mask, Math, Printers,   zlib, StrUtils, Menus, SHDocVw,
   ActiveX, Buttons,  WinSvc, ImgList,wininet, types, kadirType, KadirLabel,jpeg, AdvGrid,
@@ -435,7 +435,11 @@ function FirmaSorgulaCSGB(firmaSGK , iguTC : string) : isyeriCevapDVO;
 //function EgitimKaydetCSGB(egitim : egitimBilgisi ; pin,cardType,_xml_ : string) : egitimBilgisiCevap;overload;
 //function EgitimKaydetCSGB(egitim : cokluEgitimBilgisi ; pin,cardType,_xml_ : string) : cokluEgitimCevapDVO;overload;
 //function EgitimKaydetCSGBImzager(egitim : egitimBilgisi) : egitimBilgisiCevap;
-function EgitimVerisi(id : string ; var pin,cardType : string; var xml : string;var xmlSOAP : string) : egitimBilgisi;
+
+function EgitimVerisi(id : string ; var pin,cardType : string; var xml : string;var xmlSOAP : string) : egitimBilgisi;overload;
+function EgitimVerisi(ado : TdxMemData ; id : string ; var pin,cardType : string; var xml : string;var xmlSOAP : string) : egitimBilgisi; overload;
+
+
 function EgitimVerisiXML(egitim : egitimBilgisi) : string;
 //function EgitimImzala(pin,egitim,cardType : string): string;
 function EgitimImzali : string;
@@ -946,6 +950,7 @@ begin
       end;
     end;
 end;
+
 function EgitimVerisi(id : string ; var pin,cardType : string; var xml : string;var xmlSOAP : string) : egitimBilgisi;
 var
   sql : string;
@@ -1047,6 +1052,113 @@ begin
    end;
 
 end;
+
+
+function EgitimVerisi(ado : TdxMemData ; id : string ; var pin,cardType : string; var xml : string;var xmlSOAP : string) : egitimBilgisi;
+var
+  sql , _c_ : string;
+  Veri : egitimBilgisi;
+//  VeriCoklu : cokluEgitimBilgisi;
+  calisanlar : Array_Of_calisanObject;
+  calisan : calisanObject;
+  egitimler : Array_Of_egitimObject;
+  egitim : egitimObject;
+  i : integer;
+  calisanList : TStringList;
+  egitimList : TStringList;
+  _egitim_ : TStringList;
+begin
+
+   calisanList := TStringList.Create;
+   egitimList := TStringList.Create;
+
+   try
+     // ado.Locate('EgitimID',id,[]);
+
+      pin := ado.FieldByName('pin').AsString;
+      cardType := ado.FieldByName('cardType').AsString;
+      xml :=  ado.FieldByName('EgitimXML').AsString;
+      xmlSOAP :=  ado.FieldByName('EgitimSOAP').AsString;
+
+
+      Veri := egitimBilgisi.Create;
+      Veri.sorguNo := strToint(id);
+      Veri.belgeTipi := ado.FieldByName('belgeTipi').AsInteger;
+      Veri.egiticiTckNo := ado.FieldByName('egitimciTC').AsLargeInt;
+      Veri.egitimTarihi := ado.FieldByName('EgitimTarihi').AsString;
+      Veri.egitimTur := ado.FieldByName('EgitimYontem').AsInteger;
+      Veri.egitimYer := ado.FieldByName('EgitimTip').AsInteger;
+      Veri.firmaKodu := ado.FieldByName('FirmaKodu').AsString;
+      Veri.isgProfTckNo :=  ado.FieldByName('isgProf').AsLargeInt;
+      Veri.sgkTescilNo := ado.FieldByName('sgkSicil').AsString;
+
+      Split(',',ado.FieldByName('calisanlar').AsString, calisanList);
+
+      if calisanList.Count = 0
+      then begin
+         ShowMessageSkin('Eðitime Katýlan Personel Bilgisi Tanýmlý Deðil','','','info');
+         Veri := nil;
+         exit;
+      end;
+
+
+      i := 0;
+      SetLength(calisanlar ,calisanList.Count);
+
+      for _c_ in calisanList do
+      begin
+        calisan := calisanObject.Create;
+        calisan.calisanTckNo := StrToInt64(_c_);
+        calisanlar[i] := calisan;
+        inc(i);
+      end;
+      Veri.calisan := calisanlar;
+
+      Split(',',ado.FieldByName('egitimler').AsString, egitimList);
+
+      if egitimList.Count = 0
+      then begin
+         ShowMessageSkin('Eðitim Bilgisi Tanýmlý Deðil','','','info');
+         Veri := nil;
+         exit;
+      end;
+
+      i := 0;
+      SetLength(egitimler,egitimList.Count);
+      for _c_ in egitimList do
+      begin
+           _egitim_ := TStringList.Create;
+           try
+            ExtractStrings(['|'],[],PWideChar(_c_),_egitim_);
+
+            if (_egitim_[0] = '0') or  (_egitim_[1] = '0.0')
+            then
+            begin
+              ShowMessageSkin('Eðitim Detay Bilgisi Tanýmý Hatalý','Kod yada Süre Bilgisi boþ olamaz','','info');
+              Veri := nil;
+              exit;
+            end;
+            egitim := egitimObject.Create;
+            egitim.egitimKoduId := strToint(_egitim_[0]);
+            egitim.egitimSuresi := strToFloat(_egitim_[1]);
+            egitimler[i] := egitim;
+            inc(i);
+            except
+              _egitim_.Free;
+            end;
+      end;
+      Veri.egitim := egitimler;
+
+   finally
+      EgitimVerisi := Veri;
+      calisanList.Free;
+      egitimList.Free;
+
+   end;
+
+end;
+
+
 
 
 Procedure FirmaSorgulCSGBCvpFirmaBilgiGuncelle(firmaSgk : string ; Cvp : isyeriCevapDVO);

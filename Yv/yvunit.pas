@@ -9,7 +9,7 @@ uses
    cxContainer, cxEdit, cxLabel, cxProgressBar,ShellApi,TlHelp32,
   IdBaseComponent, IdComponent, IdTCPConnection, IdTCPClient, IdHTTP,
   Vcl.StdCtrls, cxButtons, dxStatusBar, Vcl.ExtCtrls,ShlObj,ActiveX,ComObj,
-  dxSkinsdxStatusBarPainter, acPNG, WinInet,
+  dxSkinsdxStatusBarPainter, acPNG, WinInet,strUtils,
   Menus,cxLookAndFeels, dxSkinsForm, IdIOHandler, IdIOHandlerSocket,
   IdIOHandlerStack, IdSSL, IdSSLOpenSSL, dxSkinBlue, dxSkinCaramel,
   dxSkinCoffee, dxSkiniMaginary, dxSkinLilian, dxSkinLiquidSky;
@@ -38,6 +38,9 @@ type
     function DesktopPath : string;
     procedure FormShow(Sender: TObject);
     function Download(URL, User, Pass, FileName :  string ; FullURL : string = '443'): Boolean;
+    function RegOku(dizi : string ; openKey : string = '') : Variant;
+    procedure RegYaz(dizi , diziDegeri : string ; openKey : string = '');
+    function IsNull (const s: String): Boolean;
   private
     { Private declarations }
   public
@@ -52,10 +55,71 @@ var
   frmYv: TfrmYv;
   filename : string;
   _max_,_ps_,_step_ : double;
+  versiyonDownloadURL : string;
+  _httpPos_ : integer;
 
   implementation
 
 {$R *.dfm}
+
+function TfrmYv.IsNull (const s: String): Boolean;
+begin
+  Result := Trim (s) = '';
+end;
+
+function TfrmYv.RegOku(dizi : string ; openKey : string = '') : Variant;
+var
+   reg : tregistry;
+   value : Variant;
+begin
+   reg := Tregistry.Create;
+   try
+     if isnull (openKey) then openkey := 'Software\NOKTA\NOKTA';
+
+     reg.OpenKey(openKey,True);
+     try
+       value := reg.ReadString(dizi);
+     finally
+       reg.CloseKey;
+     end;
+   finally
+     reg.Free;
+   end;
+   Result := value;
+end;
+
+procedure TfrmYv.RegYaz(dizi , diziDegeri : string ; openKey : string = '');
+var
+  reg : tregistry;
+begin
+ (*
+  reg := TRegistry.Create(KEY_READ);
+  reg.RootKey := HKEY_LOCAL_MACHINE;
+
+  if (not reg.KeyExists('Software\\MyCompanyName\\MyApplication\\')) then
+    begin
+      MessageDlg('Key not found! Created now.',
+                            mtInformation, mbOKCancel, 0);
+    end;
+  reg.Access := KEY_WRITE;
+  openResult := reg.OpenKey('Software\\MyCompanyName\\MyApplication\\',True);
+
+    *)
+
+  reg := Tregistry.Create;
+  try
+    if IsNull (OpenKey) then OpenKey := 'Software\NOKTA\NOKTA';
+    reg.OpenKey(openKey,True);
+    try
+      reg.WriteString(dizi,diziDegeri);
+    finally
+      reg.CloseKey;
+    end;
+  finally
+    reg.Free;
+  end;
+end;
+
 
 function TfrmYv.Download(URL, User, Pass, FileName :  string ; FullURL : string = '443'): Boolean;
 const
@@ -82,7 +146,7 @@ begin
    );
 
   try
-    hURL := InternetOpenURL(hSession, PChar(URL), nil, 0, 0, 0) ;
+    hURL := InternetOpenURL(hSession, PChar(URL), nil, 0, INTERNET_FLAG_RELOAD, 0) ;
     try
       AssignFile(f, FileName);
       Rewrite(f,1);
@@ -210,6 +274,13 @@ begin
 
  KillTaskt('OSGB.exe');
 // KillTaskt('UYUMOSGB.exe');
+//  RegYaz ('versiyonDownloadURL','');
+
+
+
+  versiyonDownloadURL := RegOku('versiyonDownloadURL');
+  versiyonDownloadURL := ifThen(versiyonDownloadURL = '' ,'https://www.noktayazilim.net', versiyonDownloadURL);
+ _httpPos_ := pos(':',versiyonDownloadURL) - 1;
 
 
  if ForceDirectories ('C:\OSGB') then
@@ -219,94 +290,106 @@ begin
     Then begin
       try
         filename := 'ALPEMIXCMX.exe';
-        Download('https://www.noktayazilim.net/'+filename,'mavinokta','nokta53Nokta','C:\OSGB\'+filename);
+        Download(versiyonDownloadURL + '/'+filename,'mavinokta','nokta53Nokta','C:\OSGB\'+filename);
       finally
       end;
     end;
 
-     try
-      filename := 'NoktaDLL.dll';
-      Download('https://www.noktayazilim.net/'+filename,'mavinokta','nokta53Nokta','C:\OSGB\'+filename);
-     finally
-     end;
 
-     try
-      filename := 'EFaturaDLL.dll';
-      Download('https://www.noktayazilim.net/'+filename,'mavinokta','nokta53Nokta','C:\OSGB\'+filename);
-     finally
-     end;
+     if copy(versiyonDownloadURL,1,_httpPos_) = 'http'
+     then begin
+        dosya := TFileStream.Create('C:\OSGB\NoktaDLL.dll',fmCreate);
+        try
+          HTTP1.Get(versiyonDownloadURL + '/NoktaDLL.dll' ,TStream(dosya));
+        finally
+         dosya.Free;
+        end;
+        dosya := TFileStream.Create('C:\OSGB\EFaturaDLL.dll',fmCreate);
+        try
+          HTTP1.Get(versiyonDownloadURL + '/EFaturaDLL.dll' ,TStream(dosya));
+        finally
+         dosya.Free;
+        end;
+        dosya := TFileStream.Create('C:\OSGB\SmsApi.dll',fmCreate);
+        try
+          HTTP1.Get(versiyonDownloadURL + '/SmsApi.dll' ,TStream(dosya));
+        finally
+         dosya.Free;
+        end;
+        dosya := TFileStream.Create('C:\OSGB\BouncyCastle.Crypto.dll',fmCreate);
+        try
+          HTTP1.Get(versiyonDownloadURL + '/BouncyCastle.Crypto.dll' ,TStream(dosya));
+        finally
+         dosya.Free;
+        end;
+        dosya := TFileStream.Create('C:\OSGB\EdocLib.dll',fmCreate);
+        try
+          HTTP1.Get(versiyonDownloadURL + '/EdocLib.dll' ,TStream(dosya));
+        finally
+         dosya.Free;
+        end;
+        dosya := TFileStream.Create('C:\OSGB\Net.Pkcs11.dll',fmCreate);
+        try
+          HTTP1.Get(versiyonDownloadURL + '/Net.Pkcs11.dll' ,TStream(dosya));
+        finally
+         dosya.Free;
+        end;
+        dosya := TFileStream.Create('C:\OSGB\itextsharp.dll',fmCreate);
+        try
+          HTTP1.Get(versiyonDownloadURL + '/itextsharp.dll' ,TStream(dosya));
+        finally
+         dosya.Free;
+        end;
+        dosya := TFileStream.Create('C:\OSGB\Microsoft.Web.Services3.dll',fmCreate);
+        try
+          HTTP1.Get(versiyonDownloadURL + '/Microsoft.Web.Services3.dll' ,TStream(dosya));
+        finally
+         dosya.Free;
+        end;
+        dosya := TFileStream.Create('C:\OSGB\Microsoft.VisualBasic.PowerPacks.Vs.dll',fmCreate);
+        try
+          HTTP1.Get(versiyonDownloadURL + '/Microsoft.VisualBasic.PowerPacks.Vs.dll' ,TStream(dosya));
+        finally
+         dosya.Free;
+        end;
+        dosya := TFileStream.Create('C:\OSGB\OSGB.exe',fmCreate);
+        try
+          HTTP1.Get(versiyonDownloadURL + '/OSGB.exe' ,TStream(dosya));
+        finally
+         dosya.Free;
+        end;
 
-
-     try
-      filename := 'SmsApi.dll';
-      Download('https://www.noktayazilim.net/'+filename,'mavinokta','nokta53Nokta','C:\OSGB\'+filename);
-      finally
-     end;
-
-
-     try
-      filename := 'BouncyCastle.Crypto.dll';
-      Download('https://www.noktayazilim.net/'+filename,'mavinokta','nokta53Nokta','C:\OSGB\'+filename);
-     finally
-     end;
-
-     try
-      filename := 'EdocLib.dll';
-      Download('https://www.noktayazilim.net/'+filename,'mavinokta','nokta53Nokta','C:\OSGB\'+filename);
-     finally
-     end;
-
-     try
-      filename := 'Net.Pkcs11.dll';
-      Download('https://www.noktayazilim.net/'+filename,'mavinokta','nokta53Nokta','C:\OSGB\'+filename);
-     finally
-     end;
-
-
-     try
-      filename := 'itextsharp.dll';
-      Download('https://www.noktayazilim.net/'+filename,'mavinokta','nokta53Nokta','C:\OSGB\'+filename);
-     finally
-     end;
-
-     try
-      filename := 'Microsoft.Web.Services3.dll';
-      Download('https://www.noktayazilim.net/'+filename,'mavinokta','nokta53Nokta','C:\OSGB\'+filename);
-     finally
-     end;
-
-     try
-      filename := 'Microsoft.VisualBasic.PowerPacks.Vs.dll';
-      Download('https://www.noktayazilim.net/'+filename,'mavinokta','nokta53Nokta','C:\OSGB\'+filename);
-     finally
-     end;
-
-
-   //   filename := 'RDP.rtf';
-   //   dosya := TFileStream.Create('C:\OSGB\RDP.rtf',fmCreate);
-   //   HTTP1.Get('https://www.noktayazilim.net/RDP.rtf' ,TStream(dosya));
-
-    //  filename := 'SonucRaporu.rtf';
-    //  dosya := TFileStream.Create('C:\OSGB\RDP.SonucRaporu',fmCreate);
-    //  HTTP1.Get('https://www.noktayazilim.net/SonucRaporu.rtf' ,TStream(dosya));
-
-
-
-    if pos('UYUM',paramStr(0)) > 0 then exeFile := UYUM else exeFile := Nokta;
+     end
+     else
      begin
-       try
-        filename := exeFile;
-        Download('https://www.noktayazilim.net/'+filename,'mavinokta','nokta53Nokta','C:\OSGB\'+filename);
-       finally
-       end;
+      filename := 'NoktaDLL.dll';
+      Download(versiyonDownloadURL + '/'+filename,'mavinokta','nokta53Nokta','C:\OSGB\'+filename);
+      filename := 'EFaturaDLL.dll';
+      Download(versiyonDownloadURL + '/'+filename,'mavinokta','nokta53Nokta','C:\OSGB\'+filename);
+      filename := 'SmsApi.dll';
+      Download(versiyonDownloadURL + '/'+filename,'mavinokta','nokta53Nokta','C:\OSGB\'+filename);
+      filename := 'BouncyCastle.Crypto.dll';
+      Download(versiyonDownloadURL + '/'+filename,'mavinokta','nokta53Nokta','C:\OSGB\'+filename);
+      filename := 'EdocLib.dll';
+      Download(versiyonDownloadURL + '/'+filename,'mavinokta','nokta53Nokta','C:\OSGB\'+filename);
+      filename := 'Net.Pkcs11.dll';
+      Download(versiyonDownloadURL + '/'+filename,'mavinokta','nokta53Nokta','C:\OSGB\'+filename);
+      filename := 'itextsharp.dll';
+      Download(versiyonDownloadURL + '/'+filename,'mavinokta','nokta53Nokta','C:\OSGB\'+filename);
+      filename := 'Microsoft.Web.Services3.dll';
+      Download(versiyonDownloadURL + '/'+filename,'mavinokta','nokta53Nokta','C:\OSGB\'+filename);
+      filename := 'Microsoft.VisualBasic.PowerPacks.Vs.dll';
+      Download(versiyonDownloadURL + '/'+filename,'mavinokta','nokta53Nokta','C:\OSGB\'+filename);
+      filename := Nokta;
+      Download(versiyonDownloadURL + '/'+filename,'mavinokta','nokta53Nokta','C:\OSGB\'+filename);
      end;
 
-    filename := 'C:\OSGB\' + exeFile;
-    ShellExecute(Handle,'open', pwidechar(filename),
-                pwidechar(''), nil, SW_SHOWNORMAL);
+
+    filename := 'C:\OSGB\' + Nokta;
+    ShellExecute(Handle,'open', pwidechar(filename),pwidechar(''), nil, SW_SHOWNORMAL);
 
     p := DesktopPath;
-    CreateLink('C:\OSGB\' + exeFile,'','', p+'\OSGB.lnk');
+    CreateLink('C:\OSGB\' + Nokta,'','', p+'\OSGB.lnk');
 
     halt;
     //x

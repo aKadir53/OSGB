@@ -639,9 +639,9 @@ begin
   Sayfa3_Kolon3.Width := 0;
   Sayfa3_Kolon2.Width := 0;
 
-  List := ListeAcCreate('SIRKETLER_TNM_view','sirketKod,tanimi,Aktif',
-                       'SirketKod,Sirket,Durum',
-                       '50,250,50','SirketKod','Firma Listesi','',5,True);
+  List := ListeAcCreate('SIRKETLER_TNM_view','sirketKod,tanimi,VN,Aktif',
+                       'SirketKodu,Sirket,VergiNo,Durum',
+                       '50,250,100,50','SirketKod','Firma Listesi','',5,True);
 
 
   //datalar.UserGroup
