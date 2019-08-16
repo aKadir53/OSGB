@@ -909,7 +909,7 @@ riskDuzenle,yeniRisk :
                     datalar.FirmaSubeBilgi.Adres :=  TcxTextEdit(FindComponent('Adres')).EditValue;
                     datalar.FirmaSubeBilgi.KapaliAlan :=  TcxTextEdit(FindComponent('KapaliAlan')).EditValue;
                     datalar.FirmaSubeBilgi.AcikAlan :=  TcxTextEdit(FindComponent('AcikAlan')).EditValue;
-
+                    datalar.FirmaSubeBilgi.BolgeKodu :=  TcxTextEdit(FindComponent('BolgeKodu')).EditValue;
                end;
    olcumEkle :
                begin
@@ -2144,6 +2144,9 @@ ptPersonelTetkikleri :
                   TcxTextEdit(FindComponent('subeKod')).EditValue := datalar.FirmaSubeBilgi.SubeKodu;
                   setDataString(self,'subeTanim','Þube Tanýmý',Kolon1,'',150,True,'',False,0,'',ecUpperCase);
                   TcxTextEdit(FindComponent('subeTanim')).EditValue := datalar.FirmaSubeBilgi.SirketAdi;
+
+                  setDataStringIC(self,'BolgeKodu','Bölge',Kolon1,'sat',120,'SCH_BolgeTanimlari','kod','tanimi');
+                  TcxImageComboKadir(FindComponent('BolgeKodu')).EditValue := datalar.FirmaSubeBilgi.BolgeKodu;
 
                   setDataString(self,'subeSiciNo','Þube Sicil No',Kolon1,'',240,True,'',False,0,'',ecUpperCase,'9-0009-09-09-9999999-099-09-09-000');
                   TcxTextEdit(FindComponent('subeSiciNo')).EditValue := datalar.FirmaSubeBilgi.subeSiciNo;

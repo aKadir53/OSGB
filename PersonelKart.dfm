@@ -529,7 +529,12 @@ object frmPersonelKart: TfrmPersonelKart
       item
         Description = 'Yeni'
         Value = 2
+      end
+      item
+        Description = 'Kara Liste'
+        Value = 3
       end>
+    Properties.OnChange = txtAktifPropertiesChange
     Style.TextStyle = [fsBold]
     TabOrder = 10
     Width = 121
@@ -899,10 +904,146 @@ object frmPersonelKart: TfrmPersonelKart
       GridView = GridIseBaslamaEgitim
     end
   end
+  object GridPersonelBelgeler: TcxGridKadir
+    Left = 8
+    Top = 35
+    Width = 742
+    Height = 140
+    TabOrder = 16
+    ExceleGonder = False
+    object GridPersonelBelgelerBelge: TcxGridDBBandedTableView
+      Navigator.Buttons.First.Visible = False
+      Navigator.Buttons.PriorPage.Visible = False
+      Navigator.Buttons.Prior.Visible = False
+      Navigator.Buttons.Next.Visible = False
+      Navigator.Buttons.NextPage.Visible = False
+      Navigator.Buttons.Last.Visible = False
+      Navigator.Buttons.Append.Visible = False
+      Navigator.Buttons.Edit.Visible = False
+      Navigator.Buttons.Refresh.Visible = False
+      Navigator.Buttons.SaveBookmark.Visible = False
+      Navigator.Buttons.GotoBookmark.Visible = False
+      Navigator.Buttons.Filter.Visible = False
+      Navigator.Visible = True
+      DataController.Summary.DefaultGroupSummaryItems = <>
+      DataController.Summary.FooterSummaryItems = <>
+      DataController.Summary.SummaryGroups = <>
+      NewItemRow.Visible = True
+      OptionsCustomize.ColumnFiltering = False
+      OptionsCustomize.ColumnSorting = False
+      OptionsView.GridLines = glHorizontal
+      OptionsView.GroupByBox = False
+      OptionsView.GroupByHeaderLayout = ghlHorizontal
+      Styles.Inactive = cxStyle1
+      Styles.Group = cxStyle3
+      Bands = <
+        item
+          Caption = 'Personelin Belgeleri'
+          Styles.Header = AnaForm.cxStyle1
+          Width = 733
+        end>
+      object BelgeTip: TcxGridDBBandedColumn
+        Caption = 'Belge Tipi'
+        DataBinding.FieldName = 'BelgeTipi'
+        PropertiesClassName = 'TcxImageComboBoxProperties'
+        Properties.Alignment.Horz = taCenter
+        Properties.Alignment.Vert = taVCenter
+        Properties.Items = <>
+        HeaderAlignmentHorz = taCenter
+        Width = 147
+        Position.BandIndex = 0
+        Position.ColIndex = 0
+        Position.RowIndex = 0
+      end
+      object cxGridDBBandedColumn6: TcxGridDBBandedColumn
+        Caption = 'Belge Tarihi'
+        DataBinding.FieldName = 'BelgeTarihi'
+        PropertiesClassName = 'TcxDateEditProperties'
+        Properties.Alignment.Horz = taCenter
+        Properties.Alignment.Vert = taVCenter
+        HeaderAlignmentHorz = taCenter
+        HeaderAlignmentVert = vaCenter
+        Width = 104
+        Position.BandIndex = 0
+        Position.ColIndex = 1
+        Position.RowIndex = 0
+      end
+      object cxGridDBBandedColumn7: TcxGridDBBandedColumn
+        Caption = 'Alinan Kurum'
+        DataBinding.FieldName = 'AlinanKurum'
+        PropertiesClassName = 'TcxTextEditProperties'
+        Properties.Alignment.Horz = taCenter
+        Properties.Alignment.Vert = taVCenter
+        HeaderAlignmentHorz = taCenter
+        Width = 138
+        Position.BandIndex = 0
+        Position.ColIndex = 3
+        Position.RowIndex = 0
+      end
+      object cxGridDBBandedColumn8: TcxGridDBBandedColumn
+        Caption = 'Gecerlilik Tarihi'
+        DataBinding.FieldName = 'GecerlilikTarihi'
+        PropertiesClassName = 'TcxDateEditProperties'
+        Properties.Alignment.Horz = taCenter
+        Properties.Alignment.Vert = taVCenter
+        HeaderAlignmentHorz = taCenter
+        HeaderAlignmentVert = vaCenter
+        Width = 104
+        Position.BandIndex = 0
+        Position.ColIndex = 2
+        Position.RowIndex = 0
+      end
+      object cxGridDBBandedColumn9: TcxGridDBBandedColumn
+        Caption = 'Belge'
+        DataBinding.FieldName = 'BelgeYuklu'
+        PropertiesClassName = 'TcxImageComboBoxProperties'
+        Properties.Images = DATALAR.imag24png
+        Properties.Items = <
+          item
+            ImageIndex = 110
+            Value = 1
+          end
+          item
+            Value = 0
+          end>
+        HeaderAlignmentHorz = taCenter
+        Options.Editing = False
+        Width = 37
+        Position.BandIndex = 0
+        Position.ColIndex = 4
+        Position.RowIndex = 0
+      end
+      object GridPersonelBelgelerBelgeColumn1: TcxGridDBBandedColumn
+        Caption = 'Aktif'
+        DataBinding.FieldName = 'durum'
+        PropertiesClassName = 'TcxCheckBoxProperties'
+        Properties.Alignment = taLeftJustify
+        Properties.NullStyle = nssUnchecked
+        Properties.ValueChecked = '1'
+        Properties.ValueUnchecked = '0'
+        HeaderAlignmentHorz = taCenter
+        Width = 42
+        Position.BandIndex = 0
+        Position.ColIndex = 5
+        Position.RowIndex = 0
+      end
+      object GridPersonelBelgelerBelgeColumn2: TcxGridDBBandedColumn
+        DataBinding.FieldName = 'Aciklama'
+        HeaderAlignmentHorz = taCenter
+        Width = 151
+        Position.BandIndex = 0
+        Position.ColIndex = 6
+        Position.RowIndex = 0
+      end
+    end
+    object cxGridLevel3: TcxGridLevel
+      GridView = GridPersonelBelgelerBelge
+    end
+  end
   object PopupMenu1: TPopupMenu
     Images = DATALAR.imag24png
-    Left = 72
-    Top = 64
+    Left = 40
+    Top = 184
     object Kapat1: TMenuItem
       Tag = 9999
       Caption = 'Kapat'
@@ -1014,8 +1155,8 @@ object frmPersonelKart: TfrmPersonelKart
   end
   object DataSource1: TDataSource
     DataSet = ADO_Gelisler
-    Left = 48
-    Top = 120
+    Left = 120
+    Top = 232
   end
   object cxStyleRepository1: TcxStyleRepository
     Left = 224
@@ -1043,8 +1184,8 @@ object frmPersonelKart: TfrmPersonelKart
   object ADO_Gelisler: TADOQuery
     Connection = DATALAR.ADOConnection2
     Parameters = <>
-    Left = 16
-    Top = 120
+    Left = 64
+    Top = 232
   end
   object ListeAc3: TListeAc
     ListeBaslik = 'Primer Tanilar (Hastal'#305'klar)'

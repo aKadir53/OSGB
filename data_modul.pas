@@ -285,6 +285,10 @@ type
       var ExecuteOptions: TExecuteOptions; var EventStatus: TEventStatus;
       const Command: _Command; const Recordset: _Recordset);
     procedure DataModuleDestroy(Sender: TObject);
+    procedure CSGBSoapAfterExecute(const MethodName: string;
+      SOAPResponse: TStream);
+    procedure CSGBSoapBeforeExecute(const MethodName: string;
+      SOAPRequest: TStream);
   private
 
     { Private declarations }
@@ -362,6 +366,7 @@ type
    CSGBSifre : string;
    CSGBFirmaKod : string;
    versiyonDownloadURL : string;
+   CSGBSoapFileName : string;
  //  Foto : TPngImage;
    Foto : TJpegImage;
    userTanimi : String;
@@ -480,6 +485,47 @@ begin
       Result := False;
    end;
   end;
+end;
+
+procedure TDATALAR.CSGBSoapAfterExecute(const MethodName: string;
+  SOAPResponse: TStream);
+var
+  R: UTF8String;
+  StrList1: TStringList;
+begin
+   StrList1 := TStringList.Create;
+
+   if not DirectoryExists('C:\OSGB\Http')
+   then MkDir('C:\OSGB\Http');
+   try
+     SetLength(R, SOAPResponse.Size);
+     SOAPResponse.Position := 0;
+     SOAPResponse.Read(R[1], Length(R));
+     StrList1.add(R);
+     StrList1.SaveToFile('C:\OSGB\Http\'+datalar.CSGBSoapFileName);
+   finally
+     StrList1.Free;
+   end;
+end;
+
+procedure TDATALAR.CSGBSoapBeforeExecute(const MethodName: string;
+  SOAPRequest: TStream);
+var
+  R: UTF8String;
+  StrList1: TStringList;
+begin
+   StrList1 := TStringList.Create;
+   if not DirectoryExists('C:\OSGB\Http')
+   then MkDir('C:\OSGB\Http');
+   try
+     SetLength(R, SOAPRequest.Size);
+     SOAPRequest.Position := 0;
+     SOAPRequest.Read(R[1], Length(R));
+     StrList1.add(R);
+     StrList1.SaveToFile('C:\OSGB\Http\'+datalar.CSGBSoapFileName);
+   finally
+     StrList1.Free;
+   end;
 end;
 
 function TDATALAR.KillTaskw(Dosyadi: string): integer;

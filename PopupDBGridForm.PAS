@@ -228,6 +228,7 @@ begin
    cxGrid3.Dataset.fieldbyname('Adres').asstring := TFirmaBilgi(_record_^).Adres;
    cxGrid3.Dataset.fieldbyname('KapaliAlan').asstring := TFirmaBilgi(_record_^).KapaliAlan;
    cxGrid3.Dataset.fieldbyname('AcikAlan').asstring := TFirmaBilgi(_record_^).AcikAlan;
+   cxGrid3.Dataset.fieldbyname('BolgeKodu').Value := TFirmaBilgi(_record_^).BolgeKodu;
 
 end;
 
@@ -262,6 +263,7 @@ begin
     TFirmaBilgi(_record_^).Adres :=   cxGrid3.Dataset.fieldbyname('Adres').asstring;
     TFirmaBilgi(_record_^).KapaliAlan :=   cxGrid3.Dataset.fieldbyname('KapaliAlan').asstring;
     TFirmaBilgi(_record_^).AcikAlan :=   cxGrid3.Dataset.fieldbyname('AcikAlan').asstring;
+    TFirmaBilgi(_record_^).BolgeKodu :=   cxGrid3.Dataset.fieldbyname('BolgeKodu').AsInteger;
 
 end;
 
@@ -453,21 +455,21 @@ begin
 
     TagfrmSube :
     begin
-        ClientHeight := 300;
-        ClientWidth := 1200;
+        ClientHeight := 600;
+        ClientWidth := 1360;
         TableName := 'SIRKET_SUBE_TNM';
         _fields_ := 'sirketKod,subeKod,subeTanim,subeSiciNo,subeDoktor,IGU,DigerSaglikPers,BolgeMudurlukSicilNo,MuayeneProtokolNo,DoktorCalismaDakika,IGUCalismaDakika,' +
-                    'DigerSaglikPersCalismaDakika,NaceKod,tehlikeSinifi,Pasif,SemtLokasyon,calisanSayi,Adres,KapaliAlan,AcikAlan';
+                    'DigerSaglikPersCalismaDakika,NaceKod,tehlikeSinifi,Pasif,SemtLokasyon,calisanSayi,Adres,KapaliAlan,AcikAlan,BolgeKodu';
         _fieldBaslik_ := ',Þube Kodu,Þube Tanýmý,ÝþYeri Sicil No,Doktor,Ýþ Güvenlik Uzm.,'+
-                         'Diðer Sað.Pers,Bölge Md.Scl.No,Muayene Protokol No,Doktor Çalýþma Dk.,Ýþ Gv.Uzm.Çalýsma Dk.,DiðerSaðPersÇDakika,Nace Kodu,TehlikeSinifi,Pasif,Semt/Lokasyon,ÇalýþanSayý,Adres,K.Alan(m2),A.Alan(m2)';
-        _fieldTips_ := 'string,string,string,maskEdit9-0009-09-09-9999999-099-09-09-000;1;_,ImageDoktorCombo,ImageDoktorCombo,ImageDoktorCombo,string,string,string,string,string,ButtonEdit,ImageDoktorCombo,CheckBit,string,string,string,int,int';
+                         'Diðer Sað.Pers,Bölge Md.Scl.No,Muayene Protokol No,Doktor Çalýþma Dk.,Ýþ Gv.Uzm.Çalýsma Dk.,DiðerSaðPersÇDakika,Nace Kodu,TehlikeSinifi,Pasif,Semt/Lokasyon,ÇalýþanSayý,Adres,K.Alan(m2),A.Alan(m2),BolgeKodu';
+        _fieldTips_ := 'string,string,string,maskEdit9-0009-09-09-9999999-099-09-09-000;1;_,ImageDoktorCombo,ImageDoktorCombo,ImageDoktorCombo,string,string,string,string,string,ButtonEdit,ImageDoktorCombo,CheckBit,string,string,string,int,int,ImageDoktorCombo';
         indexFieldName := 'sirketKod = ' + QuotedStr(_firmaKod_);
         cxPanel.Visible := false;
         cxGroupDoktorlar.Caption := 'Þube Bilgileri';
         cxGrid3.Dataset.BeforePost := ADOBeforePost;
         cxGrid3.Dataset.Connection := datalar.ADOConnection2;
         cxGrid3.Dataset.SQL.Text := 'Select sirketKod,subeKod,subeTanim,subeSiciNo,subeDoktor,IGU,DigerSaglikPers,' +
-                                    'BolgeMudurlukSicilNo,MuayeneProtokolNo,DoktorCalismaDakika,IGUCalismaDakika,DigerSaglikPersCalismaDakika,NaceKod,tehlikeSinifi,Pasif,SemtLokasyon,calisanSayi,Adres,KapaliAlan,AcikAlan ' +
+                                    'BolgeMudurlukSicilNo,MuayeneProtokolNo,DoktorCalismaDakika,IGUCalismaDakika,DigerSaglikPersCalismaDakika,NaceKod,tehlikeSinifi,Pasif,SemtLokasyon,calisanSayi,Adres,KapaliAlan,AcikAlan,BolgeKodu ' +
                                     ' from SIRKET_SUBE_TNM where sirketKod = ' + QuotedStr(_firmaKod_);
         cxGrid3.Dataset.Open;
         DBGrid.ClearItems;

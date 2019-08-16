@@ -186,11 +186,16 @@ begin
     url := datalar.CSGBUrl;
     DurumGoster(True,False,'Eðitim Bilgisi Sorgulanýyor...Lütfen Bekleyiniz...',0);
     try
+
+      datalar.CSGBSoapFileName := 'egitimSorgula.xml';
+
       Application.ProcessMessages;
       datalar.CSGBsoap.URL := 'http://213.159.30.6/CSGBservice.asmx';
-      Cvps := (datalar.CSGBsoap as CSGBServiceSoap).egitimSorgula(sorguNo,url);
+      Cvps := (datalar.CSGBsoap as CSGBServiceSoap).egitimSorgula(sorguNo,url,datalar._database,datalar.osgbKodu);
 
       DurumGoster(False,False,'Eðitim Bilgisi Sorgulanýyor...Lütfen Bekleyiniz...',0);
+
+      datalar.CSGBSoapFileName := 'egitimSorgulaCvp.xml';
 
       for Cvp in Cvps do
       begin
@@ -245,8 +250,10 @@ begin
         DurumGoster(True,False,'Eðitim Bilgisi Gönderiliyor...Lütfen Bekleyiniz...',0);
         try
           Application.ProcessMessages;
+          datalar.CSGBSoapFileName := egitimID  +'_egitimKaydet.xml';
           datalar.CSGBsoap.URL := 'http://213.159.30.6/CSGBservice.asmx';
           Cvp := (datalar.CSGBsoap as CSGBServiceSoap).egitimKaydetSOAP(egitim,EgitimString,_xml_,datalar._database,datalar.osgbKodu,egitimID,url);
+          datalar.CSGBSoapFileName := egitimID + '_egitimKaydetCevap.xml';
           EgitimKaydetCSGB := Cvp;
           if Cvp.status = 200
           Then begin
@@ -576,8 +583,14 @@ begin
 
   end;
 
-  if (TcxButtonKadir(Sender).ButtonName = 'btnEgitimSorgu') or
-     (TcxButtonKadir(Sender).ButtonName = 'btnEgitimSorgula')
+  if (TcxButtonKadir(Sender).ButtonName = 'btnEgitimSorgula')
+  then begin
+       SetLength(sorguNolari,1);
+       sorguNolari[0] := memDataEgitimler.FieldByName('sorguNo').AsString;
+       EgitimSorgulaCSGB(sorguNolari,sorguSonuc,sonucKodu,True);
+  end
+  else
+  if (TcxButtonKadir(Sender).ButtonName = 'btnEgitimSorgu')
   then begin
     if TcxButtonKadir(Sender).ButtonName = 'btnEgitimSorgu'
     Then begin

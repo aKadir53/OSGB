@@ -92,7 +92,7 @@ uses
 // KadirMedula3 in '..\..\medula3wsdl\KadirMedula3.pas';
 
 const
-  AppalicationVer : integer = 1095;   // Versiyon info kontrol etmeyi unutma  OSGBVersiyon.txt içine AppalicationVer deðerini yaz ftp at
+  AppalicationVer : integer = 1097;   // Versiyon info kontrol etmeyi unutma  OSGBVersiyon.txt içine AppalicationVer deðerini yaz ftp at
   OSGBDllVersiyon : integer = 8;     //  DLLVersiyon.txt  içine DllVersiyon deðerini yaz ftp at
                                      // isg.exe yapý deðiþikliðinden sonra buna gerek kalmýyor
 

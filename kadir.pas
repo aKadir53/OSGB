@@ -1786,13 +1786,13 @@ begin
   try
     ado.Connection := datalar.ADOConnection2;
     sql :=
-      'select yetkili,yetkilimail,yetkiliTel from SIRKETLER_TNM ' +
+      'select yetkili,yetkilimail,yetkiliTel,Aktif from SIRKETLER_TNM ' +
       ' where SirketKod = ' + QuotedStr(sirketKodu);
     datalar.QuerySelect(ado, sql);
     FirmaBilgileri.Yetkili := ado.Fields[0].AsString;
     FirmaBilgileri.YetkiliMail := ado.Fields[1].AsString;
     FirmaBilgileri.YetkiliMobil := ado.Fields[2].AsString;
-
+    FirmaBilgileri.Aktif := ado.Fields[3].AsInteger;
 
     sql := 'declare @mail varchar(max) ' +
            ' set @mail = ''''' +

@@ -320,7 +320,7 @@ type
     function  egitimKaydetSOAP(const egitimBilgisi: egitimBilgisi; const imzaliDeger: string; const imzalananXML: string; const DbName: string; const osgbKodu: string; const egitimID: string;
                                const CSGBurl: string): egitimBilgisiCevap; stdcall;
     function  egitimKaydetMASTER(const egitimBilgisi: egitimBilgisi; const imzaliDeger: string; const imzalananXML: string; const DbName: string; const osgbKodu: string): string; stdcall;
-    function  egitimSorgula(const sorguNo: ArrayOfString; const CSGBurl: string): ArrayOfEgitimBilgisiCevap; stdcall;
+    function  egitimSorgula(const sorguNo: ArrayOfString; const CSGBurl: string ; const DbName: string = '' ; const osgbKodu: string = ''): ArrayOfEgitimBilgisiCevap; stdcall;
   end;
 
 function GetCSGBServiceSoap(UseWSDL: Boolean=System.False; Addr: string=''; HTTPRIO: THTTPRIO = nil): CSGBServiceSoap;

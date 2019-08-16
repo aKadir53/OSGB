@@ -105,7 +105,7 @@ uses
     sirketOrtamOlcum,
     firmaCihazKontrolListesi,
     PersonelFirmaEgitimListesi,
-
+    SCH_FirmaSozlesme,
     HastaKart
     ;
 
@@ -312,7 +312,7 @@ begin
    TagfrmCihazKontrolListesi : Result := TfrmCihazKontrolListesi;
    TagfrmFirmaPersonelEgitimList : Result := TfrmPersonelFirmaEgitimListe;
 
-
+   TagfrmSCH_FirmaSozlesme : Result := TfrmSCH_FirmaSozlesme;
 
    TagfrmHastaKart : Result := TfrmHastaKart;
 
@@ -391,7 +391,7 @@ begin
    TagfrmCihazKontrolListesi : Result := frmCihazKontrolListesi;
    TagfrmFirmaPersonelEgitimList : Result := frmPersonelFirmaEgitimListe;
 
-
+   TagfrmSCH_FirmaSozlesme : Result := frmSCH_FirmaSozlesme;
    TagfrmHastaKart : Result := frmHastaKart;
 
 //   TagfrmAjandaOzet : Result := frmAjandaOzet;
@@ -737,6 +737,8 @@ begin
     TagfrmOrtamOlcum : Application.CreateForm(TfrmSirketOrtamOlcum, frmSirketOrtamOlcum) ;
     TagfrmCihazKontrolListesi : Application.CreateForm(TfrmCihazKontrolListesi, frmCihazKontrolListesi);
     TagfrmFirmaPersonelEgitimList : Application.CreateForm(TfrmPersonelFirmaEgitimListe,frmPersonelFirmaEgitimListe);
+
+    TagfrmSCH_FirmaSozlesme : Application.CreateForm(TfrmSCH_FirmaSozlesme,frmSCH_FirmaSozlesme);
 
 
     TagfrmHastaKart : Application.CreateForm(TfrmHastaKart,frmHastaKart);

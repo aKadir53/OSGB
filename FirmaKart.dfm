@@ -64,12 +64,17 @@ object frmFirmaKart: TfrmFirmaKart
       item
         Description = 'Pasif'
         ImageIndex = 77
-        Value = '0'
+        Value = 0
       end
       item
         Description = 'Aktif'
-        Value = '1'
+        Value = 1
+      end
+      item
+        Description = 'Kara Liste'
+        Value = 2
       end>
+    Properties.OnChange = txtAktifPropertiesChange
     Style.TextStyle = [fsBold]
     TabOrder = 1
     Width = 107

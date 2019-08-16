@@ -475,6 +475,8 @@ type
     Adres : string;
     KapaliAlan : string;
     AcikAlan : string;
+    BolgeKodu : integer;
+    Aktif : integer;
   End;
 
 type
@@ -795,6 +797,8 @@ Const
   TagfrmOrtamOlcum = 1020;
   TagfrmCihazKontrolListesi = 1030;
   TagfrmFirmaPersonelEgitimList = 1040;
+
+  TagfrmSCH_FirmaSozlesme = 2000;
 
   TagfrmHastaKart = 5001;
 

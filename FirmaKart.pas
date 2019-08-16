@@ -70,6 +70,8 @@ type
     procedure cxEditExit(Sender: TObject);
     procedure seansGunleriPropertiesEditValueChanged(Sender: TObject);
     procedure FotoEkle;
+    procedure FirmaSozlesmeNewRecord;
+    function FirmaSozlesmeDosyaYuklumu : string;
     procedure FotoNewRecord;
     procedure FotoDeleteRecord;
     procedure cxButtonEditPropertiesButtonClick(Sender: TObject;
@@ -131,7 +133,11 @@ begin
   GirisRecord.F_firmaKod_ := TcxButtonEditKadir(FindComponent('SirketKod')).EditValue;
   GirisRecord.F_HastaAdSoyad_ := TcxTextEditKadir(FindComponent('tanimi')).EditValue;
   F := nil;
-  if TcxButtonKadir(sender).ButtonName = 'btnSozlesmeler' then
+  if (TcxButtonKadir(sender).ButtonName = 'btnSozlesmeler') and
+     (TcxImageComboKadir(FindComponent('FirmaTip')).EditValue = 4) then
+     F := FormINIT(TagfrmSCH_FirmaSozlesme,GirisRecord,ikHayir,'')
+  else if (TcxButtonKadir(sender).ButtonName = 'btnSozlesmeler') and
+     (TcxImageComboKadir(FindComponent('FirmaTip')).EditValue <> 4) then
     F := FormINIT(TagfrmSirketSozlesme,GirisRecord,ikHayir,'')
   else if TcxButtonKadir(sender).ButtonName = 'btnSubeler' then
     F := FormINIT(TagfrmSube,GirisRecord,ikHayir,'')
@@ -184,29 +190,36 @@ var
 begin
    if datalar.AktifSirket = '' then exit;
 
-   if aktifKart = 0
-   then begin
-       if txtAktif.ItemIndex in [1,2]
+ //  if aktifKart = 0
+ //  then begin
+       if TcxImageComboBox(FindComponent('Aktif')).ItemIndex in [1]
        then begin
-         _aktif := inttostr(txtAktif.ItemIndex);
+         _aktif := inttostr(TcxImageComboBox(FindComponent('Aktif')).ItemIndex);
          _pasifTarih := '';
+         TdxLayoutItem(FindComponent('dxLaKaraListeAlinmaTarihi')).Visible := False;
+         TdxLayoutItem(FindComponent('dxLaKaraListeAlinmaSebebi')).Visible := False;
 
        end
        else
-       if txtAktif.ItemIndex = 0
+       if TcxImageComboBox(FindComponent('Aktif')).ItemIndex  = 0
        then begin
          _aktif := '0';
          _pasifTarih := tarihal(date());
-
+         TdxLayoutItem(FindComponent('dxLaKaraListeAlinmaTarihi')).Visible := False;
+         TdxLayoutItem(FindComponent('dxLaKaraListeAlinmaSebebi')).Visible := False;
        end
        else begin
          _pasifTarih := tarihal(date());
          _aktif := '2';
+         TdxLayoutItem(FindComponent('dxLaKaraListeAlinmaTarihi')).Visible := True;
+         TdxLayoutItem(FindComponent('dxLaKaraListeAlinmaSebebi')).Visible := True;
        end;
+
+       (*
        sql := 'update FirmaKart set aktif = ' + #39 + _aktif + #39 +
               ' where kod = ' + #39 + TcxButtonEditKadir(FindComponent('SirketKod')).EditingValue + #39;
        datalar.QueryExec(datalar.ADO_SQL1,sql);
-
+         *)
 
        (*
        btnKaydet.Enabled := false;
@@ -217,8 +230,8 @@ begin
 
        ord := 2;
        aktifKart := 1;
-       txtAktif.Enabled := false;
-   end;
+      // TcxImageComboBox(FindComponent('Aktif')).Enabled := false;
+ //  end;
 
 end;
 
@@ -275,9 +288,28 @@ begin
     firmaTip := TcxImageComboKadir(sender).EditValue;
     if firmaTip in [1,3]
     then begin
-        Kolon3.Visible := true;
+      TdxLayoutItem(FindComponent('dxLaB'+'btnSubeler')).Visible := True;
+      TdxLayoutItem(FindComponent('dxLaB'+'btnSubeGetir')).Visible := True;
+      TdxLayoutItem(FindComponent('dxLaB'+'btnCalismalar')).Visible := True;
+      TdxLayoutItem(FindComponent('dxLaB'+'btnSozlesmeler')).Visible := True;
+      TdxLayoutItem(FindComponent('dxLaB'+'btnISGEkipleri')).Visible := True;
+      TdxLayoutItem(FindComponent('dxLaB'+'btnEkipmanList')).Visible := True;
+      TdxLayoutItem(FindComponent('dxLaB'+'btnFirmaYetkili')).Visible := True;
+      TdxLayoutItem(FindComponent('dxLaB'+'btnTopluAktif')).Visible := True;
+      TdxLayoutItem(FindComponent('dxLaB'+'btnTopluPasif')).Visible := True;
     end
-    else Kolon3.Visible := false;
+    else begin
+      TdxLayoutItem(FindComponent('dxLaB'+'btnSubeler')).Visible := False;
+      TdxLayoutItem(FindComponent('dxLaB'+'btnSubeGetir')).Visible := False;
+      TdxLayoutItem(FindComponent('dxLaB'+'btnCalismalar')).Visible := False;
+      TdxLayoutItem(FindComponent('dxLaB'+'btnSozlesmeler')).Visible := True;
+      TdxLayoutItem(FindComponent('dxLaB'+'btnISGEkipleri')).Visible := False;
+      TdxLayoutItem(FindComponent('dxLaB'+'btnEkipmanList')).Visible := False;
+      TdxLayoutItem(FindComponent('dxLaB'+'btnFirmaYetkili')).Visible := False;
+      TdxLayoutItem(FindComponent('dxLaB'+'btnTopluAktif')).Visible := False;
+      TdxLayoutItem(FindComponent('dxLaB'+'btnTopluPasif')).Visible := False;
+
+    end;
 
   end;
 
@@ -307,6 +339,45 @@ function TfrmFirmaKart.TakipSil;
 begin
 //
 end;
+
+
+function TfrmFirmaKart.FirmaSozlesmeDosyaYuklumu : string;
+var
+ sql,dosyaNo : string;
+ ado : TADOQuery;
+begin
+  dosyaNo := TcxButtonEditKadir(FindComponent('SirketKod')).Text;
+  ado := TADOQuery.Create(nil);
+  try
+    sql := 'select * from SCH_FirmaSozlesmeleri where sirketKod = ' + QuotedStr(dosyaNo) +
+           ' and Dokuman is null';
+    datalar.QuerySelect(ado,sql);
+
+    if not ado.Eof
+    then FirmaSozlesmeDosyaYuklumu := ado.FieldByName('sozlesmeTanimi').AsString
+    else FirmaSozlesmeDosyaYuklumu := '';
+
+  finally
+    ado.Free;
+  end;
+end;
+
+
+procedure TfrmFirmaKart.FirmaSozlesmeNewRecord;
+var
+ sql,dosyaNo : string;
+ ado : TADOQuery;
+begin
+  dosyaNo := TcxButtonEditKadir(FindComponent('SirketKod')).Text;
+  ado := TADOQuery.Create(nil);
+  try
+    sql := 'exec sp_SCH_FirmaSozleme_NewRecord @sirketKod = ' + QuotedStr(dosyaNo);
+    datalar.QueryExec(ado,sql);
+  finally
+    ado.Free;
+  end;
+end;
+
 
 procedure TfrmFirmaKart.FotoNewRecord;
 var
@@ -612,6 +683,7 @@ var
   List : TListeAc;
   SEHIR ,ILCE ,BUCAK ,KOY,MAHALLE,tehlikeSinifi,odeme : TcxImageComboKadir;
   BB : TcxButtonKadir;
+  Tarih : TcxDateEditKadir;
 begin
   // Burdaki User_ID ve sirketKod base formda dolduruluyor. Visible false (true set etmeyin)
   // Eðer kayýt eklediðiniz tabloda bu alanlar varsa ve bunlarý otomatik set etmek isterseniz
@@ -639,9 +711,9 @@ begin
   Sayfa3_Kolon3.Width := 0;
   Sayfa3_Kolon2.Width := 0;
 
-  List := ListeAcCreate('SIRKETLER_TNM_view','sirketKod,tanimi,VN,Aktif',
-                       'SirketKodu,Sirket,VergiNo,Durum',
-                       '50,250,100,50','SirketKod','Firma Listesi','',5,True);
+  List := ListeAcCreate('SIRKETLER_TNM','sirketKod,SGKKod,tanimi,VN,Aktif',
+                       'SirketKodu,SatýcýKodu,Sirket,VergiNo,Durum',
+                       '50,80,250,100,50','SirketKod','Firma Listesi','',5,True);
 
 
   //datalar.UserGroup
@@ -651,13 +723,19 @@ begin
 
   tehlikeSinifi := TcxImageComboKadir.Create(self);
   tehlikeSinifi.Conn := nil;
-  tehlikeSinifi.ItemList := '1;Firma,2;Tedarikçi,3;Firma+Tedarikçi,4;Taþören Firma';
+  tehlikeSinifi.ItemList := '1;Firma,2;Tedarikçi,3;Þirket,4;Taþören';
   tehlikeSinifi.BosOlamaz := False;
   tehlikeSinifi.Filter := '';
   setDataStringKontrol(self,tehlikeSinifi,'FirmaTip','Firma Tipi',kolon1,'',120);
 
 
   OrtakEventAta(tehlikeSinifi);
+
+  setDataString(self,'SGKKod','Satýcý Kodu  ',Kolon1,'sat',100,True);
+
+
+  setDataStringIC(self,'BolgeKodu','Bölge',Kolon1,'sat',120,'SCH_BolgeTanimlari','kod','tanimi');
+
 
 
 
@@ -781,6 +859,15 @@ begin
   setDataStringKontrol(self,cxFotoPanel , 'cxFotoPanel','',Kolon2,'',110);
   setDataStringKontrol(self,txtAktif , 'Aktif','',Kolon2,'',110);
 
+  Tarih := TcxDateEditKadir.Create(self);
+  Tarih.ValueTip := tvDate;
+  Tarih.Date := date;
+  setDataStringKontrol(self,Tarih,'KaraListeAlinmaTarihi','Kara Listeye Alýnma Tarihi',kolon2,'',110);
+  OrtakEventAta(Tarih);
+
+  setDataStringMemo(Self,'KaraListeAlinmaSebebi','',Kolon2,'',250,100);
+  TdxLayoutItem(FindComponent('dxLaKaraListeAlinmaSebebi')).Visible := False;
+  TdxLayoutItem(FindComponent('dxLaKaraListeAlinmaTarihi')).Visible := False;
 
 
 //  setDataStringKontrol(self,txtTip , 'Tip','',Kolon3,'',110);
@@ -822,6 +909,7 @@ end;
 procedure TfrmFirmaKart.cxKaydetClick(Sender: TObject);
 var
  B : TcxButtonKadir;
+ s : string;
 begin
   datalar.KontrolUserSet := False;
   BeginTrans (DATALAR.ADOConnection2);
@@ -832,23 +920,36 @@ begin
           end;
     end;
 
+    s := FirmaSozlesmeDosyaYuklumu;
+    if (s <> '') and (TcxImageComboBox(FindComponent('Aktif')).ItemIndex = 1)
+    then begin
+      TcxImageComboBox(FindComponent('Aktif')).ItemIndex := 0;
+      ShowMessageSkin(s,' Dökümaný Yüklü Deðil','Firma Aktif Edilemez','info');
+      exit;
+    end;
+
+
     inherited;
     if datalar.KontrolUserSet then exit;
     if not cxKaydetResult then Exit;
 
     case TControl(sender).Tag  of
  kaydet : begin
-           // if TCtoDosyaNo(TcxCustomEdit(FindComponent('TckimlikNo')).EditingValue)
-           FotoNewRecord;
-           Kart := sql_none;
-           if SubeIGUDoktorAtanmismi(TcxButtonEditKadir(FindComponent('SirketKod')).Text) = 0
-           Then
-            if mrYes = ShowMessageSkin('Doktor Yada ÝGU atamasý yapýlmayan Þube Var','Tanýmlamak Ýster misiniz?','','msg')
-            then begin
-              B := TcxButtonKadir(FindComponentButtonName('btnSubeler',Self));
+             // if TCtoDosyaNo(TcxCustomEdit(FindComponent('TckimlikNo')).EditingValue)
+             FotoNewRecord;
+             FirmaSozlesmeNewRecord;
+             Kart := sql_none;
+             if (SubeIGUDoktorAtanmismi(TcxButtonEditKadir(FindComponent('SirketKod')).Text) = 0) and
+                (TcxImageComboBox(FindComponent('FirmaTip')).ItemIndex = 1)
+             Then
+              if mrYes = ShowMessageSkin('Doktor Yada ÝGU atamasý yapýlmayan Þube Var','Tanýmlamak Ýster misiniz?','','msg')
+              then begin
+                B := TcxButtonKadir(FindComponentButtonName('btnSubeler',Self));
 
-              B.Click;
-            end;
+                B.Click;
+              end;
+              TcxImageComboBox(FindComponent('Aktif')).Enabled := True;
+
 
           end;
     sil : begin
@@ -862,6 +963,10 @@ begin
                 ShowMessageskin('Dosya No Alýnamadý','','','info');
               end;
               foto.Picture.Assign(nil);
+
+              TcxImageComboBox(FindComponent('Aktif')).ItemIndex := 0;
+              TcxImageComboBox(FindComponent('Aktif')).Enabled := False;
+
           end;
     end;
   finally

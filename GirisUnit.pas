@@ -121,6 +121,13 @@ type
     ListeNaceKodlari: TListeAc;
     _CINSIYET_: TcxImageComboKadir;
     Timer1: TTimer;
+    Sayfa1_dxLayoutControl1Group1: TdxLayoutGroup;
+    Sayfa1_dxLayoutControl1SplitterItem1: TdxLayoutSplitterItem;
+    Sayfa1_dxLayoutControl1SplitterItem2: TdxLayoutSplitterItem;
+    dxLayoutSkinLookAndFeel3: TdxLayoutSkinLookAndFeel;
+    Sayfa1_dxLayoutControl1SplitterItem3: TdxLayoutSplitterItem;
+    dxLayoutControl2SplitterItem1: TdxLayoutSplitterItem;
+    dxLayoutControl2SplitterItem2: TdxLayoutSplitterItem;
 
     procedure cxKaydetClick(Sender: TObject);virtual;
     procedure cxButtonCClick(Sender: TObject);
@@ -398,7 +405,7 @@ begin
     Where := '';
     Sube := '';
   end;
-  Result := where + Sube;
+  Result := where + Sube;// + ' and Aktif = 1';
 end;
 
 function TGirisForm.ResultDataset(FormTag : integer) : TADOQuery;
@@ -1698,6 +1705,7 @@ var
   dxLa : TdxLayoutItem;
   dxLaG : TdxLayoutGroup;
   control : TControl;
+  Spliter : TdxLayoutSplitterItem;
 begin
    if EditMask = ''
    then begin
@@ -1729,31 +1737,56 @@ begin
         control := cxEditMask;
    end;
 
+  control.Align := alClient;
 
+  parent.AlignHorz := ahParentManaged;
+
+  parent.LayoutDirection := ldVertical;
 
   dxLa := TdxLayoutGroup(parent).CreateItemForControl(control);
-
-  //  dxLa.ControlOptions.ShowBorder := true;
+ // dxLa.AutoAligns := [aaHorizontal,aaVertical];
   dxLa.Name := 'dxLa'+fieldName;
-  dxLa.AlignHorz := ahLeft;
+
+  dxLa.AlignHorz := ahParentManaged;
+  //dxLa.AlignVert := avCenter;
+
+
+ // dxLa.AlignVert := avParentManaged;
  // dxLa.Width := uzunluk;
   dxLa.Caption := caption;
 //  SpaceItem := TdxLayoutEmptySpaceItem.Create(self);
  // SpaceItem.Name := 'dxSp'+fieldName;
  // SpaceItem.Width := TdxLayoutGroup(parent).Width - (50 + uzunluk);
-  if grup = '' then
-    dxLa.Parent := parent
+
+       (*
+  Spliter := TdxLayoutSplitterItem.Create(Sayfa1_dxLayoutControl1Group_Root);
+  Spliter.Name := 'Spliter'+fieldName;
+  Spliter.Parent := dxLa.Parent;
+  Spliter.AutoAligns := [aaHorizontal];
+  Spliter.AlignHorz := ahParentManaged;
+  Spliter.AlignVert := avParentManaged;
+  Spliter.SizeOptions.AssignedValues := [sovSizableHorz,sovSizableVert];
+  Spliter.SizeOptions.SizableVert := False;
+  Spliter.SizeOptions.SizableHorz := False;
+         *)
+
+
+  if grup = '' then begin
+    dxLa.Parent := parent;
+  end
     else begin
         if Self.FindComponent(grup) = nil
         then begin
          dxLaG := TdxLayoutGroup.Create(self);
          dxLaG.Name := grup;
          dxLaG.LayoutDirection := ldHorizontal;
+         dxLaG.AlignHorz := ahClient;
          dxLaG.Parent := parent;
          dxLag.ShowBorder := false;
         end ;
 
       dxLa.Parent := TdxLayoutGroup(Self.findcomponent(grup));
+   //   Spliter.Parent := TdxLayoutGroup(findcomponent(grup));
  //     SpaceItem.Parent := TdxLayoutGroup(findcomponent(grup));
     end;
 
@@ -1774,9 +1807,11 @@ begin
   cxEdit.Name := fieldName;
   cxEdit.Text := '';
   cxEdit.Properties.ScrollBars := ssVertical;
+  cxEdit.Align := alClient;
   dxLa := TdxLayoutGroup(parent).CreateItemForControl(cxEdit);
   dxLa.Name := 'dxLa'+fieldName;
-  dxLa.AlignHorz := ahLeft;
+  dxLa.AlignHorz := ahParentManaged;
+  dxLa.AlignVert := avParentManaged;
   cxEdit.Width := uzunluk;
  // dxLa.Width := uzunluk;
   dxLa.Height := yukseklik;
@@ -1883,10 +1918,12 @@ procedure TGirisForm.setDataStringBLabel(sender : Tform ; Name : string;
      pBoldText: Boolean = True;
      pTextColor: TColor = clRed;
      pHorzAlignment: TcxEditHorzAlignment = taLeftJustify);
+
 var
   cxLabel : TcxLabel;
   dxLaB : TdxLayoutItem;
   dxLaGB : TdxLayoutGroup;
+
 begin
   cxLabel := TcxLabel.Create(self);
   cxLabel.Name := 'Label'+ Name;
@@ -1902,6 +1939,8 @@ begin
     cxLabel.Style.Font.Style := cxLabel.Style.Font.Style - [fsBold];
   cxLabel.Style.TextColor := pTextColor;
   cxLabel.Properties.Alignment.Horz := pHorzAlignment;
+  //cxLabel.Properties.Alignment.Vert := taVCenter;
+
   cxLabel.Style.BorderStyle := ebsFlat;
   dxLaB := TdxLayoutGroup(parent).CreateItemForControl(cxLabel);
   dxLaB.Name := 'dxLaC'+Name;
@@ -1952,6 +1991,7 @@ begin
   dxLaC := TdxLayoutGroup(parent).CreateItemForControl(cxEditC);
   dxLaC.Name := 'dxLa'+fieldName;
   dxLaC.AlignHorz := ahLeft;
+  dxLaC.AlignVert := avCenter;
   cxEDitC.Width := uzunluk;
 //  dxLaC.Width := uzunluk;
   dxLaC.Caption := caption;
@@ -1993,6 +2033,7 @@ begin
   dxLaC := TdxLayoutGroup(parent).CreateItemForControl(cxEditC);
   dxLaC.Name := 'dxLa'+fieldName;
   dxLaC.AlignHorz := ahLeft;
+ // dxLaC.AlignVert := avCenter;
   cxEDitC.Width := uzunluk;
 //  dxLaC.Width := uzunluk;
   dxLaC.Caption := caption;
@@ -2035,10 +2076,12 @@ begin
   finally
     TList.Free;
   end;
+  parent.AlignVert := avParentManaged;
   cxEditC.Properties.DropDownListStyle := lsFixedList;
   dxLaC := TdxLayoutGroup(parent).CreateItemForControl(cxEditC);
   dxLaC.Name := 'dxLa'+fieldName;
   dxLaC.AlignHorz := ahLeft;
+//  dxLaC.AlignVert := avCenter;
   cxEDitC.Width := uzunluk;
  // dxLaC.Width := uzunluk;
   dxLaC.Caption := caption;

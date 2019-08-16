@@ -321,9 +321,9 @@ begin
   setDataString(self,'Guid','Fatura Guid',Kolon1,'FaturaID',250,False,'',True);
 
 
-  List := ListeAcCreate('SIRKETLER_TNM','sirketKod,tanimi,Aktif',
-                       'SirketKod,Sirket,Durum',
-                       '50,250,50','SirketKod','Firma Listesi','',5,True);
+  List := ListeAcCreate('SIRKETLER_TNM','sirketKod,SGKKod,tanimi,Aktif',
+                       'SirketKod,SatýcýKod,Sirket,Durum',
+                       '50,80,250,50','SirketKod','Firma Listesi','',5,True);
 
   setDataStringB(self,'SirketKod','Þirket Kodu',Kolon1,'SirketTnm',100,List,False,nil,'','',True,True,1);
 
