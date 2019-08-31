@@ -83,6 +83,8 @@ type
     N1: TMenuItem;
     memDataEgitimler: TdxMemData;
     memDataEgitimlerDS: TDataSource;
+    N2: TMenuItem;
+    E1: TMenuItem;
     procedure FormCreate(Sender: TObject);
     procedure ButtonClick(Sender: TObject);
     procedure cxKaydetClick(Sender: TObject);override;
@@ -97,6 +99,8 @@ type
     procedure SayfalarChange(Sender: TObject);
     procedure cxButtonCClick(Sender: TObject);
     procedure PropertiesEditValueChanged(Sender: TObject);override;
+    procedure PropertiesButtonClick(Sender: TObject;
+      AButtonIndex: Integer);
     procedure EgitimAltDetay;
     procedure Foto;
     procedure Foto1PropertiesCustomClick(Sender: TObject);
@@ -272,7 +276,7 @@ begin
           else
           begin
               memDataEgitimler.Edit;
-              memDataEgitimler.FieldByName('GonderimSonuc').AsString := Cvp.message_;
+              memDataEgitimler.FieldByName('EgitimCSGBGonderimSonuc').AsString := Cvp.message_;
               memDataEgitimler.FieldByName('SorguNo').AsString := Cvp.sorguNo;
               memDataEgitimler.Post;
           end;
@@ -441,6 +445,24 @@ begin
 
 end;
 
+procedure TfrmPersonelEgitim.PropertiesButtonClick(Sender: TObject;
+  AButtonIndex: Integer);
+begin
+  inherited;
+(*
+ if (TcxImageComboKadir(Sender).Name = 'EgitimFirmaTipi') and
+    (TcxImageComboKadir(Sender).EditingValue = 1)
+ Then begin
+     //TcxImageComboKadir(FindComponent('SirketKod')).Enabled := False;
+     TcxImageComboKadir(FindComponent('SirketKod')).Clear;
+
+     Kolon3.Visible := False;
+ end
+ else
+      Kolon3.Visible := True;
+  *)
+end;
+
 procedure TfrmPersonelEgitim.PropertiesEditValueChanged(Sender: TObject);
 var
   xDeger ,where : String;
@@ -460,10 +482,25 @@ begin
     *)
 
 
+ if (TcxImageComboKadir(Sender).Name = 'EgitimFirmaTipi')
+ Then
+  if (TcxImageComboKadir(Sender).EditingValue = 1)
+ Then begin
+     //TcxImageComboKadir(FindComponent('SirketKod')).Enabled := False;
+     TcxImageComboKadir(FindComponent('SirketKod')).Clear;
+
+     Kolon4.Visible := False;
+ end
+ else
+      Kolon4.Visible := True;
+
+
+
  if TcxImageComboKadir(Sender).Name = 'SirketKod'
  Then begin
 
-     if EgitimPersonel.Dataset.RecordCount > 0
+     if (EgitimPersonel.Dataset.RecordCount > 0 ) and
+        (TcxImageComboKadir(FindComponent('EgitimFirmaTipi')).EditValue = 0)
      Then begin
        TcxImageComboKadir(Sender).Reset;
      end
@@ -677,6 +714,38 @@ begin
 
   end;
 
+  if TcxButtonKadir (Sender).ButtonName = 'btnEgitimSorgulaKaydet' then
+  begin
+     if not datalar.ADOConnection2.Connected then datalar.ADOConnection2.Connected := True;
+
+     try
+        datalar.QuerySelect('select 1');
+     except on e : exception do
+       begin
+        datalar.ADOConnection2.Connected := False;
+        datalar.ADOConnection2.Connected := True;
+       end;
+     end;
+
+     if datalar.ADOConnection2.Connected
+     then begin
+         memDataEgitimler.First;
+         while not memDataEgitimler.Eof do
+         begin
+           EgitimKaydetCSGBCvpBilgiGuncelle(memDataEgitimler.FieldByName('id').AsString,
+                                            memDataEgitimler.FieldByName('EgitimCSGBGonderimSonuc').AsString,
+                                            memDataEgitimler.FieldByName('sorguNo').AsString,
+                                            memDataEgitimler.FieldByName('sorguSonuc').AsString ,
+                                            memDataEgitimler.FieldByName('sorguSonucKodu').AsString);
+
+
+
+           memDataEgitimler.next;
+         end;
+     end;
+  end;
+
+
   if TcxButtonKadir (Sender).ButtonName = 'btnEgitimListele' then
   begin
   (*
@@ -813,18 +882,34 @@ begin
     end;
 
 
+
     if IsNull (TcxButtonEditKadir (FindComponent('id')).Text) then
     begin
       ShowMessageSkin('Bu iþlem için eðitim kaydý seçmeniz ya da ekrandaki bilgileri kaydetmeniz gerekir.', '', '', 'info');
       Exit;
     end;
+
+    if TcxImageComboKadir(FindComponent('EgitimFirmaTipi')).EditingValue = 0
+    Then
     PersonelList.Where :=
       'Aktif = 1 '+
       'and SirketKod = ' + QuotedStr(varTOstr(TcxImageComboKadir((FindComponent('SirketKod'))).EditingValue)) +
       'and not exists (select 1 '+
       'from Personel_Egitim pe '+
       'where pe.EgitimId '+ IfThen (IsNull (TcxButtonEditKadir (FindComponent('id')).Text), 'is NULL', '= ' +  TcxButtonEditKadir (FindComponent('id')).Text) + ' '+
+      'and pe.PersonelDosyaNo = PersonelKartview.DosyaNo)'
+    Else
+    PersonelList.Where :=
+      'Aktif = 1 '+
+      'and FirmaTip = 1 ' +
+      ' and SirketKod like ' + QuotedStr('%' + varTOstr(TcxImageComboKadir((FindComponent('SirketKod'))).EditingValue) + '%') +
+      'and not exists (select 1 '+
+      'from Personel_Egitim pe '+
+      'where pe.EgitimId '+ IfThen (IsNull (TcxButtonEditKadir (FindComponent('id')).Text), 'is NULL', '= ' +  TcxButtonEditKadir (FindComponent('id')).Text) + ' '+
       'and pe.PersonelDosyaNo = PersonelKartview.DosyaNo)';
+
+
+
     datalar.ButtonEditSecimlist := PersonelList.ListeGetir;
     if length (datalar.ButtonEditSecimlist) > 0 then
     begin
@@ -868,22 +953,28 @@ var
   TopluDataset : TDataSetKadir;
 begin
   inherited;
+
   if IsNull (TcxButtonEditKadir (FindComponent('id')).Text) then
   begin
     ShowMessageSkin('Bu iþlemden önce Eðitim Bilgisini kaydetmeniz gerekir.', '', '', 'info');
     Exit;
   end;
+
+
+
   ado := TADOQuery.Create(nil);
   try
     ado1 := TADOQuery.Create(nil);
     try
       ado.Connection := datalar.ADOConnection2;
       ado1.Connection := datalar.ADOConnection2;
+
       if TMenuItem (Sender).Tag = -40 then
       begin
         showmessageSkin ('Servisler aktif deðil ya da servislere ulaþýlamýyor', '', '', 'info');
         Exit;
       end;
+
       sql := 'sp_frmPersonelEgitim ' + TcxButtonEditKadir(FindComponent('id')).Text;
       if TMenuItem (Sender).Tag = -20 then sql := sql + ', ' + QuotedStr (EgitimPersonel.Dataset.FieldByName('PersonelDosyaNo').AsString) + ',1'
       else sql := sql + ', ' + QuotedStr('') + ',1';
@@ -902,6 +993,18 @@ begin
       datalar.QuerySelect(ado1, sql);
       TopluDataset.Dataset1 := ado1;
       *)
+
+      if TMenuItem (Sender).Tag = -50 then
+      begin
+         if mailGonder(DATALAR.BildirimMail.egitimBildirTo,'Eðitim Planý Bildirimi',
+                       ado.FieldByName('egitimBilgisiMail').AsString,'',datalar.usernameAdi
+
+                       ) = '0000'
+         then
+           ShowMessageSkin('Mail Gönderildi','','','info');
+         exit;
+      end;
+
       if TMenuItem (Sender).Tag = -30 then
         PrintYap('004','Eðitime Katýlan Personel Listesi','',TopluDataset,pTNone)
        else
@@ -1034,6 +1137,20 @@ begin
   kombo.Filter := '';
   OrtakEventAta(kombo);
   setDataStringKontrol(self,kombo,'belgeTipi','Belge Tipi',kolon1,'ababa',100);
+
+  kombo := TcxImageComboKadir.Create(self);
+  kombo.Conn := datalar.ADOConnection2;
+  kombo.BosOlamaz := True;
+  kombo.TableName := 'FirmaTipleri';
+  kombo.ValueField := 'kod';
+  kombo.DisplayField := 'tanimi';
+  kombo.Filter := '';
+  kombo.Clear;
+  OrtakEventAta(kombo);
+  setDataStringKontrol(self,kombo,'EgitimFirmaTipi','Eðitim Firma Türü',Kolon1,'',100,0,alNone,'');
+  TcxImageComboKadir(FindComponent('EgitimFirmaTipi')).Properties.OnButtonClick := PropertiesButtonClick ;//SirketlerPropertiesChange;
+
+
 
 
 //  setDataString(self,'hazirlayan','Ýþ Güvenlik Uzm',Kolon1,'hz',120,false,'',True);
@@ -1249,7 +1366,10 @@ begin
 
   addButton(self,nil,'btnEgitimGonder','','Eðitim Bilgisini Gönder',sayfa4_kolon1,'btar',120,ButtonClick,30);
   addButton(self,nil,'btnEgitimSorgula','','Eðitim Sorgula',sayfa4_kolon1,'btar',120,ButtonClick,30);
-//  addButton(self,nil,'btnEgitimSonucDetay','','Gönderim Sonuç Detay',sayfa4_kolon1,'btar',120,ButtonClick,30);
+  addButton(self,nil,'btnEgitimSorgulaKaydet','','Kaydet',sayfa4_kolon1,'btar',120,ButtonClick,30);
+
+  //  addButton(self,nil,'btnEgitimSonucDetay','','Gönderim Sonuç Detay',sayfa4_kolon1,'btar',120,ButtonClick,30);
+
 
   setDataStringKontrol(self,EgitimGrid,'EgitimGrid','',sayfa4_kolon1,'',1,1,alClient);
   Sayfa4_Kolon2.Visible := False;
@@ -1278,6 +1398,7 @@ begin
   TcxButton(FindComponentButtonName('btnEgitimListele',Self)).Enabled := True;
   TcxButton(FindComponentButtonName('btnEgitimGonder',Self)).Enabled := True;
   TcxButton(FindComponentButtonName('btnEgitimSorgula',SElf)).Enabled := True;
+  TcxButton(FindComponentButtonName('btnEgitimSorgulaKaydet',SElf)).Enabled := True;
 
   SayfaCaption('Eðitim Bilgi', '', '', 'Eðitimler Listesi', 'Eðitim Foto');
   //_HastaBilgileriniCaptionGoster_ := True;

@@ -463,6 +463,30 @@ begin
   then
   case TfrmPopup(self).islem_ of
 
+      PersonelBelgeDuzenle,yeniPersonelBelge :
+            begin
+                //
+                datalar.PersonelBelge.id := TcxTextEdit(FindComponent('id')).EditValue;
+                datalar.PersonelBelge.BelgeTip := TcxImageComboKadir(FindComponent('BelgeTip')).EditValue;
+                datalar.PersonelBelge.BelgeTarihi := TcxDateEdit(FindComponent('BelgeTarihi')).EditValue;
+                datalar.PersonelBelge.GecerlilikTarihi := TcxDateEdit(FindComponent('GecerlilikTarihi')).EditValue;
+                datalar.PersonelBelge.Durum := TcxCheckBox(FindComponent('Durum')).EditValue;
+                datalar.PersonelBelge.AlinanKurum := TcxTextEdit(FindComponent('AlinanKurum')).EditValue;
+            end;
+
+      yeniPersonelLevel,PersonelLevelDuzenle :
+            begin
+                datalar.PersonelLevel.id := TcxTextEdit(FindComponent('id')).EditValue;
+                datalar.PersonelLevel.Tarih := TcxDateEdit(FindComponent('Tarih')).EditValue;
+            //    datalar.PersonelLevel.PersonelKodu := vartostr(TcxTextEdit(FindComponent('DosyaNo')).EditingValue);
+            //    datalar.PersonelLevel.SirketKodu := vartostr(TcxTextEdit(FindComponent('sirketKod')).EditingValue);
+                datalar.PersonelLevel.Aciklama := TcxCheckBox(FindComponent('Aciklama')).EditValue;
+                datalar.PersonelLevel.Tip := TcxTextEdit(FindComponent('Tip')).EditValue;
+                datalar.PersonelLevel.personelLevel := TcxTextEdit(FindComponent('personelLevel')).EditValue;
+                datalar.PersonelLevel.Durum := TcxTextEdit(FindComponent('Durum')).EditValue;
+
+            end;
+
       SeansTarihiUpdate   :
             begin
               if TfrmPopup(self).ModalResult = mrYes
@@ -944,6 +968,7 @@ var
   //Listx : TListeAc;
   ICombo : TcxImageComboKadir;
   Tarih : TcxDateEditKadir;
+  ComboList : TStringList;
 begin
 inherited;
 
@@ -2225,6 +2250,83 @@ ptPersonelTetkikleri :
 
                end;
 
+      PersonelBelgeDuzenle,yeniPersonelBelge :
+            begin
+                  cxTab.Width := 150;
+                  ClientHeight := 400;
+                  ClientWidth := 400;
+
+                  setDataString(self,'id','ID',Kolon1,'',50,True,'',False,0,'',ecUpperCase);
+                  TcxTextEdit(FindComponent('id')).EditValue := datalar.PersonelBelge.id;
+
+                  setDataStringIC(self,'BelgeTip','Belge Tip',Kolon1,'',150,'Personel_BelgeTipleri','kod','tanimi');
+                  TcxImageComboKadir(FindComponent('BelgeTip')).EditValue := datalar.PersonelBelge.BelgeTip;
+
+                  _Tarih_ := TcxDateEditKadir.Create(self);
+                  _Tarih_.Name := 'BelgeTarihi';
+                  setDataStringKontrol(self,_Tarih_, 'BelgeTarihi','Belge Tarihi',Kolon1,'',100);
+                  TcxDateEditKadir(FindComponent('BelgeTarihi')).EditValue := datalar.PersonelBelge.BelgeTarihi;
+
+                  _Tarih_ := TcxDateEditKadir.Create(self);
+                  _Tarih_.Name := 'GecerlilikTarihi';
+                  setDataStringKontrol(self,_Tarih_, 'GecerlilikTarihi','Geçerlilik Tarihi',Kolon1,'',100);
+                  TcxDateEditKadir(FindComponent('GecerlilikTarihi')).EditValue := datalar.PersonelBelge.GecerlilikTarihi;
+
+
+                  setDataString(self,'AlinanKurum','Alýnan Kurum',Kolon1,'',200,True,'',False,0,'',ecUpperCase);
+                  TcxTextEdit(FindComponent('AlinanKurum')).EditValue := datalar.PersonelBelge.AlinanKurum;
+
+                  setDataStringChk (Self, 'Durum', 'Aktif', Kolon1, '', 50);
+                  TcxCheckBox(FindComponent('Durum')).Properties.Alignment := taRightJustify;
+                  TcxCheckBox(FindComponent('Durum')).Properties.ValueChecked := 1;
+                  TcxCheckBox(FindComponent('Durum')).Properties.ValueGrayed := 0;
+                  TcxCheckBox(FindComponent('Durum')).Properties.ValueUnchecked := 0;
+                  TcxCheckBox(FindComponent('Durum')).EditValue := datalar.PersonelBelge.Durum;
+            end;
+
+      PersonelLevelDuzenle,yeniPersonelLevel :
+            begin
+                  cxTab.Width := 150;
+                  ClientHeight := 400;
+                  ClientWidth := 400;
+
+                  setDataString(self,'id','ID',Kolon1,'',50,True,'',False,0,'',ecUpperCase);
+                  TcxTextEdit(FindComponent('id')).EditValue := datalar.PersonelLevel.id;
+
+                  _Tarih_ := TcxDateEditKadir.Create(self);
+                  _Tarih_.Name := 'GecerlilikTarihi';
+                  setDataStringKontrol(self,_Tarih_, 'Tarih','Tarihi',Kolon1,'',100);
+                  TcxDateEditKadir(FindComponent('Tarih')).EditValue := datalar.PersonelLevel.Tarih;
+
+                  setDataStringIC(self,'Tip','Deðerlendirme Tip',Kolon1,'',150,'Personel_Degerlendirme_tipleri','kod','tanimi');
+                  TcxImageComboKadir(FindComponent('Tip')).EditValue := datalar.PersonelLevel.Tip;
+
+                  setDataStringMemo(self,'Aciklama','Açýklama',Kolon1,'',250,100);
+                  TcxMemo(FindComponent('Aciklama')).text := datalar.PersonelLevel.Aciklama;
+
+                  ComboList := TStringList.Create;
+                  Try
+                   ComboList.Add('1');ComboList.Add('2');ComboList.Add('3');ComboList.Add('4');
+                   setDataStringC(self,'personelLevel','Seviye',Kolon1,'',50,ComboList);
+                  Finally
+                    ComboList.free;
+                  End;
+
+                  TcxComboBox(FindComponent('personelLevel')).EditValue := datalar.PersonelLevel.personelLevel;
+                  TcxComboBox(FindComponent('personelLevel')).Properties.OnEditValueChanged := PropertiesEditValueChanged;
+
+                  setDataStringIC(self,'Durum','Durum',Kolon1,'',150,'Personel_Degerlendirme_Durum','kod','tanimi');
+                  TcxImageComboKadir(FindComponent('Durum')).EditValue := datalar.PersonelLevel.Durum;
+
+                  // seviye sadece admin tarafýndan deðiþtirilebilir.
+                  if datalar.UserGroup = '1' then
+                   TcxComboBox(FindComponent('personelLevel')).Enabled := True
+                  else
+                   TcxComboBox(FindComponent('personelLevel')).Enabled := False;
+              //    addButton(self,nil,'btnPersonelLevelBelgeYukle','','Belge Ekle',Kolon1,'',80,ButtonClick,30);
+
+            end;
+
   end;
 
 
@@ -2257,6 +2359,15 @@ procedure TfrmPopup.PropertiesEditValueChanged(Sender: TObject);
 begin
   inherited;
 
+  if TcxComboBox(sender).Name = 'personelLevel'
+  Then begin
+    if TcxComboBox(sender).EditValue < 4
+    Then
+      TcxImageComboKadir(FindComponent('Durum')).EditValue := 1
+       else
+         TcxImageComboKadir(FindComponent('Durum')).EditValue := 2;
+
+  end;
 
   if TcxImageComboKadir(sender).Name = 'tetkikIstemGrupSablon'
   Then begin

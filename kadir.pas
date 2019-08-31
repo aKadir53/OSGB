@@ -301,6 +301,7 @@ procedure Sonucyaz(s, Takip: string; x: integer; hatalar: tstringlist);
 function TCtoAd(tc: string): string;
 function dosyaNOIslemGormusmu(dosyaNo: string): integer;
 function TCtoDosyaNo(tc: string ; var firma : string): string;
+function TCtoPersonelBilgi(tc: string): THastaKabul;
 function KanAlimTarihi(DosyaNo, GelisNo: string): string;
 procedure GonderimMesaj(msj, filename: string);
 function TCdenDosyaNoGelisNo(tc, tarih1, tarih2: string;
@@ -412,7 +413,7 @@ function FirmaBilgileri(sirketKodu : string ; subeKodu  : string = '00') : TFirm
 function isgKurulEkibiMailBilgileri(id : string) : string;
 function isgRDSEkibiMailBilgileri(id : string) : string;
 
-function mailGonder (alici , konu , mesaj : string ;  filename : string = ''): string;
+function mailGonder (alici , konu , mesaj : string ;  filename : string = '' ; displayName : string = ''): string;
 procedure UyumSoftPortalGit(user,pasword,url : string);
 function FaturaSilIptal(FID : string) : Boolean;
 function SonYayinlananGuncellemeNumarasi : Integer;
@@ -449,7 +450,7 @@ procedure SetAnaFormFoto;
 Function myFileSize(filename : string) : integer;
 
 Procedure EgitimSorgulaCSGBCvpBilgiGuncelle(cvp : ArrayOfEgitimBilgisiCevap);
-Procedure EgitimKaydetCSGBCvpBilgiGuncelle(egitimId,msg,sorguNo : string);
+Procedure EgitimKaydetCSGBCvpBilgiGuncelle(egitimId,msg,sorguNo : string ; sorguSonuc : string = '';sorguSonucKodu : string = '');
 Procedure FirmaSorgulCSGBCvpFirmaBilgiGuncelle(firmaSgk : string ; Cvp : isyeriCevapDVO);
 
 function DetaySil(Tag : integer ; Tablaname,WhereField,Where : string) : Boolean;
@@ -482,7 +483,8 @@ type
                           alici : PWideChar;
                           konu : PWideChar;
                           msj : PWideChar;
-                          filename : PWideChar
+                          filename : PWideChar;
+                          displayName : PWideChar
                           ); stdcall;
 
 
@@ -1174,13 +1176,16 @@ begin
 end;
 
 
-Procedure EgitimKaydetCSGBCvpBilgiGuncelle(egitimId,msg,sorguNo : string);
+Procedure EgitimKaydetCSGBCvpBilgiGuncelle(egitimId,msg,sorguNo : string ; sorguSonuc : string = '';sorguSonucKodu : string = '');
 var
   sql : string;
 begin
   sql := ' set nocount on ' +
-         ' update Egitimler set EgitimCSGBGonderimSonuc = ' + QuotedStr(msg) +
+         ' update Egitimler set ' +
+         ' EgitimCSGBGonderimSonuc = ' + QuotedStr(msg) +
          ',sorguNo = ' + QuotedStr(sorguNo) +
+         ',sorguSonuc = ' + QuotedStr(sorguSonuc) +
+         ',sorguSonucKodu = ' + QuotedStr(sorguSonucKodu) +
          ' where id = ' + QuotedStr(egitimId) +
          ' set nocount off';
   datalar.QueryExec(sql);
@@ -1689,7 +1694,7 @@ end;
 
 
 
-function mailGonder (alici , konu , mesaj : string ; filename : string = ''): string;
+function mailGonder (alici , konu , mesaj : string ; filename : string = '' ; displayName : string = ''): string;
 var
   Mail : TEmailSend;
   dllHandle: Cardinal;
@@ -1711,7 +1716,7 @@ begin
     @Mail := findMethod(dllHandle, 'EMailSend');
     if addr(Mail) <> nil then
 
-    Mail(ss,PWideChar(mailserver),PWideChar(username),PWideChar(password),PWideChar(alici),PWideChar(konu),PWideChar(mesaj),PWideChar(filename));
+    Mail(ss,PWideChar(mailserver),PWideChar(username),PWideChar(password),PWideChar(alici),PWideChar(konu),PWideChar(mesaj),PWideChar(filename),PWideChar(displayName));
 
     mailGonder := ss;
 
@@ -3885,6 +3890,36 @@ begin
     datalar.QuerySelect(ado, sql);
     Result := ado.Fields[0].AsString;
     firma := ado.Fields[1].AsString;
+  finally
+    ado.Free;
+  end;
+end;
+
+
+function TCtoPersonelBilgi(tc: string): THastaKabul;
+var
+  sql: string;
+  ado: TADOQuery;
+  Bilgiler : THastaKabul;
+begin
+  Result.Adi := '';
+  Result.Sadi := '';
+  Result.DTarihi := '';
+
+  ado := TADOQuery.Create(nil);
+  try
+    ado.Connection := datalar.ADOConnection2;
+    sql := 'select HASTAADI,HASTASOYADI,DOGUMTARIHI,S.tanimi,S.sirketKod from Personelkart P ' +
+           ' left join SIRKETLER_TNM S on S.sirketKod = P.sirketKod ' +
+           ' where TCKIMLIKNO = ' + QuotedStr(tc);
+    datalar.QuerySelect(ado, sql);
+
+    Bilgiler.Adi := ado.Fields[0].AsString;
+    Bilgiler.Sadi := ado.Fields[1].AsString;
+    Bilgiler.DTarihi := ado.Fields[2].AsString;
+    Bilgiler.devredilenKurum := ado.Fields[3].AsString;
+    Bilgiler.Durum := ado.Fields[4].AsString;
+    Result := Bilgiler;
   finally
     ado.Free;
   end;

@@ -1133,7 +1133,7 @@ var
   sube : string;
 begin
 
-  datalar.AktifSirket := TcxImageComboKadir(sender).EditValue;
+  datalar.AktifSirket := varToStr(TcxImageComboKadir(sender).EditValue);
   datalar.AktifSirketAdi := TcxImageComboKadir(sender).EditingText;
   dxStatusBar1.Panels[1].Text := DATALAR.AktifSirketAdi + '-' + datalar.AktifSubeAdi;
   dxStatusBar1.Panels[1].Width := length(Datalar.AktifSirketAdi) * 8;

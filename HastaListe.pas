@@ -78,6 +78,10 @@ type
     ListeColumnSirketKod: TcxGridDBColumn;
     ListeColumnSube: TcxGridDBColumn;
     f1: TMenuItem;
+    N2: TMenuItem;
+    P1: TMenuItem;
+    ListeColumn1: TcxGridDBColumn;
+    P2: TMenuItem;
 
     procedure TopPanelPropertiesChange(Sender: TObject);
     procedure btnVazgecClick(Sender: TObject);
@@ -123,11 +127,12 @@ begin
   Result := False;
   if Tag = TagfrmHastaListe
   then
-   TapPanelElemanVisible(True,false,false,false,false,false,False,false,False,True,False,False)
+   TapPanelElemanVisible(True,false,false,True,false,false,False,false,False,True,False,False)
   else
-   TapPanelElemanVisible(True,false,false,false,false,false,True,false,False,True,False,False);
+   TapPanelElemanVisible(True,false,false,True,false,false,True,false,False,True,False,False);
 
-   AktifPasifTopPanel.EditValue := '1';
+   AktifPasifTopPanel.ItemIndex := 0;
+
    Result := True;
 
 end;
@@ -141,8 +146,9 @@ procedure TfrmHastaListe.cxButtonCClick(Sender: TObject);
 var
  GirisFormRecord : TGirisFormRecord;
  F : TGirisForm;
- dosyaNo,sirketKod,sube : string;
+ dosyaNo,sirketKod,sube,sql : string;
  i : integer;
+ ado : TADOQuery;
 begin
   datalar.KontrolUserSet := False;
   inherited;
@@ -204,6 +210,35 @@ begin
         end;
 
       end;
+
+
+ -20  : begin
+
+          ado := TADOQuery.Create(nil);
+          try
+            ado.Connection := datalar.ADOConnection2;
+            sql := 'exec sp_PasaportBitenMailBildirimListesi ';
+            datalar.QuerySelect(ado,sql);
+            DurumGoster(True);
+            while not ado.Eof do
+            begin
+                mailGonder(ado.FieldByName('yetkilimail').AsString,'Pasaport Durum Bildirimi',
+                            ado.FieldByName('mailVeri').AsString,'',ado.FieldByName('Gonderen').AsString);
+                sleep(2000);
+
+                mailGonder(ado.FieldByName('SchMail').AsString,'Pasaport Durum Bildirimi',
+                            ado.FieldByName('mailVeri').AsString,'',ado.FieldByName('Gonderen').AsString);
+                sleep(2000);
+
+               ado.Next;
+            end;
+          finally
+            DurumGoster(False);
+            ado.free;
+          end;
+
+        end;
+
  330,9020 : begin
                F := FormINIT(Tcontrol(sender).tag,GirisFormRecord,ikEvet,'');
                if F <> nil then F.ShowModal;
@@ -224,6 +259,15 @@ begin
   Menu := PopupMenu1;
 
   TopPanel.Visible := true;
+
+   ENabizMesajTipi.Properties.Items.Clear;
+   ENabizMesajTipi.Conn := datalar.ADOConnection2;
+   ENabizMesajTipi.TableName := 'FirmaTipleri';
+   ENabizMesajTipi.ValueField := 'kod';
+   ENabizMesajTipi.DisplayField := 'tanimi';
+   ENabizMesajTipi.Width := 80;
+   ENabizMesajTipi.Filter := '';
+   ENabizMesajTipi.EditValue := 0;
 
   Liste.DataController.DataSource := DataSource;
 

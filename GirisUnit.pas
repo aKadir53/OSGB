@@ -421,9 +421,10 @@ begin
        TagfrmHastaListe :
            begin
               sql := 'exec sp_frmPersonelListesi ' + QuotedStr(datalar.AktifSirket) + ',' +
-                                                     AktifPasifTopPanel.EditValue + ',' +
+                                                     varTostr(AktifPasifTopPanel.EditValue) + ',' +
                                                      QuotedStr('') + ',' +
-                                                     QuotedStr(datalar.AktifSube);
+                                                     QuotedStr(datalar.AktifSube) + ',' +
+                                                     QuotedStr(varTostr(ENabizMesajTipi.EditValue));
 
            end;
 
@@ -1296,12 +1297,16 @@ begin
           SQL := TADOQuery.Create(nil);
           try
             SQL.Connection := sqlRun.Connection;
-            _Table_ := TcxButtonEditKadir(self.Components[i]).ListeAc.Table;
-            _kolon1_ := TcxButtonEditKadir(self.Components[i]).ListeAc.Kolonlar[0];
-            _text_ := TcxButtonEditKadir(self.Components[i]).Text;
-            SQL.SQL.Text := Format(selectSQL,[_table_,
-                                        _kolon1_ + '=' + #39+_text_+#39]);
-            SQl.Open;
+             if Assigned(TcxButtonEditKadir(self.Components[i]).ListeAc)
+             then begin
+                _Table_ := TcxButtonEditKadir(self.Components[i]).ListeAc.Table;
+                _kolon1_ := TcxButtonEditKadir(self.Components[i]).ListeAc.Kolonlar[0];
+                _text_ := TcxButtonEditKadir(self.Components[i]).Text;
+                SQL.SQL.Text := Format(selectSQL,[_table_,
+                                            _kolon1_ + '=' + #39+_text_+#39]);
+                SQl.Open;
+             end;
+
           //  TcxButtonEditKadir(self.Components[i]).tanimDeger := SQL.FieldByName(TcxButtonEditKadir(self.Components[i]).tanim).AsString;
             if TcxButtonEditKadir(self.Components[i]).tanim <> ''
             then
@@ -1939,7 +1944,7 @@ begin
     cxLabel.Style.Font.Style := cxLabel.Style.Font.Style - [fsBold];
   cxLabel.Style.TextColor := pTextColor;
   cxLabel.Properties.Alignment.Horz := pHorzAlignment;
-  //cxLabel.Properties.Alignment.Vert := taVCenter;
+  cxLabel.Properties.Alignment.Vert := TcxEditVertAlignment.taVCenter;
 
   cxLabel.Style.BorderStyle := ebsFlat;
   dxLaB := TdxLayoutGroup(parent).CreateItemForControl(cxLabel);
@@ -1991,7 +1996,7 @@ begin
   dxLaC := TdxLayoutGroup(parent).CreateItemForControl(cxEditC);
   dxLaC.Name := 'dxLa'+fieldName;
   dxLaC.AlignHorz := ahLeft;
-  dxLaC.AlignVert := avCenter;
+//  dxLaC.AlignVert := avCenter;
   cxEDitC.Width := uzunluk;
 //  dxLaC.Width := uzunluk;
   dxLaC.Caption := caption;
@@ -2660,6 +2665,7 @@ begin
   Yeni : begin
            Enabled;
            _SQLRUN_ := _SqlInsert_;
+
            indexKaydiBul(dosyaNo,'');
          //  KontrolEditValueClear;
            sqlRunLoad;

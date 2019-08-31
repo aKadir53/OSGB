@@ -106,7 +106,8 @@ uses
     firmaCihazKontrolListesi,
     PersonelFirmaEgitimListesi,
     SCH_FirmaSozlesme,
-    HastaKart
+    HastaKart,
+    Web_Navigate
     ;
 
 
@@ -315,6 +316,7 @@ begin
    TagfrmSCH_FirmaSozlesme : Result := TfrmSCH_FirmaSozlesme;
 
    TagfrmHastaKart : Result := TfrmHastaKart;
+   TagfrmWebNavigate : Result := TfrmWebNavigate;
 
 
  //  TagfrmAjandaOzet : Result := TfrmAjandaOzet;
@@ -393,6 +395,7 @@ begin
 
    TagfrmSCH_FirmaSozlesme : Result := frmSCH_FirmaSozlesme;
    TagfrmHastaKart : Result := frmHastaKart;
+   TagfrmWebNavigate : Result := frmWebNavigate;
 
 //   TagfrmAjandaOzet : Result := frmAjandaOzet;
 
@@ -742,6 +745,7 @@ begin
 
 
     TagfrmHastaKart : Application.CreateForm(TfrmHastaKart,frmHastaKart);
+    TagfrmWebNavigate : Application.CreateForm(TfrmWebNavigate,frmWebNavigate);
 
   end;
   try

@@ -319,6 +319,8 @@ type
    Risk : TRiskRecord;
    SahaDenetim : TSahaDenetim;
    OrtamOlcum : TOlcumKriter;
+   PersonelBelge : TPersonelBelge;
+   PersonelLevel : TPersonelLevel;
    KKD : TKKDREcord;
    SeansOlusturPrm : TSeansOlusturPrm;
    TeleEkg : TTeleEKG;
@@ -359,6 +361,7 @@ type
    portalSifre : string;
    sirketlerUserFilter : string;
    GirisFormRecord : TGirisFormRecord;
+   BildirimMail : TEmailBigileri;
    StandartFormCaption : String;
    YazilimFirma : String;
    CSGBUrl : string;
@@ -380,6 +383,7 @@ type
    function QueryExec (var Q: TADOQuery; const sql : string): Boolean;overload;
    function FindData (Q: TADOQuery; sql: string): integer;
    procedure Login;
+   procedure EmailSet;
  //  function WebErisimBilgi(slk,slb : string) : string;
    function KillTaskw(Dosyadi: string): integer;
    function UygulamaBaglantiTanimi : String;
@@ -395,6 +399,25 @@ implementation
 uses kadir, NThermo, AnaUnit;
 
 {$R *.dfm}
+
+procedure TDatalar.EmailSet;
+var
+  ado : TADOQuery;
+begin
+     ado := TADOQuery.Create(nil);
+     try
+      ado.Connection := ADOConnection2;
+      QuerySelect(ado,'select BildirimMailTo,BildirimMailCC,BildirimGSM from BildirimIslemListesi where id = 2');
+      BildirimMail.egitimBildirTo := ado.FieldByName('BildirimMailTo').AsString;
+      BildirimMail.egitimBildirCC := ado.FieldByName('BildirimMailCC').AsString;
+      QuerySelect(ado,'select BildirimMailTo,BildirimMailCC,BildirimGSM from BildirimIslemListesi where id = 1');
+      BildirimMail.kategoriBildirTo := ado.FieldByName('BildirimMailTo').AsString;
+      BildirimMail.kategoriBildirCC := ado.FieldByName('BildirimMailCC').AsString;
+     finally
+       ado.free;
+     end;
+end;
+
 
 function TDatalar.MasterBaglan : Boolean;
 var
@@ -613,6 +636,9 @@ begin
         portalUSer := WebErisimBilgi('EF','09');
         portalSifre := WebErisimBilgi('EF','10');
 
+        EmailSet;
+
+
 
         if not UpdateThermo (3, iThermo, 'Kurum Tesis Kodu') then Exit;
         _tesisKodu := WebErisimBilgi('99','00');
@@ -812,6 +838,7 @@ begin
 //      if  (Pos ('GROUP BY',AnsiUpperCase(sql)) = 0)
 //      and (Pos ('ORDER BY',AnsiUpperCase(sql)) = 0)
 //      Then sql := sql + ' WITH(NOLOCK) ';
+
     Result := TADOQuery.Create(nil);
     try
       Result.Connection := ADOConnection2;

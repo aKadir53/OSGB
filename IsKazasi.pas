@@ -118,6 +118,9 @@ begin
   TableName := _TableName_;
   Menu := PopupMenu1;
 
+
+  PersonelList.Where := 'Aktif = 1 and sirketKod = ' + QuotedStr(datalar.AktifSirket);
+
   setDataStringB(self,'ID','Sýra No',Kolon1,'',70,Kazalar,True,nil,'HASTAADI','',False,True,-100);
   setDataStringB(self,'PersonelDosyaNo','Personel Bilgisi',Kolon1,'Per',70,PersonelList,False,nil,'Adi','',False,True);
   setDataStringBLabel(self,'PersonelDosyaNo',Kolon3,'per',150,'','','');

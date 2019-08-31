@@ -668,7 +668,7 @@ object GirisForm: TGirisForm
     Align = alClient
     TabOrder = 2
     TabStop = False
-    Properties.ActivePage = sayfa1
+    Properties.ActivePage = sayfa5
     Properties.Style = 11
     Properties.TabHeight = 10
     Properties.TabPosition = tpBottom
@@ -993,7 +993,6 @@ object GirisForm: TGirisForm
           Index = 0
         end
         object Sayfa5_Kolon2: TdxLayoutGroup
-          AlignHorz = ahRight
           Parent = dxLayoutGroup2
           SizeOptions.AssignedValues = [sovSizableHorz]
           SizeOptions.SizableHorz = True
@@ -1004,8 +1003,6 @@ object GirisForm: TGirisForm
           Index = 2
         end
         object Sayfa5_Kolon3: TdxLayoutGroup
-          AlignHorz = ahLeft
-          AlignVert = avTop
           Parent = dxLayoutGroup2
           ButtonOptions.Buttons = <>
           ShowBorder = False
@@ -1759,15 +1756,19 @@ object GirisForm: TGirisForm
         item
           Description = 'Aktif'
           ImageIndex = 0
-          Value = '1'
+          Value = 1
         end
         item
           Description = 'Pasif'
-          Value = '0'
+          Value = 0
         end
         item
           Description = 'Yeni'
-          Value = '2'
+          Value = 2
+        end
+        item
+          Description = 'Kara Liste'
+          Value = 3
         end>
       Properties.OnChange = TopPanelPropertiesChange
       Style.Font.Charset = DEFAULT_CHARSET

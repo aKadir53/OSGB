@@ -928,10 +928,6 @@ object frmLogin: TfrmLogin
       Caption = 'cxTabSheet1'
       ImageIndex = 2
       TabVisible = False
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object Label1: TLabel
         Left = 154
         Top = 62

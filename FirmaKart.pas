@@ -115,6 +115,7 @@ var
   _gez : integer;
   aktifKart : integer = 0;
   kart : sqlType;
+  SirketDurumDegisti : integer;
 
 implementation
 uses AnaUnit,SMS, TransUtils, StrUtils, nThermo;
@@ -134,10 +135,10 @@ begin
   GirisRecord.F_HastaAdSoyad_ := TcxTextEditKadir(FindComponent('tanimi')).EditValue;
   F := nil;
   if (TcxButtonKadir(sender).ButtonName = 'btnSozlesmeler') and
-     (TcxImageComboKadir(FindComponent('FirmaTip')).EditValue = 4) then
+     (TcxImageComboKadir(FindComponent('FirmaTip')).EditValue = 1) then
      F := FormINIT(TagfrmSCH_FirmaSozlesme,GirisRecord,ikHayir,'')
   else if (TcxButtonKadir(sender).ButtonName = 'btnSozlesmeler') and
-     (TcxImageComboKadir(FindComponent('FirmaTip')).EditValue <> 4) then
+     (TcxImageComboKadir(FindComponent('FirmaTip')).EditValue = 0) then
     F := FormINIT(TagfrmSirketSozlesme,GirisRecord,ikHayir,'')
   else if TcxButtonKadir(sender).ButtonName = 'btnSubeler' then
     F := FormINIT(TagfrmSube,GirisRecord,ikHayir,'')
@@ -190,23 +191,29 @@ var
 begin
    if datalar.AktifSirket = '' then exit;
 
+   SirketDurumDegisti := 1;
+
  //  if aktifKart = 0
  //  then begin
        if TcxImageComboBox(FindComponent('Aktif')).ItemIndex in [1]
        then begin
          _aktif := inttostr(TcxImageComboBox(FindComponent('Aktif')).ItemIndex);
          _pasifTarih := '';
+         TcxTextEdit(FindComponent('KaraListeAlinmaSebebi')).Text := '';
+         TcxDateEdit(FindComponent('KaraListeAlinmaTarihi')).Clear;
          TdxLayoutItem(FindComponent('dxLaKaraListeAlinmaTarihi')).Visible := False;
          TdxLayoutItem(FindComponent('dxLaKaraListeAlinmaSebebi')).Visible := False;
-
        end
        else
        if TcxImageComboBox(FindComponent('Aktif')).ItemIndex  = 0
        then begin
          _aktif := '0';
          _pasifTarih := tarihal(date());
+         TcxTextEdit(FindComponent('KaraListeAlinmaSebebi')).Text := '';
+         TcxDateEdit(FindComponent('KaraListeAlinmaTarihi')).Clear;
          TdxLayoutItem(FindComponent('dxLaKaraListeAlinmaTarihi')).Visible := False;
          TdxLayoutItem(FindComponent('dxLaKaraListeAlinmaSebebi')).Visible := False;
+
        end
        else begin
          _pasifTarih := tarihal(date());
@@ -286,7 +293,7 @@ begin
   if TcxImageComboKadir(sender).Name = 'FirmaTip'
   Then begin
     firmaTip := TcxImageComboKadir(sender).EditValue;
-    if firmaTip in [1,3]
+    if firmaTip in [0]
     then begin
       TdxLayoutItem(FindComponent('dxLaB'+'btnSubeler')).Visible := True;
       TdxLayoutItem(FindComponent('dxLaB'+'btnSubeGetir')).Visible := True;
@@ -722,9 +729,11 @@ begin
   setDataStringB(self,'SirketKod','Þirket Kodu',Kolon1,'',80,List,True,nil,'','',True,True,1);
 
   tehlikeSinifi := TcxImageComboKadir.Create(self);
-  tehlikeSinifi.Conn := nil;
-  tehlikeSinifi.ItemList := '1;Firma,2;Tedarikçi,3;Þirket,4;Taþören';
-  tehlikeSinifi.BosOlamaz := False;
+  tehlikeSinifi.Conn := datalar.ADOConnection2;
+  tehlikeSinifi.BosOlamaz := True;
+  tehlikeSinifi.TableName := 'FirmaTipleri';
+  tehlikeSinifi.ValueField := 'kod';
+  tehlikeSinifi.DisplayField := 'tanimi';
   tehlikeSinifi.Filter := '';
   setDataStringKontrol(self,tehlikeSinifi,'FirmaTip','Firma Tipi',kolon1,'',120);
 
@@ -909,7 +918,7 @@ end;
 procedure TfrmFirmaKart.cxKaydetClick(Sender: TObject);
 var
  B : TcxButtonKadir;
- s : string;
+ s ,sql : string;
 begin
   datalar.KontrolUserSet := False;
   BeginTrans (DATALAR.ADOConnection2);
@@ -940,7 +949,7 @@ begin
              FirmaSozlesmeNewRecord;
              Kart := sql_none;
              if (SubeIGUDoktorAtanmismi(TcxButtonEditKadir(FindComponent('SirketKod')).Text) = 0) and
-                (TcxImageComboBox(FindComponent('FirmaTip')).ItemIndex = 1)
+                (TcxImageComboBox(FindComponent('FirmaTip')).EditValue = 0)
              Then
               if mrYes = ShowMessageSkin('Doktor Yada ÝGU atamasý yapýlmayan Þube Var','Tanýmlamak Ýster misiniz?','','msg')
               then begin
@@ -949,6 +958,21 @@ begin
                 B.Click;
               end;
               TcxImageComboBox(FindComponent('Aktif')).Enabled := True;
+
+
+              if SirketDurumDegisti = 1 then
+              Begin
+                  sql := 'insert into Sirket_Personel_Durum_Gecmisi(sirketKod,durum,aciklama,kullanici)' +
+                                    'values( ' + QuotedStr(TcxButtonEditKadir(FindComponent('SirketKod')).EditValue) + ','
+                                               + varTostr(TcxImageComboBox(FindComponent('Aktif')).EditValue) + ','
+                                               + QuotedStr(vartoStr(TcxTextEdit(FindComponent('KaraListeAlinmaSebebi')).EditValue)) +  ','
+                                               + QuotedStr(datalar.username) + ')';
+                  datalar.QueryExec(sql);
+
+                  SirketDurumDegisti := 0;
+              End;
+
+
 
 
           end;

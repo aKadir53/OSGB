@@ -481,8 +481,8 @@ object frmPersonelEgitim: TfrmPersonelEgitim
   end
   object PersonelList: TListeAc
     ListeBaslik = 'Personel Listesi'
-    TColcount = 3
-    TColsW = '50,150,80'
+    TColcount = 4
+    TColsW = '50,150,80,200'
     Table = 'PersonelKartView'
     Conn = DATALAR.ADOConnection2
     Filtercol = 0
@@ -491,18 +491,20 @@ object frmPersonelEgitim: TfrmPersonelEgitim
     Kolonlar.Strings = (
       'dosyaNo'
       'Adi'
-      'TCKIMLIKNO')
+      'TCKIMLIKNO'
+      'tanimi')
     KolonBasliklari.Strings = (
       'Dosya No'
       'Hasta Ad'#305
-      'Tc Kimlik No')
+      'Tc Kimlik No'
+      #350'irket')
     Calistir = fgEvet
     BiriktirmeliSecim = False
     SkinName = 'Lilian'
     Grup = False
     GrupCol = 0
-    Left = 584
-    Top = 104
+    Left = 608
+    Top = 136
   end
   object PopupMenu1: TPopupMenu
     Images = DATALAR.imag24png
@@ -535,6 +537,15 @@ object frmPersonelEgitim: TfrmPersonelEgitim
         Caption = '-'
       end
     end
+    object N2: TMenuItem
+      Caption = '-'
+    end
+    object E1: TMenuItem
+      Tag = -50
+      Caption = 'E'#287'itim Plan'#305'n'#305' e-Mail olarak bildir '
+      ImageIndex = 10
+      OnClick = cxButtonCClick
+    end
   end
   object Egitimciler: TListeAc
     ListeBaslik = 'E'#287'itimci Listesi'
@@ -558,8 +569,8 @@ object frmPersonelEgitim: TfrmPersonelEgitim
     SkinName = 'Lilian'
     Grup = False
     GrupCol = 0
-    Left = 496
-    Top = 128
+    Left = 512
+    Top = 136
   end
   object Egitimler: TListeAc
     TColcount = 4

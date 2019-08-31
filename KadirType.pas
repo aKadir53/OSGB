@@ -480,6 +480,14 @@ type
   End;
 
 type
+   TEmailBigileri = Record
+     egitimBildirTo : string;
+     egitimBildirCC : string;
+     kategoriBildirTo : string;
+     kategoriBildirCC : string;
+   End;
+
+type
   TGirisFormRecord = Record
     F_dosyaNO_ : string;
     F_gelisNO_ : string;
@@ -618,6 +626,28 @@ type
     Olcumler : ArrayOfString;
   end;
 
+ TPersonelBelge = record
+   id : variant;
+   PersonelKodu : string;
+   SirketKodu : string;
+   BelgeTip : variant;
+   BelgeTarihi : variant;
+   GecerlilikTarihi : variant;
+   Durum : variant;
+   AlinanKurum : string;
+ end;
+
+ TPersonelLevel = record
+   id : variant;
+   PersonelKodu : string;
+   SirketKodu : string;
+   Aciklama : string;
+   Tarih : variant;
+   personelLevel : variant;
+   Degerlendiren : string;
+   Tip : variant;
+   Durum : variant;
+ end;
 
 
 
@@ -802,6 +832,7 @@ Const
 
   TagfrmHastaKart = 5001;
 
+  TagfrmWebNavigate = 9000;
 
 
   Kaydet = 0;
@@ -888,6 +919,11 @@ Const
   olcumEkle =  65;
   olcumDuzenle = 66;
   yeniCek = 67;
+  yeniPersonelBelge = 68;
+  PersonelBelgeDuzenle = 69;
+  PersonelBelgeSil = 70;
+  yeniPersonelLevel = 71;
+  PersonelLevelDuzenle = 72;
 
 
   sp_HastaGelis = 'exec sp_HastaGelisleri ';

@@ -341,9 +341,21 @@ object frmHastaListe: TfrmHastaListe
           HeaderAlignmentHorz = taCenter
           HeaderAlignmentVert = vaCenter
         end
+        object ListeColumn1: TcxGridDBColumn
+          Caption = 'P.Kart Kalan G'#252'n Say'#305's'#305
+          DataBinding.FieldName = 'KartBitisGun'
+          PropertiesClassName = 'TcxCurrencyEditProperties'
+          Properties.AssignedValues.DisplayFormat = True
+          HeaderAlignmentHorz = taCenter
+          HeaderAlignmentVert = vaCenter
+          Options.Editing = False
+        end
         object ListeColumn12: TcxGridDBColumn
           Caption = 'Grup'
           DataBinding.FieldName = 'tetkikIstemGrupSablon'
+          HeaderAlignmentHorz = taCenter
+          HeaderAlignmentVert = vaCenter
+          Options.Editing = False
         end
         object ListeColumnSirketKod: TcxGridDBColumn
           DataBinding.FieldName = 'sirketKod'
@@ -384,10 +396,6 @@ object frmHastaListe: TfrmHastaListe
       object cxTabSheet1: TcxTabSheet
         Caption = 'Uyar'#305' Bilgisi'
         ImageIndex = 133
-        ExplicitLeft = 4
-        ExplicitTop = 0
-        ExplicitWidth = 1155
-        ExplicitHeight = 34
         object txtUyariMesaj: TcxMemo
           Left = 0
           Top = 0
@@ -582,6 +590,20 @@ object frmHastaListe: TfrmHastaListe
       Tag = -10
       Caption = 'Pesonel '#350'irket De'#287'i'#351'tir'
       ImageIndex = 69
+      OnClick = cxButtonCClick
+    end
+    object N2: TMenuItem
+      Caption = '-'
+    end
+    object P1: TMenuItem
+      Tag = -21
+      Caption = 'Personel Kart Yazd'#305'r'
+      ImageIndex = 112
+    end
+    object P2: TMenuItem
+      Tag = -20
+      Caption = 'Pasaport S'#252'resi Ge'#231'enleri Firmas'#305'na Bildir'
+      ImageIndex = 10
       OnClick = cxButtonCClick
     end
   end
