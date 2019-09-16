@@ -643,7 +643,7 @@ type
    SirketKodu : string;
    Aciklama : string;
    Tarih : variant;
-   personelLevel : variant;
+   personelLevel : string;
    Degerlendiren : string;
    Tip : variant;
    Durum : variant;

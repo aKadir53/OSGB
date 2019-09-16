@@ -179,6 +179,7 @@ object frmHastaListe: TfrmHastaListe
             item
               Value = '0'
             end>
+          Visible = False
           HeaderAlignmentHorz = taCenter
           HeaderAlignmentVert = vaCenter
           Width = 31
@@ -189,6 +190,7 @@ object frmHastaListe: TfrmHastaListe
           PropertiesClassName = 'TcxTextEditProperties'
           Properties.Alignment.Horz = taLeftJustify
           Properties.Alignment.Vert = taVCenter
+          Visible = False
           HeaderAlignmentHorz = taCenter
           HeaderAlignmentVert = vaCenter
           Width = 38
@@ -203,6 +205,7 @@ object frmHastaListe: TfrmHastaListe
               ImageIndex = 0
               Value = '1'
             end>
+          Visible = False
           HeaderAlignmentHorz = taCenter
           HeaderAlignmentVert = vaCenter
           Width = 37
@@ -217,6 +220,7 @@ object frmHastaListe: TfrmHastaListe
               ImageIndex = 0
               Value = '+'
             end>
+          Visible = False
           HeaderAlignmentHorz = taCenter
           HeaderAlignmentVert = vaCenter
           Width = 43
@@ -604,6 +608,15 @@ object frmHastaListe: TfrmHastaListe
       Tag = -20
       Caption = 'Pasaport S'#252'resi Ge'#231'enleri Firmas'#305'na Bildir'
       ImageIndex = 10
+      OnClick = cxButtonCClick
+    end
+    object N3: TMenuItem
+      Caption = '-'
+    end
+    object P3: TMenuItem
+      Tag = -50
+      Caption = 'Personel Kart Excelden Aktar'
+      ImageIndex = 75
       OnClick = cxButtonCClick
     end
   end

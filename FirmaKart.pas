@@ -7,7 +7,7 @@ uses
   Dialogs, cxGraphics, cxControls, cxLookAndFeels, cxLookAndFeelPainters,pngImage,
   cxContainer, cxEdit, Menus, StdCtrls, cxButtons, cxGroupBox, DB, ADODB,
   cxTextEdit, cxMaskEdit, cxButtonEdit, cxDBEdit,
-  kadirType,KadirLabel,Kadir,Data_Modul,
+  kadirType,KadirLabel,Kadir,Data_Modul,comObj,
   GirisUnit, cxStyles, dxSkinscxPCPainter, cxCustomData, cxFilter,
   cxData, cxDataStorage, cxDBData, cxGridCustomTableView, cxGridTableView,
   cxGridDBTableView, cxGridLevel, cxClasses, cxGridCustomView, cxGrid,jpeg,
@@ -45,20 +45,11 @@ type
     cxStyleRepository1: TcxStyleRepository;
     cxStyle1: TcxStyle;
     cxStyle2: TcxStyle;
-    SeansKart1: TMenuItem;
     ADO_Gelisler: TADOQuery;
     lemler1: TMenuItem;
     txtAktif: TcxImageComboBox;
     ListeNaceKods: TListeAc;
-    AKart1: TMenuItem;
-    YatBilgileri1: TMenuItem;
-    Epikriz1: TMenuItem;
     SmsGnder1: TMenuItem;
-    HastaRaporlar1: TMenuItem;
-    T1: TMenuItem;
-    R1: TMenuItem;
-    N3: TMenuItem;
-    T2: TMenuItem;
     T3: TMenuItem;
     NaceKod: TcxButtonEditKadir;
     procedure FormCreate(Sender: TObject);
@@ -77,18 +68,15 @@ type
     procedure cxButtonEditPropertiesButtonClick(Sender: TObject;
       AButtonIndex: Integer);override;
     function TakipSil(TakipNo : string) : string;
-    procedure cxGridGelislerDblClick(Sender: TObject);
     procedure txtTipPropertiesChange(Sender: TObject);
     procedure txtAktifPropertiesChange(Sender: TObject);
     procedure PropertiesEditValueChanged(Sender: TObject);
-    procedure cxGridGelislerKeyDown(Sender: TObject; var Key: Word;
-      Shift: TShiftState);
     procedure DOGUMTARIHIPropertiesValidate(Sender: TObject;
       var DisplayValue: Variant; var ErrorText: TCaption; var Error: Boolean);
     procedure txtNaceKodPropertiesButtonClick(Sender: TObject;
       AButtonIndex: Integer);
      procedure ButtonClick(Sender: TObject);
-
+   // procedure ExceldenFirmaAktar;
   private
     { Private declarations }
   protected
@@ -135,8 +123,12 @@ begin
   GirisRecord.F_HastaAdSoyad_ := TcxTextEditKadir(FindComponent('tanimi')).EditValue;
   F := nil;
   if (TcxButtonKadir(sender).ButtonName = 'btnSozlesmeler') and
-     (TcxImageComboKadir(FindComponent('FirmaTip')).EditValue = 1) then
-     F := FormINIT(TagfrmSCH_FirmaSozlesme,GirisRecord,ikHayir,'')
+     (TcxImageComboKadir(FindComponent('FirmaTip')).EditValue = 1)
+     then begin
+      FirmaSozlesmeNewRecord;
+      F := FormINIT(TagfrmSCH_FirmaSozlesme,GirisRecord,ikHayir,'')
+
+     end
   else if (TcxButtonKadir(sender).ButtonName = 'btnSozlesmeler') and
      (TcxImageComboKadir(FindComponent('FirmaTip')).EditValue = 0) then
     F := FormINIT(TagfrmSirketSozlesme,GirisRecord,ikHayir,'')
@@ -527,19 +519,6 @@ begin
 
 end;
 
-procedure TfrmFirmaKart.cxGridGelislerDblClick(Sender: TObject);
-begin
-  inherited;
-    SeansKart1.Click;
-end;
-
-procedure TfrmFirmaKart.cxGridGelislerKeyDown(Sender: TObject; var Key: Word;
-  Shift: TShiftState);
-begin
-  inherited;
-if Key = 13 then SeansKart1.Click;
-end;
-
 procedure TfrmFirmaKart.cxTextEditBKeyDown(Sender: TObject; var Key: Word;
   Shift: TShiftState);
 begin
@@ -559,6 +538,88 @@ begin
   inherited;
 //
 end;
+
+(*
+
+procedure TfrmFirmaKart.ExceldenFirmaAktar(dosyaAdi , TabloAdi : string);
+var
+  Excel ,sayfa , tip : variant;
+  SatirSutunVeriVar : variant;
+  dosya : string;
+  sonColon,sonsatir , x ,c,r,indexCol: integer;
+  liste ,sql ,fieldnames , values , indexField : string;
+  ado : TADOQuery;
+  fields : TStrings;
+begin
+  dosya := 'C:\OSGB\FirmaKart.XLS';
+
+  Excel := CreateOleObject('Excel.Application');
+  try
+    Excel.Workbooks.Open(dosya);
+    Excel.visible := False;//Exceli acip verileri goster
+    sayfa := Excel.workbooks[1].worksheets[2];
+  except
+    Excel.DisplayAlerts := False;  //Excel mesajlarýný görünteleme
+    Excel.Quit;
+    Excel := Unassigned;
+  end;
+
+ // fields := TStrings.Create;
+ try
+  try
+  // sonsatir := Excel.Range[Char(96 + 1) + IntToStr(65536)].end[3].Rows.Row;
+  // sonColon := Excel.Range[Char(96 + 1) + IntToStr(256)].end[3].Cols.Col;
+
+   SatirSutunVeriVar:= Excel.workbooks[1].worksheets[2].UsedRange; // veri çalýþma kitabý 1 deki hangi satýrlarda ve sütünlarda var buluyor
+   sonsatir:= SatirSutunVeriVar.rows.Count; /// kaç satýr bilgi olduðunu rakamsal olarak buluyor.
+   sonColon:= SatirSutunVeriVar.columns.Count;
+
+   DurumGoster();
+
+   for x := 1 to sonColon do
+   begin
+      //tip := sayfa.cells[1,x].DataType;
+
+        if pos('*', varToStr(sayfa.cells[1,x].value)) > 0
+        then begin
+          indexField := StringReplace(varToStr(sayfa.cells[1,x].value),'*','',[rfReplaceAll]);
+          indexCol := x;
+        end;
+        fieldnames := fieldnames + ifThen(fieldnames = '','',',') + StringReplace(varToStr(sayfa.cells[1,x].value),'*','',[rfReplaceAll]);
+   end;
+
+
+   for r := 2 to sonsatir do
+   begin
+       values := '';
+       for c := 1 to sonColon do
+       begin
+         values := values + ifThen(values = '','',',') + QuotedStr(varTostr(sayfa.cells[r,c].value));
+       end;
+
+         sql := 'if not exists(select * from SIRKETLER_TNM where ' + indexField + ' = ' + QuotedStr(varTostr(sayfa.cells[r,indexCol].value)) + ')' +
+                ' begin ' +
+                '  insert into SIRKETLER_TNM (' + fieldnames + ')' +
+                '  values(' + values + ')' +
+                ' end';
+
+         datalar.QueryExec(sql);
+
+   end;
+
+  except on e : exception do
+   begin
+     ShowMessageSkin(e.Message,'','','info');
+   end;
+  end;
+
+  finally
+   //fields.free;
+   DurumGoster(False);
+  end;
+
+end;
+*)
 
 function TfrmFirmaKart.Init(Sender : TObject) : Boolean;
 var
@@ -691,6 +752,7 @@ var
   SEHIR ,ILCE ,BUCAK ,KOY,MAHALLE,tehlikeSinifi,odeme : TcxImageComboKadir;
   BB : TcxButtonKadir;
   Tarih : TcxDateEditKadir;
+  SirketlerSorgu : String;
 begin
   // Burdaki User_ID ve sirketKod base formda dolduruluyor. Visible false (true set etmeyin)
   // Eðer kayýt eklediðiniz tabloda bu alanlar varsa ve bunlarý otomatik set etmek isterseniz
@@ -718,7 +780,9 @@ begin
   Sayfa3_Kolon3.Width := 0;
   Sayfa3_Kolon2.Width := 0;
 
-  List := ListeAcCreate('SIRKETLER_TNM','sirketKod,SGKKod,tanimi,VN,Aktif',
+  SirketlerSorgu := '(select distinct sb.sirketKod,s.tanimi,s.SGKKod,s.VN,S.aktif  from SIRKET_SUBE_TNM Sb join SIRKETLER_TNM s on s.SirketKod = sb.sirketKod) S';
+                                                                     //         ,sb.IGU,Sb.SubeDoktor
+  List := ListeAcCreate(SirketlerSorgu,'sirketKod,SGKKod,tanimi,VN,Aktif',
                        'SirketKodu,SatýcýKodu,Sirket,VergiNo,Durum',
                        '50,80,250,100,50','SirketKod','Firma Listesi','',5,True);
 
@@ -736,8 +800,6 @@ begin
   tehlikeSinifi.DisplayField := 'tanimi';
   tehlikeSinifi.Filter := '';
   setDataStringKontrol(self,tehlikeSinifi,'FirmaTip','Firma Tipi',kolon1,'',120);
-
-
   OrtakEventAta(tehlikeSinifi);
 
   setDataString(self,'SGKKod','Satýcý Kodu  ',Kolon1,'sat',100,True);
@@ -748,7 +810,7 @@ begin
 
 
 
-  setDataString(self,'tanimi','Firma Adý  ',Kolon1,'',350,True);
+  setDataString(self,'tanimi','Fatura Ünvaný',Kolon1,'',350,True);
   setDataStringKontrol(self,NaceKod, 'NaceKod','Nace Kodu  ',Kolon1,'',130);
   setDataString(self,'anaFaliyet','Firma Ana Faaliye',Kolon1,'',450,True);
  // setDataString(self,'tehlikeSinifi','Tehlike Sýnýfý',Kolon1,'',100,True);
@@ -760,13 +822,29 @@ begin
   tehlikeSinifi.DisplayField := 'Tanimi';
   tehlikeSinifi.BosOlamaz := False;
   tehlikeSinifi.Filter := '';
-  setDataStringKontrol(self,tehlikeSinifi,'tehlikeSinifi','Tehlike Sýnýfý',kolon1,'',100);
+  setDataStringKontrol(self,tehlikeSinifi,'tehlikeSinifi','Tehlike Sýnýfý',kolon1,'',120);
+  OrtakEventAta(tehlikeSinifi);
+
+
+  tehlikeSinifi := TcxImageComboKadir.Create(self);
+  tehlikeSinifi.Conn := datalar.ADOConnection2;
+  tehlikeSinifi.BosOlamaz := True;
+  tehlikeSinifi.TableName := 'SCH_isTanim';
+  tehlikeSinifi.ValueField := 'kod';
+  tehlikeSinifi.DisplayField := 'tanimi';
+  tehlikeSinifi.Filter := '';
+  setDataStringKontrol(self,tehlikeSinifi,'isTanim','Ýþ Tanýmý',kolon1,'',120);
   OrtakEventAta(tehlikeSinifi);
 
 
   setDataString(self,'VD','Vergi Dairesi',Kolon1,'',100,True);
   setDataString(self,'VN','Vergi No',Kolon1,'',100,True);
-  setDataString(self,'IsyeriSicilNo','Ýþ Yeri Sicil No',Kolon1,'',100,True);
+  setDataString(self,'VergiLevhaUnvani','Vergi Levha Unvani',Kolon1,'',250,True);
+
+
+
+
+  setDataString(self,'IsyeriSicilNo','Ýþ Yeri Sicil No',Kolon1,'',120,True);
   setDataString(self,'BolgeMudurlukSicilNo','Bölge Müd. Sicil No.',Kolon1,'',100,True);
   SEHIR := TcxImageComboKadir.Create(self);
   SEHIR.Conn := Datalar.ADOConnection2;
@@ -930,11 +1008,11 @@ begin
     end;
 
     s := FirmaSozlesmeDosyaYuklumu;
-    if (s <> '') and (TcxImageComboBox(FindComponent('Aktif')).ItemIndex = 1)
+    if (s <> '') //and (TcxImageComboBox(FindComponent('Aktif')).ItemIndex = 1)
     then begin
       TcxImageComboBox(FindComponent('Aktif')).ItemIndex := 0;
       ShowMessageSkin(s,' Dökümaný Yüklü Deðil','Firma Aktif Edilemez','info');
-      exit;
+      //exit;
     end;
 
 
@@ -1141,8 +1219,9 @@ begin
        end;
 
  -36 : begin
-          F := FormINIT(TagfrmHastaDiyalizIzlem,GirisFormRecord,ikHayir);
-          if F <> nil then F.ShowModal;
+          DurumGoster();
+          ExceldenKayitAktar('C:\OSGB\FirmaKart.XLS','SIRKETLER_TNM');
+          DurumGoster(False);
        end;
 
 

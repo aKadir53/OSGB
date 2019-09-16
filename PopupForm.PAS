@@ -2306,8 +2306,8 @@ ptPersonelTetkikleri :
 
                   ComboList := TStringList.Create;
                   Try
-                   ComboList.Add('1');ComboList.Add('2');ComboList.Add('3');ComboList.Add('4');
-                   setDataStringC(self,'personelLevel','Seviye',Kolon1,'',50,ComboList);
+                   ComboList.Add('1-Yardýmcý');ComboList.Add('2-Yardýmcý');ComboList.Add('3-Usta');ComboList.Add('4-Usta');
+                   setDataStringC(self,'personelLevel','Seviye',Kolon1,'',100,ComboList);
                   Finally
                     ComboList.free;
                   End;
@@ -2359,15 +2359,17 @@ procedure TfrmPopup.PropertiesEditValueChanged(Sender: TObject);
 begin
   inherited;
 
-  if TcxComboBox(sender).Name = 'personelLevel'
-  Then begin
-    if TcxComboBox(sender).EditValue < 4
-    Then
-      TcxImageComboKadir(FindComponent('Durum')).EditValue := 1
-       else
-         TcxImageComboKadir(FindComponent('Durum')).EditValue := 2;
+  if TcxComboBox(sender).EditValue <> Null
+  then
+    if TcxComboBox(sender).Name = 'personelLevel'
+    Then begin
+      if strToint(copy(TcxComboBox(sender).EditValue,1,1)) < 4
+      Then
+        TcxImageComboKadir(FindComponent('Durum')).EditValue := 1
+         else
+           TcxImageComboKadir(FindComponent('Durum')).EditValue := 2;
 
-  end;
+    end;
 
   if TcxImageComboKadir(sender).Name = 'tetkikIstemGrupSablon'
   Then begin

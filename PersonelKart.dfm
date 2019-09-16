@@ -2505,7 +2505,7 @@ object frmPersonelKart: TfrmPersonelKart
   object GridPersonelLevel: TcxGridKadir
     Left = 911
     Top = 266
-    Width = 210
+    Width = 260
     Height = 159
     TabOrder = 19
     ExceleGonder = False
@@ -2540,7 +2540,7 @@ object frmPersonelKart: TfrmPersonelKart
           Caption = 'Personel De'#287'erlendirme'
           HeaderAlignmentHorz = taLeftJustify
           Styles.Header = AnaForm.cxStyle1
-          Width = 197
+          Width = 238
         end>
       object cxGridDBBandedColumn10: TcxGridDBBandedColumn
         Caption = 'Tarihi'
@@ -2551,7 +2551,7 @@ object frmPersonelKart: TfrmPersonelKart
         HeaderAlignmentHorz = taCenter
         HeaderAlignmentVert = vaCenter
         Options.Editing = False
-        Width = 90
+        Width = 87
         Position.BandIndex = 0
         Position.ColIndex = 1
         Position.RowIndex = 0
@@ -2564,7 +2564,7 @@ object frmPersonelKart: TfrmPersonelKart
         Properties.Alignment.Vert = taVCenter
         HeaderAlignmentHorz = taCenter
         Options.Editing = False
-        Width = 35
+        Width = 83
         Position.BandIndex = 0
         Position.ColIndex = 2
         Position.RowIndex = 0
@@ -2578,7 +2578,7 @@ object frmPersonelKart: TfrmPersonelKart
         HeaderAlignmentHorz = taCenter
         Options.Editing = False
         Styles.Content = cxStyle1
-        Width = 59
+        Width = 68
         Position.BandIndex = 0
         Position.ColIndex = 0
         Position.RowIndex = 0
@@ -2587,6 +2587,32 @@ object frmPersonelKart: TfrmPersonelKart
     object cxGridLevel4: TcxGridLevel
       GridView = GridDegerlendirme
     end
+  end
+  object CalismaAlani: TcxCheckGroup
+    Left = 976
+    Top = 19
+    Alignment = alCenterCenter
+    EditValue = '0110'
+    Properties.Columns = 4
+    Properties.EditValueFormat = cvfStatesString
+    Properties.Items = <
+      item
+        Caption = 'Tam'
+      end
+      item
+        Caption = 'Mekanik'
+      end
+      item
+        Caption = 'Elektrik'
+      end
+      item
+        Caption = 'Comm'
+      end>
+    Properties.OnEditValueChanged = seansGunleriPropertiesEditValueChanged
+    TabOrder = 20
+    Visible = False
+    Height = 33
+    Width = 270
   end
   object PopupMenu1: TPopupMenu
     Images = DATALAR.imag24png

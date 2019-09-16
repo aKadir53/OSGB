@@ -82,6 +82,8 @@ type
     P1: TMenuItem;
     ListeColumn1: TcxGridDBColumn;
     P2: TMenuItem;
+    N3: TMenuItem;
+    P3: TMenuItem;
 
     procedure TopPanelPropertiesChange(Sender: TObject);
     procedure btnVazgecClick(Sender: TObject);
@@ -210,6 +212,19 @@ begin
         end;
 
       end;
+ -50  : begin
+         if mrYes = ShowMessageSkin('Personel Kart Aktarýmý Ýçin Excel Dosyasýnýn C:\OSGB\PersonelKart.XLS',
+                                    'Hazýr Olduðundan Emin Olun',
+                                    'Ýþleme Devam Edilsin mi?',
+                                    'msg')
+         then begin
+
+          DurumGoster();
+          ExceldenKayitAktar('C:\OSGB\PersonelKart.XLS','PersonelKart');
+          DurumGoster(False);
+
+         end;
+        end;
 
 
  -20  : begin

@@ -37,10 +37,6 @@ type
     cxGridKontrolUsercaption: TcxGridDBColumn;
     cxLabel1: TcxLabel;
     txtKullanici: TcxButtonEditKadir;
-    User_Kontrol_Settingskullanici: TStringField;
-    User_Kontrol_SettingsformTag: TIntegerField;
-    User_Kontrol_SettingskontrolTag: TIntegerField;
-    User_Kontrol_Settingscaption: TStringField;
     cxTabSheet2: TcxTabSheet;
     cxGroupBox4: TcxGroupBox;
     InputKontroller: TcxListView;
@@ -52,6 +48,8 @@ type
     IntegerField2: TIntegerField;
     DataSource2: TDataSource;
     InputKontrolkontrolName: TStringField;
+    cxButton5: TcxButton;
+    cxButton6: TcxButton;
     procedure cxButton1Click(Sender: TObject);
     procedure cxButtonEditKadir1PropertiesButtonClick(Sender: TObject;
       AButtonIndex: Integer);
@@ -112,8 +110,13 @@ begin
             if User_Kontrol_Settings.Locate('formTag;kontrolTag',
                        VarArrayOf([inttostr(Formname.Tag),
                        inttostr(mi.Tag)]),[]) = True
-            Then
+            Then begin
+              if User_Kontrol_Settings.FieldByName('goster').AsInteger = 1
+              Then
                item.SubItems.Add('Kilitli')
+              else
+               item.SubItems.Add('Gizli');
+            end
             else
                item.SubItems.Add('Serbest');
           end;
@@ -132,8 +135,13 @@ begin
         if User_Kontrol_Settings.Locate('formTag;kontrolTag',
                    VarArrayOf([inttostr(Formname.Tag),
                    inttostr(TToolButton(FormName.components[i]).Tag)]),[]) = True
-        Then
+        Then begin
+          if User_Kontrol_Settings.FieldByName('goster').AsInteger = 1
+          Then
            item.SubItems.Add('Kilitli')
+          else
+           item.SubItems.Add('Gizli');
+        end
         else
            item.SubItems.Add('Serbest');
 
@@ -217,13 +225,30 @@ end;
 
 
 procedure TfrmKontrolUserSet.cxButton2Click(Sender: TObject);
+var
+ goster : integer;
+  formTag,kontrolTag : string;
 begin
+
+  formTag := kontroller.Selected.SubItems[0];
+  kontrolTag := kontroller.Selected.SubItems[1];
+
+  if User_Kontrol_Settings.Locate('formTag;kontrolTag',
+             VarArrayOf([formTag,kontrolTag]),[]) = True
+  Then
+    User_Kontrol_Settings.Edit
+  Else
+    User_Kontrol_Settings.Append;
+
+  goster := TcxButton(sender).Tag;
+
+
  try
-   User_Kontrol_Settings.Append;
    User_Kontrol_Settings.FieldByName('kullanici').AsString := txtKullanici.EditingValue;
    User_Kontrol_Settings.FieldByName('formTag').AsString := kontroller.ItemFocused.SubItems[0];
    User_Kontrol_Settings.FieldByName('kontrolTag').AsString := kontroller.ItemFocused.SubItems[1];
    User_Kontrol_Settings.FieldByName('caption').AsString := kontroller.ItemFocused.SubItems[3];
+   User_Kontrol_Settings.FieldByName('Goster').AsInteger := goster;
    User_Kontrol_Settings.Post;
  except on e : Exception do
    begin

@@ -152,76 +152,13 @@ object frmFirmaKart: TfrmFirmaKart
       ImageIndex = 94
       OnClick = cxButtonCClick
     end
-    object AKart1: TMenuItem
-      Tag = -25
-      Caption = 'A'#351#305' Kart'#305
-      ImageIndex = 60
-      Visible = False
-      OnClick = cxButtonCClick
-    end
-    object T2: TMenuItem
-      Tag = -35
-      Caption = 'Tan'#305' Kart'#305
-      ImageIndex = 74
-      Visible = False
-      OnClick = cxButtonCClick
-    end
-    object YatBilgileri1: TMenuItem
-      Tag = -26
-      Caption = 'Yat'#305#351' Bilgileri'
-      ImageIndex = 66
-      Visible = False
-    end
-    object Epikriz1: TMenuItem
-      Tag = -26
-      Caption = 'Epikriz'
-      ImageIndex = 90
-      Visible = False
-      OnClick = cxButtonCClick
-    end
-    object R1: TMenuItem
-      Tag = 130
-      Caption = 'Re'#231'ete'
-      ImageIndex = 97
-      Visible = False
-      OnClick = cxButtonCClick
-    end
-    object N3: TMenuItem
-      Tag = 140
-      Caption = #304'la'#231' Tedavi'
-      ImageIndex = 63
-      Visible = False
-      OnClick = cxButtonCClick
-    end
-    object HastaRaporlar1: TMenuItem
-      Tag = -29
-      Caption = 'Hasta Raporlar'#305
-      ImageIndex = 98
-      Visible = False
-      OnClick = cxButtonCClick
-    end
     object N2: TMenuItem
       Caption = '-'
     end
-    object SeansKart1: TMenuItem
-      Tag = -6
-      Caption = 'Seans Kart'#305
-      Hint = 'SEANS i'#350'LEMLER'#304',D'#252'zenle'
-      ImageIndex = 80
-      Visible = False
-      OnClick = cxButtonCClick
-    end
-    object T1: TMenuItem
-      Tag = -32
-      Caption = 'Tetkik Tedavi Kart'#305
-      ImageIndex = 47
-      Visible = False
-      OnClick = cxButtonCClick
-    end
     object T3: TMenuItem
       Tag = -36
-      Caption = 'Tedavi '#304'zlem'
-      ImageIndex = 67
+      Caption = 'Excelden Firma Kart'#305' Y'#252'ke'
+      ImageIndex = 75
       Visible = False
       OnClick = cxButtonCClick
     end

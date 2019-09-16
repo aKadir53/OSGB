@@ -338,6 +338,7 @@ procedure PopupMenuToToolBarEnabled(AOwner : TComponent ; TB : TToolbar ; Menu :
 procedure PopupMenuEnabled(AOwner : TComponent ; Menu : TPopupMenu ; Enableded : Boolean = True);
 
 function KontrolUsers(FormTag,KontrolTag : string; kullanici : string) : Boolean;
+function KontrolUsersVisible(FormTag,KontrolTag : string ; kullanici : string) : Boolean;
 function dosyaNoYeniNumaraAl(tip : string) : string;
 function TakipMeduladanSil(TakipNo : string) : string;
 function HastaKontrol(_dosyaNo : string) : boolean;
@@ -456,7 +457,7 @@ Procedure FirmaSorgulCSGBCvpFirmaBilgiGuncelle(firmaSgk : string ; Cvp : isyeriC
 function DetaySil(Tag : integer ; Tablaname,WhereField,Where : string) : Boolean;
 procedure FirmaBilgiRecordToNull;
 function Download(URL, User, Pass, FileName :  string ; FullURL : string = '443'): Boolean;
-
+procedure ExceldenKayitAktar(dosyaAdi , TabloAdi : string);
 
 
 function findMethod(dllHandle: Cardinal;  methodName: string): FARPROC;
@@ -2906,6 +2907,22 @@ begin
   end;
 end;
 
+function KontrolUsersVisible(FormTag,KontrolTag : string ; kullanici : string) : Boolean;
+var
+  ado : TADOQuery;
+  sql : string;
+begin
+  ado := TADOQuery.Create(nil);
+  try
+    sql := 'select * from KontrolUserSettings where kullanici = ' + QuotedStr(kullanici) +
+           ' and formTag = ' + FormTag + ' and kontrolTag = ' + KontrolTag + ' and goster = 0';
+    datalar.QuerySelect(ado,sql);
+    KontrolUsersVisible := ado.Eof;
+  finally
+    ado.Free;
+  end;
+end;
+
 
 procedure PopupMenuToToolBarEnabled(AOwner : TComponent ; TB : TToolbar ; Menu : TPopupMenu);
 var
@@ -2966,13 +2983,17 @@ begin
   for r := 0 to Menu.Items.Count - 1 do
   begin
     mi := TMenuItem(Menu.Items[r]);
+    mi.Visible := KontrolUsersVisible(inttostr(AOwner.Tag),intTostr(mi.Tag),datalar.username);
+
     TBB := FindToolButton(TB,'ToolButton'+mi.Name);
     if TBB <> nil
     then begin
      TBB.Enabled := mi.Enabled;
      Continue;
     end;
-    if (mi.Visible = True) then
+
+    if 1 = 1 //(mi.Visible = True)
+    then
     begin
       TBB := TToolButtonKadir.Create(AOwner);
       if (mi.Caption = '-')
@@ -2981,6 +3002,7 @@ begin
         TBB.Width := 10;
       end
       else begin
+          TBB.Visible := mi.Visible;
           TBB.Style := tbsButton;
           TBB.Height := 40;
           TBB.Width := 32;
@@ -3003,7 +3025,6 @@ begin
           begin
             misub := TMenuItem.Create(pmenu);
             misub.Caption := mi.Items[i].Caption;
-
             if Assigned(mi.Items[i].Action)
             then begin
               mi.Items[i].Action.Tag := mi.Items[i].Tag;
@@ -3017,6 +3038,7 @@ begin
           //  misub.Islem := mi.Islem;
             misub.hint := mi.Items[i].hint; //Modul,Islem
             misub.OnClick := mi.Items[i].OnClick;
+            misub.Visible := KontrolUsersVisible(inttostr(AOwner.Tag),intTostr(mi.Items[i].Tag),datalar.username);
             pmenu.Items.Add(misub);
            end;
           TBB.DropdownMenu := pmenu;
@@ -11447,6 +11469,87 @@ begin
     aQuery.Free;
   end;
 end;
+
+procedure ExceldenKayitAktar(dosyaAdi , TabloAdi : string);
+var
+  Excel ,sayfa , tip : variant;
+  SatirSutunVeriVar : variant;
+  dosya : string;
+  sonColon,sonsatir , x ,c,r,indexCol: integer;
+  liste ,sql ,fieldnames , values , indexField : string;
+  ado : TADOQuery;
+  fields : TStrings;
+begin
+  dosya := dosyaAdi;
+
+  Excel := CreateOleObject('Excel.Application');
+  try
+    Excel.Workbooks.Open(dosya);
+    Excel.visible := False;//Exceli acip verileri goster
+    sayfa := Excel.workbooks[1].worksheets[2];
+  except
+    Excel.DisplayAlerts := False;  //Excel mesajlarýný görünteleme
+    Excel.Quit;
+    Excel := Unassigned;
+  end;
+
+ // fields := TStrings.Create;
+ try
+  try
+  // sonsatir := Excel.Range[Char(96 + 1) + IntToStr(65536)].end[3].Rows.Row;
+  // sonColon := Excel.Range[Char(96 + 1) + IntToStr(256)].end[3].Cols.Col;
+
+   SatirSutunVeriVar:= Excel.workbooks[1].worksheets[2].UsedRange; // veri çalýþma kitabý 1 deki hangi satýrlarda ve sütünlarda var buluyor
+   sonsatir:= SatirSutunVeriVar.rows.Count; /// kaç satýr bilgi olduðunu rakamsal olarak buluyor.
+   sonColon:= SatirSutunVeriVar.columns.Count;
+
+  // DurumGoster();
+
+   for x := 1 to sonColon do
+   begin
+      //tip := sayfa.cells[1,x].DataType;
+
+        if pos('*', varToStr(sayfa.cells[1,x].value)) > 0
+        then begin
+          indexField := StringReplace(varToStr(sayfa.cells[1,x].value),'*','',[rfReplaceAll]);
+          indexCol := x;
+        end;
+        fieldnames := fieldnames + ifThen(fieldnames = '','',',') + StringReplace(varToStr(sayfa.cells[1,x].value),'*','',[rfReplaceAll]);
+   end;
+
+
+   for r := 2 to sonsatir do
+   begin
+       values := '';
+       for c := 1 to sonColon do
+       begin
+         values := values + ifThen(values = '','',',') + QuotedStr(varTostr(sayfa.cells[r,c].value));
+       end;
+
+         sql := 'if not exists(select * from ' + TabloAdi  + ' where ' + indexField + ' = ' + QuotedStr(varTostr(sayfa.cells[r,indexCol].value)) + ')' +
+                ' begin ' +
+                '  insert into ' + TabloAdi  + ' (' + fieldnames + ')' +
+                '  values(' + values + ')' +
+                ' end';
+
+         datalar.QueryExec(sql);
+
+   end;
+
+  except on e : exception do
+   begin
+     ShowMessageSkin(e.Message,'','','info');
+   end;
+  end;
+
+  finally
+   //fields.free;
+  // DurumGoster(False);
+  end;
+
+end;
+
+
 
 function SQLValue (const sValue: String): String;
 begin

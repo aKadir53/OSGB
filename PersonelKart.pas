@@ -145,6 +145,7 @@ type
     cxGridDBBandedColumn11: TcxGridDBBandedColumn;
     cxGridLevel4: TcxGridLevel;
     Tip: TcxGridDBBandedColumn;
+    CalismaAlani: TcxCheckGroup;
     procedure FormCreate(Sender: TObject);
     procedure cxKaydetClick(Sender: TObject);override;
     procedure cxButtonCClick(Sender: TObject);
@@ -739,7 +740,7 @@ procedure TfrmPersonelKart.GridDegerlendirmeNavigatorButtonsButtonClick(
     GridPersonelLevel.DataSet.FieldByName('Tarih').Value := datalar.PersonelLevel.Tarih;
     GridPersonelLevel.DataSet.FieldByName('Aciklama').Value := datalar.PersonelLevel.Aciklama;
     GridPersonelLevel.DataSet.FieldByName('Degerlendiren').Value := datalar.PersonelLevel.Degerlendiren;
-    GridPersonelLevel.DataSet.FieldByName('personelLevel').Value := datalar.PersonelLevel.personelLevel;
+    GridPersonelLevel.DataSet.FieldByName('personelLevel').AsString := datalar.PersonelLevel.personelLevel;
     GridPersonelLevel.DataSet.FieldByName('Tip').Value := datalar.PersonelLevel.Tip;
     GridPersonelLevel.DataSet.FieldByName('Durum').Value := datalar.PersonelLevel.Durum;
   end;
@@ -750,7 +751,7 @@ procedure TfrmPersonelKart.GridDegerlendirmeNavigatorButtonsButtonClick(
     datalar.PersonelLevel.PersonelKodu := GridPersonelLevel.DataSet.FieldByName('dosyaNo').Value;
     datalar.PersonelLevel.Aciklama := GridPersonelLevel.DataSet.FieldByName('Aciklama').Value;
     datalar.PersonelLevel.Tarih := GridPersonelLevel.DataSet.FieldByName('Tarih').Value;
-    datalar.PersonelLevel.personelLevel := GridPersonelLevel.DataSet.FieldByName('personelLevel').Value;
+    datalar.PersonelLevel.personelLevel := GridPersonelLevel.DataSet.FieldByName('personelLevel').Asstring;
     datalar.PersonelLevel.Degerlendiren := GridPersonelLevel.DataSet.FieldByName('Degerlendiren').AsString;
     datalar.PersonelLevel.Tip := GridPersonelLevel.DataSet.FieldByName('Tip').Value;
     datalar.PersonelLevel.Durum := GridPersonelLevel.DataSet.FieldByName('Durum').Value;
@@ -768,7 +769,7 @@ begin
             datalar.PersonelLevel.SirketKodu := vartostr(TcxTextEdit(FindComponent('sirketKod')).EditingValue);
             datalar.PersonelLevel.Aciklama := '';
             datalar.PersonelLevel.Tarih := Null;
-            datalar.PersonelLevel.personelLevel := Null;
+            datalar.PersonelLevel.personelLevel := '';
             datalar.PersonelLevel.Degerlendiren := '';
         end;
    end;
@@ -2001,7 +2002,7 @@ begin
   BASLANGIC := TcxDateEditKadir.Create(self);
   BASLANGIC.ValueTip := tvDate;
   BASLANGIC.Properties.Alignment.Horz := taCenter;
-  setDataStringKontrol(self,BASLANGIC, 'ISG_SertifikaTarihi','ÝSG Sertifika Tarihi',sayfa5_Kolon1,'ISG',100);
+  setDataStringKontrol(self,BASLANGIC, 'ISG_SertifikaTarihi','Taþ.ÝSG Tarihi',sayfa5_Kolon1,'ISG',100);
 
   BASLANGIC := TcxDateEditKadir.Create(self);
   BASLANGIC.ValueTip := tvDate;
@@ -2041,12 +2042,16 @@ begin
   setDataStringC(self,'tshirt','T-SHIRT',sayfa5_Kolon1,'',70,'XS(2),S(3),M(4),L(5),XL(6),XXL(7)');
 
   setDataStringBLabel(self,'KategoriDurum',sayfa5_Kolon1,'',500,'Kategori');
-  setDataStringIC(Self,'Kategori_E','Eðitim',Sayfa5_Kolon1,'',200,'SCH_KatagoriTanim','kod','tanimi');
-  setDataStringIC(Self,'Kategori_ISG','ÝSG',Sayfa5_Kolon1,'',200,'SCH_KatagoriTanim','kod','tanimi');
-  setDataStringIC(Self,'Kategori_ISG_SCH','ÝSG SCH',Sayfa5_Kolon1,'',200,'SCH_KatagoriTanim','kod','tanimi');
   setDataStringIC(Self,'Kategori_SR','Saðlýk Raporu',Sayfa5_Kolon1,'',200,'SCH_KatagoriTanim','kod','tanimi');
+  setDataStringIC(Self,'Kategori_ISG','Taþ.ÝSG',Sayfa5_Kolon1,'',200,'SCH_KatagoriTanim','kod','tanimi');
   setDataStringIC(Self,'Kategori_KKE','K.K. Ekipman',Sayfa5_Kolon1,'',200,'SCH_KatagoriTanim','kod','tanimi');
+  setDataStringIC(Self,'Kategori_ISG_SCH','ÝSG SCH',Sayfa5_Kolon1,'',200,'SCH_KatagoriTanim','kod','tanimi');
+  setDataStringIC(Self,'Kategori_E','Metot SCH Eðitim',Sayfa5_Kolon1,'',200,'SCH_KatagoriTanim','kod','tanimi');
 
+  setDataStringBLabel(self,'NI_CalismaAlani',sayfa5_Kolon1,'',500,'Diðer');
+  setDataStringC(self,'NI','NI/El',sayfa5_Kolon1,'',100,'(NI)Montaj,(El)Bakým,NI/El');
+//  setDataStringC(self,'CalismaAlani','Çalisma Alani',sayfa5_Kolon1,'',100,'Tam,Mekanik,Elektrik,Comm');
+  setDataStringKontrol(self,CalismaAlani , 'CalismaAlani','Çalisma Alani',sayfa5_Kolon1,'',270);
 
 
   setDataStringKontrol(self,GridPersonelBelgeler,'GridPersonelBelgeler','',sayfa5_Kolon2,'',410,sayfa1.Height,alNone);
@@ -2055,7 +2060,7 @@ begin
   addButton(self,nil,'btnMYKBelgeYukle','','Belge Yükle',sayfa5_Kolon2,'btn',70,ButtonClick, 500);
   addButton(self,nil,'btnMYKBelgeAc','','Belge Göster',sayfa5_Kolon2,'btn',70,ButtonClick, 501);
 
-  setDataStringKontrol(self,GridPersonelLevel,'GridPersonelLevel','',sayfa5_Kolon3,'',210,sayfa1.Height,alNone);
+  setDataStringKontrol(self,GridPersonelLevel,'GridPersonelLevel','',sayfa5_Kolon3,'',260,sayfa1.Height,alNone);
   addButton(self,nil,'btnLevelYukleGetir','','Kayýtlar',sayfa5_Kolon3,'btn2',50,ButtonClick, 602);
   addButton(self,nil,'btnLevelBelgeYukle','','Belge Yükle',sayfa5_Kolon3,'btn2',70,ButtonClick, 600);
   addButton(self,nil,'btnLevelBelgeAc','','Belge Göster',sayfa5_Kolon3,'btn2',70,ButtonClick, 601);
@@ -2076,10 +2081,10 @@ begin
 
   setDataStringCurr(self,'idealKilo','Kilo',sayfa3_Kolon1,'kilo',50,'0.00', 1);
   setDataStringCurr(self,'boy','Boy',sayfa3_Kolon1,'_boy_',50,'0', 1);
-  setDataStringC(self,'HbsAg','HbsAg',sayfa3_Kolon1,'hbs',40,'-,+');
-  setDataStringC(self,'AntiHbs','AntiHbs',sayfa3_Kolon1,'hbs',40,'-,+');
-  setDataStringC(self,'AntiHCV','AntiHCV',sayfa3_Kolon1,'_hbs_',40,'-,+');
-  setDataStringC(self,'HIV','AntiHIV',sayfa3_Kolon1,'_hbs_',40,'-,+');
+//  setDataStringC(self,'HbsAg','HbsAg',sayfa3_Kolon1,'hbs',40,'-,+');
+//  setDataStringC(self,'AntiHbs','AntiHbs',sayfa3_Kolon1,'hbs',40,'-,+');
+//  setDataStringC(self,'AntiHCV','AntiHCV',sayfa3_Kolon1,'_hbs_',40,'-,+');
+//  setDataStringC(self,'HIV','AntiHIV',sayfa3_Kolon1,'_hbs_',40,'-,+');
 
 
 

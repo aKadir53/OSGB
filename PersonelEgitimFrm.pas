@@ -496,6 +496,24 @@ begin
 
 
 
+
+  if TcxImageComboKadir(Sender).Name = 'belgeTipi'
+  Then begin
+      if TcxImageComboKadir(FindComponent('belgeTipi')).EditValue = '2'
+      then begin
+        TcxImageComboKadir(FindComponent('IGU')).TableName := 'IGU';
+        TcxImageComboKadir(FindComponent('IGU')).Filter := ' kod in (select IGU from SIRKET_SUBE_TNM where sirketKod = ' + quotedStr( varToStr(TcxImageComboKadir(FindComponent('SirketKod')).EditValue)) +')';
+      end
+      else begin
+      TcxImageComboKadir(FindComponent('IGU')).TableName := 'DoktorlarT';
+      TcxImageComboKadir(FindComponent('IGU')).Filter := ' kod in (select subedoktor from SIRKET_SUBE_TNM where sirketKod = ' + quotedStr( varToStr(TcxImageComboKadir(FindComponent('SirketKod')).EditValue)) +')';
+      end;
+     TcxImageComboKadir(FindComponent('IGU')).ItemIndex := 0;
+ //    TcxImageComboKadir(FindComponent('IGU')).Enabled := False;
+
+   end
+   else
+
  if TcxImageComboKadir(Sender).Name = 'SirketKod'
  Then begin
 
@@ -506,11 +524,20 @@ begin
      end
      else
      begin
-       TcxImageComboKadir(FindComponent('IGU')).Filter := ' kod in (select IGU from SIRKET_SUBE_TNM where sirketKod = ' + quotedStr( varToStr(TcxImageComboKadir(Sender).EditValue)) +')';
+        if TcxImageComboKadir(FindComponent('belgeTipi')).EditValue = '2'
+        then begin
+          TcxImageComboKadir(FindComponent('IGU')).TableName := 'IGU';
+          TcxImageComboKadir(FindComponent('IGU')).Filter := ' kod in (select IGU from SIRKET_SUBE_TNM where sirketKod = ' + quotedStr( varToStr(TcxImageComboKadir(Sender).EditValue)) +')';
+        end
+        else begin
+        TcxImageComboKadir(FindComponent('IGU')).TableName := 'DoktorlarT';
+        TcxImageComboKadir(FindComponent('IGU')).Filter := ' kod in (select doktor from SIRKET_SUBE_TNM where sirketKod = ' + quotedStr( varToStr(TcxImageComboKadir(Sender).EditValue)) +')';
+        end;
        TcxImageComboKadir(FindComponent('IGU')).ItemIndex := 0;
    //    TcxImageComboKadir(FindComponent('IGU')).Enabled := False;
 
      end;
+
 
 
 
@@ -1195,9 +1222,15 @@ begin
   TcxImageComboKadir(FindComponent('SirketKod')).Properties.OnEditValueChanged := PropertiesEditValueChanged;//SirketlerPropertiesChange;
 
 
+
+
+
   kombo := TcxImageComboKadir.Create(self);
   kombo.Conn := Datalar.ADOConnection2;
-  kombo.TableName := 'IGU';
+  if TcxImageComboKadir(FindComponent('belgeTipi')).EditValue = '2'
+  then kombo.TableName := 'IGU'
+  else kombo.TableName := 'DoktorlarT';
+
   kombo.ValueField := 'kod';
   kombo.DisplayField := 'Tanimi';
   kombo.BosOlamaz := False;
@@ -1205,7 +1238,7 @@ begin
   kombo.Filter := '';
   kombo.Enabled := False;
 
-  setDataStringKontrol(self,kombo,'IGU','Ýþ Güvenlik Uzm.',Kolon1,'',140,0,alNone,'');
+  setDataStringKontrol(self,kombo,'IGU','Ýsg Prof.',Kolon1,'',140,0,alNone,'');
 
   (*
   //þube kodu ekle
