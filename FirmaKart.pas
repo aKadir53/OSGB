@@ -1220,7 +1220,7 @@ begin
 
  -36 : begin
           DurumGoster();
-          ExceldenKayitAktar('C:\OSGB\FirmaKart.XLS','SIRKETLER_TNM');
+          ExceldenKayitAktar('C:\OSGB\Aktarim.XLS','SIRKETLER_TNM',2);
           DurumGoster(False);
        end;
 

@@ -13,7 +13,7 @@ uses Windows, Messages, SysUtils, Variants, Classes, Graphics, Vcl.Controls, Con
   IdCoderMIME, cxDataStorage, cxEdit, cxControls, cxGridCustomView, cxGridDBTableView,
   cxCheckListBox,cxGridCustomTableView, cxGridTableView, cxGridBandedTableView,cxGridDBBandedTableView, cxClasses,
   cxGroupBox, cxRadioGroup,cxGridLevel, cxGrid, cxCheckBox, cxImageComboBox, cxTextEdit, cxButtonEdit,
-  cxCalendar,dxLayoutContainer, dxLayoutControl,cxPC, cxImage,
+  cxCalendar,dxLayoutContainer, dxLayoutControl,cxPC, cxImage,Vcl.FileCtrl,
   frxExportPDF ,CSGBService,IOUtils;
 
 
@@ -457,7 +457,8 @@ Procedure FirmaSorgulCSGBCvpFirmaBilgiGuncelle(firmaSgk : string ; Cvp : isyeriC
 function DetaySil(Tag : integer ; Tablaname,WhereField,Where : string) : Boolean;
 procedure FirmaBilgiRecordToNull;
 function Download(URL, User, Pass, FileName :  string ; FullURL : string = '443'): Boolean;
-procedure ExceldenKayitAktar(dosyaAdi , TabloAdi : string);
+procedure ExceldenKayitAktar(dosyaAdi , TabloAdi : string; page : integer);
+procedure KasordenFotoAktar(Liste : TFileListBox ; Dataset : TDataset);
 
 
 function findMethod(dllHandle: Cardinal;  methodName: string): FARPROC;
@@ -11470,13 +11471,59 @@ begin
   end;
 end;
 
-procedure ExceldenKayitAktar(dosyaAdi , TabloAdi : string);
+
+procedure KasordenFotoAktar(Liste : TFileListBox ; Dataset : TDataset);
+const
+  old = ['a' .. 'z', 'A' .. 'Z' , '-' , ' ' , 'þ' , 'Þ' , 'ü' , 'Ü' ,'ö' , 'Ö' , 'ç', 'Ç' , 'ð' , 'Ð' , 'Ý' , 'ý'];
+var
+  dosya , dosyaAdi , dosyaNo : string;
+  i : integer;
+  jp : TJpegimage;
+  g : TGraphic;
+  ado : TADOQuery;
+begin
+    ado := TADOQuery.Create(nil);
+    ado.Connection := datalar.ADOConnection2;
+    Dataset.First;
+    try
+      while not Dataset.Eof do
+      begin
+         dosyaAdi := Dataset.FieldByName('TCKIMLIKNO').AsString;
+         dosyaNo := Dataset.FieldByName('dosyaNo').AsString;
+
+          for dosya in Liste.Items do
+          begin
+              if pos(dosyaAdi,dosya) > 0
+              then begin
+                    jp := TJpegimage.Create;
+                    try
+                      ado.Close;
+                      jp.LoadFromFile('C:\OSGB\Foto\' + dosya);
+                      ado.SQL.Text := 'update PersonelFoto set Foto = :BLOB where dosyaNo = ' + QuotedStr(dosyaNo);
+                      ado.Parameters[0].Assign(jp);
+                      ado.ExecSQL;
+                    finally
+                      jp.free;
+                    end;
+              end;
+          end;
+          Dataset.Next;
+      end;
+    finally
+      ado.free;
+    end;
+end;
+
+
+
+
+procedure ExceldenKayitAktar(dosyaAdi , TabloAdi : string ; page : integer);
 var
   Excel ,sayfa , tip : variant;
   SatirSutunVeriVar : variant;
   dosya : string;
   sonColon,sonsatir , x ,c,r,indexCol: integer;
-  liste ,sql ,fieldnames , values , indexField : string;
+  liste ,sql ,fieldnames , values , indexField , CellData : string;
   ado : TADOQuery;
   fields : TStrings;
 begin
@@ -11486,44 +11533,59 @@ begin
   try
     Excel.Workbooks.Open(dosya);
     Excel.visible := False;//Exceli acip verileri goster
-    sayfa := Excel.workbooks[1].worksheets[2];
+    sayfa := Excel.workbooks[1].worksheets[page];
   except
     Excel.DisplayAlerts := False;  //Excel mesajlarýný görünteleme
     Excel.Quit;
     Excel := Unassigned;
+    ShowMessageSkin('Aktarim.XLS açýlamadý','Dosyanýn C:\OSGB klasöründe olduðundan emin olun','','info');
+    exit;
   end;
 
  // fields := TStrings.Create;
+
+
+
+  datalar.ADOConnection2.BeginTrans;
  try
   try
   // sonsatir := Excel.Range[Char(96 + 1) + IntToStr(65536)].end[3].Rows.Row;
   // sonColon := Excel.Range[Char(96 + 1) + IntToStr(256)].end[3].Cols.Col;
 
-   SatirSutunVeriVar:= Excel.workbooks[1].worksheets[2].UsedRange; // veri çalýþma kitabý 1 deki hangi satýrlarda ve sütünlarda var buluyor
+   SatirSutunVeriVar:= Excel.workbooks[1].worksheets[page].UsedRange; // veri çalýþma kitabý 1 deki hangi satýrlarda ve sütünlarda var buluyor
    sonsatir:= SatirSutunVeriVar.rows.Count; /// kaç satýr bilgi olduðunu rakamsal olarak buluyor.
    sonColon:= SatirSutunVeriVar.columns.Count;
 
-  // DurumGoster();
-
    for x := 1 to sonColon do
    begin
-      //tip := sayfa.cells[1,x].DataType;
-
         if pos('*', varToStr(sayfa.cells[1,x].value)) > 0
         then begin
           indexField := StringReplace(varToStr(sayfa.cells[1,x].value),'*','',[rfReplaceAll]);
           indexCol := x;
         end;
-        fieldnames := fieldnames + ifThen(fieldnames = '','',',') + StringReplace(varToStr(sayfa.cells[1,x].value),'*','',[rfReplaceAll]);
+        if sayfa.cells[1,x].EntireColumn.Hidden = False
+        Then
+         fieldnames := fieldnames + ifThen(fieldnames = '','',',') + StringReplace(varToStr(sayfa.cells[1,x].value),'*','',[rfReplaceAll]);
    end;
 
 
    for r := 2 to sonsatir do
    begin
        values := '';
+       sql := '';
        for c := 1 to sonColon do
        begin
-         values := values + ifThen(values = '','',',') + QuotedStr(varTostr(sayfa.cells[r,c].value));
+        if sayfa.cells[r,c].EntireColumn.Hidden = False
+        Then begin
+          if sayfa.cells[r,c].NumberFormat = 'yyyy-aa-gg'
+          Then
+           CellData := ifThen(varTostr(sayfa.cells[r,c].Value) <> '', varTostr(FormatDateTime('YYYYMMDD', sayfa.cells[r,c].Value)),'NULL')
+          else
+           CellData := varTostr(sayfa.cells[r,c].Value);
+
+         values := values + ifThen(values = '','',',') + ifThen(CellData = 'NULL','NULL',  QuotedStr(CellData));
+        end;
+
        end;
 
          sql := 'if not exists(select * from ' + TabloAdi  + ' where ' + indexField + ' = ' + QuotedStr(varTostr(sayfa.cells[r,indexCol].value)) + ')' +
@@ -11535,17 +11597,18 @@ begin
          datalar.QueryExec(sql);
 
    end;
+   datalar.ADOConnection2.CommitTrans;
 
   except on e : exception do
    begin
-     ShowMessageSkin(e.Message,'','','info');
+     ShowMessageSkin(e.Message,values,sayfa.cells[r,c].Value,'info');
+     datalar.ADOConnection2.RollbackTrans;
    end;
   end;
-
-  finally
-   //fields.free;
-  // DurumGoster(False);
-  end;
+ finally
+   Excel.Quit;
+   Excel := Unassigned;
+ end;
 
 end;
 

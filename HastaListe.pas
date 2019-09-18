@@ -22,7 +22,7 @@ uses
   dxSkinOffice2007Silver, dxSkinOffice2010Black, dxSkinOffice2010Blue,
   dxSkinOffice2010Silver, dxSkinPumpkin, dxSkinSeven, dxSkinSharp, dxSkinSilver,
   dxSkinSpringTime, dxSkinStardust, dxSkinSummer2008, dxSkinValentine,
-  dxSkinXmas2008Blue, cxCalendar, cxCurrencyEdit;
+  dxSkinXmas2008Blue, cxCalendar, cxCurrencyEdit, Vcl.FileCtrl;
 
 type
   TfrmHastaListe = class(TGirisForm)
@@ -84,6 +84,8 @@ type
     P2: TMenuItem;
     N3: TMenuItem;
     P3: TMenuItem;
+    P4: TMenuItem;
+    FileList: TFileListBox;
 
     procedure TopPanelPropertiesChange(Sender: TObject);
     procedure btnVazgecClick(Sender: TObject);
@@ -213,18 +215,33 @@ begin
 
       end;
  -50  : begin
-         if mrYes = ShowMessageSkin('Personel Kart Aktarýmý Ýçin Excel Dosyasýnýn C:\OSGB\PersonelKart.XLS',
+         if mrYes = ShowMessageSkin('Personel Kart Aktarýmý Ýçin Excel Dosyasýnýn C:\OSGB\Aktarim.XLS',
+                                    'Ýlk sayfada Personel Listesi Olduðundan Emin Olun',
+                                    'Ýþleme Devam Edilsin mi?',
+                                    'msg')
+         then begin
+            DurumGoster();
+            try
+             ExceldenKayitAktar('C:\OSGB\Aktarim.XLS','PersonelKart',1);
+            finally
+             DurumGoster(False);
+            end;
+         end;
+        end;
+
+ -51 : begin
+         if mrYes = ShowMessageSkin('Personel Foto Aktarýmý Ýçin Jpg Dosyalarýnýn C:\OSGB\Foto klasöründe',
                                     'Hazýr Olduðundan Emin Olun',
                                     'Ýþleme Devam Edilsin mi?',
                                     'msg')
          then begin
-
-          DurumGoster();
-          ExceldenKayitAktar('C:\OSGB\PersonelKart.XLS','PersonelKart');
-          DurumGoster(False);
+              DurumGoster();
+              FileList.Mask := 'C:\OSGB\Foto\*.jpg';
+              KasordenFotoAktar(FileList,_Dataset);
+              DurumGoster(False);
 
          end;
-        end;
+       end;
 
 
  -20  : begin

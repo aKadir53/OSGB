@@ -419,6 +419,16 @@ object frmHastaListe: TfrmHastaListe
         end
       end
     end
+    object FileList: TFileListBox
+      Left = 840
+      Top = 88
+      Width = 265
+      Height = 161
+      ItemHeight = 13
+      Mask = 'c:\OSGB\Foto\*.jpg'
+      TabOrder = 2
+      Visible = False
+    end
   end
   object cxHastaListePanelBaslik: TcxGroupBox
     Left = 0
@@ -617,6 +627,11 @@ object frmHastaListe: TfrmHastaListe
       Tag = -50
       Caption = 'Personel Kart Excelden Aktar'
       ImageIndex = 75
+      OnClick = cxButtonCClick
+    end
+    object P4: TMenuItem
+      Tag = -51
+      Caption = 'Personel Foto Dosyadan Y'#252'kle'
       OnClick = cxButtonCClick
     end
   end
