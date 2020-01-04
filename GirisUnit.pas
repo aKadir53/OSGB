@@ -423,8 +423,9 @@ begin
               sql := 'exec sp_frmPersonelListesi ' + QuotedStr(datalar.AktifSirket) + ',' +
                                                      varTostr(AktifPasifTopPanel.EditValue) + ',' +
                                                      QuotedStr('') + ',' +
-                                                     QuotedStr(datalar.AktifSube) + ',' +
-                                                     QuotedStr(varTostr(ENabizMesajTipi.EditValue));
+                                                     QuotedStr(datalar.AktifSube);
+                                                     // + ',' +
+                                                    // QuotedStr(varTostr(ENabizMesajTipi.EditValue));
 
            end;
 

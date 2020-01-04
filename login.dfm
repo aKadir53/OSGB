@@ -690,6 +690,7 @@ object frmLogin: TfrmLogin
           Style.TextStyle = [fsBold]
           TabOrder = 3
           BosOlamaz = False
+          FilterSet = fsNone
           Width = 121
         end
         object dxLayoutControl1Group_Root: TdxLayoutGroup

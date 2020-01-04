@@ -22,7 +22,8 @@ uses
   cxGridDBBandedTableView, cxGridCustomTableView, cxGridTableView,
   cxGridDBTableView, cxGridCustomView, cxGrid, DB, cxLabel, acPNG, dxSkinBlue,
   dxSkinCaramel, dxSkinCoffee, dxSkiniMaginary, dxSkinLilian, dxSkinLiquidSky,
-  dxSkinsDefaultPainters, dxSkinsdxNavBarPainter;
+  dxSkinsDefaultPainters, dxSkinsdxNavBarPainter, dxSkinLondonLiquidSky,
+  dxSkinMcSkin, dxSkinMoneyTwins;
 
 type
   TAnaForm = class(TForm)
@@ -221,6 +222,7 @@ begin
 
   for i := 0 to MainMenuKadir1.Items.Count - 1 do
   begin
+    (*
     for j := 0 to ToolBar1.ButtonCount - 1 do
     begin
       if MainMenuKadir1.Items[i].Tag = ToolBar1.Buttons[j].Tag
@@ -231,6 +233,8 @@ begin
       end;
 
     end;
+    *)
+
   end;
 end;
 

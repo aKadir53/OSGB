@@ -481,7 +481,7 @@ begin
     TcxCheckGroupKadir(FindComponent('Egitimkod')).Filter := '';
     *)
 
-
+ (*
  if (TcxImageComboKadir(Sender).Name = 'EgitimFirmaTipi')
  Then
   if (TcxImageComboKadir(Sender).EditingValue = 1)
@@ -494,7 +494,7 @@ begin
  else
       Kolon4.Visible := True;
 
-
+   *)
 
 
   if TcxImageComboKadir(Sender).Name = 'belgeTipi'
@@ -508,7 +508,7 @@ begin
       TcxImageComboKadir(FindComponent('IGU')).TableName := 'DoktorlarT';
       TcxImageComboKadir(FindComponent('IGU')).Filter := ' kod in (select subedoktor from SIRKET_SUBE_TNM where sirketKod = ' + quotedStr( varToStr(TcxImageComboKadir(FindComponent('SirketKod')).EditValue)) +')';
       end;
-     TcxImageComboKadir(FindComponent('IGU')).ItemIndex := 0;
+//     TcxImageComboKadir(FindComponent('IGU')).ItemIndex := 0;
  //    TcxImageComboKadir(FindComponent('IGU')).Enabled := False;
 
    end
@@ -517,8 +517,8 @@ begin
  if TcxImageComboKadir(Sender).Name = 'SirketKod'
  Then begin
 
-     if (EgitimPersonel.Dataset.RecordCount > 0 ) and
-        (TcxImageComboKadir(FindComponent('EgitimFirmaTipi')).EditValue = 0)
+     if (EgitimPersonel.Dataset.RecordCount > 0 ) //and
+      //  (TcxImageComboKadir(FindComponent('EgitimFirmaTipi')).EditValue = 0)
      Then begin
        TcxImageComboKadir(Sender).Reset;
      end
@@ -533,7 +533,7 @@ begin
         TcxImageComboKadir(FindComponent('IGU')).TableName := 'DoktorlarT';
         TcxImageComboKadir(FindComponent('IGU')).Filter := ' kod in (select doktor from SIRKET_SUBE_TNM where sirketKod = ' + quotedStr( varToStr(TcxImageComboKadir(Sender).EditValue)) +')';
         end;
-       TcxImageComboKadir(FindComponent('IGU')).ItemIndex := 0;
+    //   TcxImageComboKadir(FindComponent('IGU')).ItemIndex := 0;
    //    TcxImageComboKadir(FindComponent('IGU')).Enabled := False;
 
      end;
@@ -916,15 +916,17 @@ begin
       Exit;
     end;
 
-    if TcxImageComboKadir(FindComponent('EgitimFirmaTipi')).EditingValue = 0
-    Then
+ //   if TcxImageComboKadir(FindComponent('EgitimFirmaTipi')).EditingValue = 0
+ //   Then
     PersonelList.Where :=
       'Aktif = 1 '+
       'and SirketKod = ' + QuotedStr(varTOstr(TcxImageComboKadir((FindComponent('SirketKod'))).EditingValue)) +
       'and not exists (select 1 '+
       'from Personel_Egitim pe '+
       'where pe.EgitimId '+ IfThen (IsNull (TcxButtonEditKadir (FindComponent('id')).Text), 'is NULL', '= ' +  TcxButtonEditKadir (FindComponent('id')).Text) + ' '+
-      'and pe.PersonelDosyaNo = PersonelKartview.DosyaNo)'
+      'and pe.PersonelDosyaNo = PersonelKartview.DosyaNo)';
+
+(*
     Else
     PersonelList.Where :=
       'Aktif = 1 '+
@@ -934,7 +936,7 @@ begin
       'from Personel_Egitim pe '+
       'where pe.EgitimId '+ IfThen (IsNull (TcxButtonEditKadir (FindComponent('id')).Text), 'is NULL', '= ' +  TcxButtonEditKadir (FindComponent('id')).Text) + ' '+
       'and pe.PersonelDosyaNo = PersonelKartview.DosyaNo)';
-
+  *)
 
 
     datalar.ButtonEditSecimlist := PersonelList.ListeGetir;
@@ -1066,6 +1068,18 @@ begin
   end;
   //if TcxButtonEditKadir(FindComponent('id')).Text = '' then exit;
   ResetDetayDataset;
+
+  if TcxImageComboKadir(FindComponent('belgeTipi')).EditValue = '2'
+  then begin
+    TcxImageComboKadir(FindComponent('IGU')).TableName := 'IGU';
+    TcxImageComboKadir(FindComponent('IGU')).Filter := ' kod in (select IGU from SIRKET_SUBE_TNM where sirketKod = ' + quotedStr( varToStr(TcxImageComboKadir(FindComponent('SirketKod')).EditValue)) +')';
+  end
+  else begin
+  TcxImageComboKadir(FindComponent('IGU')).TableName := 'DoktorlarT';
+  TcxImageComboKadir(FindComponent('IGU')).Filter := ' kod in (select subedoktor from SIRKET_SUBE_TNM where sirketKod = ' + quotedStr( varToStr(TcxImageComboKadir(FindComponent('SirketKod')).EditValue)) +')';
+  end;
+
+
 end;
 
 procedure TfrmPersonelEgitim.cxEditEnter(Sender: TObject);
@@ -1165,6 +1179,7 @@ begin
   OrtakEventAta(kombo);
   setDataStringKontrol(self,kombo,'belgeTipi','Belge Tipi',kolon1,'ababa',100);
 
+ (*
   kombo := TcxImageComboKadir.Create(self);
   kombo.Conn := datalar.ADOConnection2;
   kombo.BosOlamaz := True;
@@ -1176,7 +1191,7 @@ begin
   OrtakEventAta(kombo);
   setDataStringKontrol(self,kombo,'EgitimFirmaTipi','Eðitim Firma Türü',Kolon1,'',100,0,alNone,'');
   TcxImageComboKadir(FindComponent('EgitimFirmaTipi')).Properties.OnButtonClick := PropertiesButtonClick ;//SirketlerPropertiesChange;
-
+   *)
 
 
 
@@ -1225,12 +1240,9 @@ begin
 
 
 
+
   kombo := TcxImageComboKadir.Create(self);
   kombo.Conn := Datalar.ADOConnection2;
-  if TcxImageComboKadir(FindComponent('belgeTipi')).EditValue = '2'
-  then kombo.TableName := 'IGU'
-  else kombo.TableName := 'DoktorlarT';
-
   kombo.ValueField := 'kod';
   kombo.DisplayField := 'Tanimi';
   kombo.BosOlamaz := False;

@@ -1036,7 +1036,7 @@ begin
    if DosyaNo.Text = '' then exit;
 
        SirketDurumDegisti := 1;
-
+      (*
        if TcxImageComboBox(FindComponent('Aktif')).ItemIndex in [1,2]
        then begin
          _aktif := inttostr(TcxImageComboBox(FindComponent('Aktif')).ItemIndex);
@@ -1074,7 +1074,7 @@ begin
           TdxLayoutItem(FindComponent('dxLapasifSebeb')).Visible := False;
          //TcxImageComboBox(FindComponent('Aktif')).Enabled := False;
        end;
-
+        *)
        (*
        sql := 'update HastaKart set aktif = ' + #39 + _aktif + #39 + ', pasifTarih = ' + #39 + _pasifTarih + #39 +
               ' where dosyaNo = ' + #39 + DosyaNo.Text + #39;
@@ -1362,13 +1362,13 @@ begin
           GridPersonelEgitim.Dataset.Open;
 //          GridEgitim.DataController.CreateAllItems(True);
 
-
+          (*
           if not datalar.QuerySelect('select * from Iskazalari where PersonelDosyaNo = ' + QuotedStr(dosyaNo.Text)).Eof
           Then
               TdxLayoutItem(FindComponent('dxLaiskazasi')).Visible := True
           Else
               TdxLayoutItem(FindComponent('dxLaiskazasi')).Visible := False;
-
+            *)
 
         (*
           GridPersonelIseBaslamaEgitim.Dataset.Connection := datalar.ADOConnection2;
@@ -1847,7 +1847,7 @@ begin
 
 
 
-
+  (*
   BASLANGIC := TcxDateEditKadir.Create(self);
   BASLANGIC.ValueTip := tvDate;
   BASLANGIC.Properties.Alignment.Horz := taCenter;
@@ -1855,8 +1855,8 @@ begin
   setDataStringMemo(Self,'pasifSebeb','Nedeni',Kolon4,'',250,100);
 
   TdxLayoutItem(FindComponent('dxLapasifSebeb')).Visible := False;
-
-
+    *)
+    (*
   Tarih := TcxDateEditKadir.Create(self);
   Tarih.ValueTip := tvDate;
   Tarih.Properties.Alignment.Horz := taCenter;
@@ -1867,7 +1867,7 @@ begin
   setDataStringMemo(Self,'KaraListeAlinmaSebebi','',Kolon4,'',250,100);
   TdxLayoutItem(FindComponent('dxLaKaraListeAlinmaSebebi')).Visible := False;
   TdxLayoutItem(FindComponent('dxLaKaraListeAlinmaTarihi')).Visible := False;
-
+      *)
 
   addButton(self,nil,'btnTopluAktif','','Toplu &Aktif Yap',Kolon4,'',110,ButtonClick, 555);
   addButton(self,nil,'btnTopluPasif','','Toplu &Pasif Yap',Kolon4,'',110,ButtonClick, 550);
@@ -1881,11 +1881,12 @@ begin
   BASLANGIC.ValueTip := tvDate;
   BASLANGIC.Properties.Alignment.Horz := taCenter;
   setDataStringKontrol(self,BASLANGIC, 'BASLANGIC','Ýþe Baþlama Tarihi',Kolon3,'IB',100);
-
+(*
   BASLANGIC := TcxDateEditKadir.Create(self);
   BASLANGIC.ValueTip := tvDate;
   BASLANGIC.Properties.Alignment.Horz := taCenter;
   setDataStringKontrol(self,BASLANGIC, 'KidemTarihi','Kýdem Tarihi',Kolon3,'IB',100);
+  *)
 
   askerlik := TcxImageComboKadir.Create(self);
   askerlik.Conn := nil;
@@ -1963,6 +1964,8 @@ begin
   setDataStringKontrol(self,tetkikIstemGrupSablon,'tetkikIstemGrupSablon','Tetkik Grubu',kolon3,'',110);
   OrtakEventAta(tetkikIstemGrupSablon);
 
+
+  (*
   BASLANGIC := TcxDateEditKadir.Create(self);
   BASLANGIC.ValueTip := tvDate;
   BASLANGIC.Properties.Alignment.Horz := taCenter;
@@ -2064,7 +2067,7 @@ begin
   addButton(self,nil,'btnLevelYukleGetir','','Kayýtlar',sayfa5_Kolon3,'btn2',50,ButtonClick, 602);
   addButton(self,nil,'btnLevelBelgeYukle','','Belge Yükle',sayfa5_Kolon3,'btn2',70,ButtonClick, 600);
   addButton(self,nil,'btnLevelBelgeAc','','Belge Göster',sayfa5_Kolon3,'btn2',70,ButtonClick, 601);
-
+    *)
 
  // setDataStringC(self,'seans','Seans',sayfa2_Kolon1,'_s_',50,'1,2,3,4,5');
  // setDataString(self,'seansSuresi','Günlük Çalýþma Süre',sayfa2_Kolon1,'_s_',30);
@@ -2119,7 +2122,7 @@ begin
 
 
 
-  SayfaCaption('Kimlik Bilgileri','Eðitim Bilgileri','Öz Geçmiþ','Çalýþma Geçmiþi','Diðer Bilgiler');
+  SayfaCaption('Kimlik Bilgileri','Eðitim Bilgileri','Öz Geçmiþ','Çalýþma Geçmiþi','');
 
   if datalar.UserGroup <> '2'
   then begin
@@ -2163,33 +2166,9 @@ begin
                   exit;
                 end;
 
-                if (TcxImageComboBox(FindComponent('MYK')).EditValue = 2) and
-                   (TcxMemo(FindComponent('MYK_Aciklama')).text = '')
-                Then Begin
-                  ShowMessageSkin('MYK , Muaf - Kapsam Dýþý','Açýklama Zorunludur','','info');
-                  TcxMemo(FindComponent('MYK_Aciklama')).SetFocus;
-                  exit;
-
-                End;
 
 
-              if SirketDurumDegisti = 1 then
-              Begin
-                  sql := 'insert into Sirket_Personel_Durum_Gecmisi(sirketKod,dosyaNo,durum,aciklama,kullanici)' +
-                                    'values( ' + QuotedStr(TcxButtonEditKadir(FindComponent('SirketKod')).EditValue) + ','
-                                               + QuotedStr(TcxTextEdit(FindComponent('TCKIMLIKNO')).EditValue) + ','
-                                               + varTostr(TcxImageComboBox(FindComponent('Aktif')).EditValue) + ','
 
-                                               + QuotedStr(ifThen(TcxImageComboBox(FindComponent('Aktif')).EditValue = 3,
-                                                  vartoStr(TcxTextEdit(FindComponent('KaraListeAlinmaSebebi')).EditingValue),
-                                                  vartoStr(TcxTextEdit(FindComponent('pasifSebeb')).EditingValue))
-                                               ) +  ','
-
-                                               + QuotedStr(datalar.username) + ')';
-                  datalar.QueryExec(sql);
-
-                  SirketDurumDegisti := 0;
-              End;
 
       (*
           if StrToint(VarToStr(TcxImageComboKadir(FindComponent('VatandasTip')).EditValue)) in [0,1]

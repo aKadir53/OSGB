@@ -24,6 +24,7 @@ object frmPersonelEgitim: TfrmPersonelEgitim
     TabOrder = 0
     OnResize = EgitimPersonelResize
     ExceleGonder = False
+    PopupForm = False
     object GridList: TcxGridDBBandedTableView
       DataController.Summary.DefaultGroupSummaryItems = <>
       DataController.Summary.FooterSummaryItems = <>
@@ -127,6 +128,7 @@ object frmPersonelEgitim: TfrmPersonelEgitim
     Height = 89
     TabOrder = 1
     ExceleGonder = False
+    PopupForm = False
     object EgitimciList: TcxGridDBBandedTableView
       DataController.Summary.DefaultGroupSummaryItems = <>
       DataController.Summary.FooterSummaryItems = <>
@@ -210,6 +212,7 @@ object frmPersonelEgitim: TfrmPersonelEgitim
     Height = 227
     TabOrder = 2
     ExceleGonder = False
+    PopupForm = False
     object EgitimGridSatirlar: TcxGridDBBandedTableView
       DataController.DataSource = memDataEgitimlerDS
       DataController.Summary.DefaultGroupSummaryItems = <>
@@ -357,6 +360,7 @@ object frmPersonelEgitim: TfrmPersonelEgitim
     Height = 130
     TabOrder = 3
     ExceleGonder = False
+    PopupForm = False
     object EgitimAltDetayGridSatir: TcxGridDBBandedTableView
       Navigator.Buttons.First.Visible = False
       Navigator.Buttons.PriorPage.Visible = False

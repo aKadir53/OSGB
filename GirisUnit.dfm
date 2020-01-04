@@ -1,4 +1,4 @@
-object GirisForm: TGirisForm
+﻿object GirisForm: TGirisForm
   Left = 0
   Top = 0
   BorderStyle = bsDialog
@@ -632,14 +632,12 @@ object GirisForm: TGirisForm
       Properties.ClearKey = 46
       Properties.Items = <
         item
-          Description = 'Bay'
-          ImageIndex = 3
-          Value = '0'
+          Description = 'Evet'
+          Value = '1'
         end
         item
-          Description = 'Bayan'
-          ImageIndex = 2
-          Value = '1'
+          Description = 'Hay'#305'r'
+          Value = '0'
         end>
       Style.LookAndFeel.NativeStyle = False
       StyleDisabled.LookAndFeel.NativeStyle = False
@@ -648,6 +646,8 @@ object GirisForm: TGirisForm
       TabOrder = 9
       Visible = False
       BosOlamaz = False
+      ItemList = '1;Evet,0;Hay'#305'r'
+      FilterSet = fsEvetHayır
       Width = 121
     end
   end
@@ -1685,13 +1685,12 @@ object GirisForm: TGirisForm
       Properties.ClearKey = 46
       Properties.Items = <
         item
-          Description = 'SysTakipNo Olmayanlar'
-          ImageIndex = 0
+          Description = 'Evet'
           Value = '1'
         end
         item
-          Description = 'T'#252'm'#252
-          Value = '100'
+          Description = 'Hay'#305'r'
+          Value = '0'
         end>
       Properties.OnChange = TopPanelPropertiesChange
       Style.Font.Charset = DEFAULT_CHARSET
@@ -1704,6 +1703,8 @@ object GirisForm: TGirisForm
       OnEnter = cxEditEnter
       OnExit = cxEditExit
       BosOlamaz = False
+      ItemList = '1;Evet,0;Hay'#305'r'
+      FilterSet = fsEvetHayır
       Width = 45
     end
     object ENabizMesajTipi: TcxImageComboKadir
@@ -1718,17 +1719,12 @@ object GirisForm: TGirisForm
       Properties.ClearKey = 46
       Properties.Items = <
         item
-          Description = 'Hasta Kay'#305't'
-          ImageIndex = 0
-          Value = 'sp_SaglikNetOnlineHastaKayitListXML'
+          Description = 'Evet'
+          Value = '1'
         end
         item
-          Description = 'Diyaliz Bildirim'
-          Value = 'sp_SaglikNetOnlineDiyalizBildirimXML'
-        end
-        item
-          Description = 'Diyali '#304'zlem'
-          Value = 'sp_SaglikNetOnlineDiyalizIzlemXML'
+          Description = 'Hay'#305'r'
+          Value = '0'
         end>
       Properties.OnChange = TopPanelPropertiesChange
       Style.Font.Charset = DEFAULT_CHARSET
@@ -1741,6 +1737,8 @@ object GirisForm: TGirisForm
       OnEnter = cxEditEnter
       OnExit = cxEditExit
       BosOlamaz = False
+      ItemList = '1;Evet,0;Hay'#305'r'
+      FilterSet = fsEvetHayır
       Width = 35
     end
     object AktifPasifTopPanel: TcxImageComboKadir
@@ -1755,20 +1753,19 @@ object GirisForm: TGirisForm
       Properties.Items = <
         item
           Description = 'Aktif'
-          ImageIndex = 0
-          Value = 1
+          Value = '1'
         end
         item
           Description = 'Pasif'
-          Value = 0
+          Value = '0'
         end
         item
           Description = 'Yeni'
-          Value = 2
+          Value = '2'
         end
         item
-          Description = 'Kara Liste'
-          Value = 3
+          Description = 'T'#252'm'#252
+          Value = '-1'
         end>
       Properties.OnChange = TopPanelPropertiesChange
       Style.Font.Charset = DEFAULT_CHARSET
@@ -1781,6 +1778,8 @@ object GirisForm: TGirisForm
       OnEnter = cxEditEnter
       OnExit = cxEditExit
       BosOlamaz = False
+      ItemList = '1;Aktif,0;Pasif,2;Yeni,-1;T'#252'm'#252
+      FilterSet = fsAktifPasif
       Width = 88
     end
     object DiyalizTipTopPanel: TcxImageComboKadir
@@ -1795,17 +1794,12 @@ object GirisForm: TGirisForm
       Properties.ClearKey = 46
       Properties.Items = <
         item
-          Description = 'Hemodiyaliz'
-          ImageIndex = 0
-          Value = 'H'
+          Description = 'Evet'
+          Value = '1'
         end
         item
-          Description = 'Periton Ayaktan'
-          Value = 'P'
-        end
-        item
-          Description = 'Periton Aletli'
-          Value = 'A'
+          Description = 'Hay'#305'r'
+          Value = '0'
         end>
       Properties.OnChange = TopPanelPropertiesChange
       Style.Font.Charset = DEFAULT_CHARSET
@@ -1819,6 +1813,8 @@ object GirisForm: TGirisForm
       OnExit = cxEditExit
       OnKeyDown = cxTextEditKeyDown
       BosOlamaz = False
+      ItemList = '1;Evet,0;Hay'#305'r'
+      FilterSet = fsEvetHayır
       Width = 139
     end
     object txtDonemTopPanel: TcxDonemComboKadir
@@ -1856,12 +1852,11 @@ object GirisForm: TGirisForm
       Properties.ClearKey = 46
       Properties.Items = <
         item
-          Description = 'Aktif '#350'irket'
-          ImageIndex = 0
+          Description = 'Evet'
           Value = '1'
         end
         item
-          Description = 'T'#252'm '#350'irketler'
+          Description = 'Hay'#305'r'
           Value = '0'
         end>
       Properties.OnChange = TopPanelPropertiesChange
@@ -1875,6 +1870,8 @@ object GirisForm: TGirisForm
       OnEnter = cxEditEnter
       OnExit = cxEditExit
       BosOlamaz = False
+      ItemList = '1;Evet,0;Hay'#305'r'
+      FilterSet = fsEvetHayır
       Width = 115
     end
     object chkList: TcxCheckGroup

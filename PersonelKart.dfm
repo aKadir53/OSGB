@@ -52,6 +52,7 @@ object frmPersonelKart: TfrmPersonelKart
     StyleHot.LookAndFeel.NativeStyle = False
     TabOrder = 1
     BosOlamaz = False
+    FilterSet = fsNone
     Width = 121
   end
   object MEDENI: TcxImageComboKadir
@@ -71,6 +72,7 @@ object frmPersonelKart: TfrmPersonelKart
       end>
     TabOrder = 2
     BosOlamaz = False
+    FilterSet = fsNone
     Width = 121
   end
   object DURUM: TcxImageComboKadir
@@ -98,6 +100,7 @@ object frmPersonelKart: TfrmPersonelKart
     TabOrder = 3
     Visible = False
     BosOlamaz = False
+    FilterSet = fsNone
     Width = 121
   end
   object VatandasTip: TcxImageComboKadir
@@ -128,6 +131,7 @@ object frmPersonelKart: TfrmPersonelKart
       end>
     TabOrder = 4
     BosOlamaz = False
+    FilterSet = fsNone
     Width = 121
   end
   object seansGunleri: TcxCheckGroup
@@ -609,6 +613,7 @@ object frmPersonelKart: TfrmPersonelKart
     TabOrder = 12
     Visible = False
     ExceleGonder = False
+    PopupForm = False
     object GridList: TcxGridDBBandedTableView
       DataController.DataSource = DataSource1
       DataController.Summary.DefaultGroupSummaryItems = <>
@@ -729,6 +734,7 @@ object frmPersonelKart: TfrmPersonelKart
     Height = 109
     TabOrder = 13
     ExceleGonder = False
+    PopupForm = False
     object GridEgitim: TcxGridDBBandedTableView
       DataController.Summary.DefaultGroupSummaryItems = <>
       DataController.Summary.FooterSummaryItems = <>
@@ -834,6 +840,7 @@ object frmPersonelKart: TfrmPersonelKart
     Height = 207
     TabOrder = 15
     ExceleGonder = False
+    PopupForm = False
     object GridIseBaslamaEgitim: TcxGridDBBandedTableView
       Navigator.Buttons.First.Visible = False
       Navigator.Buttons.PriorPage.Visible = False
@@ -927,12 +934,14 @@ object frmPersonelKart: TfrmPersonelKart
     end
   end
   object GridPersonelBelgeler: TcxGridKadir
-    Left = 779
+    Left = 803
     Top = 120
     Width = 412
     Height = 140
     TabOrder = 16
+    Visible = False
     ExceleGonder = False
+    PopupForm = False
     object GridPersonelBelgelerBelge: TcxGridDBBandedTableView
       Navigator.Buttons.OnButtonClick = GridPersonelBelgelerBelgeNavigatorButtonsButtonClick
       Navigator.Buttons.First.Visible = False
@@ -2508,7 +2517,9 @@ object frmPersonelKart: TfrmPersonelKart
     Width = 260
     Height = 159
     TabOrder = 19
+    Visible = False
     ExceleGonder = False
+    PopupForm = False
     object GridDegerlendirme: TcxGridDBBandedTableView
       Navigator.Buttons.OnButtonClick = GridDegerlendirmeNavigatorButtonsButtonClick
       Navigator.Buttons.First.Visible = False
@@ -2589,6 +2600,7 @@ object frmPersonelKart: TfrmPersonelKart
     end
   end
   object CalismaAlani: TcxCheckGroup
+    Tag = -100
     Left = 976
     Top = 19
     Alignment = alCenterCenter

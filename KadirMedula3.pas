@@ -94,10 +94,10 @@ function RaporOkuTcKimlikTenICD(kimlikNo : string; tani : array of string ; http
 
 function KatilimPayiTakipler(evrakId : integer ; var sonuc : string; http1 : THTTPRIO) : KatilimPaylari;
 
-function Kesinti(evrakId : integer ; var sonuc : string; http1 : THTTPRIO) : KesintiTakipler;
+//function Kesinti(evrakId : integer ; var sonuc : string; http1 : THTTPRIO) : KesintiTakipler;
 
-function EtkinmaddeSUTKuraligetir(etkinmaddeKodu , raporTarihi : string ; var EMaddeCvp : Array_Of_EtkinMaddeSUTKuraliDVO ;  http1 : THTTPRIO) : string;
-function MedulaListeGetir(var Cvp : EtkinMaddeOkuCevapDVO ; var Cvp1 : TeshisOkuCevapDVO ; tip : string ; http1 : THTTPRIO) : string;
+//function EtkinmaddeSUTKuraligetir(etkinmaddeKodu , raporTarihi : string ; var EMaddeCvp : Array_Of_EtkinMaddeSUTKuraliDVO ;  http1 : THTTPRIO) : string;
+//function MedulaListeGetir(var Cvp : EtkinMaddeOkuCevapDVO ; var Cvp1 : TeshisOkuCevapDVO ; tip : string ; http1 : THTTPRIO) : string;
 
 procedure TakipbilgisiYaz(PrvGrs : ProvizyonGirisDVO ; PrvCvp : ProvizyonCevapDVO);
 procedure TakipSilYaz(takipno : string);
@@ -1939,7 +1939,7 @@ begin
    end;
 end;
 
-
+  (*
 function MedulaListeGetir(var Cvp : EtkinMaddeOkuCevapDVO ; var Cvp1 : TeshisOkuCevapDVO ; tip : string ; http1 : THTTPRIO) : string;
 var
    Ts_Gon : EtkinMaddeOkuGirisDVO;
@@ -2104,7 +2104,7 @@ begin
 
 
 end;
-
+         *)
 function KatilimPayiTakipler(evrakId : integer ; var sonuc : string; http1 : THTTPRIO) : KatilimPaylari;
 var
    OrnTkpOku :  KatilimPayiGirisDVO;

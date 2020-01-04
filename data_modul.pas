@@ -636,7 +636,7 @@ begin
         portalUSer := WebErisimBilgi('EF','09');
         portalSifre := WebErisimBilgi('EF','10');
 
-        EmailSet;
+       // EmailSet;
 
 
 

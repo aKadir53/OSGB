@@ -332,6 +332,7 @@ begin
   //sirketAdi.Enabled := False;
   SirketAdi.TabStop := False;
   setDataStringKontrol(self,sirketAdi,'sirketTanimi','',Kolon1,'SirketTnm',350);
+
  // setDataStringBLabel(self,'SirketKod',Kolon1,'SirketTnm',350,' ','','sirketTanimi');
 
   FaturaTip := TcxImageComboKadir.Create(self);

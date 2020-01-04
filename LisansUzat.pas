@@ -148,7 +148,9 @@ begin
             then begin
               btnUygula.Click;
               ShowMessageSkin(kb.SonucMesaj,'Lisansýnýz Uygulandý.','','info');
-           end;
+           end
+           else
+            ShowMessageSkin(kb.SonucMesaj,'','','info');
         except on e : Exception do
          begin
           ShowMessageSkin(e.Message,'','','info');

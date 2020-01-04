@@ -6120,7 +6120,7 @@ var
   Tarih, basla, bitis, kurum : string;
   limit : integer;
 begin
-  //LisansBilgileri(Tarih, basla, bitis, kurum, limit);
+  LisansBilgileri(Tarih, basla, bitis, kurum, limit);
 
   if (datalar.ProgTarih = '') Then
   Begin
@@ -11473,8 +11473,8 @@ end;
 
 
 procedure KasordenFotoAktar(Liste : TFileListBox ; Dataset : TDataset);
-const
-  old = ['a' .. 'z', 'A' .. 'Z' , '-' , ' ' , 'þ' , 'Þ' , 'ü' , 'Ü' ,'ö' , 'Ö' , 'ç', 'Ç' , 'ð' , 'Ð' , 'Ý' , 'ý'];
+//const
+//  old = ['a' .. 'z', 'A' .. 'Z' , '-' , ' ' , 'þ' , 'Þ' , 'ü' , 'Ü' ,'ö' , 'Ö' , 'ç', 'Ç' , 'ð' , 'Ð' , 'Ý' , 'ý'];
 var
   dosya , dosyaAdi , dosyaNo : string;
   i : integer;
@@ -11490,6 +11490,7 @@ begin
       begin
          dosyaAdi := Dataset.FieldByName('TCKIMLIKNO').AsString;
          dosyaNo := Dataset.FieldByName('dosyaNo').AsString;
+
 
           for dosya in Liste.Items do
           begin

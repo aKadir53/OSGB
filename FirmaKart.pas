@@ -75,7 +75,9 @@ type
       var DisplayValue: Variant; var ErrorText: TCaption; var Error: Boolean);
     procedure txtNaceKodPropertiesButtonClick(Sender: TObject;
       AButtonIndex: Integer);
-     procedure ButtonClick(Sender: TObject);
+    procedure ButtonClick(Sender: TObject);
+
+    function FirmaSil : Boolean;
    // procedure ExceldenFirmaAktar;
   private
     { Private declarations }
@@ -184,7 +186,7 @@ begin
    if datalar.AktifSirket = '' then exit;
 
    SirketDurumDegisti := 1;
-
+  (*
  //  if aktifKart = 0
  //  then begin
        if TcxImageComboBox(FindComponent('Aktif')).ItemIndex in [1]
@@ -213,6 +215,7 @@ begin
          TdxLayoutItem(FindComponent('dxLaKaraListeAlinmaTarihi')).Visible := True;
          TdxLayoutItem(FindComponent('dxLaKaraListeAlinmaSebebi')).Visible := True;
        end;
+       *)
 
        (*
        sql := 'update FirmaKart set aktif = ' + #39 + _aktif + #39 +
@@ -282,6 +285,7 @@ begin
     if FindComponent('MAHALLE') <> nil Then TcxImageComboKadir(FindComponent('MAHALLE')).EditValue := '';
   end ;
 
+ (*
   if TcxImageComboKadir(sender).Name = 'FirmaTip'
   Then begin
     firmaTip := TcxImageComboKadir(sender).EditValue;
@@ -311,7 +315,7 @@ begin
     end;
 
   end;
-
+   *)
 end;
 
 procedure TfrmFirmaKart.txtTipPropertiesChange(Sender: TObject);
@@ -339,6 +343,22 @@ begin
 //
 end;
 
+
+function TfrmFirmaKart.FirmaSil: Boolean;
+begin
+  Result := False;
+  datalar.ADOConnection2.BeginTrans;
+  try
+    datalar.QueryExec('delete from FirmaLogo where sirketKod = ' + QuotedStr(TcxButtonEditKadir(FindComponent('sirketKod')).EditValue));
+  //  datalar.QueryExec('delete from SCH_FirmaSozlesmeleri where sirketKod = ' + QuotedStr(TcxButtonEditKadir(FindComponent('sirketKod')).EditValue));
+    datalar.QueryExec('delete from SIRKET_SUBE_TNM where sirketKod = ' + QuotedStr(TcxButtonEditKadir(FindComponent('sirketKod')).EditValue));
+    datalar.ADOConnection2.CommitTrans;
+    Result := True;
+  except
+    datalar.ADOConnection2.RollbackTrans;
+  end;
+
+end;
 
 function TfrmFirmaKart.FirmaSozlesmeDosyaYuklumu : string;
 var
@@ -780,7 +800,7 @@ begin
   Sayfa3_Kolon3.Width := 0;
   Sayfa3_Kolon2.Width := 0;
 
-  SirketlerSorgu := '(select distinct sb.sirketKod,s.tanimi,s.SGKKod,s.VN,S.aktif  from SIRKET_SUBE_TNM Sb join SIRKETLER_TNM s on s.SirketKod = sb.sirketKod) S';
+  SirketlerSorgu := '(select distinct sb.sirketKod,s.tanimi,s.SGKKod,s.VN,S.aktif,sb.IGU,sb.subeDoktor,doktor  from SIRKET_SUBE_TNM Sb join SIRKETLER_TNM_view s on s.SirketKod = sb.sirketKod) S';
                                                                      //         ,sb.IGU,Sb.SubeDoktor
   List := ListeAcCreate(SirketlerSorgu,'sirketKod,SGKKod,tanimi,VN,Aktif',
                        'SirketKodu,SatýcýKodu,Sirket,VergiNo,Durum',
@@ -791,7 +811,7 @@ begin
   List.Where := datalar.sirketlerUserFilter;
 
   setDataStringB(self,'SirketKod','Þirket Kodu',Kolon1,'',80,List,True,nil,'','',True,True,1);
-
+(*
   tehlikeSinifi := TcxImageComboKadir.Create(self);
   tehlikeSinifi.Conn := datalar.ADOConnection2;
   tehlikeSinifi.BosOlamaz := True;
@@ -801,7 +821,7 @@ begin
   tehlikeSinifi.Filter := '';
   setDataStringKontrol(self,tehlikeSinifi,'FirmaTip','Firma Tipi',kolon1,'',120);
   OrtakEventAta(tehlikeSinifi);
-
+  *)
   setDataString(self,'SGKKod','Satýcý Kodu  ',Kolon1,'sat',100,True);
 
 
@@ -825,7 +845,7 @@ begin
   setDataStringKontrol(self,tehlikeSinifi,'tehlikeSinifi','Tehlike Sýnýfý',kolon1,'',120);
   OrtakEventAta(tehlikeSinifi);
 
-
+ (*
   tehlikeSinifi := TcxImageComboKadir.Create(self);
   tehlikeSinifi.Conn := datalar.ADOConnection2;
   tehlikeSinifi.BosOlamaz := True;
@@ -835,11 +855,11 @@ begin
   tehlikeSinifi.Filter := '';
   setDataStringKontrol(self,tehlikeSinifi,'isTanim','Ýþ Tanýmý',kolon1,'',120);
   OrtakEventAta(tehlikeSinifi);
-
+   *)
 
   setDataString(self,'VD','Vergi Dairesi',Kolon1,'',100,True);
   setDataString(self,'VN','Vergi No',Kolon1,'',100,True);
-  setDataString(self,'VergiLevhaUnvani','Vergi Levha Unvani',Kolon1,'',250,True);
+//  setDataString(self,'VergiLevhaUnvani','Vergi Levha Unvani',Kolon1,'',250,True);
 
 
 
@@ -945,7 +965,7 @@ begin
 
   setDataStringKontrol(self,cxFotoPanel , 'cxFotoPanel','',Kolon2,'',110);
   setDataStringKontrol(self,txtAktif , 'Aktif','',Kolon2,'',110);
-
+  (*
   Tarih := TcxDateEditKadir.Create(self);
   Tarih.ValueTip := tvDate;
   Tarih.Date := date;
@@ -955,7 +975,7 @@ begin
   setDataStringMemo(Self,'KaraListeAlinmaSebebi','',Kolon2,'',250,100);
   TdxLayoutItem(FindComponent('dxLaKaraListeAlinmaSebebi')).Visible := False;
   TdxLayoutItem(FindComponent('dxLaKaraListeAlinmaTarihi')).Visible := False;
-
+    *)
 
 //  setDataStringKontrol(self,txtTip , 'Tip','',Kolon3,'',110);
 
@@ -999,24 +1019,34 @@ var
  s ,sql : string;
 begin
   datalar.KontrolUserSet := False;
-  BeginTrans (DATALAR.ADOConnection2);
-  try
+
+
     case TControl(sender).Tag  of
-      1 : begin
-            FotoDeleteRecord;
-          end;
+      Sil : begin
+              firmaSil;
+            end;
+
+       kaydet :
+            begin
+            (*
+                s := FirmaSozlesmeDosyaYuklumu;
+                if (s <> '') //and (TcxImageComboBox(FindComponent('Aktif')).ItemIndex = 1)
+                then begin
+                  TcxImageComboBox(FindComponent('Aktif')).ItemIndex := 0;
+                  ShowMessageSkin(s,' Dökümaný Yüklü Deðil','Firma Aktif Edilemez','info');
+                  //exit;
+                end;
+                *)
+            end;
     end;
 
-    s := FirmaSozlesmeDosyaYuklumu;
-    if (s <> '') //and (TcxImageComboBox(FindComponent('Aktif')).ItemIndex = 1)
-    then begin
-      TcxImageComboBox(FindComponent('Aktif')).ItemIndex := 0;
-      ShowMessageSkin(s,' Dökümaný Yüklü Deðil','Firma Aktif Edilemez','info');
-      //exit;
-    end;
+  try
+   BeginTrans (DATALAR.ADOConnection2);
 
 
     inherited;
+
+
     if datalar.KontrolUserSet then exit;
     if not cxKaydetResult then Exit;
 
@@ -1024,10 +1054,10 @@ begin
  kaydet : begin
              // if TCtoDosyaNo(TcxCustomEdit(FindComponent('TckimlikNo')).EditingValue)
              FotoNewRecord;
-             FirmaSozlesmeNewRecord;
+            // FirmaSozlesmeNewRecord;
              Kart := sql_none;
-             if (SubeIGUDoktorAtanmismi(TcxButtonEditKadir(FindComponent('SirketKod')).Text) = 0) and
-                (TcxImageComboBox(FindComponent('FirmaTip')).EditValue = 0)
+             if (SubeIGUDoktorAtanmismi(TcxButtonEditKadir(FindComponent('SirketKod')).Text) = 0) //and
+                //(TcxImageComboBox(FindComponent('FirmaTip')).EditValue = 0)
              Then
               if mrYes = ShowMessageSkin('Doktor Yada ÝGU atamasý yapýlmayan Þube Var','Tanýmlamak Ýster misiniz?','','msg')
               then begin
@@ -1037,7 +1067,7 @@ begin
               end;
               TcxImageComboBox(FindComponent('Aktif')).Enabled := True;
 
-
+              (*
               if SirketDurumDegisti = 1 then
               Begin
                   sql := 'insert into Sirket_Personel_Durum_Gecmisi(sirketKod,durum,aciklama,kullanici)' +
@@ -1049,7 +1079,7 @@ begin
 
                   SirketDurumDegisti := 0;
               End;
-
+                *)
 
 
 

@@ -22,10 +22,6 @@ object frmLisansBilgisi: TfrmLisansBilgisi
     Caption = '  Mevcut Lisans Bilgisi  '
     Style.BorderStyle = ebsOffice11
     TabOrder = 0
-    ExplicitLeft = 8
-    ExplicitTop = 8
-    ExplicitWidth = 308
-    ExplicitHeight = 127
     Height = 106
     Width = 324
     object Label1: TLabel
@@ -123,7 +119,6 @@ object frmLisansBilgisi: TfrmLisansBilgisi
     Align = alBottom
     PanelStyle.Active = True
     TabOrder = 2
-    ExplicitTop = 144
     Height = 32
     Width = 324
     object btnVazgec: TcxButton
@@ -141,9 +136,6 @@ object frmLisansBilgisi: TfrmLisansBilgisi
       Font.Style = [fsBold]
       ParentFont = False
       OnClick = btnVazgecClick
-      ExplicitLeft = 223
-      ExplicitTop = 13
-      ExplicitHeight = 25
     end
     object btnLisans: TcxButton
       Left = 172
@@ -160,9 +152,6 @@ object frmLisansBilgisi: TfrmLisansBilgisi
       Font.Style = [fsBold]
       ParentFont = False
       OnClick = btnLisansClick
-      ExplicitLeft = 145
-      ExplicitTop = 11
-      ExplicitHeight = 27
     end
     object btnUygula: TcxButton
       Left = 98

@@ -43,6 +43,7 @@ object frmHastaListe: TfrmHastaListe
       LevelTabs.ImageBorder = 2
       LevelTabs.Style = 1
       ExceleGonder = False
+      PopupForm = False
       object Liste: TcxGridDBTableView
         PopupMenu = PopupMenu1
         OnDblClick = ListeDblClick
@@ -345,15 +346,6 @@ object frmHastaListe: TfrmHastaListe
           HeaderAlignmentHorz = taCenter
           HeaderAlignmentVert = vaCenter
         end
-        object ListeColumn1: TcxGridDBColumn
-          Caption = 'P.Kart Kalan G'#252'n Say'#305's'#305
-          DataBinding.FieldName = 'KartBitisGun'
-          PropertiesClassName = 'TcxCurrencyEditProperties'
-          Properties.AssignedValues.DisplayFormat = True
-          HeaderAlignmentHorz = taCenter
-          HeaderAlignmentVert = vaCenter
-          Options.Editing = False
-        end
         object ListeColumn12: TcxGridDBColumn
           Caption = 'Grup'
           DataBinding.FieldName = 'tetkikIstemGrupSablon'
@@ -418,16 +410,6 @@ object frmHastaListe: TfrmHastaListe
           Width = 1153
         end
       end
-    end
-    object FileList: TFileListBox
-      Left = 840
-      Top = 88
-      Width = 265
-      Height = 161
-      ItemHeight = 13
-      Mask = 'c:\OSGB\Foto\*.jpg'
-      TabOrder = 2
-      Visible = False
     end
   end
   object cxHastaListePanelBaslik: TcxGroupBox

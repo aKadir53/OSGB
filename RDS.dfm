@@ -17,13 +17,14 @@ object frmRDS: TfrmRDS
   PixelsPerInch = 96
   TextHeight = 13
   object RDSGrid: TcxGridKadir
-    Left = -1025
-    Top = 104
+    Left = 135
+    Top = 120
     Width = 2017
     Height = 169
     TabOrder = 0
     ExcelFileName = 'RiskDegerlendirme'
     ExceleGonder = True
+    PopupForm = False
     object cxGridDBTableView1: TcxGridDBTableView
       DataController.Summary.DefaultGroupSummaryItems = <>
       DataController.Summary.FooterSummaryItems = <>
@@ -579,6 +580,7 @@ object frmRDS: TfrmRDS
     BorderStyle = cxcbsNone
     TabOrder = 1
     ExceleGonder = False
+    PopupForm = False
     object RDSEkipGridList: TcxGridDBBandedTableView
       DataController.Summary.DefaultGroupSummaryItems = <>
       DataController.Summary.FooterSummaryItems = <>

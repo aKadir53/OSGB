@@ -35,7 +35,6 @@ type
     DiyalizTip: TcxRadioGroup;
     popupYil: TPopupMenu;
     ADOTable1: TADOTable;
-    DataSource2: TDataSource;
     cxListPanel: TcxGroupBox;
     cxGrid2: TcxGridKadir;
     Liste: TcxGridDBTableView;
@@ -80,12 +79,11 @@ type
     f1: TMenuItem;
     N2: TMenuItem;
     P1: TMenuItem;
-    ListeColumn1: TcxGridDBColumn;
     P2: TMenuItem;
     N3: TMenuItem;
     P3: TMenuItem;
     P4: TMenuItem;
-    FileList: TFileListBox;
+    DataSource2: TDataSource;
 
     procedure TopPanelPropertiesChange(Sender: TObject);
     procedure btnVazgecClick(Sender: TObject);
@@ -131,9 +129,9 @@ begin
   Result := False;
   if Tag = TagfrmHastaListe
   then
-   TapPanelElemanVisible(True,false,false,True,false,false,False,false,False,True,False,False)
+   TapPanelElemanVisible(True,false,false,False,false,false,False,false,False,True,False,False)
   else
-   TapPanelElemanVisible(True,false,false,True,false,false,True,false,False,True,False,False);
+   TapPanelElemanVisible(True,false,false,False,false,false,True,false,False,True,False,False);
 
    AktifPasifTopPanel.ItemIndex := 0;
 
@@ -230,17 +228,7 @@ begin
         end;
 
  -51 : begin
-         if mrYes = ShowMessageSkin('Personel Foto Aktarýmý Ýçin Jpg Dosyalarýnýn C:\OSGB\Foto klasöründe',
-                                    'Hazýr Olduðundan Emin Olun',
-                                    'Ýþleme Devam Edilsin mi?',
-                                    'msg')
-         then begin
-              DurumGoster();
-              FileList.Mask := 'C:\OSGB\Foto\*.jpg';
-              KasordenFotoAktar(FileList,_Dataset);
-              DurumGoster(False);
 
-         end;
        end;
 
 
@@ -290,8 +278,10 @@ begin
   Olustur(self,TableName,'Personel Listesi',23);
   Menu := PopupMenu1;
 
-  TopPanel.Visible := true;
 
+  TopPanel.Visible := true;
+  (*
+   ENabizMesajTipi.FilterSet := fsNone;
    ENabizMesajTipi.Properties.Items.Clear;
    ENabizMesajTipi.Conn := datalar.ADOConnection2;
    ENabizMesajTipi.TableName := 'FirmaTipleri';
@@ -300,7 +290,7 @@ begin
    ENabizMesajTipi.Width := 80;
    ENabizMesajTipi.Filter := '';
    ENabizMesajTipi.EditValue := 0;
-
+    *)
   Liste.DataController.DataSource := DataSource;
 
  // AktifPasifTopPanel.EditValue := '0';

@@ -291,6 +291,7 @@ begin
       dxStatusBar1.Panels [1].Text := datalar.usernameAdi + ' (' + datalar.UserGroupName + ')';
       dxStatusBar1.Panels [1].Width := Length (dxStatusBar1.Panels [1].Text) * 8;
       datalar._database := txtDataBase.Text;
+      datalar.osgbKodu := txtOsgbKodu.Text;
 
   (*
       if datalar.UserGroup = '1' then
