@@ -181,7 +181,7 @@ type
   end;
 
 
-
+  (*
   TReceteImzala = procedure(Id : integer;
                       recete : PWideChar;
                       doktorkullanici : PWideChar;
@@ -191,7 +191,23 @@ type
                       TesisKodu : integer;
                        var sonuc : PWideChar;
                       url : string;
-                      cardType : PWideChar); stdcall;
+                      cardType : PWideChar;
+                      goster : integer); stdcall;
+                            *)
+
+  TReceteImzala = procedure(Id : integer;
+                      recete : PWideChar;
+                      doktorkullanici : PWideChar;
+                      doktrsifre : PWideChar;
+                      pin : PWideChar;
+                      doktorTc : PWideChar;
+                      TesisKodu : PWideChar;
+                       var sonuc : PWideChar;
+                      url : PWideChar;
+                      cardType : PWideChar;
+                      goster : integer); stdcall;
+
+
 
   TReceteGonder = procedure(Id : integer;
                       recete : string;
@@ -281,7 +297,7 @@ begin
 
     @imzala := findMethod(dllHandle, 'ReceteImzalaGonder');
     if addr(imzala) <> nil then
-    imzala(receteId,PWidechar(recete),PWidechar(doktorKullanici),PWidechar(doktorsifre),PWidechar(pin),PWidechar(doktorTc),TesisKodu,ss,url,PWidechar(cardType));
+    imzala(receteId,PWidechar(recete),PWidechar(doktorKullanici),PWidechar(doktorsifre),PWidechar(pin),PWidechar(doktorTc),PWidechar(TesisKodu),PWidechar(ss),PWidechar(url),PWidechar(cardType),1);
 
     ReceteImzalaGonder := ss;
 

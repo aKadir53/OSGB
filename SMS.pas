@@ -41,10 +41,11 @@ type
 
   TSendMesaj = procedure(KullaniciAdi : string ; Sifre : string ; _from : string ;
                          TelefonNums : string ; mesaj : string;
-                         var Sonuc : string);stdCall;
+                         var Sonuc : PWideChar);stdCall;
 
   const
    LIB_DLL = 'NoktaDLL.dll';
+  // LIB_DLL = 'D:\Projeler\VS\c#\ListeDLL_Cades\ListeDLL\bin\x86\Debug\NoktaDLL.dll';
 
 var
   frmSMS: TfrmSMS;
@@ -63,7 +64,7 @@ function TfrmSMS.SendMesajGonder(tel,mesaj : string) : string;
 var
   SendMesaj : TSendMesaj;
   dllHandle: Cardinal;
-  _sonuc_ : string;
+  _sonuc_ : PWideChar;
 begin
   SendMesajGonder := '';
   dllHandle := LoadLibrary(LIB_DLL);

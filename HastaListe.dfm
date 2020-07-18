@@ -42,7 +42,8 @@ object frmHastaListe: TfrmHastaListe
       TabOrder = 0
       LevelTabs.ImageBorder = 2
       LevelTabs.Style = 1
-      ExceleGonder = False
+      ExcelFileName = 'Firma_Personel_Listesi'
+      ExceleGonder = True
       PopupForm = False
       object Liste: TcxGridDBTableView
         PopupMenu = PopupMenu1
@@ -595,11 +596,13 @@ object frmHastaListe: TfrmHastaListe
       Tag = -21
       Caption = 'Personel Kart Yazd'#305'r'
       ImageIndex = 112
+      Visible = False
     end
     object P2: TMenuItem
       Tag = -20
       Caption = 'Pasaport S'#252'resi Ge'#231'enleri Firmas'#305'na Bildir'
       ImageIndex = 10
+      Visible = False
       OnClick = cxButtonCClick
     end
     object N3: TMenuItem
@@ -608,12 +611,25 @@ object frmHastaListe: TfrmHastaListe
     object P3: TMenuItem
       Tag = -50
       Caption = 'Personel Kart Excelden Aktar'
-      ImageIndex = 75
+      ImageIndex = 9
       OnClick = cxButtonCClick
     end
     object P4: TMenuItem
       Tag = -51
       Caption = 'Personel Foto Dosyadan Y'#252'kle'
+      Visible = False
+      OnClick = cxButtonCClick
+    end
+    object E1: TMenuItem
+      Tag = 9997
+      Caption = 'Excel'#39'e Aktar'
+      ImageIndex = 75
+      OnClick = cxButtonCClick
+    end
+    object L1: TMenuItem
+      Tag = -52
+      Caption = 'Listeyi Yazd'#305'r'
+      ImageIndex = 28
       OnClick = cxButtonCClick
     end
   end

@@ -2967,7 +2967,7 @@ begin
     end;
   end;
 end;
-
+ (*
 procedure PopupMenuToToolBar(AOwner : TComponent ; TB : TToolbar ; Menu : TPopupMenu);
 var
   mi : TMenuItem;
@@ -3052,7 +3052,87 @@ begin
     end;
   end;
 end;
+  *)
 
+procedure PopupMenuToToolBar(AOwner : TComponent ; TB : TToolbar ; Menu : TPopupMenu);
+var
+  mi : TMenuItem;
+  misub : TMenuItem;
+  TBB : TToolButtonKadir;
+  pmenu : TPopupMenu;
+  i,r : integer;
+begin
+  for I := TB.ButtonCount - 1 downto 0 do
+    TB.Buttons[I].Free;
+
+  TB.Images := Menu.Images;
+
+  for r := 0 to Menu.Items.Count - 1 do
+  begin
+    mi := TMenuItem(Menu.Items[r]);
+    TBB := FindToolButton(TB,'ToolButton'+mi.Name);
+    if TBB <> nil
+    then begin
+     TBB.Enabled := mi.Enabled;
+     Continue;
+    end;
+    if (mi.Visible = True) then
+    begin
+      TBB := TToolButtonKadir.Create(AOwner);
+      if (mi.Caption = '-')
+      then begin
+        TBB.Style := tbsSeparator;
+        TBB.Width := 10;
+      end
+      else begin
+          TBB.Style := tbsButton;
+          TBB.Height := 40;
+          TBB.Width := 32;
+          TBB.Hint := mi.Caption;
+          TBB.ShowHint := True;
+          TBB.Tag := mi.Tag;
+          TBB.Enabled := mi.Enabled;
+          TBB.Name := 'ToolButton'+mi.Name;
+          TBB.ImageIndex := mi.ImageIndex;
+          TBB.Modul := copy(mi.Hint,1,pos(',',mi.Hint)-1); //Modul
+          TBB.Islem := copy(mi.Hint,pos(',',mi.Hint)+1,100); //Islem
+          TBB.OnClick := mi.OnClick;
+          TBB.Parent := TB;
+        if mi.Count > 0
+        Then begin
+          TBB.Style := tbsDropDown;
+          pmenu := TPopupMenu.Create(AOwner);
+          pmenu.Images := menu.Images;
+          for i := 0 to mi.count - 1 do
+          begin
+            misub := TMenuItem.Create(pmenu);
+            misub.Caption := mi.Items[i].Caption;
+
+            if Assigned(mi.Items[i].Action)
+            then begin
+              mi.Items[i].Action.Tag := mi.Items[i].Tag;
+              misub.Action := mi.Items[i].Action;
+            end;
+
+            misub.ImageIndex := mi.Items[i].ImageIndex;
+            misub.Tag := mi.Items[i].Tag;
+            misub.Enabled := mi.Items[i].Enabled;
+            //misub.Modul := mi.Items[i]. Modul;
+          //  misub.Islem := mi.Islem;
+            misub.hint := mi.Items[i].hint; //Modul,Islem
+            misub.OnClick := mi.Items[i].OnClick;
+            pmenu.Items.Add(misub);
+           end;
+          TBB.DropdownMenu := pmenu;
+        end
+        else  // if mi.count end
+        begin
+
+        end;
+      end;
+    end;
+  end;
+end;
 
 function ListeAcCreate(TableName,kolonlar,kolonBasliklar,kolonGenislik,name,baslik,where : string;colcount : integer;Grup : boolean = false;Owner : TComponent = nil) : TListeAc;
 var

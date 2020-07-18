@@ -84,6 +84,8 @@ type
     P3: TMenuItem;
     P4: TMenuItem;
     DataSource2: TDataSource;
+    E1: TMenuItem;
+    L1: TMenuItem;
 
     procedure TopPanelPropertiesChange(Sender: TObject);
     procedure btnVazgecClick(Sender: TObject);
@@ -151,6 +153,7 @@ var
  dosyaNo,sirketKod,sube,sql : string;
  i : integer;
  ado : TADOQuery;
+ TopluDataset : TDataSetKadir;
 begin
   datalar.KontrolUserSet := False;
   inherited;
@@ -227,8 +230,9 @@ begin
          end;
         end;
 
- -51 : begin
-
+ -52 : begin
+         TopluDataset.Dataset0 := _Dataset;
+         PrintYap('PRL','Personel Listesi',intTostr(TagfrmHastaListe), TopluDataset);
        end;
 
 
